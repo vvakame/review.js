@@ -1,0 +1,292 @@
+module.exports = function (grunt) {
+	grunt.initConfig({
+		pkg: grunt.file.readJSON('package.json'),
+		// Java用プロジェクト構成向け設定
+		opt: {
+			"tsMain": "src/main/typescript",
+			"tsMainLib": "src/main/typescript/libs",
+			"tsTest": "src/test/typescript",
+			"tsTestLib": "src/test/typescript/libs",
+			"peg": "src/main/peg",
+
+			"outBase": "bin",
+			"jsMainOut": "bin",
+			"jsTestOut": "src/test/typescript"
+		},
+
+		typescript: {
+			main: { // --declarations --sourcemap --target ES5 --out client/scripts/main.js client/scripts/main.ts
+				src: ['<%= opt.tsMain %>/Ignite.ts'],
+				dest: '<%= opt.jsMainOut %>',
+				options: {
+					target: 'es5',
+					base_path: '<%= opt.tsMain %>',
+					sourcemap: false,
+					declaration: false,
+					noImplicitAny: true
+				}
+			},
+			test: {
+				src: ['<%= opt.tsTest %>/MainSpec.ts'],
+				dest: '<%= opt.tsTest %>/main-spec.js',
+				options: {
+					target: 'es5',
+					sourcemap: false,
+					declaration: false,
+					noImplicitAny: true
+				}
+			}
+		},
+		tslint: {
+			options: {
+				formatter: "prose",
+				configuration: {
+					// https://github.com/palantir/tslint#supported-rules
+					"rules": {
+						"bitwise": true,
+						"classname": true,
+						"curly": true,
+						"debug": false,
+						"dupkey": true,
+						"eofline": true,
+						"eqeqeq": true,
+						"evil": true,
+						"forin": false, // TODO 解消方法よくわからない
+						// "indent": [false, 4], // WebStormのFormatterと相性が悪い
+						"labelpos": true,
+						"label-undefined": true,
+						// "maxlen": [false, 140],
+						"noarg": true,
+						"noconsole": [false,
+							"debug",
+							"info",
+							"time",
+							"timeEnd",
+							"trace"
+						],
+						"noconstruct": true,
+						"nounreachable": true,
+						"noempty": false, // プロパティアクセス付き引数有りのコンストラクタまで怒られるので
+						"oneline": [true,
+							"check-open-brace",
+							"check-catch",
+							"check-else",
+							"check-whitespace"
+						],
+						"quotemark": [true, "double"],
+						"radix": false, // 10の基数指定するのめんどいので
+						"semicolon": true,
+						"sub": true,
+						"trailing": true,
+						"varname": false, // _hoge とかが許可されなくなるので…
+						"whitespace": [false, // WebStormのFormatterと相性が悪い
+							"check-branch",
+							"check-decl",
+							"check-operator",
+							"check-separator" ,
+							"check-type"
+						]
+					}
+				}
+			},
+			files: {
+				src: ['<%= opt.tsMain %>/**/*.ts', '<%= opt.tsTest %>/**/*.ts'],
+				filter: function (filepath) {
+					var mainLib = grunt.config.get("opt.tsMainLib") + "/";
+					var testLib = grunt.config.get("opt.tsTestLib") + "/";
+					if (filepath.indexOf(mainLib) !== -1 || filepath.indexOf(testLib) !== -1) {
+						return false;
+					}
+
+					return true;
+				}
+			}
+		},
+		watch: {
+			"typescript-main": {
+				files: ['<%= opt.tsMain %>/**/*.ts'],
+				tasks: ['typescript:main']
+			},
+			"typescript-test": {
+				files: [ '<%= opt.tsTest %>/**/*.ts'],
+				tasks: ['typescript']
+			}
+		},
+		bower: {
+			install: {
+				options: {
+					targetDir: 'bower-task',
+					layout: 'byType', // exportsOverride の左辺に従って分類
+					install: true,
+					verbose: true, // ログの詳細を出すかどうか
+					cleanTargetDir: true,
+					cleanBowerDir: false
+				}
+			}
+		},
+		copy: {
+			bower: {
+				files: [
+					{
+						expand: true,
+						flatten: true,
+						cwd: 'bower-task/',
+						src: ['main-js/**/*.js'],
+						dest: '<%= opt.jsMainOut %>/libs/'
+					},
+					{
+						expand: true,
+						flatten: true,
+						cwd: 'bower-task/',
+						src: ['test-js/**/*.js', 'test-css/**/*.css'],
+						dest: '<%= opt.tsTest %>/libs/'
+					}
+				]
+			},
+			tsd: {
+				files: [
+					{
+						expand: true,
+						cwd: 'd.ts/DefinitelyTyped/',
+						src: ['*/*.d.ts'],
+						dest: '<%= opt.tsMain %>/libs/DefinitelyTyped/'
+					},
+					{
+						expand: true,
+						cwd: 'd.ts/DefinitelyTyped/',
+						src: ['*/*.d.ts'],
+						dest: '<%= opt.tsTest %>/libs/DefinitelyTyped/'
+					}
+				]
+			}
+		},
+		uglify: {
+			dev: {
+				options: {
+					report: 'min',
+					// 変数名の圧縮類は作業コストが大きすぎるのでやらない
+					beautify: true,
+					mangle: false,
+					preserveComments: 'some',
+
+					sourceMap: '<%= opt.jsMainOut %>/source.js.map',
+					sourceMapRoot: '',
+					sourceMappingURL: 'source.js.map'
+				},
+				files: {
+					'<%= opt.jsMainOut %>/main.min.js': [
+						'<%= opt.jsMainOut %>/libs/*.js',
+						'<%= opt.jsMainOut %>/*.js'
+					]
+				}
+			},
+			prod: {
+				options: {
+					report: 'gzip',
+					// 変数名の圧縮類は作業コストが大きすぎるのでやらない
+					mangle: false,
+					preserveComments: 'some'
+				},
+				files: {
+					'<%= opt.jsMainOut %>/main.min.js': [
+						'<%= opt.jsMainOut %>/libs/*.js',
+						'<%= opt.jsMainOut %>/*.js'
+					]
+				}
+			}
+		},
+		clean: {
+			clientScript: {
+				src: [
+					// client
+					'<%= opt.jsMainOut %>/*.js',
+					'<%= opt.jsMainOut %>/*.d.ts',
+					'<%= opt.jsMainOut %>/*.js.map',
+					// client test
+					'<%= opt.jsTestOut %>/*.js',
+					'<%= opt.jsTestOut %>/*.js.map',
+					'<%= opt.jsTestOut %>/*.d.ts',
+					// minified
+					'<%= opt.jsMainOut %>/main.min.js',
+					'<%= opt.jsMainOut %>/source.js.map'
+				]
+			},
+			tsd: {
+				src: [
+					// tsd installed
+					"d.ts/",
+					'<%= opt.tsMain %>/libs/DefinitelyTyped',
+					'<%= opt.tsTest %>/libs/DefinitelyTyped'
+				]
+			},
+			bower: {
+				src: [
+					// bower installed
+					"bower-task/",
+					"bower_componenets",
+					'<%= opt.jsMainOut %>/libs',
+					'<%= opt.jsTestOut %>/libs/*.js',
+					'<%= opt.tsTest %>/libs/*.css'
+				]
+			}
+		},
+		jasmine: {
+			all: {
+				src: ['<%= opt.tsTest %>/SpecRunner.html'],
+				errorReporting: true
+			}
+		},
+		karma: {
+			unit: {
+				options: {
+					configFile: 'karma.conf.js',
+					autoWatch: false,
+					browsers: ['PhantomJS'],
+					reporters: ['progress', 'junit'],
+					singleRun: true,
+					keepalive: true
+				}
+			}
+		},
+		open: {
+			"test-browser": {
+				path: '<%= opt.tsTest %>/SpecRunner.html'
+			}
+		},
+		exec: {
+			tsd: {
+				cmd: function () {
+					return "tsd install jasmine";
+				}
+			},
+			pegjs: {
+				cmd: function () {
+					var main = grunt.config.get("opt.jsMainOut") + "/";
+					var peg = grunt.config.get("opt.peg") + "/";
+					return "./node_modules/pegjs/bin/pegjs -e PEG --track-line-and-column " + peg + "/grammer.peg " + main + "/grammer.js";
+				}
+			}
+		}
+	});
+
+	grunt.registerTask(
+		'setup',
+		"プロジェクトの初期セットアップを行う。",
+		['clean', 'bower', 'exec:tsd', 'copy']);
+
+	grunt.registerTask(
+		'default',
+		"必要なコンパイルを行い画面表示できるようにする。",
+		['clean:clientScript', 'typescript:main', 'tslint', 'exec:pegjs', 'uglify:dev']);
+
+	grunt.registerTask(
+		'test',
+		"必要なコンパイルを行いkarma(旧testacular)でテストを実行する。",
+		['clean:clientScript', 'typescript:test', 'tslint', 'exec:pegjs', 'karma']);
+	grunt.registerTask(
+		'test-browser',
+		"必要なコンパイルを行いブラウザ上でテストを実行する。",
+		['clean:clientScript', 'typescript:test', 'tslint', 'exec:pegjs', 'uglify:dev', 'open:test-browser']);
+
+	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+};

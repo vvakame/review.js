@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Jasmine</title>
+    <link rel="stylesheet" type="text/css" href="libs/jasmine.css">
+
+    <script type="text/javascript" src="../../../bin/main.min.js"></script>
+
+    <script type="text/javascript" src="libs/jasmine.js"></script>
+    <script type="text/javascript" src="libs/jasmine-html.js"></script>
+
+    <script type="text/javascript" src="main-spec.js"></script>
+
+    <script type="text/javascript">
+        var jasmineEnv = jasmine.getEnv();
+        jasmineEnv.updateInterval = 1000;
+        var htmlReporter = new jasmine.HtmlReporter();
+        jasmineEnv.addReporter(htmlReporter);
+
+        document.addEventListener("DOMContentLoaded", function () {
+            jasmineEnv.execute();
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>

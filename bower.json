@@ -1,0 +1,13 @@
+{
+	"name": "jscket",
+	"version": "0.1.0",
+	"devDependencies": {
+		"jasmine": "1.3.1"
+	},
+	"exportsOverride": {
+		"jasmine": {
+			"test-js": "lib/jasmine-core/jasmine*.js",
+			"test-css": "lib/jasmine-core/*.css"
+		}
+	}
+}

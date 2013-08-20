@@ -1,4 +1,4 @@
-var parser = require("./grammer");
+var parser = require("../bin/grammer");
 
 process.stdin.resume();
 process.stdin.setEncoding('utf8');

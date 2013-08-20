@@ -1,4 +1,18 @@
+# for WebStorm
+.idea/
+
+# for npm
 node_modules/
 
-grammer.js
+# for grunt
+bower_components/
+bower-task/
+d.ts/
+src/main/typescript/libs/
+src/test/typescript/libs/
+src/test/typescript/*.js
+src/test/typescript/*.js.map
+src/test/typescript/*.d.ts
+test-results.xml
 
+bin/
