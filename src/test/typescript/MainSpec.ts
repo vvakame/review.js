@@ -2,4 +2,4 @@
 
 ///<reference path='../../main/typescript/Ignite.ts' />
 
-///<reference path='SampleSpec.ts' />
+///<reference path='IgniteSpec.ts' />

@@ -259,7 +259,14 @@ module.exports = function (grunt) {
 					return "tsd install jasmine";
 				}
 			},
-			pegjs: {
+			"pegjs-node": {
+				cmd: function () {
+					var main = grunt.config.get("opt.jsMainOut") + "/";
+					var peg = grunt.config.get("opt.peg") + "/";
+					return "./node_modules/pegjs/bin/pegjs --track-line-and-column " + peg + "/grammer.peg " + main + "/grammer.js";
+				}
+			},
+			"pegjs-browser": {
 				cmd: function () {
 					var main = grunt.config.get("opt.jsMainOut") + "/";
 					var peg = grunt.config.get("opt.peg") + "/";
@@ -275,18 +282,28 @@ module.exports = function (grunt) {
 		['clean', 'bower', 'exec:tsd', 'copy']);
 
 	grunt.registerTask(
+		'node',
+		"必要なコンパイルを行い画面表示できるようにする。",
+		['clean:clientScript', 'typescript:main', 'tslint', 'exec:pegjs-node', 'uglify:dev']);
+
+	grunt.registerTask(
+		'browser',
+		"必要なコンパイルを行い画面表示できるようにする。",
+		['clean:clientScript', 'typescript:main', 'tslint', 'exec:pegjs-browser', 'uglify:dev']);
+
+	grunt.registerTask(
 		'default',
 		"必要なコンパイルを行い画面表示できるようにする。",
-		['clean:clientScript', 'typescript:main', 'tslint', 'exec:pegjs', 'uglify:dev']);
+		['browser']);
 
 	grunt.registerTask(
 		'test',
 		"必要なコンパイルを行いkarma(旧testacular)でテストを実行する。",
-		['clean:clientScript', 'typescript:test', 'tslint', 'exec:pegjs', 'karma']);
+		['clean:clientScript', 'typescript:test', 'tslint', 'exec:pegjs-browser', 'karma']);
 	grunt.registerTask(
 		'test-browser',
 		"必要なコンパイルを行いブラウザ上でテストを実行する。",
-		['clean:clientScript', 'typescript:test', 'tslint', 'exec:pegjs', 'uglify:dev', 'open:test-browser']);
+		['clean:clientScript', 'typescript:test', 'tslint', 'exec:pegjs-browser', 'uglify:dev', 'open:test-browser']);
 
 	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 };

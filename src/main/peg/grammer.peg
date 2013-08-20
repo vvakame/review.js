@@ -1,23 +1,24 @@
-/*
- * Classic example grammar, which recognizes simple arithmetic expressions like
- * "2*(3+4)". The parser generated from this grammar then computes their value.
- */
-
 start
-  = additive
+    = chapter*                     { ReVIEW.parser.parse(arguments); }
+    ;
 
-additive
-  = left:multiplicative "+" right:additive { return left + right; }
-  / multiplicative
+chapter "chapter"
+    = caption text:[^=]*               { ReVIEW.parser.parse(arguments); }
+    ;
 
-multiplicative
-  = left:primary "*" right:multiplicative { return left * right; }
-  / primary
+caption "caption"
+    = level:"="+ "{" label:[^\n}]+ "}" spacing text:[^\n]+       { ReVIEW.parser.parse(arguments); }
+    / level:"="+ spacing text:[^\n]+       { ReVIEW.parser.parse(arguments); }
+    ;
 
-primary
-  = integer
-  / "(" additive:additive ")" { return additive; }
+spacing
+    =   (space / singlelineComment)*
+    ;
 
-integer "integer"
-  = digits:[0-9]+ { return parseInt(digits.join(""), 10); }
+singlelineComment
+    =   "#@#" ( !"\n" !"\r" .)* ("\r" / "\r\n" / "\n")
+    ;
 
+space
+    =   [ \t\r\n]
+    ;
