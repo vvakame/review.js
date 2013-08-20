@@ -160,6 +160,20 @@ module.exports = function (grunt) {
 				]
 			}
 		},
+		replace: {
+			peg: {
+				src: ['<%= opt.peg %>/grammer.peg'],
+				dest: '<%= opt.peg %>/grammer-processed.peg',
+				replacements: [
+					{
+						from: /(^|\n)\s*[=\/].*/g,
+						to: function (matchedWord) {
+							return matchedWord + '\t\t\t{ ReVIEW.parser.parse(arguments); }';
+						}
+					}
+				]
+			}
+		},
 		uglify: {
 			dev: {
 				options: {
@@ -209,6 +223,11 @@ module.exports = function (grunt) {
 					// minified
 					'<%= opt.jsMainOut %>/main.min.js',
 					'<%= opt.jsMainOut %>/source.js.map'
+				]
+			},
+			peg: {
+				src: [
+					'<%= opt.peg %>/grammer-processed.peg'
 				]
 			},
 			tsd: {
@@ -263,14 +282,14 @@ module.exports = function (grunt) {
 				cmd: function () {
 					var main = grunt.config.get("opt.jsMainOut") + "/";
 					var peg = grunt.config.get("opt.peg") + "/";
-					return "./node_modules/pegjs/bin/pegjs --track-line-and-column " + peg + "/grammer.peg " + main + "/grammer.js";
+					return "./node_modules/pegjs/bin/pegjs --track-line-and-column " + peg + "/grammer-processed.peg " + main + "/grammer.js";
 				}
 			},
 			"pegjs-browser": {
 				cmd: function () {
 					var main = grunt.config.get("opt.jsMainOut") + "/";
 					var peg = grunt.config.get("opt.peg") + "/";
-					return "./node_modules/pegjs/bin/pegjs -e PEG --track-line-and-column " + peg + "/grammer.peg " + main + "/grammer.js";
+					return "./node_modules/pegjs/bin/pegjs -e PEG --track-line-and-column " + peg + "/grammer-processed.peg " + main + "/grammer.js";
 				}
 			}
 		}
@@ -284,12 +303,12 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'node',
 		"必要なコンパイルを行い画面表示できるようにする。",
-		['clean:clientScript', 'typescript:main', 'tslint', 'exec:pegjs-node', 'uglify:dev']);
+		['clean:clientScript', 'typescript:main', 'tslint', 'replace', 'exec:pegjs-node', 'uglify:dev']);
 
 	grunt.registerTask(
 		'browser',
 		"必要なコンパイルを行い画面表示できるようにする。",
-		['clean:clientScript', 'typescript:main', 'tslint', 'exec:pegjs-browser', 'uglify:dev']);
+		['clean:clientScript', 'typescript:main', 'tslint', 'replace', 'exec:pegjs-browser', 'uglify:dev']);
 
 	grunt.registerTask(
 		'default',
@@ -299,11 +318,11 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'test',
 		"必要なコンパイルを行いkarma(旧testacular)でテストを実行する。",
-		['clean:clientScript', 'typescript:test', 'tslint', 'exec:pegjs-browser', 'karma']);
+		['clean:clientScript', 'typescript:test', 'tslint', 'replace', 'exec:pegjs-browser', 'karma']);
 	grunt.registerTask(
 		'test-browser',
 		"必要なコンパイルを行いブラウザ上でテストを実行する。",
-		['clean:clientScript', 'typescript:test', 'tslint', 'exec:pegjs-browser', 'uglify:dev', 'open:test-browser']);
+		['clean:clientScript', 'typescript:test', 'tslint', 'replace', 'exec:pegjs-browser', 'uglify:dev', 'open:test-browser']);
 
 	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 };

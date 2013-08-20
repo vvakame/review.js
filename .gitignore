@@ -13,6 +13,7 @@ src/test/typescript/libs/
 src/test/typescript/*.js
 src/test/typescript/*.js.map
 src/test/typescript/*.d.ts
+src/main/peg/grammer-processed.peg
 test-results.xml
 
 bin/

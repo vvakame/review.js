@@ -8,9 +8,9 @@ module ReVIEW {
 		inlineNodes:SyntaxTree[] = [];
 
 		constructor(input:string) {
-			parser = this;
+			ReVIEW.parser = this;
 			PEG.parse(input);
-			parser = null;
+			ReVIEW.parser = null;
 		}
 
 		parse(syntaxArguments:any) {
@@ -18,11 +18,20 @@ module ReVIEW {
 			var offset = syntaxArguments[0];
 			var line = syntaxArguments[1];
 			var column = syntaxArguments[2];
+			// PEG上でラベル貼った項目が登場順に取れる
 			var data:string[] = Array.prototype.splice.call(syntaxArguments, 3);
 
 			var newNode = new SyntaxTree(offset, line, column, name, data);
-			if (this.inlineNodes.length !== 0 && newNode.offset >= this.inlineNodes[0].offset) {
-				// 既に評価された子要素より今評価したNodeの方が後に記述されていれば少なくとも兄弟もしくは親である。
+
+			// 自分の子要素は		自分より先に評価され	offsetが自分と同じかそれ以降
+			// 自分の親要素は		自分より後に評価され	offsetが自分と同じかそれ以上
+			// 自分の兄要素は		自分より先に評価され	offsetが自分以前
+			// 自分の弟要素は		自分より後に評価され	offsetが自分以降
+			// 自分の親の兄要素は	自分より先に評価され	offsetが自分より前
+			// 自分の親の弟要素は	自分より後に評価され	offsetが自分より後
+
+			if (this.inlineNodes.length !== 0 && newNode.offset <= this.inlineNodes[0].offset) {
+				// 自分の子要素は		自分より先に評価され	offsetが自分と同じかそれ以降
 				newNode.childNodes = this.inlineNodes;
 				this.inlineNodes = [];
 			}
@@ -63,6 +72,11 @@ module ReVIEW {
 						this.label = this.attributes[1];
 						this.text = this.attributes[2];
 					}
+					break;
+				case "space":
+				case "spacing":
+					this.type = "inline";
+					// TODO めんどいから適当にそうした 後で再チェック
 					break;
 				default:
 					console.warn("unknown name '" + this.name + "'");

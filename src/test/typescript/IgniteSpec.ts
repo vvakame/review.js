@@ -18,7 +18,6 @@ describe("ReVIEW構文の", ()=> {
 		expect(chapter.name).toBe("chapter");
 
 		var caption = chapter.childNodes[0];
-		expect(caption.childNodes.length).toBe(0);
 		expect(caption.attributes.length).toBe(2);
 		expect(caption.type).toBe("inline");
 		expect(caption.name).toBe("caption");
@@ -38,7 +37,6 @@ describe("ReVIEW構文の", ()=> {
 		expect(chapter.name).toBe("chapter");
 
 		var caption = chapter.childNodes[0];
-		expect(caption.childNodes.length).toBe(0);
 		expect(caption.attributes.length).toBe(3);
 		expect(caption.type).toBe("inline");
 		expect(caption.name).toBe("caption");

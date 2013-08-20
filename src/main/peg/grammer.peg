@@ -1,24 +1,24 @@
 start
-    = chapter*                     { ReVIEW.parser.parse(arguments); }
+    = chapter*
     ;
 
 chapter "chapter"
-    = caption text:[^=]*               { ReVIEW.parser.parse(arguments); }
+    = caption text:[^=]*
     ;
 
 caption "caption"
-    = level:"="+ "{" label:[^\n}]+ "}" spacing text:[^\n]+       { ReVIEW.parser.parse(arguments); }
-    / level:"="+ spacing text:[^\n]+       { ReVIEW.parser.parse(arguments); }
+    = level:"="+ "{" label:[^\n}]+ "}" spacing text:[^\n]+
+    / level:"="+ spacing text:[^\n]+
     ;
 
 spacing
-    =   (space / singlelineComment)*
+    = (space / singlelineComment)*
     ;
 
 singlelineComment
-    =   "#@#" ( !"\n" !"\r" .)* ("\r" / "\r\n" / "\n")
+    = "#@#" ( !"\n" !"\r" .)* ("\r" / "\r\n" / "\n")
     ;
 
 space
-    =   [ \t\r\n]
+    = [ \t\r\n]
     ;
