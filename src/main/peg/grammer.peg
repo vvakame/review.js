@@ -3,15 +3,82 @@ start
     ;
 
 chapter
-    = headline text:content?
+    = headline text:paragraph* _
     ;
 
+// = 章タイトル
 headline
-    = level:"="+ ("[" tag:[^\n\]]+ "]")? ("{" label:[^\n}]+ "}")? space* caption:lineRestString
+    // TODO caption は inline element
+    = level:"="+ ("[" tag:[^\n\]]+ "]")? ("{" label:[^\n}]+ "}")? space* caption:contentInline
+    ;
+
+paragraph
+    = !"=" content _
+    ;
+
+content
+    = content_sub* newline?
+    ;
+
+content_sub
+    = blockElement
+    / inlineElement
+    / content:(!"//" [^\r\n@]*)
+    ;
+
+contentInline
+    = contentInline_sub* newline
+    ;
+
+contentInline_sub
+    = content:([^\r\n@]+)
+    / inlineElement
+    ;
+
+blockElement
+    = "//" name:az bracketParameter* "{" /* TODO */ "//}"
+    ;
+
+inlineElement
+    = "@<" name:[^>\r\n]+ ">" "{" contentInline_sub* "}"
+    ;
+
+// * 箇条書き
+ulist
+    // 行頭から… の指定がない
+    = ulistElement (singlelineComment / ulistElement)*
+    ;
+
+ulistElement
+    = " "+ level:"*"+ text:contentInline
+    ;
+
+// 1. 番号付き箇条書き
+olist
+    // 行頭から… の指定がない
+    = olistElement (singlelineComment / olistElement)*
+    ;
+
+olistElement
+    = " "+ digit "." text:contentInline
+    ;
+
+// : 用語リスト
+dlist
+    // 行頭から… の指定がない
+    = dlistElement (singlelineComment / dlistElement)*
+    ;
+
+dlistElement
+    = " "* ":" " " text:contentInline
     ;
 
 lineRestString
     = [^\n]* "\n"?
+    ;
+
+bracketParameter
+    = "[" !"]" arg:.* "]"
     ;
 
 content
@@ -19,7 +86,15 @@ content
     ;
 
 singlelineComment
-    = "#@" ( !"\n" !"\r" .)* ("\r" / "\r\n" / "\n")
+    = "#@" [^\r\n]* newline
+    ;
+
+digit
+    = [0-9]+
+    ;
+
+az
+    = [a-z]+
     ;
 
 newline
