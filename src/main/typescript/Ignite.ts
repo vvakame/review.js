@@ -39,6 +39,7 @@ module ReVIEW {
 
 			if (newNode.name === "start") {
 				this.root = newNode;
+				console.log(this.root.toString());
 			}
 		}
 	}
@@ -60,19 +61,17 @@ module ReVIEW {
 				case "chapter":
 					this.type = "block";
 					break;
-				case "caption":
+				case "headline":
 					this.type = "inline";
-					if (data.length === 2) {
-						// == hoge
-						this.attributes = [data[0].length, data[1].join("")];
-						this.text = this.attributes[1];
-					} else {
-						// =={fuga} hoge
-						this.attributes = [data[0].length, data[1].join(""), data[2].join("")];
-						this.label = this.attributes[1];
-						this.text = this.attributes[2];
-					}
+					console.log(data);
+					this.attributes = [data[0].length, data[1].join("")];
+					this.label = this.attributes[2];
+					this.text = this.attributes[3];
 					break;
+				case "content":
+					// TODO
+					this.type = "block";
+				case "newline":
 				case "space":
 				case "spacing":
 					this.type = "inline";
@@ -107,7 +106,7 @@ module ReVIEW {
 				result += "]\n";
 			}
 			if (this.childNodes.length !== 0) {
-				result += makeIndent(indentLevel + 1) + "childNodes=[\n";
+				result += makeIndent(indentLevel + 1) + "childNodes[" + this.childNodes.length + "]=[\n";
 				this.childNodes.forEach((node)=> {
 					result += node.toString(indentLevel + 2);
 					result += "\n";

@@ -23,7 +23,7 @@ module.exports = function (grunt) {
 					base_path: '<%= opt.tsMain %>',
 					sourcemap: false,
 					declaration: false,
-					noImplicitAny: true
+					noImplicitAny: false // node.d.ts がエラー吐く
 				}
 			},
 			test: {
@@ -33,7 +33,7 @@ module.exports = function (grunt) {
 					target: 'es5',
 					sourcemap: false,
 					declaration: false,
-					noImplicitAny: true
+					noImplicitAny: false // node.d.ts がエラー吐く
 				}
 			}
 		},
@@ -65,7 +65,7 @@ module.exports = function (grunt) {
 							"trace"
 						],
 						"noconstruct": true,
-						"nounreachable": true,
+						"nounreachable": false, // switch で怒られるので
 						"noempty": false, // プロパティアクセス付き引数有りのコンストラクタまで怒られるので
 						"oneline": [true,
 							"check-open-brace",
@@ -189,7 +189,7 @@ module.exports = function (grunt) {
 				},
 				files: {
 					'<%= opt.jsMainOut %>/main.min.js': [
-						'<%= opt.jsMainOut %>/libs/*.js',
+						'<%= opt.jsMainOut %>/grammer.js',
 						'<%= opt.jsMainOut %>/*.js'
 					]
 				}
@@ -203,8 +203,27 @@ module.exports = function (grunt) {
 				},
 				files: {
 					'<%= opt.jsMainOut %>/main.min.js': [
-						'<%= opt.jsMainOut %>/libs/*.js',
+						'<%= opt.jsMainOut %>/grammer.js',
 						'<%= opt.jsMainOut %>/*.js'
+					]
+				}
+			},
+			test: {
+				options: {
+					report: 'min',
+					// 変数名の圧縮類は作業コストが大きすぎるのでやらない
+					beautify: true,
+					mangle: false,
+					preserveComments: 'some',
+
+					sourceMap: '<%= opt.jsMainOut %>/source.js.map',
+					sourceMapRoot: '',
+					sourceMappingURL: 'source.js.map'
+				},
+				files: {
+					'<%= opt.jsTestOut %>/test.js': [
+						'<%= opt.jsMainOut %>/grammer.js',
+						'<%= opt.jsTestOut %>/main-spec.js'
 					]
 				}
 			}
@@ -255,6 +274,19 @@ module.exports = function (grunt) {
 				errorReporting: true
 			}
 		},
+		"jasmine-node": {
+			options: {
+				match: "test.",
+				matchall: true
+			},
+			run: {
+				spec: "<%= opt.jsTestOut %>/"
+			},
+			env: {
+				NODE_PATH: "lib"
+			},
+			executable: './node_modules/.bin/jasmine-node'
+		},
 		karma: {
 			unit: {
 				options: {
@@ -275,21 +307,21 @@ module.exports = function (grunt) {
 		exec: {
 			tsd: {
 				cmd: function () {
-					return "tsd install jasmine";
+					return "tsd install node jasmine";
 				}
 			},
 			"pegjs-node": {
 				cmd: function () {
 					var main = grunt.config.get("opt.jsMainOut") + "/";
 					var peg = grunt.config.get("opt.peg") + "/";
-					return "./node_modules/pegjs/bin/pegjs --track-line-and-column " + peg + "/grammer-processed.peg " + main + "/grammer.js";
+					return "./node_modules/pegjs/bin/pegjs --track-line-and-column " + peg + "/grammer.peg " + main + "/grammer.js";
 				}
 			},
 			"pegjs-browser": {
 				cmd: function () {
 					var main = grunt.config.get("opt.jsMainOut") + "/";
 					var peg = grunt.config.get("opt.peg") + "/";
-					return "./node_modules/pegjs/bin/pegjs -e PEG --track-line-and-column " + peg + "/grammer-processed.peg " + main + "/grammer.js";
+					return "./node_modules/pegjs/bin/pegjs -e PEG --track-line-and-column " + peg + "/grammer.peg " + main + "/grammer.js";
 				}
 			}
 		}
@@ -316,13 +348,39 @@ module.exports = function (grunt) {
 		['browser']);
 
 	grunt.registerTask(
+		'test-preprocess',
+		"テストに必要な前準備を実行する。",
+		['clean:clientScript', 'typescript:test', 'tslint', 'replace', 'exec:pegjs-browser', 'uglify:dev']);
+
+	grunt.registerTask(
+		'test-preprocess-browser',
+		"テストに必要な前準備を実行する。",
+		['test-preprocess', 'exec:pegjs-browser', 'uglify:test']);
+
+	grunt.registerTask(
+		'test-preprocess-node',
+		"テストに必要な前準備を実行する。",
+		['test-preprocess', 'exec:pegjs-node', 'uglify:test']);
+
+	grunt.registerTask(
 		'test',
-		"必要なコンパイルを行いkarma(旧testacular)でテストを実行する。",
-		['clean:clientScript', 'typescript:test', 'tslint', 'replace', 'exec:pegjs-browser', 'karma']);
+		"必要なコンパイルを行いテストを実行する。",
+		['test-node']);
+
+	grunt.registerTask(
+		'test-node',
+		"必要なコンパイルを行いjasmine-nodeでテストを実行する。",
+		['test-preprocess-browser', 'jasmine-node']);
+
+	grunt.registerTask(
+		'test-karma',
+		"必要なコンパイルを行いブラウザ上でテストを実行する。",
+		['test-preprocess-browser', 'karma']);
+
 	grunt.registerTask(
 		'test-browser',
 		"必要なコンパイルを行いブラウザ上でテストを実行する。",
-		['clean:clientScript', 'typescript:test', 'tslint', 'replace', 'exec:pegjs-browser', 'uglify:dev', 'open:test-browser']);
+		['test-preprocess-browser', 'open:test-browser']);
 
 	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 };
