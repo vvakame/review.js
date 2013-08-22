@@ -1,126 +1,130 @@
-start
-    = _ chapters? _
+Start
+    = _ Chapters? _
     ;
 
-chapters "chapters"
-    = chapter chapters?
+Chapters "chapters"
+    = Chapter Chapters?
 
-chapter "chapter"
-    = headline text:paragraphs?
+Chapter "chapter"
+    = Headline text:Paragraphs?
     ;
 
 // = 章タイトル
-headline "headline"
+Headline "headline"
     // TODO caption は inline element
-    = level:"="+ bracketArg? braceArg? space* caption:contentInline newline*
+    = level:"="+ BracketArg? BraceArg? Space* caption:ContentInline Newline*
     ;
 
-bracketArg "bracket argument"
+BracketArg "bracket argument"
     = "[" arg:$([^\n\]]*) "]"
     ;
 
-braceArg "brace argument"
+BraceArg "brace argument"
     = "{" arg:$([^\n\}]*) "}"
     ;
 
-paragraphs "paragraphs"
-    = !"=" paragraph paragraphs?
+Paragraphs "paragraphs"
+    = !"=" Paragraph Paragraphs?
     ;
 
-paragraph "paragraph"
-    = newline* contents newline?
+Paragraph "paragraph"
+    = Newline* Contents Newline?
     ;
 
-contents "contents"
+Contents "contents"
     // eof 検出に &. を使っている
-    = &. content contents? newline?
+    = &. Content Contents? Newline?
     ;
 
-content "content"
-    = ( blockElement / inlineElement / content:$(!"//}" [^\r\n@]+) )
+Content "content"
+    = ( BlockElement / InlineElement / content:$(!"//}" [^\r\n@]+) )
     ;
 
 // contents との差は paragraph を切るか切らないか
-blockInnerContents
-    = blockInnerContent blockInnerContents?
+BlockInnerContents
+    = BlockInnerContent BlockInnerContents?
     ;
 
-blockInnerContent
-    = ( blockElement / inlineElement / newline / content:$(!"//}" [^\r\n@]+) ) 
+BlockInnerContent
+    = ( BlockElement / InlineElement / Newline / content:$(!"//}" [^\r\n@]+) ) 
     ;
 
-contentInline "inline content"
-    = contentInline_subs newline
+ContentInline "inline content"
+    = ContentInline_subs Newline
     ;
 
-contentInline_subs "children of inline content"
-    = contentInline_sub contentInline_subs?
+ContentInline_subs "children of inline content"
+    = ContentInline_sub ContentInline_subs?
     ;
 
-contentInline_sub "child of inline content"
+ContentInline_sub "child of inline content"
     = content:$([^\r\n@]+)
-    / inlineElement
+    / InlineElement
     ;
 
-blockElement "block element"
-    = "//" name:$(az+) bracketArg* "{" newline blockInnerContents? "//}"
+BlockElement "block element"
+    = "//" name:$(AZ+) BracketArg* "{" Newline BlockInnerContents? "//}"
     ;
 
-inlineElement "inline element"
-    = "@<" name:$([^>\r\n]+) ">" "{" contentInline_sub* "}"
+InlineElement "inline element"
+    = "@<" name:$([^>\r\n]+) ">" "{" ContentInline_sub* "}"
     ;
 
 // * 箇条書き
-ulist "ulist"
+Ulist "ulist"
     // 行頭から… の指定がない
-    = ulistElement (singlelineComment / ulistElement)*
+    = UlistElement (SinglelineComment / UlistElement)*
     ;
 
-ulistElement "ulist element"
-    = " "+ level:"*"+ text:contentInline
+UlistElement "ulist element"
+    = " "+ level:"*"+ text:ContentInline
     ;
 
 // 1. 番号付き箇条書き
-olist "olist"
+Olist "olist"
     // 行頭から… の指定がない
-    = olistElement (singlelineComment / olistElement)*
+    = OlistElement (SinglelineComment / OlistElement)*
     ;
 
-olistElement "olist element"
-    = " "+ digit "." text:contentInline
+OlistElement "olist element"
+    = " "+ Digits "." text:ContentInline
     ;
 
 // : 用語リスト
-dlist "dlist"
+Dlist "dlist"
     // 行頭から… の指定がない
-    = dlistElement (singlelineComment / dlistElement)*
+    = DlistElement (SinglelineComment / DlistElement)*
     ;
 
-dlistElement "dlist element"
-    = " "* ":" " " text:contentInline
+DlistElement "dlist element"
+    = " "* ":" " " text:ContentInline
     ;
 
-singlelineComment "signle line comment"
-    = "#@" [^\r\n]* newline
+SinglelineComment "signle line comment"
+    = "#@" [^\r\n]* Newline
     ;
 
-digit "digits"
-    = [0-9]+
+Digits "digits"
+    = Digit+
     ;
 
-az "lower alphabet"
+Digit "digit"
+    = [0-9]
+    ;
+
+AZ "lower alphabet"
     = [a-z]
     ;
 
-newline "newline"
+Newline "newline"
     = "\r\n"
     / "\n"
     ;
 
 _ "spacer"
-    = space*
+    = Space*
     ;
 
-space "space"
+Space "space"
     = [ \t\r\n]
     ;
