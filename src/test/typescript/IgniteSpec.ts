@@ -27,8 +27,8 @@ describe("ReVIEW構文の", ()=> {
 					var data = fs.readFileSync(path + file, "utf8");
 					try {
 						var parser = new ReVIEW.Parser(data);
-						console.log(data);
-						console.log(JSON.stringify(parser.parseRawResult));
+						// console.log(data);
+						// console.log(JSON.stringify(parser.parseRawResult));
 					} catch (e) {
 						updateIfSyntaxError(e);
 						throw e;
@@ -62,7 +62,8 @@ describe("ReVIEW構文の", ()=> {
 		var strings = [
 			"= 今日のお昼ごはん\n\n断固としてカレーライス！\n",
 			"= ブロック要素のテスト\n\n//list[hoge][fuga]{\nvar hoge = confirm(\"test\");\n\n// JS comment\n//}",
-			"=[hoge]{fuga} 両方付き"
+			"=[hoge]{fuga} 両方付き",
+			"= headline\n@<kw>{hoge,fuga}\n"
 		];
 		strings.forEach((str)=> {
 			it("try: " + str.substr(0, 15), ()=> {

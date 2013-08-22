@@ -49,6 +49,15 @@ BlockInnerContent
     = ( BlockElement / InlineElement / Newline / content:$(!"//}" [^\r\n@]+) ) 
     ;
 
+InlineInnerContents
+    = !">" InlineInnerContent InlineInnerContents?
+    ;
+
+InlineInnerContent
+    = content:$([^\r\n@}]+)
+    / InlineElement
+    ;
+
 ContentInline "inline content"
     = ContentInline_subs (Newline / EOF)
     ;
@@ -67,7 +76,7 @@ BlockElement "block element"
     ;
 
 InlineElement "inline element"
-    = "@<" name:$([^>\r\n]+) ">" "{" ContentInline_sub* "}"
+    = "@<" name:$([^>\r\n]+) ">" "{" InlineInnerContents? "}"
     ;
 
 // * 箇条書き

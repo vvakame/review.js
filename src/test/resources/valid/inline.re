@@ -1,0 +1,2 @@
+= headline
+@<kw>{hoge,fuga}
