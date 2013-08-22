@@ -314,14 +314,14 @@ module.exports = function (grunt) {
 				cmd: function () {
 					var main = grunt.config.get("opt.jsMainOut") + "/";
 					var peg = grunt.config.get("opt.peg") + "/";
-					return "./node_modules/pegjs/bin/pegjs --track-line-and-column " + peg + "/grammer.peg " + main + "/grammer.js";
+					return "./node_modules/pegjs/bin/pegjs " + peg + "/grammer.peg " + main + "/grammer.js";
 				}
 			},
 			"pegjs-browser": {
 				cmd: function () {
 					var main = grunt.config.get("opt.jsMainOut") + "/";
 					var peg = grunt.config.get("opt.peg") + "/";
-					return "./node_modules/pegjs/bin/pegjs -e PEG --track-line-and-column " + peg + "/grammer.peg " + main + "/grammer.js";
+					return "./node_modules/pegjs/bin/pegjs -e PEG " + peg + "/grammer.peg " + main + "/grammer.js";
 				}
 			}
 		}
