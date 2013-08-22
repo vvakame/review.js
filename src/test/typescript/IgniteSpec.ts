@@ -64,7 +64,9 @@ describe("ReVIEW構文の", ()=> {
 		strings.forEach((str)=> {
 			it("try: " + str.substr(0, 15), ()=> {
 				try {
-					new ReVIEW.Parser(str);
+					var parser = new ReVIEW.Parser(str);
+					// console.log(str);
+					// console.log(JSON.stringify(parser.parseRawResult));
 				} catch (e) {
 					updateIfSyntaxError(e);
 					throw e;

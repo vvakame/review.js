@@ -6,10 +6,11 @@ module ReVIEW {
 	export class Parser {
 		root:SyntaxTree;
 		inlineNodes:SyntaxTree[] = [];
+		parseRawResult:any;
 
 		constructor(input:string) {
 			ReVIEW.parser = this;
-			var result = PEG.parse(input);
+			this.parseRawResult = PEG.parse(input);
 			ReVIEW.parser = null;
 		}
 

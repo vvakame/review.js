@@ -63,7 +63,7 @@ contentInline_sub "child of inline content"
     ;
 
 blockElement "block element"
-    = "//" name:az bracketArg* "{" newline blockInnerContents? "//}"
+    = "//" name:$(az+) bracketArg* "{" newline blockInnerContents? "//}"
     ;
 
 inlineElement "inline element"
@@ -109,7 +109,7 @@ digit "digits"
     ;
 
 az "lower alphabet"
-    = [a-z]+
+    = [a-z]
     ;
 
 newline "newline"
