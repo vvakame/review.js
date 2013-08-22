@@ -2,116 +2,116 @@ start
     = _ chapters? _
     ;
 
-chapters
+chapters "chapters"
     = chapter chapters?
 
-chapter
+chapter "chapter"
     = headline text:paragraphs?
     ;
 
 // = 章タイトル
-headline
+headline "headline"
     // TODO caption は inline element
     = level:"="+ bracketArg? braceArg? space* caption:contentInline newline*
     ;
 
-bracketArg
+bracketArg "bracket argument"
     = "[" arg:$([^\n\]]*) "]"
     ;
 
-braceArg
+braceArg "brace argument"
     = "{" arg:$([^\n\}]*) "}"
     ;
 
-paragraphs
+paragraphs "paragraphs"
     = !"=" paragraph paragraphs?
     ;
 
-paragraph
+paragraph "paragraph"
     = contents newline?
     ;
 
-contents
+contents "contents"
     // eof 検出に &. を使っている
     = &. content contents? newline?
     ;
 
-content
+content "content"
     = ( blockElement / inlineElement / content:$(!"//" [^\r\n@]+) )
     ;
 
-contentInline
+contentInline "inline content"
     = contentInline_subs newline
     ;
 
-contentInline_subs
+contentInline_subs "children of inline content"
     = contentInline_sub contentInline_subs?
     ;
 
-contentInline_sub
+contentInline_sub "child of inline content"
     = content:$([^\r\n@]+)
     / inlineElement
     ;
 
-blockElement
+blockElement "block element"
     = "//" name:az bracketArg* "{" contents? "//}"
     ;
 
-inlineElement
+inlineElement "inline element"
     = "@<" name:$([^>\r\n]+) ">" "{" contentInline_sub* "}"
     ;
 
 // * 箇条書き
-ulist
+ulist "ulist"
     // 行頭から… の指定がない
     = ulistElement (singlelineComment / ulistElement)*
     ;
 
-ulistElement
+ulistElement "ulist element"
     = " "+ level:"*"+ text:contentInline
     ;
 
 // 1. 番号付き箇条書き
-olist
+olist "olist"
     // 行頭から… の指定がない
     = olistElement (singlelineComment / olistElement)*
     ;
 
-olistElement
+olistElement "olist element"
     = " "+ digit "." text:contentInline
     ;
 
 // : 用語リスト
-dlist
+dlist "dlist"
     // 行頭から… の指定がない
     = dlistElement (singlelineComment / dlistElement)*
     ;
 
-dlistElement
+dlistElement "dlist element"
     = " "* ":" " " text:contentInline
     ;
 
-singlelineComment
+singlelineComment "signle line comment"
     = "#@" [^\r\n]* newline
     ;
 
-digit
+digit "digits"
     = [0-9]+
     ;
 
-az
+az "lower alphabet"
     = [a-z]+
     ;
 
-newline
+newline "newline"
     = "\r\n"
     / "\n"
     ;
 
-_
+_ "spacer"
     = space*
     ;
 
-space
+space "space"
     = [ \t\r\n]
     ;

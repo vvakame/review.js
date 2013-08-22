@@ -17,7 +17,16 @@ describe("ReVIEW構文の", ()=> {
 			files.forEach((file)=> {
 				it("ファイル:" + file, ()=> {
 					var data = fs.readFileSync(path + file, "utf8");
-					new ReVIEW.Parser(data);
+					try {
+						new ReVIEW.Parser(data);
+					} catch (e) {
+						if (e instanceof PEG.SyntaxError) {
+							var se:PEG.SyntaxError = e;
+							var additionalInfo = "raised: offset=" + se.offset + ", line=" + se.line + ", column=" + se.column;
+							se.message = additionalInfo + ". " + se.message;
+						}
+						throw e;
+					}
 				});
 			});
 		});
