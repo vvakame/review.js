@@ -12,7 +12,7 @@ chapter
 // = 章タイトル
 headline
     // TODO caption は inline element
-    = level:"="+ bracketArg? braceArg? space* caption:contentInline
+    = level:"="+ bracketArg? braceArg? space* caption:contentInline newline*
     ;
 
 bracketArg
@@ -32,15 +32,20 @@ paragraph
     ;
 
 contents
-    = content contents?
+    // eof 検出に &. を使っている
+    = &. content contents? newline?
     ;
 
 content
-    = ( blockElement / inlineElement / content:$(!"//" [^\r\n@]*) )
+    = ( blockElement / inlineElement / content:$(!"//" [^\r\n@]+) )
     ;
 
 contentInline
-    = contentInline_sub* newline
+    = contentInline_subs newline
+    ;
+
+contentInline_subs
+    = contentInline_sub contentInline_subs?
     ;
 
 contentInline_sub
@@ -49,7 +54,7 @@ contentInline_sub
     ;
 
 blockElement
-    = "//" name:az bracketArg* "{" /* TODO */ "//}"
+    = "//" name:az bracketArg* "{" contents? "//}"
     ;
 
 inlineElement
@@ -84,14 +89,6 @@ dlist
 
 dlistElement
     = " "* ":" " " text:contentInline
-    ;
-
-lineRestString
-    = [^\n]* "\n"?
-    ;
-
-content
-    = text:((!(newline "=") .) / singlelineComment)*
     ;
 
 singlelineComment

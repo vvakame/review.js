@@ -24,8 +24,7 @@ describe("ReVIEW構文の", ()=> {
 	}
 
 	it("テスト0件エラー避け", ()=> {
-		var parser = new ReVIEW.Parser("= 今日のお昼ごはん\n\n断固としてカレーライス！\n");
-		console.log(parser.root.toString());
+		// new ReVIEW.Parser("= 今日のお昼ごはん\n\n断固としてカレーライス！\n");
 	});
 
 	xit("captionのテスト label無し", ()=> {

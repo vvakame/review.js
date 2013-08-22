@@ -9,7 +9,7 @@ module ReVIEW {
 
 		constructor(input:string) {
 			ReVIEW.parser = this;
-			PEG.parse(input);
+			var result = PEG.parse(input);
 			ReVIEW.parser = null;
 		}
 
