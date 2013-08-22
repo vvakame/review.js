@@ -29,7 +29,8 @@ Contents "contents"
     ;
 
 Content "content"
-    = ( BlockElement / InlineElement / content:$(!"//}" [^\r\n@]+) )
+    // TODO InlineElement の後に Ulist / Olist / Dlist が来ると先頭行じゃなくてマッチできてしまうかも
+    = ( BlockElement / InlineElement / Ulist / Olist / Dlist / content:$(!"//}" [^\r\n@]+) )
     ;
 
 BlockElement "block element"
@@ -86,7 +87,7 @@ Ulist "ulist"
     ;
 
 UlistElement "ulist element"
-    = " "+ level:"*"+ text:ContentInline
+    = " "+ level:"*"+ _ text:ContentInline
     ;
 
 // 1. 番号付き箇条書き
@@ -96,7 +97,7 @@ Olist "olist"
     ;
 
 OlistElement "olist element"
-    = " "+ Digits "." text:ContentInline
+    = " "+ Digits "." _ text:ContentInline
     ;
 
 // : 用語リスト
@@ -106,7 +107,7 @@ Dlist "dlist"
     ;
 
 DlistElement "dlist element"
-    = " "* ":" " " text:ContentInline
+    = " "* ":" " " _ text:ContentInline content:( [ \t]+ ContentInline )+
     ;
 
 SinglelineComment "signle line comment"
