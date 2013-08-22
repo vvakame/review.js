@@ -174,26 +174,19 @@ module.exports = function (grunt) {
 				]
 			}
 		},
-		uglify: {
-			dev: {
-				options: {
-					report: 'min',
-					// 変数名の圧縮類は作業コストが大きすぎるのでやらない
-					beautify: true,
-					mangle: false,
-					preserveComments: 'some',
-
-					sourceMap: '<%= opt.jsMainOut %>/source.js.map',
-					sourceMapRoot: '',
-					sourceMappingURL: 'source.js.map'
-				},
-				files: {
-					'<%= opt.jsMainOut %>/main.min.js': [
-						'<%= opt.jsMainOut %>/grammer.js',
-						'<%= opt.jsMainOut %>/*.js'
-					]
-				}
+		concat: {
+			options: {
+				separator: ';'
 			},
+			dev: {
+				src: [
+					'<%= opt.jsMainOut %>/grammer.js',
+					'<%= opt.jsMainOut %>/*.js'
+				],
+				dest: '<%= opt.jsMainOut %>/main.min.js'
+			}
+		},
+		uglify: {
 			prod: {
 				options: {
 					report: 'gzip',
@@ -335,12 +328,12 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'node',
 		"必要なコンパイルを行い画面表示できるようにする。",
-		['clean:clientScript', 'typescript:main', 'tslint', 'replace', 'exec:pegjs-node', 'uglify:dev']);
+		['clean:clientScript', 'typescript:main', 'tslint', 'replace', 'exec:pegjs-node', 'concat:dev']);
 
 	grunt.registerTask(
 		'browser',
 		"必要なコンパイルを行い画面表示できるようにする。",
-		['clean:clientScript', 'typescript:main', 'tslint', 'replace', 'exec:pegjs-browser', 'uglify:dev']);
+		['clean:clientScript', 'typescript:main', 'tslint', 'replace', 'exec:pegjs-browser', 'concat:dev']);
 
 	grunt.registerTask(
 		'default',
@@ -350,7 +343,7 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'test-preprocess',
 		"テストに必要な前準備を実行する。",
-		['clean:clientScript', 'typescript:test', 'tslint', 'replace', 'exec:pegjs-browser', 'uglify:dev']);
+		['clean:clientScript', 'typescript:test', 'tslint', 'replace', 'exec:pegjs-browser', 'concat:dev']);
 
 	grunt.registerTask(
 		'test-preprocess-browser',
