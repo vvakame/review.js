@@ -50,7 +50,7 @@ BlockInnerContent
     ;
 
 ContentInline "inline content"
-    = ContentInline_subs Newline
+    = ContentInline_subs (Newline / EOF)
     ;
 
 ContentInline_subs "children of inline content"
@@ -127,4 +127,8 @@ _ "spacer"
 
 Space "space"
     = [ \t\r\n]
+    ;
+
+EOF
+    = !.
     ;

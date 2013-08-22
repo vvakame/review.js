@@ -26,7 +26,9 @@ describe("ReVIEW構文の", ()=> {
 				it("ファイル:" + file, ()=> {
 					var data = fs.readFileSync(path + file, "utf8");
 					try {
-						new ReVIEW.Parser(data);
+						var parser = new ReVIEW.Parser(data);
+						console.log(data);
+						console.log(JSON.stringify(parser.parseRawResult));
 					} catch (e) {
 						updateIfSyntaxError(e);
 						throw e;
@@ -59,7 +61,8 @@ describe("ReVIEW構文の", ()=> {
 	describe("正常に処理ができる文字列を与える", ()=> {
 		var strings = [
 			"= 今日のお昼ごはん\n\n断固としてカレーライス！\n",
-			"= ブロック要素のテスト\n\n//list[hoge][fuga]{\nvar hoge = confirm(\"test\");\n\n// JS comment\n//}"
+			"= ブロック要素のテスト\n\n//list[hoge][fuga]{\nvar hoge = confirm(\"test\");\n\n// JS comment\n//}",
+			"=[hoge]{fuga} 両方付き"
 		];
 		strings.forEach((str)=> {
 			it("try: " + str.substr(0, 15), ()=> {
