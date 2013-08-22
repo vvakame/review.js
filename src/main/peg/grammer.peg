@@ -28,7 +28,7 @@ paragraphs "paragraphs"
     ;
 
 paragraph "paragraph"
-    = contents newline?
+    = newline* contents newline?
     ;
 
 contents "contents"
@@ -37,7 +37,16 @@ contents "contents"
     ;
 
 content "content"
-    = ( blockElement / inlineElement / content:$(!"//" [^\r\n@]+) )
+    = ( blockElement / inlineElement / content:$(!"//}" [^\r\n@]+) )
+    ;
+
+// contents との差は paragraph を切るか切らないか
+blockInnerContents
+    = blockInnerContent blockInnerContents?
+    ;
+
+blockInnerContent
+    = ( blockElement / inlineElement / newline / content:$(!"//}" [^\r\n@]+) ) 
     ;
 
 contentInline "inline content"
@@ -54,7 +63,7 @@ contentInline_sub "child of inline content"
     ;
 
 blockElement "block element"
-    = "//" name:az bracketArg* "{" contents? "//}"
+    = "//" name:az bracketArg* "{" newline blockInnerContents? "//}"
     ;
 
 inlineElement "inline element"

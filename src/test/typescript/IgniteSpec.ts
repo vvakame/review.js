@@ -7,6 +7,14 @@
 
 "use strict";
 
+function updateIfSyntaxError(e:any) {
+	if (e instanceof PEG.SyntaxError) {
+		var se:PEG.SyntaxError = e;
+		var additionalInfo = "raised: offset=" + se.offset + ", line=" + se.line + ", column=" + se.column;
+		se.message = additionalInfo + ". " + se.message;
+	}
+}
+
 describe("ReVIEW構文の", ()=> {
 	if (typeof require !== "undefined") {
 		var fs = require("fs");
@@ -20,11 +28,7 @@ describe("ReVIEW構文の", ()=> {
 					try {
 						new ReVIEW.Parser(data);
 					} catch (e) {
-						if (e instanceof PEG.SyntaxError) {
-							var se:PEG.SyntaxError = e;
-							var additionalInfo = "raised: offset=" + se.offset + ", line=" + se.line + ", column=" + se.column;
-							se.message = additionalInfo + ". " + se.message;
-						}
+						updateIfSyntaxError(e);
 						throw e;
 					}
 				});
@@ -52,8 +56,21 @@ describe("ReVIEW構文の", ()=> {
 		});
 	}
 
-	it("テスト0件エラー避け", ()=> {
-		// new ReVIEW.Parser("= 今日のお昼ごはん\n\n断固としてカレーライス！\n");
+	describe("正常に処理ができる文字列を与える", ()=> {
+		var strings = [
+			"= 今日のお昼ごはん\n\n断固としてカレーライス！\n",
+			"= ブロック要素のテスト\n\n//list[hoge][fuga]{\nvar hoge = confirm(\"test\");\n\n// JS comment\n//}"
+		];
+		strings.forEach((str)=> {
+			it("try: " + str.substr(0, 15), ()=> {
+				try {
+					new ReVIEW.Parser(str);
+				} catch (e) {
+					updateIfSyntaxError(e);
+					throw e;
+				}
+			});
+		});
 	});
 
 	xit("captionのテスト label無し", ()=> {
