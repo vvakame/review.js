@@ -55,7 +55,7 @@ BlockInnerContents
     ;
 
 BlockInnerContent
-    = ( BlockElement / InlineElement / Newline / content:$(!"//}" [^\r\n@]+) ) 
+    = ( SinglelineComment / BlockElement / InlineElement / Ulist / Olist / Dlist / Newline / content:$(!"//}" [^\r\n@]+) ) 
     ;
 
 InlineInnerContents

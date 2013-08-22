@@ -64,7 +64,8 @@ describe("ReVIEW構文の", ()=> {
 			"= ブロック要素のテスト\n\n//list[hoge][fuga]{\nvar hoge = confirm(\"test\");\n\n// JS comment\n//}",
 			"=[hoge]{fuga} 両方付き",
 			"= headline\n@<kw>{hoge,fuga}\n",
-			"= ＼(^o^)／\n\n#@# コメント\n"
+			"= ＼(^o^)／\n\n#@# コメント\n",
+			"= use review-preproc\n//list[hoge][]{\n#@mapfile(bin/grammer.js)\n#@end\n//}"
 		];
 		strings.forEach((str)=> {
 			it("try: " + str.substr(0, 15), ()=> {
