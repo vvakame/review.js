@@ -66,7 +66,8 @@ describe("ReVIEW構文の", ()=> {
 			"= headline\n@<kw>{hoge,fuga}\n",
 			"= ＼(^o^)／\n\n#@# コメント\n",
 			"= use review-preproc\n//list[hoge][]{\n#@mapfile(bin/grammer.js)\n#@end\n//}",
-			"= headline\nというように、型を @<tti>{<} と　@<tti>{>} で囲んで式 expression の先頭に置くと\n"
+			"= headline\nというように、型を @<tti>{<} と　@<tti>{>} で囲んで式 expression の先頭に置くと\n",
+			"= @がinlineじゃなく出てくる\n\n例えば @Override アノテーションの話とか。"
 		];
 		strings.forEach((str)=> {
 			it("try: " + str.substr(0, 15), ()=> {

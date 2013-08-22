@@ -30,7 +30,7 @@ Contents "contents"
 
 Content "content"
     // TODO InlineElement の後に Ulist / Olist / Dlist が来ると先頭行じゃなくてマッチできてしまうかも
-    = ( SinglelineComment / BlockElement / InlineElement / Ulist / Olist / Dlist / content:$(!"//}" [^\r\n@]+) )
+    = ( SinglelineComment / BlockElement / InlineElement / Ulist / Olist / Dlist / content:$(!"//}" ( !InlineElement [^\r\n] )+) )
     ;
 
 BlockElement "block element"
@@ -55,7 +55,7 @@ BlockInnerContents
     ;
 
 BlockInnerContent
-    = ( SinglelineComment / BlockElement / InlineElement / Ulist / Olist / Dlist / Newline / content:$(!"//}" [^\r\n@]+) ) 
+    = ( SinglelineComment / BlockElement / InlineElement / Ulist / Olist / Dlist / Newline / content:$(!"//}" ( !InlineElement [^\r\n] )+) ) 
     ;
 
 InlineInnerContents
@@ -64,7 +64,7 @@ InlineInnerContents
 
 InlineInnerContent
     = "\\}"
-    / content:$([^\r\n@}]+)
+    / content:$( ( !InlineElement [^\r\n] )+ )
     / InlineElement
     ;
 
@@ -77,7 +77,7 @@ ContentInline_subs "children of inline content"
     ;
 
 ContentInline_sub "child of inline content"
-    = content:$([^\r\n@]+)
+    = content:$( ( !InlineElement [^\r\n] )+ )
     / InlineElement
     ;
 
