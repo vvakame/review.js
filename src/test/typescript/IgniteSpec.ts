@@ -22,7 +22,7 @@ describe("ReVIEW構文の", ()=> {
 		describe("正しい構文のファイルが処理できること", ()=> {
 			var path = "src/test/resources/valid/";
 			var files = fs.readdirSync(path);
-			files.forEach((file)=> {
+			files.filter((file) => file.indexOf(".re") !== -1).forEach((file)=> {
 				it("ファイル:" + file, ()=> {
 					var data = fs.readFileSync(path + file, "utf8");
 					try {
@@ -40,7 +40,7 @@ describe("ReVIEW構文の", ()=> {
 		describe("正しくない構文のファイルが処理できること", ()=> {
 			var path = "src/test/resources/invalid/";
 			var files = fs.readdirSync(path);
-			files.forEach((file)=> {
+			files.filter((file) => file.indexOf(".re") !== -1).forEach((file)=> {
 				it("ファイル:" + file, ()=> {
 					var data = fs.readFileSync(path + file, "utf8");
 					try {
@@ -63,7 +63,8 @@ describe("ReVIEW構文の", ()=> {
 			"= 今日のお昼ごはん\n\n断固としてカレーライス！\n",
 			"= ブロック要素のテスト\n\n//list[hoge][fuga]{\nvar hoge = confirm(\"test\");\n\n// JS comment\n//}",
 			"=[hoge]{fuga} 両方付き",
-			"= headline\n@<kw>{hoge,fuga}\n"
+			"= headline\n@<kw>{hoge,fuga}\n",
+			"= ＼(^o^)／\n\n#@# コメント\n"
 		];
 		strings.forEach((str)=> {
 			it("try: " + str.substr(0, 15), ()=> {
