@@ -12,12 +12,32 @@ describe("ReVIEW構文の", ()=> {
 		var fs = require("fs");
 		// PhantomJS 環境下専用のテスト
 		describe("正しい構文のファイルが処理できること", ()=> {
-
-			var paths = ["src/test/resources/valid/sample.re", "src/test/resources/invalid/empty.re"];
-			paths.forEach((path)=> {
+			var path = "src/test/resources/valid/";
+			var files = fs.readdirSync(path);
+			files.forEach((file)=> {
 				it("ファイル:" + path, ()=> {
-					var data = fs.readFileSync(path, "utf8");
+					var data = fs.readFileSync(path + file, "utf8");
 					new ReVIEW.Parser(data);
+				});
+			});
+		});
+
+		describe("正しくない構文のファイルが処理できること", ()=> {
+			var path = "src/test/resources/invalid/";
+			var files = fs.readdirSync(path);
+			files.forEach((file)=> {
+				it("ファイル:" + path, ()=> {
+					var data = fs.readFileSync(path + file, "utf8");
+					try {
+						new ReVIEW.Parser(data);
+						throw new Error("正しく処理できてしまった");
+					} catch (e) {
+						if (e instanceof PEG.SyntaxError) {
+							// ok
+						} else {
+							throw e;
+						}
+					}
 				});
 			});
 		});
