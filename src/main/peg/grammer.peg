@@ -1,29 +1,42 @@
 start
-    = _ chapter* _
+    = _ chapters? _
     ;
 
+chapters
+    = chapter chapters?
+
 chapter
-    = headline text:paragraph* _
+    = headline text:paragraphs?
     ;
 
 // = 章タイトル
 headline
     // TODO caption は inline element
-    = level:"="+ ("[" tag:[^\n\]]+ "]")? ("{" label:[^\n}]+ "}")? space* caption:contentInline
+    = level:"="+ bracketArg? braceArg? space* caption:contentInline
+    ;
+
+bracketArg
+    = "[" arg:$([^\n\]]*) "]"
+    ;
+
+braceArg
+    = "{" arg:$([^\n\}]*) "}"
+    ;
+
+paragraphs
+    = !"=" paragraph paragraphs?
     ;
 
 paragraph
-    = !"=" content _
+    = contents newline?
+    ;
+
+contents
+    = content contents?
     ;
 
 content
-    = content_sub* newline?
-    ;
-
-content_sub
-    = blockElement
-    / inlineElement
-    / content:(!"//" [^\r\n@]*)
+    = ( blockElement / inlineElement / content:$(!"//" [^\r\n@]*) )
     ;
 
 contentInline
@@ -31,16 +44,16 @@ contentInline
     ;
 
 contentInline_sub
-    = content:([^\r\n@]+)
+    = content:$([^\r\n@]+)
     / inlineElement
     ;
 
 blockElement
-    = "//" name:az bracketParameter* "{" /* TODO */ "//}"
+    = "//" name:az bracketArg* "{" /* TODO */ "//}"
     ;
 
 inlineElement
-    = "@<" name:[^>\r\n]+ ">" "{" contentInline_sub* "}"
+    = "@<" name:$([^>\r\n]+) ">" "{" contentInline_sub* "}"
     ;
 
 // * 箇条書き
@@ -75,10 +88,6 @@ dlistElement
 
 lineRestString
     = [^\n]* "\n"?
-    ;
-
-bracketParameter
-    = "[" !"]" arg:.* "]"
     ;
 
 content
