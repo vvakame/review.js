@@ -15,14 +15,6 @@ Headline "headline"
     = level:"="+ BracketArg? BraceArg? Space* caption:ContentInline Newline*
     ;
 
-BracketArg "bracket argument"
-    = "[" arg:$([^\n\]]*) "]"
-    ;
-
-BraceArg "brace argument"
-    = "{" arg:$([^\n\}]*) "}"
-    ;
-
 Paragraphs "paragraphs"
     = !"=" Paragraph Paragraphs?
     ;
@@ -38,6 +30,22 @@ Contents "contents"
 
 Content "content"
     = ( BlockElement / InlineElement / content:$(!"//}" [^\r\n@]+) )
+    ;
+
+BlockElement "block element"
+    = "//" name:$(AZ+) BracketArg* "{" Newline BlockInnerContents? "//}"
+    ;
+
+InlineElement "inline element"
+    = "@<" name:$([^>\r\n]+) ">" "{" InlineInnerContents? "}"
+    ;
+
+BracketArg "bracket argument"
+    = "[" arg:$([^\n\]]*) "]"
+    ;
+
+BraceArg "brace argument"
+    = "{" arg:$([^\n\}]*) "}"
     ;
 
 // contents との差は paragraph を切るか切らないか
@@ -69,14 +77,6 @@ ContentInline_subs "children of inline content"
 ContentInline_sub "child of inline content"
     = content:$([^\r\n@]+)
     / InlineElement
-    ;
-
-BlockElement "block element"
-    = "//" name:$(AZ+) BracketArg* "{" Newline BlockInnerContents? "//}"
-    ;
-
-InlineElement "inline element"
-    = "@<" name:$([^>\r\n]+) ">" "{" InlineInnerContents? "}"
     ;
 
 // * 箇条書き
