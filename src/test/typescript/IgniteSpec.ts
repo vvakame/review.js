@@ -15,7 +15,7 @@ describe("ReVIEW構文の", ()=> {
 			var path = "src/test/resources/valid/";
 			var files = fs.readdirSync(path);
 			files.forEach((file)=> {
-				it("ファイル:" + path, ()=> {
+				it("ファイル:" + file, ()=> {
 					var data = fs.readFileSync(path + file, "utf8");
 					new ReVIEW.Parser(data);
 				});
@@ -26,7 +26,7 @@ describe("ReVIEW構文の", ()=> {
 			var path = "src/test/resources/invalid/";
 			var files = fs.readdirSync(path);
 			files.forEach((file)=> {
-				it("ファイル:" + path, ()=> {
+				it("ファイル:" + file, ()=> {
 					var data = fs.readFileSync(path + file, "utf8");
 					try {
 						new ReVIEW.Parser(data);
