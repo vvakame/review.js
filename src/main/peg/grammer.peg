@@ -59,11 +59,12 @@ BlockInnerContent
     ;
 
 InlineInnerContents
-    = !">" InlineInnerContent InlineInnerContents?
+    = !"}" InlineInnerContent InlineInnerContents?
     ;
 
 InlineInnerContent
-    = content:$([^\r\n@}]+)
+    = "\\}"
+    / content:$([^\r\n@}]+)
     / InlineElement
     ;
 
@@ -111,7 +112,7 @@ DlistElement "dlist element"
     ;
 
 SinglelineComment "signle line comment"
-    = "#@" [^\r\n]* Newline?
+    = "#@" $([^\r\n]*) Newline?
     ;
 
 Digits "digits"
