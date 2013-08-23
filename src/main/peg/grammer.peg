@@ -1,44 +1,44 @@
 Start
-    = _ Chapters? _
+    = _ c:Chapters? _
     ;
 
 Chapters "chapters"
-    = Chapter Chapters?
+    = c:Chapter cc:Chapters?
+    ;
 
 Chapter "chapter"
-    = Headline text:Paragraphs?
+    = headline:Headline text:Paragraphs?
     ;
 
 // = 章タイトル
 Headline "headline"
-    // TODO caption は inline element
-    = level:"="+ BracketArg? BraceArg? Space* caption:ContentInline Newline*
+    = level:"="+ label:BracketArg? tag:BraceArg? Space* caption:ContentInline Newline*
     ;
 
 Paragraphs "paragraphs"
-    = !"=" Paragraph Paragraphs?
+    = !"=" c:Paragraph cc:Paragraphs?
     ;
 
 Paragraph "paragraph"
-    = Newline* Contents Newline?
+    = Newline* c:Contents Newline?
     ;
 
 Contents "contents"
     // eof 検出に &. を使っている
-    = &. Content Contents? Newline?
+    = &. c:Content cc:Contents? Newline?
     ;
 
 Content "content"
     // TODO InlineElement の後に Ulist / Olist / Dlist が来ると先頭行じゃなくてマッチできてしまうかも
-    = ( SinglelineComment / BlockElement / InlineElement / Ulist / Olist / Dlist / content:$(!"//}" ( !InlineElement [^\r\n] )+) )
+    = c:SinglelineComment / c:BlockElement / c:InlineElement / c:Ulist / c:Olist / c:Dlist / c:$(!"//}" ( !InlineElement [^\r\n] )+)
     ;
 
 BlockElement "block element"
-    = "//" name:$(AZ+) BracketArg* "{" Newline BlockInnerContents? "//}"
+    = "//" name:$(AZ+) args:BracketArg* "{" Newline contents:BlockInnerContents? "//}"
     ;
 
 InlineElement "inline element"
-    = "@<" name:$([^>\r\n]+) ">" "{" InlineInnerContents? "}"
+    = "@<" name:$([^>\r\n]+) ">" "{" contents:InlineInnerContents? "}"
     ;
 
 BracketArg "bracket argument"
@@ -51,40 +51,40 @@ BraceArg "brace argument"
 
 // contents との差は paragraph を切るか切らないか
 BlockInnerContents
-    = BlockInnerContent BlockInnerContents?
+    = c:BlockInnerContent cc:BlockInnerContents?
     ;
 
 BlockInnerContent
-    = ( SinglelineComment / BlockElement / InlineElement / Ulist / Olist / Dlist / Newline / content:$(!"//}" ( !InlineElement [^\r\n] )+) ) 
+    = c:SinglelineComment / c:BlockElement / c:InlineElement / c:Ulist / c:Olist / c:Dlist / c:Newline / c:$(!"//}" ( !InlineElement [^\r\n] )+)
     ;
 
 InlineInnerContents
-    = !"}" InlineInnerContent InlineInnerContents?
+    = !"}" c:InlineInnerContent cc:InlineInnerContents?
     ;
 
 InlineInnerContent
-    = "\\}"
-    / content:$( ( !InlineElement [^\r\n] )+ )
-    / InlineElement
+    = c:"\\}"
+    / c:InlineElement
+    / c:$( ( !InlineElement [^\r\n}] )+ )
     ;
 
 ContentInline "inline content"
-    = ContentInline_subs (Newline / EOF)
+    = c:ContentInlineHelpers (Newline / EOF)
     ;
 
-ContentInline_subs "children of inline content"
-    = ContentInline_sub ContentInline_subs?
+ContentInlineHelpers "children of inline content"
+    = c:ContentInlineHelper cc:ContentInlineHelpers?
     ;
 
-ContentInline_sub "child of inline content"
-    = content:$( ( !InlineElement [^\r\n] )+ )
-    / InlineElement
+ContentInlineHelper "child of inline content"
+    = c:$( ( !InlineElement [^\r\n] )+ )
+    / c:InlineElement
     ;
 
 // * 箇条書き
 Ulist "ulist"
     // 行頭から… の指定がない
-    = UlistElement (SinglelineComment / UlistElement)*
+    = c:UlistElement cc:(SinglelineComment / UlistElement)*
     ;
 
 UlistElement "ulist element"
@@ -94,17 +94,17 @@ UlistElement "ulist element"
 // 1. 番号付き箇条書き
 Olist "olist"
     // 行頭から… の指定がない
-    = OlistElement (SinglelineComment / OlistElement)*
+    = c:OlistElement cc:(SinglelineComment / OlistElement)*
     ;
 
 OlistElement "olist element"
-    = " "+ Digits "." _ text:ContentInline
+    = " "+ n:Digits "." _ text:ContentInline
     ;
 
 // : 用語リスト
 Dlist "dlist"
     // 行頭から… の指定がない
-    = DlistElement (SinglelineComment / DlistElement)*
+    = c:DlistElement cc:(SinglelineComment / DlistElement)*
     ;
 
 DlistElement "dlist element"
@@ -112,11 +112,11 @@ DlistElement "dlist element"
     ;
 
 SinglelineComment "signle line comment"
-    = "#@" $([^\r\n]*) Newline?
+    = c:$("#@" $([^\r\n]*) Newline?)
     ;
 
 Digits "digits"
-    = Digit+
+    = $(Digit+)
     ;
 
 Digit "digit"
@@ -133,13 +133,13 @@ Newline "newline"
     ;
 
 _ "spacer"
-    = Space*
+    = $(Space*)
     ;
 
 Space "space"
     = [ \t\r\n]
     ;
 
-EOF
+EOF "end of file"
     = !.
     ;
