@@ -6,7 +6,8 @@
 		"npm": "1.3.5"
 	},
 	"dependencies": {
-		"pegjs": "git://github.com/dmajda/pegjs.git#fe18c6ffd3a2170243908ef3d63b887483960d14"
+		"pegjs": "git://github.com/dmajda/pegjs.git#fe18c6ffd3a2170243908ef3d63b887483960d14",
+		"pegjs-override-action": "0.0.6"
 	},
 	"devDependencies": {
 		"grunt": "0.4.1",
