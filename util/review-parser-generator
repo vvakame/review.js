@@ -1,0 +1,205 @@
+#!/usr/bin/env node
+
+var util = require("util");
+var fs = require("fs");
+var path = require("path");
+
+var peg = require('../node_modules/pegjs');
+var overrideAction = require('../node_modules/pegjs-override-action');
+
+var inputFile = "src/main/peg/grammer.peg";
+var exportVar = "PEG";
+
+/* generate ReVIEW parser */
+
+var inputStream = fs.createReadStream(inputFile);
+inputStream.on("error", function () {
+	abort("Can't read from file \"" + inputFile + "\".");
+});
+
+var outputStream = process.stdout;
+outputStream.on("error", function () {
+	abort("Can't write to stdout.");
+});
+
+var template = {
+	contents: function (ruleName) {
+		// func.toString() で構文解析されるので eval で作らないといけない
+		return eval("(function(c, cc) { return { line: line(), column: column(), offset: offset(), syntax:\"" + ruleName + "\", content:c, contents: cc}; })");
+	},
+	content: function (ruleName) {
+		// func.toString() で構文解析されるので eval で作らないといけない
+		return eval("(function (c) { return { line: line(), column: column(), offset: offset(), syntax:\"" + ruleName + "\", content: c}; })");
+	},
+	repeat: function (times, obj) {
+		var result = [];
+		for (var i = 0; i < times; i++) {
+			result.push(obj);
+		}
+		return result;
+	}
+};
+
+var options =
+{
+	cache: false,
+	output: "source",
+	optimize: "speed",
+	plugins: [overrideAction],
+	overrideActionPlugin: {
+		rules: {
+			// 注意 Rule置き換えのfunctionは構文解析されて引数がgrammer中のラベル名に置き換えられます。
+			Start: template.content("Start"),
+			Chapters: template.contents("Chapters"),
+			Chapter: function () {
+				return {
+					syntax: "Chapter",
+					line: line(),
+					column: column(),
+					offset: offset(),
+					headline: headline,
+					text: text
+				};
+			},
+			Headline: function () {
+				return {
+					syntax: "Headline",
+					line: line(),
+					column: column(),
+					offset: offset(),
+					level: level.length,
+					label: label,
+					tag: tag,
+					caption: caption
+				};
+			},
+			Paragraphs: template.contents("Paragraphs"),
+			Paragraph: template.content("Paragraph"),
+			Contents: template.contents("Contents"),
+			Content: template.repeat(7, template.content("Content")),
+			BlockElement: function () {
+				return {
+					syntax: "BlockElement",
+					line: line(),
+					column: column(),
+					offset: offset(),
+					name: name,
+					args: args,
+					contents: contents
+				};
+			},
+			InlineElement: function () {
+				return {
+					syntax: "InlineElement",
+					line: line(),
+					column: column(),
+					offset: offset(),
+					name: name,
+					contents: contents
+				};
+			},
+			BracketArg: function () {
+				return {
+					syntax: "BracketArg",
+					line: line(),
+					column: column(),
+					offset: offset(),
+					arg: arg
+				};
+			},
+			BraceArg: function () {
+				return {
+					syntax: "BraceArg",
+					line: line(),
+					column: column(),
+					offset: offset(),
+					arg: arg
+				};
+			},
+			BlockInnerContents: template.contents("BlockInnerContents"),
+			BlockInnerContent: template.repeat(8, template.content("BlockInnerContent")),
+			InlineInnerContents: template.contents("InlineInnerContents"),
+			InlineInnerContent: template.repeat(3, template.content("InlineInnerContent")),
+			ContentInline: template.content("ContentInline"),
+			ContentInlineHelpers: template.contents("ContentInlineHelpers"),
+			ContentInlineHelper: template.repeat(2, template.content("ContentInlineHelper")),
+			Ulist: template.contents("Ulist"),
+			UlistElement: function () {
+				return {
+					syntax: "UlistElement",
+					line: line(),
+					column: column(),
+					offset: offset(),
+					level: level.length,
+					text: text
+				};
+			},
+			Olist: template.contents("Olist"),
+			OlistElement: function () {
+				return {
+					syntax: "OlistElement",
+					line: line(),
+					column: column(),
+					offset: offset(),
+					no: n,
+					text: text
+				};
+			},
+			Dlist: template.contents("Dlist"),
+			DlistElement: function () {
+				return {
+					syntax: "DlistElement",
+					line: line(),
+					column: column(),
+					offset: offset(),
+					text: text,
+					content: content
+				};
+			},
+			SinglelineComment: template.content("SinglelineComment")
+		}
+	}
+};
+
+readStream(inputStream, function (input) {
+	try {
+		var source = peg.buildParser(input, options);
+	} catch (e) {
+		if (e.line !== undefined && e.column !== undefined) {
+			abort(e.line + ":" + e.column + ": " + e.message);
+		} else {
+			abort(e.message);
+		}
+	}
+
+	outputStream.write(
+		exportVar !== "" ? exportVar + " = " + source + ";\n" : source + "\n"
+	);
+	if (outputStream !== process.stdout) {
+		outputStream.end();
+	}
+});
+
+/* from pegjs */
+function exitSuccess() {
+	process.exit(0);
+}
+
+function exitFailure() {
+	process.exit(1);
+}
+
+function abort(message) {
+	util.error(message);
+	exitFailure();
+}
+
+function readStream(inputStream, callback) {
+	var input = "";
+	inputStream.on("data", function (data) {
+		input += data;
+	});
+	inputStream.on("end", function () {
+		callback(input);
+	});
+}
