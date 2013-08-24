@@ -303,18 +303,11 @@ module.exports = function (grunt) {
 					return "tsd install node jasmine";
 				}
 			},
-			"pegjs-node": {
+			"pegjs": {
 				cmd: function () {
 					var main = grunt.config.get("opt.jsMainOut") + "/";
 					var peg = grunt.config.get("opt.peg") + "/";
-					return "./node_modules/pegjs/bin/pegjs " + peg + "/grammer.peg " + main + "/grammer.js";
-				}
-			},
-			"pegjs-browser": {
-				cmd: function () {
-					var main = grunt.config.get("opt.jsMainOut") + "/";
-					var peg = grunt.config.get("opt.peg") + "/";
-					return "./node_modules/pegjs/bin/pegjs -e PEG " + peg + "/grammer.peg " + main + "/grammer.js";
+					return "./util/review-parser-generator > " + main + "/grammer.js";
 				}
 			}
 		}
@@ -326,34 +319,14 @@ module.exports = function (grunt) {
 		['clean', 'bower', 'exec:tsd', 'copy']);
 
 	grunt.registerTask(
-		'node',
-		"必要なコンパイルを行い画面表示できるようにする。",
-		['clean:clientScript', 'typescript:main', 'tslint', 'replace', 'exec:pegjs-node', 'concat:dev']);
-
-	grunt.registerTask(
-		'browser',
-		"必要なコンパイルを行い画面表示できるようにする。",
-		['clean:clientScript', 'typescript:main', 'tslint', 'replace', 'exec:pegjs-browser', 'concat:dev']);
-
-	grunt.registerTask(
 		'default',
 		"必要なコンパイルを行い画面表示できるようにする。",
-		['browser']);
+		['clean:clientScript', 'typescript:main', 'tslint', 'replace', 'exec:pegjs', 'concat:dev']);
 
 	grunt.registerTask(
 		'test-preprocess',
 		"テストに必要な前準備を実行する。",
-		['clean:clientScript', 'typescript:test', 'tslint', 'replace', 'exec:pegjs-browser', 'concat:dev']);
-
-	grunt.registerTask(
-		'test-preprocess-browser',
-		"テストに必要な前準備を実行する。",
-		['test-preprocess', 'exec:pegjs-browser', 'uglify:test']);
-
-	grunt.registerTask(
-		'test-preprocess-node',
-		"テストに必要な前準備を実行する。",
-		['test-preprocess', 'exec:pegjs-node', 'uglify:test']);
+		['clean:clientScript', 'typescript:test', 'tslint', 'replace', 'exec:pegjs', 'concat:dev', 'uglify:test']);
 
 	grunt.registerTask(
 		'test',
@@ -363,17 +336,17 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'test-node',
 		"必要なコンパイルを行いjasmine-nodeでテストを実行する。",
-		['test-preprocess-browser', 'jasmine-node']);
+		['test-preprocess', 'jasmine-node']);
 
 	grunt.registerTask(
 		'test-karma',
 		"必要なコンパイルを行いブラウザ上でテストを実行する。",
-		['test-preprocess-browser', 'karma']);
+		['test-preprocess', 'karma']);
 
 	grunt.registerTask(
 		'test-browser',
 		"必要なコンパイルを行いブラウザ上でテストを実行する。",
-		['test-preprocess-browser', 'open:test-browser']);
+		['test-preprocess', 'open:test-browser']);
 
 	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 };

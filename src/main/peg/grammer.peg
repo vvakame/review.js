@@ -1,5 +1,3 @@
-First "first rule" = "first"
-
 Start
     = _ c:Chapters? _
     ;

@@ -1,48 +1,30 @@
 ///<reference path='libs/peg.js.d.ts' />
 
 module ReVIEW {
-	export var parser:Parser;
-
 	export class Parser {
 		root:SyntaxTree;
-		inlineNodes:SyntaxTree[] = [];
-		parseRawResult:any;
+		rawResult:any;
 
-		constructor(input:string) {
-			ReVIEW.parser = this;
-			this.parseRawResult = PEG.parse(input);
-			ReVIEW.parser = null;
+		constructor(public input:string) {
+			this.rawResult = PEG.parse(input);
+			this.root = this.transform(this.rawResult);
 		}
 
-		parse(syntaxArguments:any) {
-			var name = syntaxArguments.callee.caller.toString().match(/function ([^\(]+)/)[1].split("_", 2)[1];
-			var offset = syntaxArguments[0];
-			var line = syntaxArguments[1];
-			var column = syntaxArguments[2];
-			// PEG上でラベル貼った項目が登場順に取れる
-			var data:string[] = Array.prototype.splice.call(syntaxArguments, 3);
-
-			var newNode = new SyntaxTree(offset, line, column, name, data);
-
-			// 自分の子要素は		自分より先に評価され	offsetが自分と同じかそれ以降
-			// 自分の親要素は		自分より後に評価され	offsetが自分と同じかそれ以上
-			// 自分の兄要素は		自分より先に評価され	offsetが自分以前
-			// 自分の弟要素は		自分より後に評価され	offsetが自分以降
-			// 自分の親の兄要素は	自分より先に評価され	offsetが自分より前
-			// 自分の親の弟要素は	自分より後に評価され	offsetが自分より後
-
-			if (this.inlineNodes.length !== 0 && newNode.offset <= this.inlineNodes[0].offset) {
-				// 自分の子要素は		自分より先に評価され	offsetが自分と同じかそれ以降
-				newNode.childNodes = this.inlineNodes;
-				this.inlineNodes = [];
-			}
-			this.inlineNodes.push(newNode);
-
-			if (newNode.name === "start") {
-				this.root = newNode;
-				console.log(this.root.toString());
-			}
+		static parse(input:string) {
+			var parser = new Parser(input);
 		}
+
+		private transform(rawResult:RawSyntaxTree = this.rawResult):SyntaxTree {
+			var tree = new SyntaxTree(rawResult.offset, rawResult.line, rawResult.column, rawResult.syntax, rawResult);
+			return tree;
+		}
+	}
+
+	interface RawSyntaxTree {
+		syntax: string;
+		line: number;
+		column: number;
+		offset: number;
 	}
 
 	export class SyntaxTree {
@@ -54,7 +36,7 @@ module ReVIEW {
 		attributes:string[] = [];
 		childNodes:SyntaxTree[] = [];
 
-		constructor(public offset:number, public line:number, public column:number, public name:string, data:any[]) {
+		constructor(public offset:number, public line:number, public column:number, public name:string, data:any) {
 			switch (this.name) {
 				case "start":
 					this.type = "block";
