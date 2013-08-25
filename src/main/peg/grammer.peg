@@ -30,7 +30,7 @@ Contents "contents"
 
 Content "content"
     // TODO InlineElement の後に Ulist / Olist / Dlist が来ると先頭行じゃなくてマッチできてしまうかも
-    = c:SinglelineComment / c:BlockElement / c:InlineElement / c:Ulist / c:Olist / c:Dlist / c:$(!"//}" ( !InlineElement [^\r\n] )+)
+    = c:SinglelineComment / c:BlockElement / c:InlineElement / c:Ulist / c:Olist / c:Dlist / c:$(!"//}" ( !InlineElement [^\r\n] )+ Newline?)
     ;
 
 BlockElement "block element"
