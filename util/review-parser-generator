@@ -24,12 +24,31 @@ outputStream.on("error", function () {
 
 var template = {
 	contents: function (ruleName) {
+		var func = (function () {
+			var processed = [c];
+			if (cc !== "") {
+				if (Array.isArray(cc)) {
+					cc.forEach(function (c) {
+						processed.push(c);
+					});
+				} else {
+					processed = [c, cc.content];
+				}
+			}
+			return {
+				line: line(),
+				column: column(),
+				offset: offset(),
+				syntax: "RuleName",
+				content: processed
+			};
+		}).toString().replace("RuleName", ruleName);
 		// func.toString() で構文解析されるので eval で作らないといけない
-		return eval("(function(c, cc) { return { line: line(), column: column(), offset: offset(), syntax:\"" + ruleName + "\", content:c, contents: cc}; })");
+		return eval("(" + func + ")");
 	},
 	content: function (ruleName) {
 		// func.toString() で構文解析されるので eval で作らないといけない
-		return eval("(function (c) { return { line: line(), column: column(), offset: offset(), syntax:\"" + ruleName + "\", content: c}; })");
+		return eval("(function (c) {\n\treturn { line: line(), column: column(), offset: offset(), syntax:\"" + ruleName + "\", content: c};\n})");
 	},
 	repeat: function (times, obj) {
 		var result = [];

@@ -7,6 +7,7 @@ module ReVIEW {
 
 		constructor(public input:string) {
 			this.rawResult = PEG.parse(input);
+			console.log(this.rawResult);
 			this.root = this.transform(this.rawResult);
 		}
 
