@@ -40,48 +40,81 @@ module ReVIEW {
 				// c, cc パターン
 				case "Chapters":
 				case "Paragraphs":
+				case "Contents":
+				case "BlockInnerContents":
 					this.type = "block";
-					if (Array.isArray(data.content)) {
-						data.content.forEach((rawResult:ConcreatSyntaxTree)=> {
-							var tree = SyntaxTree.transform(rawResult);
-							if (tree) {
-								this.childNodes.push(tree);
-							}
-						});
-					} else if (data.content !== "" && !data.content) {
-						((rawResult:ConcreatSyntaxTree)=> {
-							var tree = SyntaxTree.transform(rawResult);
-							if (tree) {
-								this.childNodes.push(tree);
-							}
-						})(data.content);
-					}
+					this.processChildNodes(data.content);
+					break;
+				case "InlineInnerContents":
+				case "ContentInlineHelpers":
+				case "Ulist":
+				case "Olist":
+				case "Dlist":
+					this.type = "inline";
+					this.processChildNodes(data.content);
 					break;
 
 				// c パターン
 				case "Start":
 				case "Paragraph":
+				case "ContentInline":
+				case "SinglelineComment":
 					this.type = "block";
-					((rawResult:ConcreatSyntaxTree)=> {
-						var tree = SyntaxTree.transform(rawResult);
-						if (tree) {
-							this.childNodes.push(tree);
-						}
-					})(data.content);
+					this.processChildNodes(data.content);
 					break;
 
 				// TODO 特殊構文なので後で
 				case "Chapter":
 				case "Content":
+				case "BlockElement":
+				case "BlockInnerContent":
 					this.type = "block";
 					break;
 				case "Headline":
+				case "InlineElement":
+				case "BracketArg":
+				case "BraceArg":
+				case "InlineInnerContent":
+				case "ContentInlineHelper":
+				case "UlistElement":
+				case "OlistElement":
+				case "DlistElement":
 					this.type = "inline";
 					break;
 
 				default:
 					console.warn("unknown name '" + this.name + "'");
 			}
+		}
+
+		private processChildNodes(content:any) {
+			if (Array.isArray(content)) {
+				content.forEach((rawResult:ConcreatSyntaxTree)=> {
+					var tree = SyntaxTree.transform(rawResult);
+					if (tree) {
+						tree.parentNode = this;
+						this.childNodes.push(tree);
+					}
+				});
+			} else if (content !== "" && !content) {
+				((rawResult:ConcreatSyntaxTree)=> {
+					var tree = SyntaxTree.transform(rawResult);
+					if (tree) {
+						tree.parentNode = this;
+						this.childNodes.push(tree);
+					}
+				})(content);
+			}
+		}
+
+		toJSON():any {
+			var result = {};
+			for (var k in this) {
+				if (k !== "parentNode" && typeof this[k] !== "function") {
+					result[k] = this[k];
+				}
+			}
+			return result;
 		}
 
 		toString(indentLevel:number = 0):string {
