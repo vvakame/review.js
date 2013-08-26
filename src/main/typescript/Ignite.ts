@@ -5,6 +5,7 @@ module ReVIEW {
 		export function parse(input:string):{ast:SyntaxTree;cst:ConcreatSyntaxTree} {
 			var rawResult = PEG.parse(input);
 			var root = SyntaxTree.transform(rawResult);
+			console.warn("まだ開発中です。生成されるASTは今後圧縮される可能性が100%です。");
 			return {
 				ast: root,
 				cst: rawResult
