@@ -1,4 +1,4 @@
-Start
+Start "start"
     = _ c:Chapters? _
     ;
 
@@ -30,7 +30,11 @@ Contents "contents"
 
 Content "content"
     // TODO InlineElement の後に Ulist / Olist / Dlist が来ると先頭行じゃなくてマッチできてしまうかも
-    = c:SinglelineComment / c:BlockElement / c:InlineElement / c:Ulist / c:Olist / c:Dlist / c:$(!"//}" ( !InlineElement [^\r\n] )+ Newline?)
+    = c:SinglelineComment / c:BlockElement / c:InlineElement / c:Ulist / c:Olist / c:Dlist / c:ContentText
+    ;
+
+ContentText "text of content"
+    = c:$(!"//}" ( !InlineElement [^\r\n] )+ Newline?)
     ;
 
 BlockElement "block element"
@@ -50,22 +54,32 @@ BraceArg "brace argument"
     ;
 
 // contents との差は paragraph を切るか切らないか
-BlockInnerContents
+BlockInnerContents "contents of block element"
     = c:BlockInnerContent cc:BlockInnerContents?
     ;
 
-BlockInnerContent
-    = c:SinglelineComment / c:BlockElement / c:InlineElement / c:Ulist / c:Olist / c:Dlist / c:Newline / c:$(!"//}" ( !InlineElement [^\r\n] )+)
+BlockInnerContent "content of block element"
+    = c:SinglelineComment / c:BlockElement / c:InlineElement / c:Ulist / c:Olist / c:Dlist / c:Newline / c:BlockInnerContentText
     ;
 
-InlineInnerContents
+BlockInnerContentText "text of block element"
+    = c:$(!"//}" ( !InlineElement [^\r\n] )+)
+    ;
+
+InlineInnerContents "contents of inline element"
     = !"}" c:InlineInnerContent cc:InlineInnerContents?
     ;
 
-InlineInnerContent
-    = c:"\\}"
-    / c:InlineElement
-    / c:$( ( !InlineElement [^\r\n}] )+ )
+InlineInnerContent "content of inline element"
+    = c:EndOfInlineInnerContent / c:InlineElement / c:InlineInnerContentText
+    ;
+
+EndOfInlineInnerContent "end of content of inline element"
+    = c:$("\\}")
+    ;
+
+InlineInnerContentText "text of inline element"
+    = c:$( ( !InlineElement [^\r\n}] )+ )
     ;
 
 ContentInline "inline content"
@@ -77,8 +91,11 @@ ContentInlineHelpers "children of inline content"
     ;
 
 ContentInlineHelper "child of inline content"
+    = c:ContentInlineHelperText / c:InlineElement
+    ;
+
+ContentInlineHelperText "text of child of inline content"
     = c:$( ( !InlineElement [^\r\n] )+ )
-    / c:InlineElement
     ;
 
 // * 箇条書き
@@ -108,7 +125,11 @@ Dlist "dlist"
     ;
 
 DlistElement "dlist element"
-    = " "* ":" " " _ text:ContentInline content:( [ \t]+ ContentInline )+
+    = " "* ":" " " _ text:ContentInline content:DlistElementText
+    ;
+
+DlistElementText "text of dlist element"
+    = c:$( [ \t]+ ContentInline )+
     ;
 
 SinglelineComment "signle line comment"

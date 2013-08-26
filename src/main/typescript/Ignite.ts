@@ -20,23 +20,27 @@ module ReVIEW {
 		offset: number;
 
 		// Ruleによっては
-		headline: any;
-		text:any;
-		level:number;
-		label:any;
-		tag:any;
-		caption:any;
-		name:any;
-		args:any;
-		content:any;
-		contents:any;
-		arg:any;
-		no:any;
+		headline?: any;
+		text?:any;
+		level?:number;
+		label?:any;
+		tag?:any;
+		caption?:any;
+		name?:any;
+		args?:any;
+		content?:any;
+		contents?:any;
+		arg?:any;
+		no?:any;
 	}
 
 	export class SyntaxTree {
 		parentNode:SyntaxTree;
 		type:string;
+		offset:number;
+		line:number;
+		column:number;
+		name:string;
 
 		childNodes:SyntaxTree[] = [];
 
@@ -44,16 +48,36 @@ module ReVIEW {
 			if (<any>rawResult === "") {
 				return null;
 			}
-			return new SyntaxTree(rawResult.offset, rawResult.line, rawResult.column, rawResult.syntax, rawResult);
+			switch (rawResult.syntax) {
+				case "Chapter":
+				case "BlockElement":
+					return null;
+				case "Headline":
+				case "InlineElement":
+				case "BracketArg":
+				case "BraceArg":
+				case "UlistElement":
+				case "OlistElement":
+				case "DlistElement":
+					return null;
+				default:
+					return new SyntaxTree(rawResult);
+			}
 		}
 
-		constructor(public offset:number, public line:number, public column:number, public name:string, data:any) {
+		constructor(data:ConcreatSyntaxTree) {
+			this.offset = data.offset;
+			this.line = data.line;
+			this.column = data.column;
+			this.name = data.syntax;
+
 			switch (this.name) {
 				// c, cc パターン
 				case "Chapters":
 				case "Paragraphs":
 				case "Contents":
 				case "BlockInnerContents":
+				case "BlockInnerContent":
 					this.type = "block";
 					this.processChildNodes(data.content);
 					break;
@@ -69,25 +93,30 @@ module ReVIEW {
 				// c パターン
 				case "Start":
 				case "Paragraph":
+				case "Content":
+				case "ContentText":
+				case "BlockInnerContentText":
+				case "InlineInnerContent":
+				case "EndOfInlineInnerContent":
+				case "InlineInnerContentText":
 				case "ContentInline":
+				case "ContentInlineHelper":
+				case "ContentInlineHelperText":
+				case "DlistElementText":
 				case "SinglelineComment":
 					this.type = "block";
 					this.processChildNodes(data.content);
 					break;
 
-				// TODO 特殊構文なので後で
+				// 特殊構文
 				case "Chapter":
-				case "Content":
 				case "BlockElement":
-				case "BlockInnerContent":
 					this.type = "block";
 					break;
 				case "Headline":
 				case "InlineElement":
 				case "BracketArg":
 				case "BraceArg":
-				case "InlineInnerContent":
-				case "ContentInlineHelper":
 				case "UlistElement":
 				case "OlistElement":
 				case "DlistElement":

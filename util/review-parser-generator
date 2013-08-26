@@ -96,6 +96,7 @@ var options =
 			Paragraph: template.content("Paragraph"),
 			Contents: template.contents("Contents"),
 			Content: template.repeat(7, template.content("Content")),
+			ContentText: template.content("ContentText"),
 			BlockElement: function () {
 				return {
 					syntax: "BlockElement",
@@ -137,11 +138,15 @@ var options =
 			},
 			BlockInnerContents: template.contents("BlockInnerContents"),
 			BlockInnerContent: template.repeat(8, template.content("BlockInnerContent")),
+			BlockInnerContentText: template.content("BlockInnerContentText"),
 			InlineInnerContents: template.contents("InlineInnerContents"),
 			InlineInnerContent: template.repeat(3, template.content("InlineInnerContent")),
+			EndOfInlineInnerContent: template.content("EndOfInlineInnerContent"),
+			InlineInnerContentText: template.content("InlineInnerContentText"),
 			ContentInline: template.content("ContentInline"),
 			ContentInlineHelpers: template.contents("ContentInlineHelpers"),
 			ContentInlineHelper: template.repeat(2, template.content("ContentInlineHelper")),
+			ContentInlineHelperText: template.content("ContentInlineHelperText"),
 			Ulist: template.contents("Ulist"),
 			UlistElement: function () {
 				return {
@@ -175,6 +180,7 @@ var options =
 					content: content
 				};
 			},
+			DlistElementText: template.content("DlistElementText"),
 			SinglelineComment: template.content("SinglelineComment")
 		}
 	}

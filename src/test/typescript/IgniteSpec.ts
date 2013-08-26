@@ -87,10 +87,14 @@ describe("ReVIEW構文の", ()=> {
 
 	describe("SyntaxTreeクラスの", ()=> {
 		it("JSON.stringifyで無限再起にならないこと", ()=> {
-			var syntax = new ReVIEW.SyntaxTree(0, 0, 0, "SinglelineComment", {content: ""});
+			var syntax = new ReVIEW.SyntaxTree({
+				line: 0, column: 0, offset: 0,
+				syntax: "SinglelineComment",
+				content: ""
+			});
 			// syntax.parentNode = syntax;
 			var json = JSON.stringify(syntax);
-			expect(json).toBe("{\"offset\":0,\"line\":0,\"column\":0,\"name\":\"SinglelineComment\",\"childNodes\":[],\"type\":\"block\"}");
+			expect(json).toBe("{\"childNodes\":[],\"offset\":0,\"line\":0,\"column\":0,\"name\":\"SinglelineComment\",\"type\":\"block\"}");
 		});
 	});
 });
