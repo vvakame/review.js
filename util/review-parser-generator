@@ -27,12 +27,12 @@ var template = {
 		var func = (function () {
 			var processed = [c];
 			if (cc !== "") {
-				if (Array.isArray(cc)) {
-					cc.forEach(function (c) {
+				if (Array.isArray(cc.content)) {
+					cc.content.forEach(function (c) {
 						processed.push(c);
 					});
 				} else {
-					processed = [c, cc.content];
+					processed.push(cc.content);
 				}
 			}
 			return {
