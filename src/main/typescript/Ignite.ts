@@ -40,9 +40,8 @@ module ReVIEW {
 		offset:number;
 		line:number;
 		column:number;
-		name:string;
-
-		childNodes:SyntaxTree[] = [];
+		ruleName:string;
+		childNodes:SyntaxTree[];
 
 		static transform(rawResult:ConcreatSyntaxTree):SyntaxTree {
 			if (<any>rawResult === "") {
@@ -50,28 +49,44 @@ module ReVIEW {
 			}
 			switch (rawResult.syntax) {
 				case "Chapter":
+					return new ChapterSyntaxTree(rawResult);
 				case "BlockElement":
-					return null;
+					return new BlockElementSyntaxTree(rawResult);
 				case "Headline":
+					return new HeadlineSyntaxTree(rawResult);
 				case "InlineElement":
+					return new InlineElementSyntaxTree(rawResult);
 				case "BracketArg":
 				case "BraceArg":
+					return new ArgumentSyntaxTree(rawResult);
 				case "UlistElement":
+					return new UlistElementSyntaxTree(rawResult);
 				case "OlistElement":
+					return new OlistElementSyntaxTree(rawResult);
 				case "DlistElement":
-					return null;
+					return new DlistElementSyntaxTree(rawResult);
+				case "ContentText":
+				case "BlockInnerContentText":
+				case "EndOfInlineInnerContent":
+				case "InlineInnerContentText":
+				case "ContentInlineHelperText":
+				case "DlistElementText":
+				case "SinglelineComment":
+					return new TextNodeSyntaxTree(rawResult);
 				default:
 					return new SyntaxTree(rawResult);
 			}
 		}
 
 		constructor(data:ConcreatSyntaxTree) {
+			this.ruleName = data.syntax;
+			this.type = "";
 			this.offset = data.offset;
 			this.line = data.line;
 			this.column = data.column;
-			this.name = data.syntax;
+			this.childNodes = [];
 
-			switch (this.name) {
+			switch (this.ruleName) {
 				// c, cc パターン
 				case "Chapters":
 				case "Paragraphs":
@@ -94,23 +109,26 @@ module ReVIEW {
 				case "Start":
 				case "Paragraph":
 				case "Content":
-				case "ContentText":
-				case "BlockInnerContentText":
+				case "BlockElement":
 				case "InlineInnerContent":
-				case "EndOfInlineInnerContent":
-				case "InlineInnerContentText":
 				case "ContentInline":
 				case "ContentInlineHelper":
+					this.type = "block";
+					this.processChildNodes(data.content);
+					break;
+				// c パターン (テキスト)
+				case "ContentText":
+				case "BlockInnerContentText":
+				case "EndOfInlineInnerContent":
+				case "InlineInnerContentText":
 				case "ContentInlineHelperText":
 				case "DlistElementText":
 				case "SinglelineComment":
 					this.type = "block";
-					this.processChildNodes(data.content);
 					break;
 
 				// 特殊構文
 				case "Chapter":
-				case "BlockElement":
 					this.type = "block";
 					break;
 				case "Headline":
@@ -124,7 +142,7 @@ module ReVIEW {
 					break;
 
 				default:
-					console.warn("unknown name '" + this.name + "'");
+					console.warn("unknown name '" + this.ruleName + "'");
 			}
 		}
 
@@ -137,7 +155,7 @@ module ReVIEW {
 						this.childNodes.push(tree);
 					}
 				});
-			} else if (content !== "" && !content) {
+			} else if (content !== "" && content) {
 				((rawResult:ConcreatSyntaxTree)=> {
 					var tree = SyntaxTree.transform(rawResult);
 					if (tree) {
@@ -170,7 +188,7 @@ module ReVIEW {
 			result += makeIndent(indentLevel + 1) + "offset = " + this.offset + ",\n";
 			result += makeIndent(indentLevel + 1) + "line=" + this.line + ",\n";
 			result += makeIndent(indentLevel + 1) + "column=" + this.column + ",\n";
-			result += makeIndent(indentLevel + 1) + "name=" + this.name + ",\n";
+			result += makeIndent(indentLevel + 1) + "name=" + this.ruleName + ",\n";
 			this.toStringHook(indentLevel, result);
 			if (this.childNodes.length !== 0) {
 				result += makeIndent(indentLevel + 1) + "childNodes[" + this.childNodes.length + "]=[\n";
@@ -186,6 +204,147 @@ module ReVIEW {
 		}
 
 		toStringHook(indentLevel:number, result:string) {
+		}
+
+		checkNumber(value:any):number {
+			if (typeof value !== "number") {
+				throw new Error("number required. actual:" + (typeof value) + ":" + value);
+			} else {
+				return value;
+			}
+		}
+
+		checkString(value:any):string {
+			if (typeof value !== "string") {
+				throw new Error("string required. actual:" + (typeof value) + ":" + value);
+			} else {
+				return value;
+			}
+		}
+
+		checkObject(value:any):any {
+			if (typeof value !== "object") {
+				throw new Error("object required. actual:" + (typeof value) + ":" + value);
+			} else {
+				return value;
+			}
+		}
+
+		checkArray(value:any):any[] {
+			if (!Array.isArray(value)) {
+				throw new Error("array required. actual:" + (typeof value) + ":" + value);
+			} else {
+				return value;
+			}
+		}
+	}
+
+	class ChapterSyntaxTree extends SyntaxTree {
+		headline:SyntaxTree;
+		text:SyntaxTree[];
+
+		constructor(data:ConcreatSyntaxTree) {
+			super(data);
+			this.headline = SyntaxTree.transform(this.checkObject(data.headline));
+			if (typeof data.text === "string") {
+				return;
+			}
+			this.text = this.checkArray(data.text.content).map((data:ConcreatSyntaxTree)=> {
+				return SyntaxTree.transform(data);
+			});
+		}
+	}
+
+	class HeadlineSyntaxTree extends SyntaxTree {
+		level:number;
+		label:ArgumentSyntaxTree;
+		tag:ArgumentSyntaxTree;
+		caption:SyntaxTree;
+
+		constructor(data:ConcreatSyntaxTree) {
+			super(data);
+
+			this.level = this.checkNumber(data.level);
+			if (data.label !== "") {
+				this.label = <ArgumentSyntaxTree> SyntaxTree.transform(this.checkObject(data.label));
+			}
+			if (data.tag !== "") {
+				this.tag = <ArgumentSyntaxTree> SyntaxTree.transform(this.checkObject(data.tag));
+			}
+			this.caption = SyntaxTree.transform(this.checkObject(data.caption));
+		}
+	}
+
+	class BlockElementSyntaxTree extends SyntaxTree {
+		name:string;
+		args:SyntaxTree[]; // TODO
+
+		constructor(data:ConcreatSyntaxTree) {
+			super(data);
+			this.name = this.checkString(data.name);
+			this.args = this.checkArray(data.args).map((data:ConcreatSyntaxTree)=> {
+				return SyntaxTree.transform(data);
+			});
+		}
+	}
+
+	class InlineElementSyntaxTree extends SyntaxTree {
+		name:string;
+
+		constructor(data:ConcreatSyntaxTree) {
+			super(data);
+			this.name = this.checkString(data.name);
+		}
+	}
+
+	class ArgumentSyntaxTree extends SyntaxTree {
+		arg:string;
+
+		constructor(data:ConcreatSyntaxTree) {
+			super(data);
+			this.arg = this.checkString(data.arg);
+		}
+	}
+
+	class UlistElementSyntaxTree extends SyntaxTree {
+		level:number;
+		text:SyntaxTree;
+
+		constructor(data:ConcreatSyntaxTree) {
+			super(data);
+			this.level = this.checkNumber(data.level);
+			this.text = SyntaxTree.transform(this.checkObject(data.text));
+		}
+	}
+
+	class OlistElementSyntaxTree extends SyntaxTree {
+		no:number;
+		text:SyntaxTree;
+
+		constructor(data:ConcreatSyntaxTree) {
+			super(data);
+			this.no = this.checkNumber(data.no);
+			this.text = SyntaxTree.transform(this.checkObject(data.text));
+		}
+	}
+
+	class DlistElementSyntaxTree extends SyntaxTree {
+		text:SyntaxTree;
+		content:SyntaxTree;
+
+		constructor(data:ConcreatSyntaxTree) {
+			super(data);
+			this.text = SyntaxTree.transform(this.checkObject(data.text));
+			this.content = SyntaxTree.transform(this.checkObject(data.content));
+		}
+	}
+
+	class TextNodeSyntaxTree extends SyntaxTree {
+		text:string;
+
+		constructor(data:ConcreatSyntaxTree) {
+			super(data);
+			this.text = this.checkString(data.text);
 		}
 	}
 }

@@ -34,7 +34,7 @@ Content "content"
     ;
 
 ContentText "text of content"
-    = c:$(!"//}" ( !InlineElement [^\r\n] )+ Newline?)
+    = text:$(!"//}" ( !InlineElement [^\r\n] )+ Newline?)
     ;
 
 BlockElement "block element"
@@ -63,7 +63,7 @@ BlockInnerContent "content of block element"
     ;
 
 BlockInnerContentText "text of block element"
-    = c:$(!"//}" ( !InlineElement [^\r\n] )+)
+    = text:$(!"//}" ( !InlineElement [^\r\n] )+)
     ;
 
 InlineInnerContents "contents of inline element"
@@ -75,11 +75,11 @@ InlineInnerContent "content of inline element"
     ;
 
 EndOfInlineInnerContent "end of content of inline element"
-    = c:$("\\}")
+    = text:$("\\}")
     ;
 
 InlineInnerContentText "text of inline element"
-    = c:$( ( !InlineElement [^\r\n}] )+ )
+    = text:$( ( !InlineElement [^\r\n}] )+ )
     ;
 
 ContentInline "inline content"
@@ -95,13 +95,13 @@ ContentInlineHelper "child of inline content"
     ;
 
 ContentInlineHelperText "text of child of inline content"
-    = c:$( ( !InlineElement [^\r\n] )+ )
+    = text:$( ( !InlineElement [^\r\n] )+ )
     ;
 
 // * 箇条書き
 Ulist "ulist"
     // 行頭から… の指定がない
-    = c:UlistElement cc:(SinglelineComment / UlistElement)*
+    = c:(UlistElement / SinglelineComment) cc:Ulist?
     ;
 
 UlistElement "ulist element"
@@ -111,7 +111,7 @@ UlistElement "ulist element"
 // 1. 番号付き箇条書き
 Olist "olist"
     // 行頭から… の指定がない
-    = c:OlistElement cc:(SinglelineComment / OlistElement)*
+    = c:(OlistElement / SinglelineComment) cc:Olist?
     ;
 
 OlistElement "olist element"
@@ -121,19 +121,20 @@ OlistElement "olist element"
 // : 用語リスト
 Dlist "dlist"
     // 行頭から… の指定がない
-    = c:DlistElement cc:(SinglelineComment / DlistElement)*
+    = c:(DlistElement / SinglelineComment) cc:Dlist?
     ;
 
 DlistElement "dlist element"
+    // TODO content が text なのは間違っているのでは…
     = " "* ":" " " _ text:ContentInline content:DlistElementText
     ;
 
 DlistElementText "text of dlist element"
-    = c:$( [ \t]+ ContentInline )+
+    = [ \t]+ text:$( ContentInline )+
     ;
 
 SinglelineComment "signle line comment"
-    = c:$("#@" $([^\r\n]*) Newline?)
+    = text:$("#@" $([^\r\n]*) Newline?)
     ;
 
 Digits "digits"

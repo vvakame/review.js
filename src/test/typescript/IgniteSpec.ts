@@ -69,7 +69,10 @@ describe("ReVIEW構文の", ()=> {
 			"= headline\nというように、型を @<tti>{<} と　@<tti>{>} で囲んで式 expression の先頭に置くと\n",
 			"= @がinlineじゃなく出てくる\n\n例えば @Override アノテーションの話とか。",
 			"= 1つ目\n= 2つ目\n\n段落1\n\n段落2\n段落2続き\n\n段落3\n= 3つ目",
-			"= level 1\n== level 2\n===level 3\n====     level 4\n\n=[hoge] []付き\n={fuga} {}付き\n=[hoge]{fuga} 両方付き\n"
+			"= level 1\n== level 2\n===level 3\n====     level 4\n\n=[hoge] []付き\n={fuga} {}付き\n=[hoge]{fuga} 両方付き\n",
+			"= ulist\n\n * level 1\n ** level 2\n *** level 3",
+			"= olist\n\n 1. No. 1\n 2. No. 2\n 3. No. 3\n",
+			"= dlist\n\n: hoge\n  これはマジマッハ\n\n: fuga\n	これはマジファンキー\n"
 		];
 		strings.forEach((str)=> {
 			it("try: " + str.substr(0, 15), ()=> {
@@ -94,7 +97,7 @@ describe("ReVIEW構文の", ()=> {
 			});
 			// syntax.parentNode = syntax;
 			var json = JSON.stringify(syntax);
-			expect(json).toBe("{\"childNodes\":[],\"offset\":0,\"line\":0,\"column\":0,\"name\":\"SinglelineComment\",\"type\":\"block\"}");
+			expect(json).toBe("{\"ruleName\":\"SinglelineComment\",\"type\":\"block\",\"offset\":0,\"line\":0,\"column\":0,\"childNodes\":[]}");
 		});
 	});
 });

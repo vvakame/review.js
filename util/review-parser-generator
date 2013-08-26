@@ -50,6 +50,10 @@ var template = {
 		// func.toString() で構文解析されるので eval で作らないといけない
 		return eval("(function (c) {\n\treturn { line: line(), column: column(), offset: offset(), syntax:\"" + ruleName + "\", content: c};\n})");
 	},
+	text: function(ruleName) {
+		// func.toString() で構文解析されるので eval で作らないといけない
+		return eval("(function (c) {\n\treturn { line: line(), column: column(), offset: offset(), syntax:\"" + ruleName + "\", text: text};\n})");
+	},
 	repeat: function (times, obj) {
 		var result = [];
 		for (var i = 0; i < times; i++) {
@@ -96,7 +100,7 @@ var options =
 			Paragraph: template.content("Paragraph"),
 			Contents: template.contents("Contents"),
 			Content: template.repeat(7, template.content("Content")),
-			ContentText: template.content("ContentText"),
+			ContentText: template.text("ContentText"),
 			BlockElement: function () {
 				return {
 					syntax: "BlockElement",
@@ -138,15 +142,15 @@ var options =
 			},
 			BlockInnerContents: template.contents("BlockInnerContents"),
 			BlockInnerContent: template.repeat(8, template.content("BlockInnerContent")),
-			BlockInnerContentText: template.content("BlockInnerContentText"),
+			BlockInnerContentText: template.text("BlockInnerContentText"),
 			InlineInnerContents: template.contents("InlineInnerContents"),
 			InlineInnerContent: template.repeat(3, template.content("InlineInnerContent")),
-			EndOfInlineInnerContent: template.content("EndOfInlineInnerContent"),
-			InlineInnerContentText: template.content("InlineInnerContentText"),
+			EndOfInlineInnerContent: template.text("EndOfInlineInnerContent"),
+			InlineInnerContentText: template.text("InlineInnerContentText"),
 			ContentInline: template.content("ContentInline"),
 			ContentInlineHelpers: template.contents("ContentInlineHelpers"),
 			ContentInlineHelper: template.repeat(2, template.content("ContentInlineHelper")),
-			ContentInlineHelperText: template.content("ContentInlineHelperText"),
+			ContentInlineHelperText: template.text("ContentInlineHelperText"),
 			Ulist: template.contents("Ulist"),
 			UlistElement: function () {
 				return {
@@ -165,7 +169,7 @@ var options =
 					line: line(),
 					column: column(),
 					offset: offset(),
-					no: n,
+					no: parseInt(n),
 					text: text
 				};
 			},
@@ -180,8 +184,8 @@ var options =
 					content: content
 				};
 			},
-			DlistElementText: template.content("DlistElementText"),
-			SinglelineComment: template.content("SinglelineComment")
+			DlistElementText: template.text("DlistElementText"),
+			SinglelineComment: template.text("SinglelineComment")
 		}
 	}
 };
