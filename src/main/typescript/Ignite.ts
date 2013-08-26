@@ -1,27 +1,18 @@
 ///<reference path='libs/peg.js.d.ts' />
 
 module ReVIEW {
-	export class Parser {
-		root:SyntaxTree;
-		rawResult:any;
-
-		constructor(public input:string) {
-			this.rawResult = PEG.parse(input);
-			console.log(this.rawResult);
-			this.root = this.transform(this.rawResult);
-		}
-
-		static parse(input:string) {
-			var parser = new Parser(input);
-		}
-
-		private transform(rawResult:RawSyntaxTree = this.rawResult):SyntaxTree {
-			var tree = new SyntaxTree(rawResult.offset, rawResult.line, rawResult.column, rawResult.syntax, rawResult);
-			return tree;
+	export module Parser {
+		export function parse(input:string):{ast:SyntaxTree;cst:ConcreatSyntaxTree} {
+			var rawResult = PEG.parse(input);
+			var root = SyntaxTree.transform(rawResult);
+			return {
+				ast: root,
+				cst: rawResult
+			};
 		}
 	}
 
-	interface RawSyntaxTree {
+	export interface ConcreatSyntaxTree {
 		syntax: string;
 		line: number;
 		column: number;
@@ -37,30 +28,57 @@ module ReVIEW {
 		attributes:string[] = [];
 		childNodes:SyntaxTree[] = [];
 
+		static transform(rawResult:ConcreatSyntaxTree):SyntaxTree {
+			if (<any>rawResult === "") {
+				return null;
+			}
+			return new SyntaxTree(rawResult.offset, rawResult.line, rawResult.column, rawResult.syntax, rawResult);
+		}
+
 		constructor(public offset:number, public line:number, public column:number, public name:string, data:any) {
 			switch (this.name) {
-				case "start":
+				// c, cc パターン
+				case "Chapters":
+				case "Paragraphs":
+					this.type = "block";
+					if (Array.isArray(data.content)) {
+						data.content.forEach((rawResult:ConcreatSyntaxTree)=> {
+							var tree = SyntaxTree.transform(rawResult);
+							if (tree) {
+								this.childNodes.push(tree);
+							}
+						});
+					} else if (data.content !== "" && !data.content) {
+						((rawResult:ConcreatSyntaxTree)=> {
+							var tree = SyntaxTree.transform(rawResult);
+							if (tree) {
+								this.childNodes.push(tree);
+							}
+						})(data.content);
+					}
+					break;
+
+				// c パターン
+				case "Start":
+				case "Paragraph":
+					this.type = "block";
+					((rawResult:ConcreatSyntaxTree)=> {
+						var tree = SyntaxTree.transform(rawResult);
+						if (tree) {
+							this.childNodes.push(tree);
+						}
+					})(data.content);
+					break;
+
+				// TODO 特殊構文なので後で
+				case "Chapter":
+				case "Content":
 					this.type = "block";
 					break;
-				case "chapter":
-					this.type = "block";
-					break;
-				case "headline":
+				case "Headline":
 					this.type = "inline";
-					console.log(data);
-					this.attributes = [data[0].length, data[1].join("")];
-					this.label = this.attributes[2];
-					this.text = this.attributes[3];
 					break;
-				case "content":
-					// TODO
-					this.type = "block";
-				case "newline":
-				case "space":
-				case "spacing":
-					this.type = "inline";
-					// TODO めんどいから適当にそうした 後で再チェック
-					break;
+
 				default:
 					console.warn("unknown name '" + this.name + "'");
 			}

@@ -26,9 +26,9 @@ describe("ReVIEW構文の", ()=> {
 				it("ファイル:" + file, ()=> {
 					var data = fs.readFileSync(path + file, "utf8");
 					try {
-						var parser = new ReVIEW.Parser(data);
-						// console.log(data);
-						// console.log(JSON.stringify(parser.parseRawResult));
+						var result = ReVIEW.Parser.parse(data);
+						// console.log(result);
+						// console.log(JSON.stringify(result));
 					} catch (e) {
 						updateIfSyntaxError(e);
 						throw e;
@@ -44,7 +44,7 @@ describe("ReVIEW構文の", ()=> {
 				it("ファイル:" + file, ()=> {
 					var data = fs.readFileSync(path + file, "utf8");
 					try {
-						new ReVIEW.Parser(data);
+						ReVIEW.Parser.parse(data);
 						throw new Error("正しく処理できてしまった");
 					} catch (e) {
 						if (e instanceof PEG.SyntaxError) {
@@ -68,102 +68,20 @@ describe("ReVIEW構文の", ()=> {
 			"= use review-preproc\n//list[hoge][]{\n#@mapfile(bin/grammer.js)\n#@end\n//}",
 			"= headline\nというように、型を @<tti>{<} と　@<tti>{>} で囲んで式 expression の先頭に置くと\n",
 			"= @がinlineじゃなく出てくる\n\n例えば @Override アノテーションの話とか。",
-			"= 1つ目\n= 2つ目\n\n段落1\n\n段落2\n段落2続き\n\n段落3\n= 3つ目"
+			"= 1つ目\n= 2つ目\n\n段落1\n\n段落2\n段落2続き\n\n段落3\n= 3つ目",
+			"= level 1\n== level 2\n===level 3\n====     level 4\n\n=[hoge] []付き\n={fuga} {}付き\n=[hoge]{fuga} 両方付き\n"
 		];
 		strings.forEach((str)=> {
 			it("try: " + str.substr(0, 15), ()=> {
 				try {
-					var parser = new ReVIEW.Parser(str);
-					// console.log(str);
-					console.log(JSON.stringify(parser.rawResult));
+					var result = ReVIEW.Parser.parse(str);
+					// console.log(result);
+					// console.log(JSON.stringify(result));
 				} catch (e) {
 					updateIfSyntaxError(e);
 					throw e;
 				}
 			});
 		});
-	});
-
-	xit("captionのテスト label無し", ()=> {
-		var parser = new ReVIEW.Parser("= hoge");
-		var root = parser.root;
-		expect(root.childNodes.length).toBe(1);
-
-		var chapter = root.childNodes[0];
-		expect(chapter.childNodes.length).toBe(1);
-		expect(chapter.type).toBe("block");
-		expect(chapter.name).toBe("chapter");
-
-		var caption = chapter.childNodes[0];
-		expect(caption.attributes.length).toBe(2);
-		expect(caption.type).toBe("inline");
-		expect(caption.name).toBe("caption");
-		expect(caption.text).toBe("hoge");
-		expect(caption.attributes[0]).toBe(1);
-		expect(caption.attributes[1]).toBe("hoge");
-	});
-
-	xit("captionのテスト label有り", ()=> {
-		var parser = new ReVIEW.Parser("={fuga} hoge");
-		var root = parser.root;
-		expect(root.childNodes.length).toBe(1);
-
-		var chapter = root.childNodes[0];
-		expect(chapter.childNodes.length).toBe(1);
-		expect(chapter.type).toBe("block");
-		expect(chapter.name).toBe("chapter");
-
-		var caption = chapter.childNodes[0];
-		expect(caption.attributes.length).toBe(3);
-		expect(caption.type).toBe("inline");
-		expect(caption.name).toBe("caption");
-		expect(caption.label).toBe("fuga");
-		expect(caption.text).toBe("hoge");
-		expect(caption.attributes[0]).toBe(1);
-		expect(caption.attributes[1]).toBe("fuga");
-		expect(caption.attributes[2]).toBe("hoge");
-	});
-
-	xit("captionのテスト tag&label有り", ()=> {
-		var parser = new ReVIEW.Parser("=[piyo]{fuga} hoge");
-		var root = parser.root;
-		expect(root.childNodes.length).toBe(1);
-
-		var chapter = root.childNodes[0];
-		expect(chapter.childNodes.length).toBe(1);
-		expect(chapter.type).toBe("block");
-		expect(chapter.name).toBe("chapter");
-
-		var caption = chapter.childNodes[0];
-		expect(caption.attributes.length).toBe(3);
-		expect(caption.type).toBe("inline");
-		expect(caption.name).toBe("caption");
-		expect(caption.label).toBe("fuga");
-		expect(caption.text).toBe("hoge");
-		expect(caption.attributes[0]).toBe(1);
-		expect(caption.attributes[1]).toBe("fuga");
-		expect(caption.attributes[2]).toBe("hoge");
-	});
-
-	xit("singlelineComment", ()=> {
-		var parser = new ReVIEW.Parser("=hoge\n#@ fuga\npiyo");
-		var root = parser.root;
-		expect(root.childNodes.length).toBe(1);
-
-		var chapter = root.childNodes[0];
-		console.log(chapter.toString());
-		expect(chapter.childNodes.length).toBe(3);
-		expect(chapter.type).toBe("block");
-		expect(chapter.name).toBe("chapter");
-
-		var caption = chapter.childNodes[0];
-		expect(caption.attributes.length).toBe(3);
-		expect(caption.type).toBe("inline");
-		expect(caption.name).toBe("caption");
-		expect(caption.label).toBe("fuga");
-		expect(caption.text).toBe("hoge");
-		expect(caption.attributes[0]).toBe(1);
-		expect(caption.attributes[1]).toBe("fuga");
-		expect(caption.attributes[2]).toBe("hoge");
 	});
 });
