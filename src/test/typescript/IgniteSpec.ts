@@ -90,7 +90,7 @@ describe("ReVIEW構文の", ()=> {
 			var syntax = new ReVIEW.SyntaxTree(0, 0, 0, "SinglelineComment", {content: ""});
 			// syntax.parentNode = syntax;
 			var json = JSON.stringify(syntax);
-			expect(json).toBe("{\"offset\":0,\"line\":0,\"column\":0,\"name\":\"SinglelineComment\",\"attributes\":[],\"childNodes\":[],\"type\":\"block\"}");
+			expect(json).toBe("{\"offset\":0,\"line\":0,\"column\":0,\"name\":\"SinglelineComment\",\"childNodes\":[],\"type\":\"block\"}");
 		});
 	});
 });

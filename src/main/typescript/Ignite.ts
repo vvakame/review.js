@@ -13,19 +13,31 @@ module ReVIEW {
 	}
 
 	export interface ConcreatSyntaxTree {
+		// 共通
 		syntax: string;
 		line: number;
 		column: number;
 		offset: number;
+
+		// Ruleによっては
+		headline: any;
+		text:any;
+		level:number;
+		label:any;
+		tag:any;
+		caption:any;
+		name:any;
+		args:any;
+		content:any;
+		contents:any;
+		arg:any;
+		no:any;
 	}
 
 	export class SyntaxTree {
 		parentNode:SyntaxTree;
 		type:string;
-		label:string;
-		text:string;
 
-		attributes:string[] = [];
 		childNodes:SyntaxTree[] = [];
 
 		static transform(rawResult:ConcreatSyntaxTree):SyntaxTree {
@@ -130,16 +142,7 @@ module ReVIEW {
 			result += makeIndent(indentLevel + 1) + "line=" + this.line + ",\n";
 			result += makeIndent(indentLevel + 1) + "column=" + this.column + ",\n";
 			result += makeIndent(indentLevel + 1) + "name=" + this.name + ",\n";
-			if (this.attributes.length !== 0) {
-				result += makeIndent(indentLevel + 1) + "attributes=[";
-				this.attributes.forEach((node, index, array)=> {
-					result += node;
-					if (index !== array.length - 1) {
-						result += ", ";
-					}
-				});
-				result += "]\n";
-			}
+			this.toStringHook(indentLevel, result);
 			if (this.childNodes.length !== 0) {
 				result += makeIndent(indentLevel + 1) + "childNodes[" + this.childNodes.length + "]=[\n";
 				this.childNodes.forEach((node)=> {
@@ -151,6 +154,9 @@ module ReVIEW {
 			result += makeIndent(indentLevel) + "]";
 
 			return result;
+		}
+
+		toStringHook(indentLevel:number, result:string) {
 		}
 	}
 }
