@@ -25,7 +25,7 @@ Paragraph "paragraph"
 
 Contents "contents"
     // eof 検出に &. を使っている
-    = &. c:Content cc:Contents? Newline?
+    = &. !"=" c:Content cc:Contents? Newline?
     ;
 
 Content "content"
