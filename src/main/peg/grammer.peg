@@ -34,7 +34,7 @@ Content "content"
     ;
 
 ContentText "text of content"
-    = text:$( ( !InlineElement [^\r\n] )+ Newline? )
+    = text:$( !Newline !Headline !SinglelineComment !BlockElement !Ulist !Olist !Dlist ( !InlineElement [^\r\n] )+ Newline? ContentText? )
     ;
 
 BlockElement "block element"
