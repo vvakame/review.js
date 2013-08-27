@@ -1,0 +1,102 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "text": "ブロック要素のテスト"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 14,
+              "line": 3,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 14,
+                  "line": 3,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "BlockElement",
+                      "offset": 14,
+                      "line": 3,
+                      "column": 1,
+                      "childNodes": [
+                        {
+                          "ruleName": "BlockElementContents",
+                          "offset": 34,
+                          "line": 4,
+                          "column": 1,
+                          "childNodes": [
+                            {
+                              "ruleName": "BlockElementContentText",
+                              "offset": 34,
+                              "line": 4,
+                              "column": 1,
+                              "text": "var hoge = confirm(\"test\");\n// JS comment\n"
+                            }
+                          ]
+                        }
+                      ],
+                      "name": "list",
+                      "args": [
+                        {
+                          "ruleName": "BracketArg",
+                          "offset": 20,
+                          "line": 3,
+                          "column": 7,
+                          "arg": "hoge"
+                        },
+                        {
+                          "ruleName": "BracketArg",
+                          "offset": 26,
+                          "line": 3,
+                          "column": 13,
+                          "arg": "fuga"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

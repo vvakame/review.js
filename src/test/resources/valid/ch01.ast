@@ -1,0 +1,891 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "text": "サンプル"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 8,
+              "line": 3,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 8,
+                  "line": 3,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "BlockElement",
+                      "offset": 8,
+                      "line": 3,
+                      "column": 1,
+                      "childNodes": [
+                        {
+                          "ruleName": "BlockElementContents",
+                          "offset": 16,
+                          "line": 4,
+                          "column": 1,
+                          "childNodes": [
+                            {
+                              "ruleName": "BlockElementContentText",
+                              "offset": 16,
+                              "line": 4,
+                              "column": 1,
+                              "text": "書き方のサンプルです。上書きするなりして消して下さい。\n"
+                            }
+                          ]
+                        }
+                      ],
+                      "name": "lead",
+                      "args": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleName": "Chapter",
+          "offset": 49,
+          "line": 7,
+          "column": 1,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 49,
+            "line": 7,
+            "column": 1,
+            "level": 2,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 52,
+              "line": 7,
+              "column": 4,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 52,
+                  "line": 7,
+                  "column": 4,
+                  "text": "本文の書き方"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 60,
+              "line": 9,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 60,
+                  "line": 9,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentText",
+                      "offset": 60,
+                      "line": 9,
+                      "column": 1,
+                      "text": "最初の段落です。\nこの行も同じ段落です。\n"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 82,
+              "line": 12,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 82,
+                  "line": 12,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentText",
+                      "offset": 82,
+                      "line": 12,
+                      "column": 1,
+                      "text": "次の段落です。\n"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 92,
+              "line": 15,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 93,
+                  "line": 16,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentText",
+                      "offset": 93,
+                      "line": 16,
+                      "column": 1,
+                      "text": "２行以上以上空いていても１行空いているのと同様に処理します。\n"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleName": "Chapter",
+          "offset": 125,
+          "line": 18,
+          "column": 1,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 125,
+            "line": 18,
+            "column": 1,
+            "level": 3,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 129,
+              "line": 18,
+              "column": 5,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 129,
+                  "line": 18,
+                  "column": 5,
+                  "text": "見出し"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 134,
+              "line": 20,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 134,
+                  "line": 20,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentText",
+                      "offset": 134,
+                      "line": 20,
+                      "column": 1,
+                      "text": "「=」「==」「===」の後に一文字空白をあけると見出しになります。\n"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleName": "Chapter",
+          "offset": 171,
+          "line": 23,
+          "column": 1,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 171,
+            "line": 23,
+            "column": 1,
+            "level": 4,
+            "label": {
+              "ruleName": "BracketArg",
+              "offset": 175,
+              "line": 23,
+              "column": 5,
+              "arg": "column"
+            },
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 184,
+              "line": 23,
+              "column": 14,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 184,
+                  "line": 23,
+                  "column": 14,
+                  "text": "コラムについて"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 193,
+              "line": 25,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 193,
+                  "line": 25,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentText",
+                      "offset": 193,
+                      "line": 25,
+                      "column": 1,
+                      "text": "見出しの先頭に「[column]」と書くと、そこはコラムになります。\n"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleName": "Chapter",
+          "offset": 229,
+          "line": 27,
+          "column": 1,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 229,
+            "line": 27,
+            "column": 1,
+            "level": 2,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 232,
+              "line": 27,
+              "column": 4,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 232,
+                  "line": 27,
+                  "column": 4,
+                  "text": "箇条書き"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 238,
+              "line": 29,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 238,
+                  "line": 29,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentText",
+                      "offset": 238,
+                      "line": 29,
+                      "column": 1,
+                      "text": "番号のない箇条書きは「*」を使います。前後に空白を入れて下さい。\n"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 272,
+              "line": 31,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 272,
+                  "line": 31,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "Ulist",
+                      "offset": 272,
+                      "line": 31,
+                      "column": 1,
+                      "childNodes": [
+                        {
+                          "ruleName": "UlistElement",
+                          "offset": 272,
+                          "line": 31,
+                          "column": 1,
+                          "level": 1,
+                          "text": {
+                            "ruleName": "ContentInlines",
+                            "offset": 275,
+                            "line": 31,
+                            "column": 4,
+                            "childNodes": [
+                              {
+                                "ruleName": "ContentInlineText",
+                                "offset": 275,
+                                "line": 31,
+                                "column": 4,
+                                "text": "1つ目"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "ruleName": "UlistElement",
+                          "offset": 279,
+                          "line": 32,
+                          "column": 1,
+                          "level": 1,
+                          "text": {
+                            "ruleName": "ContentInlines",
+                            "offset": 282,
+                            "line": 32,
+                            "column": 4,
+                            "childNodes": [
+                              {
+                                "ruleName": "ContentInlineText",
+                                "offset": 282,
+                                "line": 32,
+                                "column": 4,
+                                "text": "2つ目"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "ruleName": "UlistElement",
+                          "offset": 286,
+                          "line": 33,
+                          "column": 1,
+                          "level": 1,
+                          "text": {
+                            "ruleName": "ContentInlines",
+                            "offset": 289,
+                            "line": 33,
+                            "column": 4,
+                            "childNodes": [
+                              {
+                                "ruleName": "ContentInlineText",
+                                "offset": 289,
+                                "line": 33,
+                                "column": 4,
+                                "text": "3つ目"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 294,
+              "line": 35,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 294,
+                  "line": 35,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentText",
+                      "offset": 294,
+                      "line": 35,
+                      "column": 1,
+                      "text": "番号つきの箇条書きには、「1.」「2.」などと書きます。\n数字の値は実際には無視され、連番が振られます。\n"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 348,
+              "line": 38,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 348,
+                  "line": 38,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "Olist",
+                      "offset": 348,
+                      "line": 38,
+                      "column": 1,
+                      "childNodes": [
+                        {
+                          "ruleName": "OlistElement",
+                          "offset": 348,
+                          "line": 38,
+                          "column": 1,
+                          "no": 1,
+                          "text": {
+                            "ruleName": "ContentInlines",
+                            "offset": 352,
+                            "line": 38,
+                            "column": 5,
+                            "childNodes": [
+                              {
+                                "ruleName": "ContentInlineText",
+                                "offset": 352,
+                                "line": 38,
+                                "column": 5,
+                                "text": "1つ目"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "ruleName": "OlistElement",
+                          "offset": 356,
+                          "line": 39,
+                          "column": 1,
+                          "no": 2,
+                          "text": {
+                            "ruleName": "ContentInlines",
+                            "offset": 360,
+                            "line": 39,
+                            "column": 5,
+                            "childNodes": [
+                              {
+                                "ruleName": "ContentInlineText",
+                                "offset": 360,
+                                "line": 39,
+                                "column": 5,
+                                "text": "2つ目"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "ruleName": "OlistElement",
+                          "offset": 364,
+                          "line": 40,
+                          "column": 1,
+                          "no": 3,
+                          "text": {
+                            "ruleName": "ContentInlines",
+                            "offset": 368,
+                            "line": 40,
+                            "column": 5,
+                            "childNodes": [
+                              {
+                                "ruleName": "ContentInlineText",
+                                "offset": 368,
+                                "line": 40,
+                                "column": 5,
+                                "text": "3つ目"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleName": "Chapter",
+          "offset": 373,
+          "line": 42,
+          "column": 1,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 373,
+            "line": 42,
+            "column": 1,
+            "level": 2,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 376,
+              "line": 42,
+              "column": 4,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 376,
+                  "line": 42,
+                  "column": 4,
+                  "text": "ソースコードなどのリスト"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 390,
+              "line": 44,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 390,
+                  "line": 44,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentText",
+                      "offset": 390,
+                      "line": 44,
+                      "column": 1,
+                      "text": "リストには「//list」ブロックや「//emlist」ブロックを使います。\n"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 430,
+              "line": 46,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 430,
+                  "line": 46,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "BlockElement",
+                      "offset": 430,
+                      "line": 46,
+                      "column": 1,
+                      "childNodes": [
+                        {
+                          "ruleName": "BlockElementContents",
+                          "offset": 454,
+                          "line": 47,
+                          "column": 1,
+                          "childNodes": [
+                            {
+                              "ruleName": "BlockElementContentText",
+                              "offset": 454,
+                              "line": 47,
+                              "column": 1,
+                              "text": "int main(int argc, char **argv) {\n  puts(\"OK\");\n  return 0;\n}\n"
+                            }
+                          ]
+                        }
+                      ],
+                      "name": "list",
+                      "args": [
+                        {
+                          "ruleName": "BracketArg",
+                          "offset": 436,
+                          "line": 46,
+                          "column": 7,
+                          "arg": "list"
+                        },
+                        {
+                          "ruleName": "BracketArg",
+                          "offset": 442,
+                          "line": 46,
+                          "column": 13,
+                          "arg": "リストのサンプル"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 521,
+              "line": 53,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 521,
+                  "line": 53,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentText",
+                      "offset": 521,
+                      "line": 53,
+                      "column": 1,
+                      "text": "文中にリストを書くには「//emlist」になります。\n"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 550,
+              "line": 55,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 550,
+                  "line": 55,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "BlockElement",
+                      "offset": 550,
+                      "line": 55,
+                      "column": 1,
+                      "childNodes": [
+                        {
+                          "ruleName": "BlockElementContents",
+                          "offset": 560,
+                          "line": 56,
+                          "column": 1,
+                          "childNodes": [
+                            {
+                              "ruleName": "BlockElementContentText",
+                              "offset": 560,
+                              "line": 56,
+                              "column": 1,
+                              "text": "def main\n  puts \"ok\"\nend\n"
+                            }
+                          ]
+                        }
+                      ],
+                      "name": "emlist",
+                      "args": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleName": "Chapter",
+          "offset": 590,
+          "line": 61,
+          "column": 1,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 590,
+            "line": 61,
+            "column": 1,
+            "level": 2,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 593,
+              "line": 61,
+              "column": 4,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 593,
+                  "line": 61,
+                  "column": 4,
+                  "text": "画像"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 597,
+              "line": 63,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 597,
+                  "line": 63,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentText",
+                      "offset": 597,
+                      "line": 63,
+                      "column": 1,
+                      "text": "画像は「//image」ブロックを使います。\n"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 621,
+              "line": 65,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 621,
+                  "line": 65,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "BlockElement",
+                      "offset": 621,
+                      "line": 65,
+                      "column": 1,
+                      "childNodes": [],
+                      "name": "image",
+                      "args": [
+                        {
+                          "ruleName": "BracketArg",
+                          "offset": 628,
+                          "line": 65,
+                          "column": 8,
+                          "arg": "imgsample"
+                        },
+                        {
+                          "ruleName": "BracketArg",
+                          "offset": 639,
+                          "line": 65,
+                          "column": 19,
+                          "arg": "画像サンプル"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 654,
+              "line": 68,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 655,
+                  "line": 69,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentText",
+                      "offset": 655,
+                      "line": 69,
+                      "column": 1,
+                      "text": "より詳しくは、\n"
+                    },
+                    {
+                      "ruleName": "InlineElement",
+                      "offset": 663,
+                      "line": 70,
+                      "column": 1,
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContents",
+                          "offset": 671,
+                          "line": 70,
+                          "column": 9,
+                          "childNodes": [
+                            {
+                              "ruleName": "InlineElementContentText",
+                              "offset": 671,
+                              "line": 70,
+                              "column": 9,
+                              "text": "https://github.com/kmuto/review/blob/master/doc/format.rdoc"
+                            }
+                          ]
+                        }
+                      ],
+                      "name": "href"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 732,
+              "line": 71,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 732,
+                  "line": 71,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentText",
+                      "offset": 732,
+                      "line": 71,
+                      "column": 1,
+                      "text": "を御覧ください。\n"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

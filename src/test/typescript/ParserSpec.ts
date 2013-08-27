@@ -24,12 +24,20 @@ describe("ReVIEW構文の", ()=> {
 			var path = "src/test/resources/valid/";
 			var files = fs.readdirSync(path);
 			files.filter((file) => file.indexOf(".re") !== -1).forEach((file)=> {
+				var astFilePath = path + file.substr(0, file.length - 3) + ".ast";
 				it("ファイル:" + file, ()=> {
 					var data = fs.readFileSync(path + file, "utf8");
 					try {
 						var result = ReVIEW.Parser.parse(data);
-						// console.log(result);
-						// console.log(JSON.stringify(result));
+						if (!fs.existsSync(astFilePath)) {
+							// ASTファイルが無い場合、現時点で生成されるASTを出力する
+							var ast = JSON.stringify(result.ast, null, 2);
+							fs.writeFileSync(astFilePath, ast);
+							throw new Error("ast file not exsists. (created)");
+						} else {
+							var expectedAST = fs.readFileSync(astFilePath, "utf8");
+							expect(JSON.parse(expectedAST)).toEqual(JSON.parse(JSON.stringify(result.ast, null, 2)));
+						}
 					} catch (e) {
 						updateIfSyntaxError(e);
 						throw e;

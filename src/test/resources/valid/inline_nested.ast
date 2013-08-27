@@ -1,0 +1,110 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "text": "headline"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 11,
+              "line": 2,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 11,
+                  "line": 2,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElement",
+                      "offset": 11,
+                      "line": 2,
+                      "column": 1,
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContents",
+                          "offset": 18,
+                          "line": 2,
+                          "column": 8,
+                          "childNodes": [
+                            {
+                              "ruleName": "InlineElementContentText",
+                              "offset": 18,
+                              "line": 2,
+                              "column": 8,
+                              "text": "ほげ"
+                            },
+                            {
+                              "ruleName": "InlineElement",
+                              "offset": 20,
+                              "line": 2,
+                              "column": 10,
+                              "childNodes": [
+                                {
+                                  "ruleName": "InlineElementContents",
+                                  "offset": 26,
+                                  "line": 2,
+                                  "column": 16,
+                                  "childNodes": [
+                                    {
+                                      "ruleName": "InlineElementContentText",
+                                      "offset": 26,
+                                      "line": 2,
+                                      "column": 16,
+                                      "text": "ぽげ"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "name": "in"
+                            }
+                          ]
+                        }
+                      ],
+                      "name": "out"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

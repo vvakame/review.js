@@ -1,0 +1,136 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "text": "ulist"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 9,
+              "line": 3,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 9,
+                  "line": 3,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "Ulist",
+                      "offset": 9,
+                      "line": 3,
+                      "column": 1,
+                      "childNodes": [
+                        {
+                          "ruleName": "UlistElement",
+                          "offset": 9,
+                          "line": 3,
+                          "column": 1,
+                          "level": 1,
+                          "text": {
+                            "ruleName": "ContentInlines",
+                            "offset": 12,
+                            "line": 3,
+                            "column": 4,
+                            "childNodes": [
+                              {
+                                "ruleName": "ContentInlineText",
+                                "offset": 12,
+                                "line": 3,
+                                "column": 4,
+                                "text": "level 1"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "ruleName": "UlistElement",
+                          "offset": 20,
+                          "line": 4,
+                          "column": 1,
+                          "level": 2,
+                          "text": {
+                            "ruleName": "ContentInlines",
+                            "offset": 24,
+                            "line": 4,
+                            "column": 5,
+                            "childNodes": [
+                              {
+                                "ruleName": "ContentInlineText",
+                                "offset": 24,
+                                "line": 4,
+                                "column": 5,
+                                "text": "level 2"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "ruleName": "UlistElement",
+                          "offset": 32,
+                          "line": 5,
+                          "column": 1,
+                          "level": 3,
+                          "text": {
+                            "ruleName": "ContentInlines",
+                            "offset": 37,
+                            "line": 5,
+                            "column": 6,
+                            "childNodes": [
+                              {
+                                "ruleName": "ContentInlineText",
+                                "offset": 37,
+                                "line": 5,
+                                "column": 6,
+                                "text": "level 3"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

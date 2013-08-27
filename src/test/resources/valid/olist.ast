@@ -1,0 +1,136 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "text": "olist"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 9,
+              "line": 3,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 9,
+                  "line": 3,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "Olist",
+                      "offset": 9,
+                      "line": 3,
+                      "column": 1,
+                      "childNodes": [
+                        {
+                          "ruleName": "OlistElement",
+                          "offset": 9,
+                          "line": 3,
+                          "column": 1,
+                          "no": 1,
+                          "text": {
+                            "ruleName": "ContentInlines",
+                            "offset": 13,
+                            "line": 3,
+                            "column": 5,
+                            "childNodes": [
+                              {
+                                "ruleName": "ContentInlineText",
+                                "offset": 13,
+                                "line": 3,
+                                "column": 5,
+                                "text": "No. 1"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "ruleName": "OlistElement",
+                          "offset": 19,
+                          "line": 4,
+                          "column": 1,
+                          "no": 2,
+                          "text": {
+                            "ruleName": "ContentInlines",
+                            "offset": 23,
+                            "line": 4,
+                            "column": 5,
+                            "childNodes": [
+                              {
+                                "ruleName": "ContentInlineText",
+                                "offset": 23,
+                                "line": 4,
+                                "column": 5,
+                                "text": "No. 2"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "ruleName": "OlistElement",
+                          "offset": 29,
+                          "line": 5,
+                          "column": 1,
+                          "no": 3,
+                          "text": {
+                            "ruleName": "ContentInlines",
+                            "offset": 33,
+                            "line": 5,
+                            "column": 5,
+                            "childNodes": [
+                              {
+                                "ruleName": "ContentInlineText",
+                                "offset": 33,
+                                "line": 5,
+                                "column": 5,
+                                "text": "No. 3"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

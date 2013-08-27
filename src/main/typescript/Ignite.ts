@@ -19,5 +19,8 @@ if (ReVIEW.isNodeJS()) {
 			// TODO
 		});
 
-	program.parse(process.argv);
+	// grunt test で動かれても困るので
+	if (process.argv[0].indexOf("review") !== -1) {
+		program.parse(process.argv);
+	}
 }
