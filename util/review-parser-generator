@@ -145,7 +145,6 @@ var options =
 			BlockElementContentText: template.text("BlockElementContentText"),
 			InlineElementContents: template.contents("InlineElementContents"),
 			InlineElementContent: template.repeat(3, template.content("InlineElementContent")),
-			InlineElementContentEnd: template.text("InlineElementContentEnd"),
 			InlineElementContent: template.text("InlineElementContent"),
 			ContentInline: template.content("ContentInline"),
 			ContentInlineHelpers: template.contents("ContentInlineHelpers"),

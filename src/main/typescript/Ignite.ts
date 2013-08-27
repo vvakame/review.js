@@ -68,7 +68,6 @@ module ReVIEW {
 					return new DlistElementSyntaxTree(rawResult);
 				case "ContentText":
 				case "BlockElementContentText":
-				case "InlineElementContentEnd":
 				case "InlineElementContentText":
 				case "ContentInlineHelperText":
 				case "DlistElementText":
@@ -127,7 +126,6 @@ module ReVIEW {
 				// c パターン (テキスト)
 				case "ContentText":
 				case "BlockElementContentText":
-				case "InlineElementContentEnd":
 				case "InlineElementContentText":
 				case "ContentInlineHelperText":
 				case "DlistElementText":

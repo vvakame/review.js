@@ -34,7 +34,7 @@ Content "content"
     ;
 
 ContentText "text of content"
-    = text:$(!"//}" ( !InlineElement [^\r\n] )+ Newline?)
+    = text:$( ( !InlineElement [^\r\n] )+ Newline? )
     ;
 
 BlockElement "block element"
@@ -63,7 +63,7 @@ BlockElementContent "content of block element"
     ;
 
 BlockElementContentText "text of block element"
-    = text:$(!"//}" ( !InlineElement [^\r\n] )+)
+    = text:$( ( !"//}" !InlineElement [^\r\n] )+ )
     ;
 
 InlineElementContents "contents of inline element"
@@ -71,11 +71,7 @@ InlineElementContents "contents of inline element"
     ;
 
 InlineElementContent "content of inline element"
-    = c:InlineElementContentEnd / c:InlineElement / c:InlineElementContentText
-    ;
-
-InlineElementContentEnd "end of content of inline element"
-    = text:$("\\}")
+    = c:InlineElement / c:InlineElementContentText
     ;
 
 InlineElementContentText "text of inline element"
