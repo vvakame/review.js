@@ -74,6 +74,13 @@ module ReVIEW {
 				case "DlistElementText":
 				case "SinglelineComment":
 					return new TextNodeSyntaxTree(rawResult);
+				case "Content":
+				case "BlockInnerContent":
+				case "InlineInnerContent":
+				case "ContentInline":
+				case "ContentInlineHelper":
+					// パースした内容は直接役にたたない c / c / c 系
+					return SyntaxTree.transform(rawResult.content);
 				default:
 					return new SyntaxTree(rawResult);
 			}
