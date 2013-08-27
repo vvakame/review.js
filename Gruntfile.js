@@ -17,7 +17,7 @@ module.exports = function (grunt) {
 		typescript: {
 			main: { // --declarations --sourcemap --target ES5 --out client/scripts/main.js client/scripts/main.ts
 				src: ['<%= opt.tsMain %>/Ignite.ts'],
-				dest: '<%= opt.jsMainOut %>',
+				dest: '<%= opt.jsMainOut %>/main.js',
 				options: {
 					target: 'es5',
 					base_path: '<%= opt.tsMain %>',

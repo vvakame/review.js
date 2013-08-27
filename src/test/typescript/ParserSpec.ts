@@ -1,8 +1,9 @@
 ///<reference path='libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
-///<reference path='libs/DefinitelyTyped/node/node.d.ts' />
+///<reference path='../../main/typescript/libs/DefinitelyTyped/node/node.d.ts' />
 
 ///<reference path='../../main/typescript/libs/peg.js.d.ts' />
 
+///<reference path='../../main/typescript/Utils.ts' />
 ///<reference path='../../main/typescript/Ignite.ts' />
 
 "use strict";
@@ -16,7 +17,7 @@ function updateIfSyntaxError(e:any) {
 }
 
 describe("ReVIEW構文の", ()=> {
-	if (typeof require !== "undefined") {
+	if (ReVIEW.isNodeJS()) {
 		var fs = require("fs");
 		// PhantomJS 環境下専用のテスト
 		describe("正しい構文のファイルが処理できること", ()=> {
