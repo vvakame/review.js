@@ -12,7 +12,7 @@ Chapter "chapter"
 
 // = 章タイトル
 Headline "headline"
-    = level:"="+ label:BracketArg? tag:BraceArg? Space* caption:ContentInline Newline*
+    = level:"="+ label:BracketArg? tag:BraceArg? Space* caption:SinglelineContent Newline*
     ;
 
 Paragraphs "paragraphs"
@@ -78,19 +78,19 @@ InlineElementContentText "text of inline element"
     = text:$( ( !InlineElement [^\r\n}] )+ )
     ;
 
-ContentInline "inline content"
-    = c:ContentInlineHelpers (Newline / EOF)
+SinglelineContent "inline content"
+    = c:ContentInlines (Newline / EOF)
     ;
 
-ContentInlineHelpers "children of inline content"
-    = c:ContentInlineHelper cc:ContentInlineHelpers?
+ContentInlines "children of inline content"
+    = c:ContentInline cc:ContentInlines?
     ;
 
-ContentInlineHelper "child of inline content"
-    = c:ContentInlineHelperText / c:InlineElement
+ContentInline "child of inline content"
+    = c:InlineElement / c:ContentInlineText
     ;
 
-ContentInlineHelperText "text of child of inline content"
+ContentInlineText "text of child of inline content"
     = text:$( ( !InlineElement [^\r\n] )+ )
     ;
 
@@ -101,7 +101,7 @@ Ulist "ulist"
     ;
 
 UlistElement "ulist element"
-    = " "+ level:"*"+ _ text:ContentInline
+    = " "+ level:"*"+ _ text:SinglelineContent
     ;
 
 // 1. 番号付き箇条書き
@@ -111,7 +111,7 @@ Olist "olist"
     ;
 
 OlistElement "olist element"
-    = " "+ n:Digits "." _ text:ContentInline
+    = " "+ n:Digits "." _ text:SinglelineContent
     ;
 
 // : 用語リスト
@@ -121,12 +121,11 @@ Dlist "dlist"
     ;
 
 DlistElement "dlist element"
-    // TODO content が text なのは間違っているのでは…
-    = " "* ":" " " _ text:ContentInline content:DlistElementText
+    = " "* ":" " " _ text:SinglelineContent content:DlistElementContent
     ;
 
-DlistElementText "text of dlist element"
-    = [ \t]+ text:$( ContentInline )+
+DlistElementContent "content of dlist element"
+    = [ \t]+ c:SinglelineContent
     ;
 
 SinglelineComment "signle line comment"

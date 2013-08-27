@@ -144,12 +144,12 @@ var options =
 			BlockElementContent: template.repeat(8, template.content("BlockElementContent")),
 			BlockElementContentText: template.text("BlockElementContentText"),
 			InlineElementContents: template.contents("InlineElementContents"),
-			InlineElementContent: template.repeat(3, template.content("InlineElementContent")),
-			InlineElementContent: template.text("InlineElementContent"),
-			ContentInline: template.content("ContentInline"),
-			ContentInlineHelpers: template.contents("ContentInlineHelpers"),
-			ContentInlineHelper: template.repeat(2, template.content("ContentInlineHelper")),
-			ContentInlineHelperText: template.text("ContentInlineHelperText"),
+			InlineElementContent: template.repeat(2, template.content("InlineElementContent")),
+			InlineElementContentText: template.text("InlineElementContentText"),
+			SinglelineContent: template.content("SinglelineContent"),
+			ContentInlines: template.contents("ContentInlines"),
+			ContentInline: template.repeat(2, template.content("ContentInline")),
+			ContentInlineText: template.text("ContentInlineText"),
 			Ulist: template.contents("Ulist"),
 			UlistElement: function () {
 				return {
@@ -183,7 +183,7 @@ var options =
 					content: content
 				};
 			},
-			DlistElementText: template.text("DlistElementText"),
+			DlistElementContent: template.content("DlistElementContent"),
 			SinglelineComment: template.text("SinglelineComment")
 		}
 	}

@@ -69,15 +69,14 @@ module ReVIEW {
 				case "ContentText":
 				case "BlockElementContentText":
 				case "InlineElementContentText":
-				case "ContentInlineHelperText":
-				case "DlistElementText":
+				case "ContentInlineText":
 				case "SinglelineComment":
 					return new TextNodeSyntaxTree(rawResult);
 				case "Content":
 				case "BlockElementContent":
 				case "InlineElementContent":
+				case "SinglelineContent":
 				case "ContentInline":
-				case "ContentInlineHelper":
 					// パースした内容は直接役にたたない c / c / c 系
 					return SyntaxTree.transform(rawResult.content);
 				default:
@@ -104,7 +103,7 @@ module ReVIEW {
 					this.processChildNodes(data.content);
 					break;
 				case "InlineElementContent":
-				case "ContentInlineHelpers":
+				case "ContentInlines":
 				case "Ulist":
 				case "Olist":
 				case "Dlist":
@@ -117,9 +116,9 @@ module ReVIEW {
 				case "Paragraph":
 				case "Content":
 				case "BlockElement":
-				case "InlineElementContent":
+				case "SinglelineContent":
 				case "ContentInline":
-				case "ContentInlineHelper":
+				case "DlistElementContent":
 					this.type = "block";
 					this.processChildNodes(data.content);
 					break;
@@ -127,8 +126,7 @@ module ReVIEW {
 				case "ContentText":
 				case "BlockElementContentText":
 				case "InlineElementContentText":
-				case "ContentInlineHelperText":
-				case "DlistElementText":
+				case "ContentInlineText":
 				case "SinglelineComment":
 					this.type = "block";
 					break;
