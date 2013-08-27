@@ -59,11 +59,12 @@ BlockElementContents "contents of block element"
     ;
 
 BlockElementContent "content of block element"
-    = c:SinglelineComment / c:BlockElement / c:InlineElement / c:Ulist / c:Olist / c:Dlist / c:Newline / c:BlockElementContentText
+    // 各要素は Newline で終わらなければならない
+    = c:SinglelineComment / c:BlockElement / c:InlineElement / c:Ulist / c:Olist / c:Dlist / c:BlockElementContentText
     ;
 
 BlockElementContentText "text of block element"
-    = text:$( ( !"//}" !InlineElement [^\r\n] )+ )
+    = text:$( ( !"//}" !SinglelineComment !BlockElement !Ulist !Olist !Dlist ( !InlineElement [^\r\n] )* Newline? )+ )
     ;
 
 InlineElementContents "contents of inline element"

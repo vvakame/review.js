@@ -141,7 +141,7 @@ var options =
 				};
 			},
 			BlockElementContents: template.contents("BlockElementContents"),
-			BlockElementContent: template.repeat(8, template.content("BlockElementContent")),
+			BlockElementContent: template.repeat(7, template.content("BlockElementContent")),
 			BlockElementContentText: template.text("BlockElementContentText"),
 			InlineElementContents: template.contents("InlineElementContents"),
 			InlineElementContent: template.repeat(2, template.content("InlineElementContent")),
