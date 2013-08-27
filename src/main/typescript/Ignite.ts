@@ -5,7 +5,7 @@ module ReVIEW {
 		export function parse(input:string):{ast:SyntaxTree;cst:ConcreatSyntaxTree} {
 			var rawResult = PEG.parse(input);
 			var root = SyntaxTree.transform(rawResult);
-			console.warn("まだ開発中です。生成されるASTは今後圧縮される可能性が100%です。");
+			console.warn("まだ開発中です。生成されるASTは今後圧縮される可能性が95%です。");
 			return {
 				ast: root,
 				cst: rawResult
@@ -42,7 +42,6 @@ module ReVIEW {
 		line:number;
 		column:number;
 		ruleName:string;
-		childNodes:SyntaxTree[];
 
 		static transform(rawResult:ConcreatSyntaxTree):SyntaxTree {
 			if (<any>rawResult === "") {
@@ -72,6 +71,22 @@ module ReVIEW {
 				case "ContentInlineText":
 				case "SinglelineComment":
 					return new TextNodeSyntaxTree(rawResult);
+				// c, cc パターン
+				case "Chapters":
+				case "Paragraphs":
+				case "Contents":
+				case "BlockElementContents":
+				case "InlineElementContents":
+				case "ContentInlines":
+				case "Ulist":
+				case "Olist":
+				case "Dlist":
+					return new NodeSyntaxTree(rawResult);
+				// c パターン
+				case "Start":
+				case "Paragraph":
+				case "DlistElementContent":
+					return new NodeSyntaxTree(rawResult);
 				case "Content":
 				case "BlockElementContent":
 				case "InlineElementContent":
@@ -80,98 +95,16 @@ module ReVIEW {
 					// パースした内容は直接役にたたない c / c / c 系
 					return SyntaxTree.transform(rawResult.content);
 				default:
+					console.warn("unknown rule : " + rawResult.syntax);
 					return new SyntaxTree(rawResult);
 			}
 		}
 
 		constructor(data:ConcreatSyntaxTree) {
 			this.ruleName = data.syntax;
-			this.type = "";
 			this.offset = data.offset;
 			this.line = data.line;
 			this.column = data.column;
-			this.childNodes = [];
-
-			switch (this.ruleName) {
-				// c, cc パターン
-				case "Chapters":
-				case "Paragraphs":
-				case "Contents":
-				case "BlockElementContents":
-				case "BlockElementContent":
-					this.type = "block";
-					this.processChildNodes(data.content);
-					break;
-				case "InlineElementContents":
-				case "ContentInlines":
-				case "Ulist":
-				case "Olist":
-				case "Dlist":
-					this.type = "inline";
-					this.processChildNodes(data.content);
-					break;
-
-				// c パターン
-				case "Start":
-				case "Paragraph":
-				case "Content":
-				case "BlockElement":
-				case "InlineElementContent":
-				case "SinglelineContent":
-				case "ContentInline":
-				case "DlistElementContent":
-					this.type = "block";
-					this.processChildNodes(data.content);
-					break;
-				// c パターン (テキスト)
-				case "ContentText":
-				case "BlockElementContentText":
-				case "InlineElementContentText":
-				case "ContentInlineText":
-				case "SinglelineComment":
-					this.type = "block";
-					break;
-
-				// 特殊構文
-				case "Chapter":
-					this.type = "block";
-					break;
-				case "Headline":
-				case "BracketArg":
-				case "BraceArg":
-				case "UlistElement":
-				case "OlistElement":
-				case "DlistElement":
-					this.type = "inline";
-					break;
-				case "InlineElement":
-					this.type = "inline";
-					this.processChildNodes(data.content);
-					break;
-
-				default:
-					console.warn("unknown name '" + this.ruleName + "'");
-			}
-		}
-
-		private processChildNodes(content:any) {
-			if (Array.isArray(content)) {
-				content.forEach((rawResult:ConcreatSyntaxTree)=> {
-					var tree = SyntaxTree.transform(rawResult);
-					if (tree) {
-						tree.parentNode = this;
-						this.childNodes.push(tree);
-					}
-				});
-			} else if (content !== "" && content) {
-				((rawResult:ConcreatSyntaxTree)=> {
-					var tree = SyntaxTree.transform(rawResult);
-					if (tree) {
-						tree.parentNode = this;
-						this.childNodes.push(tree);
-					}
-				})(content);
-			}
 		}
 
 		toJSON():any {
@@ -185,30 +118,23 @@ module ReVIEW {
 		}
 
 		toString(indentLevel:number = 0):string {
-			var makeIndent = function (indentLevel:number) {
-				var indent = "";
-				for (var i = 0; i < indentLevel; i++) {
-					indent += "  ";
-				}
-				return indent;
-			};
-			var result = makeIndent(indentLevel) + "SyntaxTree:[\n";
-			result += makeIndent(indentLevel + 1) + "offset = " + this.offset + ",\n";
-			result += makeIndent(indentLevel + 1) + "line=" + this.line + ",\n";
-			result += makeIndent(indentLevel + 1) + "column=" + this.column + ",\n";
-			result += makeIndent(indentLevel + 1) + "name=" + this.ruleName + ",\n";
+			var result = this.makeIndent(indentLevel) + "SyntaxTree:[\n";
+			result += this.makeIndent(indentLevel + 1) + "offset = " + this.offset + ",\n";
+			result += this.makeIndent(indentLevel + 1) + "line=" + this.line + ",\n";
+			result += this.makeIndent(indentLevel + 1) + "column=" + this.column + ",\n";
+			result += this.makeIndent(indentLevel + 1) + "name=" + this.ruleName + ",\n";
 			this.toStringHook(indentLevel, result);
-			if (this.childNodes.length !== 0) {
-				result += makeIndent(indentLevel + 1) + "childNodes[" + this.childNodes.length + "]=[\n";
-				this.childNodes.forEach((node)=> {
-					result += node.toString(indentLevel + 2);
-					result += "\n";
-				});
-				result += makeIndent(indentLevel + 1) + "]\n";
-			}
-			result += makeIndent(indentLevel) + "]";
+			result += this.makeIndent(indentLevel) + "]";
 
 			return result;
+		}
+
+		makeIndent(indentLevel:number) {
+			var indent = "";
+			for (var i = 0; i < indentLevel; i++) {
+				indent += "  ";
+			}
+			return indent;
 		}
 
 		toStringHook(indentLevel:number, result:string) {
@@ -247,6 +173,49 @@ module ReVIEW {
 		}
 	}
 
+	class NodeSyntaxTree extends SyntaxTree {
+		childNodes:SyntaxTree[];
+
+		constructor(data:ConcreatSyntaxTree) {
+			super(data);
+			this.childNodes = [];
+			this.processChildNodes(data.content);
+		}
+
+		private processChildNodes(content:any) {
+			if (Array.isArray(content)) {
+				content.forEach((rawResult:ConcreatSyntaxTree)=> {
+					var tree = SyntaxTree.transform(rawResult);
+					if (tree) {
+						tree.parentNode = this;
+						this.childNodes.push(tree);
+					}
+				});
+			} else if (content !== "" && content) {
+				((rawResult:ConcreatSyntaxTree)=> {
+					var tree = SyntaxTree.transform(rawResult);
+					if (tree) {
+						tree.parentNode = this;
+						this.childNodes.push(tree);
+					}
+				})(content);
+			}
+		}
+
+		toStringHook(indentLevel:number, result:string) {
+			if (this.childNodes.length !== 0) {
+				result += this.makeIndent(indentLevel + 1) + "childNodes[" + this.childNodes.length + "]=[\n";
+				this.childNodes.forEach((node)=> {
+					result += node.toString(indentLevel + 2);
+					result += "\n";
+				});
+				result += this.makeIndent(indentLevel + 1) + "]\n";
+			}
+		}
+	}
+
+	// TODO SyntaxTree と指定されている所についてもっと細かく書けるはず…
+
 	class ChapterSyntaxTree extends SyntaxTree {
 		headline:SyntaxTree;
 		text:SyntaxTree[];
@@ -283,9 +252,9 @@ module ReVIEW {
 		}
 	}
 
-	class BlockElementSyntaxTree extends SyntaxTree {
+	class BlockElementSyntaxTree extends NodeSyntaxTree {
 		name:string;
-		args:SyntaxTree[]; // TODO
+		args:SyntaxTree[];
 
 		constructor(data:ConcreatSyntaxTree) {
 			super(data);
@@ -296,7 +265,7 @@ module ReVIEW {
 		}
 	}
 
-	class InlineElementSyntaxTree extends SyntaxTree {
+	class InlineElementSyntaxTree extends NodeSyntaxTree {
 		name:string;
 
 		constructor(data:ConcreatSyntaxTree) {

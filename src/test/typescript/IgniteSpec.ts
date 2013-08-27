@@ -97,7 +97,7 @@ describe("ReVIEW構文の", ()=> {
 			});
 			// syntax.parentNode = syntax;
 			var json = JSON.stringify(syntax);
-			expect(json).toBe("{\"ruleName\":\"SinglelineComment\",\"type\":\"block\",\"offset\":0,\"line\":0,\"column\":0,\"childNodes\":[]}");
+			expect(json).toBe("{\"ruleName\":\"SinglelineComment\",\"offset\":0,\"line\":0,\"column\":0}");
 		});
 	});
 });
