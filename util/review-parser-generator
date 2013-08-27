@@ -109,7 +109,7 @@ var options =
 					offset: offset(),
 					name: name,
 					args: args,
-					contents: contents
+					content: contents
 				};
 			},
 			InlineElement: function () {
@@ -119,7 +119,7 @@ var options =
 					column: column(),
 					offset: offset(),
 					name: name,
-					contents: contents
+					content: contents
 				};
 			},
 			BracketArg: function () {
