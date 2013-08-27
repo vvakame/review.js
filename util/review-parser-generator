@@ -8,7 +8,7 @@ var peg = require('../node_modules/pegjs');
 var overrideAction = require('./pegjs-override-action-plugin');
 
 var inputFile = "src/main/peg/grammer.peg";
-var exportVar = "PEG";
+var exportVar = "var PEG";
 
 /* generate ReVIEW parser */
 

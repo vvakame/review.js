@@ -10,7 +10,7 @@ module.exports = function (grunt) {
 			"peg": "src/main/peg",
 
 			"outBase": "bin",
-			"jsMainOut": "bin",
+			"jsMainOut": "bin/lib",
 			"jsTestOut": "src/test/typescript"
 		},
 
@@ -132,7 +132,7 @@ module.exports = function (grunt) {
 						flatten: true,
 						cwd: 'bower-task/',
 						src: ['main-js/**/*.js'],
-						dest: '<%= opt.jsMainOut %>/libs/'
+						dest: '<%= opt.jsMainOut %>/'
 					},
 					{
 						expand: true,
@@ -160,30 +160,16 @@ module.exports = function (grunt) {
 				]
 			}
 		},
-		replace: {
-			peg: {
-				src: ['<%= opt.peg %>/grammer.peg'],
-				dest: '<%= opt.peg %>/grammer-processed.peg',
-				replacements: [
-					{
-						from: /(^|\n)\s*[=\/].*/g,
-						to: function (matchedWord) {
-							return matchedWord + '\t\t\t{ ReVIEW.parser.parse(arguments); }';
-						}
-					}
-				]
-			}
-		},
 		concat: {
 			options: {
 				separator: ';'
 			},
 			dev: {
 				src: [
-					'<%= opt.jsMainOut %>/grammer.js',
+					'<%= opt.peg %>/grammer.js',
 					'<%= opt.jsMainOut %>/*.js'
 				],
-				dest: '<%= opt.jsMainOut %>/main.min.js'
+				dest: '<%= opt.outBase %>/review.js'
 			}
 		},
 		uglify: {
@@ -195,8 +181,8 @@ module.exports = function (grunt) {
 					preserveComments: 'some'
 				},
 				files: {
-					'<%= opt.jsMainOut %>/main.min.js': [
-						'<%= opt.jsMainOut %>/grammer.js',
+					'<%= opt.outBase %>/review.min.js': [
+						'<%= opt.peg %>/grammer.js',
 						'<%= opt.jsMainOut %>/*.js'
 					]
 				}
@@ -215,7 +201,7 @@ module.exports = function (grunt) {
 				},
 				files: {
 					'<%= opt.jsTestOut %>/test.js': [
-						'<%= opt.jsMainOut %>/grammer.js',
+						'<%= opt.peg %>/grammer.js',
 						'<%= opt.jsTestOut %>/main-spec.js'
 					]
 				}
@@ -233,13 +219,9 @@ module.exports = function (grunt) {
 					'<%= opt.jsTestOut %>/*.js.map',
 					'<%= opt.jsTestOut %>/*.d.ts',
 					// minified
-					'<%= opt.jsMainOut %>/main.min.js',
-					'<%= opt.jsMainOut %>/source.js.map'
-				]
-			},
-			peg: {
-				src: [
-					'<%= opt.peg %>/grammer-processed.peg'
+					'<%= opt.outBase %>/*',
+					// peg.js
+					'<%= opt.peg %>/grammer.js'
 				]
 			},
 			tsd: {
@@ -305,9 +287,8 @@ module.exports = function (grunt) {
 			},
 			"pegjs": {
 				cmd: function () {
-					var main = grunt.config.get("opt.jsMainOut") + "/";
 					var peg = grunt.config.get("opt.peg") + "/";
-					return "./util/review-parser-generator > " + main + "/grammer.js";
+					return "./util/review-parser-generator > " + peg + "/grammer.js";
 				}
 			}
 		}
@@ -321,12 +302,12 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'default',
 		"必要なコンパイルを行い画面表示できるようにする。",
-		['clean:clientScript', 'typescript:main', 'tslint', 'replace', 'exec:pegjs', 'concat:dev']);
+		['clean:clientScript', 'typescript:main', 'tslint', 'exec:pegjs', 'concat:dev', 'uglify:prod']);
 
 	grunt.registerTask(
 		'test-preprocess',
 		"テストに必要な前準備を実行する。",
-		['clean:clientScript', 'typescript:test', 'tslint', 'replace', 'exec:pegjs', 'concat:dev', 'uglify:test']);
+		['clean:clientScript', 'typescript:test', 'tslint', 'exec:pegjs', 'concat:dev', 'uglify:test']);
 
 	grunt.registerTask(
 		'test',
