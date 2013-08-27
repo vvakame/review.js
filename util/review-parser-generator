@@ -140,9 +140,9 @@ var options =
 					arg: arg
 				};
 			},
-			BlockInnerContents: template.contents("BlockInnerContents"),
-			BlockInnerContent: template.repeat(8, template.content("BlockInnerContent")),
-			BlockInnerContentText: template.text("BlockInnerContentText"),
+			BlockElementContents: template.contents("BlockElementContents"),
+			BlockElementContent: template.repeat(8, template.content("BlockElementContent")),
+			BlockElementContentText: template.text("BlockElementContentText"),
 			InlineInnerContents: template.contents("InlineInnerContents"),
 			InlineInnerContent: template.repeat(3, template.content("InlineInnerContent")),
 			EndOfInlineInnerContent: template.text("EndOfInlineInnerContent"),

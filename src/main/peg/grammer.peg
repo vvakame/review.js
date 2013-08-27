@@ -38,7 +38,7 @@ ContentText "text of content"
     ;
 
 BlockElement "block element"
-    = "//" name:$(AZ+) args:BracketArg* "{" Newline contents:BlockInnerContents? "//}"
+    = "//" name:$(AZ+) args:BracketArg* "{" Newline contents:BlockElementContents? "//}"
     ;
 
 InlineElement "inline element"
@@ -54,15 +54,15 @@ BraceArg "brace argument"
     ;
 
 // contents との差は paragraph を切るか切らないか
-BlockInnerContents "contents of block element"
-    = c:BlockInnerContent cc:BlockInnerContents?
+BlockElementContents "contents of block element"
+    = c:BlockElementContent cc:BlockElementContents?
     ;
 
-BlockInnerContent "content of block element"
-    = c:SinglelineComment / c:BlockElement / c:InlineElement / c:Ulist / c:Olist / c:Dlist / c:Newline / c:BlockInnerContentText
+BlockElementContent "content of block element"
+    = c:SinglelineComment / c:BlockElement / c:InlineElement / c:Ulist / c:Olist / c:Dlist / c:Newline / c:BlockElementContentText
     ;
 
-BlockInnerContentText "text of block element"
+BlockElementContentText "text of block element"
     = text:$(!"//}" ( !InlineElement [^\r\n] )+)
     ;
 
