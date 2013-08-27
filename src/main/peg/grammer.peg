@@ -42,7 +42,7 @@ BlockElement "block element"
     ;
 
 InlineElement "inline element"
-    = "@<" name:$([^>\r\n]+) ">" "{" contents:InlineInnerContents? "}"
+    = "@<" name:$([^>\r\n]+) ">" "{" contents:InlineElementContents? "}"
     ;
 
 BracketArg "bracket argument"
@@ -66,19 +66,19 @@ BlockElementContentText "text of block element"
     = text:$(!"//}" ( !InlineElement [^\r\n] )+)
     ;
 
-InlineInnerContents "contents of inline element"
-    = !"}" c:InlineInnerContent cc:InlineInnerContents?
+InlineElementContents "contents of inline element"
+    = !"}" c:InlineElementContent cc:InlineElementContents?
     ;
 
-InlineInnerContent "content of inline element"
-    = c:EndOfInlineInnerContent / c:InlineElement / c:InlineInnerContentText
+InlineElementContent "content of inline element"
+    = c:InlineElementContentEnd / c:InlineElement / c:InlineElementContentText
     ;
 
-EndOfInlineInnerContent "end of content of inline element"
+InlineElementContentEnd "end of content of inline element"
     = text:$("\\}")
     ;
 
-InlineInnerContentText "text of inline element"
+InlineElementContentText "text of inline element"
     = text:$( ( !InlineElement [^\r\n}] )+ )
     ;
 

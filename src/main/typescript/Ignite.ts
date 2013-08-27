@@ -68,15 +68,15 @@ module ReVIEW {
 					return new DlistElementSyntaxTree(rawResult);
 				case "ContentText":
 				case "BlockElementContentText":
-				case "EndOfInlineInnerContent":
-				case "InlineInnerContentText":
+				case "InlineElementContentEnd":
+				case "InlineElementContentText":
 				case "ContentInlineHelperText":
 				case "DlistElementText":
 				case "SinglelineComment":
 					return new TextNodeSyntaxTree(rawResult);
 				case "Content":
 				case "BlockElementContent":
-				case "InlineInnerContent":
+				case "InlineElementContent":
 				case "ContentInline":
 				case "ContentInlineHelper":
 					// パースした内容は直接役にたたない c / c / c 系
@@ -104,7 +104,7 @@ module ReVIEW {
 					this.type = "block";
 					this.processChildNodes(data.content);
 					break;
-				case "InlineInnerContents":
+				case "InlineElementContent":
 				case "ContentInlineHelpers":
 				case "Ulist":
 				case "Olist":
@@ -118,7 +118,7 @@ module ReVIEW {
 				case "Paragraph":
 				case "Content":
 				case "BlockElement":
-				case "InlineInnerContent":
+				case "InlineElementContent":
 				case "ContentInline":
 				case "ContentInlineHelper":
 					this.type = "block";
@@ -127,8 +127,8 @@ module ReVIEW {
 				// c パターン (テキスト)
 				case "ContentText":
 				case "BlockElementContentText":
-				case "EndOfInlineInnerContent":
-				case "InlineInnerContentText":
+				case "InlineElementContentEnd":
+				case "InlineElementContentText":
 				case "ContentInlineHelperText":
 				case "DlistElementText":
 				case "SinglelineComment":
