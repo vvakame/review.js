@@ -102,7 +102,7 @@ module ReVIEW {
 					this.type = "block";
 					this.processChildNodes(data.content);
 					break;
-				case "InlineElementContent":
+				case "InlineElementContents":
 				case "ContentInlines":
 				case "Ulist":
 				case "Olist":
@@ -116,6 +116,7 @@ module ReVIEW {
 				case "Paragraph":
 				case "Content":
 				case "BlockElement":
+				case "InlineElementContent":
 				case "SinglelineContent":
 				case "ContentInline":
 				case "DlistElementContent":
@@ -136,13 +137,16 @@ module ReVIEW {
 					this.type = "block";
 					break;
 				case "Headline":
-				case "InlineElement":
 				case "BracketArg":
 				case "BraceArg":
 				case "UlistElement":
 				case "OlistElement":
 				case "DlistElement":
 					this.type = "inline";
+					break;
+				case "InlineElement":
+					this.type = "inline";
+					this.processChildNodes(data.content);
 					break;
 
 				default:
