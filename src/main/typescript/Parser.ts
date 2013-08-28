@@ -9,10 +9,12 @@ module ReVIEW {
 			var rawResult = PEG.parse(input);
 			var root = <NodeSyntaxTree> transform(rawResult);
 
-			// Chapter と Ulist の構造を正しい親子関係になるように組替え
+			// Chapter を Headline の level に応じて構造を組み替える
+			//   level 2 は level 1 の下に来るようにしたい
 			if (root.childNodes.length !== 0) {
-				reconstructChapters(<NodeSyntaxTree>root.childNodes[0]);
+				reconstruct(<NodeSyntaxTree>root.childNodes[0], (chapter:ChapterSyntaxTree)=> chapter.headline.level);
 			}
+			// Ulist もChapter 同様の level 構造があるので同じように処理したい
 			var ulistSet:NodeSyntaxTree[] = [];
 			ReVIEW.visit(root, {
 				visitDefault: (parent:Parse.SyntaxTree, ast:Parse.SyntaxTree)=> {
@@ -22,7 +24,7 @@ module ReVIEW {
 				}
 			});
 			ulistSet.forEach((ulist)=> {
-				reconstructUlist(ulist);
+				reconstruct(ulist, (ulistElement:UlistElementSyntaxTree)=> ulistElement.level);
 			});
 
 			// parentNode を設定
@@ -94,72 +96,36 @@ module ReVIEW {
 			}
 		}
 
-		function reconstructChapters(node:NodeSyntaxTree) {
-			// Chapter を Headline の level に応じて構造を組み替える
-			//   level 2 は level 1 の下に来るようにしたい
+		function reconstruct(node:NodeSyntaxTree, pickLevel:(ast:NodeSyntaxTree)=>number) {
 			var originalChildNodes = node.childNodes;
 			node.childNodes = [];
 
-			var chapterSets:ChapterSyntaxTree[][] = [];
-			var currentSet:ChapterSyntaxTree[] = [];
+			var nodeSets:NodeSyntaxTree[][] = [];
+			var currentSet:NodeSyntaxTree[] = [];
 
-			originalChildNodes.forEach((chapter:ChapterSyntaxTree)=> {
+			originalChildNodes.forEach((child:NodeSyntaxTree)=> {
 				if (currentSet.length === 0) {
-					currentSet.push(chapter);
+					currentSet.push(child);
 
-				} else if (currentSet[0].headline.level < chapter.headline.level) {
-					currentSet.push(chapter);
+				} else if (pickLevel(currentSet[0]) < pickLevel(child)) {
+					currentSet.push(child);
 
 				} else {
-					chapterSets.push(currentSet);
+					nodeSets.push(currentSet);
 					currentSet = [];
-					currentSet.push(chapter);
+					currentSet.push(child);
 				}
 			});
 			if (currentSet.length !== 0) {
-				chapterSets.push(currentSet);
+				nodeSets.push(currentSet);
 			}
-			chapterSets.forEach((chapters:ChapterSyntaxTree[])=> {
-				var parent = chapters[0];
+			nodeSets.forEach((nodes:NodeSyntaxTree[])=> {
+				var parent = nodes[0];
 				node.childNodes.push(parent);
-				chapters.splice(1).forEach((child) => {
+				nodes.splice(1).forEach((child) => {
 					parent.childNodes.push(child);
 				});
-				reconstructChapters(parent);
-			});
-		}
-
-		function reconstructUlist(node:NodeSyntaxTree) {
-			// Ulist もChapter 同様の level 構造があるので同じように処理したい
-			var originalChildNodes = node.childNodes;
-			node.childNodes = [];
-
-			var ulistSets:UlistElementSyntaxTree[][] = [];
-			var currentSet:UlistElementSyntaxTree[] = [];
-
-			originalChildNodes.forEach((ulistElement:UlistElementSyntaxTree) => {
-				if (currentSet.length === 0) {
-					currentSet.push(ulistElement);
-
-				} else if (currentSet[0].level < ulistElement.level) {
-					currentSet.push(ulistElement);
-
-				} else {
-					ulistSets.push(currentSet);
-					currentSet = [];
-					currentSet.push(ulistElement);
-				}
-			});
-			if (currentSet.length !== 0) {
-				ulistSets.push(currentSet);
-			}
-			ulistSets.forEach((chapters:UlistElementSyntaxTree[])=> {
-				var parent = chapters[0];
-				node.childNodes.push(parent);
-				chapters.splice(1).forEach((child) => {
-					parent.childNodes.push(child);
-				});
-				reconstructUlist(parent);
+				reconstruct(parent, pickLevel);
 			});
 		}
 	}
