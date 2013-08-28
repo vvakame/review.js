@@ -1,6 +1,7 @@
 ///<reference path='libs/peg.js.d.ts' />
 
 ///<reference path='Model.ts' />
+///<reference path='Walker.ts' />
 
 module ReVIEW {
 	export module Parse {
@@ -10,16 +11,60 @@ module ReVIEW {
 			if (root.childNodes.length !== 0) {
 				reconstructChapters(<NodeSyntaxTree>root.childNodes[0]);
 			}
+			var ulistSet:NodeSyntaxTree[] = [];
+			ReVIEW.visit(root, {
+				visitDefault: (ast:Parse.SyntaxTree)=> {
+					if (ast.ruleName === "Ulist") {
+						ulistSet.push(<NodeSyntaxTree>ast);
+					}
+				}
+			});
+			ulistSet.forEach((ulist)=> {
+				reconstructUlist(ulist);
+			});
 			return {
 				ast: root,
 				cst: rawResult
 			};
 		}
 
+		function reconstructUlist(node:NodeSyntaxTree) {
+			// Ulist もChapter 同様の level 構造があるので同じように処理したい
+			var originalChildNodes = node.childNodes;
+			node.childNodes = [];
+
+			var ulistSets:UlistElementSyntaxTree[][] = [];
+			var currentSet:UlistElementSyntaxTree[] = [];
+
+			originalChildNodes.forEach((ulistElement:UlistElementSyntaxTree) => {
+				if (currentSet.length === 0) {
+					currentSet.push(ulistElement);
+
+				} else if (currentSet[0].level < ulistElement.level) {
+					currentSet.push(ulistElement);
+
+				} else {
+					ulistSets.push(currentSet);
+					currentSet = [];
+					currentSet.push(ulistElement);
+				}
+			});
+			if (currentSet.length !== 0) {
+				ulistSets.push(currentSet);
+			}
+			ulistSets.forEach((chapters:UlistElementSyntaxTree[])=> {
+				var parent = chapters[0];
+				node.childNodes.push(parent);
+				chapters.splice(1).forEach((child) => {
+					parent.childNodes.push(child);
+				});
+				reconstructUlist(parent);
+			});
+		}
+
 		function reconstructChapters(node:NodeSyntaxTree) {
 			// Chapter を Headline の level に応じて構造を組み替える
 			//   level 2 は level 1 の下に来るようにしたい
-			// Ulist も同様の level 構造があるので同じように処理したい
 			var originalChildNodes = node.childNodes;
 			node.childNodes = [];
 

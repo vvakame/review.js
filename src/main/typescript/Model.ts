@@ -261,7 +261,7 @@ module ReVIEW {
 			}
 		}
 
-		export class UlistElementSyntaxTree extends SyntaxTree {
+		export class UlistElementSyntaxTree extends NodeSyntaxTree {
 			level:number;
 			text:SyntaxTree;
 
@@ -270,6 +270,9 @@ module ReVIEW {
 				this.level = this.checkNumber(data.level);
 				this.text = transform(this.checkObject(data.text));
 				this.text.parentNode = this;
+
+				delete this.childNodes; // JSON化した時の属性順制御のため…
+				this.childNodes = [];
 			}
 		}
 

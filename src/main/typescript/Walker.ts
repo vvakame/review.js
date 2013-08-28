@@ -69,12 +69,6 @@ module ReVIEW {
 			chap.childNodes.forEach((ast)=> {
 				visitSub(ast, v);
 			});
-		} else if (ast instanceof Parse.NodeSyntaxTree) {
-			var node:Parse.NodeSyntaxTree = <Parse.NodeSyntaxTree>ast;
-			v.visitNode(node);
-			node.childNodes.forEach((ast)=> {
-				visitSub(ast, v);
-			});
 		} else if (ast instanceof Parse.HeadlineSyntaxTree) {
 			var head:Parse.HeadlineSyntaxTree = <Parse.HeadlineSyntaxTree>ast;
 			v.visitHeadline(head);
@@ -85,6 +79,9 @@ module ReVIEW {
 			var ul:Parse.UlistElementSyntaxTree = <Parse.UlistElementSyntaxTree>ast;
 			v.visitUlist(ul);
 			visitSub(ul.text, v);
+			ul.childNodes.forEach((ast)=> {
+				visitSub(ast, v);
+			});
 		} else if (ast instanceof Parse.OlistElementSyntaxTree) {
 			var ol:Parse.OlistElementSyntaxTree = <Parse.OlistElementSyntaxTree>ast;
 			v.visitOlist(ol);
@@ -94,6 +91,12 @@ module ReVIEW {
 			v.visitDlist(dl);
 			visitSub(dl.text, v);
 			visitSub(dl.content, v);
+		} else if (ast instanceof Parse.NodeSyntaxTree) {
+			var node:Parse.NodeSyntaxTree = <Parse.NodeSyntaxTree>ast;
+			v.visitNode(node);
+			node.childNodes.forEach((ast)=> {
+				visitSub(ast, v);
+			});
 		} else if (ast instanceof Parse.TextNodeSyntaxTree) {
 			var text:Parse.TextNodeSyntaxTree = <Parse.TextNodeSyntaxTree>ast;
 			v.visitText(text);
