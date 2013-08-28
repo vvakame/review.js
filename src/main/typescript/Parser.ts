@@ -8,6 +8,8 @@ module ReVIEW {
 		export function parse(input:string):{ast:NodeSyntaxTree;cst:ConcreatSyntaxTree} {
 			var rawResult = PEG.parse(input);
 			var root = <NodeSyntaxTree> transform(rawResult);
+
+			// Chapter と Ulist の構造を正しい親子関係になるように組替え
 			if (root.childNodes.length !== 0) {
 				reconstructChapters(<NodeSyntaxTree>root.childNodes[0]);
 			}
@@ -21,6 +23,28 @@ module ReVIEW {
 			});
 			ulistSet.forEach((ulist)=> {
 				reconstructUlist(ulist);
+			});
+
+			// parentNode が変わっているので組替え
+			// TODO visit に parent を絡むように書き換えてここで全ての設定をしたほうが楽そう
+			ReVIEW.visit(root, {
+				visitDefault: (ast:Parse.SyntaxTree)=> {
+				},
+				visitNode: (ast:Parse.NodeSyntaxTree) => {
+					ast.childNodes.forEach((child)=> {
+						child.parentNode = ast;
+					});
+				},
+				visitChapter: (ast:Parse.ChapterSyntaxTree) => {
+					ast.childNodes.forEach((child)=> {
+						child.parentNode = ast;
+					});
+				},
+				visitUlist: (ast:Parse.UlistElementSyntaxTree) => {
+					ast.childNodes.forEach((child)=> {
+						child.parentNode = ast;
+					});
+				}
 			});
 			return {
 				ast: root,
