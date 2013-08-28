@@ -390,7 +390,8 @@
                                     "text": "1つ目"
                                   }
                                 ]
-                              }
+                              },
+                              "childNodes": []
                             },
                             {
                               "ruleName": "UlistElement",
@@ -412,7 +413,8 @@
                                     "text": "2つ目"
                                   }
                                 ]
-                              }
+                              },
+                              "childNodes": []
                             },
                             {
                               "ruleName": "UlistElement",
@@ -434,7 +436,8 @@
                                     "text": "3つ目"
                                   }
                                 ]
-                              }
+                              },
+                              "childNodes": []
                             }
                           ]
                         }
