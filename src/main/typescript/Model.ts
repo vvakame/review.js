@@ -1,6 +1,21 @@
 ///<reference path='Parser.ts' />
 
 module ReVIEW {
+	export interface Options {
+		reviewfile?:string;
+		base?:string;
+	}
+
+	export interface Config {
+		read?:(path:string)=>string;
+		write?:(path:string, data:string)=>void;
+		book:{
+			preface?:string[];
+			chapters:string[];
+			afterword?:string[];
+		};
+	}
+
 	export module Parse {
 		export interface ConcreatSyntaxTree {
 			// 共通

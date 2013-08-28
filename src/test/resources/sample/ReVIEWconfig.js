@@ -34,7 +34,7 @@ var setup = function (ReVIEW) {
 
 		read: function (path) {
 			var fs = require("fs");
-			return fs.readFileSync(path);
+			return fs.readFileSync(path, "utf8");
 		},
 		write: function (path, content) {
 			var fs = require("fs");

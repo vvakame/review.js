@@ -1,13 +1,29 @@
 ///<reference path='libs/DefinitelyTyped/node/node.d.ts' />
 
 ///<reference path='Utils.ts' />
+///<reference path='Model.ts' />
 ///<reference path='Parser.ts' />
 ///<reference path='Walker.ts' />
+///<reference path='SemanticAnalyzer.ts' />
+///<reference path='Controller.ts' />
+
+module ReVIEW {
+
+	export function start(setup:(review:any)=>void, options?:ReVIEW.Options) {
+		var controller = new Controller(options);
+		// setup 中で initConfig が呼び出される
+		setup(controller);
+		controller.process();
+	}
+}
 
 if (ReVIEW.isNodeJS()) {
 	var program = require("commander");
 	program
-		.version("TODO", "-v, --version");
+		.version("TODO", "-v, --version")
+		.option("--reviewfile <file>", "where is ReVIEWconfig.js?")
+		.option("--base <path>", "alternative base path")
+	;
 
 	// <hoge> は required, [hoge] は optional
 	program
@@ -15,13 +31,27 @@ if (ReVIEW.isNodeJS()) {
 		.description("compile ReVIEW document")
 		.option("--ast", "output JSON format abstract syntax tree")
 		.option("-t, --target <target>", "output format of document")
-		.action(function (document, options) {
+		.action((document, options)=> {
 			var ast = options.ast || false;
 			// TODO
 		});
 
+	program
+		.command("*")
+		.action((args, options)=> {
+			var reviewfile = program.reviewfile || "./ReVIEWconfig";
+			var setup = require(reviewfile);
+			ReVIEW.start(setup, {
+				reviewfile: reviewfile,
+				base: program.base
+			});
+		});
+
 	// grunt test で動かれても困るので
-	if (process.argv[0].indexOf("review") !== -1) {
+	var endWith = (str, target) => {
+		return str.indexOf(target, str.length - target.length) !== -1;
+	};
+	if (endWith(process.argv[1], "review.js")) {
 		program.parse(process.argv);
 	}
 }
