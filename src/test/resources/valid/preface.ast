@@ -61,166 +61,175 @@
                 }
               ]
             }
-          ]
-        },
-        {
-          "ruleName": "Chapter",
-          "offset": 33,
-          "line": 5,
-          "column": 1,
-          "headline": {
-            "ruleName": "Headline",
-            "offset": 33,
-            "line": 5,
-            "column": 1,
-            "level": 2,
-            "caption": {
-              "ruleName": "ContentInlines",
-              "offset": 36,
+          ],
+          "childNodes": [
+            {
+              "ruleName": "Chapter",
+              "offset": 33,
               "line": 5,
-              "column": 4,
-              "childNodes": [
-                {
-                  "ruleName": "ContentInlineText",
+              "column": 1,
+              "headline": {
+                "ruleName": "Headline",
+                "offset": 33,
+                "line": 5,
+                "column": 1,
+                "level": 2,
+                "caption": {
+                  "ruleName": "ContentInlines",
                   "offset": 36,
                   "line": 5,
                   "column": 4,
-                  "text": "内容について"
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentInlineText",
+                      "offset": 36,
+                      "line": 5,
+                      "column": 4,
+                      "text": "内容について"
+                    }
+                  ]
                 }
-              ]
-            }
-          },
-          "text": [
-            {
-              "ruleName": "Paragraph",
-              "offset": 44,
-              "line": 7,
-              "column": 1,
-              "childNodes": [
+              },
+              "text": [
                 {
-                  "ruleName": "Contents",
+                  "ruleName": "Paragraph",
                   "offset": 44,
                   "line": 7,
                   "column": 1,
                   "childNodes": [
                     {
-                      "ruleName": "ContentText",
+                      "ruleName": "Contents",
                       "offset": 44,
                       "line": 7,
                       "column": 1,
-                      "text": "(内容紹介)\n"
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentText",
+                          "offset": 44,
+                          "line": 7,
+                          "column": 1,
+                          "text": "(内容紹介)\n"
+                        }
+                      ]
                     }
                   ]
                 }
-              ]
-            }
-          ]
-        },
-        {
-          "ruleName": "Chapter",
-          "offset": 52,
-          "line": 9,
-          "column": 1,
-          "headline": {
-            "ruleName": "Headline",
-            "offset": 52,
-            "line": 9,
-            "column": 1,
-            "level": 2,
-            "caption": {
-              "ruleName": "ContentInlines",
-              "offset": 55,
+              ],
+              "childNodes": [],
+              "level": 2
+            },
+            {
+              "ruleName": "Chapter",
+              "offset": 52,
               "line": 9,
-              "column": 4,
-              "childNodes": [
-                {
-                  "ruleName": "ContentInlineText",
+              "column": 1,
+              "headline": {
+                "ruleName": "Headline",
+                "offset": 52,
+                "line": 9,
+                "column": 1,
+                "level": 2,
+                "caption": {
+                  "ruleName": "ContentInlines",
                   "offset": 55,
                   "line": 9,
                   "column": 4,
-                  "text": "動作環境について"
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentInlineText",
+                      "offset": 55,
+                      "line": 9,
+                      "column": 4,
+                      "text": "動作環境について"
+                    }
+                  ]
                 }
-              ]
-            }
-          },
-          "text": [
-            {
-              "ruleName": "Paragraph",
-              "offset": 65,
-              "line": 11,
-              "column": 1,
-              "childNodes": [
+              },
+              "text": [
                 {
-                  "ruleName": "Contents",
+                  "ruleName": "Paragraph",
                   "offset": 65,
                   "line": 11,
                   "column": 1,
                   "childNodes": [
                     {
-                      "ruleName": "ContentText",
+                      "ruleName": "Contents",
                       "offset": 65,
                       "line": 11,
                       "column": 1,
-                      "text": "(バージョンとか)\n"
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentText",
+                          "offset": 65,
+                          "line": 11,
+                          "column": 1,
+                          "text": "(バージョンとか)\n"
+                        }
+                      ]
                     }
                   ]
                 }
-              ]
-            }
-          ]
-        },
-        {
-          "ruleName": "Chapter",
-          "offset": 76,
-          "line": 13,
-          "column": 1,
-          "headline": {
-            "ruleName": "Headline",
-            "offset": 76,
-            "line": 13,
-            "column": 1,
-            "level": 2,
-            "caption": {
-              "ruleName": "ContentInlines",
-              "offset": 79,
+              ],
+              "childNodes": [],
+              "level": 2
+            },
+            {
+              "ruleName": "Chapter",
+              "offset": 76,
               "line": 13,
-              "column": 4,
-              "childNodes": [
-                {
-                  "ruleName": "ContentInlineText",
+              "column": 1,
+              "headline": {
+                "ruleName": "Headline",
+                "offset": 76,
+                "line": 13,
+                "column": 1,
+                "level": 2,
+                "caption": {
+                  "ruleName": "ContentInlines",
                   "offset": 79,
                   "line": 13,
                   "column": 4,
-                  "text": "謝辞"
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentInlineText",
+                      "offset": 79,
+                      "line": 13,
+                      "column": 4,
+                      "text": "謝辞"
+                    }
+                  ]
                 }
-              ]
-            }
-          },
-          "text": [
-            {
-              "ruleName": "Paragraph",
-              "offset": 83,
-              "line": 15,
-              "column": 1,
-              "childNodes": [
+              },
+              "text": [
                 {
-                  "ruleName": "Contents",
+                  "ruleName": "Paragraph",
                   "offset": 83,
                   "line": 15,
                   "column": 1,
                   "childNodes": [
                     {
-                      "ruleName": "ContentText",
+                      "ruleName": "Contents",
                       "offset": 83,
                       "line": 15,
                       "column": 1,
-                      "text": "(必要に応じて)\n"
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentText",
+                          "offset": 83,
+                          "line": 15,
+                          "column": 1,
+                          "text": "(必要に応じて)\n"
+                        }
+                      ]
                     }
                   ]
                 }
-              ]
+              ],
+              "childNodes": [],
+              "level": 2
             }
-          ]
+          ],
+          "level": 1
         }
       ]
     }

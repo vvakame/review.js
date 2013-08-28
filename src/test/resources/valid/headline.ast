@@ -15,6 +15,100 @@
           "offset": 0,
           "line": 1,
           "column": 1,
+          "childNodes": [
+            {
+              "ruleName": "Chapter",
+              "offset": 10,
+              "line": 2,
+              "column": 1,
+              "childNodes": [
+                {
+                  "ruleName": "Chapter",
+                  "offset": 21,
+                  "line": 3,
+                  "column": 1,
+                  "childNodes": [
+                    {
+                      "ruleName": "Chapter",
+                      "offset": 32,
+                      "line": 4,
+                      "column": 1,
+                      "childNodes": [],
+                      "headline": {
+                        "ruleName": "Headline",
+                        "offset": 32,
+                        "line": 4,
+                        "column": 1,
+                        "level": 4,
+                        "caption": {
+                          "ruleName": "ContentInlines",
+                          "offset": 41,
+                          "line": 4,
+                          "column": 10,
+                          "childNodes": [
+                            {
+                              "ruleName": "ContentInlineText",
+                              "offset": 41,
+                              "line": 4,
+                              "column": 10,
+                              "text": "level 4"
+                            }
+                          ]
+                        }
+                      },
+                      "level": 4
+                    }
+                  ],
+                  "headline": {
+                    "ruleName": "Headline",
+                    "offset": 21,
+                    "line": 3,
+                    "column": 1,
+                    "level": 3,
+                    "caption": {
+                      "ruleName": "ContentInlines",
+                      "offset": 24,
+                      "line": 3,
+                      "column": 4,
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentInlineText",
+                          "offset": 24,
+                          "line": 3,
+                          "column": 4,
+                          "text": "level 3"
+                        }
+                      ]
+                    }
+                  },
+                  "level": 3
+                }
+              ],
+              "headline": {
+                "ruleName": "Headline",
+                "offset": 10,
+                "line": 2,
+                "column": 1,
+                "level": 2,
+                "caption": {
+                  "ruleName": "ContentInlines",
+                  "offset": 13,
+                  "line": 2,
+                  "column": 4,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentInlineText",
+                      "offset": 13,
+                      "line": 2,
+                      "column": 4,
+                      "text": "level 2"
+                    }
+                  ]
+                }
+              },
+              "level": 2
+            }
+          ],
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
@@ -36,97 +130,15 @@
                 }
               ]
             }
-          }
-        },
-        {
-          "ruleName": "Chapter",
-          "offset": 10,
-          "line": 2,
-          "column": 1,
-          "headline": {
-            "ruleName": "Headline",
-            "offset": 10,
-            "line": 2,
-            "column": 1,
-            "level": 2,
-            "caption": {
-              "ruleName": "ContentInlines",
-              "offset": 13,
-              "line": 2,
-              "column": 4,
-              "childNodes": [
-                {
-                  "ruleName": "ContentInlineText",
-                  "offset": 13,
-                  "line": 2,
-                  "column": 4,
-                  "text": "level 2"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "ruleName": "Chapter",
-          "offset": 21,
-          "line": 3,
-          "column": 1,
-          "headline": {
-            "ruleName": "Headline",
-            "offset": 21,
-            "line": 3,
-            "column": 1,
-            "level": 3,
-            "caption": {
-              "ruleName": "ContentInlines",
-              "offset": 24,
-              "line": 3,
-              "column": 4,
-              "childNodes": [
-                {
-                  "ruleName": "ContentInlineText",
-                  "offset": 24,
-                  "line": 3,
-                  "column": 4,
-                  "text": "level 3"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "ruleName": "Chapter",
-          "offset": 32,
-          "line": 4,
-          "column": 1,
-          "headline": {
-            "ruleName": "Headline",
-            "offset": 32,
-            "line": 4,
-            "column": 1,
-            "level": 4,
-            "caption": {
-              "ruleName": "ContentInlines",
-              "offset": 41,
-              "line": 4,
-              "column": 10,
-              "childNodes": [
-                {
-                  "ruleName": "ContentInlineText",
-                  "offset": 41,
-                  "line": 4,
-                  "column": 10,
-                  "text": "level 4"
-                }
-              ]
-            }
-          }
+          },
+          "level": 1
         },
         {
           "ruleName": "Chapter",
           "offset": 50,
           "line": 6,
           "column": 1,
+          "childNodes": [],
           "headline": {
             "ruleName": "Headline",
             "offset": 50,
@@ -155,13 +167,15 @@
                 }
               ]
             }
-          }
+          },
+          "level": 1
         },
         {
           "ruleName": "Chapter",
           "offset": 63,
           "line": 7,
           "column": 1,
+          "childNodes": [],
           "headline": {
             "ruleName": "Headline",
             "offset": 63,
@@ -190,13 +204,15 @@
                 }
               ]
             }
-          }
+          },
+          "level": 1
         },
         {
           "ruleName": "Chapter",
           "offset": 76,
           "line": 8,
           "column": 1,
+          "childNodes": [],
           "headline": {
             "ruleName": "Headline",
             "offset": 76,
@@ -232,7 +248,8 @@
                 }
               ]
             }
-          }
+          },
+          "level": 1
         }
       ]
     }

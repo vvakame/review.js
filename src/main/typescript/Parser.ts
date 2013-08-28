@@ -7,7 +7,9 @@ module ReVIEW {
 		export function parse(input:string):{ast:NodeSyntaxTree;cst:ConcreatSyntaxTree} {
 			var rawResult = PEG.parse(input);
 			var root = <NodeSyntaxTree> transform(rawResult);
-			reconstructChapters(<NodeSyntaxTree>root.childNodes[0]);
+			if (root.childNodes.length !== 0) {
+				reconstructChapters(<NodeSyntaxTree>root.childNodes[0]);
+			}
 			return {
 				ast: root,
 				cst: rawResult

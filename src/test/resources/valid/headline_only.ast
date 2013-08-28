@@ -15,6 +15,7 @@
           "offset": 0,
           "line": 1,
           "column": 1,
+          "childNodes": [],
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
@@ -50,7 +51,8 @@
                 }
               ]
             }
-          }
+          },
+          "level": 1
         }
       ]
     }
