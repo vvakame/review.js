@@ -173,7 +173,7 @@ module ReVIEW {
 		}
 	}
 
-	class NodeSyntaxTree extends SyntaxTree {
+	export class NodeSyntaxTree extends SyntaxTree {
 		childNodes:SyntaxTree[];
 
 		constructor(data:ConcreatSyntaxTree) {
@@ -216,7 +216,8 @@ module ReVIEW {
 
 	// TODO SyntaxTree と指定されている所についてもっと細かく書けるはず…
 
-	class ChapterSyntaxTree extends SyntaxTree {
+	// TODO Chapter も NodeSyntaxTree を継承するべき
+	export class ChapterSyntaxTree extends SyntaxTree {
 		headline:SyntaxTree;
 		text:SyntaxTree[];
 
@@ -232,7 +233,7 @@ module ReVIEW {
 		}
 	}
 
-	class HeadlineSyntaxTree extends SyntaxTree {
+	export class HeadlineSyntaxTree extends SyntaxTree {
 		level:number;
 		label:ArgumentSyntaxTree;
 		tag:ArgumentSyntaxTree;
@@ -252,7 +253,7 @@ module ReVIEW {
 		}
 	}
 
-	class BlockElementSyntaxTree extends NodeSyntaxTree {
+	export class BlockElementSyntaxTree extends NodeSyntaxTree {
 		name:string;
 		args:SyntaxTree[];
 
@@ -265,7 +266,7 @@ module ReVIEW {
 		}
 	}
 
-	class InlineElementSyntaxTree extends NodeSyntaxTree {
+	export class InlineElementSyntaxTree extends NodeSyntaxTree {
 		name:string;
 
 		constructor(data:ConcreatSyntaxTree) {
@@ -274,7 +275,7 @@ module ReVIEW {
 		}
 	}
 
-	class ArgumentSyntaxTree extends SyntaxTree {
+	export class ArgumentSyntaxTree extends SyntaxTree {
 		arg:string;
 
 		constructor(data:ConcreatSyntaxTree) {
@@ -283,7 +284,7 @@ module ReVIEW {
 		}
 	}
 
-	class UlistElementSyntaxTree extends SyntaxTree {
+	export class UlistElementSyntaxTree extends SyntaxTree {
 		level:number;
 		text:SyntaxTree;
 
@@ -294,7 +295,7 @@ module ReVIEW {
 		}
 	}
 
-	class OlistElementSyntaxTree extends SyntaxTree {
+	export class OlistElementSyntaxTree extends SyntaxTree {
 		no:number;
 		text:SyntaxTree;
 
@@ -305,7 +306,7 @@ module ReVIEW {
 		}
 	}
 
-	class DlistElementSyntaxTree extends SyntaxTree {
+	export class DlistElementSyntaxTree extends SyntaxTree {
 		text:SyntaxTree;
 		content:SyntaxTree;
 
@@ -316,7 +317,7 @@ module ReVIEW {
 		}
 	}
 
-	class TextNodeSyntaxTree extends SyntaxTree {
+	export class TextNodeSyntaxTree extends SyntaxTree {
 		text:string;
 
 		constructor(data:ConcreatSyntaxTree) {

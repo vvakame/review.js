@@ -2,6 +2,7 @@
 
 ///<reference path='Utils.ts' />
 ///<reference path='Parser.ts' />
+///<reference path='Walker.ts' />
 
 if (ReVIEW.isNodeJS()) {
 	var program = require("commander");
