@@ -3,7 +3,7 @@
 
 module ReVIEW {
 
-	export function walk(ast:Parse.SyntaxTree, v:TreeVisitor) {
+	export function visit(ast:Parse.SyntaxTree, v:TreeVisitor) {
 		var newV:TreeVisitor = {
 			visitDefault: v.visitDefault,
 			visitBlockElement: v.visitBlockElement || v.visitNode || v.visitDefault,
@@ -28,30 +28,30 @@ module ReVIEW {
 		newV.visitOlist = newV.visitOlist.bind(v);
 		newV.visitDlist = newV.visitDlist.bind(v);
 		newV.visitText = newV.visitText.bind(v);
-		walkSub(ast, newV);
+		visitSub(ast, newV);
 	}
 
-	function walkSub(ast:Parse.SyntaxTree, v:TreeVisitor) {
+	function visitSub(ast:Parse.SyntaxTree, v:TreeVisitor) {
 		if (ast instanceof Parse.BlockElementSyntaxTree) {
 			var block:Parse.BlockElementSyntaxTree = <Parse.BlockElementSyntaxTree>ast;
 			v.visitBlockElement(block);
 			block.args.forEach((ast)=> {
-				walkSub(ast, v);
+				visitSub(ast, v);
 			});
 			block.childNodes.forEach((ast)=> {
-				walkSub(ast, v);
+				visitSub(ast, v);
 			});
 		} else if (ast instanceof Parse.InlineElementSyntaxTree) {
 			var inline:Parse.InlineElementSyntaxTree = <Parse.InlineElementSyntaxTree>ast;
 			v.visitInlineElement(inline);
 			inline.childNodes.forEach((ast)=> {
-				walkSub(ast, v);
+				visitSub(ast, v);
 			});
 		} else if (ast instanceof Parse.NodeSyntaxTree) {
 			var node:Parse.NodeSyntaxTree = <Parse.NodeSyntaxTree>ast;
 			v.visitNode(node);
 			node.childNodes.forEach((ast)=> {
-				walkSub(ast, v);
+				visitSub(ast, v);
 			});
 		} else if (ast instanceof Parse.ArgumentSyntaxTree) {
 			var arg:Parse.ArgumentSyntaxTree = <Parse.ArgumentSyntaxTree>ast;
@@ -59,31 +59,31 @@ module ReVIEW {
 		} else if (ast instanceof Parse.ChapterSyntaxTree) {
 			var chap:Parse.ChapterSyntaxTree = <Parse.ChapterSyntaxTree>ast;
 			v.visitChapter(chap);
-			walkSub(chap.headline, v);
+			visitSub(chap.headline, v);
 			if (chap.text) {
 				chap.text.forEach((ast)=> {
-					walkSub(ast, v);
+					visitSub(ast, v);
 				});
 			}
 		} else if (ast instanceof Parse.HeadlineSyntaxTree) {
 			var head:Parse.HeadlineSyntaxTree = <Parse.HeadlineSyntaxTree>ast;
 			v.visitHeadline(head);
-			walkSub(head.label, v);
-			walkSub(head.tag, v);
-			walkSub(head.caption, v);
+			visitSub(head.label, v);
+			visitSub(head.tag, v);
+			visitSub(head.caption, v);
 		} else if (ast instanceof Parse.UlistElementSyntaxTree) {
 			var ul:Parse.UlistElementSyntaxTree = <Parse.UlistElementSyntaxTree>ast;
 			v.visitUlist(ul);
-			walkSub(ul.text, v);
+			visitSub(ul.text, v);
 		} else if (ast instanceof Parse.OlistElementSyntaxTree) {
 			var ol:Parse.OlistElementSyntaxTree = <Parse.OlistElementSyntaxTree>ast;
 			v.visitOlist(ol);
-			walkSub(ol.text, v);
+			visitSub(ol.text, v);
 		} else if (ast instanceof Parse.DlistElementSyntaxTree) {
 			var dl:Parse.DlistElementSyntaxTree = <Parse.DlistElementSyntaxTree>ast;
 			v.visitDlist(dl);
-			walkSub(dl.text, v);
-			walkSub(dl.content, v);
+			visitSub(dl.text, v);
+			visitSub(dl.content, v);
 		} else if (ast instanceof Parse.TextNodeSyntaxTree) {
 			var text:Parse.TextNodeSyntaxTree = <Parse.TextNodeSyntaxTree>ast;
 			v.visitText(text);
