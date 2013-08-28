@@ -16,6 +16,20 @@ module ReVIEW {
 		};
 	}
 
+	export class Book {
+		parts:Part[] = [];
+	}
+
+	// PREDEF, CHAPS, POSTDEF かな？
+	// Part毎に章番号を採番する
+	// PREDEF は採番しない
+	export class Part {
+		chapters:Chapter[];
+	}
+
+	export class Chapter {
+	}
+
 	export module Parse {
 		export interface ConcreatSyntaxTree {
 			// 共通

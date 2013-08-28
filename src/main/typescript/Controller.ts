@@ -3,38 +3,42 @@
 ///<reference path='Parser.ts' />
 
 module ReVIEW {
+
 	export class Controller {
 		data:ReVIEW.Config;
 
 		constructor(public options:ReVIEW.Options = {}) {
 		}
 
-		initConfig(data:ReVIEW.Config) {
+		initConfig(data:ReVIEW.Config):void {
 			this.data = data;
 		}
 
-		process() {
-			// 色々な処理の開始地点
-			// 型付してあるがユーザが仕様を満たした物をくれるかというと全然そんなことはない
+		processBook():Book {
+			var book = new Book();
+			book.parts = [
+				this.data.book.preface,
+				this.data.book.chapters,
+				this.data.book.afterword
+			].map((part) => this.processPart(book, part ? part : []));
+			// TODO
+			return book;
+		}
 
-			var preface:string[] = [];
-			if (this.data.book.preface) {
-				preface = this.data.book.preface;
-			}
-			var chapters:string[] = [];
-			if (this.data.book.chapters) {
-				chapters = this.data.book.chapters;
-			}
-			var afterword:string[] = [];
-			if (this.data.book.afterword) {
-				afterword = this.data.book.afterword;
-			}
+		processPart(book:Book, chapters:string[]):Part {
+			var part = new Part();
+			part.chapters = chapters.map((chapter) => this.processChapter(book, part, chapter));
+			// TODO
+			return part;
+		}
 
-			chapters.forEach((path)=> {
-				var data = this.read(this.resolvePath(path));
-				var parseResult = ReVIEW.Parse.parse(data);
-				console.log(JSON.stringify(parseResult.ast, null, 2));
-			});
+		processChapter(book:Book, part:Part, chapter:string):Chapter {
+			var data = this.read(this.resolvePath(chapter));
+			var parseResult = ReVIEW.Parse.parse(data);
+			console.log(JSON.stringify(parseResult.ast, null, 2));
+			var chapter = new Chapter();
+			// TODO
+			return chapter;
 		}
 
 		get read():(path:string)=>string {

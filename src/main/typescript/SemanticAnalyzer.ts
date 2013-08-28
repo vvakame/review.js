@@ -12,21 +12,4 @@ module ReVIEW {
 	export function analyse(ast:ReVIEW.Parse.SyntaxTree) {
 
 	}
-
-	export module Book {
-		export class Book {
-			parts:Part[];
-		}
-
-		// PREDEF, CHAPS, POSTDEF かな？
-		// Part毎に章番号を採番する
-		// PREDEF は採番しない
-		export class Part {
-			chaps:Chapter[];
-		}
-
-		export class Chapter {
-
-		}
-	}
 }

@@ -13,7 +13,7 @@ module ReVIEW {
 		var controller = new Controller(options);
 		// setup 中で initConfig が呼び出される
 		setup(controller);
-		controller.process();
+		controller.processBook();
 	}
 }
 
