@@ -10,9 +10,9 @@ describe("ReVIEW.walkについて", ()=> {
 		var parseResult = ReVIEW.Parse.parse(input);
 		var headline:ReVIEW.Parse.HeadlineSyntaxTree = null;
 		ReVIEW.visit(parseResult.ast, {
-			visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+			visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 			},
-			visitHeadline: (ast:ReVIEW.Parse.HeadlineSyntaxTree)=> {
+			visitHeadline: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.HeadlineSyntaxTree)=> {
 				headline = ast;
 			}
 		});
@@ -40,7 +40,7 @@ describe("ReVIEW.visitについて", ()=> {
 		var result = ReVIEW.Parse.parse(input);
 		var actual = "";
 		ReVIEW.visit(result.ast, {
-			visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+			visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 				if (ast instanceof ReVIEW.Parse.TextNodeSyntaxTree) {
 					actual += (<ReVIEW.Parse.TextNodeSyntaxTree>ast).text + "\n";
 				}
@@ -56,9 +56,9 @@ describe("ReVIEW.visitについて", ()=> {
 		it("BlockElementSyntaxTreeが処理できる", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 				},
-				visitBlockElement: (ast:ReVIEW.Parse.NodeSyntaxTree) => {
+				visitBlockElement: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.NodeSyntaxTree) => {
 					actual += "n";
 				}
 			});
@@ -67,9 +67,9 @@ describe("ReVIEW.visitについて", ()=> {
 		it("visitBlockElementが無い時visitNodeに行く", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 				},
-				visitNode: (ast:ReVIEW.Parse.NodeSyntaxTree) => {
+				visitNode: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.NodeSyntaxTree) => {
 					if (ast.ruleName === "BlockElement") {
 						actual += "n";
 					}
@@ -80,7 +80,7 @@ describe("ReVIEW.visitについて", ()=> {
 		it("visitBlockElementもvisitNodeも無い時visitDefaultに行く", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 					if (ast.ruleName === "BlockElement") {
 						actual += "n";
 					}
@@ -97,9 +97,9 @@ describe("ReVIEW.visitについて", ()=> {
 		it("InlineElementSyntaxTreeが処理できる", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 				},
-				visitInlineElement: (ast:ReVIEW.Parse.InlineElementSyntaxTree) => {
+				visitInlineElement: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.InlineElementSyntaxTree) => {
 					actual += "n";
 				}
 			});
@@ -108,9 +108,9 @@ describe("ReVIEW.visitについて", ()=> {
 		it("visitInlineElementが無い時visitNodeに行く", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 				},
-				visitNode: (ast:ReVIEW.Parse.NodeSyntaxTree) => {
+				visitNode: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.NodeSyntaxTree) => {
 					if (ast.ruleName === "InlineElement") {
 						actual += "n";
 					}
@@ -121,7 +121,7 @@ describe("ReVIEW.visitについて", ()=> {
 		it("visitInlineElementもvisitNodeも無い時visitDefaultに行く", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 					if (ast.ruleName === "InlineElement") {
 						actual += "n";
 					}
@@ -138,9 +138,9 @@ describe("ReVIEW.visitについて", ()=> {
 		it("NodeSyntaxTreeが処理できる", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 				},
-				visitNode: (ast:ReVIEW.Parse.NodeSyntaxTree) => {
+				visitNode: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.NodeSyntaxTree) => {
 					actual += "n";
 				}
 			});
@@ -150,7 +150,7 @@ describe("ReVIEW.visitについて", ()=> {
 		it("visitNodeが無い時visitDefaultに行く", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 					actual += "n";
 				}
 			});
@@ -166,9 +166,9 @@ describe("ReVIEW.visitについて", ()=> {
 		it("ArgumentSyntaxTreeが処理できる", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 				},
-				visitArgument: (ast:ReVIEW.Parse.ArgumentSyntaxTree) => {
+				visitArgument: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.ArgumentSyntaxTree) => {
 					actual += "n";
 				}
 			});
@@ -177,7 +177,7 @@ describe("ReVIEW.visitについて", ()=> {
 		it("visitArgumentが無い時visitDefaultに行く", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 					if (ast.ruleName.indexOf("Arg") !== -1) {
 						actual += "n";
 					}
@@ -194,9 +194,9 @@ describe("ReVIEW.visitについて", ()=> {
 		it("ChapterSyntaxTreeが処理できる", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 				},
-				visitChapter: (ast:ReVIEW.Parse.ChapterSyntaxTree) => {
+				visitChapter: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.ChapterSyntaxTree) => {
 					actual += "n";
 				}
 			});
@@ -205,9 +205,9 @@ describe("ReVIEW.visitについて", ()=> {
 		it("visitChapterが無い時visitNodeに行く", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 				},
-				visitNode: (ast:ReVIEW.Parse.NodeSyntaxTree) => {
+				visitNode: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.NodeSyntaxTree) => {
 					if (ast.ruleName === "Chapter") {
 						actual += "n";
 					}
@@ -218,7 +218,7 @@ describe("ReVIEW.visitについて", ()=> {
 		it("visitChapterが無い時visitDefaultに行く", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 					if (ast.ruleName === "Chapter") {
 						actual += "n";
 					}
@@ -235,9 +235,9 @@ describe("ReVIEW.visitについて", ()=> {
 		it("HeadlineSyntaxTreeが処理できる", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 				},
-				visitHeadline: (ast:ReVIEW.Parse.HeadlineSyntaxTree) => {
+				visitHeadline: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.HeadlineSyntaxTree) => {
 					actual += "n";
 				}
 			});
@@ -246,7 +246,7 @@ describe("ReVIEW.visitについて", ()=> {
 		it("visitHeadlineが無い時visitDefaultに行く", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 					if (ast.ruleName === "Headline") {
 						actual += "n";
 					}
@@ -263,9 +263,9 @@ describe("ReVIEW.visitについて", ()=> {
 		it("UlistElementSyntaxTreeが処理できる", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 				},
-				visitUlist: (ast:ReVIEW.Parse.UlistElementSyntaxTree) => {
+				visitUlist: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.UlistElementSyntaxTree) => {
 					actual += "n";
 				}
 			});
@@ -274,9 +274,9 @@ describe("ReVIEW.visitについて", ()=> {
 		it("visitUlistが無い時visitNodeに行く", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 				},
-				visitNode: (ast:ReVIEW.Parse.NodeSyntaxTree) => {
+				visitNode: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.NodeSyntaxTree) => {
 					if (ast.ruleName === "UlistElement") {
 						actual += "n";
 					}
@@ -287,7 +287,7 @@ describe("ReVIEW.visitについて", ()=> {
 		it("visitUlistが無い時visitDefaultに行く", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 					if (ast.ruleName === "UlistElement") {
 						actual += "n";
 					}
@@ -304,9 +304,9 @@ describe("ReVIEW.visitについて", ()=> {
 		it("OlistElementSyntaxTreeが処理できる", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 				},
-				visitOlist: (ast:ReVIEW.Parse.OlistElementSyntaxTree) => {
+				visitOlist: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.OlistElementSyntaxTree) => {
 					actual += "n";
 				}
 			});
@@ -315,7 +315,7 @@ describe("ReVIEW.visitについて", ()=> {
 		it("visitOlistが無い時visitDefaultに行く", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 					if (ast.ruleName === "OlistElement") {
 						actual += "n";
 					}
@@ -332,9 +332,9 @@ describe("ReVIEW.visitについて", ()=> {
 		it("DlistElementSyntaxTreeが処理できる", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 				},
-				visitDlist: (ast:ReVIEW.Parse.DlistElementSyntaxTree) => {
+				visitDlist: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.DlistElementSyntaxTree) => {
 					actual += "n";
 				}
 			});
@@ -343,7 +343,7 @@ describe("ReVIEW.visitについて", ()=> {
 		it("visitDlistが無い時visitDefaultに行く", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 					if (ast.ruleName === "DlistElement") {
 						actual += "n";
 					}
@@ -360,9 +360,9 @@ describe("ReVIEW.visitについて", ()=> {
 		it("TextNodeSyntaxTreeが処理できる", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 				},
-				visitText: (ast:ReVIEW.Parse.TextNodeSyntaxTree) => {
+				visitText: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.TextNodeSyntaxTree) => {
 					actual += "n";
 				}
 			});
@@ -371,7 +371,7 @@ describe("ReVIEW.visitについて", ()=> {
 		it("visitTextが無い時visitDefaultに行く", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
-				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 					if (ast instanceof ReVIEW.Parse.TextNodeSyntaxTree) {
 						actual += "n";
 					}

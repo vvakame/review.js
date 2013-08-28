@@ -148,7 +148,6 @@ module ReVIEW {
 					content.forEach((rawResult:ConcreatSyntaxTree)=> {
 						var tree = transform(rawResult);
 						if (tree) {
-							tree.parentNode = this;
 							this.childNodes.push(tree);
 						}
 					});
@@ -156,7 +155,6 @@ module ReVIEW {
 					((rawResult:ConcreatSyntaxTree)=> {
 						var tree = transform(rawResult);
 						if (tree) {
-							tree.parentNode = this;
 							this.childNodes.push(tree);
 						}
 					})(content);
@@ -186,14 +184,11 @@ module ReVIEW {
 				super(data);
 
 				this.headline = <HeadlineSyntaxTree>transform(this.checkObject(data.headline));
-				this.headline.parentNode = this;
 				if (typeof data.text === "string") {
 					return;
 				}
 				this.text = this.checkArray(data.text.content).map((data:ConcreatSyntaxTree)=> {
-					var syntax = transform(data);
-					syntax.parentNode = this;
-					return syntax;
+					return transform(data);
 				});
 
 				delete this.childNodes; // JSON化した時の属性順制御のため…
@@ -217,14 +212,11 @@ module ReVIEW {
 				this.level = this.checkNumber(data.level);
 				if (data.label !== "") {
 					this.label = <ArgumentSyntaxTree> transform(this.checkObject(data.label));
-					this.label.parentNode = this;
 				}
 				if (data.tag !== "") {
 					this.tag = <ArgumentSyntaxTree> transform(this.checkObject(data.tag));
-					this.tag.parentNode = this;
 				}
 				this.caption = transform(this.checkObject(data.caption));
-				this.caption.parentNode = this;
 			}
 		}
 
@@ -236,9 +228,7 @@ module ReVIEW {
 				super(data);
 				this.name = this.checkString(data.name);
 				this.args = this.checkArray(data.args).map((data:ConcreatSyntaxTree)=> {
-					var syntax = transform(data);
-					syntax.parentNode = this;
-					return syntax;
+					return transform(data);
 				});
 			}
 		}
@@ -269,7 +259,6 @@ module ReVIEW {
 				super(data);
 				this.level = this.checkNumber(data.level);
 				this.text = transform(this.checkObject(data.text));
-				this.text.parentNode = this;
 
 				delete this.childNodes; // JSON化した時の属性順制御のため…
 				this.childNodes = [];
@@ -284,7 +273,6 @@ module ReVIEW {
 				super(data);
 				this.no = this.checkNumber(data.no);
 				this.text = transform(this.checkObject(data.text));
-				this.text.parentNode = this;
 			}
 		}
 
@@ -295,9 +283,7 @@ module ReVIEW {
 			constructor(data:ConcreatSyntaxTree) {
 				super(data);
 				this.text = transform(this.checkObject(data.text));
-				this.text.parentNode = this;
 				this.content = transform(this.checkObject(data.content));
-				this.content.parentNode = this;
 			}
 		}
 

@@ -15,7 +15,7 @@ module ReVIEW {
 			}
 			var ulistSet:NodeSyntaxTree[] = [];
 			ReVIEW.visit(root, {
-				visitDefault: (ast:Parse.SyntaxTree)=> {
+				visitDefault: (parent:Parse.SyntaxTree, ast:Parse.SyntaxTree)=> {
 					if (ast.ruleName === "Ulist") {
 						ulistSet.push(<NodeSyntaxTree>ast);
 					}
@@ -25,25 +25,10 @@ module ReVIEW {
 				reconstructUlist(ulist);
 			});
 
-			// parentNode が変わっているので組替え
-			// TODO visit に parent を絡むように書き換えてここで全ての設定をしたほうが楽そう
+			// parentNode を設定
 			ReVIEW.visit(root, {
-				visitDefault: (ast:Parse.SyntaxTree)=> {
-				},
-				visitNode: (ast:Parse.NodeSyntaxTree) => {
-					ast.childNodes.forEach((child)=> {
-						child.parentNode = ast;
-					});
-				},
-				visitChapter: (ast:Parse.ChapterSyntaxTree) => {
-					ast.childNodes.forEach((child)=> {
-						child.parentNode = ast;
-					});
-				},
-				visitUlist: (ast:Parse.UlistElementSyntaxTree) => {
-					ast.childNodes.forEach((child)=> {
-						child.parentNode = ast;
-					});
+				visitDefault: (parent:Parse.SyntaxTree, ast:Parse.SyntaxTree)=> {
+					ast.parentNode = parent;
 				}
 			});
 			return {
