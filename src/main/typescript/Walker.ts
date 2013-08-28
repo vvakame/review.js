@@ -3,6 +3,13 @@
 
 module ReVIEW {
 
+	export function walk(ast:Parse.SyntaxTree, actor:(ast:Parse.SyntaxTree)=>Parse.SyntaxTree) {
+		var next = actor(ast);
+		if (next !== null) {
+			walk(next, actor);
+		}
+	}
+
 	export function visit(ast:Parse.SyntaxTree, v:TreeVisitor) {
 		var newV:TreeVisitor = {
 			visitDefault: v.visitDefault,

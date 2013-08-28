@@ -4,6 +4,36 @@
 
 "use strict";
 
+describe("ReVIEW.walkについて", ()=> {
+	xit("目的のNodeを発見できること", ()=> {
+		var input = "= level1\n== level2\n=== level3\n==== level4\n===== level5";
+		var parseResult = ReVIEW.Parse.parse(input);
+		var headline:ReVIEW.Parse.HeadlineSyntaxTree = null;
+		ReVIEW.visit(parseResult.ast, {
+			visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+			},
+			visitHeadline: (ast:ReVIEW.Parse.HeadlineSyntaxTree)=> {
+				headline = ast;
+			}
+		});
+
+		// 最後のやつが取れる
+		expect(headline.level).toBe(5);
+
+		var result:ReVIEW.Parse.HeadlineSyntaxTree = null;
+		ReVIEW.walk(headline, (ast)=> {
+			if (ast.ruleName === "Headline" && (<ReVIEW.Parse.HeadlineSyntaxTree>ast).level === 2) {
+				result = <ReVIEW.Parse.HeadlineSyntaxTree>ast;
+				return null;
+			} else {
+				return ast.parentNode;
+			}
+		});
+		// level に応じた適切な構造になってないの忘れてた
+		expect(result.level).toBe(2);
+	});
+});
+
 describe("ReVIEW.visitについて", ()=> {
 	it("挙動のサンプル", ()=> {
 		var input = "= 今日のお昼ごはん\n\n断固としてカレーライス！\n";

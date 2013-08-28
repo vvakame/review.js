@@ -185,11 +185,14 @@ module ReVIEW {
 			constructor(data:ConcreatSyntaxTree) {
 				super(data);
 				this.headline = transform(this.checkObject(data.headline));
+				this.headline.parentNode = this;
 				if (typeof data.text === "string") {
 					return;
 				}
 				this.text = this.checkArray(data.text.content).map((data:ConcreatSyntaxTree)=> {
-					return transform(data);
+					var syntax = transform(data);
+					syntax.parentNode = this;
+					return syntax;
 				});
 			}
 		}
@@ -206,11 +209,14 @@ module ReVIEW {
 				this.level = this.checkNumber(data.level);
 				if (data.label !== "") {
 					this.label = <ArgumentSyntaxTree> transform(this.checkObject(data.label));
+					this.label.parentNode = this;
 				}
 				if (data.tag !== "") {
 					this.tag = <ArgumentSyntaxTree> transform(this.checkObject(data.tag));
+					this.tag.parentNode = this;
 				}
 				this.caption = transform(this.checkObject(data.caption));
+				this.caption.parentNode = this;
 			}
 		}
 
@@ -222,7 +228,9 @@ module ReVIEW {
 				super(data);
 				this.name = this.checkString(data.name);
 				this.args = this.checkArray(data.args).map((data:ConcreatSyntaxTree)=> {
-					return transform(data);
+					var syntax = transform(data);
+					syntax.parentNode = this;
+					return syntax;
 				});
 			}
 		}
@@ -253,6 +261,7 @@ module ReVIEW {
 				super(data);
 				this.level = this.checkNumber(data.level);
 				this.text = transform(this.checkObject(data.text));
+				this.text.parentNode = this;
 			}
 		}
 
@@ -264,6 +273,7 @@ module ReVIEW {
 				super(data);
 				this.no = this.checkNumber(data.no);
 				this.text = transform(this.checkObject(data.text));
+				this.text.parentNode = this;
 			}
 		}
 
@@ -274,7 +284,9 @@ module ReVIEW {
 			constructor(data:ConcreatSyntaxTree) {
 				super(data);
 				this.text = transform(this.checkObject(data.text));
+				this.text.parentNode = this;
 				this.content = transform(this.checkObject(data.content));
+				this.content.parentNode = this;
 			}
 		}
 
