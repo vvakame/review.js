@@ -178,13 +178,14 @@ module ReVIEW {
 		// TODO SyntaxTree と指定されている所についてもっと細かく書けるはず…
 
 		// TODO Chapter も NodeSyntaxTree を継承するべき
-		export class ChapterSyntaxTree extends SyntaxTree {
-			headline:SyntaxTree;
+		export class ChapterSyntaxTree extends NodeSyntaxTree {
+			headline:HeadlineSyntaxTree;
 			text:SyntaxTree[];
 
 			constructor(data:ConcreatSyntaxTree) {
 				super(data);
-				this.headline = transform(this.checkObject(data.headline));
+
+				this.headline = <HeadlineSyntaxTree>transform(this.checkObject(data.headline));
 				this.headline.parentNode = this;
 				if (typeof data.text === "string") {
 					return;
@@ -194,6 +195,13 @@ module ReVIEW {
 					syntax.parentNode = this;
 					return syntax;
 				});
+
+				delete this.childNodes; // JSON化した時の属性順制御のため…
+				this.childNodes = [];
+			}
+
+			get level():number {
+				return this.headline.level;
 			}
 		}
 

@@ -54,12 +54,6 @@ module ReVIEW {
 			inline.childNodes.forEach((ast)=> {
 				visitSub(ast, v);
 			});
-		} else if (ast instanceof Parse.NodeSyntaxTree) {
-			var node:Parse.NodeSyntaxTree = <Parse.NodeSyntaxTree>ast;
-			v.visitNode(node);
-			node.childNodes.forEach((ast)=> {
-				visitSub(ast, v);
-			});
 		} else if (ast instanceof Parse.ArgumentSyntaxTree) {
 			var arg:Parse.ArgumentSyntaxTree = <Parse.ArgumentSyntaxTree>ast;
 			v.visitArgument(arg);
@@ -72,6 +66,15 @@ module ReVIEW {
 					visitSub(ast, v);
 				});
 			}
+			chap.childNodes.forEach((ast)=> {
+				visitSub(ast, v);
+			});
+		} else if (ast instanceof Parse.NodeSyntaxTree) {
+			var node:Parse.NodeSyntaxTree = <Parse.NodeSyntaxTree>ast;
+			v.visitNode(node);
+			node.childNodes.forEach((ast)=> {
+				visitSub(ast, v);
+			});
 		} else if (ast instanceof Parse.HeadlineSyntaxTree) {
 			var head:Parse.HeadlineSyntaxTree = <Parse.HeadlineSyntaxTree>ast;
 			v.visitHeadline(head);
