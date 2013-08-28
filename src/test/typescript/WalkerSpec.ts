@@ -145,7 +145,7 @@ describe("ReVIEW.visitについて", ()=> {
 				}
 			});
 			// Start, Chapters, ContentInlines
-			expect(actual).toBe("nnn");
+			expect(actual).toBe("nnnn");
 		});
 		it("visitNodeが無い時visitDefaultに行く", ()=> {
 			var actual = "";
@@ -202,6 +202,19 @@ describe("ReVIEW.visitについて", ()=> {
 			});
 			expect(actual).toBe("nn");
 		});
+		it("visitChapterが無い時visitNodeに行く", ()=> {
+			var actual = "";
+			ReVIEW.visit(result.ast, {
+				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				},
+				visitNode: (ast:ReVIEW.Parse.NodeSyntaxTree) => {
+					if (ast.ruleName === "Chapter") {
+						actual += "n";
+					}
+				}
+			});
+			expect(actual).toBe("nn");
+		});
 		it("visitChapterが無い時visitDefaultに行く", ()=> {
 			var actual = "";
 			ReVIEW.visit(result.ast, {
@@ -254,6 +267,19 @@ describe("ReVIEW.visitについて", ()=> {
 				},
 				visitUlist: (ast:ReVIEW.Parse.UlistElementSyntaxTree) => {
 					actual += "n";
+				}
+			});
+			expect(actual).toBe("n");
+		});
+		it("visitUlistが無い時visitNodeに行く", ()=> {
+			var actual = "";
+			ReVIEW.visit(result.ast, {
+				visitDefault: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				},
+				visitNode: (ast:ReVIEW.Parse.NodeSyntaxTree) => {
+					if (ast.ruleName === "UlistElement") {
+						actual += "n";
+					}
 				}
 			});
 			expect(actual).toBe("n");

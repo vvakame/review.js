@@ -17,9 +17,9 @@ module ReVIEW {
 			visitInlineElement: v.visitInlineElement || v.visitNode || v.visitDefault,
 			visitNode: v.visitNode || v.visitDefault,
 			visitArgument: v.visitArgument || v.visitDefault,
-			visitChapter: v.visitChapter || v.visitDefault,
+			visitChapter: v.visitChapter || v.visitNode || v.visitDefault,
 			visitHeadline: v.visitHeadline || v.visitDefault,
-			visitUlist: v.visitUlist || v.visitDefault,
+			visitUlist: v.visitUlist || v.visitNode || v.visitDefault,
 			visitOlist: v.visitOlist || v.visitDefault,
 			visitDlist: v.visitDlist || v.visitDefault,
 			visitText: v.visitText || v.visitDefault
