@@ -28,7 +28,7 @@ describe("ReVIEW構文の", ()=> {
 				it("ファイル:" + file, ()=> {
 					var data = fs.readFileSync(path + file, "utf8");
 					try {
-						var result = ReVIEW.Parser.parse(data);
+						var result = ReVIEW.Parse.parse(data);
 						if (!fs.existsSync(astFilePath)) {
 							// ASTファイルが無い場合、現時点で生成されるASTを出力する
 							var ast = JSON.stringify(result.ast, null, 2);
@@ -53,7 +53,7 @@ describe("ReVIEW構文の", ()=> {
 				it("ファイル:" + file, ()=> {
 					var data = fs.readFileSync(path + file, "utf8");
 					try {
-						ReVIEW.Parser.parse(data);
+						ReVIEW.Parse.parse(data);
 						throw new Error("正しく処理できてしまった");
 					} catch (e) {
 						if (e instanceof PEG.SyntaxError) {
@@ -86,7 +86,7 @@ describe("ReVIEW構文の", ()=> {
 		strings.forEach((str)=> {
 			it("try: " + str.substr(0, 15), ()=> {
 				try {
-					var result = ReVIEW.Parser.parse(str);
+					var result = ReVIEW.Parse.parse(str);
 					// console.log(result);
 					// console.log(JSON.stringify(result));
 				} catch (e) {
@@ -99,7 +99,7 @@ describe("ReVIEW構文の", ()=> {
 
 	describe("SyntaxTreeクラスの", ()=> {
 		it("JSON.stringifyで無限再起にならないこと", ()=> {
-			var syntax = new ReVIEW.SyntaxTree({
+			var syntax = new ReVIEW.Parse.SyntaxTree({
 				line: 0, column: 0, offset: 0,
 				syntax: "SinglelineComment",
 				content: ""
