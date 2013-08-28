@@ -37,75 +37,6 @@ module ReVIEW {
 			};
 		}
 
-		function reconstructUlist(node:NodeSyntaxTree) {
-			// Ulist もChapter 同様の level 構造があるので同じように処理したい
-			var originalChildNodes = node.childNodes;
-			node.childNodes = [];
-
-			var ulistSets:UlistElementSyntaxTree[][] = [];
-			var currentSet:UlistElementSyntaxTree[] = [];
-
-			originalChildNodes.forEach((ulistElement:UlistElementSyntaxTree) => {
-				if (currentSet.length === 0) {
-					currentSet.push(ulistElement);
-
-				} else if (currentSet[0].level < ulistElement.level) {
-					currentSet.push(ulistElement);
-
-				} else {
-					ulistSets.push(currentSet);
-					currentSet = [];
-					currentSet.push(ulistElement);
-				}
-			});
-			if (currentSet.length !== 0) {
-				ulistSets.push(currentSet);
-			}
-			ulistSets.forEach((chapters:UlistElementSyntaxTree[])=> {
-				var parent = chapters[0];
-				node.childNodes.push(parent);
-				chapters.splice(1).forEach((child) => {
-					parent.childNodes.push(child);
-				});
-				reconstructUlist(parent);
-			});
-		}
-
-		function reconstructChapters(node:NodeSyntaxTree) {
-			// Chapter を Headline の level に応じて構造を組み替える
-			//   level 2 は level 1 の下に来るようにしたい
-			var originalChildNodes = node.childNodes;
-			node.childNodes = [];
-
-			var chapterSets:ChapterSyntaxTree[][] = [];
-			var currentSet:ChapterSyntaxTree[] = [];
-
-			originalChildNodes.forEach((chapter:ChapterSyntaxTree)=> {
-				if (currentSet.length === 0) {
-					currentSet.push(chapter);
-
-				} else if (currentSet[0].headline.level < chapter.headline.level) {
-					currentSet.push(chapter);
-
-				} else {
-					chapterSets.push(currentSet);
-					currentSet = [];
-					currentSet.push(chapter);
-				}
-			});
-			if (currentSet.length !== 0) {
-				chapterSets.push(currentSet);
-			}
-			chapterSets.forEach((chapters:ChapterSyntaxTree[])=> {
-				var parent = chapters[0];
-				node.childNodes.push(parent);
-				chapters.splice(1).forEach((child) => {
-					parent.childNodes.push(child);
-				});
-				reconstructChapters(parent);
-			});
-		}
-
 		export function transform(rawResult:ConcreatSyntaxTree):SyntaxTree {
 			if (<any>rawResult === "") {
 				return null;
@@ -161,6 +92,75 @@ module ReVIEW {
 					console.warn("unknown rule : " + rawResult.syntax);
 					return new SyntaxTree(rawResult);
 			}
+		}
+
+		function reconstructChapters(node:NodeSyntaxTree) {
+			// Chapter を Headline の level に応じて構造を組み替える
+			//   level 2 は level 1 の下に来るようにしたい
+			var originalChildNodes = node.childNodes;
+			node.childNodes = [];
+
+			var chapterSets:ChapterSyntaxTree[][] = [];
+			var currentSet:ChapterSyntaxTree[] = [];
+
+			originalChildNodes.forEach((chapter:ChapterSyntaxTree)=> {
+				if (currentSet.length === 0) {
+					currentSet.push(chapter);
+
+				} else if (currentSet[0].headline.level < chapter.headline.level) {
+					currentSet.push(chapter);
+
+				} else {
+					chapterSets.push(currentSet);
+					currentSet = [];
+					currentSet.push(chapter);
+				}
+			});
+			if (currentSet.length !== 0) {
+				chapterSets.push(currentSet);
+			}
+			chapterSets.forEach((chapters:ChapterSyntaxTree[])=> {
+				var parent = chapters[0];
+				node.childNodes.push(parent);
+				chapters.splice(1).forEach((child) => {
+					parent.childNodes.push(child);
+				});
+				reconstructChapters(parent);
+			});
+		}
+
+		function reconstructUlist(node:NodeSyntaxTree) {
+			// Ulist もChapter 同様の level 構造があるので同じように処理したい
+			var originalChildNodes = node.childNodes;
+			node.childNodes = [];
+
+			var ulistSets:UlistElementSyntaxTree[][] = [];
+			var currentSet:UlistElementSyntaxTree[] = [];
+
+			originalChildNodes.forEach((ulistElement:UlistElementSyntaxTree) => {
+				if (currentSet.length === 0) {
+					currentSet.push(ulistElement);
+
+				} else if (currentSet[0].level < ulistElement.level) {
+					currentSet.push(ulistElement);
+
+				} else {
+					ulistSets.push(currentSet);
+					currentSet = [];
+					currentSet.push(ulistElement);
+				}
+			});
+			if (currentSet.length !== 0) {
+				ulistSets.push(currentSet);
+			}
+			ulistSets.forEach((chapters:UlistElementSyntaxTree[])=> {
+				var parent = chapters[0];
+				node.childNodes.push(parent);
+				chapters.splice(1).forEach((child) => {
+					parent.childNodes.push(child);
+				});
+				reconstructUlist(parent);
+			});
 		}
 	}
 }
