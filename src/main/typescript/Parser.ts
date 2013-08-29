@@ -5,7 +5,7 @@
 
 module ReVIEW {
 	export module Parse {
-		export function parse(input:string):{ast:NodeSyntaxTree;cst:ConcreatSyntaxTree} {
+		export function parse(input:string):{ast:NodeSyntaxTree;cst:ConcreatSyntaxTree;} {
 			var rawResult = PEG.parse(input);
 			var root = <NodeSyntaxTree> transform(rawResult);
 
@@ -17,7 +17,7 @@ module ReVIEW {
 			// Ulist もChapter 同様の level 構造があるので同じように処理したい
 			var ulistSet:NodeSyntaxTree[] = [];
 			ReVIEW.visit(root, {
-				visitDefault: (parent:Parse.SyntaxTree, ast:Parse.SyntaxTree)=> {
+				visitDefault: (parent:SyntaxTree, ast:SyntaxTree)=> {
 					if (ast.ruleName === RuleName.Ulist) {
 						ulistSet.push(<NodeSyntaxTree>ast);
 					}
@@ -29,7 +29,7 @@ module ReVIEW {
 
 			// parentNode を設定
 			ReVIEW.visit(root, {
-				visitDefault: (parent:Parse.SyntaxTree, ast:Parse.SyntaxTree)=> {
+				visitDefault: (parent:SyntaxTree, ast:SyntaxTree)=> {
 					ast.parentNode = parent;
 				}
 			});

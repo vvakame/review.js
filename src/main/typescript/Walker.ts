@@ -3,14 +3,27 @@
 
 module ReVIEW {
 
-	export function walk(ast:Parse.SyntaxTree, actor:(ast:Parse.SyntaxTree)=>Parse.SyntaxTree) {
+	// ここまでに Parser.ts の内容が実行完了していないとエラーになる
+import SyntaxTree = ReVIEW.Parse.SyntaxTree;
+import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
+import ArgumentSyntaxTree = ReVIEW.Parse.ArgumentSyntaxTree;
+import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
+import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
+import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
+import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
+import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
+
+	export function walk(ast:SyntaxTree, actor:(ast:SyntaxTree)=>SyntaxTree) {
 		var next = actor(ast);
 		if (next !== null) {
 			walk(next, actor);
 		}
 	}
 
-	export function visit(ast:Parse.SyntaxTree, v:TreeVisitor) {
+	export function visit(ast:SyntaxTree, v:TreeVisitor) {
 		var newV:TreeVisitor = {
 			visitDefault: v.visitDefault,
 			visitBlockElement: v.visitBlockElement || v.visitNode || v.visitDefault,
@@ -38,9 +51,9 @@ module ReVIEW {
 		visitSub(null, ast, newV);
 	}
 
-	function visitSub(parent:Parse.SyntaxTree, ast:Parse.SyntaxTree, v:TreeVisitor) {
-		if (ast instanceof Parse.BlockElementSyntaxTree) {
-			var block:Parse.BlockElementSyntaxTree = <Parse.BlockElementSyntaxTree>ast;
+	function visitSub(parent:SyntaxTree, ast:SyntaxTree, v:TreeVisitor) {
+		if (ast instanceof BlockElementSyntaxTree) {
+			var block:BlockElementSyntaxTree = <BlockElementSyntaxTree>ast;
 			v.visitBlockElement(parent, block);
 			block.args.forEach((next)=> {
 				visitSub(ast, next, v);
@@ -48,17 +61,17 @@ module ReVIEW {
 			block.childNodes.forEach((next)=> {
 				visitSub(ast, next, v);
 			});
-		} else if (ast instanceof Parse.InlineElementSyntaxTree) {
-			var inline:Parse.InlineElementSyntaxTree = <Parse.InlineElementSyntaxTree>ast;
+		} else if (ast instanceof InlineElementSyntaxTree) {
+			var inline:InlineElementSyntaxTree = <InlineElementSyntaxTree>ast;
 			v.visitInlineElement(parent, inline);
 			inline.childNodes.forEach((next)=> {
 				visitSub(ast, next, v);
 			});
-		} else if (ast instanceof Parse.ArgumentSyntaxTree) {
-			var arg:Parse.ArgumentSyntaxTree = <Parse.ArgumentSyntaxTree>ast;
+		} else if (ast instanceof ArgumentSyntaxTree) {
+			var arg:ArgumentSyntaxTree = <ArgumentSyntaxTree>ast;
 			v.visitArgument(parent, arg);
-		} else if (ast instanceof Parse.ChapterSyntaxTree) {
-			var chap:Parse.ChapterSyntaxTree = <Parse.ChapterSyntaxTree>ast;
+		} else if (ast instanceof ChapterSyntaxTree) {
+			var chap:ChapterSyntaxTree = <ChapterSyntaxTree>ast;
 			v.visitChapter(parent, chap);
 			visitSub(ast, chap.headline, v);
 			if (chap.text) {
@@ -69,36 +82,36 @@ module ReVIEW {
 			chap.childNodes.forEach((next)=> {
 				visitSub(ast, next, v);
 			});
-		} else if (ast instanceof Parse.HeadlineSyntaxTree) {
-			var head:Parse.HeadlineSyntaxTree = <Parse.HeadlineSyntaxTree>ast;
+		} else if (ast instanceof HeadlineSyntaxTree) {
+			var head:HeadlineSyntaxTree = <HeadlineSyntaxTree>ast;
 			v.visitHeadline(parent, head);
 			visitSub(ast, head.label, v);
 			visitSub(ast, head.tag, v);
 			visitSub(ast, head.caption, v);
-		} else if (ast instanceof Parse.UlistElementSyntaxTree) {
-			var ul:Parse.UlistElementSyntaxTree = <Parse.UlistElementSyntaxTree>ast;
+		} else if (ast instanceof UlistElementSyntaxTree) {
+			var ul:UlistElementSyntaxTree = <UlistElementSyntaxTree>ast;
 			v.visitUlist(parent, ul);
 			visitSub(ast, ul.text, v);
 			ul.childNodes.forEach((next)=> {
 				visitSub(ast, next, v);
 			});
-		} else if (ast instanceof Parse.OlistElementSyntaxTree) {
-			var ol:Parse.OlistElementSyntaxTree = <Parse.OlistElementSyntaxTree>ast;
+		} else if (ast instanceof OlistElementSyntaxTree) {
+			var ol:OlistElementSyntaxTree = <OlistElementSyntaxTree>ast;
 			v.visitOlist(parent, ol);
 			visitSub(ast, ol.text, v);
-		} else if (ast instanceof Parse.DlistElementSyntaxTree) {
-			var dl:Parse.DlistElementSyntaxTree = <Parse.DlistElementSyntaxTree>ast;
+		} else if (ast instanceof DlistElementSyntaxTree) {
+			var dl:DlistElementSyntaxTree = <DlistElementSyntaxTree>ast;
 			v.visitDlist(parent, dl);
 			visitSub(ast, dl.text, v);
 			visitSub(ast, dl.content, v);
-		} else if (ast instanceof Parse.NodeSyntaxTree) {
-			var node:Parse.NodeSyntaxTree = <Parse.NodeSyntaxTree>ast;
+		} else if (ast instanceof NodeSyntaxTree) {
+			var node:NodeSyntaxTree = <NodeSyntaxTree>ast;
 			v.visitNode(parent, node);
 			node.childNodes.forEach((next)=> {
 				visitSub(ast, next, v);
 			});
-		} else if (ast instanceof Parse.TextNodeSyntaxTree) {
-			var text:Parse.TextNodeSyntaxTree = <Parse.TextNodeSyntaxTree>ast;
+		} else if (ast instanceof TextNodeSyntaxTree) {
+			var text:TextNodeSyntaxTree = <TextNodeSyntaxTree>ast;
 			v.visitText(parent, text);
 		} else if (ast) {
 			v.visitDefault(parent, ast);
@@ -106,16 +119,16 @@ module ReVIEW {
 	}
 
 	export interface TreeVisitor {
-		visitDefault(parent:Parse.SyntaxTree, ast:Parse.SyntaxTree);
-		visitNode?(parent:Parse.SyntaxTree, ast:Parse.NodeSyntaxTree);
-		visitBlockElement?(parent:Parse.SyntaxTree, ast:Parse.BlockElementSyntaxTree);
-		visitInlineElement?(parent:Parse.SyntaxTree, ast:Parse.InlineElementSyntaxTree);
-		visitArgument?(parent:Parse.SyntaxTree, ast:Parse.ArgumentSyntaxTree);
-		visitChapter?(parent:Parse.SyntaxTree, ast:Parse.ChapterSyntaxTree);
-		visitHeadline?(parent:Parse.SyntaxTree, ast:Parse.HeadlineSyntaxTree);
-		visitUlist?(parent:Parse.SyntaxTree, ast:Parse.UlistElementSyntaxTree);
-		visitOlist?(parent:Parse.SyntaxTree, ast:Parse.OlistElementSyntaxTree);
-		visitDlist?(parent:Parse.SyntaxTree, ast:Parse.DlistElementSyntaxTree);
-		visitText?(parent:Parse.SyntaxTree, ast:Parse.TextNodeSyntaxTree);
+		visitDefault(parent:SyntaxTree, ast:SyntaxTree);
+		visitNode?(parent:SyntaxTree, ast:NodeSyntaxTree);
+		visitBlockElement?(parent:SyntaxTree, ast:BlockElementSyntaxTree);
+		visitInlineElement?(parent:SyntaxTree, ast:InlineElementSyntaxTree);
+		visitArgument?(parent:SyntaxTree, ast:ArgumentSyntaxTree);
+		visitChapter?(parent:SyntaxTree, ast:ChapterSyntaxTree);
+		visitHeadline?(parent:SyntaxTree, ast:HeadlineSyntaxTree);
+		visitUlist?(parent:SyntaxTree, ast:UlistElementSyntaxTree);
+		visitOlist?(parent:SyntaxTree, ast:OlistElementSyntaxTree);
+		visitDlist?(parent:SyntaxTree, ast:DlistElementSyntaxTree);
+		visitText?(parent:SyntaxTree, ast:TextNodeSyntaxTree);
 	}
 }

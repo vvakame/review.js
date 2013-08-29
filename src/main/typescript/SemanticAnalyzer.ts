@@ -9,7 +9,9 @@
 // review-compile に secnolevel, toclevel
 
 module ReVIEW {
-	export function analyse(ast:ReVIEW.Parse.SyntaxTree) {
+import SyntaxTree = ReVIEW.Parse.SyntaxTree;
+
+	export function analyse(ast:SyntaxTree) {
 
 	}
 }
