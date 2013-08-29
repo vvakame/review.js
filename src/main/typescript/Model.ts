@@ -31,6 +31,14 @@ module ReVIEW {
 	}
 
 	export module Parse {
+		export class ParseError implements Error {
+			name:string;
+
+			constructor(public syntax:ConcreatSyntaxTree, public message:string) {
+				this.name = "ParseError";
+			}
+		}
+
 		export interface ConcreatSyntaxTree {
 			// 共通
 			syntax: string;
@@ -53,16 +61,52 @@ module ReVIEW {
 			no?:any;
 		}
 
+		export enum RuleName {
+			Start,
+			Chapters,
+			Chapter,
+			Headline,
+			Paragraphs,
+			Paragraph,
+			Contents,
+			Content,
+			ContentText,
+			BlockElement,
+			InlineElement,
+			BracketArg,
+			BraceArg,
+			BlockElementContents,
+			BlockElementContent,
+			BlockElementContentText,
+			InlineElementContents,
+			InlineElementContent,
+			InlineElementContentText,
+			SinglelineContent,
+			ContentInlines,
+			ContentInline,
+			ContentInlineText,
+			Ulist,
+			UlistElement,
+			Olist,
+			OlistElement,
+			Dlist,
+			DlistElement,
+			DlistElementContent,
+			SinglelineComment,
+		}
+
 		export class SyntaxTree {
 			parentNode:SyntaxTree;
-			type:string;
 			offset:number;
 			line:number;
 			column:number;
-			ruleName:string;
+			ruleName:RuleName;
 
 			constructor(data:ConcreatSyntaxTree) {
-				this.ruleName = data.syntax;
+				this.ruleName = RuleName[data.syntax];
+				if (typeof this.ruleName === "undefined") {
+					throw new ParseError(data, "unknown rule: " + data.syntax);
+				}
 				this.offset = data.offset;
 				this.line = data.line;
 				this.column = data.column;
@@ -71,7 +115,9 @@ module ReVIEW {
 			toJSON():any {
 				var result = {};
 				for (var k in this) {
-					if (k !== "parentNode" && typeof this[k] !== "function") {
+					if (k === "ruleName") {
+						result[k] = RuleName[this[k]];
+					} else if (k !== "parentNode" && typeof this[k] !== "function") {
 						result[k] = this[k];
 					}
 				}
@@ -83,7 +129,7 @@ module ReVIEW {
 				result += this.makeIndent(indentLevel + 1) + "offset = " + this.offset + ",\n";
 				result += this.makeIndent(indentLevel + 1) + "line=" + this.line + ",\n";
 				result += this.makeIndent(indentLevel + 1) + "column=" + this.column + ",\n";
-				result += this.makeIndent(indentLevel + 1) + "name=" + this.ruleName + ",\n";
+				result += this.makeIndent(indentLevel + 1) + "name=" + RuleName[this.ruleName] + ",\n";
 				this.toStringHook(indentLevel, result);
 				result += this.makeIndent(indentLevel) + "]";
 

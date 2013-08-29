@@ -18,7 +18,7 @@ module ReVIEW {
 			var ulistSet:NodeSyntaxTree[] = [];
 			ReVIEW.visit(root, {
 				visitDefault: (parent:Parse.SyntaxTree, ast:Parse.SyntaxTree)=> {
-					if (ast.ruleName === "Ulist") {
+					if (ast.ruleName === RuleName.Ulist) {
 						ulistSet.push(<NodeSyntaxTree>ast);
 					}
 				}
@@ -43,51 +43,55 @@ module ReVIEW {
 			if (<any>rawResult === "") {
 				return null;
 			}
-			switch (rawResult.syntax) {
-				case "Chapter":
+			var rule = RuleName[rawResult.syntax];
+			if (typeof rule === "undefined") {
+				throw new ParseError(rawResult, "unknown rule: " + rawResult.syntax);
+			}
+			switch (rule) {
+				case RuleName.Chapter:
 					return new ChapterSyntaxTree(rawResult);
-				case "BlockElement":
+				case RuleName.BlockElement:
 					return new BlockElementSyntaxTree(rawResult);
-				case "Headline":
+				case RuleName.Headline:
 					return new HeadlineSyntaxTree(rawResult);
-				case "InlineElement":
+				case RuleName.InlineElement:
 					return new InlineElementSyntaxTree(rawResult);
-				case "BracketArg":
-				case "BraceArg":
+				case RuleName.BracketArg:
+				case RuleName.BraceArg:
 					return new ArgumentSyntaxTree(rawResult);
-				case "UlistElement":
+				case RuleName.UlistElement:
 					return new UlistElementSyntaxTree(rawResult);
-				case "OlistElement":
+				case RuleName.OlistElement:
 					return new OlistElementSyntaxTree(rawResult);
-				case "DlistElement":
+				case RuleName.DlistElement:
 					return new DlistElementSyntaxTree(rawResult);
-				case "ContentText":
-				case "BlockElementContentText":
-				case "InlineElementContentText":
-				case "ContentInlineText":
-				case "SinglelineComment":
+				case RuleName.ContentText:
+				case RuleName.BlockElementContentText:
+				case RuleName.InlineElementContentText:
+				case RuleName.ContentInlineText:
+				case RuleName.SinglelineComment:
 					return new TextNodeSyntaxTree(rawResult);
 				// c, cc パターン
-				case "Chapters":
-				case "Paragraphs":
-				case "Contents":
-				case "BlockElementContents":
-				case "InlineElementContents":
-				case "ContentInlines":
-				case "Ulist":
-				case "Olist":
-				case "Dlist":
+				case RuleName.Chapters:
+				case RuleName.Paragraphs:
+				case RuleName.Contents:
+				case RuleName.BlockElementContents:
+				case RuleName.InlineElementContents:
+				case RuleName.ContentInlines:
+				case RuleName.Ulist:
+				case RuleName.Olist:
+				case RuleName.Dlist:
 					return new NodeSyntaxTree(rawResult);
 				// c パターン
-				case "Start":
-				case "Paragraph":
-				case "DlistElementContent":
+				case RuleName.Start:
+				case RuleName.Paragraph:
+				case RuleName.DlistElementContent:
 					return new NodeSyntaxTree(rawResult);
-				case "Content":
-				case "BlockElementContent":
-				case "InlineElementContent":
-				case "SinglelineContent":
-				case "ContentInline":
+				case RuleName.Content:
+				case RuleName.BlockElementContent:
+				case RuleName.InlineElementContent:
+				case RuleName.SinglelineContent:
+				case RuleName.ContentInline:
 					// パースした内容は直接役にたたない c / c / c 系
 					return transform(rawResult.content);
 				default:
