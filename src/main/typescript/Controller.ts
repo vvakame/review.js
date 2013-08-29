@@ -4,6 +4,12 @@
 
 module ReVIEW {
 
+import SyntaxTree = ReVIEW.Parse.SyntaxTree;
+import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
+import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
+
 	export class Controller {
 		data:ReVIEW.Config;
 
@@ -37,7 +43,33 @@ module ReVIEW {
 			var parseResult = ReVIEW.Parse.parse(data);
 			console.log(JSON.stringify(parseResult.ast, null, 2));
 			var chapter = new Chapter();
-			// TODO
+
+			var symbolTable:{chapterName:string; symbolName:string; node:SyntaxTree;}[] = [];
+			ReVIEW.visit(parseResult.ast, {
+				visitDefault: (node:SyntaxTree)=> {
+
+				},
+				visitHeadline: (node:HeadlineSyntaxTree)=> {
+					var symbol:string = null;
+					if (node.tag) {
+						symbol = node.tag.arg;
+					} else if (node.caption.childNodes.length === 1) {
+						var textNode:TextNodeSyntaxTree = <TextNodeSyntaxTree> node.caption.childNodes[0];
+						symbol = textNode.text;
+					}
+					symbolTable.push({
+						chapterName: chapter,
+						symbolName: symbol,
+						node: node
+					});
+				},
+				visitBlockElement: (node:BlockElementSyntaxTree)=> {
+
+				},
+				visitInlineElement: (node:InlineElementSyntaxTree)=> {
+				}
+			});
+
 			return chapter;
 		}
 

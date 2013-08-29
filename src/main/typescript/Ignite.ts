@@ -4,7 +4,6 @@
 ///<reference path='Walker.ts' /> // Walker が import で Parser.ts に実行順序依存している
 ///<reference path='Model.ts' />
 ///<reference path='Parser.ts' />
-///<reference path='SemanticAnalyzer.ts' />
 ///<reference path='Controller.ts' />
 
 module ReVIEW {

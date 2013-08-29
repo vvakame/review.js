@@ -25,6 +25,7 @@ module ReVIEW {
 	// PREDEF は採番しない
 	export class Part {
 		chapters:Chapter[];
+		symbolTables:{chapterName:string; symbolName:string; node:Parse.SyntaxTree;}[];
 	}
 
 	export class Chapter {
@@ -250,7 +251,7 @@ module ReVIEW {
 			level:number;
 			label:ArgumentSyntaxTree;
 			tag:ArgumentSyntaxTree;
-			caption:SyntaxTree;
+			caption:NodeSyntaxTree;
 
 			constructor(data:ConcreatSyntaxTree) {
 				super(data);
@@ -262,7 +263,7 @@ module ReVIEW {
 				if (data.tag !== "") {
 					this.tag = <ArgumentSyntaxTree> transform(this.checkObject(data.tag));
 				}
-				this.caption = transform(this.checkObject(data.caption));
+				this.caption = <NodeSyntaxTree> transform(this.checkObject(data.caption));
 			}
 		}
 
