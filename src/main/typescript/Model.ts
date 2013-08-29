@@ -179,6 +179,54 @@ module ReVIEW {
 					return value;
 				}
 			}
+
+			private toOtherNode<T extends SyntaxTree >(clazz:any):T {
+				if (this instanceof clazz) {
+					return <T>this;
+				} else {
+					throw new Error("this node is not " + clazz.name);
+				}
+			}
+
+			toNode():NodeSyntaxTree {
+				return this.toOtherNode<NodeSyntaxTree>(NodeSyntaxTree);
+			}
+
+			toBlockElement():BlockElementSyntaxTree {
+				return this.toOtherNode<BlockElementSyntaxTree>(BlockElementSyntaxTree);
+			}
+
+			toInlineElement():InlineElementSyntaxTree {
+				return this.toOtherNode<InlineElementSyntaxTree>(InlineElementSyntaxTree);
+			}
+
+			toArgument():ArgumentSyntaxTree {
+				return this.toOtherNode<ArgumentSyntaxTree>(ArgumentSyntaxTree);
+			}
+
+			toChapter():ChapterSyntaxTree {
+				return this.toOtherNode<ChapterSyntaxTree>(ChapterSyntaxTree);
+			}
+
+			toHeadline():HeadlineSyntaxTree {
+				return this.toOtherNode<HeadlineSyntaxTree>(HeadlineSyntaxTree);
+			}
+
+			toUlist():UlistElementSyntaxTree {
+				return this.toOtherNode<UlistElementSyntaxTree>(UlistElementSyntaxTree);
+			}
+
+			toOlist():OlistElementSyntaxTree {
+				return this.toOtherNode<OlistElementSyntaxTree>(OlistElementSyntaxTree);
+			}
+
+			toDlist():DlistElementSyntaxTree {
+				return this.toOtherNode<DlistElementSyntaxTree>(DlistElementSyntaxTree);
+			}
+
+			toTextNode():TextNodeSyntaxTree {
+				return this.toOtherNode<TextNodeSyntaxTree>(TextNodeSyntaxTree);
+			}
 		}
 
 		export class NodeSyntaxTree extends SyntaxTree {
@@ -230,7 +278,7 @@ module ReVIEW {
 			constructor(data:ConcreatSyntaxTree) {
 				super(data);
 
-				this.headline = <HeadlineSyntaxTree>transform(this.checkObject(data.headline));
+				this.headline = transform(this.checkObject(data.headline)).toHeadline();
 				if (typeof data.text === "string") {
 					return;
 				}
@@ -258,12 +306,12 @@ module ReVIEW {
 
 				this.level = this.checkNumber(data.level);
 				if (data.label !== "") {
-					this.label = <ArgumentSyntaxTree> transform(this.checkObject(data.label));
+					this.label = transform(this.checkObject(data.label)).toArgument();
 				}
 				if (data.tag !== "") {
-					this.tag = <ArgumentSyntaxTree> transform(this.checkObject(data.tag));
+					this.tag = transform(this.checkObject(data.tag)).toArgument();
 				}
-				this.caption = <NodeSyntaxTree> transform(this.checkObject(data.caption));
+				this.caption = transform(this.checkObject(data.caption)).toNode();
 			}
 		}
 

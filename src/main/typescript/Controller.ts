@@ -54,7 +54,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 					if (node.tag) {
 						symbol = node.tag.arg;
 					} else if (node.caption.childNodes.length === 1) {
-						var textNode:TextNodeSyntaxTree = <TextNodeSyntaxTree> node.caption.childNodes[0];
+						var textNode = node.caption.childNodes[0].toTextNode();
 						symbol = textNode.text;
 					}
 					symbolTable.push({

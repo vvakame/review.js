@@ -7,19 +7,19 @@ module ReVIEW {
 	export module Parse {
 		export function parse(input:string):{ast:NodeSyntaxTree;cst:ConcreatSyntaxTree;} {
 			var rawResult = PEG.parse(input);
-			var root = <NodeSyntaxTree> transform(rawResult);
+			var root = transform(rawResult).toNode();
 
 			// Chapter を Headline の level に応じて構造を組み替える
 			//   level 2 は level 1 の下に来るようにしたい
 			if (root.childNodes.length !== 0) {
-				reconstruct(<NodeSyntaxTree>root.childNodes[0], (chapter:ChapterSyntaxTree)=> chapter.headline.level);
+				reconstruct(root.childNodes[0].toNode(), (chapter:ChapterSyntaxTree)=> chapter.headline.level);
 			}
 			// Ulist もChapter 同様の level 構造があるので同じように処理したい
 			var ulistSet:NodeSyntaxTree[] = [];
 			ReVIEW.visit(root, {
 				visitDefault: (parent:SyntaxTree, ast:SyntaxTree)=> {
 					if (ast.ruleName === RuleName.Ulist) {
-						ulistSet.push(<NodeSyntaxTree>ast);
+						ulistSet.push(ast.toNode());
 					}
 				}
 			});

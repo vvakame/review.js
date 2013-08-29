@@ -25,8 +25,8 @@ describe("ReVIEW.walkについて", ()=> {
 
 		var result:ReVIEW.Parse.ChapterSyntaxTree = null;
 		ReVIEW.walk(headline, (ast)=> {
-			if (ast.ruleName === RuleName.Chapter && (<ReVIEW.Parse.ChapterSyntaxTree>ast).level === 2) {
-				result = <ReVIEW.Parse.ChapterSyntaxTree>ast;
+			if (ast.ruleName === RuleName.Chapter && ast.toChapter().level === 2) {
+				result = ast.toChapter();
 				return null;
 			} else {
 				return ast.parentNode;
@@ -46,7 +46,7 @@ describe("ReVIEW.visitについて", ()=> {
 		ReVIEW.visit(result.ast, {
 			visitDefault: (parent:ReVIEW.Parse.SyntaxTree, ast:ReVIEW.Parse.SyntaxTree)=> {
 				if (ast instanceof ReVIEW.Parse.TextNodeSyntaxTree) {
-					actual += (<ReVIEW.Parse.TextNodeSyntaxTree>ast).text + "\n";
+					actual += ast.toTextNode().text + "\n";
 				}
 			}
 		});
