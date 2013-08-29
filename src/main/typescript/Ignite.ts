@@ -8,11 +8,11 @@
 
 module ReVIEW {
 
-	export function start(setup:(review:any)=>void, options?:ReVIEW.Options) {
+	export function start(setup:(review:any)=>void, options?:ReVIEW.Options):Book {
 		var controller = new Controller(options);
 		// setup 中で initConfig が呼び出される
 		setup(controller);
-		controller.processBook();
+		return controller.processBook();
 	}
 }
 

@@ -10,6 +10,8 @@ import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
 import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 
+import Chapter = ReVIEW.Chapter;
+
 	export class Controller {
 		data:ReVIEW.Config;
 
@@ -27,49 +29,82 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 				this.data.book.chapters,
 				this.data.book.afterword
 			].map((part) => this.processPart(book, part ? part : []));
-			// TODO
+
+			book.config = this.data;
 			return book;
 		}
 
 		processPart(book:Book, chapters:string[]):Part {
 			var part = new Part();
 			part.chapters = chapters.map((chapter) => this.processChapter(book, part, chapter));
-			// TODO
+			var symbolTable:{
+				chapterName:string;
+				symbolName:string;
+				labelName:string;
+				node:SyntaxTree;
+			}[] = [];
+			part.chapters.forEach((chapter)=> {
+				chapter.symbolTable.forEach((symbolInfo) => {
+					symbolTable.push({
+						chapterName: chapter.name,
+						symbolName: symbolInfo.symbolName,
+						labelName: symbolInfo.labelName,
+						node: symbolInfo.node
+					});
+				});
+			});
+
+			part.symbolTable = symbolTable;
 			return part;
 		}
 
-		processChapter(book:Book, part:Part, chapter:string):Chapter {
-			var data = this.read(this.resolvePath(chapter));
+		processChapter(book:Book, part:Part, chapterPath:string):Chapter {
+			var data = this.read(this.resolvePath(chapterPath));
 			var parseResult = ReVIEW.Parse.parse(data);
-			console.log(JSON.stringify(parseResult.ast, null, 2));
 			var chapter = new Chapter();
 
-			var symbolTable:{chapterName:string; symbolName:string; node:SyntaxTree;}[] = [];
+			var symbolTable:{
+				symbolName:string;
+				labelName:string;
+				node:SyntaxTree;
+			}[] = [];
 			ReVIEW.visit(parseResult.ast, {
-				visitDefault: (node:SyntaxTree)=> {
+				visitDefault: (parent:SyntaxTree, node:SyntaxTree)=> {
 
 				},
-				visitHeadline: (node:HeadlineSyntaxTree)=> {
-					var symbol:string = null;
+				visitHeadline: (parent:SyntaxTree, node:HeadlineSyntaxTree)=> {
+					var label:string = null;
 					if (node.tag) {
-						symbol = node.tag.arg;
+						label = node.tag.arg;
 					} else if (node.caption.childNodes.length === 1) {
 						var textNode = node.caption.childNodes[0].toTextNode();
-						symbol = textNode.text;
+						label = textNode.text;
 					}
 					symbolTable.push({
-						chapterName: chapter,
-						symbolName: symbol,
+						symbolName: "hd",
+						labelName: label,
 						node: node
 					});
 				},
-				visitBlockElement: (node:BlockElementSyntaxTree)=> {
-
+				visitBlockElement: (parent:SyntaxTree, node:BlockElementSyntaxTree)=> {
+					symbolTable.push({
+						symbolName: node.name,
+						labelName: null,
+						node: node
+					});
 				},
-				visitInlineElement: (node:InlineElementSyntaxTree)=> {
+				visitInlineElement: (parent:SyntaxTree, node:InlineElementSyntaxTree)=> {
+					symbolTable.push({
+						symbolName: node.name,
+						labelName: null,
+						node: node
+					});
 				}
 			});
 
+			chapter.name = chapterPath;
+			chapter.symbolTable = symbolTable;
+			chapter.root = parseResult.ast;
 			return chapter;
 		}
 

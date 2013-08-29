@@ -17,6 +17,7 @@ module ReVIEW {
 	}
 
 	export class Book {
+		config:Config;
 		parts:Part[] = [];
 	}
 
@@ -25,10 +26,22 @@ module ReVIEW {
 	// PREDEF は採番しない
 	export class Part {
 		chapters:Chapter[];
-		symbolTables:{chapterName:string; symbolName:string; node:Parse.SyntaxTree;}[];
+		symbolTable:{
+			chapterName:string;
+			symbolName:string;
+			labelName:string;
+			node:ReVIEW.Parse.SyntaxTree;
+		}[];
 	}
 
 	export class Chapter {
+		name:string;
+		symbolTable:{
+			symbolName:string;
+			labelName:string;
+			node:ReVIEW.Parse.SyntaxTree;
+		}[];
+		root:ReVIEW.Parse.SyntaxTree;
 	}
 
 	export module Parse {
