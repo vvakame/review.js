@@ -37,6 +37,7 @@ module ReVIEW {
 	 */
 	export class Process {
 		symbols:Symbol[] = [];
+		indexCounter:{ [kind:string]:number; } = {};
 		afterProcess:Function[] = [];
 
 		constructor(public part:Part, public chapter:Chapter) {
@@ -63,6 +64,17 @@ module ReVIEW {
 
 		addSymbol(symbol:Symbol) {
 			this.symbols.push(symbol);
+		}
+
+		nextIndex(kind:string) {
+			var nextIndex = this.indexCounter[kind];
+			if (typeof nextIndex === "undefined") {
+				nextIndex = 1;
+			} else {
+				nextIndex++;
+			}
+			this.indexCounter[kind] = nextIndex;
+			return nextIndex;
 		}
 
 		addAfterProcess(func:Function) {
@@ -218,6 +230,8 @@ module ReVIEW {
 			line:number;
 			column:number;
 			ruleName:RuleName;
+			// analyzer 中で設定する項目
+			index:number;
 
 			constructor(data:ConcreatSyntaxTree) {
 				this.ruleName = RuleName[data.syntax];

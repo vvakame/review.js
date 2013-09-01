@@ -180,6 +180,7 @@ module ReVIEW {
 				if (!this.checkArgsLength(process, node, 2)) {
 					return;
 				}
+				node.index = process.nextIndex("list");
 				process.addSymbol({
 					symbolName: node.name,
 					labelName: node.args[0].arg,
