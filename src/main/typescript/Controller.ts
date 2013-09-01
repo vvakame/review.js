@@ -52,6 +52,12 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 			process():Book {
 			var book = this.processBook();
 			this.config.analyzer.init(book);
+			this.config.validators.forEach((validator)=> {
+				validator.init(book);
+			});
+			this.config.builders.forEach((builder)=> {
+				builder.init(book);
+			});
 			return book;
 		}
 

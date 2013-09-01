@@ -10,6 +10,7 @@ module ReVIEW {
 	import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 	import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
 	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
+	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
 		/**
 		 * 意味解析やシンボルの解決を行う。
@@ -27,6 +28,7 @@ module ReVIEW {
 		 * また、Builderと対比させて、未実装の候補がないかをチェックする。
 		 */
 		export interface IValidator {
+			init(book:Book);
 			checkByBuilders(builders:IBuilder[]);
 		}
 
@@ -34,7 +36,7 @@ module ReVIEW {
 		 * IAnalyzerとIValidatorでチェックをした後に構文木から出力を生成する。
 		 */
 		export interface IBuilder {
-
+			init(book:Book);
 		}
 
 		/**
@@ -63,7 +65,6 @@ module ReVIEW {
 
 						ReVIEW.visit(chapter.root, {
 							visitDefaultPre: (node:SyntaxTree)=> {
-
 							},
 							visitHeadlinePre: (node:HeadlineSyntaxTree)=> {
 								this.headline(chapter.process, "hd", node);
@@ -100,19 +101,19 @@ module ReVIEW {
 			}
 
 			block(process:Process, name:string, node:BlockElementSyntaxTree) {
-				var func = this["block_" + name].bind(this);
+				var func = this["block_" + name];
 				if (typeof func !== "function") {
 					throw new AnalyzerError("block_" + name + " is not Function");
 				}
-				func(process, node);
+				func.call(this, process, node);
 			}
 
 			inline(process:Process, name:string, node:InlineElementSyntaxTree) {
-				var func = this["inline_" + name].bind(this);
+				var func = this["inline_" + name];
 				if (typeof func !== "function") {
 					throw new AnalyzerError("inline_" + name + " is not Function");
 				}
-				func(process, node);
+				func.call(this, process, node);
 			}
 
 			checkArgsLength(process:Process, node:BlockElementSyntaxTree, expect:number):boolean;
@@ -180,7 +181,7 @@ module ReVIEW {
 				if (!this.checkArgsLength(process, node, 2)) {
 					return;
 				}
-				node.index = process.nextIndex("list");
+				node.no = process.nextIndex("list");
 				process.addSymbol({
 					symbolName: node.name,
 					labelName: node.args[0].arg,
@@ -259,15 +260,149 @@ module ReVIEW {
 		}
 
 		export class DefaultValidator implements IValidator {
-			constructor() {
+			init(book:Book) {
 			}
 
 			checkByBuilders(builders:IBuilder[]) {
-
 			}
 		}
 
 		export class DefaultBuilder implements IBuilder {
+			book:Book;
+
+			init(book:Book) {
+				this.book = book;
+
+				book.parts.forEach((part) => {
+					part.chapters.forEach((chapter) => {
+						var process = chapter.process;
+						ReVIEW.visit(chapter.root, {
+							visitDefaultPre: (node:SyntaxTree)=> {
+							},
+							visitTextPre: (node:TextNodeSyntaxTree) => {
+								process.out(node.text);
+							},
+							visitHeadlinePre: (node:HeadlineSyntaxTree)=> {
+								this.headline_pre(chapter.process, "hd", node);
+							},
+							visitHeadlinePost: (node:HeadlineSyntaxTree)=> {
+								this.headline_post(chapter.process, "hd", node);
+							},
+							visitBlockElementPre: (node:BlockElementSyntaxTree)=> {
+								this.block_pre(chapter.process, node.name, node);
+							},
+							visitBlockElementPost: (node:BlockElementSyntaxTree)=> {
+								this.block_post(chapter.process, node.name, node);
+							},
+							visitInlineElementPre: (node:InlineElementSyntaxTree)=> {
+								this.inline_pre(chapter.process, node.name, node);
+							},
+							visitInlineElementPost: (node:InlineElementSyntaxTree)=> {
+								this.inline_post(chapter.process, node.name, node);
+							},
+							visitChapterPost: (node:ChapterSyntaxTree)=> {
+								process.out("\n");
+							}
+						});
+					});
+				});
+				book.parts.forEach((part) => {
+					part.chapters.forEach((chapter) => {
+						chapter.process.doAfterProcess();
+					});
+				});
+			}
+
+			headline_pre(process:Process, name:string, node:HeadlineSyntaxTree) {
+				// TODO no の採番がレベル別になっていない
+				process.out("■H").out(node.level).out("■").out("第").out(node.no).out("章").out("　");
+			}
+
+			headline_post(process:Process, name:string, node:HeadlineSyntaxTree) {
+				process.out("\n");
+			}
+
+			block_pre(process:Process, name:string, node:BlockElementSyntaxTree) {
+				var func:Function;
+				func = this["block_" + name];
+				if (typeof func === "function") {
+					func.call(this, process, node);
+					return;
+				}
+
+				func = this["block_" + name + "_pre"];
+				if (typeof func !== "function") {
+					throw new AnalyzerError("block_" + name + "_pre or block_" + name + " is not Function");
+				}
+				func.call(this, process, node);
+			}
+
+			block_post(process:Process, name:string, node:BlockElementSyntaxTree) {
+				var func:Function;
+				func = this["block_" + name];
+				if (typeof func === "function") {
+					return;
+				}
+
+				func = this["block_" + name + "_post"];
+				if (typeof func !== "function") {
+					throw new AnalyzerError("block_" + name + "_post is not Function");
+				}
+				func.call(this, process, node);
+			}
+
+			inline_pre(process:Process, name:string, node:InlineElementSyntaxTree) {
+				var func:Function;
+				func = this["inline_" + name];
+				if (typeof func === "function") {
+					func.call(this, process, node);
+					return;
+				}
+
+				func = this["inline_" + name + "_pre"];
+				if (typeof func !== "function") {
+					throw new AnalyzerError("inline_" + name + "_pre or inline_" + name + " is not Function");
+				}
+				func.call(this, process, node);
+			}
+
+			inline_post(process:Process, name:string, node:InlineElementSyntaxTree) {
+				var func:Function;
+				func = this["inline_" + name];
+				if (typeof func === "function") {
+					return;
+				}
+
+				func = this["inline_" + name + "_post"];
+				if (typeof func !== "function") {
+					throw new AnalyzerError("inline_" + name + "_post is not Function");
+				}
+				func.call(this, process, node);
+			}
+
+			block_list_pre(process:Process, node:BlockElementSyntaxTree) {
+				process.out("◆→開始:リスト←◆\n");
+				// TODO 章番号を引いて挿入しないといけない
+				process.out("リスト").out(1).out(".").out(node.no).out("　").out(node.args[1].arg).out("\n");
+			}
+
+			block_list_post(process:Process, node:BlockElementSyntaxTree) {
+				process.out("◆→終了:リスト←◆\n");
+			}
+
+			inline_list(process:Process, node:InlineElementSyntaxTree) {
+				// TODO 章番号と図番号を挿入しないといけない
+				process.out("リスト").out(1).out(".").out(1);
+			}
+
+			inline_hd_pre(process:Process, node:InlineElementSyntaxTree) {
+				// TODO 章番号と見出し番号を挿入しないといけない
+				process.out("「").out(1).out(".").out(1).out(" ");
+			}
+
+			inline_hd_post(process:Process, node:InlineElementSyntaxTree) {
+				process.out("」");
+			}
 		}
 	}
 }

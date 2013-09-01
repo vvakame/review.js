@@ -57,9 +57,10 @@ module ReVIEW {
 			console.error(message, node);
 		}
 
-		out(data:string) {
+		out(data:any):Process {
 			// 最近のブラウザだと単純結合がアホみたいに早いらしいので
 			this.result += data;
+			return this;
 		}
 
 		addSymbol(symbol:Symbol) {
@@ -231,7 +232,7 @@ module ReVIEW {
 			column:number;
 			ruleName:RuleName;
 			// analyzer 中で設定する項目
-			index:number;
+			no:number;
 
 			constructor(data:ConcreatSyntaxTree) {
 				this.ruleName = RuleName[data.syntax];
