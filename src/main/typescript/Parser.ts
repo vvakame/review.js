@@ -28,7 +28,7 @@ module ReVIEW {
 			// Ulist もChapter 同様の level 構造があるので同じように処理したい
 			var ulistSet:NodeSyntaxTree[] = [];
 			ReVIEW.visit(root, {
-				visitDefault: (ast:SyntaxTree)=> {
+				visitDefaultPre: (ast:SyntaxTree)=> {
 					if (ast.ruleName === RuleName.Ulist) {
 						ulistSet.push(ast.toNode());
 					}
@@ -40,7 +40,7 @@ module ReVIEW {
 
 			// parentNode を設定
 			ReVIEW.visit(root, {
-				visitDefault: (ast:SyntaxTree, parent:SyntaxTree)=> {
+				visitDefaultPre: (ast:SyntaxTree, parent:SyntaxTree)=> {
 					ast.parentNode = parent;
 				}
 			});
