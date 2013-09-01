@@ -68,7 +68,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 	function visitSub(parent:SyntaxTree, ast:SyntaxTree, v:TreeVisitor) {
 		if (ast instanceof BlockElementSyntaxTree) {
 			var block = ast.toBlockElement();
-			v.visitBlockElement(parent, block);
+			v.visitBlockElement(block, parent);
 			block.args.forEach((next)=> {
 				visitSub(ast, next, v);
 			});
@@ -77,16 +77,16 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 			});
 		} else if (ast instanceof InlineElementSyntaxTree) {
 			var inline = ast.toInlineElement();
-			v.visitInlineElement(parent, inline);
+			v.visitInlineElement(inline, parent);
 			inline.childNodes.forEach((next)=> {
 				visitSub(ast, next, v);
 			});
 		} else if (ast instanceof ArgumentSyntaxTree) {
 			var arg = ast.toArgument();
-			v.visitArgument(parent, arg);
+			v.visitArgument(arg, parent);
 		} else if (ast instanceof ChapterSyntaxTree) {
 			var chap = ast.toChapter();
-			v.visitChapter(parent, chap);
+			v.visitChapter(chap, parent);
 			visitSub(ast, chap.headline, v);
 			if (chap.text) {
 				chap.text.forEach((next)=> {
@@ -98,35 +98,35 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 			});
 		} else if (ast instanceof HeadlineSyntaxTree) {
 			var head = ast.toHeadline();
-			v.visitHeadline(parent, head);
+			v.visitHeadline(head, parent);
 			visitSub(ast, head.label, v);
 			visitSub(ast, head.tag, v);
 			visitSub(ast, head.caption, v);
 		} else if (ast instanceof UlistElementSyntaxTree) {
 			var ul = ast.toUlist();
-			v.visitUlist(parent, ul);
+			v.visitUlist(ul, parent);
 			visitSub(ast, ul.text, v);
 			ul.childNodes.forEach((next)=> {
 				visitSub(ast, next, v);
 			});
 		} else if (ast instanceof OlistElementSyntaxTree) {
 			var ol = ast.toOlist();
-			v.visitOlist(parent, ol);
+			v.visitOlist(ol, parent);
 			visitSub(ast, ol.text, v);
 		} else if (ast instanceof DlistElementSyntaxTree) {
 			var dl = ast.toDlist();
-			v.visitDlist(parent, dl);
+			v.visitDlist(dl, parent);
 			visitSub(ast, dl.text, v);
 			visitSub(ast, dl.content, v);
 		} else if (ast instanceof NodeSyntaxTree) {
 			var node = ast.toNode();
-			v.visitNode(parent, node);
+			v.visitNode(node, parent);
 			node.childNodes.forEach((next)=> {
 				visitSub(ast, next, v);
 			});
 		} else if (ast instanceof TextNodeSyntaxTree) {
 			var text = ast.toTextNode();
-			v.visitText(parent, text);
+			v.visitText(text, parent);
 		} else if (ast) {
 			v.visitDefault(parent, ast);
 		}
@@ -137,16 +137,16 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 	 * 実装されなかったメソッドは、visitDefault または NodeSyntaxTree を継承している場合 visitNode にフォールバックする。
 	 */
 	export interface TreeVisitor {
-		visitDefault(parent:SyntaxTree, ast:SyntaxTree);
-		visitNode?(parent:SyntaxTree, ast:NodeSyntaxTree);
-		visitBlockElement?(parent:SyntaxTree, ast:BlockElementSyntaxTree);
-		visitInlineElement?(parent:SyntaxTree, ast:InlineElementSyntaxTree);
-		visitArgument?(parent:SyntaxTree, ast:ArgumentSyntaxTree);
-		visitChapter?(parent:SyntaxTree, ast:ChapterSyntaxTree);
-		visitHeadline?(parent:SyntaxTree, ast:HeadlineSyntaxTree);
-		visitUlist?(parent:SyntaxTree, ast:UlistElementSyntaxTree);
-		visitOlist?(parent:SyntaxTree, ast:OlistElementSyntaxTree);
-		visitDlist?(parent:SyntaxTree, ast:DlistElementSyntaxTree);
-		visitText?(parent:SyntaxTree, ast:TextNodeSyntaxTree);
+		visitDefault(node:SyntaxTree, parent:SyntaxTree);
+		visitNode?(node:NodeSyntaxTree, parent:SyntaxTree);
+		visitBlockElement?(node:BlockElementSyntaxTree, parent:SyntaxTree);
+		visitInlineElement?(node:InlineElementSyntaxTree, parent:SyntaxTree);
+		visitArgument?(node:ArgumentSyntaxTree, parent:SyntaxTree);
+		visitChapter?(node:ChapterSyntaxTree, parent:SyntaxTree);
+		visitHeadline?(node:HeadlineSyntaxTree, parent:SyntaxTree);
+		visitUlist?(node:UlistElementSyntaxTree, parent:SyntaxTree);
+		visitOlist?(node:OlistElementSyntaxTree, parent:SyntaxTree);
+		visitDlist?(node:DlistElementSyntaxTree, parent:SyntaxTree);
+		visitText?(node:TextNodeSyntaxTree, parent:SyntaxTree);
 	}
 }

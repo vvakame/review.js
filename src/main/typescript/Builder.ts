@@ -62,16 +62,16 @@ module ReVIEW {
 					part.chapters.forEach((chapter) => {
 
 						ReVIEW.visit(chapter.root, {
-							visitDefault: (parent:SyntaxTree, node:SyntaxTree)=> {
+							visitDefault: (node:SyntaxTree)=> {
 
 							},
-							visitHeadline: (parent:SyntaxTree, node:HeadlineSyntaxTree)=> {
+							visitHeadline: (node:HeadlineSyntaxTree)=> {
 								this.headline(chapter.process, "hd", node);
 							},
-							visitBlockElement: (parent:SyntaxTree, node:BlockElementSyntaxTree)=> {
+							visitBlockElement: (node:BlockElementSyntaxTree)=> {
 								this.block(chapter.process, node.name, node);
 							},
-							visitInlineElement: (parent:SyntaxTree, node:InlineElementSyntaxTree)=> {
+							visitInlineElement: (node:InlineElementSyntaxTree)=> {
 								this.inline(chapter.process, node.name, node);
 							}
 						});
@@ -141,9 +141,9 @@ module ReVIEW {
 			contentToString(node:NodeSyntaxTree):string {
 				var result = "";
 				ReVIEW.visit(node, {
-					visitDefault: (parent:SyntaxTree, node:SyntaxTree)=> {
+					visitDefault: (node:SyntaxTree)=> {
 					},
-					visitText: (parent:SyntaxTree, text:TextNodeSyntaxTree) => {
+					visitText: (text:TextNodeSyntaxTree) => {
 						result += text.text;
 					}
 				});
