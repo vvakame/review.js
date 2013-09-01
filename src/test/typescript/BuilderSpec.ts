@@ -1,6 +1,6 @@
 ///<reference path='libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
 
-///<reference path='../../main/typescript/Model.ts' />
+///<reference path='../../main/typescript/Builder.ts' />
 
 describe("ReVIEW.Controllerの", ()=> {
 	it("処理が正しく動くこと", ()=> {

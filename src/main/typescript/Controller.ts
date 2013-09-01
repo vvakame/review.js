@@ -20,6 +20,23 @@ import Chapter = ReVIEW.Chapter;
 
 		initConfig(data:ReVIEW.Config):void {
 			this.data = data;
+
+			// analyzer の正規化
+			data.analyzer = data.analyzer || new Build.DefaultAnalyzer();
+			// validators の正規化
+			if (!data.validators || data.validators.length === 0) {
+				this.data.validators = [new Build.DefaultValidator()];
+			} else if (!Array.isArray(data.validators)) {
+				this.data.validators = [<any>data.validators];
+			}
+			// builders の正規化
+		}
+
+		process():Book {
+			var book = this.processBook();
+			var process = new Process();
+			this.data.analyzer.init(book, process);
+			return book;
 		}
 
 		processBook():Book {
@@ -36,25 +53,8 @@ import Chapter = ReVIEW.Chapter;
 
 		processPart(book:Book, chapters:string[]):Part {
 			var part = new Part();
+			part.parent = book;
 			part.chapters = chapters.map((chapter) => this.processChapter(book, part, chapter));
-			var symbolTable:{
-				chapterName:string;
-				symbolName:string;
-				labelName:string;
-				node:SyntaxTree;
-			}[] = [];
-			part.chapters.forEach((chapter)=> {
-				chapter.symbolTable.forEach((symbolInfo) => {
-					symbolTable.push({
-						chapterName: chapter.name,
-						symbolName: symbolInfo.symbolName,
-						labelName: symbolInfo.labelName,
-						node: symbolInfo.node
-					});
-				});
-			});
-
-			part.symbolTable = symbolTable;
 			return part;
 		}
 
@@ -62,6 +62,7 @@ import Chapter = ReVIEW.Chapter;
 			var data = this.read(this.resolvePath(chapterPath));
 			var parseResult = ReVIEW.Parse.parse(data);
 			var chapter = new Chapter();
+			chapter.parent = part;
 
 			var symbolTable:{
 				symbolName:string;
@@ -72,6 +73,7 @@ import Chapter = ReVIEW.Chapter;
 				visitDefault: (parent:SyntaxTree, node:SyntaxTree)=> {
 
 				},
+				// TODO 後で頑張って消す
 				visitHeadline: (parent:SyntaxTree, node:HeadlineSyntaxTree)=> {
 					var label:string = null;
 					if (node.tag) {
@@ -83,20 +85,6 @@ import Chapter = ReVIEW.Chapter;
 					symbolTable.push({
 						symbolName: "hd",
 						labelName: label,
-						node: node
-					});
-				},
-				visitBlockElement: (parent:SyntaxTree, node:BlockElementSyntaxTree)=> {
-					symbolTable.push({
-						symbolName: node.name,
-						labelName: null,
-						node: node
-					});
-				},
-				visitInlineElement: (parent:SyntaxTree, node:InlineElementSyntaxTree)=> {
-					symbolTable.push({
-						symbolName: node.name,
-						labelName: null,
 						node: node
 					});
 				}

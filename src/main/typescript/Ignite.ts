@@ -8,11 +8,11 @@
 
 module ReVIEW {
 
-	export function start(setup:(review:any)=>void, options?:ReVIEW.Options):Book {
+	export function start(setup:(review:any)=>void, options?:ReVIEW.Options) {
 		var controller = new Controller(options);
 		// setup 中で initConfig が呼び出される
 		setup(controller);
-		return controller.processBook();
+		return controller.process();
 	}
 }
 
@@ -33,7 +33,8 @@ if (ReVIEW.isNodeJS()) {
 		.action((document, options)=> {
 			var ast = options.ast || false;
 			// TODO
-		});
+		})
+	;
 
 	program
 		.command("*")
@@ -44,7 +45,8 @@ if (ReVIEW.isNodeJS()) {
 				reviewfile: reviewfile,
 				base: program.base
 			});
-		});
+		})
+	;
 
 	// grunt test で動かれても困るので
 	var endWith = (str, target) => {

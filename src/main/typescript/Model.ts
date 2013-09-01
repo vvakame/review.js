@@ -1,6 +1,8 @@
 ///<reference path='Parser.ts' />
+///<reference path='Builder.ts' />
 
 module ReVIEW {
+
 	export interface Options {
 		reviewfile?:string;
 		base?:string;
@@ -9,11 +11,37 @@ module ReVIEW {
 	export interface Config {
 		read?:(path:string)=>string;
 		write?:(path:string, data:string)=>void;
+
+		analyzer:Build.IAnalyzer;
+		validators:Build.IValidator[];
+		builders:Build.IBuilder[];
+
 		book:{
 			preface?:string[];
 			chapters:string[];
 			afterword?:string[];
 		};
+	}
+
+	export class Process {
+		result:string = "";
+
+		log(message:string, node?:Parse.SyntaxTree) {
+			console.log(message, node);
+		}
+
+		warn(message:string, node?:Parse.SyntaxTree) {
+			console.warn(message, node);
+		}
+
+		error(message:string, node?:Parse.SyntaxTree) {
+			console.error(message, node);
+		}
+
+		out(data:string) {
+			// 最近のブラウザだと単純結合がアホみたいに早いらしいので
+			this.result += data;
+		}
 	}
 
 	export class Book {
@@ -25,23 +53,26 @@ module ReVIEW {
 	// Part毎に章番号を採番する
 	// PREDEF は採番しない
 	export class Part {
+		parent:Book;
 		chapters:Chapter[];
-		symbolTable:{
-			chapterName:string;
-			symbolName:string;
-			labelName:string;
-			node:ReVIEW.Parse.SyntaxTree;
-		}[];
+	}
+
+	export interface ChapterSymbol {
+		symbolName:string;
+		labelName?:string;
+		referenceTo?:string;
+		node:ReVIEW.Parse.SyntaxTree;
 	}
 
 	export class Chapter {
+		parent:Part;
 		name:string;
-		symbolTable:{
-			symbolName:string;
-			labelName:string;
-			node:ReVIEW.Parse.SyntaxTree;
-		}[];
 		root:ReVIEW.Parse.SyntaxTree;
+		symbolTable:ChapterSymbol[] = [];
+
+		addSymbol(symbol:ChapterSymbol) {
+			this.symbolTable.push(symbol);
+		}
 	}
 
 	export module Parse {
@@ -49,6 +80,9 @@ module ReVIEW {
 			name:string;
 
 			constructor(public syntax:ConcreatSyntaxTree, public message:string) {
+				if ((<any>Error).captureStackTrace) {
+					(<any>Error).captureStackTrace(this, ParseError);
+				}
 				this.name = "ParseError";
 			}
 		}
@@ -330,13 +364,13 @@ module ReVIEW {
 
 		export class BlockElementSyntaxTree extends NodeSyntaxTree {
 			name:string;
-			args:SyntaxTree[];
+			args:ArgumentSyntaxTree[];
 
 			constructor(data:ConcreatSyntaxTree) {
 				super(data);
 				this.name = this.checkString(data.name);
 				this.args = this.checkArray(data.args).map((data:ConcreatSyntaxTree)=> {
-					return transform(data);
+					return transform(data).toArgument();
 				});
 			}
 		}
