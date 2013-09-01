@@ -16,6 +16,13 @@ import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
 import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
 import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 
+	/**
+	 * 指定された構文木を歩きまわる。
+	 * 次にどちらへ歩くかは渡した関数によって決まる。
+	 * null が返ってくると歩くのを中断する。
+	 * @param ast
+	 * @param actor
+	 */
 	export function walk(ast:SyntaxTree, actor:(ast:SyntaxTree)=>SyntaxTree) {
 		var next = actor(ast);
 		if (next !== null) {
@@ -23,6 +30,13 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 		}
 	}
 
+	/**
+	 * 指定された構文木の全てのノード・リーフを探索する。
+	 * 親子であれば親のほうが先に探索され、兄弟であれば兄のほうが先に探索される。
+	 * つまり、葉に着目すると文章に登場する順番に探索される。
+	 * @param ast
+	 * @param v
+	 */
 	export function visit(ast:SyntaxTree, v:TreeVisitor) {
 		var newV:TreeVisitor = {
 			visitDefault: v.visitDefault,
@@ -118,6 +132,10 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 		}
 	}
 
+	/**
+	 * 構文木を渡り歩くためのVisitor。
+	 * 実装されなかったメソッドは、visitDefault または NodeSyntaxTree を継承している場合 visitNode にフォールバックする。
+	 */
 	export interface TreeVisitor {
 		visitDefault(parent:SyntaxTree, ast:SyntaxTree);
 		visitNode?(parent:SyntaxTree, ast:NodeSyntaxTree);

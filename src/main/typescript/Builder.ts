@@ -22,12 +22,34 @@ module ReVIEW {
 			inline(name:string, node:InlineElementSyntaxTree);
 		}
 
+		/**
+		 * IAnalyzerで処理した後の構文木について構文上のエラーがないかチェックする。
+		 * また、Builderと対比させて、未実装の候補がないかをチェックする。
+		 */
 		export interface IValidator {
 			checkByBuilders(builders:IBuilder[]);
 		}
 
+		/**
+		 * IAnalyzerとIValidatorでチェックをした後に構文木から出力を生成する。
+		 */
 		export interface IBuilder {
 
+		}
+
+		/**
+		 * 解析中に発生したエラーを表す。
+		 * この例外は実装に不備があった時のみ利用される。
+		 * ユーザの入力した文書に不備がある場合には Process.error を利用すること。
+		 */
+		export class AnalyzerError implements Error {
+			name = "AnalyzerError";
+
+			constructor(public message:string) {
+				if ((<any>Error).captureStackTrace) {
+					(<any>Error).captureStackTrace(this, AnalyzerError);
+				}
+			}
 		}
 
 		export class DefaultAnalyzer implements IAnalyzer {
@@ -228,16 +250,6 @@ module ReVIEW {
 		}
 
 		export class DefaultBuilder implements IBuilder {
-		}
-
-		export class AnalyzerError implements Error {
-			name = "AnalyzerError";
-
-			constructor(public message:string) {
-				if ((<any>Error).captureStackTrace) {
-					(<any>Error).captureStackTrace(this, AnalyzerError);
-				}
-			}
 		}
 	}
 }

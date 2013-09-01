@@ -1,14 +1,33 @@
 ///<reference path='Parser.ts' />
 ///<reference path='Builder.ts' />
 
+class Hoge {
+	/**
+	 * test is test!
+	 */
+		test() {
+		console.log("test1");
+	}
+}
+
+
 module ReVIEW {
 
+	/**
+	 * コマンドライン引数を解釈した結果のオプション。
+	 */
 	export interface Options {
 		reviewfile?:string;
 		base?:string;
 	}
 
+	/**
+	 * コンパイル実行時の設定。
+	 * 本についての情報や処理実行時のプログラムの差し替え。
+	 */
 	export interface Config {
+		// TODO めんどくさくてまだ書いてない要素がたくさんある
+
 		read?:(path:string)=>string;
 		write?:(path:string, data:string)=>void;
 
@@ -23,10 +42,15 @@ module ReVIEW {
 		};
 	}
 
+	/**
+	 * コンパイル処理時の出力ハンドリング。
+	 */
 	export class Process {
+		// TODO Chapterごとに出力先を変えられる設計にしたほうが良さそう。
+
 		result:string = "";
 
-		log(message:string, node?:Parse.SyntaxTree) {
+		info(message:string, node?:Parse.SyntaxTree) {
 			console.log(message, node);
 		}
 
@@ -44,19 +68,28 @@ module ReVIEW {
 		}
 	}
 
+	/**
+	 * 本全体を表す。
+	 */
 	export class Book {
 		config:Config;
 		parts:Part[] = [];
 	}
 
-	// PREDEF, CHAPS, POSTDEF かな？
-	// Part毎に章番号を採番する
-	// PREDEF は採番しない
+	/**
+	 * パートを表す。
+	 * パートは 前書き、本文、後書き など。
+	 * Ruby版でいうと PREDEF, CHAPS, POSTDEF。
+	 * 章番号はパート毎に採番される。(Ruby版では PREDEF は採番されない)
+	 */
 	export class Part {
 		parent:Book;
 		chapters:Chapter[];
 	}
 
+	/**
+	 * チャプターに含まれる Headline, BlockElement, InlineElement についての情報。
+	 */
 	export interface ChapterSymbol {
 		symbolName:string;
 		labelName?:string;
@@ -64,6 +97,9 @@ module ReVIEW {
 		node:ReVIEW.Parse.SyntaxTree;
 	}
 
+	/**
+	 * チャプターを表す。
+	 */
 	export class Chapter {
 		parent:Part;
 		name:string;
@@ -75,7 +111,14 @@ module ReVIEW {
 		}
 	}
 
+	/**
+	 * 構文解析用途のモジュール。
+	 */
 	export module Parse {
+
+		/**
+		 * 構文解析時に発生したエラー。
+		 */
 		export class ParseError implements Error {
 			name:string;
 
@@ -87,6 +130,9 @@ module ReVIEW {
 			}
 		}
 
+		/**
+		 * 構文解析直後の生データ。
+		 */
 		export interface ConcreatSyntaxTree {
 			// 共通
 			syntax: string;
@@ -109,6 +155,9 @@ module ReVIEW {
 			no?:any;
 		}
 
+		/**
+		 * 構文解析時のルール名。
+		 */
 		export enum RuleName {
 			Start,
 			Chapters,
@@ -143,6 +192,9 @@ module ReVIEW {
 			SinglelineComment,
 		}
 
+		/**
+		 * 構文解析後の少し加工したデータ。
+		 */
 		export class SyntaxTree {
 			parentNode:SyntaxTree;
 			offset:number;
@@ -195,7 +247,12 @@ module ReVIEW {
 			toStringHook(indentLevel:number, result:string) {
 			}
 
-			checkNumber(value:any):number {
+			/**
+			 * 引数が数字かどうかチェックして違うならば例外を投げる。
+			 * @param value
+			 * @returns {*=}
+			 */
+				checkNumber(value:any):number {
 				if (typeof value !== "number") {
 					throw new Error("number required. actual:" + (typeof value) + ":" + value);
 				} else {
@@ -203,7 +260,12 @@ module ReVIEW {
 				}
 			}
 
-			checkString(value:any):string {
+			/**
+			 * 引数が文字列かどうかチェックして違うならば例外を投げる。
+			 * @param value
+			 * @returns {*=}
+			 */
+				checkString(value:any):string {
 				if (typeof value !== "string") {
 					throw new Error("string required. actual:" + (typeof value) + ":" + value);
 				} else {
@@ -211,7 +273,12 @@ module ReVIEW {
 				}
 			}
 
-			checkObject(value:any):any {
+			/**
+			 * 引数がオブジェクトかどうかチェックして違うならば例外を投げる。
+			 * @param value
+			 * @returns {*=}
+			 */
+				checkObject(value:any):any {
 				if (typeof value !== "object") {
 					throw new Error("object required. actual:" + (typeof value) + ":" + value);
 				} else {
@@ -219,7 +286,12 @@ module ReVIEW {
 				}
 			}
 
-			checkArray(value:any):any[] {
+			/**
+			 * 引数がArrayかどうかチェックして違うならば例外を投げる。
+			 * @param value
+			 * @returns {*=}
+			 */
+				checkArray(value:any):any[] {
 				if (!Array.isArray(value)) {
 					throw new Error("array required. actual:" + (typeof value) + ":" + value);
 				} else {
@@ -235,43 +307,73 @@ module ReVIEW {
 				}
 			}
 
-			toNode():NodeSyntaxTree {
+			/**
+			 * thisをNodeSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+			 */
+				toNode():NodeSyntaxTree {
 				return this.toOtherNode<NodeSyntaxTree>(NodeSyntaxTree);
 			}
 
-			toBlockElement():BlockElementSyntaxTree {
+			/**
+			 * thisをBlockElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+			 */
+				toBlockElement():BlockElementSyntaxTree {
 				return this.toOtherNode<BlockElementSyntaxTree>(BlockElementSyntaxTree);
 			}
 
-			toInlineElement():InlineElementSyntaxTree {
+			/**
+			 * thisをInlineElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+			 */
+				toInlineElement():InlineElementSyntaxTree {
 				return this.toOtherNode<InlineElementSyntaxTree>(InlineElementSyntaxTree);
 			}
 
-			toArgument():ArgumentSyntaxTree {
+			/**
+			 * thisをArgumentSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+			 */
+				toArgument():ArgumentSyntaxTree {
 				return this.toOtherNode<ArgumentSyntaxTree>(ArgumentSyntaxTree);
 			}
 
-			toChapter():ChapterSyntaxTree {
+			/**
+			 * thisをChapterSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+			 */
+				toChapter():ChapterSyntaxTree {
 				return this.toOtherNode<ChapterSyntaxTree>(ChapterSyntaxTree);
 			}
 
-			toHeadline():HeadlineSyntaxTree {
+			/**
+			 * thisをHeadlineSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+			 */
+				toHeadline():HeadlineSyntaxTree {
 				return this.toOtherNode<HeadlineSyntaxTree>(HeadlineSyntaxTree);
 			}
 
-			toUlist():UlistElementSyntaxTree {
+			/**
+			 * thisをUlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+			 */
+				toUlist():UlistElementSyntaxTree {
 				return this.toOtherNode<UlistElementSyntaxTree>(UlistElementSyntaxTree);
 			}
 
-			toOlist():OlistElementSyntaxTree {
+			/**
+			 * thisをOlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+			 */
+				toOlist():OlistElementSyntaxTree {
 				return this.toOtherNode<OlistElementSyntaxTree>(OlistElementSyntaxTree);
 			}
 
-			toDlist():DlistElementSyntaxTree {
+			/**
+			 * thisをDlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+			 */
+				toDlist():DlistElementSyntaxTree {
 				return this.toOtherNode<DlistElementSyntaxTree>(DlistElementSyntaxTree);
 			}
 
-			toTextNode():TextNodeSyntaxTree {
+			/**
+			 * thisをTextNodeSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+			 */
+				toTextNode():TextNodeSyntaxTree {
 				return this.toOtherNode<TextNodeSyntaxTree>(TextNodeSyntaxTree);
 			}
 		}

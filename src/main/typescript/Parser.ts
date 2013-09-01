@@ -4,7 +4,18 @@
 ///<reference path='Walker.ts' />
 
 module ReVIEW {
+
+	/**
+	 * 構文解析用途のモジュール。
+	 */
 	export module Parse {
+
+		/**
+		 * 文字列をReVIEW文書として解釈し構文木を返す。
+		 * 解釈に失敗した場合、PEG.SyntaxError または ReVIEW.ParseError が投げられる。
+		 * @param input
+		 * @returns {{ast: NodeSyntaxTree, cst: *}}
+		 */
 		export function parse(input:string):{ast:NodeSyntaxTree;cst:ConcreatSyntaxTree;} {
 			var rawResult = PEG.parse(input);
 			var root = transform(rawResult).toNode();
@@ -39,6 +50,11 @@ module ReVIEW {
 			};
 		}
 
+		/**
+		 * 具象構文木を抽象構文木に変換します。
+		 * @param rawResult
+		 * @returns {*}
+		 */
 		export function transform(rawResult:ConcreatSyntaxTree):SyntaxTree {
 			if (<any>rawResult === "") {
 				return null;
@@ -100,6 +116,12 @@ module ReVIEW {
 			}
 		}
 
+		/**
+		 * 構文木の組替えを行う。
+		 * 主に兄弟ノードを親子ノードに組み替えるために使う。
+		 * @param node
+		 * @param pickLevel
+		 */
 		function reconstruct(node:NodeSyntaxTree, pickLevel:(ast:NodeSyntaxTree)=>number) {
 			var originalChildNodes = node.childNodes;
 			node.childNodes = [];

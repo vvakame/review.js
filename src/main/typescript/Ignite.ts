@@ -8,6 +8,12 @@
 
 module ReVIEW {
 
+	/**
+	 * ReVIEW文書のコンパイルを開始する。
+	 * @param setup
+	 * @param options
+	 * @returns {Book}
+	 */
 	export function start(setup:(review:any)=>void, options?:ReVIEW.Options) {
 		var controller = new Controller(options);
 		// setup 中で initConfig が呼び出される
@@ -17,6 +23,8 @@ module ReVIEW {
 }
 
 if (ReVIEW.isNodeJS()) {
+	// Node.js 上で実行されている場合はコマンドライン引数を解釈して処理を実行する。
+
 	var program = require("commander");
 	program
 		.version("TODO", "-v, --version")
