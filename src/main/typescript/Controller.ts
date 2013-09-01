@@ -56,21 +56,19 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 		}
 
 		private processBook():Book {
-			var book = new Book();
-			book.parts = [
-				this.config.book.preface,
-				this.config.book.chapters,
-				this.config.book.afterword
-			].map((part) => this.processPart(book, part ? part : []));
-
-			book.config = this.config;
+			var book = new Book(this.config);
+			book.parts = Object.keys(this.config.book).map((key, index) => {
+				var chapters:string[] = this.config.book[key];
+				return this.processPart(book, index, key, chapters);
+			});
 			return book;
 		}
 
-		private processPart(book:Book, chapters:string[]):Part {
-			var part = new Part();
-			part.parent = book;
-			part.chapters = chapters.map((chapter, index) => this.processChapter(book, part, index, chapter));
+		private processPart(book:Book, index:number, name:string, chapters:string[] = []):Part {
+			var part = new Part(book, index + 1, name);
+			part.chapters = chapters.map((chapter, index) => {
+				return this.processChapter(book, part, index, chapter);
+			});
 			return part;
 		}
 

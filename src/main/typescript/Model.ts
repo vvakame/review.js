@@ -87,8 +87,10 @@ module ReVIEW {
 	 * 本全体を表す。
 	 */
 	export class Book {
-		config:Config;
 		parts:Part[] = [];
+
+		constructor(public config:Config) {
+		}
 	}
 
 	/**
@@ -98,8 +100,10 @@ module ReVIEW {
 	 * 章番号はパート毎に採番される。(Ruby版では PREDEF は採番されない)
 	 */
 	export class Part {
-		parent:Book;
 		chapters:Chapter[];
+
+		constructor(public parent:Book, public no:number, public name:string) {
+		}
 	}
 
 	/**
