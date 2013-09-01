@@ -315,16 +315,6 @@ module ReVIEW {
 				});
 			}
 
-			headline_pre(process:Process, name:string, node:HeadlineSyntaxTree) {
-				// TODO no の採番がレベル別になっていない
-				// TODO 2.3.2 みたいな階層を返せるメソッドが何かほしい
-				process.out("■H").out(node.level).out("■").out("第").out(node.parentNode.no).out("章").out("　");
-			}
-
-			headline_post(process:Process, name:string, node:HeadlineSyntaxTree) {
-				process.out("\n");
-			}
-
 			block_pre(process:Process, name:string, node:BlockElementSyntaxTree) {
 				var func:Function;
 				func = this["block_" + name];
@@ -399,12 +389,27 @@ module ReVIEW {
 
 			findReference(process:Process, node:SyntaxTree):Symbol {
 				var founds = process.symbols.filter((symbol)=> {
-					return symbol === node;
+					return symbol.node === node;
 				});
 				if (founds.length !== 1) {
 					throw new AnalyzerError("invalid status.");
 				}
 				return founds[0];
+			}
+
+			headline_pre(process:Process, name:string, node:HeadlineSyntaxTree) {
+				// TODO no の採番がレベル別になっていない
+				// TODO 2.3.2 みたいな階層を返せるメソッドが何かほしい
+				process.out("■H").out(node.level).out("■");
+				if (node.level === 1) {
+					process.out("第").out(node.parentNode.no).out("章").out("　");
+				} else if (node.level === 2) {
+					process.out(node.parentNode.toChapter().fqn).out("　");
+				}
+			}
+
+			headline_post(process:Process, name:string, node:HeadlineSyntaxTree) {
+				process.out("\n\n");
 			}
 
 			block_list_pre(process:Process, node:BlockElementSyntaxTree) {

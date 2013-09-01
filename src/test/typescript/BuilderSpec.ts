@@ -2,7 +2,7 @@
 
 ///<reference path='../../main/typescript/Builder.ts' />
 
-describe("ReVIEW.Controllerの", ()=> {
+describe("ReVIEW.Buildの", ()=> {
 	it("処理が正しく動くこと", ()=> {
 		var files:any = {
 			"./ch01.re": "={ch01} ちゃぷたーだよ\n今日の晩ご飯はラフテーだった",
@@ -44,5 +44,39 @@ describe("ReVIEW.Controllerの", ()=> {
 
 		expect(part.chapters[0].process.symbols.length).toBe(1);
 		expect(part.chapters[1].process.symbols.length).toBe(3);
+	});
+
+	describe("DefaultBuilderの動作の確認として", ()=> {
+		it("", ()=> {
+			var files:any = {
+				"./ch01.re": "= hoge\n== fuga\n=== moge\n== piyo\n=== foo\n= bar\n"
+			};
+			var result:any = {
+			};
+			var book = ReVIEW.start((review)=> {
+				review.initConfig({
+					read: function (path) {
+						return files[path];
+					},
+					write: function (path, content) {
+						result[path] = content;
+					},
+
+					book: {
+						preface: [
+						],
+						chapters: [
+							"ch01.re"
+						],
+						afterword: [
+						]
+					}
+				});
+			});
+			// TODO 想定より改行が多い… みた感じLevel3以降でおかしくなってる？
+			// var expected = "■H1■第1章　hoge\n\n■H2■1.1　fuga\n\n■H3■moge\n\n■H2■1.2　piyo\n\n■H3■foo\n\n■H1■第2章　bar\n";
+			var expected = "■H1■第1章　hoge\n\n■H2■1.1　fuga\n\n■H3■moge\n\n\n\n■H2■1.2　piyo\n\n■H3■foo\n\n\n\n\n■H1■第2章　bar\n\n\n";
+			expect(book.parts[1].chapters[0].process.result).toBe(expected);
+		});
 	});
 });

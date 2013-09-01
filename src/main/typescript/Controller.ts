@@ -9,6 +9,7 @@ import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
 import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
 import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
+import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
 	/**
 	 * ReVIEW文書を処理するためのコントローラ。
@@ -66,6 +67,38 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 			book.parts = Object.keys(this.config.book).map((key, index) => {
 				var chapters:string[] = this.config.book[key];
 				return this.processPart(book, index, key, chapters);
+			});
+			// Chapterに採番を行う
+			book.parts.forEach((part)=> {
+				var chapters:ChapterSyntaxTree[] = [];
+				part.chapters.forEach((chapter)=> {
+					ReVIEW.visit(chapter.root, {
+						visitDefaultPre: (node)=> {
+						},
+						visitChapterPre: (node:ChapterSyntaxTree) => {
+							chapters.push(node);
+						}
+					});
+				});
+				var counter:{[index:number]:number;} = {};
+				var max = 0;
+				var currentLevel = 0;
+				chapters.forEach((chapter)=> {
+					var level = chapter.headline.level;
+					max = Math.max(max, level);
+					if (currentLevel > level) {
+						for (var i = level + 1; i <= max; i++) {
+							counter[i] = 0;
+						}
+					} else if (currentLevel < level) {
+						for (var i = level; i <= max; i++) {
+							counter[i] = 0;
+						}
+					}
+					currentLevel = level;
+					counter[level] += 1;
+					chapter.no = counter[level];
+				});
 			});
 			return book;
 		}
