@@ -117,7 +117,9 @@ module ReVIEW {
 			}
 
 			block_list(node:BlockElementSyntaxTree) {
-				this.checkArgsLength(node, 2);
+				if (!this.checkArgsLength(node, 2)) {
+					return;
+				}
 				this.currentChapter.addSymbol({
 					symbolName: node.name,
 					labelName: node.args[0].arg,
@@ -126,8 +128,7 @@ module ReVIEW {
 			}
 
 			inline_list(node:InlineElementSyntaxTree) {
-				var childLength = node.childNodes.length;
-				if (childLength !== 1) {
+				if (node.childNodes.length !== 1) {
 					this.process.error("element body mismatch, only string");
 				}
 				this.currentChapter.addSymbol({
@@ -138,8 +139,7 @@ module ReVIEW {
 			}
 
 			inline_hd(node:InlineElementSyntaxTree) {
-				var childLength = node.childNodes.length;
-				if (childLength !== 1) {
+				if (node.childNodes.length !== 1) {
 					this.process.error("element body mismatch, only string");
 				}
 				this.currentChapter.addSymbol({
@@ -149,6 +149,53 @@ module ReVIEW {
 					node: node
 				});
 			}
+
+			// TODO 以下のものの実装をすすめる
+			// block_list
+			// block_emlist
+			// block_source
+			// block_listnum
+			// inline_list
+			// emlistnum
+			// inline_code
+			// block_cmd
+			// block_image
+			// inline_img
+			// block_indepimage
+			// block_graph
+			// block_table
+			// inline_table
+			// block_quote
+			// block_footnote
+			// inline_fn
+			// block_bibpaper
+			// inline_bib
+			// block_lead
+			// block_texequation
+			// block_noindent
+			// block_raw
+			// inline_kw
+			// inline_chap
+			// inline_title
+			// inline_chapref
+			// inline_bou
+			// inline_ruby
+			// inline_ami
+			// inline_b
+			// inline_i
+			// inline_strong
+			// inline_em
+			// inline_tt
+			// inline_tti
+			// inline_ttb
+			// inline_u
+			// inline_br
+			// inline_m
+			// inline_icon
+			// inline_uchar
+			// inline_href
+			// inline_raw
+			// block_label
 		}
 
 		export class DefaultValidator implements IValidator {
