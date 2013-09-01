@@ -10,8 +10,6 @@ import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
 import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 
-import Chapter = ReVIEW.Chapter;
-
 	export class Controller {
 		data:ReVIEW.Config;
 
@@ -30,6 +28,12 @@ import Chapter = ReVIEW.Chapter;
 				this.data.validators = [<any>data.validators];
 			}
 			// builders の正規化
+			if (!data.builders || data.builders.length === 0) {
+				// TODO DefaultBuilder は微妙感
+				this.data.builders = [new Build.DefaultBuilder()];
+			} else if (!Array.isArray(data.builders)) {
+				this.data.builders = [<any>data.builders];
+			}
 		}
 
 		process():Book {
@@ -63,35 +67,7 @@ import Chapter = ReVIEW.Chapter;
 			var parseResult = ReVIEW.Parse.parse(data);
 			var chapter = new Chapter();
 			chapter.parent = part;
-
-			var symbolTable:{
-				symbolName:string;
-				labelName:string;
-				node:SyntaxTree;
-			}[] = [];
-			ReVIEW.visit(parseResult.ast, {
-				visitDefault: (parent:SyntaxTree, node:SyntaxTree)=> {
-
-				},
-				// TODO 後で頑張って消す
-				visitHeadline: (parent:SyntaxTree, node:HeadlineSyntaxTree)=> {
-					var label:string = null;
-					if (node.tag) {
-						label = node.tag.arg;
-					} else if (node.caption.childNodes.length === 1) {
-						var textNode = node.caption.childNodes[0].toTextNode();
-						label = textNode.text;
-					}
-					symbolTable.push({
-						symbolName: "hd",
-						labelName: label,
-						node: node
-					});
-				}
-			});
-
 			chapter.name = chapterPath;
-			chapter.symbolTable = symbolTable;
 			chapter.root = parseResult.ast;
 			return chapter;
 		}

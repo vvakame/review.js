@@ -8,6 +8,7 @@ module ReVIEW {
 	import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
 	import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
 	import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
+	import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
 	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 
 		/**
@@ -16,6 +17,7 @@ module ReVIEW {
 		 */
 		export interface IAnalyzer {
 			init(book:Book, process:Process);
+			headline(name:string, node:HeadlineSyntaxTree);
 			block(name:string, node:BlockElementSyntaxTree);
 			inline(name:string, node:InlineElementSyntaxTree);
 		}
@@ -49,6 +51,9 @@ module ReVIEW {
 							visitDefault: (parent:SyntaxTree, node:SyntaxTree)=> {
 
 							},
+							visitHeadline: (parent:SyntaxTree, node:HeadlineSyntaxTree)=> {
+								this.headline("hd", node);
+							},
 							visitBlockElement: (parent:SyntaxTree, node:BlockElementSyntaxTree)=> {
 								this.block(node.name, node);
 							},
@@ -59,6 +64,21 @@ module ReVIEW {
 					});
 				});
 				this.delayChecker.forEach((func)=> func());
+			}
+
+			headline(name:string, node:HeadlineSyntaxTree) {
+				var label:string = null;
+				if (node.tag) {
+					label = node.tag.arg;
+				} else if (node.caption.childNodes.length === 1) {
+					var textNode = node.caption.childNodes[0].toTextNode();
+					label = textNode.text;
+				}
+				this.currentChapter.addSymbol({
+					symbolName: "hd",
+					labelName: label,
+					node: node
+				});
 			}
 
 			block(name:string, node:BlockElementSyntaxTree) {
@@ -200,7 +220,6 @@ module ReVIEW {
 
 		export class DefaultValidator implements IValidator {
 			constructor() {
-				console.log("DefaultValidator");
 			}
 
 			checkByBuilders(builders:IBuilder[]) {
