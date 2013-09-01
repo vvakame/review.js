@@ -15,6 +15,8 @@ module ReVIEW {
 		/**
 		 * 意味解析やシンボルの解決を行う。
 		 * 未解決のシンボルのエラーを通知するのはここ。
+		 * TODO また、シンボルの重複についてもチェックする必要がある。
+		 * TODO 章番号の採番についても、Part全部を横断で振る必要がある。
 		 */
 		export interface IAnalyzer {
 			init(book:Book);
@@ -315,7 +317,8 @@ module ReVIEW {
 
 			headline_pre(process:Process, name:string, node:HeadlineSyntaxTree) {
 				// TODO no の採番がレベル別になっていない
-				process.out("■H").out(node.level).out("■").out("第").out(node.no).out("章").out("　");
+				// TODO 2.3.2 みたいな階層を返せるメソッドが何かほしい
+				process.out("■H").out(node.level).out("■").out("第").out(node.parentNode.no).out("章").out("　");
 			}
 
 			headline_post(process:Process, name:string, node:HeadlineSyntaxTree) {
@@ -380,10 +383,25 @@ module ReVIEW {
 				func.call(this, process, node);
 			}
 
+			findChapter(node:SyntaxTree, level?:number):ChapterSyntaxTree {
+				var chapter:ChapterSyntaxTree = null;
+				ReVIEW.walk(node, (node:SyntaxTree) => {
+					if (node instanceof ReVIEW.Parse.ChapterSyntaxTree) {
+						chapter = node.toChapter();
+						if (typeof level === "undefined" || chapter.level === level) {
+							return null;
+						}
+					}
+					return node.parentNode;
+				});
+				return chapter;
+			}
+
 			block_list_pre(process:Process, node:BlockElementSyntaxTree) {
 				process.out("◆→開始:リスト←◆\n");
 				// TODO 章番号を引いて挿入しないといけない
-				process.out("リスト").out(1).out(".").out(node.no).out("　").out(node.args[1].arg).out("\n");
+				var chapter = this.findChapter(node, 1);
+				process.out("リスト").out(chapter.no).out(".").out(node.no).out("　").out(node.args[1].arg).out("\n");
 			}
 
 			block_list_post(process:Process, node:BlockElementSyntaxTree) {
@@ -391,12 +409,13 @@ module ReVIEW {
 			}
 
 			inline_list(process:Process, node:InlineElementSyntaxTree) {
-				// TODO 章番号と図番号を挿入しないといけない
-				process.out("リスト").out(1).out(".").out(1);
+				// TODO リファレンスを辿って章番号と図番号を挿入しないといけない
+				var chapter = this.findChapter(node);
+				process.out("リスト").out(chapter.no).out(".").out(1);
 			}
 
 			inline_hd_pre(process:Process, node:InlineElementSyntaxTree) {
-				// TODO 章番号と見出し番号を挿入しないといけない
+				// TODO リファレンスを辿って章番号を挿入しないといけない
 				process.out("「").out(1).out(".").out(1).out(" ");
 			}
 

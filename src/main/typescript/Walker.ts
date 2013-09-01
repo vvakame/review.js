@@ -25,7 +25,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 	 */
 	export function walk(ast:SyntaxTree, actor:(ast:SyntaxTree)=>SyntaxTree) {
 		var next = actor(ast);
-		if (next !== null) {
+		if (next) {
 			walk(next, actor);
 		}
 	}

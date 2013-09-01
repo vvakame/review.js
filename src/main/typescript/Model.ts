@@ -105,6 +105,8 @@ module ReVIEW {
 		part?:string;
 		chapter?:string;
 		label:string;
+		// 上記情報から解決した結果のNode
+		referenceNode?:ReVIEW.Parse.SyntaxTree;
 	}
 
 	/**
