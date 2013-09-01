@@ -1,16 +1,6 @@
 ///<reference path='Parser.ts' />
 ///<reference path='Builder.ts' />
 
-class Hoge {
-	/**
-	 * test is test!
-	 */
-		test() {
-		console.log("test1");
-	}
-}
-
-
 module ReVIEW {
 
 	/**
@@ -46,9 +36,11 @@ module ReVIEW {
 	 * コンパイル処理時の出力ハンドリング。
 	 */
 	export class Process {
-		// TODO Chapterごとに出力先を変えられる設計にしたほうが良さそう。
-		symbols:ChapterSymbol[] = [];
+		symbols:Symbol[] = [];
 		afterProcess:Function[] = [];
+
+		constructor(public part:Part, public chapter:Chapter) {
+		}
 
 		result:string = "";
 
@@ -69,7 +61,7 @@ module ReVIEW {
 			this.result += data;
 		}
 
-		addSymbol(symbol:ChapterSymbol) {
+		addSymbol(symbol:Symbol) {
 			this.symbols.push(symbol);
 		}
 
@@ -81,6 +73,25 @@ module ReVIEW {
 			this.afterProcess.forEach((func)=>func());
 			this.afterProcess = [];
 		}
+	}
+
+	/**
+	 * シンボルについての情報。
+	 */
+	export interface Symbol {
+		symbolName:string;
+		labelName?:string;
+		referenceTo?:ReferenceTo;
+		node:ReVIEW.Parse.SyntaxTree;
+	}
+
+	/**
+	 * 参照先についての情報。
+	 */
+	export interface ReferenceTo {
+		part?:string;
+		chapter?:string;
+		label:string;
 	}
 
 	/**
@@ -107,22 +118,13 @@ module ReVIEW {
 	}
 
 	/**
-	 * チャプターに含まれる Headline, BlockElement, InlineElement についての情報。
-	 */
-	export interface ChapterSymbol {
-		symbolName:string;
-		labelName?:string;
-		referenceTo?:string;
-		node:ReVIEW.Parse.SyntaxTree;
-	}
-
-	/**
 	 * チャプターを表す。
 	 */
 	export class Chapter {
-		process:Process = new Process();
+		process:Process;
 
 		constructor(public parent:Part, public no:number, public name:string, public root:ReVIEW.Parse.SyntaxTree) {
+			this.process = new Process(this.parent, this);
 		}
 	}
 

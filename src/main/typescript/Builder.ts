@@ -150,6 +150,32 @@ module ReVIEW {
 				return result;
 			}
 
+			constructReferenceTo(process:Process, node:SyntaxTree, value:string, separator = "|"):ReferenceTo {
+				var splitted = value.split(separator);
+				if (splitted.length === 3) {
+					return {
+						part: splitted[0],
+						chapter: splitted[1],
+						label: splitted[2]
+					};
+				} else if (splitted.length === 2) {
+					return {
+						part: process.part.name,
+						chapter: splitted[0],
+						label: splitted[1]
+					};
+				} else if (splitted.length === 1) {
+					return {
+						part: process.part.name,
+						chapter: process.chapter.name,
+						label: splitted[0]
+					};
+				} else {
+					process.error("argments length mismatch, expect 1 or 2 or 3. actual " + splitted.length, node);
+					return null;
+				}
+			}
+
 			block_list(process:Process, node:BlockElementSyntaxTree) {
 				if (!this.checkArgsLength(process, node, 2)) {
 					return;
@@ -167,7 +193,7 @@ module ReVIEW {
 				}
 				process.addSymbol({
 					symbolName: node.name,
-					referenceTo: this.contentToString(node),
+					referenceTo: this.constructReferenceTo(process, node, this.contentToString(node)),
 					node: node
 				});
 			}
@@ -178,8 +204,7 @@ module ReVIEW {
 				}
 				process.addSymbol({
 					symbolName: node.name,
-					// TODO | で分割記述が可能
-					referenceTo: this.contentToString(node),
+					referenceTo: this.constructReferenceTo(process, node, this.contentToString(node)),
 					node: node
 				});
 			}
