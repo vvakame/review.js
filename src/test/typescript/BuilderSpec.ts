@@ -42,7 +42,7 @@ describe("ReVIEW.Controllerの", ()=> {
 			expect(chapter.root).toBeDefined();
 		});
 
-		expect(part.chapters[0].symbolTable.length).toBe(1);
-		expect(part.chapters[1].symbolTable.length).toBe(3);
+		expect(part.chapters[0].process.symbols.length).toBe(1);
+		expect(part.chapters[1].process.symbols.length).toBe(3);
 	});
 });

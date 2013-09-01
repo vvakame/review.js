@@ -16,10 +16,10 @@ module ReVIEW {
 		 * 未解決のシンボルのエラーを通知するのはここ。
 		 */
 		export interface IAnalyzer {
-			init(book:Book, process:Process);
-			headline(name:string, node:HeadlineSyntaxTree);
-			block(name:string, node:BlockElementSyntaxTree);
-			inline(name:string, node:InlineElementSyntaxTree);
+			init(book:Book);
+			headline(process:Process, name:string, node:HeadlineSyntaxTree);
+			block(process:Process, name:string, node:BlockElementSyntaxTree);
+			inline(process:Process, name:string, node:InlineElementSyntaxTree);
 		}
 
 		/**
@@ -53,42 +53,38 @@ module ReVIEW {
 		}
 
 		export class DefaultAnalyzer implements IAnalyzer {
-			process:Process;
 			book:Book;
-			currentPart:Part;
-			currentChapter:Chapter;
-			delayChecker:Function[] = [];
 
-			init(book:Book, process:Process) {
-				this.process = process;
+			init(book:Book) {
 				this.book = book;
 
 				book.parts.forEach((part) => {
-					this.currentPart = part;
-
 					part.chapters.forEach((chapter) => {
-						this.currentChapter = chapter;
 
 						ReVIEW.visit(chapter.root, {
 							visitDefault: (parent:SyntaxTree, node:SyntaxTree)=> {
 
 							},
 							visitHeadline: (parent:SyntaxTree, node:HeadlineSyntaxTree)=> {
-								this.headline("hd", node);
+								this.headline(chapter.process, "hd", node);
 							},
 							visitBlockElement: (parent:SyntaxTree, node:BlockElementSyntaxTree)=> {
-								this.block(node.name, node);
+								this.block(chapter.process, node.name, node);
 							},
 							visitInlineElement: (parent:SyntaxTree, node:InlineElementSyntaxTree)=> {
-								this.inline(node.name, node);
+								this.inline(chapter.process, node.name, node);
 							}
 						});
 					});
 				});
-				this.delayChecker.forEach((func)=> func());
+				book.parts.forEach((part) => {
+					part.chapters.forEach((chapter) => {
+						chapter.process.doAfterProcess();
+					});
+				});
 			}
 
-			headline(name:string, node:HeadlineSyntaxTree) {
+			headline(process:Process, name:string, node:HeadlineSyntaxTree) {
 				var label:string = null;
 				if (node.tag) {
 					label = node.tag.arg;
@@ -96,34 +92,34 @@ module ReVIEW {
 					var textNode = node.caption.childNodes[0].toTextNode();
 					label = textNode.text;
 				}
-				this.currentChapter.addSymbol({
+				process.addSymbol({
 					symbolName: "hd",
 					labelName: label,
 					node: node
 				});
 			}
 
-			block(name:string, node:BlockElementSyntaxTree) {
+			block(process:Process, name:string, node:BlockElementSyntaxTree) {
 				var func = this["block_" + name].bind(this);
 				if (typeof func !== "function") {
 					throw new AnalyzerError("block_" + name + " is not Function");
 				}
-				func(node);
+				func(process, node);
 			}
 
-			inline(name:string, node:InlineElementSyntaxTree) {
+			inline(process:Process, name:string, node:InlineElementSyntaxTree) {
 				var func = this["inline_" + name].bind(this);
 				if (typeof func !== "function") {
 					throw new AnalyzerError("inline_" + name + " is not Function");
 				}
-				func(node);
+				func(process, node);
 			}
 
-			checkArgsLength(node:BlockElementSyntaxTree, expect:number):boolean;
+			checkArgsLength(process:Process, node:BlockElementSyntaxTree, expect:number):boolean;
 
-			checkArgsLength(node:BlockElementSyntaxTree, expects:number[]):boolean;
+			checkArgsLength(process:Process, node:BlockElementSyntaxTree, expects:number[]):boolean;
 
-			checkArgsLength(node, expect):boolean {
+			checkArgsLength(process:Process, node:BlockElementSyntaxTree, expect):boolean {
 				if (typeof expect === "undefined" || expect === null) {
 					throw new AnalyzerError("args length is required");
 				}
@@ -135,15 +131,11 @@ module ReVIEW {
 				}
 				var arg = node.args || [];
 				if (expects.indexOf(arg.length) === -1) {
-					this.process.error("argments length mismatch, " + node.name + " expected " + expects.map((n)=>Number(n).toString()).join(" or ") + "," + node + ", actual" + arg.length);
+					process.error("argments length mismatch, " + node.name + " expected " + expects.map((n)=>Number(n).toString()).join(" or ") + "," + node + ", actual" + arg.length);
 					return false;
 				} else {
 					return true;
 				}
-			}
-
-			addPostProcess(func:Function) {
-				this.delayChecker.push(func);
 			}
 
 			contentToString(node:NodeSyntaxTree):string {
@@ -158,33 +150,33 @@ module ReVIEW {
 				return result;
 			}
 
-			block_list(node:BlockElementSyntaxTree) {
-				if (!this.checkArgsLength(node, 2)) {
+			block_list(process:Process, node:BlockElementSyntaxTree) {
+				if (!this.checkArgsLength(process, node, 2)) {
 					return;
 				}
-				this.currentChapter.addSymbol({
+				process.addSymbol({
 					symbolName: node.name,
 					labelName: node.args[0].arg,
 					node: node
 				});
 			}
 
-			inline_list(node:InlineElementSyntaxTree) {
+			inline_list(process:Process, node:InlineElementSyntaxTree) {
 				if (node.childNodes.length !== 1) {
-					this.process.error("element body mismatch, only string");
+					process.error("element body mismatch, only string");
 				}
-				this.currentChapter.addSymbol({
+				process.addSymbol({
 					symbolName: node.name,
 					referenceTo: this.contentToString(node),
 					node: node
 				});
 			}
 
-			inline_hd(node:InlineElementSyntaxTree) {
+			inline_hd(process:Process, node:InlineElementSyntaxTree) {
 				if (node.childNodes.length !== 1) {
-					this.process.error("element body mismatch, only string");
+					process.error("element body mismatch, only string");
 				}
-				this.currentChapter.addSymbol({
+				process.addSymbol({
 					symbolName: node.name,
 					// TODO | で分割記述が可能
 					referenceTo: this.contentToString(node),

@@ -47,6 +47,8 @@ module ReVIEW {
 	 */
 	export class Process {
 		// TODO Chapterごとに出力先を変えられる設計にしたほうが良さそう。
+		symbols:ChapterSymbol[] = [];
+		afterProcess:Function[] = [];
 
 		result:string = "";
 
@@ -65,6 +67,19 @@ module ReVIEW {
 		out(data:string) {
 			// 最近のブラウザだと単純結合がアホみたいに早いらしいので
 			this.result += data;
+		}
+
+		addSymbol(symbol:ChapterSymbol) {
+			this.symbols.push(symbol);
+		}
+
+		addAfterProcess(func:Function) {
+			this.afterProcess.push(func);
+		}
+
+		doAfterProcess() {
+			this.afterProcess.forEach((func)=>func());
+			this.afterProcess = [];
 		}
 	}
 
@@ -101,13 +116,9 @@ module ReVIEW {
 	 * チャプターを表す。
 	 */
 	export class Chapter {
-		parent:Part;
-		name:string;
-		root:ReVIEW.Parse.SyntaxTree;
-		symbolTable:ChapterSymbol[] = [];
+		process:Process = new Process();
 
-		addSymbol(symbol:ChapterSymbol) {
-			this.symbolTable.push(symbol);
+		constructor(public parent:Part, public no:number, public name:string, public root:ReVIEW.Parse.SyntaxTree) {
 		}
 	}
 

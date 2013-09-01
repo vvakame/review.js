@@ -51,8 +51,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 		 */
 			process():Book {
 			var book = this.processBook();
-			var process = new Process();
-			this.config.analyzer.init(book, process);
+			this.config.analyzer.init(book);
 			return book;
 		}
 
@@ -71,18 +70,14 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 		private processPart(book:Book, chapters:string[]):Part {
 			var part = new Part();
 			part.parent = book;
-			part.chapters = chapters.map((chapter) => this.processChapter(book, part, chapter));
+			part.chapters = chapters.map((chapter, index) => this.processChapter(book, part, index, chapter));
 			return part;
 		}
 
-		private processChapter(book:Book, part:Part, chapterPath:string):Chapter {
+		private processChapter(book:Book, part:Part, index:number, chapterPath:string):Chapter {
 			var data = this.read(this.resolvePath(chapterPath));
 			var parseResult = ReVIEW.Parse.parse(data);
-			var chapter = new Chapter();
-			chapter.parent = part;
-			chapter.name = chapterPath;
-			chapter.root = parseResult.ast;
-			return chapter;
+			return new Chapter(part, index + 1, chapterPath, parseResult.ast);
 		}
 
 		get read():(path:string)=>string {
