@@ -397,11 +397,20 @@ module ReVIEW {
 				return chapter;
 			}
 
+			findReference(process:Process, node:SyntaxTree):Symbol {
+				var founds = process.symbols.filter((symbol)=> {
+					return symbol === node;
+				});
+				if (founds.length !== 1) {
+					throw new AnalyzerError("invalid status.");
+				}
+				return founds[0];
+			}
+
 			block_list_pre(process:Process, node:BlockElementSyntaxTree) {
 				process.out("◆→開始:リスト←◆\n");
-				// TODO 章番号を引いて挿入しないといけない
 				var chapter = this.findChapter(node, 1);
-				process.out("リスト").out(chapter.no).out(".").out(node.no).out("　").out(node.args[1].arg).out("\n");
+				process.out("リスト").out(chapter.fqn).out(".").out(node.no).out("　").out(node.args[1].arg).out("\n");
 			}
 
 			block_list_post(process:Process, node:BlockElementSyntaxTree) {
@@ -409,14 +418,14 @@ module ReVIEW {
 			}
 
 			inline_list(process:Process, node:InlineElementSyntaxTree) {
-				// TODO リファレンスを辿って章番号と図番号を挿入しないといけない
-				var chapter = this.findChapter(node);
-				process.out("リスト").out(chapter.no).out(".").out(1);
+				var chapter = this.findChapter(node, 1);
+				var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+				process.out("リスト").out(chapter.fqn).out(".").out(listNode.no);
 			}
 
 			inline_hd_pre(process:Process, node:InlineElementSyntaxTree) {
-				// TODO リファレンスを辿って章番号を挿入しないといけない
-				process.out("「").out(1).out(".").out(1).out(" ");
+				var chapter = this.findChapter(node);
+				process.out("「").out(chapter.fqn).out(" ");
 			}
 
 			inline_hd_post(process:Process, node:InlineElementSyntaxTree) {

@@ -251,6 +251,8 @@ module ReVIEW {
 				for (var k in this) {
 					if (k === "ruleName") {
 						result[k] = RuleName[this[k]];
+					} else if (k === "fqn") {
+						// TODO あとでちゃんと出るようにする
 					} else if (k !== "parentNode" && typeof this[k] !== "function") {
 						result[k] = this[k];
 					}
@@ -475,6 +477,20 @@ module ReVIEW {
 
 			get level():number {
 				return this.headline.level;
+			}
+
+			get fqn():string {
+				var chapters:ChapterSyntaxTree[] = [];
+				ReVIEW.walk(this, (node:SyntaxTree) => {
+					if (node instanceof ReVIEW.Parse.ChapterSyntaxTree) {
+						chapters.unshift(node.toChapter());
+					}
+					return node.parentNode;
+				});
+				var result = chapters.map((chapter)=> {
+					return chapter.no;
+				}).join(".");
+				return result;
 			}
 		}
 
