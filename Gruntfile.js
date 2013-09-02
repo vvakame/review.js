@@ -8,9 +8,10 @@ module.exports = function (grunt) {
 			"tsTest": "src/test/typescript",
 			"tsTestLib": "src/test/typescript/libs",
 			"peg": "src/main/peg",
+			"jsLib": "bin/lib",
 
 			"outBase": "bin",
-			"jsMainOut": "bin/lib",
+			"jsMainOut": "bin/out",
 			"jsTestOut": "src/test/typescript"
 		},
 
@@ -22,7 +23,7 @@ module.exports = function (grunt) {
 					target: 'es5',
 					base_path: '<%= opt.tsMain %>',
 					sourcemap: false,
-					declaration: false,
+					declaration: true,
 					noImplicitAny: false // node.d.ts がエラー吐く
 				}
 			},
@@ -132,7 +133,7 @@ module.exports = function (grunt) {
 						flatten: true,
 						cwd: 'bower-task/',
 						src: ['main-js/**/*.js'],
-						dest: '<%= opt.jsMainOut %>/'
+						dest: '<%= opt.jsLib %>/'
 					},
 					{
 						expand: true,
@@ -219,7 +220,7 @@ module.exports = function (grunt) {
 					'<%= opt.jsTestOut %>/*.js.map',
 					'<%= opt.jsTestOut %>/*.d.ts',
 					// minified
-					'<%= opt.outBase %>/*',
+					'<%= opt.outBase %>/*.js',
 					// peg.js
 					'<%= opt.peg %>/grammer.js'
 				]
@@ -237,6 +238,7 @@ module.exports = function (grunt) {
 					// bower installed
 					"bower-task/",
 					"bower_componenets",
+					'<%= opt.jsLib %>',
 					'<%= opt.jsMainOut %>/libs',
 					'<%= opt.jsTestOut %>/libs/*.js',
 					'<%= opt.tsTest %>/libs/*.css'
@@ -282,7 +284,8 @@ module.exports = function (grunt) {
 		exec: {
 			tsd: {
 				cmd: function () {
-					return "tsd install node jasmine";
+					// jquery は i18next がコンパイル時に依存している
+					return "tsd install node jasmine jquery i18next";
 				}
 			},
 			"pegjs": {

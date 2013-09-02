@@ -7,7 +7,8 @@
 	},
 	"dependencies": {
 		"pegjs": "git://github.com/dmajda/pegjs.git#fe18c6ffd3a2170243908ef3d63b887483960d14",
-		"commander": "2.0.0"
+		"commander": "2.0.0",
+		"i18next": "1.6.8"
 	},
 	"devDependencies": {
 		"grunt": "0.4.1",

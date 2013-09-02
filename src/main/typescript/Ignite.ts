@@ -1,6 +1,7 @@
 ///<reference path='libs/DefinitelyTyped/node/node.d.ts' />
 
 ///<reference path='Utils.ts' />
+///<reference path='i18n.ts' />
 ///<reference path='Walker.ts' /> // Walker が import で Parser.ts に実行順序依存している
 ///<reference path='Model.ts' />
 ///<reference path='Parser.ts' />
