@@ -1,6 +1,7 @@
 ///<reference path='libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
 
 ///<reference path='../../main/typescript/Builder.ts' />
+///<reference path='../../main/typescript/builder/TextBuilder.ts' />
 
 describe("ReVIEW.Buildの", ()=> {
 	it("処理が正しく動くこと", ()=> {
@@ -18,6 +19,8 @@ describe("ReVIEW.Buildの", ()=> {
 				write: function (path, content) {
 					result[path] = content;
 				},
+
+				builders: [new ReVIEW.Build.TextBuilder()],
 
 				book: {
 					preface: [
@@ -61,6 +64,8 @@ describe("ReVIEW.Buildの", ()=> {
 					write: function (path, content) {
 						result[path] = content;
 					},
+
+					builders: [new ReVIEW.Build.TextBuilder()],
 
 					book: {
 						preface: [

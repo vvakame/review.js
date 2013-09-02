@@ -1,6 +1,7 @@
 ///<reference path='libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
 
 ///<reference path='../../main/typescript/Model.ts' />
+///<reference path='../../main/typescript/builder/TextBuilder.ts' />
 
 describe("ReVIEW.Controllerの", ()=> {
 	it("処理が正しく動くこと", ()=> {
@@ -18,6 +19,8 @@ describe("ReVIEW.Controllerの", ()=> {
 				write: function (path, content) {
 					result[path] = content;
 				},
+
+				builders: [new ReVIEW.Build.TextBuilder()],
 
 				book: {
 					preface: [

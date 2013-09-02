@@ -5,6 +5,7 @@
 ///<reference path='Model.ts' />
 ///<reference path='Parser.ts' />
 ///<reference path='Controller.ts' />
+///<reference path='builder/TextBuilder.ts' />
 
 module ReVIEW {
 
