@@ -285,22 +285,22 @@ module ReVIEW {
 								process.out(node.text);
 							},
 							visitHeadlinePre: (node:HeadlineSyntaxTree)=> {
-								this.headline_pre(chapter.process, "hd", node);
+								return this.headline_pre(chapter.process, "hd", node);
 							},
 							visitHeadlinePost: (node:HeadlineSyntaxTree)=> {
-								this.headline_post(chapter.process, "hd", node);
+								return this.headline_post(chapter.process, "hd", node);
 							},
 							visitBlockElementPre: (node:BlockElementSyntaxTree)=> {
-								this.block_pre(chapter.process, node.name, node);
+								return this.blockPre(chapter.process, node.name, node);
 							},
 							visitBlockElementPost: (node:BlockElementSyntaxTree)=> {
-								this.block_post(chapter.process, node.name, node);
+								return this.blockPost(chapter.process, node.name, node);
 							},
 							visitInlineElementPre: (node:InlineElementSyntaxTree)=> {
-								this.inline_pre(chapter.process, node.name, node);
+								return this.inlinePre(chapter.process, node.name, node);
 							},
 							visitInlineElementPost: (node:InlineElementSyntaxTree)=> {
-								this.inline_post(chapter.process, node.name, node);
+								return this.inlinePost(chapter.process, node.name, node);
 							},
 							visitChapterPost: (node:ChapterSyntaxTree)=> {
 								process.out("\n");
@@ -315,7 +315,7 @@ module ReVIEW {
 				});
 			}
 
-			block_pre(process:Process, name:string, node:BlockElementSyntaxTree) {
+			blockPre(process:Process, name:string, node:BlockElementSyntaxTree):any {
 				var func:Function;
 				func = this["block_" + name];
 				if (typeof func === "function") {
@@ -327,10 +327,10 @@ module ReVIEW {
 				if (typeof func !== "function") {
 					throw new AnalyzerError("block_" + name + "_pre or block_" + name + " is not Function");
 				}
-				func.call(this, process, node);
+				return func.call(this, process, node);
 			}
 
-			block_post(process:Process, name:string, node:BlockElementSyntaxTree) {
+			blockPost(process:Process, name:string, node:BlockElementSyntaxTree):any {
 				var func:Function;
 				func = this["block_" + name];
 				if (typeof func === "function") {
@@ -341,10 +341,10 @@ module ReVIEW {
 				if (typeof func !== "function") {
 					throw new AnalyzerError("block_" + name + "_post is not Function");
 				}
-				func.call(this, process, node);
+				return func.call(this, process, node);
 			}
 
-			inline_pre(process:Process, name:string, node:InlineElementSyntaxTree) {
+			inlinePre(process:Process, name:string, node:InlineElementSyntaxTree):any {
 				var func:Function;
 				func = this["inline_" + name];
 				if (typeof func === "function") {
@@ -356,10 +356,10 @@ module ReVIEW {
 				if (typeof func !== "function") {
 					throw new AnalyzerError("inline_" + name + "_pre or inline_" + name + " is not Function");
 				}
-				func.call(this, process, node);
+				return func.call(this, process, node);
 			}
 
-			inline_post(process:Process, name:string, node:InlineElementSyntaxTree) {
+			inlinePost(process:Process, name:string, node:InlineElementSyntaxTree):any {
 				var func:Function;
 				func = this["inline_" + name];
 				if (typeof func === "function") {
@@ -370,7 +370,7 @@ module ReVIEW {
 				if (typeof func !== "function") {
 					throw new AnalyzerError("inline_" + name + "_post is not Function");
 				}
-				func.call(this, process, node);
+				return func.call(this, process, node);
 			}
 
 			findChapter(node:SyntaxTree, level?:number):ChapterSyntaxTree {
@@ -397,6 +397,18 @@ module ReVIEW {
 				return founds[0];
 			}
 
+			contentToString(node:SyntaxTree):string {
+				var result = "";
+				ReVIEW.visit(node, {
+					visitDefaultPre: (node:SyntaxTree)=> {
+					},
+					visitTextPre: (text:TextNodeSyntaxTree) => {
+						result += text.text;
+					}
+				});
+				return result;
+			}
+
 			headline_pre(process:Process, name:string, node:HeadlineSyntaxTree) {
 				// TODO no の採番がレベル別になっていない
 				// TODO 2.3.2 みたいな階層を返せるメソッドが何かほしい
@@ -416,6 +428,12 @@ module ReVIEW {
 				process.out("◆→開始:リスト←◆\n");
 				var chapter = this.findChapter(node, 1);
 				process.out("リスト").out(chapter.fqn).out(".").out(node.no).out("　").out(node.args[1].arg).out("\n");
+				return (v) => {
+					// name, args はパスしたい
+					node.childNodes.forEach((node)=> {
+						ReVIEW.visit(node, v);
+					});
+				};
 			}
 
 			block_list_post(process:Process, node:BlockElementSyntaxTree) {
@@ -429,8 +447,15 @@ module ReVIEW {
 			}
 
 			inline_hd_pre(process:Process, node:InlineElementSyntaxTree) {
+				process.out("「");
 				var chapter = this.findChapter(node);
-				process.out("「").out(chapter.fqn).out(" ");
+				if (chapter.level === 1) {
+					process.out(chapter.fqn).out("章 ");
+				} else {
+					process.out(chapter.fqn).out(" ");
+				}
+				process.out(this.contentToString(chapter.headline));
+				return false;
 			}
 
 			inline_hd_post(process:Process, node:InlineElementSyntaxTree) {
