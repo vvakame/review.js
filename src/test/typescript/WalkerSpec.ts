@@ -384,4 +384,41 @@ describe("ReVIEW.visitについて", ()=> {
 			expect(actual).toBe("n");
 		});
 	});
+
+	describe("探索の制御について", () => {
+		var input = "= chap1";
+		var result = ReVIEW.Parse.parse(input);
+
+		it("探索をスキップできる", ()=> {
+			var count = 0;
+			ReVIEW.visit(result.ast, {
+				visitDefaultPre: (ast:ReVIEW.Parse.SyntaxTree)=> {
+					count++;
+					return false;
+				}
+			});
+			expect(count).toBe(1);
+		});
+
+		it("探索方法を指定できる", ()=> {
+			var count = 0;
+			var visitor:ReVIEW.TreeVisitor = {
+				visitDefaultPre: (ast:ReVIEW.Parse.SyntaxTree)=> {
+					count++;
+					if (ast.ruleName === ReVIEW.Parse.RuleName.Start) {
+						return () => {
+							ReVIEW.visit(ast.toNode().childNodes[0], visitor);
+						};
+					} else {
+						return false;
+					}
+				},
+				visitChapterPre: (ast:ReVIEW.Parse.ChapterSyntaxTree) => {
+					count++;
+				}
+			};
+			ReVIEW.visit(result.ast, visitor);
+			expect(count).toBe(2);
+		});
+	});
 });

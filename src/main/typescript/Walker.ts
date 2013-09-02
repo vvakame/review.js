@@ -101,77 +101,118 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 	function visitSub(parent:SyntaxTree, ast:SyntaxTree, v:TreeVisitor) {
 		if (ast instanceof BlockElementSyntaxTree) {
 			var block = ast.toBlockElement();
-			v.visitBlockElementPre(block, parent);
-			block.args.forEach((next)=> {
-				visitSub(ast, next, v);
-			});
-			block.childNodes.forEach((next)=> {
-				visitSub(ast, next, v);
-			});
+			var ret = v.visitBlockElementPre(block, parent);
+			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+				block.args.forEach((next)=> {
+					visitSub(ast, next, v);
+				});
+				block.childNodes.forEach((next)=> {
+					visitSub(ast, next, v);
+				});
+			} else if (typeof ret === "function") {
+				ret();
+			}
 			v.visitBlockElementPost(block, parent);
 		} else if (ast instanceof InlineElementSyntaxTree) {
 			var inline = ast.toInlineElement();
-			v.visitInlineElementPre(inline, parent);
-			inline.childNodes.forEach((next)=> {
-				visitSub(ast, next, v);
-			});
+			var ret = v.visitInlineElementPre(inline, parent);
+			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+				inline.childNodes.forEach((next)=> {
+					visitSub(ast, next, v);
+				});
+			} else if (typeof ret === "function") {
+				ret();
+			}
 			v.visitInlineElementPost(inline, parent);
 		} else if (ast instanceof ArgumentSyntaxTree) {
 			var arg = ast.toArgument();
-			v.visitArgumentPre(arg, parent);
+			var ret = v.visitArgumentPre(arg, parent);
+			if (typeof ret === "function") {
+				ret();
+			}
 			v.visitArgumentPost(arg, parent);
 		} else if (ast instanceof ChapterSyntaxTree) {
 			var chap = ast.toChapter();
-			v.visitChapterPre(chap, parent);
-			visitSub(ast, chap.headline, v);
-			if (chap.text) {
-				chap.text.forEach((next)=> {
+			var ret = v.visitChapterPre(chap, parent);
+			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+				visitSub(ast, chap.headline, v);
+				if (chap.text) {
+					chap.text.forEach((next)=> {
+						visitSub(ast, next, v);
+					});
+				}
+				chap.childNodes.forEach((next)=> {
 					visitSub(ast, next, v);
 				});
+			} else if (typeof ret === "function") {
+				ret();
 			}
-			chap.childNodes.forEach((next)=> {
-				visitSub(ast, next, v);
-			});
 			v.visitChapterPost(chap, parent);
 		} else if (ast instanceof HeadlineSyntaxTree) {
 			var head = ast.toHeadline();
-			v.visitHeadlinePre(head, parent);
-			visitSub(ast, head.label, v);
-			visitSub(ast, head.tag, v);
-			visitSub(ast, head.caption, v);
+			var ret = v.visitHeadlinePre(head, parent);
+			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+				visitSub(ast, head.label, v);
+				visitSub(ast, head.tag, v);
+				visitSub(ast, head.caption, v);
+			} else if (typeof ret === "function") {
+				ret();
+			}
 			v.visitHeadlinePost(head, parent);
 		} else if (ast instanceof UlistElementSyntaxTree) {
 			var ul = ast.toUlist();
-			v.visitUlistPre(ul, parent);
-			visitSub(ast, ul.text, v);
-			ul.childNodes.forEach((next)=> {
-				visitSub(ast, next, v);
-			});
+			var ret = v.visitUlistPre(ul, parent);
+			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+				visitSub(ast, ul.text, v);
+				ul.childNodes.forEach((next)=> {
+					visitSub(ast, next, v);
+				});
+			} else if (typeof ret === "function") {
+				ret();
+			}
 			v.visitUlistPost(ul, parent);
 		} else if (ast instanceof OlistElementSyntaxTree) {
 			var ol = ast.toOlist();
-			v.visitOlistPre(ol, parent);
-			visitSub(ast, ol.text, v);
+			var ret = v.visitOlistPre(ol, parent);
+			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+				visitSub(ast, ol.text, v);
+			} else if (typeof ret === "function") {
+				ret();
+			}
 			v.visitOlistPost(ol, parent);
 		} else if (ast instanceof DlistElementSyntaxTree) {
 			var dl = ast.toDlist();
-			v.visitDlistPre(dl, parent);
-			visitSub(ast, dl.text, v);
-			visitSub(ast, dl.content, v);
+			var ret = v.visitDlistPre(dl, parent);
+			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+				visitSub(ast, dl.text, v);
+				visitSub(ast, dl.content, v);
+			} else if (typeof ret === "function") {
+				ret();
+			}
 			v.visitDlistPost(dl, parent);
 		} else if (ast instanceof NodeSyntaxTree) {
 			var node = ast.toNode();
-			v.visitNodePre(node, parent);
-			node.childNodes.forEach((next)=> {
-				visitSub(ast, next, v);
-			});
+			var ret = v.visitNodePre(node, parent);
+			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+				node.childNodes.forEach((next)=> {
+					visitSub(ast, next, v);
+				});
+			} else if (typeof ret === "function") {
+				ret();
+			}
 			v.visitNodePost(node, parent);
 		} else if (ast instanceof TextNodeSyntaxTree) {
 			var text = ast.toTextNode();
-			v.visitTextPre(text, parent);
+			var ret = v.visitTextPre(text, parent);
+			if (typeof ret === "function") {
+				ret();
+			}
 			v.visitTextPost(text, parent);
 		} else if (ast) {
-			v.visitDefaultPre(parent, ast);
+			var ret = v.visitDefaultPre(parent, ast);
+			if (typeof ret === "function") {
+				ret();
+			}
 			v.visitDefaultPost(parent, ast);
 		}
 	}
@@ -179,29 +220,33 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 	/**
 	 * 構文木を渡り歩くためのVisitor。
 	 * 実装されなかったメソッドは、visitDefault または NodeSyntaxTree を継承している場合 visitNode にフォールバックする。
+	 * 各メソッドの返り値としてanyを返す。
+	 * undefined, true を返した時、子要素の探索は継続される。
+	 * false を返した時、子要素の探索は行われない。
+	 * Function を返した時、子要素の探索を行う代わりにその関数が実行される。
 	 */
 	export interface TreeVisitor {
-		visitDefaultPre(node:SyntaxTree, parent:SyntaxTree);
+		visitDefaultPre(node:SyntaxTree, parent:SyntaxTree):any;
 		visitDefaultPost?(node:SyntaxTree, parent:SyntaxTree);
-		visitNodePre?(node:NodeSyntaxTree, parent:SyntaxTree);
+		visitNodePre?(node:NodeSyntaxTree, parent:SyntaxTree):any;
 		visitNodePost?(node:NodeSyntaxTree, parent:SyntaxTree);
-		visitBlockElementPre?(node:BlockElementSyntaxTree, parent:SyntaxTree);
+		visitBlockElementPre?(node:BlockElementSyntaxTree, parent:SyntaxTree):any;
 		visitBlockElementPost?(node:BlockElementSyntaxTree, parent:SyntaxTree);
-		visitInlineElementPre?(node:InlineElementSyntaxTree, parent:SyntaxTree);
+		visitInlineElementPre?(node:InlineElementSyntaxTree, parent:SyntaxTree):any;
 		visitInlineElementPost?(node:InlineElementSyntaxTree, parent:SyntaxTree);
-		visitArgumentPre?(node:ArgumentSyntaxTree, parent:SyntaxTree);
+		visitArgumentPre?(node:ArgumentSyntaxTree, parent:SyntaxTree):any;
 		visitArgumentPost?(node:ArgumentSyntaxTree, parent:SyntaxTree);
-		visitChapterPre?(node:ChapterSyntaxTree, parent:SyntaxTree);
+		visitChapterPre?(node:ChapterSyntaxTree, parent:SyntaxTree):any;
 		visitChapterPost?(node:ChapterSyntaxTree, parent:SyntaxTree);
-		visitHeadlinePre?(node:HeadlineSyntaxTree, parent:SyntaxTree);
+		visitHeadlinePre?(node:HeadlineSyntaxTree, parent:SyntaxTree):any;
 		visitHeadlinePost?(node:HeadlineSyntaxTree, parent:SyntaxTree);
-		visitUlistPre?(node:UlistElementSyntaxTree, parent:SyntaxTree);
+		visitUlistPre?(node:UlistElementSyntaxTree, parent:SyntaxTree):any;
 		visitUlistPost?(node:UlistElementSyntaxTree, parent:SyntaxTree);
-		visitOlistPre?(node:OlistElementSyntaxTree, parent:SyntaxTree);
+		visitOlistPre?(node:OlistElementSyntaxTree, parent:SyntaxTree):any;
 		visitOlistPost?(node:OlistElementSyntaxTree, parent:SyntaxTree);
-		visitDlistPre?(node:DlistElementSyntaxTree, parent:SyntaxTree);
+		visitDlistPre?(node:DlistElementSyntaxTree, parent:SyntaxTree):any;
 		visitDlistPost?(node:DlistElementSyntaxTree, parent:SyntaxTree);
-		visitTextPre?(node:TextNodeSyntaxTree, parent:SyntaxTree);
+		visitTextPre?(node:TextNodeSyntaxTree, parent:SyntaxTree):any;
 		visitTextPost?(node:TextNodeSyntaxTree, parent:SyntaxTree);
 	}
 }
