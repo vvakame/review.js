@@ -402,12 +402,12 @@ describe("ReVIEW.visitについて", ()=> {
 
 		it("探索方法を指定できる", ()=> {
 			var count = 0;
-			var visitor:ReVIEW.TreeVisitor = {
+			ReVIEW.visit(result.ast, {
 				visitDefaultPre: (ast:ReVIEW.Parse.SyntaxTree)=> {
 					count++;
 					if (ast.ruleName === ReVIEW.Parse.RuleName.Start) {
-						return () => {
-							ReVIEW.visit(ast.toNode().childNodes[0], visitor);
+						return (v:ReVIEW.TreeVisitor) => {
+							ReVIEW.visit(ast.toNode().childNodes[0], v);
 						};
 					} else {
 						return false;
@@ -416,8 +416,7 @@ describe("ReVIEW.visitについて", ()=> {
 				visitChapterPre: (ast:ReVIEW.Parse.ChapterSyntaxTree) => {
 					count++;
 				}
-			};
-			ReVIEW.visit(result.ast, visitor);
+			});
 			expect(count).toBe(2);
 		});
 	});

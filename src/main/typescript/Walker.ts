@@ -110,7 +110,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 					visitSub(ast, next, v);
 				});
 			} else if (typeof ret === "function") {
-				ret();
+				ret(v);
 			}
 			v.visitBlockElementPost(block, parent);
 		} else if (ast instanceof InlineElementSyntaxTree) {
@@ -121,14 +121,14 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 					visitSub(ast, next, v);
 				});
 			} else if (typeof ret === "function") {
-				ret();
+				ret(v);
 			}
 			v.visitInlineElementPost(inline, parent);
 		} else if (ast instanceof ArgumentSyntaxTree) {
 			var arg = ast.toArgument();
 			var ret = v.visitArgumentPre(arg, parent);
 			if (typeof ret === "function") {
-				ret();
+				ret(v);
 			}
 			v.visitArgumentPost(arg, parent);
 		} else if (ast instanceof ChapterSyntaxTree) {
@@ -145,7 +145,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 					visitSub(ast, next, v);
 				});
 			} else if (typeof ret === "function") {
-				ret();
+				ret(v);
 			}
 			v.visitChapterPost(chap, parent);
 		} else if (ast instanceof HeadlineSyntaxTree) {
@@ -156,7 +156,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 				visitSub(ast, head.tag, v);
 				visitSub(ast, head.caption, v);
 			} else if (typeof ret === "function") {
-				ret();
+				ret(v);
 			}
 			v.visitHeadlinePost(head, parent);
 		} else if (ast instanceof UlistElementSyntaxTree) {
@@ -168,7 +168,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 					visitSub(ast, next, v);
 				});
 			} else if (typeof ret === "function") {
-				ret();
+				ret(v);
 			}
 			v.visitUlistPost(ul, parent);
 		} else if (ast instanceof OlistElementSyntaxTree) {
@@ -177,7 +177,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
 				visitSub(ast, ol.text, v);
 			} else if (typeof ret === "function") {
-				ret();
+				ret(v);
 			}
 			v.visitOlistPost(ol, parent);
 		} else if (ast instanceof DlistElementSyntaxTree) {
@@ -187,7 +187,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 				visitSub(ast, dl.text, v);
 				visitSub(ast, dl.content, v);
 			} else if (typeof ret === "function") {
-				ret();
+				ret(v);
 			}
 			v.visitDlistPost(dl, parent);
 		} else if (ast instanceof NodeSyntaxTree) {
@@ -198,20 +198,20 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 					visitSub(ast, next, v);
 				});
 			} else if (typeof ret === "function") {
-				ret();
+				ret(v);
 			}
 			v.visitNodePost(node, parent);
 		} else if (ast instanceof TextNodeSyntaxTree) {
 			var text = ast.toTextNode();
 			var ret = v.visitTextPre(text, parent);
 			if (typeof ret === "function") {
-				ret();
+				ret(v);
 			}
 			v.visitTextPost(text, parent);
 		} else if (ast) {
 			var ret = v.visitDefaultPre(parent, ast);
 			if (typeof ret === "function") {
-				ret();
+				ret(v);
 			}
 			v.visitDefaultPost(parent, ast);
 		}
@@ -223,7 +223,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 	 * 各メソッドの返り値としてanyを返す。
 	 * undefined, true を返した時、子要素の探索は継続される。
 	 * false を返した時、子要素の探索は行われない。
-	 * Function を返した時、子要素の探索を行う代わりにその関数が実行される。
+	 * Function を返した時、子要素の探索を行う代わりにその関数が実行される。Functionには引数として実行中のTreeVisitorが渡される。
 	 */
 	export interface TreeVisitor {
 		visitDefaultPre(node:SyntaxTree, parent:SyntaxTree):any;
