@@ -10,6 +10,6 @@ describe("ReVIEW.i18nの", ()=> {
 		expect(ReVIEW.i18n.t("sample")).toBe("Hello!");
 
 		ReVIEW.i18n.setup("ja");
-		expect(ReVIEW.i18n.t("chapter", 1)).toBe("第1章");
+		expect(ReVIEW.i18n.t("builder.chapter", 1)).toBe("第1章");
 	});
 });

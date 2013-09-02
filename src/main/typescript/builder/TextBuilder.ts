@@ -1,7 +1,10 @@
 ///<reference path='../Builder.ts' />
+///<reference path='../i18n.ts' />
 
 module ReVIEW {
 	export module Build {
+
+	import i18n = ReVIEW.i18n;
 
 	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
 	import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
@@ -18,7 +21,8 @@ module ReVIEW {
 				// TODO 2.3.2 みたいな階層を返せるメソッドが何かほしい
 				process.out("■H").out(node.level).out("■");
 				if (node.level === 1) {
-					process.out("第").out(node.parentNode.no).out("章").out("　");
+					var text = i18n.t("builder.chapter", node.parentNode.no);
+					process.out(text).out("　");
 				} else if (node.level === 2) {
 					process.out(node.parentNode.toChapter().fqn).out("　");
 				}
@@ -31,7 +35,8 @@ module ReVIEW {
 			block_list_pre(process:Process, node:BlockElementSyntaxTree) {
 				process.out("◆→開始:リスト←◆\n");
 				var chapter = this.findChapter(node, 1);
-				process.out("リスト").out(chapter.fqn).out(".").out(node.no).out("　").out(node.args[1].arg).out("\n");
+				var text = i18n.t("builder.list", chapter.fqn, node.no);
+				process.out(text).out("　").out(node.args[1].arg).out("\n");
 				return (v) => {
 					// name, args はパスしたい
 					node.childNodes.forEach((node)=> {
@@ -47,7 +52,8 @@ module ReVIEW {
 			inline_list(process:Process, node:InlineElementSyntaxTree) {
 				var chapter = this.findChapter(node, 1);
 				var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-				process.out("リスト").out(chapter.fqn).out(".").out(listNode.no);
+				var text = i18n.t("builder.list", chapter.fqn, listNode.no);
+				process.out(text);
 			}
 
 			inline_hd_pre(process:Process, node:InlineElementSyntaxTree) {
