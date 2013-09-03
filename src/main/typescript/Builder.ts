@@ -85,6 +85,72 @@ module ReVIEW {
 						chapter.process.doAfterProcess();
 					});
 				});
+				// symbols の解決
+				var symbols:Symbol[] = [];
+				book.parts.forEach((part) => {
+					part.chapters.forEach((chapter) => {
+						chapter.process.symbols.forEach(symbol=> {
+							// symbolの収集
+							symbols.push(symbol);
+							// referenceToのpartやchapterの解決
+							var referenceTo = symbol.referenceTo;
+							if (!referenceTo) {
+								return;
+							}
+							if (!referenceTo.part) {
+								book.parts.forEach(part=> {
+									if (referenceTo.partName === part.name) {
+										referenceTo.part = part;
+									}
+								});
+							}
+							if (!referenceTo.part) {
+								symbol.chapter.process.error("Part is missing " + symbol.part.name, symbol.node);
+								return;
+							}
+							if (!referenceTo.chapter) {
+								referenceTo.part.chapters.forEach(chap=> {
+									if (referenceTo.chapterName === chap.name) {
+										referenceTo.chapter = chap;
+									}
+								});
+							}
+							if (!referenceTo.chapter) {
+								symbol.chapter.process.error("Chapter is missing " + symbol.chapter.name, symbol.node);
+								return;
+							}
+						});
+					});
+				});
+				// referenceTo.node の解決
+				symbols.forEach(symbol=> {
+					if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
+						var reference = symbol.referenceTo;
+						symbols.forEach(symbol=> {
+							if (reference.part === symbol.part && reference.chapter === symbol.chapter && reference.targetSymbol === symbol.symbolName && reference.label === symbol.labelName) {
+								reference.referenceNode = symbol.node;
+							}
+						});
+						if (!reference.referenceNode) {
+							symbol.chapter.process.error("Refenrece is missing " + symbol.labelName, symbol.node);
+							return;
+						}
+					}
+				});
+				// 同一チャプター内に同一シンボル(listとか)で同一labelの要素がないかチェック
+				symbols.forEach(symbol1=> {
+					symbols.forEach(symbol2=> {
+						if (symbol1 === symbol2) {
+							return;
+						}
+						if (symbol1.chapter === symbol2.chapter && symbol1.symbolName === symbol2.symbolName) {
+							if (symbol1.labelName && symbol2.labelName && symbol1.labelName === symbol2.labelName) {
+								symbol1.chapter.process.error("Duplicated symbol", symbol1.node, symbol2.node);
+								return;
+							}
+						}
+					});
+				});
 			}
 
 			headline(process:Process, name:string, node:HeadlineSyntaxTree) {
@@ -153,24 +219,34 @@ module ReVIEW {
 				return result;
 			}
 
-			constructReferenceTo(process:Process, node:SyntaxTree, value:string, separator = "|"):ReferenceTo {
+			constructReferenceTo(process:Process, node:InlineElementSyntaxTree, value:string, targetSymbol?:string, separator?:string):ReferenceTo;
+
+			constructReferenceTo(process:Process, node:BlockElementSyntaxTree, value:string, targetSymbol:string, separator?:string):ReferenceTo;
+
+			constructReferenceTo(process:Process, node, value:string, targetSymbol = node.name, separator = "|"):ReferenceTo {
 				var splitted = value.split(separator);
 				if (splitted.length === 3) {
 					return {
-						part: splitted[0],
-						chapter: splitted[1],
+						partName: splitted[0],
+						chapterName: splitted[1],
+						targetSymbol: targetSymbol,
 						label: splitted[2]
 					};
 				} else if (splitted.length === 2) {
 					return {
-						part: process.part.name,
-						chapter: splitted[0],
+						part: process.part,
+						partName: process.part.name,
+						chapterName: splitted[0],
+						targetSymbol: targetSymbol,
 						label: splitted[1]
 					};
 				} else if (splitted.length === 1) {
 					return {
-						part: process.part.name,
-						chapter: process.chapter.name,
+						part: process.part,
+						partName: process.part.name,
+						chapter: process.chapter,
+						chapterName: process.chapter.name,
+						targetSymbol: targetSymbol,
 						label: splitted[0]
 					};
 				} else {

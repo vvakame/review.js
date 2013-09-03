@@ -45,16 +45,16 @@ module ReVIEW {
 
 		result:string = "";
 
-		info(message:string, node?:Parse.SyntaxTree) {
-			console.log(message, node);
+		info(message:string, ...nodes:Parse.SyntaxTree[]) {
+			console.log(message, nodes);
 		}
 
-		warn(message:string, node?:Parse.SyntaxTree) {
-			console.warn(message, node);
+		warn(message:string, ...nodes:Parse.SyntaxTree[]) {
+			console.warn(message, nodes);
 		}
 
-		error(message:string, node?:Parse.SyntaxTree) {
-			console.error(message, node);
+		error(message:string, ...nodes:Parse.SyntaxTree[]) {
+			console.error(message, nodes);
 		}
 
 		out(data:any):Process {
@@ -64,7 +64,19 @@ module ReVIEW {
 		}
 
 		addSymbol(symbol:Symbol) {
+			symbol.part = this.part;
+			symbol.chapter = this.chapter;
 			this.symbols.push(symbol);
+		}
+
+		get missingSymbols():Symbol[] {
+			var result:Symbol[] = [];
+			this.symbols.forEach(symbol=> {
+				if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
+					result.push(symbol);
+				}
+			});
+			return result;
 		}
 
 		nextIndex(kind:string) {
@@ -92,6 +104,8 @@ module ReVIEW {
 	 * シンボルについての情報。
 	 */
 	export interface Symbol {
+		part?:Part;
+		chapter?:Chapter;
 		symbolName:string;
 		labelName?:string;
 		referenceTo?:ReferenceTo;
@@ -102,8 +116,11 @@ module ReVIEW {
 	 * 参照先についての情報。
 	 */
 	export interface ReferenceTo {
-		part?:string;
-		chapter?:string;
+		part?:Part;
+		partName:string;
+		chapter?:Chapter;
+		chapterName:string;
+		targetSymbol:string;
 		label:string;
 		// 上記情報から解決した結果のNode
 		referenceNode?:ReVIEW.Parse.SyntaxTree;

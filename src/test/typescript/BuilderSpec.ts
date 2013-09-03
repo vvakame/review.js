@@ -7,7 +7,7 @@ describe("ReVIEW.Buildの", ()=> {
 	it("処理が正しく動くこと", ()=> {
 		var files:any = {
 			"./ch01.re": "={ch01} ちゃぷたーだよ\n今日の晩ご飯はラフテーだった",
-			"./ch02.re": "= チャプター2\n参照 @<hd>{ch01} とか\n//list[hoge][fuga]{\ntest\n//}"
+			"./ch02.re": "={ch02} チャプター2\n参照 @<hd>{ch02} とか\n//list[hoge][fuga]{\ntest\n//}"
 		};
 		var result:any = {
 		};
@@ -47,6 +47,41 @@ describe("ReVIEW.Buildの", ()=> {
 
 		expect(part.chapters[0].process.symbols.length).toBe(1);
 		expect(part.chapters[1].process.symbols.length).toBe(3);
+	});
+
+	describe("DefaultAnalyzerの動作の確認として", () => {
+		it("正しくsymbolの解決が出来る", ()=> {
+			var files:any = {
+				"./ch01.re": "={ch01} chapter01\n@<hd>{ch01}\n@<hd>{missing}"
+			};
+			var result:any = {
+			};
+			var book = ReVIEW.start((review)=> {
+				review.initConfig({
+					read: function (path) {
+						return files[path];
+					},
+					write: function (path, content) {
+						result[path] = content;
+					},
+
+					builders: [new ReVIEW.Build.TextBuilder()],
+
+					book: {
+						preface: [
+						],
+						chapters: [
+							"ch01.re"
+						],
+						afterword: [
+						]
+					}
+				});
+			});
+			var missingSymbols = book.parts[1].chapters[0].process.missingSymbols;
+			expect(missingSymbols.length).toBe(1);
+			expect(missingSymbols[0].referenceTo.label).toBe("missing");
+		});
 	});
 
 	describe("DefaultBuilderの動作の確認として", ()=> {

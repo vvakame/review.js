@@ -7,7 +7,7 @@ describe("ReVIEW.Controllerの", ()=> {
 	it("処理が正しく動くこと", ()=> {
 		var files:any = {
 			"./ch01.re": "={ch01} ちゃぷたーだよ\n今日の晩ご飯はラフテーだった",
-			"./ch02.re": "= チャプター2\n参照 @<hd>{ch01} とか\n//list[hoge][fuga]{\ntest\n//}"
+			"./ch02.re": "={ch02} チャプター2\n参照 @<hd>{ch02} とか\n//list[hoge][fuga]{\ntest\n//}"
 		};
 		var result:any = {
 		};
