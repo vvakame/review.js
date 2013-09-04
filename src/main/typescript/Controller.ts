@@ -184,6 +184,30 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
+		compileFinished(book:Book) {
+			var func:Function = ()=> {
+				console.log("!?");
+			};
+			if (book.reports.some(report=>report.level === ReVIEW.ReportLevel.Error)) {
+				if (this.config.compileSuccess) {
+					func = this.config.compileSuccess;
+				} else if (ReVIEW.isNodeJS()) {
+					func = ()=> {
+						process.exit(0);
+					};
+				}
+			} else {
+				if (this.config.compileFailed) {
+					func = this.config.compileFailed;
+				} else if (ReVIEW.isNodeJS()) {
+					func = ()=> {
+						process.exit(1);
+					};
+				}
+			}
+			func();
+		}
+
 		resolvePath(path:string):string {
 			var base = this.options.base || "./";
 			if (!this.endWith(base, "/") && !this.startWith(path, "/")) {

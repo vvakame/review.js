@@ -22,6 +22,7 @@ module ReVIEW {
 		setup(controller);
 		var book = controller.process();
 		controller.outputReport(book.reports);
+		controller.compileFinished(book);
 		return book;
 	}
 }

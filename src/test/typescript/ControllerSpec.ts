@@ -20,6 +20,11 @@ describe("ReVIEW.Controllerの", ()=> {
 					result[path] = content;
 				},
 
+				compileSuccess: ()=> {
+				},
+				compileFailed: ()=> {
+				},
+
 				builders: [new ReVIEW.Build.TextBuilder()],
 
 				book: {

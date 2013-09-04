@@ -20,6 +20,11 @@ describe("ReVIEW.Buildの", ()=> {
 					result[path] = content;
 				},
 
+				compileSuccess: ()=> {
+				},
+				compileFailed: ()=> {
+				},
+
 				builders: [new ReVIEW.Build.TextBuilder()],
 
 				book: {
@@ -64,7 +69,13 @@ describe("ReVIEW.Buildの", ()=> {
 					write: function (path, content) {
 						result[path] = content;
 					},
+
 					outputReport: ()=> {
+					},
+
+					compileSuccess: ()=> {
+					},
+					compileFailed: ()=> {
 					},
 
 					builders: [new ReVIEW.Build.TextBuilder()],
@@ -100,6 +111,11 @@ describe("ReVIEW.Buildの", ()=> {
 					},
 					write: function (path, content) {
 						result[path] = content;
+					},
+
+					compileSuccess: ()=> {
+					},
+					compileFailed: ()=> {
 					},
 
 					builders: [new ReVIEW.Build.TextBuilder()],

@@ -23,6 +23,9 @@ module ReVIEW {
 
 		outputReport?:(reports:ReVIEW.ProcessReport[])=>void;
 
+		compileSuccess?:()=>void;
+		compileFailed?:()=>void;
+
 		analyzer:Build.IAnalyzer;
 		validators:Build.IValidator[];
 		builders:Build.IBuilder[];
