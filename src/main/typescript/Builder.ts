@@ -28,8 +28,7 @@ module ReVIEW {
 		 * また、Builderと対比させて、未実装の候補がないかをチェックする。
 		 */
 		export interface IValidator {
-			init(book:Book);
-			checkByBuilders(builders:IBuilder[]);
+			init(book:Book, builders:IBuilder[]);
 		}
 
 		/**
@@ -352,10 +351,32 @@ module ReVIEW {
 		}
 
 		export class DefaultValidator implements IValidator {
-			init(book:Book) {
+
+			init(book:Book, builders:IBuilder[]) {
+				this.checkBook(book);
 			}
 
-			checkByBuilders(builders:IBuilder[]) {
+			checkBook(book:Book) {
+				book.parts.forEach(part=> this.checkPart(part));
+			}
+
+			checkPart(part:Part) {
+				part.chapters.forEach(chapter=>this.checkChapter(chapter));
+			}
+
+			checkChapter(chapter:Chapter) {
+				// 章の下に項がいきなり来ていないか(節のレベルを飛ばしている)
+				// 最初は必ず Level 1
+				ReVIEW.visit(chapter.root, {
+					visitDefaultPre: (node:SyntaxTree) => {
+					},
+					visitChapterPre: (node:ChapterSyntaxTree) => {
+						if (node.level !== 1) {
+							chapter.process.error("Top level chapter must level 1", node);
+						}
+						return false;
+					}
+				});
 			}
 		}
 

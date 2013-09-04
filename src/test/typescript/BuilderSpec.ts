@@ -97,6 +97,51 @@ describe("ReVIEW.Buildの", ()=> {
 		});
 	});
 
+	describe("DefaultValidatorの動作の確認として", () => {
+		it("トップレベルのChapterは必ず level 1 であること", ()=> {
+			var files:any = {
+				"./ch01.re": "= level 1\n== level2",
+				"./ch02.re": "== level 2"
+			};
+			var result:any = {
+			};
+			var book = ReVIEW.start((review)=> {
+				review.initConfig({
+					read: function (path) {
+						return files[path];
+					},
+					write: function (path, content) {
+						result[path] = content;
+					},
+
+					outputReport: ()=> {
+					},
+
+					compileSuccess: ()=> {
+					},
+					compileFailed: ()=> {
+					},
+
+					builders: [new ReVIEW.Build.TextBuilder()],
+
+					book: {
+						preface: [
+						],
+						chapters: [
+							"ch01.re",
+							"ch02.re"
+						],
+						afterword: [
+						]
+					}
+				});
+			});
+			expect(book.reports.length).toBe(1);
+			expect(book.reports[0].level).toBe(ReVIEW.ReportLevel.Error);
+		});
+	});
+
+
 	describe("DefaultBuilderの動作の確認として", ()=> {
 		it("", ()=> {
 			var files:any = {

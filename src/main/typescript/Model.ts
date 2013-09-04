@@ -404,7 +404,7 @@ module ReVIEW {
 				if (this instanceof clazz) {
 					return <T>this;
 				} else {
-					throw new Error("this node is not " + clazz.name);
+					throw new Error("this node is not " + clazz.name + ", actual " + (<any>this).constructor.name);
 				}
 			}
 

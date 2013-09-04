@@ -56,7 +56,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			var book = this.processBook();
 			this.config.analyzer.init(book);
 			this.config.validators.forEach((validator)=> {
-				validator.init(book);
+				validator.init(book, this.config.builders);
 			});
 			this.config.builders.forEach((builder)=> {
 				builder.init(book);
