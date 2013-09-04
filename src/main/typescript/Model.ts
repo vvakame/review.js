@@ -33,12 +33,30 @@ module ReVIEW {
 	}
 
 	/**
+	 * 処理時に発生したレポートのレベル。
+	 */
+	export enum ReportLevel {
+		Info,
+		Warning,
+		Error
+	}
+
+	/**
+	 * 処理時に発生したレポート。
+	 */
+	export class ProcessReport {
+		constructor(public level:ReportLevel, public message:string, public nodes:Parse.SyntaxTree[] = []) {
+		}
+	}
+
+	/**
 	 * コンパイル処理時の出力ハンドリング。
 	 */
 	export class Process {
 		symbols:Symbol[] = [];
 		indexCounter:{ [kind:string]:number; } = {};
 		afterProcess:Function[] = [];
+		private _reports:ProcessReport[] = [];
 
 		constructor(public part:Part, public chapter:Chapter) {
 		}
@@ -46,21 +64,35 @@ module ReVIEW {
 		result:string = "";
 
 		info(message:string, ...nodes:Parse.SyntaxTree[]) {
-			console.log(message, nodes);
+			this._reports.push(new ProcessReport(ReportLevel.Info, message, nodes));
 		}
 
 		warn(message:string, ...nodes:Parse.SyntaxTree[]) {
-			console.warn(message, nodes);
+			this._reports.push(new ProcessReport(ReportLevel.Warning, message, nodes));
 		}
 
 		error(message:string, ...nodes:Parse.SyntaxTree[]) {
-			console.error(message, nodes);
+			this._reports.push(new ProcessReport(ReportLevel.Error, message, nodes));
 		}
 
 		out(data:any):Process {
 			// 最近のブラウザだと単純結合がアホみたいに早いらしいので
 			this.result += data;
 			return this;
+		}
+
+		get reports():ProcessReport[] {
+			return this._reports.sort((a, b) => {
+				if (a.nodes.length === 0 && b.nodes.length === 0) {
+					return 0;
+				} else if (a.nodes.length === 0) {
+					return -1;
+				} else if (b.nodes.length === 0) {
+					return 1;
+				} else {
+					return a.nodes[0].offset - b.nodes[0].offset;
+				}
+			});
 		}
 
 		addSymbol(symbol:Symbol) {
