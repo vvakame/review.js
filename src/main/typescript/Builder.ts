@@ -37,6 +37,15 @@ module ReVIEW {
 		 */
 		export interface IBuilder {
 			init(book:Book);
+			chapterPre(process:Process, node:ChapterSyntaxTree):any;
+			chapterPost(process:Process, node:ChapterSyntaxTree):any;
+			headlinePre(process:Process, name:string, node:HeadlineSyntaxTree):any;
+			headlinePost(process:Process, name:string, node:HeadlineSyntaxTree):any;
+			blockPre(process:Process, name:string, node:BlockElementSyntaxTree):any;
+			blockPost(process:Process, name:string, node:BlockElementSyntaxTree):any;
+			inlinePre(process:Process, name:string, node:InlineElementSyntaxTree):any;
+			inlinePost(process:Process, name:string, node:InlineElementSyntaxTree):any;
+			text(process:Process, name:string, node:TextNodeSyntaxTree):any;
 		}
 
 		/**
@@ -362,14 +371,17 @@ module ReVIEW {
 						ReVIEW.visit(chapter.root, {
 							visitDefaultPre: (node:SyntaxTree)=> {
 							},
-							visitTextPre: (node:TextNodeSyntaxTree) => {
-								this.text(process, node.text, node);
+							visitChapterPre: (node:ChapterSyntaxTree)=> {
+								return this.chapterPre(chapter.process, node);
+							},
+							visitChapterPost: (node:ChapterSyntaxTree)=> {
+								return this.chapterPost(chapter.process, node);
 							},
 							visitHeadlinePre: (node:HeadlineSyntaxTree)=> {
-								return (<any>this).headline_pre(chapter.process, "hd", node);
+								return this.headlinePre(chapter.process, "hd", node);
 							},
 							visitHeadlinePost: (node:HeadlineSyntaxTree)=> {
-								return (<any>this).headline_post(chapter.process, "hd", node);
+								return this.headlinePost(chapter.process, "hd", node);
 							},
 							visitBlockElementPre: (node:BlockElementSyntaxTree)=> {
 								return this.blockPre(chapter.process, node.name, node);
@@ -383,8 +395,8 @@ module ReVIEW {
 							visitInlineElementPost: (node:InlineElementSyntaxTree)=> {
 								return this.inlinePost(chapter.process, node.name, node);
 							},
-							visitChapterPost: (node:ChapterSyntaxTree)=> {
-								process.out("\n");
+							visitTextPre: (node:TextNodeSyntaxTree) => {
+								this.text(process, node.text, node);
 							}
 						});
 					});
@@ -394,6 +406,18 @@ module ReVIEW {
 						chapter.process.doAfterProcess();
 					});
 				});
+			}
+
+			chapterPre(process:Process, node:ChapterSyntaxTree):any {
+			}
+
+			chapterPost(process:Process, node:ChapterSyntaxTree):any {
+			}
+
+			headlinePre(process:Process, name:string, node:HeadlineSyntaxTree):any {
+			}
+
+			headlinePost(process:Process, name:string, node:HeadlineSyntaxTree):any {
 			}
 
 			text(process:Process, name:string, node:TextNodeSyntaxTree):any {

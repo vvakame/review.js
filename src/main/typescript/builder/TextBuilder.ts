@@ -16,7 +16,11 @@ module ReVIEW {
 
 		export class TextBuilder extends DefaultBuilder {
 
-			headline_pre(process:Process, name:string, node:HeadlineSyntaxTree) {
+			chapterPost(process:Process, node:ChapterSyntaxTree):any {
+				process.out("\n");
+			}
+
+			headlinePre(process:Process, name:string, node:HeadlineSyntaxTree) {
 				// TODO no の採番がレベル別になっていない
 				// TODO 2.3.2 みたいな階層を返せるメソッドが何かほしい
 				process.out("■H").out(node.level).out("■");
@@ -28,7 +32,7 @@ module ReVIEW {
 				}
 			}
 
-			headline_post(process:Process, name:string, node:HeadlineSyntaxTree) {
+			headlinePost(process:Process, name:string, node:HeadlineSyntaxTree) {
 				process.out("\n\n");
 			}
 
