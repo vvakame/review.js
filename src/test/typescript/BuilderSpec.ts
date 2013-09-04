@@ -139,6 +139,46 @@ describe("ReVIEW.Buildの", ()=> {
 			expect(book.reports.length).toBe(1);
 			expect(book.reports[0].level).toBe(ReVIEW.ReportLevel.Error);
 		});
+
+		it("あるChapterの親のChapterのレベル差が1であること", ()=> {
+			var files:any = {
+				"./ch01.re": "= level 1\n=== level3"
+			};
+			var result:any = {
+			};
+			var book = ReVIEW.start((review)=> {
+				review.initConfig({
+					read: function (path) {
+						return files[path];
+					},
+					write: function (path, content) {
+						result[path] = content;
+					},
+
+					outputReport: ()=> {
+					},
+
+					compileSuccess: ()=> {
+					},
+					compileFailed: ()=> {
+					},
+
+					builders: [new ReVIEW.Build.TextBuilder()],
+
+					book: {
+						preface: [
+						],
+						chapters: [
+							"ch01.re"
+						],
+						afterword: [
+						]
+					}
+				});
+			});
+			expect(book.reports.length).toBe(1);
+			expect(book.reports[0].level).toBe(ReVIEW.ReportLevel.Error);
+		});
 	});
 
 

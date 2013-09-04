@@ -366,17 +366,40 @@ module ReVIEW {
 
 			checkChapter(chapter:Chapter) {
 				// 章の下に項がいきなり来ていないか(節のレベルを飛ばしている)
-				// 最初は必ず Level 1
+				// 最初は必ず Level 1, 1以外の場合は1つ上のChapterとのレベル差が1でなければならない
 				ReVIEW.visit(chapter.root, {
 					visitDefaultPre: (node:SyntaxTree) => {
 					},
 					visitChapterPre: (node:ChapterSyntaxTree) => {
-						if (node.level !== 1) {
-							chapter.process.error("Top level chapter must level 1", node);
+						if (node.level === 1) {
+							if (!this.findChapter(node)) {
+								// ここに来るのは実装のバグのはず
+								chapter.process.error("This is Level 1 chapter, but not top level", node);
+							}
+						} else {
+							var parent = this.findChapter(node.parentNode);
+							if (!parent) {
+								chapter.process.error("Top level chapter must level 1", node);
+							} else if (parent.level !== node.level - 1) {
+								chapter.process.error("This is Level " + node.level + " chapter, but parent chapter is not level " + (node.level - 1) + ". actual " + (parent ? String(parent.level) : "none"), node);
+							}
 						}
-						return false;
 					}
 				});
+			}
+
+			findChapter(node:SyntaxTree, level?:number):ChapterSyntaxTree {
+				var chapter:ChapterSyntaxTree = null;
+				ReVIEW.walk(node, (node:SyntaxTree) => {
+					if (node instanceof ReVIEW.Parse.ChapterSyntaxTree) {
+						chapter = node.toChapter();
+						if (typeof level === "undefined" || chapter.level === level) {
+							return null;
+						}
+					}
+					return node.parentNode;
+				});
+				return chapter;
 			}
 		}
 
