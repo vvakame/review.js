@@ -15,8 +15,6 @@ module ReVIEW {
 		/**
 		 * 意味解析やシンボルの解決を行う。
 		 * 未解決のシンボルのエラーを通知するのはここ。
-		 * TODO また、シンボルの重複についてもチェックする必要がある。
-		 * TODO 章番号の採番についても、Part全部を横断で振る必要がある。
 		 */
 		export interface IAnalyzer {
 			init(book:Book);
