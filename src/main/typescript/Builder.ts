@@ -365,7 +365,7 @@ module ReVIEW {
 							visitDefaultPre: (node:SyntaxTree)=> {
 							},
 							visitTextPre: (node:TextNodeSyntaxTree) => {
-								process.out(node.text);
+								this.text(process, node.text, node);
 							},
 							visitHeadlinePre: (node:HeadlineSyntaxTree)=> {
 								return (<any>this).headline_pre(chapter.process, "hd", node);
@@ -396,6 +396,10 @@ module ReVIEW {
 						chapter.process.doAfterProcess();
 					});
 				});
+			}
+
+			text(process:Process, name:string, node:TextNodeSyntaxTree):any {
+				process.out(node.text);
 			}
 
 			blockPre(process:Process, name:string, node:BlockElementSyntaxTree):any {
