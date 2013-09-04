@@ -1,3 +1,4 @@
+///<reference path='Utils.ts' />
 ///<reference path='Model.ts' />
 ///<reference path='Parser.ts' />
 
@@ -11,6 +12,10 @@ module ReVIEW {
 	import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
 	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+
+	import flatten = ReVIEW.flatten;
+	import nodeToString = ReVIEW.nodeToString;
+	import findChapter = ReVIEW.findChapter;
 
 		/**
 		 * 意味解析やシンボルの解決を行う。
@@ -56,8 +61,9 @@ module ReVIEW {
 			name = "AnalyzerError";
 
 			constructor(public message:string) {
-				if ((<any>Error).captureStackTrace) {
-					(<any>Error).captureStackTrace(this, AnalyzerError);
+				var E = <any>Error;
+				if (E.captureStackTrace) {
+					E.captureStackTrace(this, AnalyzerError);
 				}
 			}
 		}
@@ -98,13 +104,6 @@ module ReVIEW {
 			resolveSymbolAndReference(book:Book) {
 				// symbols の解決
 				// Arrayにflatten がなくて悲しい reduce だと長い…
-				var flatten = (data:any[])=> {
-					if (data.some((d)=>Array.isArray(d))) {
-						return flatten(data.reduce((p, c)=> p.concat(c), []));
-					} else {
-						return data;
-					}
-				};
 				var symbols:Symbol[] = flatten(book.parts.map(part=>part.chapters.map(chapter=>chapter.process.symbols)));
 				symbols.forEach(symbol=> {
 					// referenceToのpartやchapterの解決
@@ -220,18 +219,6 @@ module ReVIEW {
 				}
 			}
 
-			contentToString(node:NodeSyntaxTree):string {
-				var result = "";
-				ReVIEW.visit(node, {
-					visitDefaultPre: (node:SyntaxTree)=> {
-					},
-					visitTextPre: (text:TextNodeSyntaxTree) => {
-						result += text.text;
-					}
-				});
-				return result;
-			}
-
 			constructReferenceTo(process:Process, node:InlineElementSyntaxTree, value:string, targetSymbol?:string, separator?:string):ReferenceTo;
 
 			constructReferenceTo(process:Process, node:BlockElementSyntaxTree, value:string, targetSymbol:string, separator?:string):ReferenceTo;
@@ -286,7 +273,7 @@ module ReVIEW {
 				}
 				process.addSymbol({
 					symbolName: node.name,
-					referenceTo: this.constructReferenceTo(process, node, this.contentToString(node)),
+					referenceTo: this.constructReferenceTo(process, node, nodeToString(node)),
 					node: node
 				});
 			}
@@ -297,7 +284,7 @@ module ReVIEW {
 				}
 				process.addSymbol({
 					symbolName: node.name,
-					referenceTo: this.constructReferenceTo(process, node, this.contentToString(node)),
+					referenceTo: this.constructReferenceTo(process, node, nodeToString(node)),
 					node: node
 				});
 			}
@@ -372,12 +359,12 @@ module ReVIEW {
 					},
 					visitChapterPre: (node:ChapterSyntaxTree) => {
 						if (node.level === 1) {
-							if (!this.findChapter(node)) {
+							if (!findChapter(node)) {
 								// ここに来るのは実装のバグのはず
 								chapter.process.error("This is Level 1 chapter, but not top level", node);
 							}
 						} else {
-							var parent = this.findChapter(node.parentNode);
+							var parent = findChapter(node.parentNode);
 							if (!parent) {
 								chapter.process.error("Top level chapter must level 1", node);
 							} else if (parent.level !== node.level - 1) {
@@ -386,20 +373,6 @@ module ReVIEW {
 						}
 					}
 				});
-			}
-
-			findChapter(node:SyntaxTree, level?:number):ChapterSyntaxTree {
-				var chapter:ChapterSyntaxTree = null;
-				ReVIEW.walk(node, (node:SyntaxTree) => {
-					if (node instanceof ReVIEW.Parse.ChapterSyntaxTree) {
-						chapter = node.toChapter();
-						if (typeof level === "undefined" || chapter.level === level) {
-							return null;
-						}
-					}
-					return node.parentNode;
-				});
-				return chapter;
 			}
 		}
 
@@ -526,20 +499,6 @@ module ReVIEW {
 				return func.call(this, process, node);
 			}
 
-			findChapter(node:SyntaxTree, level?:number):ChapterSyntaxTree {
-				var chapter:ChapterSyntaxTree = null;
-				ReVIEW.walk(node, (node:SyntaxTree) => {
-					if (node instanceof ReVIEW.Parse.ChapterSyntaxTree) {
-						chapter = node.toChapter();
-						if (typeof level === "undefined" || chapter.level === level) {
-							return null;
-						}
-					}
-					return node.parentNode;
-				});
-				return chapter;
-			}
-
 			findReference(process:Process, node:SyntaxTree):Symbol {
 				var founds = process.symbols.filter((symbol)=> {
 					return symbol.node === node;
@@ -548,18 +507,6 @@ module ReVIEW {
 					throw new AnalyzerError("invalid status.");
 				}
 				return founds[0];
-			}
-
-			contentToString(node:SyntaxTree):string {
-				var result = "";
-				ReVIEW.visit(node, {
-					visitDefaultPre: (node:SyntaxTree)=> {
-					},
-					visitTextPre: (text:TextNodeSyntaxTree) => {
-						result += text.text;
-					}
-				});
-				return result;
 			}
 		}
 	}

@@ -1,3 +1,4 @@
+///<reference path='../Utils.ts' />
 ///<reference path='../Builder.ts' />
 ///<reference path='../i18n.ts' />
 
@@ -13,6 +14,9 @@ module ReVIEW {
 	import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
 	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+
+	import nodeToString = ReVIEW.nodeToString;
+	import findChapter = ReVIEW.findChapter;
 
 		export class TextBuilder extends DefaultBuilder {
 
@@ -38,7 +42,7 @@ module ReVIEW {
 
 			block_list_pre(process:Process, node:BlockElementSyntaxTree) {
 				process.out("◆→開始:リスト←◆\n");
-				var chapter = this.findChapter(node, 1);
+				var chapter = findChapter(node, 1);
 				var text = i18n.t("builder.list", chapter.fqn, node.no);
 				process.out(text).out("　").out(node.args[1].arg).out("\n");
 				return (v) => {
@@ -54,7 +58,7 @@ module ReVIEW {
 			}
 
 			inline_list(process:Process, node:InlineElementSyntaxTree) {
-				var chapter = this.findChapter(node, 1);
+				var chapter = findChapter(node, 1);
 				var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
 				var text = i18n.t("builder.list", chapter.fqn, listNode.no);
 				process.out(text);
@@ -62,13 +66,13 @@ module ReVIEW {
 
 			inline_hd_pre(process:Process, node:InlineElementSyntaxTree) {
 				process.out("「");
-				var chapter = this.findChapter(node);
+				var chapter = findChapter(node);
 				if (chapter.level === 1) {
 					process.out(chapter.fqn).out("章 ");
 				} else {
 					process.out(chapter.fqn).out(" ");
 				}
-				process.out(this.contentToString(chapter.headline));
+				process.out(nodeToString(chapter.headline));
 				return false;
 			}
 
