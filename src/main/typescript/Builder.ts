@@ -85,42 +85,49 @@ module ReVIEW {
 						chapter.process.doAfterProcess();
 					});
 				});
+
+				this.resolveSymbolAndReference(book);
+			}
+
+			resolveSymbolAndReference(book:Book) {
 				// symbols の解決
-				var symbols:Symbol[] = [];
-				book.parts.forEach((part) => {
-					part.chapters.forEach((chapter) => {
-						chapter.process.symbols.forEach(symbol=> {
-							// symbolの収集
-							symbols.push(symbol);
-							// referenceToのpartやchapterの解決
-							var referenceTo = symbol.referenceTo;
-							if (!referenceTo) {
-								return;
-							}
-							if (!referenceTo.part) {
-								book.parts.forEach(part=> {
-									if (referenceTo.partName === part.name) {
-										referenceTo.part = part;
-									}
-								});
-							}
-							if (!referenceTo.part) {
-								symbol.chapter.process.error("Part is missing " + symbol.part.name, symbol.node);
-								return;
-							}
-							if (!referenceTo.chapter) {
-								referenceTo.part.chapters.forEach(chap=> {
-									if (referenceTo.chapterName === chap.name) {
-										referenceTo.chapter = chap;
-									}
-								});
-							}
-							if (!referenceTo.chapter) {
-								symbol.chapter.process.error("Chapter is missing " + symbol.chapter.name, symbol.node);
-								return;
+				// Arrayにflatten がなくて悲しい reduce だと長い…
+				var flatten = (data:any[])=> {
+					if (data.some((d)=>Array.isArray(d))) {
+						return flatten(data.reduce((p, c)=> p.concat(c), []));
+					} else {
+						return data;
+					}
+				};
+				var symbols:Symbol[] = flatten(book.parts.map(part=>part.chapters.map(chapter=>chapter.process.symbols)));
+				symbols.forEach(symbol=> {
+					// referenceToのpartやchapterの解決
+					var referenceTo = symbol.referenceTo;
+					if (!referenceTo) {
+						return;
+					}
+					if (!referenceTo.part) {
+						book.parts.forEach(part=> {
+							if (referenceTo.partName === part.name) {
+								referenceTo.part = part;
 							}
 						});
-					});
+					}
+					if (!referenceTo.part) {
+						symbol.chapter.process.error("Part is missing " + symbol.part.name, symbol.node);
+						return;
+					}
+					if (!referenceTo.chapter) {
+						referenceTo.part.chapters.forEach(chap=> {
+							if (referenceTo.chapterName === chap.name) {
+								referenceTo.chapter = chap;
+							}
+						});
+					}
+					if (!referenceTo.chapter) {
+						symbol.chapter.process.error("Chapter is missing " + symbol.chapter.name, symbol.node);
+						return;
+					}
 				});
 				// referenceTo.node の解決
 				symbols.forEach(symbol=> {
