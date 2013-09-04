@@ -16,11 +16,13 @@ module ReVIEW {
 	 * @param options
 	 * @returns {Book}
 	 */
-	export function start(setup:(review:any)=>void, options?:ReVIEW.Options) {
+	export function start(setup:(review:any)=>void, options?:ReVIEW.Options):Book {
 		var controller = new Controller(options);
 		// setup 中で initConfig が呼び出される
 		setup(controller);
-		return controller.process();
+		var book = controller.process();
+		controller.outputReport(book.reports);
+		return book;
 	}
 }
 

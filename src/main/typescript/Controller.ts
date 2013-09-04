@@ -1,3 +1,5 @@
+///<reference path='libs/custom-colors.d.ts' />
+
 ///<reference path='Utils.ts' />
 ///<reference path='Model.ts' />
 ///<reference path='Parser.ts' />
@@ -123,6 +125,63 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
 		get write():(path:string, data:string)=>void {
 			return this.config.write || ReVIEW.IO.write;
+		}
+
+		get outputReport():(reports:ReVIEW.ProcessReport[])=>void {
+			if (this.config.outputReport) {
+				return this.config.outputReport;
+			} else if (ReVIEW.isNodeJS()) {
+				return this.outputReportNodeJS;
+			} else {
+				return this.outputReportBrowser;
+			}
+		}
+
+		private outputReportNodeJS(reports:ReVIEW.ProcessReport[]):void {
+			var colors = require("colors");
+			colors.setTheme({
+				info: "cyan",
+				warn: "yellow",
+				error: "red"
+			});
+
+			reports.forEach(report=> {
+				var message = "";
+				message += report.chapter.name + " ";
+				report.nodes.forEach(node => {
+					message += "[" + node.line + "," + node.column + "] ";
+				});
+				message += report.message;
+				if (report.level === ReVIEW.ReportLevel.Error) {
+					console.warn(message.error);
+				} else if (report.level === ReVIEW.ReportLevel.Warning) {
+					console.error(message.warn);
+				} else if (report.level === ReVIEW.ReportLevel.Info) {
+					console.info(message.info);
+				} else {
+					throw new Error("unknown report level.");
+				}
+			});
+		}
+
+		private outputReportBrowser(reports:ReVIEW.ProcessReport[]):void {
+			reports.forEach(report=> {
+				var message = "";
+				message += report.chapter.name + " ";
+				report.nodes.forEach(node => {
+					message += "[" + node.line + "," + node.column + "] ";
+				});
+				message += report.message;
+				if (report.level === ReVIEW.ReportLevel.Error) {
+					console.warn(message);
+				} else if (report.level === ReVIEW.ReportLevel.Warning) {
+					console.error(message);
+				} else if (report.level === ReVIEW.ReportLevel.Info) {
+					console.info(message);
+				} else {
+					throw new Error("unknown report level.");
+				}
+			});
 		}
 
 		resolvePath(path:string):string {

@@ -64,6 +64,8 @@ describe("ReVIEW.Buildの", ()=> {
 					write: function (path, content) {
 						result[path] = content;
 					},
+					outputReport: ()=> {
+					},
 
 					builders: [new ReVIEW.Build.TextBuilder()],
 

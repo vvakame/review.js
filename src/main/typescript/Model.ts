@@ -21,6 +21,8 @@ module ReVIEW {
 		read?:(path:string)=>string;
 		write?:(path:string, data:string)=>void;
 
+		outputReport?:(reports:ReVIEW.ProcessReport[])=>void;
+
 		analyzer:Build.IAnalyzer;
 		validators:Build.IValidator[];
 		builders:Build.IBuilder[];
@@ -45,7 +47,7 @@ module ReVIEW {
 	 * 処理時に発生したレポート。
 	 */
 	export class ProcessReport {
-		constructor(public level:ReportLevel, public message:string, public nodes:Parse.SyntaxTree[] = []) {
+		constructor(public level:ReportLevel, public part:Part, public chapter:Chapter, public message:string, public nodes:Parse.SyntaxTree[] = []) {
 		}
 	}
 
@@ -64,15 +66,15 @@ module ReVIEW {
 		result:string = "";
 
 		info(message:string, ...nodes:Parse.SyntaxTree[]) {
-			this._reports.push(new ProcessReport(ReportLevel.Info, message, nodes));
+			this._reports.push(new ProcessReport(ReportLevel.Info, this.part, this.chapter, message, nodes));
 		}
 
 		warn(message:string, ...nodes:Parse.SyntaxTree[]) {
-			this._reports.push(new ProcessReport(ReportLevel.Warning, message, nodes));
+			this._reports.push(new ProcessReport(ReportLevel.Warning, this.part, this.chapter, message, nodes));
 		}
 
 		error(message:string, ...nodes:Parse.SyntaxTree[]) {
-			this._reports.push(new ProcessReport(ReportLevel.Error, message, nodes));
+			this._reports.push(new ProcessReport(ReportLevel.Error, this.part, this.chapter, message, nodes));
 		}
 
 		out(data:any):Process {
@@ -165,6 +167,17 @@ module ReVIEW {
 		parts:Part[] = [];
 
 		constructor(public config:Config) {
+		}
+
+		get reports():ProcessReport[] {
+			var flatten = (data:any[])=> {
+				if (data.some((d)=>Array.isArray(d))) {
+					return flatten(data.reduce((p, c)=> p.concat(c), []));
+				} else {
+					return data;
+				}
+			};
+			return flatten(this.parts.map(part=>part.chapters.map(chapter=>chapter.process.reports)));
 		}
 	}
 
