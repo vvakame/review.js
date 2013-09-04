@@ -1,9 +1,12 @@
 ///<reference path='Utils.ts' />
+///<reference path='i18n.ts' />
 ///<reference path='Model.ts' />
 ///<reference path='Parser.ts' />
 
 module ReVIEW {
 	export module Build {
+
+	import t = ReVIEW.i18n.t;
 
 	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
 	import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
@@ -119,7 +122,7 @@ module ReVIEW {
 						});
 					}
 					if (!referenceTo.part) {
-						symbol.chapter.process.error("Part is missing " + symbol.part.name, symbol.node);
+						symbol.chapter.process.error(t("compile.part_is_missing", symbol.part.name), symbol.node);
 						return;
 					}
 					if (!referenceTo.chapter) {
@@ -130,7 +133,7 @@ module ReVIEW {
 						});
 					}
 					if (!referenceTo.chapter) {
-						symbol.chapter.process.error("Chapter is missing " + symbol.chapter.name, symbol.node);
+						symbol.chapter.process.error(t("compile.chapter_is_missing", symbol.chapter.name), symbol.node);
 						return;
 					}
 				});
@@ -144,7 +147,7 @@ module ReVIEW {
 							}
 						});
 						if (!reference.referenceNode) {
-							symbol.chapter.process.error("Refenrece is missing " + symbol.labelName, symbol.node);
+							symbol.chapter.process.error(t("compile.reference_is_missing", symbol.labelName), symbol.node);
 							return;
 						}
 					}
@@ -157,7 +160,7 @@ module ReVIEW {
 						}
 						if (symbol1.chapter === symbol2.chapter && symbol1.symbolName === symbol2.symbolName) {
 							if (symbol1.labelName && symbol2.labelName && symbol1.labelName === symbol2.labelName) {
-								symbol1.chapter.process.error("Duplicated symbol", symbol1.node, symbol2.node);
+								symbol1.chapter.process.error(t("compile.duplicated_label"), symbol1.node, symbol2.node);
 								return;
 							}
 						}
@@ -212,7 +215,9 @@ module ReVIEW {
 				}
 				var arg = node.args || [];
 				if (expects.indexOf(arg.length) === -1) {
-					process.error("argments length mismatch, " + node.name + " expected " + expects.map((n)=>Number(n).toString()).join(" or ") + "," + node + ", actual" + arg.length);
+					var expected = expects.map((n)=>Number(n).toString()).join(" or ");
+					var message = t("compile.args_length_mismatch", expected, arg.length);
+					process.error(message, node);
 					return false;
 				} else {
 					return true;
@@ -250,7 +255,8 @@ module ReVIEW {
 						label: splitted[0]
 					};
 				} else {
-					process.error("argments length mismatch, expect 1 or 2 or 3. actual " + splitted.length, node);
+					var message = t("compile.args_length_mismatch", "1 or 2 or 3", splitted.length);
+					process.error(message, node);
 					return null;
 				}
 			}
@@ -269,7 +275,7 @@ module ReVIEW {
 
 			inline_list(process:Process, node:InlineElementSyntaxTree) {
 				if (node.childNodes.length !== 1) {
-					process.error("element body mismatch, only string");
+					process.error(t("compile.body_string_only"));
 				}
 				process.addSymbol({
 					symbolName: node.name,
@@ -280,7 +286,7 @@ module ReVIEW {
 
 			inline_hd(process:Process, node:InlineElementSyntaxTree) {
 				if (node.childNodes.length !== 1) {
-					process.error("element body mismatch, only string");
+					process.error(t("compile.body_string_only"));
 				}
 				process.addSymbol({
 					symbolName: node.name,
@@ -361,14 +367,14 @@ module ReVIEW {
 						if (node.level === 1) {
 							if (!findChapter(node)) {
 								// ここに来るのは実装のバグのはず
-								chapter.process.error("This is Level 1 chapter, but not top level", node);
+								chapter.process.error(t("compile.chapter_not_toplevel"), node);
 							}
 						} else {
 							var parent = findChapter(node.parentNode);
 							if (!parent) {
-								chapter.process.error("Top level chapter must level 1", node);
+								chapter.process.error(t("compile.chapter_topleve_eq1"), node);
 							} else if (parent.level !== node.level - 1) {
-								chapter.process.error("This is Level " + node.level + " chapter, but parent chapter is not level " + (node.level - 1) + ". actual " + (parent ? String(parent.level) : "none"), node);
+								chapter.process.error(t("compile.chapter_level_omission", node.level, node.level - 1, parent ? String(parent.level) : "none"), node);
 							}
 						}
 					}

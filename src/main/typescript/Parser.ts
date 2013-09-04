@@ -111,7 +111,6 @@ module ReVIEW {
 					// パースした内容は直接役にたたない c / c / c 系
 					return transform(rawResult.content);
 				default:
-					console.warn("unknown rule : " + rawResult.syntax);
 					return new SyntaxTree(rawResult);
 			}
 		}

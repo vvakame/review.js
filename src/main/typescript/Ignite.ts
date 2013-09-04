@@ -30,6 +30,8 @@ module ReVIEW {
 if (ReVIEW.isNodeJS()) {
 	// Node.js 上で実行されている場合はコマンドライン引数を解釈して処理を実行する。
 
+	// TODO i18n
+
 	var program = require("commander");
 	program
 		.version("TODO", "-v, --version")
