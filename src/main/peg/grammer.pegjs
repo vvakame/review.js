@@ -64,7 +64,7 @@ BlockElementContent "content of block element"
     ;
 
 BlockElementContentText "text of block element"
-    = text:$( ( !"//}" !SinglelineComment !BlockElement !Ulist !Olist !Dlist ( !InlineElement [^\r\n] )* Newline? )+ )
+    = text:$( ( &. !"//}" !SinglelineComment !BlockElement !Ulist !Olist !Dlist ( !InlineElement [^\r\n] )* Newline? )+ )
     ;
 
 InlineElementContents "contents of inline element"
