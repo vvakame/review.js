@@ -62,6 +62,7 @@ module ReVIEW {
 				var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
 				var text = i18n.t("builder.list", chapter.fqn, listNode.no);
 				process.out(text);
+				return false;
 			}
 
 			inline_hd_pre(process:Process, node:InlineElementSyntaxTree) {

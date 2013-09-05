@@ -147,7 +147,7 @@ module ReVIEW {
 							}
 						});
 						if (!reference.referenceNode) {
-							symbol.chapter.process.error(t("compile.reference_is_missing", symbol.labelName), symbol.node);
+							symbol.chapter.process.error(t("compile.reference_is_missing", reference.targetSymbol, reference.label), symbol.node);
 							return;
 						}
 					}
@@ -451,8 +451,7 @@ module ReVIEW {
 				var func:Function;
 				func = this["block_" + name];
 				if (typeof func === "function") {
-					func.call(this, process, node);
-					return;
+					return func.call(this, process, node);
 				}
 
 				func = this["block_" + name + "_pre"];
@@ -480,8 +479,7 @@ module ReVIEW {
 				var func:Function;
 				func = this["inline_" + name];
 				if (typeof func === "function") {
-					func.call(this, process, node);
-					return;
+					return func.call(this, process, node);
 				}
 
 				func = this["inline_" + name + "_pre"];

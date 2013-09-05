@@ -188,7 +188,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			var func:Function = ()=> {
 				console.log("!?");
 			};
-			if (book.reports.some(report=>report.level === ReVIEW.ReportLevel.Error)) {
+			if (!book.reports.some(report=>report.level === ReVIEW.ReportLevel.Error)) {
 				if (this.config.compileSuccess) {
 					func = this.config.compileSuccess;
 				} else if (ReVIEW.isNodeJS()) {
@@ -205,7 +205,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 					};
 				}
 			}
-			func();
+			func(book);
 		}
 
 		resolvePath(path:string):string {
