@@ -285,7 +285,7 @@ module.exports = function (grunt) {
 			tsd: {
 				cmd: function () {
 					// jquery は i18next がコンパイル時に依存している
-					return "tsd install node jasmine jquery i18next";
+					return "./node_modules/.bin/tsd install node jasmine jquery i18next";
 				}
 			},
 			"pegjs": {

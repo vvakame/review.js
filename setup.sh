@@ -15,13 +15,6 @@ if [ $? -ne 0 ] ; then
 	ISERROR=1
 fi
 
-which tsd > /dev/null 2>&1
-if [ $? -ne 0 ] ; then
-	echo "command not found: tsd"
-	echo "please install tsd. e.g. npm install -g tsd"
-	ISERROR=1
-fi
-
 if [ "${PHANTOMJS_BIN}" = "" ] ; then
 	echo "set environment variable PHANTOMJS_BIN"
 	echo "please install if you have not installed phantomjs. e.g. sudo port install phantomjs"
