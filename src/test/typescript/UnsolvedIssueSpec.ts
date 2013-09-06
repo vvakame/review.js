@@ -6,7 +6,7 @@
 
 "use strict";
 
-describe("俺たちは腐ったみかんじゃねえ！", ()=> {
+describe("未解決のエラー", ()=> {
     describe("Builderのパース", ()=> {
         xit("listの中身の途中に改行を含んでいる", ()=> {
             var files:any = {
