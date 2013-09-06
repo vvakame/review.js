@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>ReVIEW.js 利用サンプル(HTML)</title>
+    <script type="application/javascript" src="../../bin/lib/i18next-1.6.3.js"></script>
+    <script type="application/javascript" src="../../bin/review.js"></script>
+
+    <script type="application/javascript" src="jquery-2.0.3.js"></script>
+
+    <style type="text/css">
+        .info {
+            color: blue;
+        }
+
+        .warn {
+            color: orange;
+        }
+
+        .error {
+            color: tomato;
+        }
+    </style>
+</head>
+<body>
+
+<div id="info">
+</div>
+
+<div>
+<textarea id="input" rows="30" style="float:left;width:40%;">
+={sample} これが、これがサンプルだ！
+@<hd>{sample} を開始する！
+//list[hoge][きゃぷしょん]{
+alert("hello");
+//}
+@<list>{hoge}はJavaScriptのコードです。
+</textarea>
+    <div id="result" style="float:left;margin-left:20px;width:55%;">
+    </div>
+    <br style="clear:both;"/>
+</div>
+<script type="application/javascript">
+    if (!window.ReVIEW) {
+        var $child = $("<div>").appendTo($("#info"));
+        $child.addClass("error");
+        $child.html("ReVIEW関連ファイルが正しく読み込めていません。<br>grunt default を実行してください。");
+    } else {
+        var $input = $("#input");
+
+        $input.on("keyup", function () {
+            doCompile($input.val());
+        });
+        doCompile($input.val())
+    }
+
+    function doCompile(text) {
+        var files = {
+            "./ch01.re": text
+        };
+        var result = {
+        };
+        ReVIEW.start(function (review) {
+            review.initConfig({
+                read: function (path) {
+                    return files[path];
+                },
+                write: function (path, content) {
+                    result[path] = content;
+                },
+
+                compileSuccess: function (book) {
+                    var result = book.parts[1].chapters[0].process.result;
+                    $("#result").html(result);
+                },
+
+                outputReport: function (reports) {
+                    outputReports(reports);
+                },
+
+                builders: [new ReVIEW.Build.HtmlBuilder()],
+
+                book: {
+                    preface: [
+                    ],
+                    chapters: [
+                        "ch01.re"
+                    ],
+                    afterword: [
+                    ]
+                }
+            });
+        });
+    }
+
+    function outputReports(reports) {
+        var $base = $("#info").empty();
+        reports.forEach(function (report, i) {
+            var $child = $("<div>").appendTo($base);
+            switch (report.level) {
+                case ReVIEW.ReportLevel.Info:
+                    $child.addClass("info");
+                case ReVIEW.ReportLevel.Warning:
+                    $child.addClass("warn");
+                case ReVIEW.ReportLevel.Error:
+                    $child.addClass("error");
+            }
+            var message = "";
+            report.nodes.forEach(function (node) {
+                message += "[" + node.line + "," + node.column + "] ";
+            });
+            message += report.message;
+            $child.text(message);
+        });
+    }
+</script>
+</body>
+</html>

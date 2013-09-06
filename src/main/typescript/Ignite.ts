@@ -7,6 +7,7 @@
 ///<reference path='Parser.ts' />
 ///<reference path='Controller.ts' />
 ///<reference path='builder/TextBuilder.ts' />
+///<reference path='builder/HtmlBuilder.ts' />
 
 module ReVIEW {
 
