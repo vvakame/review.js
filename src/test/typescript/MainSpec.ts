@@ -6,3 +6,4 @@
 ///<reference path='WalkerSpec.ts' />
 ///<reference path='ControllerSpec.ts' />
 ///<reference path='BuilderSpec.ts' />
+///<reference path='UnsolvedIssueSpec.ts' />
