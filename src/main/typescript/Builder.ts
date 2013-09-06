@@ -186,7 +186,8 @@ module ReVIEW {
 			block(process:Process, name:string, node:BlockElementSyntaxTree) {
 				var func = this["block_" + name];
 				if (typeof func !== "function") {
-					throw new AnalyzerError("block_" + name + " is not Function");
+					process.error(t("compile.block_not_supported", name), node);
+					return;
 				}
 				func.call(this, process, node);
 			}
@@ -194,7 +195,8 @@ module ReVIEW {
 			inline(process:Process, name:string, node:InlineElementSyntaxTree) {
 				var func = this["inline_" + name];
 				if (typeof func !== "function") {
-					throw new AnalyzerError("inline_" + name + " is not Function");
+					process.error(t("compile.inline_not_supported", name), node);
+					return;
 				}
 				func.call(this, process, node);
 			}

@@ -2,6 +2,8 @@ module ReVIEW {
 	export var ja = {
 		"sample": "こんちゃーす！",
 		"compile": {
+			"block_not_supported": "%s というブロック構文はサポートされていません",
+			"inline_not_supported": "%s というインライン構文はサポートされていません",
 			"part_is_missing": "パート %s が見つかりません",
 			"chapter_is_missing": "チャプター %s が見つかりません",
 			"reference_is_missing": "参照先 %s の %s が見つかりません",
