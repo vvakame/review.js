@@ -58,6 +58,10 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			this.config.validators.forEach((validator)=> {
 				validator.init(book, this.config.builders);
 			});
+			if (book.reports.some(report=>report.level === ReVIEW.ReportLevel.Error)) {
+				// エラーがあったら処理中断
+				return book;
+			}
 			this.config.builders.forEach((builder)=> {
 				builder.init(book);
 			});
@@ -186,7 +190,6 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
 		compileFinished(book:Book) {
 			var func:Function = ()=> {
-				console.log("!?");
 			};
 			if (!book.reports.some(report=>report.level === ReVIEW.ReportLevel.Error)) {
 				if (this.config.compileSuccess) {
