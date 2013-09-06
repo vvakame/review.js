@@ -119,8 +119,24 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
 		private processChapter(book:Book, part:Part, index:number, chapterPath:string):Chapter {
 			var data = this.read(this.resolvePath(chapterPath));
-			var parseResult = ReVIEW.Parse.parse(data);
-			return new Chapter(part, index + 1, chapterPath, parseResult.ast);
+			try {
+				var parseResult = ReVIEW.Parse.parse(data);
+				var chapter = new Chapter(part, index + 1, chapterPath, parseResult.ast);
+			} catch (e) {
+				if (!(e instanceof PEG.SyntaxError)) {
+					throw e;
+				}
+				var se:PEG.SyntaxError = e;
+				var errorNode = new SyntaxTree({
+					syntax: se.name,
+					line: se.line,
+					column: se.column,
+					offset: se.offset
+				});
+				var chapter = new Chapter(part, index + 1, chapterPath, null);
+				chapter.process.error(se.message, errorNode);
+			}
+			return chapter;
 		}
 
 		get read():(path:string)=>string {

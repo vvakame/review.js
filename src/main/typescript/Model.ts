@@ -256,6 +256,8 @@ module ReVIEW {
 		 * 構文解析時のルール名。
 		 */
 		export enum RuleName {
+			SyntaxError,
+
 			Start,
 			Chapters,
 			Chapter,
