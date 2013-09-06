@@ -7,7 +7,7 @@
 "use strict";
 
 describe("俺たちは腐ったみかんじゃねえ！", ()=> {
-    describe("listを食わせるぜ！", ()=> {
+    describe("Builderのパース", ()=> {
         xit("listの中身の途中に改行を含んでいる", ()=> {
             var files:any = {
                 "./ch01.re": "= title\n//list[hoge][きゃぷしょん]{\nalert('hello');\n\n//}\n"
