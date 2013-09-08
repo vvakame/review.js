@@ -3,35 +3,41 @@
   "offset": 0,
   "line": 1,
   "column": 1,
+  "endPos": 25,
   "childNodes": [
     {
       "ruleName": "Chapters",
       "offset": 0,
       "line": 1,
       "column": 1,
+      "endPos": 25,
       "childNodes": [
         {
           "ruleName": "Chapter",
           "offset": 0,
           "line": 1,
           "column": 1,
+          "endPos": 25,
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
             "line": 1,
             "column": 1,
+            "endPos": 11,
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
               "offset": 2,
               "line": 1,
               "column": 3,
+              "endPos": 9,
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
                   "offset": 2,
                   "line": 1,
                   "column": 3,
+                  "endPos": 9,
                   "text": "サンプルその２"
                 }
               ]
@@ -43,18 +49,21 @@
               "offset": 11,
               "line": 3,
               "column": 1,
+              "endPos": 25,
               "childNodes": [
                 {
                   "ruleName": "Contents",
                   "offset": 11,
                   "line": 3,
                   "column": 1,
+                  "endPos": 25,
                   "childNodes": [
                     {
                       "ruleName": "ContentText",
                       "offset": 11,
                       "line": 3,
                       "column": 1,
+                      "endPos": 25,
                       "text": "基本はサンプルと同様です。\n"
                     }
                   ]

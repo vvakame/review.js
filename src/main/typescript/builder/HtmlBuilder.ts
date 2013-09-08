@@ -74,7 +74,7 @@ import findChapter = ReVIEW.findChapter;
 			} else {
 				process.out(chapter.fqn).out(" ");
 			}
-			process.out(nodeToString(chapter.headline));
+			process.out(nodeToString(process, chapter.headline));
 			return false;
 		}
 

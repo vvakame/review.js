@@ -3,30 +3,35 @@
   "offset": 0,
   "line": 1,
   "column": 1,
+  "endPos": 18,
   "childNodes": [
     {
       "ruleName": "Chapters",
       "offset": 0,
       "line": 1,
       "column": 1,
+      "endPos": 18,
       "childNodes": [
         {
           "ruleName": "Chapter",
           "offset": 0,
           "line": 1,
           "column": 1,
+          "endPos": 18,
           "childNodes": [],
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
             "line": 1,
             "column": 1,
+            "endPos": 18,
             "level": 1,
             "label": {
               "ruleName": "BracketArg",
               "offset": 1,
               "line": 1,
               "column": 2,
+              "endPos": 7,
               "arg": "hoge"
             },
             "tag": {
@@ -34,6 +39,7 @@
               "offset": 7,
               "line": 1,
               "column": 8,
+              "endPos": 13,
               "arg": "fuga"
             },
             "caption": {
@@ -41,12 +47,14 @@
               "offset": 14,
               "line": 1,
               "column": 15,
+              "endPos": 18,
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
                   "offset": 14,
                   "line": 1,
                   "column": 15,
+                  "endPos": 18,
                   "text": "両方付き"
                 }
               ]

@@ -24,12 +24,19 @@ module ReVIEW {
 
 	/**
 	 * SyntaxTree を String に変換する。
-	 * TODO 現在の実装だと space とか newline が無かったことにされてしまう… offset から頑張って計算するのが正しい
-	 * TODO node で parent だけじゃなくて 兄と弟も取れたほうが楽そう…
 	 * @param node
 	 * @returns {string}
 	 */
-	export function nodeToString(node:ReVIEW.Parse.SyntaxTree):string {
+	export function nodeToString(process:Process, node:ReVIEW.Parse.SyntaxTree):string ;
+
+	export function nodeToString(process:BuilderProcess, node:ReVIEW.Parse.SyntaxTree):string ;
+
+	export function nodeToString(process:any, node:ReVIEW.Parse.SyntaxTree):string {
+		// TODO 現在の実装だと space とか newline が無かったことにされてしまう… offsetとendPosから計算するのが正しい
+		// しかし、愚直に実装すると Headlineを投げた時に TextNode 以外の箇所も取れてしまう。
+		// また、上記問題を適当に回避すると TextNode, BlockElement という順番で子要素を持つとおかしいことになるはず。
+		// TODO node で parent だけじゃなくて 兄と弟も取れたほうが楽そう…
+
 		var result = "";
 		ReVIEW.visit(node, {
 			visitDefaultPre: (node:ReVIEW.Parse.SyntaxTree)=> {

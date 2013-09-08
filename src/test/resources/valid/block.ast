@@ -3,35 +3,41 @@
   "offset": 0,
   "line": 1,
   "column": 1,
+  "endPos": 80,
   "childNodes": [
     {
       "ruleName": "Chapters",
       "offset": 0,
       "line": 1,
       "column": 1,
+      "endPos": 80,
       "childNodes": [
         {
           "ruleName": "Chapter",
           "offset": 0,
           "line": 1,
           "column": 1,
+          "endPos": 80,
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
             "line": 1,
             "column": 1,
+            "endPos": 14,
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
               "offset": 2,
               "line": 1,
               "column": 3,
+              "endPos": 12,
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
                   "offset": 2,
                   "line": 1,
                   "column": 3,
+                  "endPos": 12,
                   "text": "ブロック要素のテスト"
                 }
               ]
@@ -43,30 +49,35 @@
               "offset": 14,
               "line": 3,
               "column": 1,
+              "endPos": 80,
               "childNodes": [
                 {
                   "ruleName": "Contents",
                   "offset": 14,
                   "line": 3,
                   "column": 1,
+                  "endPos": 80,
                   "childNodes": [
                     {
                       "ruleName": "BlockElement",
                       "offset": 14,
                       "line": 3,
                       "column": 1,
+                      "endPos": 79,
                       "childNodes": [
                         {
                           "ruleName": "BlockElementContents",
                           "offset": 34,
                           "line": 4,
                           "column": 1,
+                          "endPos": 76,
                           "childNodes": [
                             {
                               "ruleName": "BlockElementContentText",
                               "offset": 34,
                               "line": 4,
                               "column": 1,
+                              "endPos": 76,
                               "text": "var hoge = confirm(\"test\");\n// JS comment\n"
                             }
                           ]
@@ -79,6 +90,7 @@
                           "offset": 20,
                           "line": 3,
                           "column": 7,
+                          "endPos": 26,
                           "arg": "hoge"
                         },
                         {
@@ -86,6 +98,7 @@
                           "offset": 26,
                           "line": 3,
                           "column": 13,
+                          "endPos": 32,
                           "arg": "fuga"
                         }
                       ]

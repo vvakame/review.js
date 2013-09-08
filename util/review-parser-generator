@@ -39,6 +39,7 @@ var template = {
 				line: line(),
 				column: column(),
 				offset: offset(),
+				endPos: peg$currPos,
 				syntax: "RuleName",
 				content: processed
 			};
@@ -47,12 +48,32 @@ var template = {
 		return eval("(" + func + ")");
 	},
 	content: function (ruleName) {
+		var func = (function () {
+			return {
+				line: line(),
+				column: column(),
+				offset: offset(),
+				endPos: peg$currPos,
+				syntax: "RuleName",
+				content: c
+			};
+		}).toString().replace("RuleName", ruleName);
 		// func.toString() で構文解析されるので eval で作らないといけない
-		return eval("(function (c) {\n\treturn { line: line(), column: column(), offset: offset(), syntax:\"" + ruleName + "\", content: c};\n})");
+		return eval("(" + func + ")");
 	},
 	text: function (ruleName) {
+		var func = (function () {
+			return {
+				line: line(),
+				column: column(),
+				offset: offset(),
+				endPos: peg$currPos,
+				syntax: "RuleName",
+				text: text
+			};
+		}).toString().replace("RuleName", ruleName);
 		// func.toString() で構文解析されるので eval で作らないといけない
-		return eval("(function (c) {\n\treturn { line: line(), column: column(), offset: offset(), syntax:\"" + ruleName + "\", text: text};\n})");
+		return eval("(" + func + ")");
 	},
 	repeat: function (times, obj) {
 		var result = [];
@@ -80,6 +101,7 @@ var options =
 					line: line(),
 					column: column(),
 					offset: offset(),
+					endPos: peg$currPos,
 					headline: headline,
 					text: text
 				};
@@ -90,6 +112,7 @@ var options =
 					line: line(),
 					column: column(),
 					offset: offset(),
+					endPos: peg$currPos,
 					level: level.length,
 					label: label,
 					tag: tag,
@@ -108,6 +131,7 @@ var options =
 						line: line(),
 						column: column(),
 						offset: offset(),
+						endPos: peg$currPos,
 						name: name,
 						args: args,
 						content: contents
@@ -118,6 +142,7 @@ var options =
 						line: line(),
 						column: column(),
 						offset: offset(),
+						endPos: peg$currPos,
 						name: name,
 						args: args,
 						content: []
@@ -130,6 +155,7 @@ var options =
 					line: line(),
 					column: column(),
 					offset: offset(),
+					endPos: peg$currPos,
 					name: name,
 					content: contents
 				};
@@ -140,6 +166,7 @@ var options =
 					line: line(),
 					column: column(),
 					offset: offset(),
+					endPos: peg$currPos,
 					arg: arg
 				};
 			},
@@ -149,6 +176,7 @@ var options =
 					line: line(),
 					column: column(),
 					offset: offset(),
+					endPos: peg$currPos,
 					arg: arg
 				};
 			},
@@ -169,6 +197,7 @@ var options =
 					line: line(),
 					column: column(),
 					offset: offset(),
+					endPos: peg$currPos,
 					level: level.length,
 					text: text
 				};
@@ -180,6 +209,7 @@ var options =
 					line: line(),
 					column: column(),
 					offset: offset(),
+					endPos: peg$currPos,
 					no: parseInt(n),
 					text: text
 				};
@@ -191,6 +221,7 @@ var options =
 					line: line(),
 					column: column(),
 					offset: offset(),
+					endPos: peg$currPos,
 					text: text,
 					content: content
 				};

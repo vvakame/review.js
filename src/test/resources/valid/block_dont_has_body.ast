@@ -3,35 +3,41 @@
   "offset": 0,
   "line": 1,
   "column": 1,
+  "endPos": 63,
   "childNodes": [
     {
       "ruleName": "Chapters",
       "offset": 0,
       "line": 1,
       "column": 1,
+      "endPos": 63,
       "childNodes": [
         {
           "ruleName": "Chapter",
           "offset": 0,
           "line": 1,
           "column": 1,
+          "endPos": 63,
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
             "line": 1,
             "column": 1,
+            "endPos": 24,
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
               "offset": 2,
               "line": 1,
               "column": 3,
+              "endPos": 22,
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
                   "offset": 2,
                   "line": 1,
                   "column": 3,
+                  "endPos": 22,
                   "text": "{}部を持たないBlockElement"
                 }
               ]
@@ -43,18 +49,21 @@
               "offset": 24,
               "line": 3,
               "column": 1,
+              "endPos": 36,
               "childNodes": [
                 {
                   "ruleName": "Contents",
                   "offset": 24,
                   "line": 3,
                   "column": 1,
+                  "endPos": 35,
                   "childNodes": [
                     {
                       "ruleName": "BlockElement",
                       "offset": 24,
                       "line": 3,
                       "column": 1,
+                      "endPos": 34,
                       "childNodes": [],
                       "name": "noindent",
                       "args": []
@@ -68,18 +77,21 @@
               "offset": 36,
               "line": 5,
               "column": 1,
+              "endPos": 63,
               "childNodes": [
                 {
                   "ruleName": "Contents",
                   "offset": 36,
                   "line": 5,
                   "column": 1,
+                  "endPos": 63,
                   "childNodes": [
                     {
                       "ruleName": "BlockElement",
                       "offset": 36,
                       "line": 5,
                       "column": 1,
+                      "endPos": 62,
                       "childNodes": [],
                       "name": "footnote",
                       "args": [
@@ -88,6 +100,7 @@
                           "offset": 46,
                           "line": 5,
                           "column": 11,
+                          "endPos": 53,
                           "arg": "label"
                         },
                         {
@@ -95,6 +108,7 @@
                           "offset": 53,
                           "line": 5,
                           "column": 18,
+                          "endPos": 62,
                           "arg": "caption"
                         }
                       ]

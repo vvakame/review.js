@@ -63,7 +63,7 @@ module ReVIEW {
 		afterProcess:Function[] = [];
 		private _reports:ProcessReport[] = [];
 
-		constructor(public part:Part, public chapter:Chapter) {
+		constructor(public part:Part, public chapter:Chapter, public input:string) {
 		}
 
 		info(message:string, ...nodes:Parse.SyntaxTree[]) {
@@ -154,6 +154,10 @@ module ReVIEW {
 			return this;
 		}
 
+		get input():string {
+			return this.base.input;
+		}
+
 		get symbols():ISymbol[] {
 			return this.base.symbols;
 		}
@@ -226,8 +230,8 @@ module ReVIEW {
 		process:Process;
 		builderProcesses:BuilderProcess[] = [];
 
-		constructor(public parent:Part, public no:number, public name:string, public root:ReVIEW.Parse.SyntaxTree) {
-			this.process = new Process(this.parent, this);
+		constructor(public parent:Part, public no:number, public name:string, public input:string, public root:ReVIEW.Parse.SyntaxTree) {
+			this.process = new Process(this.parent, this, input);
 		}
 
 		createBuilderProcess(builder:ReVIEW.Build.IBuilder):BuilderProcess {
@@ -280,6 +284,7 @@ module ReVIEW {
 			line: number;
 			column: number;
 			offset: number;
+			endPos: number;
 
 			// Ruleによっては
 			headline?: any;
@@ -343,6 +348,7 @@ module ReVIEW {
 			offset:number;
 			line:number;
 			column:number;
+			endPos:number;
 			ruleName:RuleName;
 			// analyzer 中で設定する項目
 			no:number;
@@ -355,6 +361,7 @@ module ReVIEW {
 				this.offset = data.offset;
 				this.line = data.line;
 				this.column = data.column;
+				this.endPos = data.endPos;
 			}
 
 			toJSON():any {

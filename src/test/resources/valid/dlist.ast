@@ -3,35 +3,41 @@
   "offset": 0,
   "line": 1,
   "column": 1,
+  "endPos": 47,
   "childNodes": [
     {
       "ruleName": "Chapters",
       "offset": 0,
       "line": 1,
       "column": 1,
+      "endPos": 47,
       "childNodes": [
         {
           "ruleName": "Chapter",
           "offset": 0,
           "line": 1,
           "column": 1,
+          "endPos": 47,
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
             "line": 1,
             "column": 1,
+            "endPos": 9,
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
               "offset": 2,
               "line": 1,
               "column": 3,
+              "endPos": 7,
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
                   "offset": 2,
                   "line": 1,
                   "column": 3,
+                  "endPos": 7,
                   "text": "dlist"
                 }
               ]
@@ -43,35 +49,41 @@
               "offset": 9,
               "line": 3,
               "column": 1,
+              "endPos": 28,
               "childNodes": [
                 {
                   "ruleName": "Contents",
                   "offset": 9,
                   "line": 3,
                   "column": 1,
+                  "endPos": 28,
                   "childNodes": [
                     {
                       "ruleName": "Dlist",
                       "offset": 9,
                       "line": 3,
                       "column": 1,
+                      "endPos": 27,
                       "childNodes": [
                         {
                           "ruleName": "DlistElement",
                           "offset": 9,
                           "line": 3,
                           "column": 1,
+                          "endPos": 27,
                           "text": {
                             "ruleName": "ContentInlines",
                             "offset": 11,
                             "line": 3,
                             "column": 3,
+                            "endPos": 15,
                             "childNodes": [
                               {
                                 "ruleName": "ContentInlineText",
                                 "offset": 11,
                                 "line": 3,
                                 "column": 3,
+                                "endPos": 15,
                                 "text": "hoge"
                               }
                             ]
@@ -81,18 +93,21 @@
                             "offset": 16,
                             "line": 4,
                             "column": 1,
+                            "endPos": 27,
                             "childNodes": [
                               {
                                 "ruleName": "ContentInlines",
                                 "offset": 18,
                                 "line": 4,
                                 "column": 3,
+                                "endPos": 26,
                                 "childNodes": [
                                   {
                                     "ruleName": "ContentInlineText",
                                     "offset": 18,
                                     "line": 4,
                                     "column": 3,
+                                    "endPos": 26,
                                     "text": "これはマジマッハ"
                                   }
                                 ]
@@ -111,35 +126,41 @@
               "offset": 28,
               "line": 6,
               "column": 1,
+              "endPos": 47,
               "childNodes": [
                 {
                   "ruleName": "Contents",
                   "offset": 28,
                   "line": 6,
                   "column": 1,
+                  "endPos": 47,
                   "childNodes": [
                     {
                       "ruleName": "Dlist",
                       "offset": 28,
                       "line": 6,
                       "column": 1,
+                      "endPos": 47,
                       "childNodes": [
                         {
                           "ruleName": "DlistElement",
                           "offset": 28,
                           "line": 6,
                           "column": 1,
+                          "endPos": 47,
                           "text": {
                             "ruleName": "ContentInlines",
                             "offset": 30,
                             "line": 6,
                             "column": 3,
+                            "endPos": 34,
                             "childNodes": [
                               {
                                 "ruleName": "ContentInlineText",
                                 "offset": 30,
                                 "line": 6,
                                 "column": 3,
+                                "endPos": 34,
                                 "text": "fuga"
                               }
                             ]
@@ -149,18 +170,21 @@
                             "offset": 35,
                             "line": 7,
                             "column": 1,
+                            "endPos": 47,
                             "childNodes": [
                               {
                                 "ruleName": "ContentInlines",
                                 "offset": 36,
                                 "line": 7,
                                 "column": 2,
+                                "endPos": 46,
                                 "childNodes": [
                                   {
                                     "ruleName": "ContentInlineText",
                                     "offset": 36,
                                     "line": 7,
                                     "column": 2,
+                                    "endPos": 46,
                                     "text": "これはマジファンキー"
                                   }
                                 ]

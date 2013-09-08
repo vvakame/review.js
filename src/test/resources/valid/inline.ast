@@ -3,35 +3,41 @@
   "offset": 0,
   "line": 1,
   "column": 1,
+  "endPos": 96,
   "childNodes": [
     {
       "ruleName": "Chapters",
       "offset": 0,
       "line": 1,
       "column": 1,
+      "endPos": 96,
       "childNodes": [
         {
           "ruleName": "Chapter",
           "offset": 0,
           "line": 1,
           "column": 1,
+          "endPos": 96,
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
             "line": 1,
             "column": 1,
+            "endPos": 11,
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
               "offset": 2,
               "line": 1,
               "column": 3,
+              "endPos": 10,
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
                   "offset": 2,
                   "line": 1,
                   "column": 3,
+                  "endPos": 10,
                   "text": "headline"
                 }
               ]
@@ -43,30 +49,35 @@
               "offset": 11,
               "line": 2,
               "column": 1,
+              "endPos": 29,
               "childNodes": [
                 {
                   "ruleName": "Contents",
                   "offset": 11,
                   "line": 2,
                   "column": 1,
+                  "endPos": 28,
                   "childNodes": [
                     {
                       "ruleName": "InlineElement",
                       "offset": 11,
                       "line": 2,
                       "column": 1,
+                      "endPos": 27,
                       "childNodes": [
                         {
                           "ruleName": "InlineElementContents",
                           "offset": 17,
                           "line": 2,
                           "column": 7,
+                          "endPos": 26,
                           "childNodes": [
                             {
                               "ruleName": "InlineElementContentText",
                               "offset": 17,
                               "line": 2,
                               "column": 7,
+                              "endPos": 26,
                               "text": "hoge,fuga"
                             }
                           ]
@@ -83,18 +94,21 @@
               "offset": 29,
               "line": 4,
               "column": 1,
+              "endPos": 96,
               "childNodes": [
                 {
                   "ruleName": "Contents",
                   "offset": 29,
                   "line": 4,
                   "column": 1,
+                  "endPos": 96,
                   "childNodes": [
                     {
                       "ruleName": "ContentText",
                       "offset": 29,
                       "line": 4,
                       "column": 1,
+                      "endPos": 39,
                       "text": "というように、型を "
                     },
                     {
@@ -102,18 +116,21 @@
                       "offset": 39,
                       "line": 4,
                       "column": 11,
+                      "endPos": 48,
                       "childNodes": [
                         {
                           "ruleName": "InlineElementContents",
                           "offset": 46,
                           "line": 4,
                           "column": 18,
+                          "endPos": 47,
                           "childNodes": [
                             {
                               "ruleName": "InlineElementContentText",
                               "offset": 46,
                               "line": 4,
                               "column": 18,
+                              "endPos": 47,
                               "text": "<"
                             }
                           ]
@@ -126,6 +143,7 @@
                       "offset": 48,
                       "line": 4,
                       "column": 20,
+                      "endPos": 51,
                       "text": " と　"
                     },
                     {
@@ -133,18 +151,21 @@
                       "offset": 51,
                       "line": 4,
                       "column": 23,
+                      "endPos": 60,
                       "childNodes": [
                         {
                           "ruleName": "InlineElementContents",
                           "offset": 58,
                           "line": 4,
                           "column": 30,
+                          "endPos": 59,
                           "childNodes": [
                             {
                               "ruleName": "InlineElementContentText",
                               "offset": 58,
                               "line": 4,
                               "column": 30,
+                              "endPos": 59,
                               "text": ">"
                             }
                           ]
@@ -157,6 +178,7 @@
                       "offset": 60,
                       "line": 4,
                       "column": 32,
+                      "endPos": 86,
                       "text": " で囲んで式 expression の先頭に置くと\n"
                     },
                     {
@@ -164,18 +186,21 @@
                       "offset": 86,
                       "line": 5,
                       "column": 1,
+                      "endPos": 95,
                       "childNodes": [
                         {
                           "ruleName": "InlineElementContents",
                           "offset": 93,
                           "line": 5,
                           "column": 8,
+                          "endPos": 94,
                           "childNodes": [
                             {
                               "ruleName": "InlineElementContentText",
                               "offset": 93,
                               "line": 5,
                               "column": 8,
+                              "endPos": 94,
                               "text": "\\"
                             }
                           ]
@@ -188,6 +213,7 @@
                       "offset": 95,
                       "line": 5,
                       "column": 10,
+                      "endPos": 96,
                       "text": "}"
                     }
                   ]

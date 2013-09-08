@@ -3,35 +3,41 @@
   "offset": 0,
   "line": 1,
   "column": 1,
+  "endPos": 741,
   "childNodes": [
     {
       "ruleName": "Chapters",
       "offset": 0,
       "line": 1,
       "column": 1,
+      "endPos": 741,
       "childNodes": [
         {
           "ruleName": "Chapter",
           "offset": 0,
           "line": 1,
           "column": 1,
+          "endPos": 49,
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
             "line": 1,
             "column": 1,
+            "endPos": 8,
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
               "offset": 2,
               "line": 1,
               "column": 3,
+              "endPos": 6,
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
                   "offset": 2,
                   "line": 1,
                   "column": 3,
+                  "endPos": 6,
                   "text": "サンプル"
                 }
               ]
@@ -43,30 +49,35 @@
               "offset": 8,
               "line": 3,
               "column": 1,
+              "endPos": 49,
               "childNodes": [
                 {
                   "ruleName": "Contents",
                   "offset": 8,
                   "line": 3,
                   "column": 1,
+                  "endPos": 48,
                   "childNodes": [
                     {
                       "ruleName": "BlockElement",
                       "offset": 8,
                       "line": 3,
                       "column": 1,
+                      "endPos": 47,
                       "childNodes": [
                         {
                           "ruleName": "BlockElementContents",
                           "offset": 16,
                           "line": 4,
                           "column": 1,
+                          "endPos": 44,
                           "childNodes": [
                             {
                               "ruleName": "BlockElementContentText",
                               "offset": 16,
                               "line": 4,
                               "column": 1,
+                              "endPos": 44,
                               "text": "書き方のサンプルです。上書きするなりして消して下さい。\n"
                             }
                           ]
@@ -86,23 +97,27 @@
               "offset": 49,
               "line": 7,
               "column": 1,
+              "endPos": 125,
               "headline": {
                 "ruleName": "Headline",
                 "offset": 49,
                 "line": 7,
                 "column": 1,
+                "endPos": 60,
                 "level": 2,
                 "caption": {
                   "ruleName": "ContentInlines",
                   "offset": 52,
                   "line": 7,
                   "column": 4,
+                  "endPos": 58,
                   "childNodes": [
                     {
                       "ruleName": "ContentInlineText",
                       "offset": 52,
                       "line": 7,
                       "column": 4,
+                      "endPos": 58,
                       "text": "本文の書き方"
                     }
                   ]
@@ -114,18 +129,21 @@
                   "offset": 60,
                   "line": 9,
                   "column": 1,
+                  "endPos": 82,
                   "childNodes": [
                     {
                       "ruleName": "Contents",
                       "offset": 60,
                       "line": 9,
                       "column": 1,
+                      "endPos": 82,
                       "childNodes": [
                         {
                           "ruleName": "ContentText",
                           "offset": 60,
                           "line": 9,
                           "column": 1,
+                          "endPos": 81,
                           "text": "最初の段落です。\nこの行も同じ段落です。\n"
                         }
                       ]
@@ -137,18 +155,21 @@
                   "offset": 82,
                   "line": 12,
                   "column": 1,
+                  "endPos": 92,
                   "childNodes": [
                     {
                       "ruleName": "Contents",
                       "offset": 82,
                       "line": 12,
                       "column": 1,
+                      "endPos": 91,
                       "childNodes": [
                         {
                           "ruleName": "ContentText",
                           "offset": 82,
                           "line": 12,
                           "column": 1,
+                          "endPos": 90,
                           "text": "次の段落です。\n"
                         }
                       ]
@@ -160,18 +181,21 @@
                   "offset": 92,
                   "line": 15,
                   "column": 1,
+                  "endPos": 125,
                   "childNodes": [
                     {
                       "ruleName": "Contents",
                       "offset": 93,
                       "line": 16,
                       "column": 1,
+                      "endPos": 125,
                       "childNodes": [
                         {
                           "ruleName": "ContentText",
                           "offset": 93,
                           "line": 16,
                           "column": 1,
+                          "endPos": 124,
                           "text": "２行以上以上空いていても１行空いているのと同様に処理します。\n"
                         }
                       ]
@@ -185,23 +209,27 @@
                   "offset": 125,
                   "line": 18,
                   "column": 1,
+                  "endPos": 171,
                   "headline": {
                     "ruleName": "Headline",
                     "offset": 125,
                     "line": 18,
                     "column": 1,
+                    "endPos": 134,
                     "level": 3,
                     "caption": {
                       "ruleName": "ContentInlines",
                       "offset": 129,
                       "line": 18,
                       "column": 5,
+                      "endPos": 132,
                       "childNodes": [
                         {
                           "ruleName": "ContentInlineText",
                           "offset": 129,
                           "line": 18,
                           "column": 5,
+                          "endPos": 132,
                           "text": "見出し"
                         }
                       ]
@@ -213,18 +241,21 @@
                       "offset": 134,
                       "line": 20,
                       "column": 1,
+                      "endPos": 171,
                       "childNodes": [
                         {
                           "ruleName": "Contents",
                           "offset": 134,
                           "line": 20,
                           "column": 1,
+                          "endPos": 170,
                           "childNodes": [
                             {
                               "ruleName": "ContentText",
                               "offset": 134,
                               "line": 20,
                               "column": 1,
+                              "endPos": 169,
                               "text": "「=」「==」「===」の後に一文字空白をあけると見出しになります。\n"
                             }
                           ]
@@ -238,17 +269,20 @@
                       "offset": 171,
                       "line": 23,
                       "column": 1,
+                      "endPos": 229,
                       "headline": {
                         "ruleName": "Headline",
                         "offset": 171,
                         "line": 23,
                         "column": 1,
+                        "endPos": 193,
                         "level": 4,
                         "label": {
                           "ruleName": "BracketArg",
                           "offset": 175,
                           "line": 23,
                           "column": 5,
+                          "endPos": 183,
                           "arg": "column"
                         },
                         "caption": {
@@ -256,12 +290,14 @@
                           "offset": 184,
                           "line": 23,
                           "column": 14,
+                          "endPos": 191,
                           "childNodes": [
                             {
                               "ruleName": "ContentInlineText",
                               "offset": 184,
                               "line": 23,
                               "column": 14,
+                              "endPos": 191,
                               "text": "コラムについて"
                             }
                           ]
@@ -273,18 +309,21 @@
                           "offset": 193,
                           "line": 25,
                           "column": 1,
+                          "endPos": 229,
                           "childNodes": [
                             {
                               "ruleName": "Contents",
                               "offset": 193,
                               "line": 25,
                               "column": 1,
+                              "endPos": 229,
                               "childNodes": [
                                 {
                                   "ruleName": "ContentText",
                                   "offset": 193,
                                   "line": 25,
                                   "column": 1,
+                                  "endPos": 228,
                                   "text": "見出しの先頭に「[column]」と書くと、そこはコラムになります。\n"
                                 }
                               ]
@@ -306,23 +345,27 @@
               "offset": 229,
               "line": 27,
               "column": 1,
+              "endPos": 373,
               "headline": {
                 "ruleName": "Headline",
                 "offset": 229,
                 "line": 27,
                 "column": 1,
+                "endPos": 238,
                 "level": 2,
                 "caption": {
                   "ruleName": "ContentInlines",
                   "offset": 232,
                   "line": 27,
                   "column": 4,
+                  "endPos": 236,
                   "childNodes": [
                     {
                       "ruleName": "ContentInlineText",
                       "offset": 232,
                       "line": 27,
                       "column": 4,
+                      "endPos": 236,
                       "text": "箇条書き"
                     }
                   ]
@@ -334,18 +377,21 @@
                   "offset": 238,
                   "line": 29,
                   "column": 1,
+                  "endPos": 272,
                   "childNodes": [
                     {
                       "ruleName": "Contents",
                       "offset": 238,
                       "line": 29,
                       "column": 1,
+                      "endPos": 272,
                       "childNodes": [
                         {
                           "ruleName": "ContentText",
                           "offset": 238,
                           "line": 29,
                           "column": 1,
+                          "endPos": 271,
                           "text": "番号のない箇条書きは「*」を使います。前後に空白を入れて下さい。\n"
                         }
                       ]
@@ -357,36 +403,42 @@
                   "offset": 272,
                   "line": 31,
                   "column": 1,
+                  "endPos": 294,
                   "childNodes": [
                     {
                       "ruleName": "Contents",
                       "offset": 272,
                       "line": 31,
                       "column": 1,
+                      "endPos": 294,
                       "childNodes": [
                         {
                           "ruleName": "Ulist",
                           "offset": 272,
                           "line": 31,
                           "column": 1,
+                          "endPos": 293,
                           "childNodes": [
                             {
                               "ruleName": "UlistElement",
                               "offset": 272,
                               "line": 31,
                               "column": 1,
+                              "endPos": 279,
                               "level": 1,
                               "text": {
                                 "ruleName": "ContentInlines",
                                 "offset": 275,
                                 "line": 31,
                                 "column": 4,
+                                "endPos": 278,
                                 "childNodes": [
                                   {
                                     "ruleName": "ContentInlineText",
                                     "offset": 275,
                                     "line": 31,
                                     "column": 4,
+                                    "endPos": 278,
                                     "text": "1つ目"
                                   }
                                 ]
@@ -398,18 +450,21 @@
                               "offset": 279,
                               "line": 32,
                               "column": 1,
+                              "endPos": 286,
                               "level": 1,
                               "text": {
                                 "ruleName": "ContentInlines",
                                 "offset": 282,
                                 "line": 32,
                                 "column": 4,
+                                "endPos": 285,
                                 "childNodes": [
                                   {
                                     "ruleName": "ContentInlineText",
                                     "offset": 282,
                                     "line": 32,
                                     "column": 4,
+                                    "endPos": 285,
                                     "text": "2つ目"
                                   }
                                 ]
@@ -421,18 +476,21 @@
                               "offset": 286,
                               "line": 33,
                               "column": 1,
+                              "endPos": 293,
                               "level": 1,
                               "text": {
                                 "ruleName": "ContentInlines",
                                 "offset": 289,
                                 "line": 33,
                                 "column": 4,
+                                "endPos": 292,
                                 "childNodes": [
                                   {
                                     "ruleName": "ContentInlineText",
                                     "offset": 289,
                                     "line": 33,
                                     "column": 4,
+                                    "endPos": 292,
                                     "text": "3つ目"
                                   }
                                 ]
@@ -450,18 +508,21 @@
                   "offset": 294,
                   "line": 35,
                   "column": 1,
+                  "endPos": 348,
                   "childNodes": [
                     {
                       "ruleName": "Contents",
                       "offset": 294,
                       "line": 35,
                       "column": 1,
+                      "endPos": 348,
                       "childNodes": [
                         {
                           "ruleName": "ContentText",
                           "offset": 294,
                           "line": 35,
                           "column": 1,
+                          "endPos": 347,
                           "text": "番号つきの箇条書きには、「1.」「2.」などと書きます。\n数字の値は実際には無視され、連番が振られます。\n"
                         }
                       ]
@@ -473,36 +534,42 @@
                   "offset": 348,
                   "line": 38,
                   "column": 1,
+                  "endPos": 373,
                   "childNodes": [
                     {
                       "ruleName": "Contents",
                       "offset": 348,
                       "line": 38,
                       "column": 1,
+                      "endPos": 373,
                       "childNodes": [
                         {
                           "ruleName": "Olist",
                           "offset": 348,
                           "line": 38,
                           "column": 1,
+                          "endPos": 372,
                           "childNodes": [
                             {
                               "ruleName": "OlistElement",
                               "offset": 348,
                               "line": 38,
                               "column": 1,
+                              "endPos": 356,
                               "no": 1,
                               "text": {
                                 "ruleName": "ContentInlines",
                                 "offset": 352,
                                 "line": 38,
                                 "column": 5,
+                                "endPos": 355,
                                 "childNodes": [
                                   {
                                     "ruleName": "ContentInlineText",
                                     "offset": 352,
                                     "line": 38,
                                     "column": 5,
+                                    "endPos": 355,
                                     "text": "1つ目"
                                   }
                                 ]
@@ -513,18 +580,21 @@
                               "offset": 356,
                               "line": 39,
                               "column": 1,
+                              "endPos": 364,
                               "no": 2,
                               "text": {
                                 "ruleName": "ContentInlines",
                                 "offset": 360,
                                 "line": 39,
                                 "column": 5,
+                                "endPos": 363,
                                 "childNodes": [
                                   {
                                     "ruleName": "ContentInlineText",
                                     "offset": 360,
                                     "line": 39,
                                     "column": 5,
+                                    "endPos": 363,
                                     "text": "2つ目"
                                   }
                                 ]
@@ -535,18 +605,21 @@
                               "offset": 364,
                               "line": 40,
                               "column": 1,
+                              "endPos": 372,
                               "no": 3,
                               "text": {
                                 "ruleName": "ContentInlines",
                                 "offset": 368,
                                 "line": 40,
                                 "column": 5,
+                                "endPos": 371,
                                 "childNodes": [
                                   {
                                     "ruleName": "ContentInlineText",
                                     "offset": 368,
                                     "line": 40,
                                     "column": 5,
+                                    "endPos": 371,
                                     "text": "3つ目"
                                   }
                                 ]
@@ -567,23 +640,27 @@
               "offset": 373,
               "line": 42,
               "column": 1,
+              "endPos": 590,
               "headline": {
                 "ruleName": "Headline",
                 "offset": 373,
                 "line": 42,
                 "column": 1,
+                "endPos": 390,
                 "level": 2,
                 "caption": {
                   "ruleName": "ContentInlines",
                   "offset": 376,
                   "line": 42,
                   "column": 4,
+                  "endPos": 388,
                   "childNodes": [
                     {
                       "ruleName": "ContentInlineText",
                       "offset": 376,
                       "line": 42,
                       "column": 4,
+                      "endPos": 388,
                       "text": "ソースコードなどのリスト"
                     }
                   ]
@@ -595,18 +672,21 @@
                   "offset": 390,
                   "line": 44,
                   "column": 1,
+                  "endPos": 430,
                   "childNodes": [
                     {
                       "ruleName": "Contents",
                       "offset": 390,
                       "line": 44,
                       "column": 1,
+                      "endPos": 430,
                       "childNodes": [
                         {
                           "ruleName": "ContentText",
                           "offset": 390,
                           "line": 44,
                           "column": 1,
+                          "endPos": 429,
                           "text": "リストには「//list」ブロックや「//emlist」ブロックを使います。\n"
                         }
                       ]
@@ -618,30 +698,35 @@
                   "offset": 430,
                   "line": 46,
                   "column": 1,
+                  "endPos": 521,
                   "childNodes": [
                     {
                       "ruleName": "Contents",
                       "offset": 430,
                       "line": 46,
                       "column": 1,
+                      "endPos": 520,
                       "childNodes": [
                         {
                           "ruleName": "BlockElement",
                           "offset": 430,
                           "line": 46,
                           "column": 1,
+                          "endPos": 519,
                           "childNodes": [
                             {
                               "ruleName": "BlockElementContents",
                               "offset": 454,
                               "line": 47,
                               "column": 1,
+                              "endPos": 516,
                               "childNodes": [
                                 {
                                   "ruleName": "BlockElementContentText",
                                   "offset": 454,
                                   "line": 47,
                                   "column": 1,
+                                  "endPos": 516,
                                   "text": "int main(int argc, char **argv) {\n  puts(\"OK\");\n  return 0;\n}\n"
                                 }
                               ]
@@ -654,6 +739,7 @@
                               "offset": 436,
                               "line": 46,
                               "column": 7,
+                              "endPos": 442,
                               "arg": "list"
                             },
                             {
@@ -661,6 +747,7 @@
                               "offset": 442,
                               "line": 46,
                               "column": 13,
+                              "endPos": 452,
                               "arg": "リストのサンプル"
                             }
                           ]
@@ -674,18 +761,21 @@
                   "offset": 521,
                   "line": 53,
                   "column": 1,
+                  "endPos": 550,
                   "childNodes": [
                     {
                       "ruleName": "Contents",
                       "offset": 521,
                       "line": 53,
                       "column": 1,
+                      "endPos": 550,
                       "childNodes": [
                         {
                           "ruleName": "ContentText",
                           "offset": 521,
                           "line": 53,
                           "column": 1,
+                          "endPos": 549,
                           "text": "文中にリストを書くには「//emlist」になります。\n"
                         }
                       ]
@@ -697,30 +787,35 @@
                   "offset": 550,
                   "line": 55,
                   "column": 1,
+                  "endPos": 590,
                   "childNodes": [
                     {
                       "ruleName": "Contents",
                       "offset": 550,
                       "line": 55,
                       "column": 1,
+                      "endPos": 589,
                       "childNodes": [
                         {
                           "ruleName": "BlockElement",
                           "offset": 550,
                           "line": 55,
                           "column": 1,
+                          "endPos": 588,
                           "childNodes": [
                             {
                               "ruleName": "BlockElementContents",
                               "offset": 560,
                               "line": 56,
                               "column": 1,
+                              "endPos": 585,
                               "childNodes": [
                                 {
                                   "ruleName": "BlockElementContentText",
                                   "offset": 560,
                                   "line": 56,
                                   "column": 1,
+                                  "endPos": 585,
                                   "text": "def main\n  puts \"ok\"\nend\n"
                                 }
                               ]
@@ -742,23 +837,27 @@
               "offset": 590,
               "line": 61,
               "column": 1,
+              "endPos": 741,
               "headline": {
                 "ruleName": "Headline",
                 "offset": 590,
                 "line": 61,
                 "column": 1,
+                "endPos": 597,
                 "level": 2,
                 "caption": {
                   "ruleName": "ContentInlines",
                   "offset": 593,
                   "line": 61,
                   "column": 4,
+                  "endPos": 595,
                   "childNodes": [
                     {
                       "ruleName": "ContentInlineText",
                       "offset": 593,
                       "line": 61,
                       "column": 4,
+                      "endPos": 595,
                       "text": "画像"
                     }
                   ]
@@ -770,18 +869,21 @@
                   "offset": 597,
                   "line": 63,
                   "column": 1,
+                  "endPos": 621,
                   "childNodes": [
                     {
                       "ruleName": "Contents",
                       "offset": 597,
                       "line": 63,
                       "column": 1,
+                      "endPos": 621,
                       "childNodes": [
                         {
                           "ruleName": "ContentText",
                           "offset": 597,
                           "line": 63,
                           "column": 1,
+                          "endPos": 620,
                           "text": "画像は「//image」ブロックを使います。\n"
                         }
                       ]
@@ -793,18 +895,21 @@
                   "offset": 621,
                   "line": 65,
                   "column": 1,
+                  "endPos": 654,
                   "childNodes": [
                     {
                       "ruleName": "Contents",
                       "offset": 621,
                       "line": 65,
                       "column": 1,
+                      "endPos": 653,
                       "childNodes": [
                         {
                           "ruleName": "BlockElement",
                           "offset": 621,
                           "line": 65,
                           "column": 1,
+                          "endPos": 652,
                           "childNodes": [],
                           "name": "image",
                           "args": [
@@ -813,6 +918,7 @@
                               "offset": 628,
                               "line": 65,
                               "column": 8,
+                              "endPos": 639,
                               "arg": "imgsample"
                             },
                             {
@@ -820,6 +926,7 @@
                               "offset": 639,
                               "line": 65,
                               "column": 19,
+                              "endPos": 647,
                               "arg": "画像サンプル"
                             }
                           ]
@@ -833,18 +940,21 @@
                   "offset": 654,
                   "line": 68,
                   "column": 1,
+                  "endPos": 732,
                   "childNodes": [
                     {
                       "ruleName": "Contents",
                       "offset": 655,
                       "line": 69,
                       "column": 1,
+                      "endPos": 732,
                       "childNodes": [
                         {
                           "ruleName": "ContentText",
                           "offset": 655,
                           "line": 69,
                           "column": 1,
+                          "endPos": 663,
                           "text": "より詳しくは、\n"
                         },
                         {
@@ -852,18 +962,21 @@
                           "offset": 663,
                           "line": 70,
                           "column": 1,
+                          "endPos": 731,
                           "childNodes": [
                             {
                               "ruleName": "InlineElementContents",
                               "offset": 671,
                               "line": 70,
                               "column": 9,
+                              "endPos": 730,
                               "childNodes": [
                                 {
                                   "ruleName": "InlineElementContentText",
                                   "offset": 671,
                                   "line": 70,
                                   "column": 9,
+                                  "endPos": 730,
                                   "text": "https://github.com/kmuto/review/blob/master/doc/format.rdoc"
                                 }
                               ]
@@ -880,18 +993,21 @@
                   "offset": 732,
                   "line": 71,
                   "column": 1,
+                  "endPos": 741,
                   "childNodes": [
                     {
                       "ruleName": "Contents",
                       "offset": 732,
                       "line": 71,
                       "column": 1,
+                      "endPos": 741,
                       "childNodes": [
                         {
                           "ruleName": "ContentText",
                           "offset": 732,
                           "line": 71,
                           "column": 1,
+                          "endPos": 741,
                           "text": "を御覧ください。\n"
                         }
                       ]

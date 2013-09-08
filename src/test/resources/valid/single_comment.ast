@@ -3,35 +3,41 @@
   "offset": 0,
   "line": 1,
   "column": 1,
+  "endPos": 64,
   "childNodes": [
     {
       "ruleName": "Chapters",
       "offset": 0,
       "line": 1,
       "column": 1,
+      "endPos": 64,
       "childNodes": [
         {
           "ruleName": "Chapter",
           "offset": 0,
           "line": 1,
           "column": 1,
+          "endPos": 64,
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
             "line": 1,
             "column": 1,
+            "endPos": 11,
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
               "offset": 2,
               "line": 1,
               "column": 3,
+              "endPos": 9,
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
                   "offset": 2,
                   "line": 1,
                   "column": 3,
+                  "endPos": 9,
                   "text": "＼(^o^)／"
                 }
               ]
@@ -43,18 +49,21 @@
               "offset": 11,
               "line": 3,
               "column": 1,
+              "endPos": 21,
               "childNodes": [
                 {
                   "ruleName": "Contents",
                   "offset": 11,
                   "line": 3,
                   "column": 1,
+                  "endPos": 21,
                   "childNodes": [
                     {
                       "ruleName": "SinglelineComment",
                       "offset": 11,
                       "line": 3,
                       "column": 1,
+                      "endPos": 20,
                       "text": "#@# コメント\n"
                     }
                   ]
@@ -66,18 +75,21 @@
               "offset": 21,
               "line": 5,
               "column": 1,
+              "endPos": 41,
               "childNodes": [
                 {
                   "ruleName": "Contents",
                   "offset": 21,
                   "line": 5,
                   "column": 1,
+                  "endPos": 41,
                   "childNodes": [
                     {
                       "ruleName": "ContentText",
                       "offset": 21,
                       "line": 5,
                       "column": 1,
+                      "endPos": 26,
                       "text": "ほげほげ\n"
                     },
                     {
@@ -85,6 +97,7 @@
                       "offset": 26,
                       "line": 6,
                       "column": 1,
+                      "endPos": 35,
                       "text": "#@# コメント\n"
                     },
                     {
@@ -92,6 +105,7 @@
                       "offset": 35,
                       "line": 7,
                       "column": 1,
+                      "endPos": 40,
                       "text": "ほげほげ\n"
                     }
                   ]
@@ -103,18 +117,21 @@
               "offset": 41,
               "line": 9,
               "column": 1,
+              "endPos": 56,
               "childNodes": [
                 {
                   "ruleName": "Contents",
                   "offset": 41,
                   "line": 9,
                   "column": 1,
+                  "endPos": 56,
                   "childNodes": [
                     {
                       "ruleName": "ContentText",
                       "offset": 41,
                       "line": 9,
                       "column": 1,
+                      "endPos": 46,
                       "text": "ほげほげ\n"
                     },
                     {
@@ -122,6 +139,7 @@
                       "offset": 46,
                       "line": 10,
                       "column": 1,
+                      "endPos": 55,
                       "text": "#@# コメント\n"
                     }
                   ]
@@ -133,18 +151,21 @@
               "offset": 56,
               "line": 12,
               "column": 1,
+              "endPos": 64,
               "childNodes": [
                 {
                   "ruleName": "Contents",
                   "offset": 56,
                   "line": 12,
                   "column": 1,
+                  "endPos": 64,
                   "childNodes": [
                     {
                       "ruleName": "SinglelineComment",
                       "offset": 56,
                       "line": 12,
                       "column": 1,
+                      "endPos": 64,
                       "text": "#@# コメント"
                     }
                   ]

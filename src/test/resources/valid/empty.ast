@@ -3,5 +3,6 @@
   "offset": 0,
   "line": 1,
   "column": 1,
+  "endPos": 0,
   "childNodes": []
 }

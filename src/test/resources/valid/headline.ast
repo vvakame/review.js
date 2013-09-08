@@ -3,54 +3,63 @@
   "offset": 0,
   "line": 1,
   "column": 1,
+  "endPos": 95,
   "childNodes": [
     {
       "ruleName": "Chapters",
       "offset": 0,
       "line": 1,
       "column": 1,
+      "endPos": 95,
       "childNodes": [
         {
           "ruleName": "Chapter",
           "offset": 0,
           "line": 1,
           "column": 1,
+          "endPos": 10,
           "childNodes": [
             {
               "ruleName": "Chapter",
               "offset": 10,
               "line": 2,
               "column": 1,
+              "endPos": 21,
               "childNodes": [
                 {
                   "ruleName": "Chapter",
                   "offset": 21,
                   "line": 3,
                   "column": 1,
+                  "endPos": 32,
                   "childNodes": [
                     {
                       "ruleName": "Chapter",
                       "offset": 32,
                       "line": 4,
                       "column": 1,
+                      "endPos": 50,
                       "childNodes": [],
                       "headline": {
                         "ruleName": "Headline",
                         "offset": 32,
                         "line": 4,
                         "column": 1,
+                        "endPos": 50,
                         "level": 4,
                         "caption": {
                           "ruleName": "ContentInlines",
                           "offset": 41,
                           "line": 4,
                           "column": 10,
+                          "endPos": 48,
                           "childNodes": [
                             {
                               "ruleName": "ContentInlineText",
                               "offset": 41,
                               "line": 4,
                               "column": 10,
+                              "endPos": 48,
                               "text": "level 4"
                             }
                           ]
@@ -64,18 +73,21 @@
                     "offset": 21,
                     "line": 3,
                     "column": 1,
+                    "endPos": 32,
                     "level": 3,
                     "caption": {
                       "ruleName": "ContentInlines",
                       "offset": 24,
                       "line": 3,
                       "column": 4,
+                      "endPos": 31,
                       "childNodes": [
                         {
                           "ruleName": "ContentInlineText",
                           "offset": 24,
                           "line": 3,
                           "column": 4,
+                          "endPos": 31,
                           "text": "level 3"
                         }
                       ]
@@ -89,18 +101,21 @@
                 "offset": 10,
                 "line": 2,
                 "column": 1,
+                "endPos": 21,
                 "level": 2,
                 "caption": {
                   "ruleName": "ContentInlines",
                   "offset": 13,
                   "line": 2,
                   "column": 4,
+                  "endPos": 20,
                   "childNodes": [
                     {
                       "ruleName": "ContentInlineText",
                       "offset": 13,
                       "line": 2,
                       "column": 4,
+                      "endPos": 20,
                       "text": "level 2"
                     }
                   ]
@@ -114,18 +129,21 @@
             "offset": 0,
             "line": 1,
             "column": 1,
+            "endPos": 10,
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
               "offset": 2,
               "line": 1,
               "column": 3,
+              "endPos": 9,
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
                   "offset": 2,
                   "line": 1,
                   "column": 3,
+                  "endPos": 9,
                   "text": "level 1"
                 }
               ]
@@ -138,18 +156,21 @@
           "offset": 50,
           "line": 6,
           "column": 1,
+          "endPos": 63,
           "childNodes": [],
           "headline": {
             "ruleName": "Headline",
             "offset": 50,
             "line": 6,
             "column": 1,
+            "endPos": 63,
             "level": 1,
             "label": {
               "ruleName": "BracketArg",
               "offset": 51,
               "line": 6,
               "column": 2,
+              "endPos": 57,
               "arg": "hoge"
             },
             "caption": {
@@ -157,12 +178,14 @@
               "offset": 58,
               "line": 6,
               "column": 9,
+              "endPos": 62,
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
                   "offset": 58,
                   "line": 6,
                   "column": 9,
+                  "endPos": 62,
                   "text": "[]付き"
                 }
               ]
@@ -175,18 +198,21 @@
           "offset": 63,
           "line": 7,
           "column": 1,
+          "endPos": 76,
           "childNodes": [],
           "headline": {
             "ruleName": "Headline",
             "offset": 63,
             "line": 7,
             "column": 1,
+            "endPos": 76,
             "level": 1,
             "tag": {
               "ruleName": "BraceArg",
               "offset": 64,
               "line": 7,
               "column": 2,
+              "endPos": 70,
               "arg": "fuga"
             },
             "caption": {
@@ -194,12 +220,14 @@
               "offset": 71,
               "line": 7,
               "column": 9,
+              "endPos": 75,
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
                   "offset": 71,
                   "line": 7,
                   "column": 9,
+                  "endPos": 75,
                   "text": "{}付き"
                 }
               ]
@@ -212,18 +240,21 @@
           "offset": 76,
           "line": 8,
           "column": 1,
+          "endPos": 95,
           "childNodes": [],
           "headline": {
             "ruleName": "Headline",
             "offset": 76,
             "line": 8,
             "column": 1,
+            "endPos": 95,
             "level": 1,
             "label": {
               "ruleName": "BracketArg",
               "offset": 77,
               "line": 8,
               "column": 2,
+              "endPos": 83,
               "arg": "hoge"
             },
             "tag": {
@@ -231,6 +262,7 @@
               "offset": 83,
               "line": 8,
               "column": 8,
+              "endPos": 89,
               "arg": "fuga"
             },
             "caption": {
@@ -238,12 +270,14 @@
               "offset": 90,
               "line": 8,
               "column": 15,
+              "endPos": 94,
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
                   "offset": 90,
                   "line": 8,
                   "column": 15,
+                  "endPos": 94,
                   "text": "両方付き"
                 }
               ]

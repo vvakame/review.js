@@ -3,35 +3,41 @@
   "offset": 0,
   "line": 1,
   "column": 1,
+  "endPos": 39,
   "childNodes": [
     {
       "ruleName": "Chapters",
       "offset": 0,
       "line": 1,
       "column": 1,
+      "endPos": 39,
       "childNodes": [
         {
           "ruleName": "Chapter",
           "offset": 0,
           "line": 1,
           "column": 1,
+          "endPos": 39,
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
             "line": 1,
             "column": 1,
+            "endPos": 9,
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
               "offset": 2,
               "line": 1,
               "column": 3,
+              "endPos": 7,
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
                   "offset": 2,
                   "line": 1,
                   "column": 3,
+                  "endPos": 7,
                   "text": "olist"
                 }
               ]
@@ -43,36 +49,42 @@
               "offset": 9,
               "line": 3,
               "column": 1,
+              "endPos": 39,
               "childNodes": [
                 {
                   "ruleName": "Contents",
                   "offset": 9,
                   "line": 3,
                   "column": 1,
+                  "endPos": 39,
                   "childNodes": [
                     {
                       "ruleName": "Olist",
                       "offset": 9,
                       "line": 3,
                       "column": 1,
+                      "endPos": 39,
                       "childNodes": [
                         {
                           "ruleName": "OlistElement",
                           "offset": 9,
                           "line": 3,
                           "column": 1,
+                          "endPos": 19,
                           "no": 1,
                           "text": {
                             "ruleName": "ContentInlines",
                             "offset": 13,
                             "line": 3,
                             "column": 5,
+                            "endPos": 18,
                             "childNodes": [
                               {
                                 "ruleName": "ContentInlineText",
                                 "offset": 13,
                                 "line": 3,
                                 "column": 5,
+                                "endPos": 18,
                                 "text": "No. 1"
                               }
                             ]
@@ -83,18 +95,21 @@
                           "offset": 19,
                           "line": 4,
                           "column": 1,
+                          "endPos": 29,
                           "no": 2,
                           "text": {
                             "ruleName": "ContentInlines",
                             "offset": 23,
                             "line": 4,
                             "column": 5,
+                            "endPos": 28,
                             "childNodes": [
                               {
                                 "ruleName": "ContentInlineText",
                                 "offset": 23,
                                 "line": 4,
                                 "column": 5,
+                                "endPos": 28,
                                 "text": "No. 2"
                               }
                             ]
@@ -105,18 +120,21 @@
                           "offset": 29,
                           "line": 5,
                           "column": 1,
+                          "endPos": 39,
                           "no": 3,
                           "text": {
                             "ruleName": "ContentInlines",
                             "offset": 33,
                             "line": 5,
                             "column": 5,
+                            "endPos": 38,
                             "childNodes": [
                               {
                                 "ruleName": "ContentInlineText",
                                 "offset": 33,
                                 "line": 5,
                                 "column": 5,
+                                "endPos": 38,
                                 "text": "No. 3"
                               }
                             ]

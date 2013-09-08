@@ -121,7 +121,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			var data = this.read(this.resolvePath(chapterPath));
 			try {
 				var parseResult = ReVIEW.Parse.parse(data);
-				var chapter = new Chapter(part, index + 1, chapterPath, parseResult.ast);
+				var chapter = new Chapter(part, index + 1, chapterPath, data, parseResult.ast);
 			} catch (e) {
 				if (!(e instanceof PEG.SyntaxError)) {
 					throw e;
@@ -131,9 +131,10 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 					syntax: se.name,
 					line: se.line,
 					column: se.column,
-					offset: se.offset
+					offset: se.offset,
+					endPos: -1 // TODO SyntaxError が置き換えられたらなんとかできるかも…
 				});
-				var chapter = new Chapter(part, index + 1, chapterPath, null);
+				var chapter = new Chapter(part, index + 1, chapterPath, data, null);
 				chapter.process.error(se.message, errorNode);
 			}
 			return chapter;

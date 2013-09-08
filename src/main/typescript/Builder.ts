@@ -281,7 +281,7 @@ import findChapter = ReVIEW.findChapter;
 			}
 			process.addSymbol({
 				symbolName: node.name,
-				referenceTo: this.constructReferenceTo(process, node, nodeToString(node)),
+				referenceTo: this.constructReferenceTo(process, node, nodeToString(process, node)),
 				node: node
 			});
 		}
@@ -292,7 +292,7 @@ import findChapter = ReVIEW.findChapter;
 			}
 			process.addSymbol({
 				symbolName: node.name,
-				referenceTo: this.constructReferenceTo(process, node, nodeToString(node)),
+				referenceTo: this.constructReferenceTo(process, node, nodeToString(process, node)),
 				node: node
 			});
 		}

@@ -3,35 +3,41 @@
   "offset": 0,
   "line": 1,
   "column": 1,
+  "endPos": 107,
   "childNodes": [
     {
       "ruleName": "Chapters",
       "offset": 0,
       "line": 1,
       "column": 1,
+      "endPos": 107,
       "childNodes": [
         {
           "ruleName": "Chapter",
           "offset": 0,
           "line": 1,
           "column": 1,
+          "endPos": 107,
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
             "line": 1,
             "column": 1,
+            "endPos": 9,
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
               "offset": 2,
               "line": 1,
               "column": 3,
+              "endPos": 7,
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
                   "offset": 2,
                   "line": 1,
                   "column": 3,
+                  "endPos": 7,
                   "text": "ulist"
                 }
               ]
@@ -43,36 +49,42 @@
               "offset": 9,
               "line": 3,
               "column": 1,
+              "endPos": 107,
               "childNodes": [
                 {
                   "ruleName": "Contents",
                   "offset": 9,
                   "line": 3,
                   "column": 1,
+                  "endPos": 107,
                   "childNodes": [
                     {
                       "ruleName": "Ulist",
                       "offset": 9,
                       "line": 3,
                       "column": 1,
+                      "endPos": 107,
                       "childNodes": [
                         {
                           "ruleName": "UlistElement",
                           "offset": 9,
                           "line": 3,
                           "column": 1,
+                          "endPos": 22,
                           "level": 1,
                           "text": {
                             "ruleName": "ContentInlines",
                             "offset": 12,
                             "line": 3,
                             "column": 4,
+                            "endPos": 21,
                             "childNodes": [
                               {
                                 "ruleName": "ContentInlineText",
                                 "offset": 12,
                                 "line": 3,
                                 "column": 4,
+                                "endPos": 21,
                                 "text": "level 1-1"
                               }
                             ]
@@ -83,18 +95,21 @@
                               "offset": 22,
                               "line": 4,
                               "column": 1,
+                              "endPos": 36,
                               "level": 2,
                               "text": {
                                 "ruleName": "ContentInlines",
                                 "offset": 26,
                                 "line": 4,
                                 "column": 5,
+                                "endPos": 35,
                                 "childNodes": [
                                   {
                                     "ruleName": "ContentInlineText",
                                     "offset": 26,
                                     "line": 4,
                                     "column": 5,
+                                    "endPos": 35,
                                     "text": "level 2-1"
                                   }
                                 ]
@@ -106,18 +121,21 @@
                               "offset": 36,
                               "line": 5,
                               "column": 1,
+                              "endPos": 50,
                               "level": 2,
                               "text": {
                                 "ruleName": "ContentInlines",
                                 "offset": 40,
                                 "line": 5,
                                 "column": 5,
+                                "endPos": 49,
                                 "childNodes": [
                                   {
                                     "ruleName": "ContentInlineText",
                                     "offset": 40,
                                     "line": 5,
                                     "column": 5,
+                                    "endPos": 49,
                                     "text": "level 2-2"
                                   }
                                 ]
@@ -128,18 +146,21 @@
                                   "offset": 50,
                                   "line": 6,
                                   "column": 1,
+                                  "endPos": 65,
                                   "level": 3,
                                   "text": {
                                     "ruleName": "ContentInlines",
                                     "offset": 55,
                                     "line": 6,
                                     "column": 6,
+                                    "endPos": 64,
                                     "childNodes": [
                                       {
                                         "ruleName": "ContentInlineText",
                                         "offset": 55,
                                         "line": 6,
                                         "column": 6,
+                                        "endPos": 64,
                                         "text": "level 3-1"
                                       }
                                     ]
@@ -153,18 +174,21 @@
                               "offset": 65,
                               "line": 7,
                               "column": 1,
+                              "endPos": 79,
                               "level": 2,
                               "text": {
                                 "ruleName": "ContentInlines",
                                 "offset": 69,
                                 "line": 7,
                                 "column": 5,
+                                "endPos": 78,
                                 "childNodes": [
                                   {
                                     "ruleName": "ContentInlineText",
                                     "offset": 69,
                                     "line": 7,
                                     "column": 5,
+                                    "endPos": 78,
                                     "text": "level 2-3"
                                   }
                                 ]
@@ -178,18 +202,21 @@
                           "offset": 79,
                           "line": 8,
                           "column": 1,
+                          "endPos": 92,
                           "level": 1,
                           "text": {
                             "ruleName": "ContentInlines",
                             "offset": 82,
                             "line": 8,
                             "column": 4,
+                            "endPos": 91,
                             "childNodes": [
                               {
                                 "ruleName": "ContentInlineText",
                                 "offset": 82,
                                 "line": 8,
                                 "column": 4,
+                                "endPos": 91,
                                 "text": "level 1-2"
                               }
                             ]
@@ -200,18 +227,21 @@
                               "offset": 92,
                               "line": 9,
                               "column": 1,
+                              "endPos": 107,
                               "level": 3,
                               "text": {
                                 "ruleName": "ContentInlines",
                                 "offset": 97,
                                 "line": 9,
                                 "column": 6,
+                                "endPos": 106,
                                 "childNodes": [
                                   {
                                     "ruleName": "ContentInlineText",
                                     "offset": 97,
                                     "line": 9,
                                     "column": 6,
+                                    "endPos": 106,
                                     "text": "level 3-2"
                                   }
                                 ]
