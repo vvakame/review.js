@@ -3,522 +3,520 @@
 ///<reference path='Model.ts' />
 ///<reference path='Parser.ts' />
 
-module ReVIEW {
-	export module Build {
+module ReVIEW.Build {
 
-	import t = ReVIEW.i18n.t;
+import t = ReVIEW.i18n.t;
 
-	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
-	import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
-	import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-	import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-	import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
-	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
-	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+import SyntaxTree = ReVIEW.Parse.SyntaxTree;
+import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
+import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
+import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
+import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
-	import flatten = ReVIEW.flatten;
-	import nodeToString = ReVIEW.nodeToString;
-	import findChapter = ReVIEW.findChapter;
+import flatten = ReVIEW.flatten;
+import nodeToString = ReVIEW.nodeToString;
+import findChapter = ReVIEW.findChapter;
 
-		/**
-		 * 意味解析やシンボルの解決を行う。
-		 * 未解決のシンボルのエラーを通知するのはここ。
-		 */
-		export interface IAnalyzer {
-			init(book:Book);
-			headline(process:Process, name:string, node:HeadlineSyntaxTree);
-			block(process:Process, name:string, node:BlockElementSyntaxTree);
-			inline(process:Process, name:string, node:InlineElementSyntaxTree);
+	/**
+	 * 意味解析やシンボルの解決を行う。
+	 * 未解決のシンボルのエラーを通知するのはここ。
+	 */
+	export interface IAnalyzer {
+		init(book:Book);
+		headline(process:Process, name:string, node:HeadlineSyntaxTree);
+		block(process:Process, name:string, node:BlockElementSyntaxTree);
+		inline(process:Process, name:string, node:InlineElementSyntaxTree);
+	}
+
+	/**
+	 * IAnalyzerで処理した後の構文木について構文上のエラーがないかチェックする。
+	 * また、Builderと対比させて、未実装の候補がないかをチェックする。
+	 */
+	export interface IValidator {
+		init(book:Book, builders:IBuilder[]);
+	}
+
+	/**
+	 * IAnalyzerとIValidatorでチェックをした後に構文木から出力を生成する。
+	 */
+	export interface IBuilder {
+		name:string;
+		init(book:Book);
+		chapterPre(process:BuilderProcess, node:ChapterSyntaxTree):any;
+		chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any;
+		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any;
+		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any;
+		blockPre(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any;
+		blockPost(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any;
+		inlinePre(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any;
+		inlinePost(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any;
+		text(process:BuilderProcess, name:string, node:TextNodeSyntaxTree):any;
+	}
+
+	/**
+	 * 解析中に発生したエラーを表す。
+	 * この例外は実装に不備があった時のみ利用される。
+	 * ユーザの入力した文書に不備がある場合には Process.error を利用すること。
+	 */
+	export class AnalyzerError implements Error {
+		name = "AnalyzerError";
+
+		constructor(public message:string) {
+			var E = <any>Error;
+			if (E.captureStackTrace) {
+				E.captureStackTrace(this, AnalyzerError);
+			}
+		}
+	}
+
+	export class DefaultAnalyzer implements IAnalyzer {
+		book:Book;
+
+		init(book:Book) {
+			this.book = book;
+
+			book.parts.forEach((part) => {
+				part.chapters.forEach((chapter) => {
+
+					ReVIEW.visit(chapter.root, {
+						visitDefaultPre: (node:SyntaxTree)=> {
+						},
+						visitHeadlinePre: (node:HeadlineSyntaxTree)=> {
+							this.headline(chapter.process, "hd", node);
+						},
+						visitBlockElementPre: (node:BlockElementSyntaxTree)=> {
+							this.block(chapter.process, node.name, node);
+						},
+						visitInlineElementPre: (node:InlineElementSyntaxTree)=> {
+							this.inline(chapter.process, node.name, node);
+						}
+					});
+				});
+			});
+			book.parts.forEach((part) => {
+				part.chapters.forEach((chapter) => {
+					chapter.process.doAfterProcess();
+				});
+			});
+
+			this.resolveSymbolAndReference(book);
 		}
 
-		/**
-		 * IAnalyzerで処理した後の構文木について構文上のエラーがないかチェックする。
-		 * また、Builderと対比させて、未実装の候補がないかをチェックする。
-		 */
-		export interface IValidator {
-			init(book:Book, builders:IBuilder[]);
-		}
-
-		/**
-		 * IAnalyzerとIValidatorでチェックをした後に構文木から出力を生成する。
-		 */
-		export interface IBuilder {
-			name:string;
-			init(book:Book);
-			chapterPre(process:BuilderProcess, node:ChapterSyntaxTree):any;
-			chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any;
-			headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any;
-			headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any;
-			blockPre(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any;
-			blockPost(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any;
-			inlinePre(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any;
-			inlinePost(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any;
-			text(process:BuilderProcess, name:string, node:TextNodeSyntaxTree):any;
-		}
-
-		/**
-		 * 解析中に発生したエラーを表す。
-		 * この例外は実装に不備があった時のみ利用される。
-		 * ユーザの入力した文書に不備がある場合には Process.error を利用すること。
-		 */
-		export class AnalyzerError implements Error {
-			name = "AnalyzerError";
-
-			constructor(public message:string) {
-				var E = <any>Error;
-				if (E.captureStackTrace) {
-					E.captureStackTrace(this, AnalyzerError);
+		resolveSymbolAndReference(book:Book) {
+			// symbols の解決
+			// Arrayにflatten がなくて悲しい reduce だと長い…
+			var symbols:Symbol[] = flatten(book.parts.map(part=>part.chapters.map(chapter=>chapter.process.symbols)));
+			symbols.forEach(symbol=> {
+				// referenceToのpartやchapterの解決
+				var referenceTo = symbol.referenceTo;
+				if (!referenceTo) {
+					return;
 				}
-			}
-		}
-
-		export class DefaultAnalyzer implements IAnalyzer {
-			book:Book;
-
-			init(book:Book) {
-				this.book = book;
-
-				book.parts.forEach((part) => {
-					part.chapters.forEach((chapter) => {
-
-						ReVIEW.visit(chapter.root, {
-							visitDefaultPre: (node:SyntaxTree)=> {
-							},
-							visitHeadlinePre: (node:HeadlineSyntaxTree)=> {
-								this.headline(chapter.process, "hd", node);
-							},
-							visitBlockElementPre: (node:BlockElementSyntaxTree)=> {
-								this.block(chapter.process, node.name, node);
-							},
-							visitInlineElementPre: (node:InlineElementSyntaxTree)=> {
-								this.inline(chapter.process, node.name, node);
-							}
-						});
+				if (!referenceTo.part) {
+					book.parts.forEach(part=> {
+						if (referenceTo.partName === part.name) {
+							referenceTo.part = part;
+						}
 					});
-				});
-				book.parts.forEach((part) => {
-					part.chapters.forEach((chapter) => {
-						chapter.process.doAfterProcess();
+				}
+				if (!referenceTo.part) {
+					symbol.chapter.process.error(t("compile.part_is_missing", symbol.part.name), symbol.node);
+					return;
+				}
+				if (!referenceTo.chapter) {
+					referenceTo.part.chapters.forEach(chap=> {
+						if (referenceTo.chapterName === chap.name) {
+							referenceTo.chapter = chap;
+						}
 					});
-				});
-
-				this.resolveSymbolAndReference(book);
-			}
-
-			resolveSymbolAndReference(book:Book) {
-				// symbols の解決
-				// Arrayにflatten がなくて悲しい reduce だと長い…
-				var symbols:Symbol[] = flatten(book.parts.map(part=>part.chapters.map(chapter=>chapter.process.symbols)));
-				symbols.forEach(symbol=> {
-					// referenceToのpartやchapterの解決
-					var referenceTo = symbol.referenceTo;
-					if (!referenceTo) {
+				}
+				if (!referenceTo.chapter) {
+					symbol.chapter.process.error(t("compile.chapter_is_missing", symbol.chapter.name), symbol.node);
+					return;
+				}
+			});
+			// referenceTo.node の解決
+			symbols.forEach(symbol=> {
+				if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
+					var reference = symbol.referenceTo;
+					symbols.forEach(symbol=> {
+						if (reference.part === symbol.part && reference.chapter === symbol.chapter && reference.targetSymbol === symbol.symbolName && reference.label === symbol.labelName) {
+							reference.referenceNode = symbol.node;
+						}
+					});
+					if (!reference.referenceNode) {
+						symbol.chapter.process.error(t("compile.reference_is_missing", reference.targetSymbol, reference.label), symbol.node);
 						return;
 					}
-					if (!referenceTo.part) {
-						book.parts.forEach(part=> {
-							if (referenceTo.partName === part.name) {
-								referenceTo.part = part;
-							}
-						});
-					}
-					if (!referenceTo.part) {
-						symbol.chapter.process.error(t("compile.part_is_missing", symbol.part.name), symbol.node);
+				}
+			});
+			// 同一チャプター内に同一シンボル(listとか)で同一labelの要素がないかチェック
+			symbols.forEach(symbol1=> {
+				symbols.forEach(symbol2=> {
+					if (symbol1 === symbol2) {
 						return;
 					}
-					if (!referenceTo.chapter) {
-						referenceTo.part.chapters.forEach(chap=> {
-							if (referenceTo.chapterName === chap.name) {
-								referenceTo.chapter = chap;
-							}
-						});
-					}
-					if (!referenceTo.chapter) {
-						symbol.chapter.process.error(t("compile.chapter_is_missing", symbol.chapter.name), symbol.node);
-						return;
-					}
-				});
-				// referenceTo.node の解決
-				symbols.forEach(symbol=> {
-					if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
-						var reference = symbol.referenceTo;
-						symbols.forEach(symbol=> {
-							if (reference.part === symbol.part && reference.chapter === symbol.chapter && reference.targetSymbol === symbol.symbolName && reference.label === symbol.labelName) {
-								reference.referenceNode = symbol.node;
-							}
-						});
-						if (!reference.referenceNode) {
-							symbol.chapter.process.error(t("compile.reference_is_missing", reference.targetSymbol, reference.label), symbol.node);
+					if (symbol1.chapter === symbol2.chapter && symbol1.symbolName === symbol2.symbolName) {
+						if (symbol1.labelName && symbol2.labelName && symbol1.labelName === symbol2.labelName) {
+							symbol1.chapter.process.error(t("compile.duplicated_label"), symbol1.node, symbol2.node);
 							return;
 						}
 					}
 				});
-				// 同一チャプター内に同一シンボル(listとか)で同一labelの要素がないかチェック
-				symbols.forEach(symbol1=> {
-					symbols.forEach(symbol2=> {
-						if (symbol1 === symbol2) {
-							return;
-						}
-						if (symbol1.chapter === symbol2.chapter && symbol1.symbolName === symbol2.symbolName) {
-							if (symbol1.labelName && symbol2.labelName && symbol1.labelName === symbol2.labelName) {
-								symbol1.chapter.process.error(t("compile.duplicated_label"), symbol1.node, symbol2.node);
-								return;
-							}
-						}
-					});
-				});
-			}
-
-			headline(process:Process, name:string, node:HeadlineSyntaxTree) {
-				var label:string = null;
-				if (node.tag) {
-					label = node.tag.arg;
-				} else if (node.caption.childNodes.length === 1) {
-					var textNode = node.caption.childNodes[0].toTextNode();
-					label = textNode.text;
-				}
-				process.addSymbol({
-					symbolName: "hd",
-					labelName: label,
-					node: node
-				});
-			}
-
-			block(process:Process, name:string, node:BlockElementSyntaxTree) {
-				var func = this["block_" + name];
-				if (typeof func !== "function") {
-					process.error(t("compile.block_not_supported", name), node);
-					return;
-				}
-				func.call(this, process, node);
-			}
-
-			inline(process:Process, name:string, node:InlineElementSyntaxTree) {
-				var func = this["inline_" + name];
-				if (typeof func !== "function") {
-					process.error(t("compile.inline_not_supported", name), node);
-					return;
-				}
-				func.call(this, process, node);
-			}
-
-			checkArgsLength(process:Process, node:BlockElementSyntaxTree, expect:number):boolean;
-
-			checkArgsLength(process:Process, node:BlockElementSyntaxTree, expects:number[]):boolean;
-
-			checkArgsLength(process:Process, node:BlockElementSyntaxTree, expect):boolean {
-				if (typeof expect === "undefined" || expect === null) {
-					throw new AnalyzerError("args length is required");
-				}
-				var expects:number[];
-				if (Array.isArray(expect)) {
-					expects = expect;
-				} else {
-					expects = [expect];
-				}
-				var arg = node.args || [];
-				if (expects.indexOf(arg.length) === -1) {
-					var expected = expects.map((n)=>Number(n).toString()).join(" or ");
-					var message = t("compile.args_length_mismatch", expected, arg.length);
-					process.error(message, node);
-					return false;
-				} else {
-					return true;
-				}
-			}
-
-			constructReferenceTo(process:Process, node:InlineElementSyntaxTree, value:string, targetSymbol?:string, separator?:string):ReferenceTo;
-
-			constructReferenceTo(process:Process, node:BlockElementSyntaxTree, value:string, targetSymbol:string, separator?:string):ReferenceTo;
-
-			constructReferenceTo(process:Process, node, value:string, targetSymbol = node.name, separator = "|"):ReferenceTo {
-				var splitted = value.split(separator);
-				if (splitted.length === 3) {
-					return {
-						partName: splitted[0],
-						chapterName: splitted[1],
-						targetSymbol: targetSymbol,
-						label: splitted[2]
-					};
-				} else if (splitted.length === 2) {
-					return {
-						part: process.part,
-						partName: process.part.name,
-						chapterName: splitted[0],
-						targetSymbol: targetSymbol,
-						label: splitted[1]
-					};
-				} else if (splitted.length === 1) {
-					return {
-						part: process.part,
-						partName: process.part.name,
-						chapter: process.chapter,
-						chapterName: process.chapter.name,
-						targetSymbol: targetSymbol,
-						label: splitted[0]
-					};
-				} else {
-					var message = t("compile.args_length_mismatch", "1 or 2 or 3", splitted.length);
-					process.error(message, node);
-					return null;
-				}
-			}
-
-			block_list(process:Process, node:BlockElementSyntaxTree) {
-				if (!this.checkArgsLength(process, node, 2)) {
-					return;
-				}
-				node.no = process.nextIndex("list");
-				process.addSymbol({
-					symbolName: node.name,
-					labelName: node.args[0].arg,
-					node: node
-				});
-			}
-
-			inline_list(process:Process, node:InlineElementSyntaxTree) {
-				if (node.childNodes.length !== 1) {
-					process.error(t("compile.body_string_only"));
-				}
-				process.addSymbol({
-					symbolName: node.name,
-					referenceTo: this.constructReferenceTo(process, node, nodeToString(node)),
-					node: node
-				});
-			}
-
-			inline_hd(process:Process, node:InlineElementSyntaxTree) {
-				if (node.childNodes.length !== 1) {
-					process.error(t("compile.body_string_only"));
-				}
-				process.addSymbol({
-					symbolName: node.name,
-					referenceTo: this.constructReferenceTo(process, node, nodeToString(node)),
-					node: node
-				});
-			}
-
-			// TODO 以下のものの実装をすすめる
-			// block_list
-			// block_emlist
-			// block_source
-			// block_listnum
-			// inline_list
-			// emlistnum
-			// inline_code
-			// block_cmd
-			// block_image
-			// inline_img
-			// block_indepimage
-			// block_graph
-			// block_table
-			// inline_table
-			// block_quote
-			// block_footnote
-			// inline_fn
-			// block_bibpaper
-			// inline_bib
-			// block_lead
-			// block_texequation
-			// block_noindent
-			// block_raw
-			// inline_kw
-			// inline_chap
-			// inline_title
-			// inline_chapref
-			// inline_bou
-			// inline_ruby
-			// inline_ami
-			// inline_b
-			// inline_i
-			// inline_strong
-			// inline_em
-			// inline_tt
-			// inline_tti
-			// inline_ttb
-			// inline_u
-			// inline_br
-			// inline_m
-			// inline_icon
-			// inline_uchar
-			// inline_href
-			// inline_raw
-			// block_label
+			});
 		}
 
-		export class DefaultValidator implements IValidator {
-
-			init(book:Book, builders:IBuilder[]) {
-				this.checkBook(book);
+		headline(process:Process, name:string, node:HeadlineSyntaxTree) {
+			var label:string = null;
+			if (node.tag) {
+				label = node.tag.arg;
+			} else if (node.caption.childNodes.length === 1) {
+				var textNode = node.caption.childNodes[0].toTextNode();
+				label = textNode.text;
 			}
+			process.addSymbol({
+				symbolName: "hd",
+				labelName: label,
+				node: node
+			});
+		}
 
-			checkBook(book:Book) {
-				book.parts.forEach(part=> this.checkPart(part));
+		block(process:Process, name:string, node:BlockElementSyntaxTree) {
+			var func = this["block_" + name];
+			if (typeof func !== "function") {
+				process.error(t("compile.block_not_supported", name), node);
+				return;
 			}
+			func.call(this, process, node);
+		}
 
-			checkPart(part:Part) {
-				part.chapters.forEach(chapter=>this.checkChapter(chapter));
+		inline(process:Process, name:string, node:InlineElementSyntaxTree) {
+			var func = this["inline_" + name];
+			if (typeof func !== "function") {
+				process.error(t("compile.inline_not_supported", name), node);
+				return;
 			}
+			func.call(this, process, node);
+		}
 
-			checkChapter(chapter:Chapter) {
-				// 章の下に項がいきなり来ていないか(節のレベルを飛ばしている)
-				// 最初は必ず Level 1, 1以外の場合は1つ上のChapterとのレベル差が1でなければならない
-				ReVIEW.visit(chapter.root, {
-					visitDefaultPre: (node:SyntaxTree) => {
-					},
-					visitChapterPre: (node:ChapterSyntaxTree) => {
-						if (node.level === 1) {
-							if (!findChapter(node)) {
-								// ここに来るのは実装のバグのはず
-								chapter.process.error(t("compile.chapter_not_toplevel"), node);
-							}
-						} else {
-							var parent = findChapter(node.parentNode);
-							if (!parent) {
-								chapter.process.error(t("compile.chapter_topleve_eq1"), node);
-							} else if (parent.level !== node.level - 1) {
-								chapter.process.error(t("compile.chapter_level_omission", node.level, node.level - 1, parent ? String(parent.level) : "none"), node);
-							}
+		checkArgsLength(process:Process, node:BlockElementSyntaxTree, expect:number):boolean;
+
+		checkArgsLength(process:Process, node:BlockElementSyntaxTree, expects:number[]):boolean;
+
+		checkArgsLength(process:Process, node:BlockElementSyntaxTree, expect):boolean {
+			if (typeof expect === "undefined" || expect === null) {
+				throw new AnalyzerError("args length is required");
+			}
+			var expects:number[];
+			if (Array.isArray(expect)) {
+				expects = expect;
+			} else {
+				expects = [expect];
+			}
+			var arg = node.args || [];
+			if (expects.indexOf(arg.length) === -1) {
+				var expected = expects.map((n)=>Number(n).toString()).join(" or ");
+				var message = t("compile.args_length_mismatch", expected, arg.length);
+				process.error(message, node);
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		constructReferenceTo(process:Process, node:InlineElementSyntaxTree, value:string, targetSymbol?:string, separator?:string):ReferenceTo;
+
+		constructReferenceTo(process:Process, node:BlockElementSyntaxTree, value:string, targetSymbol:string, separator?:string):ReferenceTo;
+
+		constructReferenceTo(process:Process, node, value:string, targetSymbol = node.name, separator = "|"):ReferenceTo {
+			var splitted = value.split(separator);
+			if (splitted.length === 3) {
+				return {
+					partName: splitted[0],
+					chapterName: splitted[1],
+					targetSymbol: targetSymbol,
+					label: splitted[2]
+				};
+			} else if (splitted.length === 2) {
+				return {
+					part: process.part,
+					partName: process.part.name,
+					chapterName: splitted[0],
+					targetSymbol: targetSymbol,
+					label: splitted[1]
+				};
+			} else if (splitted.length === 1) {
+				return {
+					part: process.part,
+					partName: process.part.name,
+					chapter: process.chapter,
+					chapterName: process.chapter.name,
+					targetSymbol: targetSymbol,
+					label: splitted[0]
+				};
+			} else {
+				var message = t("compile.args_length_mismatch", "1 or 2 or 3", splitted.length);
+				process.error(message, node);
+				return null;
+			}
+		}
+
+		block_list(process:Process, node:BlockElementSyntaxTree) {
+			if (!this.checkArgsLength(process, node, 2)) {
+				return;
+			}
+			node.no = process.nextIndex("list");
+			process.addSymbol({
+				symbolName: node.name,
+				labelName: node.args[0].arg,
+				node: node
+			});
+		}
+
+		inline_list(process:Process, node:InlineElementSyntaxTree) {
+			if (node.childNodes.length !== 1) {
+				process.error(t("compile.body_string_only"));
+			}
+			process.addSymbol({
+				symbolName: node.name,
+				referenceTo: this.constructReferenceTo(process, node, nodeToString(node)),
+				node: node
+			});
+		}
+
+		inline_hd(process:Process, node:InlineElementSyntaxTree) {
+			if (node.childNodes.length !== 1) {
+				process.error(t("compile.body_string_only"));
+			}
+			process.addSymbol({
+				symbolName: node.name,
+				referenceTo: this.constructReferenceTo(process, node, nodeToString(node)),
+				node: node
+			});
+		}
+
+		// TODO 以下のものの実装をすすめる
+		// block_list
+		// block_emlist
+		// block_source
+		// block_listnum
+		// inline_list
+		// emlistnum
+		// inline_code
+		// block_cmd
+		// block_image
+		// inline_img
+		// block_indepimage
+		// block_graph
+		// block_table
+		// inline_table
+		// block_quote
+		// block_footnote
+		// inline_fn
+		// block_bibpaper
+		// inline_bib
+		// block_lead
+		// block_texequation
+		// block_noindent
+		// block_raw
+		// inline_kw
+		// inline_chap
+		// inline_title
+		// inline_chapref
+		// inline_bou
+		// inline_ruby
+		// inline_ami
+		// inline_b
+		// inline_i
+		// inline_strong
+		// inline_em
+		// inline_tt
+		// inline_tti
+		// inline_ttb
+		// inline_u
+		// inline_br
+		// inline_m
+		// inline_icon
+		// inline_uchar
+		// inline_href
+		// inline_raw
+		// block_label
+	}
+
+	export class DefaultValidator implements IValidator {
+
+		init(book:Book, builders:IBuilder[]) {
+			this.checkBook(book);
+		}
+
+		checkBook(book:Book) {
+			book.parts.forEach(part=> this.checkPart(part));
+		}
+
+		checkPart(part:Part) {
+			part.chapters.forEach(chapter=>this.checkChapter(chapter));
+		}
+
+		checkChapter(chapter:Chapter) {
+			// 章の下に項がいきなり来ていないか(節のレベルを飛ばしている)
+			// 最初は必ず Level 1, 1以外の場合は1つ上のChapterとのレベル差が1でなければならない
+			ReVIEW.visit(chapter.root, {
+				visitDefaultPre: (node:SyntaxTree) => {
+				},
+				visitChapterPre: (node:ChapterSyntaxTree) => {
+					if (node.level === 1) {
+						if (!findChapter(node)) {
+							// ここに来るのは実装のバグのはず
+							chapter.process.error(t("compile.chapter_not_toplevel"), node);
+						}
+					} else {
+						var parent = findChapter(node.parentNode);
+						if (!parent) {
+							chapter.process.error(t("compile.chapter_topleve_eq1"), node);
+						} else if (parent.level !== node.level - 1) {
+							chapter.process.error(t("compile.chapter_level_omission", node.level, node.level - 1, parent ? String(parent.level) : "none"), node);
 						}
 					}
-				});
-			}
+				}
+			});
+		}
+	}
+
+	export class DefaultBuilder implements IBuilder {
+		book:Book;
+
+		get name():string {
+			return (<any>this).constructor.name;
 		}
 
-		export class DefaultBuilder implements IBuilder {
-			book:Book;
+		init(book:Book) {
+			this.book = book;
 
-			get name():string {
-				return (<any>this).constructor.name;
-			}
-
-			init(book:Book) {
-				this.book = book;
-
-				book.parts.forEach((part) => {
-					part.chapters.forEach((chapter) => {
-						var process = chapter.createBuilderProcess(this);
-						ReVIEW.visit(chapter.root, {
-							visitDefaultPre: (node:SyntaxTree)=> {
-							},
-							visitChapterPre: (node:ChapterSyntaxTree)=> {
-								return this.chapterPre(process, node);
-							},
-							visitChapterPost: (node:ChapterSyntaxTree)=> {
-								return this.chapterPost(process, node);
-							},
-							visitHeadlinePre: (node:HeadlineSyntaxTree)=> {
-								return this.headlinePre(process, "hd", node);
-							},
-							visitHeadlinePost: (node:HeadlineSyntaxTree)=> {
-								return this.headlinePost(process, "hd", node);
-							},
-							visitBlockElementPre: (node:BlockElementSyntaxTree)=> {
-								return this.blockPre(process, node.name, node);
-							},
-							visitBlockElementPost: (node:BlockElementSyntaxTree)=> {
-								return this.blockPost(process, node.name, node);
-							},
-							visitInlineElementPre: (node:InlineElementSyntaxTree)=> {
-								return this.inlinePre(process, node.name, node);
-							},
-							visitInlineElementPost: (node:InlineElementSyntaxTree)=> {
-								return this.inlinePost(process, node.name, node);
-							},
-							visitTextPre: (node:TextNodeSyntaxTree) => {
-								this.text(process, node.text, node);
-							}
-						});
+			book.parts.forEach((part) => {
+				part.chapters.forEach((chapter) => {
+					var process = chapter.createBuilderProcess(this);
+					ReVIEW.visit(chapter.root, {
+						visitDefaultPre: (node:SyntaxTree)=> {
+						},
+						visitChapterPre: (node:ChapterSyntaxTree)=> {
+							return this.chapterPre(process, node);
+						},
+						visitChapterPost: (node:ChapterSyntaxTree)=> {
+							return this.chapterPost(process, node);
+						},
+						visitHeadlinePre: (node:HeadlineSyntaxTree)=> {
+							return this.headlinePre(process, "hd", node);
+						},
+						visitHeadlinePost: (node:HeadlineSyntaxTree)=> {
+							return this.headlinePost(process, "hd", node);
+						},
+						visitBlockElementPre: (node:BlockElementSyntaxTree)=> {
+							return this.blockPre(process, node.name, node);
+						},
+						visitBlockElementPost: (node:BlockElementSyntaxTree)=> {
+							return this.blockPost(process, node.name, node);
+						},
+						visitInlineElementPre: (node:InlineElementSyntaxTree)=> {
+							return this.inlinePre(process, node.name, node);
+						},
+						visitInlineElementPost: (node:InlineElementSyntaxTree)=> {
+							return this.inlinePost(process, node.name, node);
+						},
+						visitTextPre: (node:TextNodeSyntaxTree) => {
+							this.text(process, node.text, node);
+						}
 					});
 				});
-				book.parts.forEach((part) => {
-					part.chapters.forEach((chapter) => {
-						chapter.process.doAfterProcess();
-					});
+			});
+			book.parts.forEach((part) => {
+				part.chapters.forEach((chapter) => {
+					chapter.process.doAfterProcess();
 				});
-			}
+			});
+		}
 
-			chapterPre(process:BuilderProcess, node:ChapterSyntaxTree):any {
-			}
+		chapterPre(process:BuilderProcess, node:ChapterSyntaxTree):any {
+		}
 
-			chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any {
-			}
+		chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any {
+		}
 
-			headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any {
-			}
+		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any {
+		}
 
-			headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any {
-			}
+		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any {
+		}
 
-			text(process:BuilderProcess, name:string, node:TextNodeSyntaxTree):any {
-				process.out(node.text);
-			}
+		text(process:BuilderProcess, name:string, node:TextNodeSyntaxTree):any {
+			process.out(node.text);
+		}
 
-			blockPre(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any {
-				var func:Function;
-				func = this["block_" + name];
-				if (typeof func === "function") {
-					return func.call(this, process, node);
-				}
-
-				func = this["block_" + name + "_pre"];
-				if (typeof func !== "function") {
-					throw new AnalyzerError("block_" + name + "_pre or block_" + name + " is not Function");
-				}
+		blockPre(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any {
+			var func:Function;
+			func = this["block_" + name];
+			if (typeof func === "function") {
 				return func.call(this, process, node);
 			}
 
-			blockPost(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any {
-				var func:Function;
-				func = this["block_" + name];
-				if (typeof func === "function") {
-					return;
-				}
+			func = this["block_" + name + "_pre"];
+			if (typeof func !== "function") {
+				throw new AnalyzerError("block_" + name + "_pre or block_" + name + " is not Function");
+			}
+			return func.call(this, process, node);
+		}
 
-				func = this["block_" + name + "_post"];
-				if (typeof func !== "function") {
-					throw new AnalyzerError("block_" + name + "_post is not Function");
-				}
+		blockPost(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any {
+			var func:Function;
+			func = this["block_" + name];
+			if (typeof func === "function") {
+				return;
+			}
+
+			func = this["block_" + name + "_post"];
+			if (typeof func !== "function") {
+				throw new AnalyzerError("block_" + name + "_post is not Function");
+			}
+			return func.call(this, process, node);
+		}
+
+		inlinePre(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any {
+			var func:Function;
+			func = this["inline_" + name];
+			if (typeof func === "function") {
 				return func.call(this, process, node);
 			}
 
-			inlinePre(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any {
-				var func:Function;
-				func = this["inline_" + name];
-				if (typeof func === "function") {
-					return func.call(this, process, node);
-				}
+			func = this["inline_" + name + "_pre"];
+			if (typeof func !== "function") {
+				throw new AnalyzerError("inline_" + name + "_pre or inline_" + name + " is not Function");
+			}
+			return func.call(this, process, node);
+		}
 
-				func = this["inline_" + name + "_pre"];
-				if (typeof func !== "function") {
-					throw new AnalyzerError("inline_" + name + "_pre or inline_" + name + " is not Function");
-				}
-				return func.call(this, process, node);
+		inlinePost(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any {
+			var func:Function;
+			func = this["inline_" + name];
+			if (typeof func === "function") {
+				return;
 			}
 
-			inlinePost(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any {
-				var func:Function;
-				func = this["inline_" + name];
-				if (typeof func === "function") {
-					return;
-				}
-
-				func = this["inline_" + name + "_post"];
-				if (typeof func !== "function") {
-					throw new AnalyzerError("inline_" + name + "_post is not Function");
-				}
-				return func.call(this, process, node);
+			func = this["inline_" + name + "_post"];
+			if (typeof func !== "function") {
+				throw new AnalyzerError("inline_" + name + "_post is not Function");
 			}
+			return func.call(this, process, node);
+		}
 
-			findReference(process:BuilderProcess, node:SyntaxTree):Symbol {
-				var founds = process.symbols.filter((symbol)=> {
-					return symbol.node === node;
-				});
-				if (founds.length !== 1) {
-					throw new AnalyzerError("invalid status.");
-				}
-				return founds[0];
+		findReference(process:BuilderProcess, node:SyntaxTree):Symbol {
+			var founds = process.symbols.filter((symbol)=> {
+				return symbol.node === node;
+			});
+			if (founds.length !== 1) {
+				throw new AnalyzerError("invalid status.");
 			}
+			return founds[0];
 		}
 	}
 }
