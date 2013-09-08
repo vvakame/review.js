@@ -37,8 +37,8 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 	 * @param ast
 	 * @param v
 	 */
-	export function visit(ast:SyntaxTree, v:TreeVisitor) {
-		var newV:TreeVisitor = {
+	export function visit(ast:SyntaxTree, v:ITreeVisitor) {
+		var newV:ITreeVisitor = {
 			visitDefaultPre: v.visitDefaultPre,
 			visitDefaultPost: v.visitDefaultPost || (()=> {
 			}),
@@ -98,7 +98,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 		visitSub(null, ast, newV);
 	}
 
-	function visitSub(parent:SyntaxTree, ast:SyntaxTree, v:TreeVisitor) {
+	function visitSub(parent:SyntaxTree, ast:SyntaxTree, v:ITreeVisitor) {
 		if (ast instanceof BlockElementSyntaxTree) {
 			var block = ast.toBlockElement();
 			var ret = v.visitBlockElementPre(block, parent);
@@ -225,7 +225,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 	 * false を返した時、子要素の探索は行われない。
 	 * Function を返した時、子要素の探索を行う代わりにその関数が実行される。Functionには引数として実行中のTreeVisitorが渡される。
 	 */
-	export interface TreeVisitor {
+	export interface ITreeVisitor {
 		visitDefaultPre(node:SyntaxTree, parent:SyntaxTree):any;
 		visitDefaultPost?(node:SyntaxTree, parent:SyntaxTree);
 		visitNodePre?(node:NodeSyntaxTree, parent:SyntaxTree):any;

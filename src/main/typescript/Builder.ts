@@ -107,7 +107,7 @@ import findChapter = ReVIEW.findChapter;
 		resolveSymbolAndReference(book:Book) {
 			// symbols の解決
 			// Arrayにflatten がなくて悲しい reduce だと長い…
-			var symbols:Symbol[] = flatten(book.parts.map(part=>part.chapters.map(chapter=>chapter.process.symbols)));
+			var symbols:ISymbol[] = flatten(book.parts.map(part=>part.chapters.map(chapter=>chapter.process.symbols)));
 			symbols.forEach(symbol=> {
 				// referenceToのpartやchapterの解決
 				var referenceTo = symbol.referenceTo;
@@ -226,11 +226,11 @@ import findChapter = ReVIEW.findChapter;
 			}
 		}
 
-		constructReferenceTo(process:Process, node:InlineElementSyntaxTree, value:string, targetSymbol?:string, separator?:string):ReferenceTo;
+		constructReferenceTo(process:Process, node:InlineElementSyntaxTree, value:string, targetSymbol?:string, separator?:string):IReferenceTo;
 
-		constructReferenceTo(process:Process, node:BlockElementSyntaxTree, value:string, targetSymbol:string, separator?:string):ReferenceTo;
+		constructReferenceTo(process:Process, node:BlockElementSyntaxTree, value:string, targetSymbol:string, separator?:string):IReferenceTo;
 
-		constructReferenceTo(process:Process, node, value:string, targetSymbol = node.name, separator = "|"):ReferenceTo {
+		constructReferenceTo(process:Process, node, value:string, targetSymbol = node.name, separator = "|"):IReferenceTo {
 			var splitted = value.split(separator);
 			if (splitted.length === 3) {
 				return {
@@ -509,7 +509,7 @@ import findChapter = ReVIEW.findChapter;
 			return func.call(this, process, node);
 		}
 
-		findReference(process:BuilderProcess, node:SyntaxTree):Symbol {
+		findReference(process:BuilderProcess, node:SyntaxTree):ISymbol {
 			var founds = process.symbols.filter((symbol)=> {
 				return symbol.node === node;
 			});

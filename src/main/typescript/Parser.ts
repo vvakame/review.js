@@ -14,7 +14,7 @@ module ReVIEW.Parse {
 	 * @param input
 	 * @returns {{ast: NodeSyntaxTree, cst: *}}
 	 */
-	export function parse(input:string):{ast:NodeSyntaxTree;cst:ConcreatSyntaxTree;} {
+	export function parse(input:string):{ast:NodeSyntaxTree;cst:IConcreatSyntaxTree;} {
 		var rawResult = PEG.parse(input);
 		var root = transform(rawResult).toNode();
 
@@ -53,7 +53,7 @@ module ReVIEW.Parse {
 	 * @param rawResult
 	 * @returns {*}
 	 */
-	export function transform(rawResult:ConcreatSyntaxTree):SyntaxTree {
+	export function transform(rawResult:IConcreatSyntaxTree):SyntaxTree {
 		if (<any>rawResult === "") {
 			return null;
 		}

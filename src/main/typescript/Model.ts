@@ -6,7 +6,7 @@ module ReVIEW {
 	/**
 	 * コマンドライン引数を解釈した結果のオプション。
 	 */
-	export interface Options {
+	export interface IOptions {
 		reviewfile?:string;
 		base?:string;
 	}
@@ -15,7 +15,7 @@ module ReVIEW {
 	 * コンパイル実行時の設定。
 	 * 本についての情報や処理実行時のプログラムの差し替え。
 	 */
-	export interface Config {
+	export interface IConfig {
 		// TODO めんどくさくてまだ書いてない要素がたくさんある
 
 		read?:(path:string)=>string;
@@ -58,7 +58,7 @@ module ReVIEW {
 	 * コンパイル処理時の出力ハンドリング。
 	 */
 	export class Process {
-		symbols:Symbol[] = [];
+		symbols:ISymbol[] = [];
 		indexCounter:{ [kind:string]:number; } = {};
 		afterProcess:Function[] = [];
 		private _reports:ProcessReport[] = [];
@@ -103,14 +103,14 @@ module ReVIEW {
 			});
 		}
 
-		addSymbol(symbol:Symbol) {
+		addSymbol(symbol:ISymbol) {
 			symbol.part = this.part;
 			symbol.chapter = this.chapter;
 			this.symbols.push(symbol);
 		}
 
-		get missingSymbols():Symbol[] {
-			var result:Symbol[] = [];
+		get missingSymbols():ISymbol[] {
+			var result:ISymbol[] = [];
 			this.symbols.forEach(symbol=> {
 				if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
 					result.push(symbol);
@@ -154,7 +154,7 @@ module ReVIEW {
 			return this;
 		}
 
-		get symbols():Symbol[] {
+		get symbols():ISymbol[] {
 			return this.base.symbols;
 		}
 	}
@@ -162,19 +162,19 @@ module ReVIEW {
 	/**
 	 * シンボルについての情報。
 	 */
-	export interface Symbol {
+	export interface ISymbol {
 		part?:Part;
 		chapter?:Chapter;
 		symbolName:string;
 		labelName?:string;
-		referenceTo?:ReferenceTo;
+		referenceTo?:IReferenceTo;
 		node:ReVIEW.Parse.SyntaxTree;
 	}
 
 	/**
 	 * 参照先についての情報。
 	 */
-	export interface ReferenceTo {
+	export interface IReferenceTo {
 		part?:Part;
 		partName:string;
 		chapter?:Chapter;
@@ -191,7 +191,7 @@ module ReVIEW {
 	export class Book {
 		parts:Part[] = [];
 
-		constructor(public config:Config) {
+		constructor(public config:IConfig) {
 		}
 
 		get reports():ProcessReport[] {
@@ -263,7 +263,7 @@ module ReVIEW {
 		export class ParseError implements Error {
 			name:string;
 
-			constructor(public syntax:ConcreatSyntaxTree, public message:string) {
+			constructor(public syntax:IConcreatSyntaxTree, public message:string) {
 				if ((<any>Error).captureStackTrace) {
 					(<any>Error).captureStackTrace(this, ParseError);
 				}
@@ -274,7 +274,7 @@ module ReVIEW {
 		/**
 		 * 構文解析直後の生データ。
 		 */
-		export interface ConcreatSyntaxTree {
+		export interface IConcreatSyntaxTree {
 			// 共通
 			syntax: string;
 			line: number;
@@ -347,7 +347,7 @@ module ReVIEW {
 			// analyzer 中で設定する項目
 			no:number;
 
-			constructor(data:ConcreatSyntaxTree) {
+			constructor(data:IConcreatSyntaxTree) {
 				this.ruleName = RuleName[data.syntax];
 				if (typeof this.ruleName === "undefined") {
 					throw new ParseError(data, "unknown rule: " + data.syntax);
@@ -528,7 +528,7 @@ module ReVIEW {
 		export class NodeSyntaxTree extends SyntaxTree {
 			childNodes:SyntaxTree[];
 
-			constructor(data:ConcreatSyntaxTree) {
+			constructor(data:IConcreatSyntaxTree) {
 				super(data);
 				this.childNodes = [];
 				this.processChildNodes(data.content);
@@ -536,14 +536,14 @@ module ReVIEW {
 
 			private processChildNodes(content:any) {
 				if (Array.isArray(content)) {
-					content.forEach((rawResult:ConcreatSyntaxTree)=> {
+					content.forEach((rawResult:IConcreatSyntaxTree)=> {
 						var tree = transform(rawResult);
 						if (tree) {
 							this.childNodes.push(tree);
 						}
 					});
 				} else if (content !== "" && content) {
-					((rawResult:ConcreatSyntaxTree)=> {
+					((rawResult:IConcreatSyntaxTree)=> {
 						var tree = transform(rawResult);
 						if (tree) {
 							this.childNodes.push(tree);
@@ -571,14 +571,14 @@ module ReVIEW {
 			headline:HeadlineSyntaxTree;
 			text:SyntaxTree[];
 
-			constructor(data:ConcreatSyntaxTree) {
+			constructor(data:IConcreatSyntaxTree) {
 				super(data);
 
 				this.headline = transform(this.checkObject(data.headline)).toHeadline();
 				if (typeof data.text === "string") {
 					return;
 				}
-				this.text = this.checkArray(data.text.content).map((data:ConcreatSyntaxTree)=> {
+				this.text = this.checkArray(data.text.content).map((data:IConcreatSyntaxTree)=> {
 					return transform(data);
 				});
 
@@ -611,7 +611,7 @@ module ReVIEW {
 			tag:ArgumentSyntaxTree;
 			caption:NodeSyntaxTree;
 
-			constructor(data:ConcreatSyntaxTree) {
+			constructor(data:IConcreatSyntaxTree) {
 				super(data);
 
 				this.level = this.checkNumber(data.level);
@@ -629,10 +629,10 @@ module ReVIEW {
 			name:string;
 			args:ArgumentSyntaxTree[];
 
-			constructor(data:ConcreatSyntaxTree) {
+			constructor(data:IConcreatSyntaxTree) {
 				super(data);
 				this.name = this.checkString(data.name);
-				this.args = this.checkArray(data.args).map((data:ConcreatSyntaxTree)=> {
+				this.args = this.checkArray(data.args).map((data:IConcreatSyntaxTree)=> {
 					return transform(data).toArgument();
 				});
 			}
@@ -641,7 +641,7 @@ module ReVIEW {
 		export class InlineElementSyntaxTree extends NodeSyntaxTree {
 			name:string;
 
-			constructor(data:ConcreatSyntaxTree) {
+			constructor(data:IConcreatSyntaxTree) {
 				super(data);
 				this.name = this.checkString(data.name);
 			}
@@ -650,7 +650,7 @@ module ReVIEW {
 		export class ArgumentSyntaxTree extends SyntaxTree {
 			arg:string;
 
-			constructor(data:ConcreatSyntaxTree) {
+			constructor(data:IConcreatSyntaxTree) {
 				super(data);
 				this.arg = this.checkString(data.arg);
 			}
@@ -660,7 +660,7 @@ module ReVIEW {
 			level:number;
 			text:SyntaxTree;
 
-			constructor(data:ConcreatSyntaxTree) {
+			constructor(data:IConcreatSyntaxTree) {
 				super(data);
 				this.level = this.checkNumber(data.level);
 				this.text = transform(this.checkObject(data.text));
@@ -674,7 +674,7 @@ module ReVIEW {
 			no:number;
 			text:SyntaxTree;
 
-			constructor(data:ConcreatSyntaxTree) {
+			constructor(data:IConcreatSyntaxTree) {
 				super(data);
 				this.no = this.checkNumber(data.no);
 				this.text = transform(this.checkObject(data.text));
@@ -685,7 +685,7 @@ module ReVIEW {
 			text:SyntaxTree;
 			content:SyntaxTree;
 
-			constructor(data:ConcreatSyntaxTree) {
+			constructor(data:IConcreatSyntaxTree) {
 				super(data);
 				this.text = transform(this.checkObject(data.text));
 				this.content = transform(this.checkObject(data.content));
@@ -695,7 +695,7 @@ module ReVIEW {
 		export class TextNodeSyntaxTree extends SyntaxTree {
 			text:string;
 
-			constructor(data:ConcreatSyntaxTree) {
+			constructor(data:IConcreatSyntaxTree) {
 				super(data);
 				this.text = this.checkString(data.text);
 			}

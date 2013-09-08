@@ -63,7 +63,6 @@ module ReVIEW {
 		return chapter;
 	}
 
-
 	/**
 	 * Node.jsでのIOをざっくり行うためのモジュール。
 	 */

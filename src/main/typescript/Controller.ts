@@ -18,9 +18,9 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 	 * 処理の起点。
 	 */
 	export class Controller {
-		config:ReVIEW.Config;
+		config:ReVIEW.IConfig;
 
-		constructor(public options:ReVIEW.Options = {}) {
+		constructor(public options:ReVIEW.IOptions = {}) {
 		}
 
 		/**
@@ -28,7 +28,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		 * 通常、 ReVIEW.start 経由で呼び出される。
 		 * @param data
 		 */
-			initConfig(data:ReVIEW.Config):void {
+			initConfig(data:ReVIEW.IConfig):void {
 			this.config = data;
 
 			// analyzer の正規化

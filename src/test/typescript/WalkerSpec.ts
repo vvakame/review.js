@@ -406,7 +406,7 @@ describe("ReVIEW.visitについて", ()=> {
 				visitDefaultPre: (ast:ReVIEW.Parse.SyntaxTree)=> {
 					count++;
 					if (ast.ruleName === ReVIEW.Parse.RuleName.Start) {
-						return (v:ReVIEW.TreeVisitor) => {
+						return (v:ReVIEW.ITreeVisitor) => {
 							ReVIEW.visit(ast.toNode().childNodes[0], v);
 						};
 					} else {

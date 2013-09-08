@@ -17,7 +17,7 @@ module ReVIEW {
 	 * @param options
 	 * @returns {Book}
 	 */
-	export function start(setup:(review:any)=>void, options?:ReVIEW.Options):Book {
+	export function start(setup:(review:any)=>void, options?:ReVIEW.IOptions):Book {
 		var controller = new Controller(options);
 		// setup 中で initConfig が呼び出される
 		setup(controller);
