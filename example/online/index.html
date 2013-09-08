@@ -19,6 +19,10 @@
         .error {
             color: tomato;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -28,6 +32,9 @@
 
 <textarea id="input">
 </textarea>
+<br>
+<input type="checkbox" id="check-text" checked> Text
+<input type="checkbox" id="check-html" checked> HTML
 
 <pre id="result-text">
     テキストへのコンパイル結果がここに出る。
@@ -50,6 +57,11 @@
         });
         doCompile($input.val())
     }
+
+    switchVisible();
+    ["text", "html"].forEach(function (type) {
+        $("#check-" + type).on("click", switchVisible);
+    });
 
     function doCompile(text) {
         var files = {
@@ -118,6 +130,18 @@
             });
             message += report.message;
             $child.text(message);
+        });
+    }
+
+    function switchVisible() {
+        var type = ["text", "html"];
+        type.forEach(function (type) {
+            var check = $("#check-" + type).prop("checked");
+            if (check) {
+                $("#result-" + type).removeClass("hidden");
+            } else {
+                $("#result-" + type).addClass("hidden");
+            }
         });
     }
 </script>
