@@ -50,7 +50,7 @@ var template = {
 		// func.toString() で構文解析されるので eval で作らないといけない
 		return eval("(function (c) {\n\treturn { line: line(), column: column(), offset: offset(), syntax:\"" + ruleName + "\", content: c};\n})");
 	},
-	text: function(ruleName) {
+	text: function (ruleName) {
 		// func.toString() で構文解析されるので eval で作らないといけない
 		return eval("(function (c) {\n\treturn { line: line(), column: column(), offset: offset(), syntax:\"" + ruleName + "\", text: text};\n})");
 	},
@@ -101,17 +101,29 @@ var options =
 			Contents: template.contents("Contents"),
 			Content: template.repeat(7, template.content("Content")),
 			ContentText: template.text("ContentText"),
-			BlockElement: function () {
-				return {
-					syntax: "BlockElement",
-					line: line(),
-					column: column(),
-					offset: offset(),
-					name: name,
-					args: args,
-					content: contents
-				};
-			},
+			BlockElement: [
+				function () {
+					return {
+						syntax: "BlockElement",
+						line: line(),
+						column: column(),
+						offset: offset(),
+						name: name,
+						args: args,
+						content: contents
+					};
+				}, function () {
+					return {
+						syntax: "BlockElement",
+						line: line(),
+						column: column(),
+						offset: offset(),
+						name: name,
+						args: args,
+						content: []
+					};
+				}
+			],
 			InlineElement: function () {
 				return {
 					syntax: "InlineElement",

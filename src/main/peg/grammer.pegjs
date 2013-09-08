@@ -39,6 +39,7 @@ ContentText "text of content"
 
 BlockElement "block element"
     = "//" name:$(AZ+) args:BracketArg* "{" Newline contents:BlockElementContents? "//}"
+    / "//" name:$(AZ+) args:BracketArg*
     ;
 
 InlineElement "inline element"
