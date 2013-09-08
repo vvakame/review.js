@@ -43,16 +43,17 @@ module ReVIEW {
 		 * IAnalyzerとIValidatorでチェックをした後に構文木から出力を生成する。
 		 */
 		export interface IBuilder {
+			name:string;
 			init(book:Book);
-			chapterPre(process:Process, node:ChapterSyntaxTree):any;
-			chapterPost(process:Process, node:ChapterSyntaxTree):any;
-			headlinePre(process:Process, name:string, node:HeadlineSyntaxTree):any;
-			headlinePost(process:Process, name:string, node:HeadlineSyntaxTree):any;
-			blockPre(process:Process, name:string, node:BlockElementSyntaxTree):any;
-			blockPost(process:Process, name:string, node:BlockElementSyntaxTree):any;
-			inlinePre(process:Process, name:string, node:InlineElementSyntaxTree):any;
-			inlinePost(process:Process, name:string, node:InlineElementSyntaxTree):any;
-			text(process:Process, name:string, node:TextNodeSyntaxTree):any;
+			chapterPre(process:BuilderProcess, node:ChapterSyntaxTree):any;
+			chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any;
+			headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any;
+			headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any;
+			blockPre(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any;
+			blockPost(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any;
+			inlinePre(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any;
+			inlinePost(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any;
+			text(process:BuilderProcess, name:string, node:TextNodeSyntaxTree):any;
 		}
 
 		/**
@@ -387,38 +388,42 @@ module ReVIEW {
 		export class DefaultBuilder implements IBuilder {
 			book:Book;
 
+			get name():string {
+				return (<any>this).constructor.name;
+			}
+
 			init(book:Book) {
 				this.book = book;
 
 				book.parts.forEach((part) => {
 					part.chapters.forEach((chapter) => {
-						var process = chapter.process;
+						var process = chapter.createBuilderProcess(this);
 						ReVIEW.visit(chapter.root, {
 							visitDefaultPre: (node:SyntaxTree)=> {
 							},
 							visitChapterPre: (node:ChapterSyntaxTree)=> {
-								return this.chapterPre(chapter.process, node);
+								return this.chapterPre(process, node);
 							},
 							visitChapterPost: (node:ChapterSyntaxTree)=> {
-								return this.chapterPost(chapter.process, node);
+								return this.chapterPost(process, node);
 							},
 							visitHeadlinePre: (node:HeadlineSyntaxTree)=> {
-								return this.headlinePre(chapter.process, "hd", node);
+								return this.headlinePre(process, "hd", node);
 							},
 							visitHeadlinePost: (node:HeadlineSyntaxTree)=> {
-								return this.headlinePost(chapter.process, "hd", node);
+								return this.headlinePost(process, "hd", node);
 							},
 							visitBlockElementPre: (node:BlockElementSyntaxTree)=> {
-								return this.blockPre(chapter.process, node.name, node);
+								return this.blockPre(process, node.name, node);
 							},
 							visitBlockElementPost: (node:BlockElementSyntaxTree)=> {
-								return this.blockPost(chapter.process, node.name, node);
+								return this.blockPost(process, node.name, node);
 							},
 							visitInlineElementPre: (node:InlineElementSyntaxTree)=> {
-								return this.inlinePre(chapter.process, node.name, node);
+								return this.inlinePre(process, node.name, node);
 							},
 							visitInlineElementPost: (node:InlineElementSyntaxTree)=> {
-								return this.inlinePost(chapter.process, node.name, node);
+								return this.inlinePost(process, node.name, node);
 							},
 							visitTextPre: (node:TextNodeSyntaxTree) => {
 								this.text(process, node.text, node);
@@ -433,23 +438,23 @@ module ReVIEW {
 				});
 			}
 
-			chapterPre(process:Process, node:ChapterSyntaxTree):any {
+			chapterPre(process:BuilderProcess, node:ChapterSyntaxTree):any {
 			}
 
-			chapterPost(process:Process, node:ChapterSyntaxTree):any {
+			chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any {
 			}
 
-			headlinePre(process:Process, name:string, node:HeadlineSyntaxTree):any {
+			headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any {
 			}
 
-			headlinePost(process:Process, name:string, node:HeadlineSyntaxTree):any {
+			headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any {
 			}
 
-			text(process:Process, name:string, node:TextNodeSyntaxTree):any {
+			text(process:BuilderProcess, name:string, node:TextNodeSyntaxTree):any {
 				process.out(node.text);
 			}
 
-			blockPre(process:Process, name:string, node:BlockElementSyntaxTree):any {
+			blockPre(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any {
 				var func:Function;
 				func = this["block_" + name];
 				if (typeof func === "function") {
@@ -463,7 +468,7 @@ module ReVIEW {
 				return func.call(this, process, node);
 			}
 
-			blockPost(process:Process, name:string, node:BlockElementSyntaxTree):any {
+			blockPost(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any {
 				var func:Function;
 				func = this["block_" + name];
 				if (typeof func === "function") {
@@ -477,7 +482,7 @@ module ReVIEW {
 				return func.call(this, process, node);
 			}
 
-			inlinePre(process:Process, name:string, node:InlineElementSyntaxTree):any {
+			inlinePre(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any {
 				var func:Function;
 				func = this["inline_" + name];
 				if (typeof func === "function") {
@@ -491,7 +496,7 @@ module ReVIEW {
 				return func.call(this, process, node);
 			}
 
-			inlinePost(process:Process, name:string, node:InlineElementSyntaxTree):any {
+			inlinePost(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any {
 				var func:Function;
 				func = this["inline_" + name];
 				if (typeof func === "function") {
@@ -505,7 +510,7 @@ module ReVIEW {
 				return func.call(this, process, node);
 			}
 
-			findReference(process:Process, node:SyntaxTree):Symbol {
+			findReference(process:BuilderProcess, node:SyntaxTree):Symbol {
 				var founds = process.symbols.filter((symbol)=> {
 					return symbol.node === node;
 				});

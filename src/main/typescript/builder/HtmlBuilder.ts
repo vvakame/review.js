@@ -20,11 +20,11 @@ module ReVIEW {
 
         export class HtmlBuilder extends DefaultBuilder {
 
-            chapterPost(process:Process, node:ChapterSyntaxTree):any {
+            chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any {
                 process.out("<br/>");
             }
 
-            headlinePre(process:Process, name:string, node:HeadlineSyntaxTree) {
+            headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
                 process.out("<h").out(node.level).out(">");
                 if (node.level === 1) {
                     var text = i18n.t("builder.chapter", node.parentNode.no);
@@ -34,11 +34,11 @@ module ReVIEW {
                 }
             }
 
-            headlinePost(process:Process, name:string, node:HeadlineSyntaxTree) {
+            headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
                 process.out("</h").out(node.level).out(">");
             }
 
-            block_list_pre(process:Process, node:BlockElementSyntaxTree) {
+            block_list_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
                 //TODO styleは外出す
                 //TODO エスケープ処理
                 process.out("<div style='margin:20px;'>");
@@ -55,11 +55,11 @@ module ReVIEW {
                 process.out(text).out("</pre>");
             }
 
-            block_list_post(process:Process, node:BlockElementSyntaxTree) {
+            block_list_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
                 process.out("</div>");
             }
 
-            inline_list(process:Process, node:InlineElementSyntaxTree) {
+            inline_list(process:BuilderProcess, node:InlineElementSyntaxTree) {
                 var chapter = findChapter(node, 1);
                 var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
                 var text = i18n.t("builder.list", chapter.fqn, listNode.no);
@@ -67,7 +67,7 @@ module ReVIEW {
                 return false;
             }
 
-            inline_hd_pre(process:Process, node:InlineElementSyntaxTree) {
+            inline_hd_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
                 process.out("「");
                 var chapter = findChapter(node);
                 if (chapter.level === 1) {
@@ -79,7 +79,7 @@ module ReVIEW {
                 return false;
             }
 
-            inline_hd_post(process:Process, node:InlineElementSyntaxTree) {
+            inline_hd_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
                 process.out("」");
             }
         }

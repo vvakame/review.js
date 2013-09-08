@@ -29,8 +29,12 @@
 <textarea id="input">
 </textarea>
 
-<pre id="result">
-    コンパイル結果がここに出る。
+<pre id="result-text">
+    テキストへのコンパイル結果がここに出る。
+</pre>
+
+<pre id="result-html">
+    HTMLへのコンパイル結果がここに出る。
 </pre>
 
 <script type="application/javascript">
@@ -63,15 +67,25 @@
                 },
 
                 compileSuccess: function (book) {
-                    var result = book.parts[1].chapters[0].process.result;
-                    $("#result").text(result);
+                    book.parts[1].chapters[0].builderProcesses.forEach(function (process) {
+                        var $result;
+                        switch (process.builder.name) {
+                            case "TextBuilder":
+                                $result = $("#result-text");
+                                break;
+                            case "HtmlBuilder":
+                                $result = $("#result-html");
+                                break;
+                        }
+                        $result.html(process.result);
+                    });
                 },
 
                 outputReport: function (reports) {
                     outputReports(reports);
                 },
 
-                builders: [new ReVIEW.Build.TextBuilder()],
+                builders: [new ReVIEW.Build.TextBuilder(), new ReVIEW.Build.HtmlBuilder()],
 
                 book: {
                     preface: [

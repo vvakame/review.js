@@ -66,8 +66,6 @@ module ReVIEW {
 		constructor(public part:Part, public chapter:Chapter) {
 		}
 
-		result:string = "";
-
 		info(message:string, ...nodes:Parse.SyntaxTree[]) {
 			this._reports.push(new ProcessReport(ReportLevel.Info, this.part, this.chapter, message, nodes));
 		}
@@ -80,10 +78,15 @@ module ReVIEW {
 			this._reports.push(new ProcessReport(ReportLevel.Error, this.part, this.chapter, message, nodes));
 		}
 
-		out(data:any):Process {
-			// 最近のブラウザだと単純結合がアホみたいに早いらしいので
-			this.result += data;
-			return this;
+		nextIndex(kind:string) {
+			var nextIndex = this.indexCounter[kind];
+			if (typeof nextIndex === "undefined") {
+				nextIndex = 1;
+			} else {
+				nextIndex++;
+			}
+			this.indexCounter[kind] = nextIndex;
+			return nextIndex;
 		}
 
 		get reports():ProcessReport[] {
@@ -116,17 +119,6 @@ module ReVIEW {
 			return result;
 		}
 
-		nextIndex(kind:string) {
-			var nextIndex = this.indexCounter[kind];
-			if (typeof nextIndex === "undefined") {
-				nextIndex = 1;
-			} else {
-				nextIndex++;
-			}
-			this.indexCounter[kind] = nextIndex;
-			return nextIndex;
-		}
-
 		addAfterProcess(func:Function) {
 			this.afterProcess.push(func);
 		}
@@ -134,6 +126,36 @@ module ReVIEW {
 		doAfterProcess() {
 			this.afterProcess.forEach((func)=>func());
 			this.afterProcess = [];
+		}
+	}
+
+	export class BuilderProcess {
+
+		constructor(public builder:ReVIEW.Build.IBuilder, public base:Process) {
+		}
+
+		get info():(message:string, ...nodes:Parse.SyntaxTree[])=>void {
+			return this.base.info;
+		}
+
+		get warn():(message:string, ...nodes:Parse.SyntaxTree[])=>void {
+			return this.base.warn;
+		}
+
+		get error():(message:string, ...nodes:Parse.SyntaxTree[])=>void {
+			return this.base.error;
+		}
+
+		result:string = "";
+
+		out(data:any):BuilderProcess {
+			// 最近のブラウザだと単純結合がアホみたいに早いらしいので
+			this.result += data;
+			return this;
+		}
+
+		get symbols():Symbol[] {
+			return this.base.symbols;
 		}
 	}
 
@@ -202,9 +224,31 @@ module ReVIEW {
 	 */
 	export class Chapter {
 		process:Process;
+		builderProcesses:BuilderProcess[] = [];
 
 		constructor(public parent:Part, public no:number, public name:string, public root:ReVIEW.Parse.SyntaxTree) {
 			this.process = new Process(this.parent, this);
+		}
+
+		createBuilderProcess(builder:ReVIEW.Build.IBuilder):BuilderProcess {
+			var builderProcess = new BuilderProcess(builder, this.process);
+			this.builderProcesses.push(builderProcess);
+			return builderProcess;
+		}
+
+		findResultByBuilder(builderName:string);
+
+		findResultByBuilder(builder:ReVIEW.Build.IBuilder);
+
+		findResultByBuilder(builder:any) {
+			var founds:BuilderProcess[];
+			if (typeof builder === "string") {
+				founds = this.builderProcesses.filter(process => process.builder.name === builder);
+			} else {
+				founds = this.builderProcesses.filter(process => process.builder === builder);
+			}
+			// TODO 何かエラー投げたほうがいい気もするなー
+			return founds[0].result;
 		}
 	}
 
