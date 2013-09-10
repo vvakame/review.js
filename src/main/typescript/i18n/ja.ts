@@ -2,6 +2,7 @@ module ReVIEW {
 	export var ja = {
 		"sample": "こんちゃーす！",
 		"compile": {
+			"file_not_exists": "ファイル %s が開けません",
 			"block_not_supported": "%s というブロック構文はサポートされていません",
 			"inline_not_supported": "%s というインライン構文はサポートされていません",
 			"part_is_missing": "パート %s が見つかりません",

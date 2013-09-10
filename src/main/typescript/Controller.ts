@@ -6,6 +6,8 @@
 
 module ReVIEW {
 
+import t = ReVIEW.i18n.t;
+
 import SyntaxTree = ReVIEW.Parse.SyntaxTree;
 import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
 import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
@@ -118,7 +120,13 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		}
 
 		private processChapter(book:Book, part:Part, index:number, chapterPath:string):Chapter {
-			var data = this.read(this.resolvePath(chapterPath));
+			var resolvedPath = this.resolvePath(chapterPath);
+			var data = this.read(resolvedPath);
+			if (!data) {
+				var chapter = new Chapter(part, index + 1, chapterPath, data, null);
+				chapter.process.error(t("compile.file_not_exists", resolvedPath));
+				return chapter;
+			}
 			try {
 				var parseResult = ReVIEW.Parse.parse(data);
 				var chapter = new Chapter(part, index + 1, chapterPath, data, parseResult.ast);
@@ -229,7 +237,16 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		}
 
 		resolvePath(path:string):string {
-			var base = this.options.base || "./";
+			if (ReVIEW.isNodeJS()) {
+				var p = require("path");
+				var base = this.options.base || "./";
+				return p.join(base, path);
+			}
+
+			if (!this.options.base) {
+				return path;
+			}
+
 			if (!this.endWith(base, "/") && !this.startWith(path, "/")) {
 				base += "/";
 			}

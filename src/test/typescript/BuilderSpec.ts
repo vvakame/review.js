@@ -6,8 +6,8 @@
 describe("ReVIEW.Buildの", ()=> {
 	it("処理が正しく動くこと", ()=> {
 		var files:any = {
-			"./ch01.re": "={ch01} ちゃぷたーだよ\n今日の晩ご飯はラフテーだった",
-			"./ch02.re": "={ch02} チャプター2\n参照 @<hd>{ch02} とか\n//list[hoge][fuga]{\ntest\n//}"
+			"ch01.re": "={ch01} ちゃぷたーだよ\n今日の晩ご飯はラフテーだった",
+			"ch02.re": "={ch02} チャプター2\n参照 @<hd>{ch02} とか\n//list[hoge][fuga]{\ntest\n//}"
 		};
 		var result:any = {
 		};
@@ -57,7 +57,7 @@ describe("ReVIEW.Buildの", ()=> {
 	describe("DefaultAnalyzerの動作の確認として", () => {
 		it("正しくsymbolの解決が出来る", ()=> {
 			var files:any = {
-				"./ch01.re": "={ch01} chapter01\n@<hd>{ch01}\n@<hd>{missing}"
+				"ch01.re": "={ch01} chapter01\n@<hd>{ch01}\n@<hd>{missing}"
 			};
 			var result:any = {
 			};
@@ -100,8 +100,8 @@ describe("ReVIEW.Buildの", ()=> {
 	describe("DefaultValidatorの動作の確認として", () => {
 		it("トップレベルのChapterは必ず level 1 であること", ()=> {
 			var files:any = {
-				"./ch01.re": "= level 1\n== level2",
-				"./ch02.re": "== level 2"
+				"ch01.re": "= level 1\n== level2",
+				"ch02.re": "== level 2"
 			};
 			var result:any = {
 			};
@@ -142,7 +142,7 @@ describe("ReVIEW.Buildの", ()=> {
 
 		it("あるChapterの親のChapterのレベル差が1であること", ()=> {
 			var files:any = {
-				"./ch01.re": "= level 1\n=== level3"
+				"ch01.re": "= level 1\n=== level3"
 			};
 			var result:any = {
 			};
@@ -185,7 +185,7 @@ describe("ReVIEW.Buildの", ()=> {
 	describe("DefaultBuilderの動作の確認として", ()=> {
 		it("", ()=> {
 			var files:any = {
-				"./ch01.re": "= hoge\n== fuga\n=== moge\n== piyo\n=== foo\n= bar\n"
+				"ch01.re": "= hoge\n== fuga\n=== moge\n== piyo\n=== foo\n= bar\n"
 			};
 			var result:any = {
 			};
