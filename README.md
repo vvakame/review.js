@@ -5,9 +5,13 @@ Node.js上とモダンなWebブラウザ上で動作することを目指しま�
 
 # 現状
 
-抽象構文木が取得できるようになりました。
-今は意味解析をしようとしています。
-Rubyに比べるとユーザに自由な拡張を許す設計にするのが難しい感じしますね。
+意味解析ができるようになりました。
+example/online/index.html を開いて試してみてください。
+
+# インストール
+
+とりあえず npm install git@github.com:vvakame/review.js.git で動くんじゃないかなぁと思います。
+npm publish するのはもう少しちゃんと実用できるようになってから…。
 
 # 開発方法
 
@@ -20,4 +24,5 @@ Rubyに比べるとユーザに自由な拡張を許す設計にするのが難�
 今貰えると嬉しい手助けはいくつかあります。
 
 * src/test/resource/valid へのファイルの追加
-* src/main/peg/grammer.pegjs のリファクタリング
+* DefaultAnalyzerが対応する構文の追加
+* 各種Builderの実装
