@@ -23,29 +23,73 @@ module ReVIEW {
 	}
 
 	/**
-	 * SyntaxTree を String に変換する。
+	 * SyntaxTree全体 を String に変換する。
+	 * @param process
 	 * @param node
-	 * @returns {string}
 	 */
 	export function nodeToString(process:Process, node:ReVIEW.Parse.SyntaxTree):string ;
 
 	export function nodeToString(process:BuilderProcess, node:ReVIEW.Parse.SyntaxTree):string ;
 
 	export function nodeToString(process:any, node:ReVIEW.Parse.SyntaxTree):string {
-		// TODO 現在の実装だと space とか newline が無かったことにされてしまう… offsetとendPosから計算するのが正しい
-		// しかし、愚直に実装すると Headlineを投げた時に TextNode 以外の箇所も取れてしまう。
-		// また、上記問題を適当に回避すると TextNode, BlockElement という順番で子要素を持つとおかしいことになるはず。
-		// TODO node で parent だけじゃなくて 兄と弟も取れたほうが楽そう…
+		return process.input.substring(node.offset, node.endPos);
+	}
 
-		var result = "";
+	/**
+	 * SyntaxTreeの中身部分 を String に変換する。
+	 * @param process
+	 * @param node
+	 */
+	export function nodeContentToString(process:Process, node:ReVIEW.Parse.SyntaxTree):string ;
+
+	export function nodeContentToString(process:BuilderProcess, node:ReVIEW.Parse.SyntaxTree):string ;
+
+	export function nodeContentToString(process:any, node:ReVIEW.Parse.SyntaxTree):string {
+		var minPos = Number.MAX_VALUE;
+		var maxPos = -1;
+		// child
+		var childVisitor:ReVIEW.ITreeVisitor = {
+			visitDefaultPre: (node:ReVIEW.Parse.SyntaxTree)=> {
+				minPos = Math.min(minPos, node.offset);
+				maxPos = Math.max(maxPos, node.endPos);
+			}
+		};
+		// root (子要素だけ抽出したい)
 		ReVIEW.visit(node, {
 			visitDefaultPre: (node:ReVIEW.Parse.SyntaxTree)=> {
 			},
+			visitNodePre: (node:ReVIEW.Parse.NodeSyntaxTree) => {
+				// Chapter, Inline, Block もここに来る
+				node.childNodes.forEach(child => ReVIEW.visit(child, childVisitor));
+				return false;
+			},
+			visitHeadlinePre: (node:ReVIEW.Parse.HeadlineSyntaxTree) => {
+				ReVIEW.visit(node.caption, childVisitor);
+				return false;
+			},
+			visitUlistPre: (node:ReVIEW.Parse.UlistElementSyntaxTree) => {
+				ReVIEW.visit(node.text, childVisitor);
+				return false;
+			},
+			visitDlistPre: (node:ReVIEW.Parse.DlistElementSyntaxTree) => {
+				ReVIEW.visit(node.text, childVisitor);
+				ReVIEW.visit(node.content, childVisitor);
+				return false;
+			},
+			visitOlistPre: (node:ReVIEW.Parse.OlistElementSyntaxTree) => {
+				ReVIEW.visit(node.text, childVisitor);
+				return false;
+			},
 			visitTextPre: (text:ReVIEW.Parse.TextNodeSyntaxTree) => {
-				result += text.text;
+				ReVIEW.visit(node, childVisitor);
+				return false;
 			}
 		});
-		return result;
+		if (maxPos < 0) {
+			return "";
+		} else {
+			return process.input.substring(minPos, maxPos);
+		}
 	}
 
 	/**

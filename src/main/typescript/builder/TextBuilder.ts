@@ -14,7 +14,7 @@ import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
 import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
-import nodeToString = ReVIEW.nodeToString;
+import nodeContentToString = ReVIEW.nodeContentToString;
 import findChapter = ReVIEW.findChapter;
 
 	export class TextBuilder extends DefaultBuilder {
@@ -72,7 +72,7 @@ import findChapter = ReVIEW.findChapter;
 			} else {
 				process.out(chapter.fqn).out(" ");
 			}
-			process.out(nodeToString(process, chapter.headline));
+			process.out(nodeContentToString(process, chapter.headline));
 			return false;
 		}
 

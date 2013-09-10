@@ -16,7 +16,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
 import flatten = ReVIEW.flatten;
-import nodeToString = ReVIEW.nodeToString;
+import nodeContentToString = ReVIEW.nodeContentToString;
 import findChapter = ReVIEW.findChapter;
 
 	/**
@@ -281,7 +281,7 @@ import findChapter = ReVIEW.findChapter;
 			}
 			process.addSymbol({
 				symbolName: node.name,
-				referenceTo: this.constructReferenceTo(process, node, nodeToString(process, node)),
+				referenceTo: this.constructReferenceTo(process, node, nodeContentToString(process, node)),
 				node: node
 			});
 		}
@@ -292,7 +292,7 @@ import findChapter = ReVIEW.findChapter;
 			}
 			process.addSymbol({
 				symbolName: node.name,
-				referenceTo: this.constructReferenceTo(process, node, nodeToString(process, node)),
+				referenceTo: this.constructReferenceTo(process, node, nodeContentToString(process, node)),
 				node: node
 			});
 		}
