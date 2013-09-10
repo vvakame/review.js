@@ -86,7 +86,7 @@ var template = {
 
 var options =
 {
-	cache: false,
+	cache: true,
 	output: "source",
 	optimize: "speed",
 	plugins: [overrideAction],
