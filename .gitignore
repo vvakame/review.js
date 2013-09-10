@@ -3,6 +3,7 @@
 
 # for npm
 node_modules/
+reviewjs-*.tgz
 
 # for grunt
 bower_components/
