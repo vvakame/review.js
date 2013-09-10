@@ -1,6 +1,7 @@
 module.exports = function (grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
+		bwr: grunt.file.readJSON('bower.json'),
 		// Java用プロジェクト構成向け設定
 		opt: {
 			"tsMain": "src/main/typescript",
@@ -8,6 +9,7 @@ module.exports = function (grunt) {
 			"tsTest": "src/test/typescript",
 			"tsTestLib": "src/test/typescript/libs",
 			"peg": "src/main/peg",
+			"res": "src/main/resources",
 			"jsLib": "bin/lib",
 
 			"outBase": "bin",
@@ -167,6 +169,7 @@ module.exports = function (grunt) {
 			},
 			dev: {
 				src: [
+					'<%= opt.res %>/exec-header',
 					'<%= opt.peg %>/grammer.js',
 					'<%= opt.jsMainOut %>/*.js'
 				],
@@ -174,7 +177,7 @@ module.exports = function (grunt) {
 			}
 		},
 		uglify: {
-			prod: {
+			browser: {
 				options: {
 					report: 'gzip',
 					// 変数名の圧縮類は作業コストが大きすぎるのでやらない
@@ -183,6 +186,7 @@ module.exports = function (grunt) {
 				},
 				files: {
 					'<%= opt.outBase %>/review.min.js': [
+						'<%= opt.jsLib %>/i18next-<%= bwr.dependencies.i18next %>.js',
 						'<%= opt.peg %>/grammer.js',
 						'<%= opt.jsMainOut %>/*.js'
 					]
@@ -219,8 +223,6 @@ module.exports = function (grunt) {
 					'<%= opt.jsTestOut %>/*.js',
 					'<%= opt.jsTestOut %>/*.js.map',
 					'<%= opt.jsTestOut %>/*.d.ts',
-					// minified
-					'<%= opt.outBase %>/*.js',
 					// peg.js
 					'<%= opt.peg %>/grammer.js'
 				]
@@ -305,7 +307,7 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'default',
 		"必要なコンパイルを行い画面表示できるようにする。",
-		['clean:clientScript', 'typescript:main', 'tslint', 'exec:pegjs', 'concat:dev', 'uglify:prod']);
+		['clean:clientScript', 'typescript:main', 'tslint', 'exec:pegjs', 'concat:dev', 'uglify:browser']);
 
 	grunt.registerTask(
 		'test-preprocess',

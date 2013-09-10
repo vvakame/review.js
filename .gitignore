@@ -3,6 +3,7 @@
 
 # for npm
 node_modules/
+reviewjs-*.tgz
 
 # for grunt
 bower_components/
@@ -16,4 +17,4 @@ src/test/typescript/*.d.ts
 src/main/peg/*.js
 test-results.xml
 
-bin/
+bin/out/

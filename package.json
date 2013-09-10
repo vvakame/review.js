@@ -1,18 +1,46 @@
 {
-	"name": "review.js",
+	"name": "reviewjs",
+	"author": "vvakame",
+
+	"private": true,
+
 	"version": "0.1.0",
-	"engines": {
-		"node": "0.10.15",
-		"npm": "1.3.5"
+	"description": "ReVIEW implementation by JavaScript",
+
+	"main": "./bin/review.js",
+	"bin": {
+		"reviewjs": "./bin/review.js"
 	},
+	"scripts": {
+		"build": "grunt default",
+		"test": "grunt test"
+	},
+	"keywords": [
+		"ReVIEW"
+	],
+
+	"homepage": "https://github.com/vvakame/review.js",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:vvakame/review.js.git"
+	},
+	"bugs": {
+		"url": "https://github.com/vvakame/review.js/issues"
+	},
+
+	"engines": {
+		"node": ">= 0.10.0"
+	},
+
 	"dependencies": {
-		"pegjs": "git://github.com/dmajda/pegjs.git#5312e124cde69d328d6de86809fd68d1a6b1399e",
 		"commander": "2.0.0",
 		"i18next": "1.6.8",
 		"colors": "0.6.2"
 	},
 	"devDependencies": {
 		"grunt": "0.4.1",
+
+		"pegjs": "git://github.com/dmajda/pegjs.git#5312e124cde69d328d6de86809fd68d1a6b1399e",
 
 		"tsd": "0.3.1",
 
