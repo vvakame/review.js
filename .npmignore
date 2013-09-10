@@ -13,6 +13,7 @@ bower-task/
 d.ts/
 
 # codes
+bin/out/
 src/
 util/
 example/

@@ -219,8 +219,6 @@ module.exports = function (grunt) {
 					'<%= opt.jsTestOut %>/*.js',
 					'<%= opt.jsTestOut %>/*.js.map',
 					'<%= opt.jsTestOut %>/*.d.ts',
-					// minified
-					'<%= opt.outBase %>/*.js',
 					// peg.js
 					'<%= opt.peg %>/grammer.js'
 				]
