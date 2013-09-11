@@ -4272,10 +4272,6 @@ var ReVIEW;
         var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
         var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
-        var flatten = ReVIEW.flatten;
-        var nodeContentToString = ReVIEW.nodeContentToString;
-        var findChapter = ReVIEW.findChapter;
-
         var AnalyzerError = (function () {
             function AnalyzerError(message) {
                 this.message = message;
@@ -4323,7 +4319,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.resolveSymbolAndReference = function (book) {
-                var symbols = flatten(book.parts.map(function (part) {
+                var symbols = ReVIEW.flatten(book.parts.map(function (part) {
                     return part.chapters.map(function (chapter) {
                         return chapter.process.symbols;
                     });
@@ -4496,7 +4492,7 @@ var ReVIEW;
                 }
                 process.addSymbol({
                     symbolName: node.name,
-                    referenceTo: this.constructReferenceTo(process, node, nodeContentToString(process, node)),
+                    referenceTo: this.constructReferenceTo(process, node, ReVIEW.nodeContentToString(process, node)),
                     node: node
                 });
             };
@@ -4507,58 +4503,26 @@ var ReVIEW;
                 }
                 process.addSymbol({
                     symbolName: node.name,
-                    referenceTo: this.constructReferenceTo(process, node, nodeContentToString(process, node)),
+                    referenceTo: this.constructReferenceTo(process, node, ReVIEW.nodeContentToString(process, node)),
                     node: node
                 });
             };
             return DefaultAnalyzer;
         })();
         Build.DefaultAnalyzer = DefaultAnalyzer;
-
-        var DefaultValidator = (function () {
-            function DefaultValidator() {
-            }
-            DefaultValidator.prototype.init = function (book, builders) {
-                this.checkBook(book);
-            };
-
-            DefaultValidator.prototype.checkBook = function (book) {
-                var _this = this;
-                book.parts.forEach(function (part) {
-                    return _this.checkPart(part);
-                });
-            };
-
-            DefaultValidator.prototype.checkPart = function (part) {
-                var _this = this;
-                part.chapters.forEach(function (chapter) {
-                    return _this.checkChapter(chapter);
-                });
-            };
-
-            DefaultValidator.prototype.checkChapter = function (chapter) {
-                ReVIEW.visit(chapter.root, {
-                    visitDefaultPre: function (node) {
-                    },
-                    visitChapterPre: function (node) {
-                        if (node.level === 1) {
-                            if (!findChapter(node)) {
-                                chapter.process.error(t("compile.chapter_not_toplevel"), node);
-                            }
-                        } else {
-                            var parent = findChapter(node.parentNode);
-                            if (!parent) {
-                                chapter.process.error(t("compile.chapter_topleve_eq1"), node);
-                            } else if (parent.level !== node.level - 1) {
-                                chapter.process.error(t("compile.chapter_level_omission", node.level, node.level - 1, parent ? String(parent.level) : "none"), node);
-                            }
-                        }
-                    }
-                });
-            };
-            return DefaultValidator;
-        })();
-        Build.DefaultValidator = DefaultValidator;
+    })(ReVIEW.Build || (ReVIEW.Build = {}));
+    var Build = ReVIEW.Build;
+})(ReVIEW || (ReVIEW = {}));
+var ReVIEW;
+(function (ReVIEW) {
+    (function (Build) {
+        var SyntaxTree = ReVIEW.Parse.SyntaxTree;
+        var NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
+        var BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+        var InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
+        var HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+        var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
+        var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
         var DefaultBuilder = (function () {
             function DefaultBuilder() {
@@ -4643,7 +4607,7 @@ var ReVIEW;
 
                 func = this["block_" + name + "_pre"];
                 if (typeof func !== "function") {
-                    throw new AnalyzerError("block_" + name + "_pre or block_" + name + " is not Function");
+                    throw new Build.AnalyzerError("block_" + name + "_pre or block_" + name + " is not Function");
                 }
                 return func.call(this, process, node);
             };
@@ -4657,7 +4621,7 @@ var ReVIEW;
 
                 func = this["block_" + name + "_post"];
                 if (typeof func !== "function") {
-                    throw new AnalyzerError("block_" + name + "_post is not Function");
+                    throw new Build.AnalyzerError("block_" + name + "_post is not Function");
                 }
                 return func.call(this, process, node);
             };
@@ -4671,7 +4635,7 @@ var ReVIEW;
 
                 func = this["inline_" + name + "_pre"];
                 if (typeof func !== "function") {
-                    throw new AnalyzerError("inline_" + name + "_pre or inline_" + name + " is not Function");
+                    throw new Build.AnalyzerError("inline_" + name + "_pre or inline_" + name + " is not Function");
                 }
                 return func.call(this, process, node);
             };
@@ -4685,7 +4649,7 @@ var ReVIEW;
 
                 func = this["inline_" + name + "_post"];
                 if (typeof func !== "function") {
-                    throw new AnalyzerError("inline_" + name + "_post is not Function");
+                    throw new Build.AnalyzerError("inline_" + name + "_post is not Function");
                 }
                 return func.call(this, process, node);
             };
@@ -4695,7 +4659,7 @@ var ReVIEW;
                     return symbol.node === node;
                 });
                 if (founds.length !== 1) {
-                    throw new AnalyzerError("invalid status.");
+                    throw new Build.AnalyzerError("invalid status.");
                 }
                 return founds[0];
             };
@@ -5790,6 +5754,61 @@ var ReVIEW;
         return Controller;
     })();
     ReVIEW.Controller = Controller;
+})(ReVIEW || (ReVIEW = {}));
+var ReVIEW;
+(function (ReVIEW) {
+    (function (Build) {
+        var t = ReVIEW.i18n.t;
+
+        var SyntaxTree = ReVIEW.Parse.SyntaxTree;
+        var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+
+        var DefaultValidator = (function () {
+            function DefaultValidator() {
+            }
+            DefaultValidator.prototype.init = function (book, builders) {
+                this.checkBook(book);
+            };
+
+            DefaultValidator.prototype.checkBook = function (book) {
+                var _this = this;
+                book.parts.forEach(function (part) {
+                    return _this.checkPart(part);
+                });
+            };
+
+            DefaultValidator.prototype.checkPart = function (part) {
+                var _this = this;
+                part.chapters.forEach(function (chapter) {
+                    return _this.checkChapter(chapter);
+                });
+            };
+
+            DefaultValidator.prototype.checkChapter = function (chapter) {
+                ReVIEW.visit(chapter.root, {
+                    visitDefaultPre: function (node) {
+                    },
+                    visitChapterPre: function (node) {
+                        if (node.level === 1) {
+                            if (!ReVIEW.findChapter(node)) {
+                                chapter.process.error(t("compile.chapter_not_toplevel"), node);
+                            }
+                        } else {
+                            var parent = ReVIEW.findChapter(node.parentNode);
+                            if (!parent) {
+                                chapter.process.error(t("compile.chapter_topleve_eq1"), node);
+                            } else if (parent.level !== node.level - 1) {
+                                chapter.process.error(t("compile.chapter_level_omission", node.level, node.level - 1, parent ? String(parent.level) : "none"), node);
+                            }
+                        }
+                    }
+                });
+            };
+            return DefaultValidator;
+        })();
+        Build.DefaultValidator = DefaultValidator;
+    })(ReVIEW.Build || (ReVIEW.Build = {}));
+    var Build = ReVIEW.Build;
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {

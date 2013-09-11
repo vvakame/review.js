@@ -6,6 +6,9 @@
 ///<reference path='Model.ts' />
 ///<reference path='Parser.ts' />
 ///<reference path='Controller.ts' />
+///<reference path='Analyzer.ts' />
+///<reference path='Validator.ts' />
+///<reference path='Builder.ts' />
 ///<reference path='builder/TextBuilder.ts' />
 ///<reference path='builder/HtmlBuilder.ts' />
 
