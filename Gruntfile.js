@@ -169,7 +169,6 @@ module.exports = function (grunt) {
 			},
 			dev: {
 				src: [
-					'<%= opt.res %>/exec-header',
 					'<%= opt.peg %>/grammer.js',
 					'<%= opt.jsMainOut %>/*.js'
 				],
