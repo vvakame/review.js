@@ -1,9 +1,13 @@
-///<reference path='Model.ts' />
+///<reference path='../model/CompilerModel.ts' />
 ///<reference path='Parser.ts' />
 
 module ReVIEW {
 
-	// ここまでに Parser.ts の内容が実行完了していないとエラーになる
+	export module Parse {
+		// Parser.ts との読み込み順序の関係で undefined を参照するエラーを避ける
+		void 0;
+	}
+
 import SyntaxTree = ReVIEW.Parse.SyntaxTree;
 import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
 import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
@@ -99,7 +103,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 	}
 
 	function visitSub(parent:SyntaxTree, ast:SyntaxTree, v:ITreeVisitor) {
-		if (ast instanceof BlockElementSyntaxTree) {
+		if (ast instanceof ReVIEW.Parse.BlockElementSyntaxTree) {
 			var block = ast.toBlockElement();
 			var ret = v.visitBlockElementPre(block, parent);
 			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
@@ -113,7 +117,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 				ret(v);
 			}
 			v.visitBlockElementPost(block, parent);
-		} else if (ast instanceof InlineElementSyntaxTree) {
+		} else if (ast instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
 			var inline = ast.toInlineElement();
 			var ret = v.visitInlineElementPre(inline, parent);
 			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
@@ -124,14 +128,14 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 				ret(v);
 			}
 			v.visitInlineElementPost(inline, parent);
-		} else if (ast instanceof ArgumentSyntaxTree) {
+		} else if (ast instanceof ReVIEW.Parse.ArgumentSyntaxTree) {
 			var arg = ast.toArgument();
 			var ret = v.visitArgumentPre(arg, parent);
 			if (typeof ret === "function") {
 				ret(v);
 			}
 			v.visitArgumentPost(arg, parent);
-		} else if (ast instanceof ChapterSyntaxTree) {
+		} else if (ast instanceof ReVIEW.Parse.ChapterSyntaxTree) {
 			var chap = ast.toChapter();
 			var ret = v.visitChapterPre(chap, parent);
 			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
@@ -148,7 +152,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 				ret(v);
 			}
 			v.visitChapterPost(chap, parent);
-		} else if (ast instanceof HeadlineSyntaxTree) {
+		} else if (ast instanceof ReVIEW.Parse.HeadlineSyntaxTree) {
 			var head = ast.toHeadline();
 			var ret = v.visitHeadlinePre(head, parent);
 			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
@@ -159,7 +163,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 				ret(v);
 			}
 			v.visitHeadlinePost(head, parent);
-		} else if (ast instanceof UlistElementSyntaxTree) {
+		} else if (ast instanceof ReVIEW.Parse.UlistElementSyntaxTree) {
 			var ul = ast.toUlist();
 			var ret = v.visitUlistPre(ul, parent);
 			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
@@ -171,7 +175,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 				ret(v);
 			}
 			v.visitUlistPost(ul, parent);
-		} else if (ast instanceof OlistElementSyntaxTree) {
+		} else if (ast instanceof ReVIEW.Parse.OlistElementSyntaxTree) {
 			var ol = ast.toOlist();
 			var ret = v.visitOlistPre(ol, parent);
 			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
@@ -180,7 +184,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 				ret(v);
 			}
 			v.visitOlistPost(ol, parent);
-		} else if (ast instanceof DlistElementSyntaxTree) {
+		} else if (ast instanceof ReVIEW.Parse.DlistElementSyntaxTree) {
 			var dl = ast.toDlist();
 			var ret = v.visitDlistPre(dl, parent);
 			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
@@ -190,7 +194,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 				ret(v);
 			}
 			v.visitDlistPost(dl, parent);
-		} else if (ast instanceof NodeSyntaxTree) {
+		} else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree) {
 			var node = ast.toNode();
 			var ret = v.visitNodePre(node, parent);
 			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
@@ -201,7 +205,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 				ret(v);
 			}
 			v.visitNodePost(node, parent);
-		} else if (ast instanceof TextNodeSyntaxTree) {
+		} else if (ast instanceof ReVIEW.Parse.TextNodeSyntaxTree) {
 			var text = ast.toTextNode();
 			var ret = v.visitTextPre(text, parent);
 			if (typeof ret === "function") {

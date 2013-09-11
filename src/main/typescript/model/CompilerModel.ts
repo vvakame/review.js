@@ -1,5 +1,7 @@
-///<reference path='Parser.ts' />
-///<reference path='Builder.ts' />
+///<reference path='../parser/Parser.ts' />
+///<reference path='../builder/Builder.ts' />
+
+// parser/ と builder/ で共用するモデル
 
 module ReVIEW {
 

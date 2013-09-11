@@ -1,6 +1,6 @@
-///<reference path='libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
+///<reference path='../libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
 
-///<reference path='../../main/typescript/Walker.ts' />
+///<reference path='../../../main/typescript/parser/Walker.ts' />
 
 "use strict";
 

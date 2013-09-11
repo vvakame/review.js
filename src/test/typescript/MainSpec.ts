@@ -1,9 +1,8 @@
 ///<reference path='libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
 
-///<reference path='i18nSpec.ts' />
-///<reference path='IgniteSpec.ts' />
-///<reference path='ParserSpec.ts' />
-///<reference path='WalkerSpec.ts' />
-///<reference path='ControllerSpec.ts' />
-///<reference path='BuilderSpec.ts' />
+///<reference path='i18n/i18nSpec.ts' />
+///<reference path='parser/ParserSpec.ts' />
+///<reference path='parser/WalkerSpec.ts' />
+///<reference path='controller/ControllerSpec.ts' />
+///<reference path='builder/BuilderSpec.ts' />
 ///<reference path='UnsolvedIssueSpec.ts' />

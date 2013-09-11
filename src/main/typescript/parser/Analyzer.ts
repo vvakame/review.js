@@ -1,5 +1,5 @@
-///<reference path='i18n.ts' />
-///<reference path='Model.ts' />
+///<reference path='../i18n/i18n.ts' />
+///<reference path='../model/CompilerModel.ts' />
 
 module ReVIEW.Build {
 

@@ -1,8 +1,8 @@
-///<reference path='libs/custom-colors.d.ts' />
+///<reference path='../libs/custom-colors.d.ts' />
 
-///<reference path='Utils.ts' />
-///<reference path='Model.ts' />
-///<reference path='Parser.ts' />
+///<reference path='../utils/Utils.ts' />
+///<reference path='../model/CompilerModel.ts' />
+///<reference path='../parser/Parser.ts' />
 
 module ReVIEW {
 

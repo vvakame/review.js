@@ -1,10 +1,10 @@
-///<reference path='libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
-///<reference path='../../main/typescript/libs/DefinitelyTyped/node/node.d.ts' />
+///<reference path='../libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
+///<reference path='../../../main/typescript/libs/DefinitelyTyped/node/node.d.ts' />
 
-///<reference path='../../main/typescript/libs/peg.js.d.ts' />
+///<reference path='../../../main/typescript/libs/peg.js.d.ts' />
 
-///<reference path='../../main/typescript/Utils.ts' />
-///<reference path='../../main/typescript/Ignite.ts' />
+///<reference path='../../../main/typescript/utils/Utils.ts' />
+///<reference path='../../../main/typescript/Ignite.ts' />
 
 "use strict";
 

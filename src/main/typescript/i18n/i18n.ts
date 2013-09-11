@@ -1,8 +1,8 @@
-///<reference path='libs/DefinitelyTyped/i18next/i18next.d.ts' />
+///<reference path='../libs/DefinitelyTyped/i18next/i18next.d.ts' />
 
-///<reference path='Utils.ts' />
-///<reference path='i18n/ja.ts' />
-///<reference path='i18n/en.ts' />
+///<reference path='../utils/Utils.ts' />
+///<reference path='ja.ts' />
+///<reference path='en.ts' />
 
 /**
  * 国際化対応のためのモジュール。デフォルトでは日本語。

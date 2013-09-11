@@ -1,6 +1,6 @@
-///<reference path='../Utils.ts' />
-///<reference path='../Builder.ts' />
-///<reference path='../i18n.ts' />
+///<reference path='../utils/Utils.ts' />
+///<reference path='Builder.ts' />
+///<reference path='../i18n/i18n.ts' />
 
 module ReVIEW.Build {
 

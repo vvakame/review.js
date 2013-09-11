@@ -1,7 +1,7 @@
-///<reference path='libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
+///<reference path='../libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
 
-///<reference path='../../main/typescript/Builder.ts' />
-///<reference path='../../main/typescript/builder/TextBuilder.ts' />
+///<reference path='../../../main/typescript/builder/Builder.ts' />
+///<reference path='../../../main/typescript/builder/TextBuilder.ts' />
 
 describe("ReVIEW.Buildの", ()=> {
 	it("処理が正しく動くこと", ()=> {

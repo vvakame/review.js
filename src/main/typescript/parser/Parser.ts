@@ -1,6 +1,6 @@
-///<reference path='libs/peg.js.d.ts' />
+///<reference path='../libs/peg.js.d.ts' />
 
-///<reference path='Model.ts' />
+///<reference path='../model/CompilerModel.ts' />
 ///<reference path='Walker.ts' />
 
 /**

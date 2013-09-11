@@ -1,7 +1,7 @@
-///<reference path='Utils.ts' />
-///<reference path='i18n.ts' />
-///<reference path='Model.ts' />
-///<reference path='Analyzer.ts' />
+///<reference path='../utils/Utils.ts' />
+///<reference path='../i18n/i18n.ts' />
+///<reference path='../model/CompilerModel.ts' />
+///<reference path='../parser/Analyzer.ts' />
 
 module ReVIEW.Build {
 

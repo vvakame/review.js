@@ -1,6 +1,6 @@
-///<reference path='libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
+///<reference path='../libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
 
-///<reference path='../../main/typescript/i18n.ts' />
+///<reference path='../../../main/typescript/i18n/i18n.ts' />
 
 describe("ReVIEW.i18nの", ()=> {
 	it("tで正しく文字列が取れること", ()=> {
