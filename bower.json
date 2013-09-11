@@ -1,6 +1,21 @@
 {
-	"name": "jscket",
+	"name": "reviewjs",
 	"version": "0.1.0",
+
+	"main": ["./bin/review.js"],
+	"private": true,
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"bower-task",
+		"d.ts",
+		"bin/out",
+		"src",
+		"util",
+		"example"
+	],
+
 	"dependencies": {
 		"i18next": "1.6.3"
 	},
