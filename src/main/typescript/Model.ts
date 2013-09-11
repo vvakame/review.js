@@ -4,37 +4,29 @@
 module ReVIEW {
 
 	/**
-	 * コマンドライン引数を解釈した結果のオプション。
+	 * 参照先についての情報。
 	 */
-	export interface IOptions {
-		reviewfile?:string;
-		base?:string;
+	export interface IReferenceTo {
+		part?:Part;
+		partName:string;
+		chapter?:Chapter;
+		chapterName:string;
+		targetSymbol:string;
+		label:string;
+		// 上記情報から解決した結果のNode
+		referenceNode?:ReVIEW.Parse.SyntaxTree;
 	}
 
 	/**
-	 * コンパイル実行時の設定。
-	 * 本についての情報や処理実行時のプログラムの差し替え。
+	 * シンボルについての情報。
 	 */
-	export interface IConfig {
-		// TODO めんどくさくてまだ書いてない要素がたくさんある
-
-		read?:(path:string)=>string;
-		write?:(path:string, data:string)=>void;
-
-		outputReport?:(reports:ReVIEW.ProcessReport[])=>void;
-
-		compileSuccess?:()=>void;
-		compileFailed?:()=>void;
-
-		analyzer:Build.IAnalyzer;
-		validators:Build.IValidator[];
-		builders:Build.IBuilder[];
-
-		book:{
-			preface?:string[];
-			chapters:string[];
-			afterword?:string[];
-		};
+	export interface ISymbol {
+		part?:Part;
+		chapter?:Chapter;
+		symbolName:string;
+		labelName?:string;
+		referenceTo?:IReferenceTo;
+		node:ReVIEW.Parse.SyntaxTree;
 	}
 
 	/**
@@ -161,32 +153,6 @@ module ReVIEW {
 		get symbols():ISymbol[] {
 			return this.base.symbols;
 		}
-	}
-
-	/**
-	 * シンボルについての情報。
-	 */
-	export interface ISymbol {
-		part?:Part;
-		chapter?:Chapter;
-		symbolName:string;
-		labelName?:string;
-		referenceTo?:IReferenceTo;
-		node:ReVIEW.Parse.SyntaxTree;
-	}
-
-	/**
-	 * 参照先についての情報。
-	 */
-	export interface IReferenceTo {
-		part?:Part;
-		partName:string;
-		chapter?:Chapter;
-		chapterName:string;
-		targetSymbol:string;
-		label:string;
-		// 上記情報から解決した結果のNode
-		referenceNode?:ReVIEW.Parse.SyntaxTree;
 	}
 
 	/**

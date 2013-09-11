@@ -16,6 +16,40 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
 	/**
+	 * コマンドライン引数を解釈した結果のオプション。
+	 */
+	export interface IOptions {
+		reviewfile?:string;
+		base?:string;
+	}
+
+	/**
+	 * コンパイル実行時の設定。
+	 * 本についての情報や処理実行時のプログラムの差し替え。
+	 */
+	export interface IConfig {
+		// TODO めんどくさくてまだ書いてない要素がたくさんある
+
+		read?:(path:string)=>string;
+		write?:(path:string, data:string)=>void;
+
+		outputReport?:(reports:ReVIEW.ProcessReport[])=>void;
+
+		compileSuccess?:()=>void;
+		compileFailed?:()=>void;
+
+		analyzer:Build.IAnalyzer;
+		validators:Build.IValidator[];
+		builders:Build.IBuilder[];
+
+		book:{
+			preface?:string[];
+			chapters:string[];
+			afterword?:string[];
+		};
+	}
+
+	/**
 	 * ReVIEW文書を処理するためのコントローラ。
 	 * 処理の起点。
 	 */
