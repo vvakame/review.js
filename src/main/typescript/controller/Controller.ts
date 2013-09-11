@@ -89,15 +89,18 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		 * @returns {Book}
 		 */
 			process():Book {
+			var acceptableSyntaxes = this.config.analyzer.getAcceptableSyntaxes();
+
 			var book = this.processBook();
-			this.config.analyzer.init(book);
 			this.config.validators.forEach((validator)=> {
-				validator.init(book, this.config.builders);
+				validator.start(book, acceptableSyntaxes, this.config.builders);
 			});
 			if (book.reports.some(report=>report.level === ReVIEW.ReportLevel.Error)) {
 				// エラーがあったら処理中断
 				return book;
 			}
+			// TODO 入力補完候補を得るにはここで acceptableSyntaxes を JSON.stringify する
+
 			this.config.builders.forEach((builder)=> {
 				builder.init(book);
 			});

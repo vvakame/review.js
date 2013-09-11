@@ -1,9 +1,12 @@
+///<reference path='../i18n/i18n.ts' />
 ///<reference path='../parser/Parser.ts' />
 ///<reference path='../builder/Builder.ts' />
 
 // parser/ と builder/ で共用するモデル
 
 module ReVIEW {
+
+import t = ReVIEW.i18n.t;
 
 	/**
 	 * 参照先についての情報。
@@ -111,6 +114,43 @@ module ReVIEW {
 				}
 			});
 			return result;
+		}
+
+		constructReferenceTo(node:ReVIEW.Parse.InlineElementSyntaxTree, value:string, targetSymbol?:string, separator?:string):IReferenceTo;
+
+		constructReferenceTo(node:ReVIEW.Parse.BlockElementSyntaxTree, value:string, targetSymbol:string, separator?:string):IReferenceTo;
+
+		constructReferenceTo(node, value:string, targetSymbol = node.name, separator = "|"):IReferenceTo {
+			var splitted = value.split(separator);
+			if (splitted.length === 3) {
+				return {
+					partName: splitted[0],
+					chapterName: splitted[1],
+					targetSymbol: targetSymbol,
+					label: splitted[2]
+				};
+			} else if (splitted.length === 2) {
+				return {
+					part: this.part,
+					partName: this.part.name,
+					chapterName: splitted[0],
+					targetSymbol: targetSymbol,
+					label: splitted[1]
+				};
+			} else if (splitted.length === 1) {
+				return {
+					part: this.part,
+					partName: this.part.name,
+					chapter: this.chapter,
+					chapterName: this.chapter.name,
+					targetSymbol: targetSymbol,
+					label: splitted[0]
+				};
+			} else {
+				var message = t("compile.args_length_mismatch", "1 or 2 or 3", splitted.length);
+				this.error(message, node);
+				return null;
+			}
 		}
 
 		addAfterProcess(func:Function) {

@@ -1,5 +1,6 @@
 ///<reference path='../i18n/i18n.ts' />
 ///<reference path='../model/CompilerModel.ts' />
+///<reference path='Analyzer.ts' />
 
 module ReVIEW.Build {
 
@@ -13,13 +14,19 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 	 * また、Builderと対比させて、未実装の候補がないかをチェックする。
 	 */
 	export interface IValidator {
-		init(book:Book, builders:IBuilder[]);
+		start(book:Book, acceptableSyntaxes:AcceptableSyntaxes, builders:IBuilder[]);
 	}
 
 	export class DefaultValidator implements IValidator {
+		acceptableSyntaxes:AcceptableSyntaxes;
+		builders:IBuilder[];
 
-		init(book:Book, builders:IBuilder[]) {
+		start(book:Book, acceptableSyntaxes:AcceptableSyntaxes, builders:IBuilder[]) {
+			this.acceptableSyntaxes = acceptableSyntaxes;
+			this.builders = builders;
+
 			this.checkBook(book);
+			this.resolveSymbolAndReference(book);
 		}
 
 		checkBook(book:Book) {
@@ -31,6 +38,22 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		}
 
 		checkChapter(chapter:Chapter) {
+			// Analyzer 内で生成した構文規則に基づき処理
+			var visitFunc = (node:SyntaxTree) => {
+				var results = this.acceptableSyntaxes.find(node);
+				if (results.length !== 1) {
+					chapter.process.error(t("compile.syntax_definietion_error"), node);
+				}
+				results[0].process(chapter.process, node);
+			};
+			ReVIEW.visit(chapter.root, {
+				visitDefaultPre: (node:SyntaxTree)=> {
+				},
+				visitHeadlinePre: visitFunc,
+				visitBlockElementPre: visitFunc,
+				visitInlineElementPre: visitFunc
+			});
+
 			// 章の下に項がいきなり来ていないか(節のレベルを飛ばしている)
 			// 最初は必ず Level 1, 1以外の場合は1つ上のChapterとのレベル差が1でなければならない
 			ReVIEW.visit(chapter.root, {
@@ -51,6 +74,70 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 						}
 					}
 				}
+			});
+		}
+
+		resolveSymbolAndReference(book:Book) {
+			// symbols の解決
+			// Arrayにflatten がなくて悲しい reduce だと長い…
+			var symbols:ISymbol[] = flatten(book.parts.map(part=>part.chapters.map(chapter=>chapter.process.symbols)));
+			symbols.forEach(symbol=> {
+				// referenceToのpartやchapterの解決
+				var referenceTo = symbol.referenceTo;
+				if (!referenceTo) {
+					return;
+				}
+				if (!referenceTo.part) {
+					book.parts.forEach(part=> {
+						if (referenceTo.partName === part.name) {
+							referenceTo.part = part;
+						}
+					});
+				}
+				if (!referenceTo.part) {
+					symbol.chapter.process.error(t("compile.part_is_missing", symbol.part.name), symbol.node);
+					return;
+				}
+				if (!referenceTo.chapter) {
+					referenceTo.part.chapters.forEach(chap=> {
+						if (referenceTo.chapterName === chap.name) {
+							referenceTo.chapter = chap;
+						}
+					});
+				}
+				if (!referenceTo.chapter) {
+					symbol.chapter.process.error(t("compile.chapter_is_missing", symbol.chapter.name), symbol.node);
+					return;
+				}
+			});
+			// referenceTo.node の解決
+			symbols.forEach(symbol=> {
+				if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
+					var reference = symbol.referenceTo;
+					symbols.forEach(symbol=> {
+						if (reference.part === symbol.part && reference.chapter === symbol.chapter && reference.targetSymbol === symbol.symbolName && reference.label === symbol.labelName) {
+							reference.referenceNode = symbol.node;
+						}
+					});
+					if (!reference.referenceNode) {
+						symbol.chapter.process.error(t("compile.reference_is_missing", reference.targetSymbol, reference.label), symbol.node);
+						return;
+					}
+				}
+			});
+			// 同一チャプター内に同一シンボル(listとか)で同一labelの要素がないかチェック
+			symbols.forEach(symbol1=> {
+				symbols.forEach(symbol2=> {
+					if (symbol1 === symbol2) {
+						return;
+					}
+					if (symbol1.chapter === symbol2.chapter && symbol1.symbolName === symbol2.symbolName) {
+						if (symbol1.labelName && symbol2.labelName && symbol1.labelName === symbol2.labelName) {
+							symbol1.chapter.process.error(t("compile.duplicated_label"), symbol1.node, symbol2.node);
+							return;
+						}
+					}
+				});
 			});
 		}
 	}
