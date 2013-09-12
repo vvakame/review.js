@@ -37,7 +37,7 @@ import flatten = ReVIEW.flatten;
 		write?:(path:string, data:string)=>void;
 
 		listener?:{
-			onAcceptables?:(acceptableSyntaxed:ReVIEW.Build.AcceptableSyntaxes)=>any;
+			onAcceptables?:(acceptableSyntaxes:ReVIEW.Build.AcceptableSyntaxes)=>any;
 			onSymbols?:(symbols:ReVIEW.ISymbol[])=>any;
 			onReports?:(reports:ReVIEW.ProcessReport[])=>any;
 

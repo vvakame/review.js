@@ -44,6 +44,10 @@
     HTMLへのコンパイル結果がここに出る。
 </pre>
 
+<pre id="hint">
+    ヒント！
+</pre>
+
 <script type="application/javascript">
     if (!window.ReVIEW) {
         var $child = $("<div>").appendTo($("#info"));
@@ -79,6 +83,37 @@
                 },
 
                 listener: {
+                    onAcceptables: function (syntaxes) {
+                        var $hint = $("#hint").empty();
+                        var text = "サポートしている構文\n";
+                        syntaxes.acceptableSyntaxes.forEach(function (acceptable) {
+                            var SyntaxType = ReVIEW.Build.SyntaxType;
+                            switch (acceptable.type) {
+                                case SyntaxType.Other:
+                                    switch (acceptable.symbolName) {
+                                        case "headline":
+                                            text += "={???} タイトル\n";
+                                            break;
+                                    }
+                                    break;
+                                case SyntaxType.Inline:
+                                    text += "@<" + acceptable.symbolName + ">{}\n";
+                                    break;
+                                case SyntaxType.Block:
+                                    acceptable.argsLength.forEach(function (len) {
+                                        text += "//" + acceptable.symbolName;
+                                        for (var i = 0; i < len; i++) {
+                                            text += "[???]";
+                                        }
+                                        text += "\n";
+                                    });
+                                    break;
+                            }
+                            text += acceptable.description;
+                            text += "\n\n";
+                        });
+                        $hint.text(text);
+                    },
                     onReports: function (reports) {
                         outputReports(reports);
                     },
