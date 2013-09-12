@@ -72,6 +72,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		toJSON():any {
 			// そのままJSON化するとAcceptableSyntax.typeの扱いに難儀すると思うので文字列に複合可能なデータを抱き合わせにする
 			return {
+				"rev": "1", // データフォーマットのリビジョン
 				"SyntaxType": SyntaxType,
 				"acceptableSyntaxes": this.acceptableSyntaxes
 			};

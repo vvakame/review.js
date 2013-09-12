@@ -4911,6 +4911,7 @@ var ReVIEW;
 
             AcceptableSyntaxes.prototype.toJSON = function () {
                 return {
+                    "rev": "1",
                     "SyntaxType": SyntaxType,
                     "acceptableSyntaxes": this.acceptableSyntaxes
                 };
