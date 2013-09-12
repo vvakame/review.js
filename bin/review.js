@@ -5585,6 +5585,8 @@ var ReVIEW;
     var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
     var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
+    var flatten = ReVIEW.flatten;
+
     var Controller = (function () {
         function Controller(options) {
             if (typeof options === "undefined") { options = {}; }
@@ -5612,6 +5614,12 @@ var ReVIEW;
             var _this = this;
             var acceptableSyntaxes = this.config.analyzer.getAcceptableSyntaxes();
 
+            if (this.config.listener && this.config.listener.onAcceptables) {
+                if (this.config.listener.onAcceptables(acceptableSyntaxes) === false) {
+                    return null;
+                }
+            }
+
             var book = this.processBook();
             this.config.validators.forEach(function (validator) {
                 validator.start(book, acceptableSyntaxes, _this.config.builders);
@@ -5619,12 +5627,29 @@ var ReVIEW;
             if (book.reports.some(function (report) {
                 return report.level === ReVIEW.ReportLevel.Error;
             })) {
+                this.outputReport(book.reports);
                 return book;
+            }
+
+            if (this.config.listener && this.config.listener.onSymbols) {
+                var symbols = flatten(book.parts.map(function (part) {
+                    return part.chapters.map(function (chapter) {
+                        return chapter.process.symbols;
+                    });
+                }));
+                if (this.config.listener.onSymbols(symbols) === false) {
+                    return null;
+                }
             }
 
             this.config.builders.forEach(function (builder) {
                 builder.init(book);
             });
+
+            this.outputReport(book.reports);
+
+            this.compileFinished(book);
+
             return book;
         };
 
@@ -6180,10 +6205,7 @@ var ReVIEW;
         var controller = new ReVIEW.Controller(options);
 
         setup(controller);
-        var book = controller.process();
-        controller.outputReport(book.reports);
-        controller.compileFinished(book);
-        return book;
+        return controller.process();
     }
     ReVIEW.start = start;
 })(ReVIEW || (ReVIEW = {}));

@@ -16,6 +16,8 @@ import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
+import flatten = ReVIEW.flatten;
+
 	/**
 	 * コマンドライン引数を解釈した結果のオプション。
 	 */
@@ -96,19 +98,39 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			process():Book {
 			var acceptableSyntaxes = this.config.analyzer.getAcceptableSyntaxes();
 
+			if (this.config.listener && this.config.listener.onAcceptables) {
+				if (this.config.listener.onAcceptables(acceptableSyntaxes) === false) {
+					// false が帰ってきたら処理を中断する (undefined でも継続)
+					return null;
+				}
+			}
+
 			var book = this.processBook();
 			this.config.validators.forEach((validator)=> {
 				validator.start(book, acceptableSyntaxes, this.config.builders);
 			});
 			if (book.reports.some(report=>report.level === ReVIEW.ReportLevel.Error)) {
 				// エラーがあったら処理中断
+				this.outputReport(book.reports);
 				return book;
 			}
-			// TODO 入力補完候補を得るにはここで acceptableSyntaxes を JSON.stringify する
+
+			if (this.config.listener && this.config.listener.onSymbols) {
+				var symbols:ReVIEW.ISymbol[] = flatten(book.parts.map(part=>part.chapters.map(chapter=>chapter.process.symbols)));
+				if (this.config.listener.onSymbols(symbols) === false) {
+					// false が帰ってきたら処理を中断する (undefined でも継続)
+					return null;
+				}
+			}
 
 			this.config.builders.forEach((builder)=> {
 				builder.init(book);
 			});
+
+			this.outputReport(book.reports);
+
+			this.compileFinished(book);
+
 			return book;
 		}
 

@@ -30,10 +30,7 @@ module ReVIEW {
 		var controller = new Controller(options);
 		// setup 中で initConfig が呼び出される
 		setup(controller);
-		var book = controller.process();
-		controller.outputReport(book.reports);
-		controller.compileFinished(book);
-		return book;
+		return controller.process();
 	}
 }
 
