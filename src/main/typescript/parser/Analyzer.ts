@@ -26,7 +26,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 	 * Analyzer内で生成され実際にValidator内でSyntaxTreeの処理を行う処理。
 	 */
 	export interface IAnalyzeProcessor {
-		(process:Process, node:SyntaxTree):void;
+		(process:Process, node:SyntaxTree):any;
 	}
 
 	/**
