@@ -120,7 +120,7 @@ import t = ReVIEW.i18n.t;
 
 		constructReferenceTo(node:ReVIEW.Parse.BlockElementSyntaxTree, value:string, targetSymbol:string, separator?:string):IReferenceTo;
 
-		constructReferenceTo(node, value:string, targetSymbol = node.name, separator = "|"):IReferenceTo {
+		constructReferenceTo(node, value:string, targetSymbol = node.symbol, separator = "|"):IReferenceTo {
 			var splitted = value.split(separator);
 			if (splitted.length === 3) {
 				return {

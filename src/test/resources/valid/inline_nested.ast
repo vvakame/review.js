@@ -105,12 +105,12 @@
                                   ]
                                 }
                               ],
-                              "name": "in"
+                              "symbol": "in"
                             }
                           ]
                         }
                       ],
-                      "name": "out"
+                      "symbol": "out"
                     }
                   ]
                 }

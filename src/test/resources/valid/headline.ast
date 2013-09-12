@@ -165,7 +165,7 @@
             "column": 1,
             "endPos": 63,
             "level": 1,
-            "label": {
+            "cmd": {
               "ruleName": "BracketArg",
               "offset": 51,
               "line": 6,
@@ -207,7 +207,7 @@
             "column": 1,
             "endPos": 76,
             "level": 1,
-            "tag": {
+            "label": {
               "ruleName": "BraceArg",
               "offset": 64,
               "line": 7,
@@ -249,7 +249,7 @@
             "column": 1,
             "endPos": 95,
             "level": 1,
-            "label": {
+            "cmd": {
               "ruleName": "BracketArg",
               "offset": 77,
               "line": 8,
@@ -257,7 +257,7 @@
               "endPos": 83,
               "arg": "hoge"
             },
-            "tag": {
+            "label": {
               "ruleName": "BraceArg",
               "offset": 83,
               "line": 8,

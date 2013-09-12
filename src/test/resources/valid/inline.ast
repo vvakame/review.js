@@ -83,7 +83,7 @@
                           ]
                         }
                       ],
-                      "name": "kw"
+                      "symbol": "kw"
                     }
                   ]
                 }
@@ -136,7 +136,7 @@
                           ]
                         }
                       ],
-                      "name": "tti"
+                      "symbol": "tti"
                     },
                     {
                       "ruleName": "ContentText",
@@ -171,7 +171,7 @@
                           ]
                         }
                       ],
-                      "name": "tti"
+                      "symbol": "tti"
                     },
                     {
                       "ruleName": "ContentText",
@@ -206,7 +206,7 @@
                           ]
                         }
                       ],
-                      "name": "tti"
+                      "symbol": "tti"
                     },
                     {
                       "ruleName": "ContentText",

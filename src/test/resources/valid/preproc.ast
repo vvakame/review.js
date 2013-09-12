@@ -91,7 +91,7 @@
                           ]
                         }
                       ],
-                      "name": "list",
+                      "symbol": "list",
                       "args": [
                         {
                           "ruleName": "BracketArg",

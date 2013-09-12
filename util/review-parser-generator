@@ -114,8 +114,8 @@ var options =
 					offset: offset(),
 					endPos: peg$currPos,
 					level: level.length,
+					cmd: cmd,
 					label: label,
-					tag: tag,
 					caption: caption
 				};
 			},
@@ -132,7 +132,7 @@ var options =
 						column: column(),
 						offset: offset(),
 						endPos: peg$currPos,
-						name: name,
+						symbol: symbol,
 						args: args,
 						content: contents
 					};
@@ -143,7 +143,7 @@ var options =
 						column: column(),
 						offset: offset(),
 						endPos: peg$currPos,
-						name: name,
+						symbol: symbol,
 						args: args,
 						content: []
 					};
@@ -156,7 +156,7 @@ var options =
 					column: column(),
 					offset: offset(),
 					endPos: peg$currPos,
-					name: name,
+					symbol: symbol,
 					content: contents
 				};
 			},

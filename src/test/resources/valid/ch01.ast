@@ -83,7 +83,7 @@
                           ]
                         }
                       ],
-                      "name": "lead",
+                      "symbol": "lead",
                       "args": []
                     }
                   ]
@@ -277,7 +277,7 @@
                         "column": 1,
                         "endPos": 193,
                         "level": 4,
-                        "label": {
+                        "cmd": {
                           "ruleName": "BracketArg",
                           "offset": 175,
                           "line": 23,
@@ -732,7 +732,7 @@
                               ]
                             }
                           ],
-                          "name": "list",
+                          "symbol": "list",
                           "args": [
                             {
                               "ruleName": "BracketArg",
@@ -821,7 +821,7 @@
                               ]
                             }
                           ],
-                          "name": "emlist",
+                          "symbol": "emlist",
                           "args": []
                         }
                       ]
@@ -911,7 +911,7 @@
                           "column": 1,
                           "endPos": 652,
                           "childNodes": [],
-                          "name": "image",
+                          "symbol": "image",
                           "args": [
                             {
                               "ruleName": "BracketArg",
@@ -982,7 +982,7 @@
                               ]
                             }
                           ],
-                          "name": "href"
+                          "symbol": "href"
                         }
                       ]
                     }

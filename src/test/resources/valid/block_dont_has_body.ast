@@ -65,7 +65,7 @@
                       "column": 1,
                       "endPos": 34,
                       "childNodes": [],
-                      "name": "noindent",
+                      "symbol": "noindent",
                       "args": []
                     }
                   ]
@@ -93,7 +93,7 @@
                       "column": 1,
                       "endPos": 62,
                       "childNodes": [],
-                      "name": "footnote",
+                      "symbol": "footnote",
                       "args": [
                         {
                           "ruleName": "BracketArg",

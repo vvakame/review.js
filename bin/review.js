@@ -120,7 +120,7 @@ var PEG = (function() {
         peg$c9 = [],
         peg$c10 = "=",
         peg$c11 = "\"=\"",
-        peg$c12 = function(level, label, tag, caption) {
+        peg$c12 = function(level, cmd, label, caption) {
         				return {
         					syntax: "Headline",
         					line: line(),
@@ -128,8 +128,8 @@ var PEG = (function() {
         					offset: offset(),
         					endPos: peg$currPos,
         					level: level.length,
+        					cmd: cmd,
         					label: label,
-        					tag: tag,
         					caption: caption
         				};
         			},
@@ -218,26 +218,26 @@ var PEG = (function() {
         peg$c30 = "\"{\"",
         peg$c31 = "//}",
         peg$c32 = "\"//}\"",
-        peg$c33 = function(name, args, contents) {
+        peg$c33 = function(symbol, args, contents) {
         					return {
         						syntax: "BlockElement",
         						line: line(),
         						column: column(),
         						offset: offset(),
         						endPos: peg$currPos,
-        						name: name,
+        						symbol: symbol,
         						args: args,
         						content: contents
         					};
         				},
-        peg$c34 = function(name, args) {
+        peg$c34 = function(symbol, args) {
         					return {
         						syntax: "BlockElement",
         						line: line(),
         						column: column(),
         						offset: offset(),
         						endPos: peg$currPos,
-        						name: name,
+        						symbol: symbol,
         						args: args,
         						content: []
         					};
@@ -251,14 +251,14 @@ var PEG = (function() {
         peg$c41 = "\">\"",
         peg$c42 = "}",
         peg$c43 = "\"}\"",
-        peg$c44 = function(name, contents) {
+        peg$c44 = function(symbol, contents) {
         				return {
         					syntax: "InlineElement",
         					line: line(),
         					column: column(),
         					offset: offset(),
         					endPos: peg$currPos,
-        					name: name,
+        					symbol: symbol,
         					content: contents
         				};
         			},
@@ -4273,8 +4273,8 @@ var ReVIEW;
             var head = ast.toHeadline();
             var ret = v.visitHeadlinePre(head, parent);
             if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+                visitSub(ast, head.cmd, v);
                 visitSub(ast, head.label, v);
-                visitSub(ast, head.tag, v);
                 visitSub(ast, head.caption, v);
             } else if (typeof ret === "function") {
                 ret(v);
@@ -4746,11 +4746,11 @@ var ReVIEW;
                 _super.call(this, data);
 
                 this.level = this.checkNumber(data.level);
+                if (data.cmd !== "") {
+                    this.cmd = transform(this.checkObject(data.cmd)).toArgument();
+                }
                 if (data.label !== "") {
                     this.label = transform(this.checkObject(data.label)).toArgument();
-                }
-                if (data.tag !== "") {
-                    this.tag = transform(this.checkObject(data.tag)).toArgument();
                 }
                 this.caption = transform(this.checkObject(data.caption)).toNode();
             }
@@ -4762,7 +4762,7 @@ var ReVIEW;
             __extends(BlockElementSyntaxTree, _super);
             function BlockElementSyntaxTree(data) {
                 _super.call(this, data);
-                this.name = this.checkString(data.name);
+                this.symbol = this.checkString(data.symbol);
                 this.args = this.checkArray(data.args).map(function (data) {
                     return transform(data).toArgument();
                 });
@@ -4775,7 +4775,7 @@ var ReVIEW;
             __extends(InlineElementSyntaxTree, _super);
             function InlineElementSyntaxTree(data) {
                 _super.call(this, data);
-                this.name = this.checkString(data.name);
+                this.symbol = this.checkString(data.symbol);
             }
             return InlineElementSyntaxTree;
         })(NodeSyntaxTree);
@@ -4868,12 +4868,12 @@ var ReVIEW;
                 if (node instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
                     var inline = node.toInlineElement();
                     results = this.inlines.filter(function (s) {
-                        return s.symbolName === inline.name;
+                        return s.symbolName === inline.symbol;
                     });
                 } else if (node instanceof ReVIEW.Parse.BlockElementSyntaxTree) {
                     var block = node.toBlockElement();
                     results = this.blocks.filter(function (s) {
-                        return s.symbolName === block.name;
+                        return s.symbolName === block.symbol;
                     });
                 } else {
                     results = this.others.filter(function (s) {
@@ -5070,8 +5070,8 @@ var ReVIEW;
                 builder.processNode(function (process, n) {
                     var node = n.toHeadline();
                     var label = null;
-                    if (node.tag) {
-                        label = node.tag.arg;
+                    if (node.label) {
+                        label = node.label.arg;
                     } else if (node.caption.childNodes.length === 1) {
                         var textNode = node.caption.childNodes[0].toTextNode();
                         label = textNode.text;
@@ -5093,7 +5093,7 @@ var ReVIEW;
                     var node = n.toBlockElement();
                     node.no = process.nextIndex("list");
                     process.addSymbol({
-                        symbolName: node.name,
+                        symbolName: node.symbol,
                         labelName: node.args[0].arg,
                         node: node
                     });
@@ -5107,7 +5107,7 @@ var ReVIEW;
                 builder.processNode(function (process, n) {
                     var node = n.toInlineElement();
                     process.addSymbol({
-                        symbolName: node.name,
+                        symbolName: node.symbol,
                         referenceTo: process.constructReferenceTo(node, ReVIEW.nodeContentToString(process, node)),
                         node: node
                     });
@@ -5121,7 +5121,7 @@ var ReVIEW;
                 builder.processNode(function (process, n) {
                     var node = n.toInlineElement();
                     process.addSymbol({
-                        symbolName: node.name,
+                        symbolName: node.symbol,
                         referenceTo: process.constructReferenceTo(node, ReVIEW.nodeContentToString(process, node)),
                         node: node
                     });
@@ -5178,16 +5178,16 @@ var ReVIEW;
                                 return _this.headlinePost(process, "hd", node);
                             },
                             visitBlockElementPre: function (node) {
-                                return _this.blockPre(process, node.name, node);
+                                return _this.blockPre(process, node.symbol, node);
                             },
                             visitBlockElementPost: function (node) {
-                                return _this.blockPost(process, node.name, node);
+                                return _this.blockPost(process, node.symbol, node);
                             },
                             visitInlineElementPre: function (node) {
-                                return _this.inlinePre(process, node.name, node);
+                                return _this.inlinePre(process, node.symbol, node);
                             },
                             visitInlineElementPost: function (node) {
-                                return _this.inlinePost(process, node.name, node);
+                                return _this.inlinePost(process, node.symbol, node);
                             },
                             visitTextPre: function (node) {
                                 _this.text(process, node.text, node);
@@ -5397,7 +5397,7 @@ var ReVIEW;
         });
 
         Process.prototype.constructReferenceTo = function (node, value, targetSymbol, separator) {
-            if (typeof targetSymbol === "undefined") { targetSymbol = node.name; }
+            if (typeof targetSymbol === "undefined") { targetSymbol = node.symbol; }
             if (typeof separator === "undefined") { separator = "|"; }
             var splitted = value.split(separator);
             if (splitted.length === 3) {
@@ -5885,7 +5885,7 @@ var ReVIEW;
                         if (results.length !== 1) {
                             chapter.process.error(t("compile.syntax_definietion_error"), node);
                         }
-                        results[0].process(chapter.process, node);
+                        return results[0].process(chapter.process, node);
                     },
                     visitBlockElementPre: function (node) {
                         var results = _this.acceptableSyntaxes.find(node);
@@ -5903,14 +5903,14 @@ var ReVIEW;
                             return;
                         }
 
-                        results[0].process(chapter.process, node);
+                        return results[0].process(chapter.process, node);
                     },
                     visitInlineElementPre: function (node) {
                         var results = _this.acceptableSyntaxes.find(node);
                         if (results.length !== 1) {
                             chapter.process.error(t("compile.syntax_definietion_error"), node);
                         }
-                        results[0].process(chapter.process, node);
+                        return results[0].process(chapter.process, node);
                     }
                 });
 

@@ -156,8 +156,8 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 			var head = ast.toHeadline();
 			var ret = v.visitHeadlinePre(head, parent);
 			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+				visitSub(ast, head.cmd, v);
 				visitSub(ast, head.label, v);
-				visitSub(ast, head.tag, v);
 				visitSub(ast, head.caption, v);
 			} else if (typeof ret === "function") {
 				ret(v);

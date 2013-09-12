@@ -59,16 +59,16 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 							return this.headlinePost(process, "hd", node);
 						},
 						visitBlockElementPre: (node:BlockElementSyntaxTree)=> {
-							return this.blockPre(process, node.name, node);
+							return this.blockPre(process, node.symbol, node);
 						},
 						visitBlockElementPost: (node:BlockElementSyntaxTree)=> {
-							return this.blockPost(process, node.name, node);
+							return this.blockPost(process, node.symbol, node);
 						},
 						visitInlineElementPre: (node:InlineElementSyntaxTree)=> {
-							return this.inlinePre(process, node.name, node);
+							return this.inlinePre(process, node.symbol, node);
 						},
 						visitInlineElementPost: (node:InlineElementSyntaxTree)=> {
-							return this.inlinePost(process, node.name, node);
+							return this.inlinePost(process, node.symbol, node);
 						},
 						visitTextPre: (node:TextNodeSyntaxTree) => {
 							this.text(process, node.text, node);

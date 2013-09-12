@@ -183,9 +183,9 @@ module ReVIEW.Parse {
 		text?:any;
 		level?:number;
 		label?:any;
-		tag?:any;
+		cmd?:any;
 		caption?:any;
-		name?:any;
+		symbol?:any;
 		args?:any;
 		content?:any;
 		contents?:any;
@@ -506,31 +506,31 @@ module ReVIEW.Parse {
 
 	export class HeadlineSyntaxTree extends SyntaxTree {
 		level:number;
+		cmd:ArgumentSyntaxTree;
 		label:ArgumentSyntaxTree;
-		tag:ArgumentSyntaxTree;
 		caption:NodeSyntaxTree;
 
 		constructor(data:IConcreatSyntaxTree) {
 			super(data);
 
 			this.level = this.checkNumber(data.level);
+			if (data.cmd !== "") {
+				this.cmd = transform(this.checkObject(data.cmd)).toArgument();
+			}
 			if (data.label !== "") {
 				this.label = transform(this.checkObject(data.label)).toArgument();
-			}
-			if (data.tag !== "") {
-				this.tag = transform(this.checkObject(data.tag)).toArgument();
 			}
 			this.caption = transform(this.checkObject(data.caption)).toNode();
 		}
 	}
 
 	export class BlockElementSyntaxTree extends NodeSyntaxTree {
-		name:string;
+		symbol:string;
 		args:ArgumentSyntaxTree[];
 
 		constructor(data:IConcreatSyntaxTree) {
 			super(data);
-			this.name = this.checkString(data.name);
+			this.symbol = this.checkString(data.symbol);
 			this.args = this.checkArray(data.args).map((data:IConcreatSyntaxTree)=> {
 				return transform(data).toArgument();
 			});
@@ -538,11 +538,11 @@ module ReVIEW.Parse {
 	}
 
 	export class InlineElementSyntaxTree extends NodeSyntaxTree {
-		name:string;
+		symbol:string;
 
 		constructor(data:IConcreatSyntaxTree) {
 			super(data);
-			this.name = this.checkString(data.name);
+			this.symbol = this.checkString(data.symbol);
 		}
 	}
 

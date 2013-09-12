@@ -12,7 +12,7 @@ Chapter "chapter"
 
 // = 章タイトル
 Headline "headline"
-    = level:"="+ label:BracketArg? tag:BraceArg? Space* caption:SinglelineContent Newline*
+    = level:"="+ cmd:BracketArg? label:BraceArg? Space* caption:SinglelineContent Newline*
     ;
 
 Paragraphs "paragraphs"
@@ -38,12 +38,12 @@ ContentText "text of content"
     ;
 
 BlockElement "block element"
-    = "//" name:$(AZ+) args:BracketArg* "{" Newline contents:BlockElementContents? "//}"
-    / "//" name:$(AZ+) args:BracketArg*
+    = "//" symbol:$(AZ+) args:BracketArg* "{" Newline contents:BlockElementContents? "//}"
+    / "//" symbol:$(AZ+) args:BracketArg*
     ;
 
 InlineElement "inline element"
-    = "@<" name:$([^>\r\n]+) ">" "{" contents:InlineElementContents? "}"
+    = "@<" symbol:$([^>\r\n]+) ">" "{" contents:InlineElementContents? "}"
     ;
 
 BracketArg "bracket argument"

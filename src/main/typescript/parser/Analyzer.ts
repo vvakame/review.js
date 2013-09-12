@@ -47,10 +47,10 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			var results:AcceptableSyntax[];
 			if (node instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
 				var inline = node.toInlineElement();
-				results = this.inlines.filter(s => s.symbolName === inline.name);
+				results = this.inlines.filter(s => s.symbolName === inline.symbol);
 			} else if (node instanceof ReVIEW.Parse.BlockElementSyntaxTree) {
 				var block = node.toBlockElement();
-				results = this.blocks.filter(s => s.symbolName === block.name);
+				results = this.blocks.filter(s => s.symbolName === block.symbol);
 			} else {
 				results = this.others.filter(s => node instanceof s.clazz);
 			}
@@ -249,8 +249,8 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			builder.processNode((process, n)=> {
 				var node = n.toHeadline();
 				var label:string = null;
-				if (node.tag) {
-					label = node.tag.arg;
+				if (node.label) {
+					label = node.label.arg;
 				} else if (node.caption.childNodes.length === 1) {
 					var textNode = node.caption.childNodes[0].toTextNode();
 					label = textNode.text;
@@ -272,7 +272,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 				var node = n.toBlockElement();
 				node.no = process.nextIndex("list");
 				process.addSymbol({
-					symbolName: node.name,
+					symbolName: node.symbol,
 					labelName: node.args[0].arg,
 					node: node
 				});
@@ -286,7 +286,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			builder.processNode((process, n)=> {
 				var node = n.toInlineElement();
 				process.addSymbol({
-					symbolName: node.name,
+					symbolName: node.symbol,
 					referenceTo: process.constructReferenceTo(node, nodeContentToString(process, node)),
 					node: node
 				});
@@ -300,7 +300,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			builder.processNode((process, n)=> {
 				var node = n.toInlineElement();
 				process.addSymbol({
-					symbolName: node.name,
+					symbolName: node.symbol,
 					referenceTo: process.constructReferenceTo(node, nodeContentToString(process, node)),
 					node: node
 				});
