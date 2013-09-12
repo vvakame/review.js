@@ -5841,6 +5841,9 @@ var ReVIEW;
 
         var SyntaxTree = ReVIEW.Parse.SyntaxTree;
         var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+        var HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+        var BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+        var InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 
         var DefaultValidator = (function () {
             function DefaultValidator() {
@@ -5869,19 +5872,41 @@ var ReVIEW;
 
             DefaultValidator.prototype.checkChapter = function (chapter) {
                 var _this = this;
-                var visitFunc = function (node) {
-                    var results = _this.acceptableSyntaxes.find(node);
-                    if (results.length !== 1) {
-                        chapter.process.error(t("compile.syntax_definietion_error"), node);
-                    }
-                    results[0].process(chapter.process, node);
-                };
                 ReVIEW.visit(chapter.root, {
                     visitDefaultPre: function (node) {
                     },
-                    visitHeadlinePre: visitFunc,
-                    visitBlockElementPre: visitFunc,
-                    visitInlineElementPre: visitFunc
+                    visitHeadlinePre: function (node) {
+                        var results = _this.acceptableSyntaxes.find(node);
+                        if (results.length !== 1) {
+                            chapter.process.error(t("compile.syntax_definietion_error"), node);
+                        }
+                        results[0].process(chapter.process, node);
+                    },
+                    visitBlockElementPre: function (node) {
+                        var results = _this.acceptableSyntaxes.find(node);
+                        if (results.length !== 1) {
+                            chapter.process.error(t("compile.syntax_definietion_error"), node);
+                        }
+                        var expects = results[0].argsLength;
+                        var arg = node.args || [];
+                        if (expects.indexOf(arg.length) === -1) {
+                            var expected = expects.map(function (n) {
+                                return Number(n).toString();
+                            }).join(" or ");
+                            var message = t("compile.args_length_mismatch", expected, arg.length);
+                            chapter.process.error(message, node);
+                            return;
+                        }
+
+                        results[0].process(chapter.process, node);
+                    },
+                    visitInlineElementPre: function (node) {
+                        var results = _this.acceptableSyntaxes.find(node);
+                        if (results.length !== 1) {
+                            chapter.process.error(t("compile.syntax_definietion_error"), node);
+                        }
+                        results[0].process(chapter.process, node);
+                    }
                 });
 
                 ReVIEW.visit(chapter.root, {

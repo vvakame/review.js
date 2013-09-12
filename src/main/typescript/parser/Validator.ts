@@ -8,6 +8,9 @@ import t = ReVIEW.i18n.t;
 
 import SyntaxTree = ReVIEW.Parse.SyntaxTree;
 import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 
 	/**
 	 * IAnalyzerで処理した後の構文木について構文上のエラーがないかチェックする。
@@ -39,19 +42,39 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
 		checkChapter(chapter:Chapter) {
 			// Analyzer 内で生成した構文規則に基づき処理
-			var visitFunc = (node:SyntaxTree) => {
-				var results = this.acceptableSyntaxes.find(node);
-				if (results.length !== 1) {
-					chapter.process.error(t("compile.syntax_definietion_error"), node);
-				}
-				results[0].process(chapter.process, node);
-			};
 			ReVIEW.visit(chapter.root, {
 				visitDefaultPre: (node:SyntaxTree)=> {
 				},
-				visitHeadlinePre: visitFunc,
-				visitBlockElementPre: visitFunc,
-				visitInlineElementPre: visitFunc
+				visitHeadlinePre: (node:HeadlineSyntaxTree) => {
+					var results = this.acceptableSyntaxes.find(node);
+					if (results.length !== 1) {
+						chapter.process.error(t("compile.syntax_definietion_error"), node);
+					}
+					results[0].process(chapter.process, node);
+				},
+				visitBlockElementPre: (node:BlockElementSyntaxTree) => {
+					var results = this.acceptableSyntaxes.find(node);
+					if (results.length !== 1) {
+						chapter.process.error(t("compile.syntax_definietion_error"), node);
+					}
+					var expects = results[0].argsLength;
+					var arg = node.args || [];
+					if (expects.indexOf(arg.length) === -1) {
+						var expected = expects.map((n)=>Number(n).toString()).join(" or ");
+						var message = t("compile.args_length_mismatch", expected, arg.length);
+						chapter.process.error(message, node);
+						return;
+					}
+
+					results[0].process(chapter.process, node);
+				},
+				visitInlineElementPre: (node:InlineElementSyntaxTree) => {
+					var results = this.acceptableSyntaxes.find(node);
+					if (results.length !== 1) {
+						chapter.process.error(t("compile.syntax_definietion_error"), node);
+					}
+					results[0].process(chapter.process, node);
+				}
 			});
 
 			// 章の下に項がいきなり来ていないか(節のレベルを飛ばしている)
