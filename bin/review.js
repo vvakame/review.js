@@ -5727,8 +5727,8 @@ var ReVIEW;
 
         Object.defineProperty(Controller.prototype, "outputReport", {
             get: function () {
-                if (this.config.outputReport) {
-                    return this.config.outputReport;
+                if (this.config.listener && this.config.listener.onReports) {
+                    return this.config.listener.onReports;
                 } else if (ReVIEW.isNodeJS()) {
                     return this.outputReportNodeJS;
                 } else {
@@ -5792,16 +5792,16 @@ var ReVIEW;
             if (!book.reports.some(function (report) {
                 return report.level === ReVIEW.ReportLevel.Error;
             })) {
-                if (this.config.compileSuccess) {
-                    func = this.config.compileSuccess;
+                if (this.config.listener && this.config.listener.onCompileSuccess) {
+                    func = this.config.listener.onCompileSuccess;
                 } else if (ReVIEW.isNodeJS()) {
                     func = function () {
                         process.exit(0);
                     };
                 }
             } else {
-                if (this.config.compileFailed) {
-                    func = this.config.compileFailed;
+                if (this.config.listener && this.config.listener.onCompileFailed) {
+                    func = this.config.listener.onCompileFailed;
                 } else if (ReVIEW.isNodeJS()) {
                     func = function () {
                         process.exit(1);

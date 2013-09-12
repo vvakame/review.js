@@ -78,23 +78,25 @@
                     result[path] = content;
                 },
 
-                compileSuccess: function (book) {
-                    book.parts[1].chapters[0].builderProcesses.forEach(function (process) {
-                        var $result;
-                        switch (process.builder.name) {
-                            case "TextBuilder":
-                                $result = $("#result-text");
-                                break;
-                            case "HtmlBuilder":
-                                $result = $("#result-html");
-                                break;
-                        }
-                        $result.html(process.result);
-                    });
-                },
+                listener: {
+                    onReports: function (reports) {
+                        outputReports(reports);
+                    },
 
-                outputReport: function (reports) {
-                    outputReports(reports);
+                    onCompileSuccess: function (book) {
+                        book.parts[1].chapters[0].builderProcesses.forEach(function (process) {
+                            var $result;
+                            switch (process.builder.name) {
+                                case "TextBuilder":
+                                    $result = $("#result-text");
+                                    break;
+                                case "HtmlBuilder":
+                                    $result = $("#result-html");
+                                    break;
+                            }
+                            $result.html(process.result);
+                        });
+                    }
                 },
 
                 builders: [new ReVIEW.Build.TextBuilder(), new ReVIEW.Build.HtmlBuilder()],

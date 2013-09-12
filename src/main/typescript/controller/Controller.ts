@@ -3,6 +3,7 @@
 ///<reference path='../utils/Utils.ts' />
 ///<reference path='../model/CompilerModel.ts' />
 ///<reference path='../parser/Parser.ts' />
+///<reference path='../parser/Analyzer.ts' />
 
 module ReVIEW {
 
@@ -33,10 +34,14 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		read?:(path:string)=>string;
 		write?:(path:string, data:string)=>void;
 
-		outputReport?:(reports:ReVIEW.ProcessReport[])=>void;
+		listener?:{
+			onAcceptables?:(acceptableSyntaxed:ReVIEW.Build.AcceptableSyntaxes)=>any;
+			onSymbols?:(symbols:ReVIEW.ISymbol[])=>any;
+			onReports?:(reports:ReVIEW.ProcessReport[])=>any;
 
-		compileSuccess?:()=>void;
-		compileFailed?:()=>void;
+			onCompileSuccess?:()=>void;
+			onCompileFailed?:()=>void;
+		};
 
 		analyzer:Build.IAnalyzer;
 		validators:Build.IValidator[];
@@ -194,8 +199,8 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		}
 
 		get outputReport():(reports:ReVIEW.ProcessReport[])=>void {
-			if (this.config.outputReport) {
-				return this.config.outputReport;
+			if (this.config.listener && this.config.listener.onReports) {
+				return this.config.listener.onReports;
 			} else if (ReVIEW.isNodeJS()) {
 				return this.outputReportNodeJS;
 			} else {
@@ -254,16 +259,16 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			var func:Function = ()=> {
 			};
 			if (!book.reports.some(report=>report.level === ReVIEW.ReportLevel.Error)) {
-				if (this.config.compileSuccess) {
-					func = this.config.compileSuccess;
+				if (this.config.listener && this.config.listener.onCompileSuccess) {
+					func = this.config.listener.onCompileSuccess;
 				} else if (ReVIEW.isNodeJS()) {
 					func = ()=> {
 						process.exit(0);
 					};
 				}
 			} else {
-				if (this.config.compileFailed) {
-					func = this.config.compileFailed;
+				if (this.config.listener && this.config.listener.onCompileFailed) {
+					func = this.config.listener.onCompileFailed;
 				} else if (ReVIEW.isNodeJS()) {
 					func = ()=> {
 						process.exit(1);
