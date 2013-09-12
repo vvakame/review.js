@@ -4051,6 +4051,10 @@ var ReVIEW;
 (function (ReVIEW) {
     ReVIEW.ja = {
         "sample": "こんちゃーす！",
+        "description": {
+            "headline": "チャプターの始まりを示します。\n\"= 見出し\" という形式で書きます。",
+            "block_list": "リストを示します。技術書ではプログラムコードの掲載に使います。\n//list[label][caption]{\nalert(\"Hello!\");\n//}\n という形式で書きます。"
+        },
         "compile": {
             "file_not_exists": "ファイル %s が開けません",
             "block_not_supported": "%s というブロック構文はサポートされていません",
