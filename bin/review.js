@@ -6211,6 +6211,10 @@ var ReVIEW;
 })(ReVIEW || (ReVIEW = {}));
 
 if (ReVIEW.isNodeJS()) {
+    module.exports = ReVIEW;
+}
+
+if (ReVIEW.isNodeJS()) {
     var program = require("commander");
     program.version("TODO", "-v, --version").option("--reviewfile <file>", "where is ReVIEWconfig.js?").option("--base <path>", "alternative base path");
 
