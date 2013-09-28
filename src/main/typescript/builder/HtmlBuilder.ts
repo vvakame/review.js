@@ -205,7 +205,7 @@ import findChapter = ReVIEW.findChapter;
 		}
 
 		inline_tt_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<tt>");
+			process.out("<tt>"); // TODO RubyReviewではContentに改行が含まれている奴の挙動がサポートされていない。
 		}
 
 		inline_tt_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
