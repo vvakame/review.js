@@ -1,0 +1,9 @@
+■H1■第2章　ブロック要素のテスト
+
+◆→開始:リスト←◆
+リスト2.1　fuga
+
+var hoge = confirm("test");
+// JS comment
+◆→終了:リスト←◆
+

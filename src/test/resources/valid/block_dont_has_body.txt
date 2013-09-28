@@ -1,0 +1,3 @@
+■H1■第3章　{}部を持たないBlockElement
+◆→DTP連絡:次の1行インデントなし←◆
+【注1】caption
