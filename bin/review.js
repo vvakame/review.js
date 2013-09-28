@@ -4081,7 +4081,8 @@ var ReVIEW;
             "body_string_only": "内容は全て文字でなければいけません",
             "chapter_not_toplevel": "深さ1のチャプターは最上位になければいけません",
             "chapter_topleve_eq1": "最上位のチャプターは深さ1のものでなければいけません",
-            "chapter_level_omission": "深さ%sのチャプターは深さ%sのチャプターに属していなければいけません 今は深さ%sのチャプターの下にいます"
+            "chapter_level_omission": "深さ%sのチャプターは深さ%sのチャプターに属していなければいけません 今は深さ%sのチャプターの下にいます",
+            "deprecated_inline_symbol": "%s というインライン構文は非推奨です。"
         },
         "builder": {
             "chapter": "第%d章",
@@ -5592,7 +5593,7 @@ var ReVIEW;
         }
         Object.defineProperty(BuilderProcess.prototype, "info", {
             get: function () {
-                return this.base.info;
+                return this.base.info.bind(this.base);
             },
             enumerable: true,
             configurable: true
@@ -5600,7 +5601,7 @@ var ReVIEW;
 
         Object.defineProperty(BuilderProcess.prototype, "warn", {
             get: function () {
-                return this.base.warn;
+                return this.base.warn.bind(this.base);
             },
             enumerable: true,
             configurable: true
@@ -5608,7 +5609,7 @@ var ReVIEW;
 
         Object.defineProperty(BuilderProcess.prototype, "error", {
             get: function () {
-                return this.base.error;
+                return this.base.error.bind(this.base);
             },
             enumerable: true,
             configurable: true
@@ -6179,7 +6180,7 @@ var ReVIEW;
 var ReVIEW;
 (function (ReVIEW) {
     (function (Build) {
-        var i18n = ReVIEW.i18n;
+        var t = ReVIEW.i18n.t;
 
         var SyntaxTree = ReVIEW.Parse.SyntaxTree;
         var NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
@@ -6210,7 +6211,7 @@ var ReVIEW;
                 if (!node.cmd) {
                     process.out("■H").out(node.level).out("■");
                     if (node.level === 1) {
-                        var text = i18n.t("builder.chapter", node.parentNode.no);
+                        var text = ReVIEW.i18n.t("builder.chapter", node.parentNode.no);
                         process.out(text).out("　");
                     } else if (node.level === 2) {
                         process.out(node.parentNode.toChapter().fqn).out("　");
@@ -6246,7 +6247,7 @@ var ReVIEW;
             TextBuilder.prototype.block_list_pre = function (process, node) {
                 process.out("◆→開始:リスト←◆\n");
                 var chapter = findChapter(node, 1);
-                var text = i18n.t("builder.list", chapter.fqn, node.no);
+                var text = ReVIEW.i18n.t("builder.list", chapter.fqn, node.no);
                 process.out(text).out("　").out(node.args[1].arg).out("\n\n");
                 return function (v) {
                     node.childNodes.forEach(function (node) {
@@ -6262,7 +6263,7 @@ var ReVIEW;
             TextBuilder.prototype.inline_list = function (process, node) {
                 var chapter = findChapter(node, 1);
                 var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-                var text = i18n.t("builder.list", chapter.fqn, listNode.no);
+                var text = ReVIEW.i18n.t("builder.list", chapter.fqn, listNode.no);
                 process.out(text);
                 return false;
             };
@@ -6321,6 +6322,15 @@ var ReVIEW;
 
             TextBuilder.prototype.inline_tt_post = function (process, node) {
                 process.out("☆");
+            };
+
+            TextBuilder.prototype.inline_em_pre = function (process, node) {
+                process.warn(t("compile.deprecated_inline_symbol", "em"), node);
+                process.out("@<em>{");
+            };
+
+            TextBuilder.prototype.inline_em_post = function (process, node) {
+                process.out("}");
             };
             return TextBuilder;
         })(Build.DefaultBuilder);

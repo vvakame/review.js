@@ -4,7 +4,7 @@
 
 module ReVIEW.Build {
 
-import i18n = ReVIEW.i18n;
+import t = ReVIEW.i18n.t;
 
 import SyntaxTree = ReVIEW.Parse.SyntaxTree;
 import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
@@ -154,5 +154,13 @@ import findChapter = ReVIEW.findChapter;
 			process.out("☆");
 		}
 
+		inline_em_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.warn(t("compile.deprecated_inline_symbol","em"), node);
+			process.out("@<em>{");
+		}
+
+		inline_em_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("}");
+		}
 	}
 }

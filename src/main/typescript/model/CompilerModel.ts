@@ -170,15 +170,15 @@ import t = ReVIEW.i18n.t;
 		}
 
 		get info():(message:string, ...nodes:Parse.SyntaxTree[])=>void {
-			return this.base.info;
+			return this.base.info.bind(this.base);
 		}
 
 		get warn():(message:string, ...nodes:Parse.SyntaxTree[])=>void {
-			return this.base.warn;
+			return this.base.warn.bind(this.base);
 		}
 
 		get error():(message:string, ...nodes:Parse.SyntaxTree[])=>void {
-			return this.base.error;
+			return this.base.error.bind(this.base);
 		}
 
 		result:string = "";
