@@ -350,12 +350,24 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
             });
         }
 
+        inline_code(builder:IAcceptableSyntaxBuilder) {
+            builder.setSyntaxType(SyntaxType.Inline);
+            builder.setSymbol("code");
+            builder.setDescription(t("description.inline_code"));
+            builder.processNode((process, n)=> {
+                var node = n.toInlineElement();
+                process.addSymbol({
+                    symbolName: node.symbol,
+                    node: node
+                });
+            });
+        }
+
 		// TODO 以下のものの実装をすすめる
 		// block_emlist
 		// block_source
 		// block_listnum
 		// emlistnum
-		// inline_code
 		// block_cmd
 		// block_image
 		// inline_img

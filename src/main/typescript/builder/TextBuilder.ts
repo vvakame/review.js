@@ -105,11 +105,16 @@ import findChapter = ReVIEW.findChapter;
 			process.out("\n");
 		}
 
-		inline_b_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+        inline_b_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+        }
 
-		}
+        inline_b_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+        }
 
-		inline_b_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-		}
+        inline_code_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+        }
+
+        inline_code_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+        }
 	}
 }
