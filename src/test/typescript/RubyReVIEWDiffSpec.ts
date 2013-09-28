@@ -77,6 +77,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 			// "empty.re", // プロセス終了しない謎があるので
 			// "headline.re" // プロセス終了しない謎があるので
 			"headline_only.re"
+			// "inline_with_newline.re", // Ruby版だと予想外の処理をする
 		];
 
 		var path = "src/test/resources/valid/";
