@@ -389,7 +389,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
-        // TODO 以下のものの実装をすすめる
+		// TODO 以下のものの実装をすすめる
 		// block_emlist
 		// block_source
 		// block_listnum
