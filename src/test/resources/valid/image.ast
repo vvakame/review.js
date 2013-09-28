@@ -1,0 +1,125 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 57,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 56,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 56,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 13,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 11,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 11,
+                  "text": "imageのテスト"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 13,
+              "line": 3,
+              "column": 1,
+              "endPos": 56,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 13,
+                  "line": 3,
+                  "column": 1,
+                  "endPos": 55,
+                  "childNodes": [
+                    {
+                      "ruleName": "BlockElement",
+                      "offset": 13,
+                      "line": 3,
+                      "column": 1,
+                      "endPos": 54,
+                      "childNodes": [
+                        {
+                          "ruleName": "BlockElementContents",
+                          "offset": 48,
+                          "line": 4,
+                          "column": 1,
+                          "endPos": 51,
+                          "childNodes": [
+                            {
+                              "ruleName": "BlockElementContentText",
+                              "offset": 48,
+                              "line": 4,
+                              "column": 1,
+                              "endPos": 51,
+                              "text": "メモ\n"
+                            }
+                          ]
+                        }
+                      ],
+                      "symbol": "image",
+                      "args": [
+                        {
+                          "ruleName": "BracketArg",
+                          "offset": 20,
+                          "line": 3,
+                          "column": 8,
+                          "endPos": 29,
+                          "arg": "vvakame"
+                        },
+                        {
+                          "ruleName": "BracketArg",
+                          "offset": 29,
+                          "line": 3,
+                          "column": 17,
+                          "endPos": 35,
+                          "arg": "サンプル"
+                        },
+                        {
+                          "ruleName": "BracketArg",
+                          "offset": 35,
+                          "line": 3,
+                          "column": 23,
+                          "endPos": 46,
+                          "arg": "scale=0.3"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "childNodes": [],
+          "level": 1
+        }
+      ]
+    }
+  ]
+}

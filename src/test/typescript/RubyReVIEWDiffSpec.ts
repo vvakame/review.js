@@ -76,7 +76,8 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 			// "dlist.re", // プロセス終了しない謎があるので
 			// "empty.re", // プロセス終了しない謎があるので
 			// "headline.re" // プロセス終了しない謎があるので
-			"headline_only.re"
+			"headline_only.re",
+			"image.re"
 			// "inline_with_newline.re", // Ruby版だと予想外の処理をする
 		];
 

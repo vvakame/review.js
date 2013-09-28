@@ -215,7 +215,7 @@ import findChapter = ReVIEW.findChapter;
 		// TODO 未完了
 		inline_kw_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("<b>");
-			process.out(nodeToString(process,node));
+			process.out(nodeToString(process, node));
 			return false;
 		}
 
@@ -227,5 +227,28 @@ import findChapter = ReVIEW.findChapter;
 			process.out("</em>");
 		}
 
+		block_image(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			// TODO ファイル名探索ロジックをもっと頑張る(jpgとかsvgとか)
+			var chapterFileName = process.base.chapter.name;
+			var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
+			var imagePath = "images/" + chapterName + "-" + node.args[0].arg + ".png";
+			var caption = node.args[1].arg;
+			var scale:number = 1;
+			if (node.args[2]) {
+				var arg3 = node.args[2].arg;
+				var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
+				var result = regexp.exec(node.args[2].arg);
+				if (result) {
+					scale = parseFloat(result[1]);
+				}
+			}
+			process.out("<div class=\"image\">\n");
+			process.out("<img src=\"" + imagePath + "\" alt=\"" + caption + "\" width=\"" + (scale * 100) + "%\" />\n");
+			process.out("<p class=\"caption\">\n");
+			process.out("図").out(process.base.chapter.no).out(".").out(node.no).out(": ").out(caption);
+			process.out("\n</p>\n");
+			process.out("</div>\n");
+			return false;
+		}
 	}
 }

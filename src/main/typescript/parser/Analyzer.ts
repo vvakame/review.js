@@ -394,11 +394,11 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			builder.setSymbol("kw");
 			builder.setDescription(t("description.inline_kw"));
 			builder.processNode((process, n)=> {
-					var node = n.toInlineElement();
-					process.addSymbol({
-						symbolName: node.symbol,
-						node: node
-					});
+				var node = n.toInlineElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
 			});
 		}
 
@@ -415,13 +415,28 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
+		block_image(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Block);
+			builder.setSymbol("image");
+			builder.setDescription(t("description.block_image"));
+			builder.checkArgsLength(2, 3);
+			builder.processNode((process, n)=> {
+				var node = n.toBlockElement();
+				node.no = process.nextIndex("image");
+				process.addSymbol({
+					symbolName: node.symbol,
+					labelName: node.args[0].arg,
+					node: node
+				});
+			});
+		}
+
 		// TODO 以下のものの実装をすすめる
 		// block_emlist
 		// block_source
 		// block_listnum
 		// emlistnum
 		// block_cmd
-		// block_image
 		// inline_img
 		// block_indepimage
 		// block_graph

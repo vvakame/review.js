@@ -155,12 +155,26 @@ import findChapter = ReVIEW.findChapter;
 		}
 
 		inline_em_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.warn(t("compile.deprecated_inline_symbol","em"), node);
+			process.warn(t("compile.deprecated_inline_symbol", "em"), node);
 			process.out("@<em>{");
 		}
 
 		inline_em_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("}");
+		}
+
+		block_image(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			// TODO ファイル名探索ロジックをもっと頑張る(jpgとかsvgとか)
+			var chapterFileName = process.base.chapter.name;
+			var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
+			var imagePath = "./images/" + chapterName + "-" + node.args[0].arg + ".png";
+			var caption = node.args[1].arg;
+			process.out("◆→開始:図←◆\n");
+			process.out("図").out(process.base.chapter.no).out(".").out(node.no).out("　").out(caption).out("\n");
+			process.out("\n");
+			process.out("◆→").out(imagePath).out("←◆\n");
+			process.out("◆→終了:図←◆\n");
+			return false;
 		}
 	}
 }

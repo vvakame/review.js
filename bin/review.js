@@ -5250,6 +5250,22 @@ var ReVIEW;
                     });
                 });
             };
+
+            DefaultAnalyzer.prototype.block_image = function (builder) {
+                builder.setSyntaxType(SyntaxType.Block);
+                builder.setSymbol("image");
+                builder.setDescription(t("description.block_image"));
+                builder.checkArgsLength(2, 3);
+                builder.processNode(function (process, n) {
+                    var node = n.toBlockElement();
+                    node.no = process.nextIndex("image");
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        labelName: node.args[0].arg,
+                        node: node
+                    });
+                });
+            };
             return DefaultAnalyzer;
         })();
         Build.DefaultAnalyzer = DefaultAnalyzer;
@@ -6332,6 +6348,19 @@ var ReVIEW;
             TextBuilder.prototype.inline_em_post = function (process, node) {
                 process.out("}");
             };
+
+            TextBuilder.prototype.block_image = function (process, node) {
+                var chapterFileName = process.base.chapter.name;
+                var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
+                var imagePath = "./images/" + chapterName + "-" + node.args[0].arg + ".png";
+                var caption = node.args[1].arg;
+                process.out("◆→開始:図←◆\n");
+                process.out("図").out(process.base.chapter.no).out(".").out(node.no).out("　").out(caption).out("\n");
+                process.out("\n");
+                process.out("◆→").out(imagePath).out("←◆\n");
+                process.out("◆→終了:図←◆\n");
+                return false;
+            };
             return TextBuilder;
         })(Build.DefaultBuilder);
         Build.TextBuilder = TextBuilder;
@@ -6559,6 +6588,29 @@ var ReVIEW;
 
             HtmlBuilder.prototype.inline_em_post = function (process, node) {
                 process.out("</em>");
+            };
+
+            HtmlBuilder.prototype.block_image = function (process, node) {
+                var chapterFileName = process.base.chapter.name;
+                var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
+                var imagePath = "images/" + chapterName + "-" + node.args[0].arg + ".png";
+                var caption = node.args[1].arg;
+                var scale = 1;
+                if (node.args[2]) {
+                    var arg3 = node.args[2].arg;
+                    var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
+                    var result = regexp.exec(node.args[2].arg);
+                    if (result) {
+                        scale = parseFloat(result[1]);
+                    }
+                }
+                process.out("<div class=\"image\">\n");
+                process.out("<img src=\"" + imagePath + "\" alt=\"" + caption + "\" width=\"" + (scale * 100) + "%\" />\n");
+                process.out("<p class=\"caption\">\n");
+                process.out("図").out(process.base.chapter.no).out(".").out(node.no).out(": ").out(caption);
+                process.out("\n</p>\n");
+                process.out("</div>\n");
+                return false;
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);
