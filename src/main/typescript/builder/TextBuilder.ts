@@ -140,5 +140,14 @@ import findChapter = ReVIEW.findChapter;
 		inline_href_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("☆");
 		}
+
+		inline_tt_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("△");
+		}
+
+		inline_tt_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("☆");
+		}
+
 	}
 }
