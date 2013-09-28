@@ -4065,17 +4065,9 @@ var ReVIEW;
             "inline_br": "改行を示します。リスト内での改行や、段落を変えずに改行をしたい場合に使います。",
             "ulist": "番号なし箇条書きを示します。*記号をつなげて書くとネストした箇条書きにする事ができます。",
             "inline_b": "ボールド(太字)にします。\n@<b>{この部分が太字になる}",
-<<<<<<< HEAD
             "inline_href": "リンクを示します。URLを書きたい場合に使います。\n@<href>{https://github.com/vvakame/review.js}",
-<<<<<<< HEAD
-            "inline_tt": "囲まれたテキストを等幅フォントで表示します。"
-=======
-            "inline_href": "リンクを示します。URLを書きたい場合に使います。\n@<href>{https://github.com/vvakame/review.js}"
->>>>>>> bols-blue
-=======
             "inline_tt": "囲まれたテキストを等幅フォントで表示します。",
             "inline_em": "テキストを強調します。\n@<em>{このように強調されます}"
->>>>>>> 7899ec52e7eed2dcf3e4b921dfbd6dff47533b29
         },
         "compile": {
             "file_not_exists": "ファイル %s が開けません",
@@ -6537,7 +6529,6 @@ var ReVIEW;
                 process.out("</a>");
             };
 
-<<<<<<< HEAD
             HtmlBuilder.prototype.inline_tt_pre = function (process, node) {
                 process.out("<tt>");
             };
@@ -6550,16 +6541,6 @@ var ReVIEW;
                 process.out("<b>");
                 process.out(ReVIEW.nodeToString(process, node));
                 return false;
-=======
-            HtmlBuilder.prototype.inline_kw_pre = function (process, node) {
-                process.out("<b>");
-                process.out(ReVIEW.nodeToString(process, node));
-                return false;
-            };
-
-            HtmlBuilder.prototype.inline_kw_post = function (process, node) {
-                process.out("</b>");
->>>>>>> bols-blue
             };
 
             HtmlBuilder.prototype.inline_em_pre = function (process, node) {
