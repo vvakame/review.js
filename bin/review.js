@@ -5199,6 +5199,19 @@ var ReVIEW;
                     });
                 });
             };
+
+            DefaultAnalyzer.prototype.inline_href = function (builder) {
+                builder.setSyntaxType(SyntaxType.Inline);
+                builder.setSymbol("href");
+                builder.setDescription(t("description.inline_href"));
+                builder.processNode(function (process, n) {
+                    var node = n.toInlineElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
             return DefaultAnalyzer;
         })();
         Build.DefaultAnalyzer = DefaultAnalyzer;
@@ -6242,15 +6255,27 @@ var ReVIEW;
             };
 
             TextBuilder.prototype.inline_b_pre = function (process, node) {
+                process.out("★");
             };
 
             TextBuilder.prototype.inline_b_post = function (process, node) {
+                process.out("☆");
             };
 
             TextBuilder.prototype.inline_code_pre = function (process, node) {
+                process.out("△");
             };
 
             TextBuilder.prototype.inline_code_post = function (process, node) {
+                process.out("☆");
+            };
+
+            TextBuilder.prototype.inline_href_pre = function (process, node) {
+                process.out("△");
+            };
+
+            TextBuilder.prototype.inline_href_post = function (process, node) {
+                process.out("☆");
             };
             return TextBuilder;
         })(Build.DefaultBuilder);
@@ -6430,6 +6455,15 @@ var ReVIEW;
 
             HtmlBuilder.prototype.inline_code_post = function (process, node) {
                 process.out("</tt>");
+            };
+
+            HtmlBuilder.prototype.inline_href_pre = function (process, node) {
+                var href = nodeContentToString(process, node);
+                process.out("<a href=\"" + href + "\">");
+            };
+
+            HtmlBuilder.prototype.inline_href_post = function (process, node) {
+                process.out("</a>");
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);

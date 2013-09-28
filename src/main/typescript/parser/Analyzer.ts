@@ -363,6 +363,19 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
             });
         }
 
+        inline_href(builder:IAcceptableSyntaxBuilder) {
+            builder.setSyntaxType(SyntaxType.Inline);
+            builder.setSymbol("href");
+            builder.setDescription(t("description.inline_href"));
+            builder.processNode((process, n)=> {
+                var node = n.toInlineElement();
+                process.addSymbol({
+                    symbolName: node.symbol,
+                    node: node
+                });
+            });
+        }
+
 		// TODO 以下のものの実装をすすめる
 		// block_emlist
 		// block_source
@@ -401,7 +414,6 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		// inline_m
 		// inline_icon
 		// inline_uchar
-		// inline_href
 		// inline_raw
 		// block_label
 	}

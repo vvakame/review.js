@@ -176,5 +176,14 @@ import findChapter = ReVIEW.findChapter;
         inline_code_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
             process.out("</tt>");
         }
+
+        inline_href_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+            var href = nodeContentToString(process, node);
+            process.out("<a href=\"" + href + "\">");
+        }
+
+        inline_href_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+            process.out("</a>");
+        }
 	}
 }
