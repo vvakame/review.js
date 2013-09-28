@@ -4185,10 +4185,6 @@ var ReVIEW;
             visitChapterPre: v.visitChapterPre || v.visitNodePre || v.visitDefaultPre,
             visitChapterPost: v.visitChapterPost || v.visitNodePost || v.visitDefaultPost || (function () {
             }),
-            visitChapterContentPre: v.visitChapterContentPre || (function () {
-            }),
-            visitChapterContentPost: v.visitChapterContentPost || (function () {
-            }),
             visitHeadlinePre: v.visitHeadlinePre || v.visitDefaultPre,
             visitHeadlinePost: v.visitHeadlinePost || v.visitDefaultPost || (function () {
             }),
@@ -4217,8 +4213,6 @@ var ReVIEW;
         newV.visitArgumentPost = newV.visitArgumentPost.bind(v);
         newV.visitChapterPre = newV.visitChapterPre.bind(v);
         newV.visitChapterPost = newV.visitChapterPost.bind(v);
-        newV.visitChapterContentPre = newV.visitChapterContentPre.bind(v);
-        newV.visitChapterContentPost = newV.visitChapterContentPost.bind(v);
         newV.visitHeadlinePre = newV.visitHeadlinePre.bind(v);
         newV.visitHeadlinePost = newV.visitHeadlinePost.bind(v);
         newV.visitUlistPre = newV.visitUlistPre.bind(v);
@@ -4271,7 +4265,6 @@ var ReVIEW;
             var ret = v.visitChapterPre(chap, parent);
             if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
                 visitSub(ast, chap.headline, v);
-                v.visitChapterContentPre(chap, parent);
                 if (chap.text) {
                     chap.text.forEach(function (next) {
                         visitSub(ast, next, v);
@@ -4280,7 +4273,6 @@ var ReVIEW;
                 chap.childNodes.forEach(function (next) {
                     visitSub(ast, next, v);
                 });
-                v.visitChapterContentPost(chap, parent);
             } else if (typeof ret === "function") {
                 ret(v);
             }
@@ -5257,12 +5249,6 @@ var ReVIEW;
                             visitChapterPost: function (node) {
                                 return _this.chapterPost(process, node);
                             },
-                            visitChapterContentPre: function (node) {
-                                return _this.chapterContentPre(process, node);
-                            },
-                            visitChapterContentPost: function (node) {
-                                return _this.chapterContentPost(process, node);
-                            },
                             visitHeadlinePre: function (node) {
                                 return _this.headlinePre(process, "hd", node);
                             },
@@ -5308,12 +5294,6 @@ var ReVIEW;
             };
 
             DefaultBuilder.prototype.chapterPost = function (process, node) {
-            };
-
-            DefaultBuilder.prototype.chapterContentPre = function (process, node) {
-            };
-
-            DefaultBuilder.prototype.chapterContentPost = function (process, node) {
             };
 
             DefaultBuilder.prototype.headlinePre = function (process, name, node) {
@@ -6174,25 +6154,33 @@ var ReVIEW;
                 _super.apply(this, arguments);
             }
             TextBuilder.prototype.chapterPost = function (process, node) {
-                process.out("\n");
+                if (!node.headline.cmd) {
+                    process.out("\n");
+                } else {
+                    process.out("◆→終了:←◆\n");
+                }
             };
 
             TextBuilder.prototype.headlinePre = function (process, name, node) {
-                process.out("■H").out(node.level).out("■");
-                if (node.level === 1) {
-                    var text = i18n.t("builder.chapter", node.parentNode.no);
-                    process.out(text).out("　");
-                } else if (node.level === 2) {
-                    process.out(node.parentNode.toChapter().fqn).out("　");
+                if (!node.cmd) {
+                    process.out("■H").out(node.level).out("■");
+                    if (node.level === 1) {
+                        var text = i18n.t("builder.chapter", node.parentNode.no);
+                        process.out(text).out("　");
+                    } else if (node.level === 2) {
+                        process.out(node.parentNode.toChapter().fqn).out("　");
+                    }
+                } else {
+                    process.out("◆→開始:←◆\n");
+                    process.out("■");
+                    return function (v) {
+                        ReVIEW.visit(node.caption, v);
+                    };
                 }
             };
 
             TextBuilder.prototype.headlinePost = function (process, name, node) {
-                process.out("\n");
-            };
-
-            TextBuilder.prototype.chapterContentPre = function (process, node) {
-                process.out("\n");
+                process.out("\n\n");
             };
 
             TextBuilder.prototype.ulistPre = function (process, name, node) {
@@ -6364,9 +6352,24 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.headlinePre = function (process, name, node) {
-                process.out("<h").out(node.level).out(">");
-                process.out("<a id=\"h").out(node.level).out("\"></a>");
-                if (node.level === 1) {
+                if (node.cmd) {
+                    process.out("<div class=\"column\">\n");
+                }
+                process.out("<h").out(node.level);
+                if (node.label) {
+                    process.out(" id=\"").out(node.label.arg).out("\"");
+                }
+                process.out(">");
+                if (node.cmd) {
+                    process.out("<a id=\"column-").out(node.parentNode.no).out("\"></a>");
+                } else {
+                    process.out("<a id=\"h").out(node.level).out("\"></a>");
+                }
+                if (node.cmd) {
+                    return function (v) {
+                        ReVIEW.visit(node.caption, v);
+                    };
+                } else if (node.level === 1) {
                     var text = i18n.t("builder.chapter", node.parentNode.no);
                     process.out(text).out("　");
                 } else if (node.level === 2) {
@@ -6376,6 +6379,9 @@ var ReVIEW;
 
             HtmlBuilder.prototype.headlinePost = function (process, name, node) {
                 process.out("</h").out(node.level).out(">\n");
+                if (node.cmd) {
+                    process.out("</div>\n");
+                }
             };
 
             HtmlBuilder.prototype.ulistPre = function (process, name, node) {

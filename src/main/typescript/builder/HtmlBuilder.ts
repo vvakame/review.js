@@ -82,9 +82,24 @@ import findChapter = ReVIEW.findChapter;
 		}
 
 		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
-			process.out("<h").out(node.level).out(">");
-			process.out("<a id=\"h").out(node.level).out("\"></a>");
-			if (node.level === 1) {
+			if (node.cmd) {
+				process.out("<div class=\"column\">\n");
+			}
+			process.out("<h").out(node.level);
+			if (node.label) {
+				process.out(" id=\"").out(node.label.arg).out("\"");
+			}
+			process.out(">");
+			if (node.cmd) {
+				process.out("<a id=\"column-").out(node.parentNode.no).out("\"></a>");
+			} else {
+				process.out("<a id=\"h").out(node.level).out("\"></a>");
+			}
+			if (node.cmd) {
+				return v => {
+					ReVIEW.visit(node.caption, v);
+				};
+			} else if (node.level === 1) {
 				var text = i18n.t("builder.chapter", node.parentNode.no);
 				process.out(text).out("　");
 			} else if (node.level === 2) {
@@ -94,6 +109,9 @@ import findChapter = ReVIEW.findChapter;
 
 		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
 			process.out("</h").out(node.level).out(">\n");
+			if (node.cmd) {
+				process.out("</div>\n");
+			}
 		}
 
 		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
@@ -161,29 +179,29 @@ import findChapter = ReVIEW.findChapter;
 			process.out("<br/>");
 		}
 
-        inline_b_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("<b>");
-        }
+		inline_b_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("<b>");
+		}
 
-        inline_b_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("</b>");
-        }
+		inline_b_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("</b>");
+		}
 
-        inline_code_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("<tt class='inline-code'>");
-        }
+		inline_code_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("<tt class='inline-code'>");
+		}
 
-        inline_code_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("</tt>");
-        }
+		inline_code_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("</tt>");
+		}
 
-        inline_href_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            var href = nodeContentToString(process, node);
-            process.out("<a href=\"" + href + "\">");
-        }
+		inline_href_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			var href = nodeContentToString(process, node);
+			process.out("<a href=\"" + href + "\">");
+		}
 
-        inline_href_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("</a>");
-        }
+		inline_href_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("</a>");
+		}
 	}
 }

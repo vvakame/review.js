@@ -21,27 +21,39 @@ import findChapter = ReVIEW.findChapter;
 	export class TextBuilder extends DefaultBuilder {
 
 		chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any {
-			process.out("\n");
+			if (!node.headline.cmd) {
+				// 非 column
+				process.out("\n");
+			} else {
+				// column
+				process.out("◆→終了:←◆\n");
+			}
 		}
 
 		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
 			// TODO no の採番がレベル別になっていない
 			// TODO 2.3.2 みたいな階層を返せるメソッドが何かほしい
-			process.out("■H").out(node.level).out("■");
-			if (node.level === 1) {
-				var text = i18n.t("builder.chapter", node.parentNode.no);
-				process.out(text).out("　");
-			} else if (node.level === 2) {
-				process.out(node.parentNode.toChapter().fqn).out("　");
+			if (!node.cmd) {
+				// 非 column
+				process.out("■H").out(node.level).out("■");
+				if (node.level === 1) {
+					var text = i18n.t("builder.chapter", node.parentNode.no);
+					process.out(text).out("　");
+				} else if (node.level === 2) {
+					process.out(node.parentNode.toChapter().fqn).out("　");
+				}
+			} else {
+				// column
+				process.out("◆→開始:←◆\n");
+				process.out("■");
+				return v => {
+					ReVIEW.visit(node.caption, v);
+				};
 			}
 		}
 
 		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
-			process.out("\n");
-		}
-
-		chapterContentPre(process:BuilderProcess, node:ChapterSyntaxTree) {
-			process.out("\n");
+			process.out("\n\n");
 		}
 
 		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
@@ -105,28 +117,28 @@ import findChapter = ReVIEW.findChapter;
 			process.out("\n");
 		}
 
-        inline_b_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("★");
-        }
+		inline_b_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("★");
+		}
 
-        inline_b_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("☆");
-        }
+		inline_b_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("☆");
+		}
 
-        inline_code_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("△");
-        }
+		inline_code_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("△");
+		}
 
-        inline_code_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("☆");
-        }
+		inline_code_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("☆");
+		}
 
-        inline_href_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("△");
-        }
+		inline_href_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("△");
+		}
 
-        inline_href_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("☆");
-        }
+		inline_href_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("☆");
+		}
 	}
 }

@@ -55,12 +55,6 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 						visitChapterPost: (node:ChapterSyntaxTree)=> {
 							return this.chapterPost(process, node);
 						},
-						visitChapterContentPre: (node:ChapterSyntaxTree)=> {
-							return this.chapterContentPre(process, node);
-						},
-						visitChapterContentPost: (node:ChapterSyntaxTree)=> {
-							return this.chapterContentPost(process, node);
-						},
 						visitHeadlinePre: (node:HeadlineSyntaxTree)=> {
 							return this.headlinePre(process, "hd", node);
 						},
@@ -106,12 +100,6 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		}
 
 		chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any {
-		}
-
-		chapterContentPre(process:BuilderProcess, node:ChapterSyntaxTree):any {
-		}
-
-		chapterContentPost(process:BuilderProcess, node:ChapterSyntaxTree):any {
 		}
 
 		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any {
