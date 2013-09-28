@@ -389,7 +389,6 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
-<<<<<<< HEAD
 		inline_kw(builder:IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Inline);
 			builder.setSymbol("kw");
@@ -403,8 +402,19 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
-=======
->>>>>>> 9e6a670ae9618907edec6e3a480392aa2b42f5a0
+		inline_em(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Inline);
+			builder.setSymbol("em");
+			builder.setDescription(t("description.inline_em"));
+			builder.processNode((process, n)=> {
+				var node = n.toInlineElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
+			});
+		}
+
 		// TODO 以下のものの実装をすすめる
 		// block_emlist
 		// block_source
@@ -434,7 +444,6 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		// inline_ami
 		// inline_i
 		// inline_strong
-		// inline_em
 		// inline_tti
 		// inline_ttb
 		// inline_u

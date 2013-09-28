@@ -11,7 +11,8 @@ module ReVIEW {
 			"ulist": "番号なし箇条書きを示します。*記号をつなげて書くとネストした箇条書きにする事ができます。",
 			"inline_b": "ボールド(太字)にします。\n@<b>{この部分が太字になる}",
 			"inline_href": "リンクを示します。URLを書きたい場合に使います。\n@<href>{https://github.com/vvakame/review.js}",
-			"inline_tt": "囲まれたテキストを等幅フォントで表示します。"
+			"inline_tt": "囲まれたテキストを等幅フォントで表示します。",
+			"inline_em": "テキストを強調します。\n@<em>{このように強調されます}"
 		},
 		"compile": {
 			"file_not_exists": "ファイル %s が開けません",
