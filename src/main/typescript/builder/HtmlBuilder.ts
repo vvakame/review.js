@@ -203,9 +203,7 @@ import findChapter = ReVIEW.findChapter;
 		inline_href_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("</a>");
 		}
-        inline_href_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("</a>");
-	}
+
         // TODO 未完了
         inline_kw_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
             process.out("<b>");

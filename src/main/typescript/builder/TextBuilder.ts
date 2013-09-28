@@ -137,10 +137,6 @@ import findChapter = ReVIEW.findChapter;
 			process.out("△");
 		}
 
-<<<<<<< HEAD
-		inline_href_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("☆");
-		}
         inline_href_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
             process.out("☆");
         }

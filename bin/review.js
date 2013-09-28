@@ -4064,7 +4064,7 @@ var ReVIEW;
             "inline_code": "短いプログラムコードを記述します。\n@<code>{alert(\"Hello!\");}\n長いソースコードにはlist記法を使いましょう。",
             "inline_br": "改行を示します。リスト内での改行や、段落を変えずに改行をしたい場合に使います。",
             "ulist": "番号なし箇条書きを示します。*記号をつなげて書くとネストした箇条書きにする事ができます。",
-            "inline_b": "ボールドを示します。",
+            "inline_b": "ボールド(太字)にします。\n@<b>{この部分が太字になる}",
             "inline_href": "リンクを示します。URLを書きたい場合に使います。\n@<href>{https://github.com/vvakame/review.js}"
         },
         "compile": {
@@ -6495,11 +6495,12 @@ var ReVIEW;
 
             HtmlBuilder.prototype.inline_kw_pre = function (process, node) {
                 process.out("<b>");
+                process.out(ReVIEW.nodeToString(process, node));
+                return false;
             };
 
             HtmlBuilder.prototype.inline_kw_post = function (process, node) {
                 process.out("</b>");
-                process.out(ReVIEW.nodeToString(process, node));
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);
