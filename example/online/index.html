@@ -24,6 +24,7 @@
             display: none;
         }
     </style>
+    <meta charset="UTF-8">
 </head>
 <body>
 
@@ -64,7 +65,8 @@
         var $input = $("#input");
         var cache = load(KEY);
         $input.val('={sample} これが、これがサンプルだ！\n@<hd>{sample} を開始する！\n//list[hoge][きゃぷしょん]{\nalert("hello");\n//}\n@<list>{hoge}はJavaScriptのコードです。');
-        if(cache !== ""){
+        if(cache === null){
+        }else if(cache !== ""){
             $input.val(cache);
         }
         $input.on("keyup", function () {
