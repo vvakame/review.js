@@ -6297,17 +6297,16 @@ var ReVIEW;
                 process.out("☆");
             };
 
-<<<<<<< HEAD
             TextBuilder.prototype.inline_kw = function (process, node) {
                 process.out("[p]");
-=======
+            };
+
             TextBuilder.prototype.inline_tt_pre = function (process, node) {
                 process.out("△");
             };
 
             TextBuilder.prototype.inline_tt_post = function (process, node) {
                 process.out("☆");
->>>>>>> e48d32fdf6bcf2d2d3e7eb9a2d553f1b64300b99
             };
             return TextBuilder;
         })(Build.DefaultBuilder);
@@ -6516,22 +6515,18 @@ var ReVIEW;
                 process.out("</a>");
             };
 
-<<<<<<< HEAD
-            HtmlBuilder.prototype.inline_kw_pre = function (process, node) {
-                process.out("<b>");
-            };
-
-            HtmlBuilder.prototype.inline_kw_post = function (process, node) {
-                process.out("</b>");
-                process.out(ReVIEW.nodeToString(process, node));
-=======
             HtmlBuilder.prototype.inline_tt_pre = function (process, node) {
                 process.out("<tt>");
             };
 
             HtmlBuilder.prototype.inline_tt_post = function (process, node) {
                 process.out("</tt>");
->>>>>>> e48d32fdf6bcf2d2d3e7eb9a2d553f1b64300b99
+            };
+
+            HtmlBuilder.prototype.inline_kw_pre = function (process, node) {
+                process.out("<b>");
+                process.out(ReVIEW.nodeToString(process, node));
+                return false;
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);

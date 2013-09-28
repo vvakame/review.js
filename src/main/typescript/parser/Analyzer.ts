@@ -389,6 +389,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
+<<<<<<< HEAD
 		inline_kw(builder:IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Inline);
 			builder.setSymbol("kw");
@@ -402,6 +403,8 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
+=======
+>>>>>>> 9e6a670ae9618907edec6e3a480392aa2b42f5a0
 		// TODO 以下のものの実装をすすめる
 		// block_emlist
 		// block_source

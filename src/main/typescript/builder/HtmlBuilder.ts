@@ -203,9 +203,6 @@ import findChapter = ReVIEW.findChapter;
 		inline_href_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("</a>");
 		}
-		inline_href_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("</a>");
-		}
 
 		inline_tt_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("<tt>"); // TODO RubyReviewではContentに改行が含まれている奴の挙動がサポートされていない。
@@ -220,11 +217,6 @@ import findChapter = ReVIEW.findChapter;
 			process.out("<b>");
 			process.out(nodeToString(process,node));
 			return false;
-		}
-
-		// TODO 未完了
-		inline_kw_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("</b>");
 		}
 	}
 }
