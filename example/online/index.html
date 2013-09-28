@@ -55,9 +55,14 @@
         $child.html("ReVIEW関連ファイルが正しく読み込めていません。<br>grunt default を実行してください。");
     } else {
         var $input = $("#input");
+        var cache = $input.val();
         $input.val('={sample} これが、これがサンプルだ！\n@<hd>{sample} を開始する！\n//list[hoge][きゃぷしょん]{\nalert("hello");\n//}\n@<list>{hoge}はJavaScriptのコードです。');
         $input.on("keyup", function () {
-            doCompile($input.val());
+            var val = $input.val();
+            if(cache.length != val.length){
+                cache = val;
+                doCompile($input.val());
+            }
         });
         doCompile($input.val())
     }
@@ -93,6 +98,9 @@
                                     switch (acceptable.symbolName) {
                                         case "headline":
                                             text += "={???} タイトル\n";
+                                            break;
+                                        case "ulist":
+                                            text += " * 文字列\n";
                                             break;
                                     }
                                     break;

@@ -11,6 +11,7 @@ import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
 import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
 import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
 import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
@@ -38,6 +39,22 @@ import findChapter = ReVIEW.findChapter;
 		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
 			process.out("\n\n");
 		}
+
+        ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
+            process.out("・");
+            return (v)=> {
+                ReVIEW.visit(node.text, v);
+                process.out("\n");
+                node.childNodes.forEach(child=>{
+                    process.out(stringRepeat(child.toUlist().level - 1, "    "));
+                    ReVIEW.visit(child, v);
+                });
+            };
+        }
+
+        ulistPost(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
+            
+        }
 
 		block_list_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
 			process.out("◆→開始:リスト←◆\n");

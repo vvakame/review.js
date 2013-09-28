@@ -231,7 +231,9 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 					func = this[k];
 				} else if (k === "headline") {
 					func = this[k];
-				}
+				} else if(k === "ulist") {
+                    func = this[k];
+                }
 				if (func) {
 					process.prepare();
 					func(process);
@@ -262,6 +264,21 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 				});
 			});
 		}
+
+        ulist(builder:IAcceptableSyntaxBuilder) {
+            builder.setSyntaxType(SyntaxType.Other);
+            builder.setClass(ReVIEW.Parse.UlistElementSyntaxTree);
+            builder.setDescription(t("description.ulist"));
+            builder.processNode((process, n)=> {
+                var node = n.toUlist();
+                process.addSymbol({
+                    symbolName: "li",
+                    level: node.level,
+                    text: node.text,
+                    node: node
+                });
+            });
+        }
 
 		block_list(builder:IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
@@ -321,11 +338,9 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
         }
 
 		// TODO 以下のものの実装をすすめる
-		// block_list
 		// block_emlist
 		// block_source
 		// block_listnum
-		// inline_list
 		// emlistnum
 		// inline_code
 		// block_cmd

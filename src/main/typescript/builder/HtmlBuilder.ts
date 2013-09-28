@@ -11,6 +11,7 @@ import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
 import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
 import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
 import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
@@ -36,6 +37,24 @@ import findChapter = ReVIEW.findChapter;
 		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
 			process.out("</h").out(node.level).out(">");
 		}
+
+        ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
+            process.out("<li>");
+            if (node.childNodes.length > 0) {
+                return (v)=> {
+                    ReVIEW.visit(node.text, v);
+                    process.out("<ul>");
+                    node.childNodes.forEach(child=>{
+                        ReVIEW.visit(child, v);
+                    });
+                    process.out("</ul>");
+                };
+            }
+        }
+
+        ulistPost(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
+            process.out("</li>");
+        }
 
 		block_list_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
 			//TODO styleは外出す

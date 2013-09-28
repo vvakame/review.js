@@ -138,4 +138,8 @@ module ReVIEW {
 			fs.writeFileSync(path, content);
 		}
 	}
+
+    export function stringRepeat(times:number, src:string):string {
+        return new Array(times + 1).join(src);
+    }
 }
