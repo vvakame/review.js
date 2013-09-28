@@ -4053,7 +4053,8 @@ var ReVIEW;
         "sample": "こんちゃーす！",
         "description": {
             "headline": "チャプターの始まりを示します。\n\"= 見出し\" という形式で書きます。",
-            "block_list": "リストを示します。技術書ではプログラムコードの掲載に使います。\n//list[label][caption]{\nalert(\"Hello!\");\n//}\n という形式で書きます。"
+            "block_list": "リストを示します。技術書ではプログラムコードの掲載に使います。\n//list[label][caption]{\nalert(\"Hello!\");\n//}\n という形式で書きます。",
+            "inline_br": "改行を示します。リスト内での改行や、段落を変えずに改行をしたい場合に使います。"
         },
         "compile": {
             "file_not_exists": "ファイル %s が開けません",
@@ -5127,6 +5128,19 @@ var ReVIEW;
                     });
                 });
             };
+
+            DefaultAnalyzer.prototype.inline_br = function (builder) {
+                builder.setSyntaxType(SyntaxType.Inline);
+                builder.setSymbol("br");
+                builder.setDescription(t("description.inline_br"));
+                builder.processNode(function (process, n) {
+                    var node = n.toInlineElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
             return DefaultAnalyzer;
         })();
         Build.DefaultAnalyzer = DefaultAnalyzer;
@@ -6110,6 +6124,10 @@ var ReVIEW;
             TextBuilder.prototype.inline_hd_post = function (process, node) {
                 process.out("」");
             };
+
+            TextBuilder.prototype.inline_br = function (process, node) {
+                process.out("\n");
+            };
             return TextBuilder;
         })(Build.DefaultBuilder);
         Build.TextBuilder = TextBuilder;
@@ -6195,6 +6213,10 @@ var ReVIEW;
 
             HtmlBuilder.prototype.inline_hd_post = function (process, node) {
                 process.out("」");
+            };
+
+            HtmlBuilder.prototype.inline_br = function (process, node) {
+                process.out("<br/>");
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);

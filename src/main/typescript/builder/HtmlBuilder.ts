@@ -81,5 +81,9 @@ import findChapter = ReVIEW.findChapter;
 		inline_hd_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("」");
 		}
+
+        inline_br(process:BuilderProcess, node:InlineElementSyntaxTree) {
+            process.out("<br/>");
+        }
 	}
 }

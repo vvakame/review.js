@@ -112,7 +112,9 @@
                             text += acceptable.description;
                             text += "\n\n";
                         });
+                        
                         $hint.text(text);
+                        $hint.prepend("<hr/>");
                     },
                     onReports: function (reports) {
                         outputReports(reports);

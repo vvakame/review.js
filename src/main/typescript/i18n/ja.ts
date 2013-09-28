@@ -3,7 +3,8 @@ module ReVIEW {
 		"sample": "こんちゃーす！",
 		"description": {
 			"headline": "チャプターの始まりを示します。\n\"= 見出し\" という形式で書きます。",
-			"block_list": "リストを示します。技術書ではプログラムコードの掲載に使います。\n//list[label][caption]{\nalert(\"Hello!\");\n//}\n という形式で書きます。"
+			"block_list": "リストを示します。技術書ではプログラムコードの掲載に使います。\n//list[label][caption]{\nalert(\"Hello!\");\n//}\n という形式で書きます。",
+            "inline_br": "改行を示します。リスト内での改行や、段落を変えずに改行をしたい場合に使います。   "
 		},
 		"compile": {
 			"file_not_exists": "ファイル %s が開けません",
