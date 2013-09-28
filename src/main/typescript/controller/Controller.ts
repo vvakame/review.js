@@ -127,6 +127,8 @@ import flatten = ReVIEW.flatten;
 				builder.init(book);
 			});
 
+			// TODO write しないといけない
+
 			this.outputReport(book.reports);
 
 			this.compileFinished(book);

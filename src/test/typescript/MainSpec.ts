@@ -5,4 +5,5 @@
 ///<reference path='parser/WalkerSpec.ts' />
 ///<reference path='controller/ControllerSpec.ts' />
 ///<reference path='builder/BuilderSpec.ts' />
+///<reference path='RubyReVIEWDiffSpec.ts' />
 ///<reference path='UnsolvedIssueSpec.ts' />
