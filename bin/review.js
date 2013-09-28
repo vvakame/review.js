@@ -4059,9 +4059,13 @@ var ReVIEW;
         "description": {
             "headline": "チャプターの始まりを示します。\n\"= 見出し\" という形式で書きます。",
             "block_list": "リストを示します。技術書ではプログラムコードの掲載に使います。\n//list[label][caption]{\nalert(\"Hello!\");\n//}\n という形式で書きます。",
+            "inline_list": "リストへの参照を示します。\n//list[hoge][caption]{alert(\"Hello!\");\n//}\n を参照する時は @<list>{hoge} と書きます。",
+            "inline_hd": "TODO 後で書く。見出し参照を作成する。",
+            "inline_code": "短いプログラムコードを記述します。\n@<code>{alert(\"Hello!\");}\n長いソースコードにはlist記法を使いましょう。",
             "inline_br": "改行を示します。リスト内での改行や、段落を変えずに改行をしたい場合に使います。",
             "ulist": "番号なし箇条書きを示します。*記号をつなげて書くとネストした箇条書きにする事ができます。",
-            "inline_b": "ボールドを示します。"
+            "inline_b": "ボールドを示します。",
+            "inline_href": "リンクを示します。URLを書きたい場合に使います。\n@<href>{https://github.com/vvakame/review.js}"
         },
         "compile": {
             "file_not_exists": "ファイル %s が開けません",
