@@ -100,5 +100,12 @@ import findChapter = ReVIEW.findChapter;
         inline_br(process:BuilderProcess, node:InlineElementSyntaxTree) {
             process.out("\n");
         }
+
+        inline_b_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+
+        }
+
+        inline_b_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+        }
 	}
 }

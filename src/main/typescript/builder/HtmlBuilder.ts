@@ -135,5 +135,13 @@ import findChapter = ReVIEW.findChapter;
 		inline_br(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("<br/>");
 		}
+
+        inline_b_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+            process.out("<b>");
+        }
+
+        inline_b_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+            process.out("</b>");
+        }
 	}
 }

@@ -337,6 +337,19 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
             });
         }
 
+        inline_b(builder:IAcceptableSyntaxBuilder) {
+            builder.setSyntaxType(SyntaxType.Inline);
+            builder.setSymbol("b");
+            builder.setDescription(t("description.inline_b"));
+            builder.processNode((process, n)=> {
+                var node = n.toInlineElement();
+                process.addSymbol({
+                    symbolName: node.symbol,
+                    node: node
+                });
+            });
+        }
+
 		// TODO 以下のものの実装をすすめる
 		// block_emlist
 		// block_source
@@ -366,7 +379,6 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		// inline_bou
 		// inline_ruby
 		// inline_ami
-		// inline_b
 		// inline_i
 		// inline_strong
 		// inline_em

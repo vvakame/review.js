@@ -4060,7 +4060,8 @@ var ReVIEW;
             "headline": "チャプターの始まりを示します。\n\"= 見出し\" という形式で書きます。",
             "block_list": "リストを示します。技術書ではプログラムコードの掲載に使います。\n//list[label][caption]{\nalert(\"Hello!\");\n//}\n という形式で書きます。",
             "inline_br": "改行を示します。リスト内での改行や、段落を変えずに改行をしたい場合に使います。",
-            "ulist": "番号なし箇条書きを示します。*記号をつなげて書くとネストした箇条書きにする事ができます。"
+            "ulist": "番号なし箇条書きを示します。*記号をつなげて書くとネストした箇条書きにする事ができます。",
+            "inline_b": "ボールドを示します。"
         },
         "compile": {
             "file_not_exists": "ファイル %s が開けません",
@@ -5164,6 +5165,19 @@ var ReVIEW;
                     });
                 });
             };
+
+            DefaultAnalyzer.prototype.inline_b = function (builder) {
+                builder.setSyntaxType(SyntaxType.Inline);
+                builder.setSymbol("b");
+                builder.setDescription(t("description.inline_b"));
+                builder.processNode(function (process, n) {
+                    var node = n.toInlineElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
             return DefaultAnalyzer;
         })();
         Build.DefaultAnalyzer = DefaultAnalyzer;
@@ -6189,6 +6203,12 @@ var ReVIEW;
             TextBuilder.prototype.inline_br = function (process, node) {
                 process.out("\n");
             };
+
+            TextBuilder.prototype.inline_b_pre = function (process, node) {
+            };
+
+            TextBuilder.prototype.inline_b_post = function (process, node) {
+            };
             return TextBuilder;
         })(Build.DefaultBuilder);
         Build.TextBuilder = TextBuilder;
@@ -6326,6 +6346,14 @@ var ReVIEW;
 
             HtmlBuilder.prototype.inline_br = function (process, node) {
                 process.out("<br/>");
+            };
+
+            HtmlBuilder.prototype.inline_b_pre = function (process, node) {
+                process.out("<b>");
+            };
+
+            HtmlBuilder.prototype.inline_b_post = function (process, node) {
+                process.out("</b>");
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);
