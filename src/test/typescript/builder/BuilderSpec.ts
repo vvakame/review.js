@@ -11,7 +11,7 @@ describe("ReVIEW.Buildの", ()=> {
 		};
 		var result:any = {
 		};
-		var book = ReVIEW.start((review)=> {
+		var book = ReVIEW.start(review=> {
 			review.initConfig({
 				read: function (path) {
 					return files[path];
@@ -20,9 +20,11 @@ describe("ReVIEW.Buildの", ()=> {
 					result[path] = content;
 				},
 
-				compileSuccess: ()=> {
-				},
-				compileFailed: ()=> {
+				listener: {
+					onCompileSuccess: ()=> {
+					},
+					onCompileFailed: ()=> {
+					}
 				},
 
 				builders: [new ReVIEW.Build.TextBuilder()],
@@ -70,12 +72,11 @@ describe("ReVIEW.Buildの", ()=> {
 						result[path] = content;
 					},
 
-					outputReport: ()=> {
-					},
-
-					compileSuccess: ()=> {
-					},
-					compileFailed: ()=> {
+					listener: {
+						onCompileSuccess: ()=> {
+						},
+						onCompileFailed: ()=> {
+						}
 					},
 
 					builders: [new ReVIEW.Build.TextBuilder()],
@@ -114,12 +115,11 @@ describe("ReVIEW.Buildの", ()=> {
 						result[path] = content;
 					},
 
-					outputReport: ()=> {
-					},
-
-					compileSuccess: ()=> {
-					},
-					compileFailed: ()=> {
+					listener: {
+						onCompileSuccess: ()=> {
+						},
+						onCompileFailed: ()=> {
+						}
 					},
 
 					builders: [new ReVIEW.Build.TextBuilder()],
@@ -155,12 +155,11 @@ describe("ReVIEW.Buildの", ()=> {
 						result[path] = content;
 					},
 
-					outputReport: ()=> {
-					},
-
-					compileSuccess: ()=> {
-					},
-					compileFailed: ()=> {
+					listener: {
+						onCompileSuccess: ()=> {
+						},
+						onCompileFailed: ()=> {
+						}
 					},
 
 					builders: [new ReVIEW.Build.TextBuilder()],
@@ -199,9 +198,11 @@ describe("ReVIEW.Buildの", ()=> {
 						result[path] = content;
 					},
 
-					compileSuccess: ()=> {
-					},
-					compileFailed: ()=> {
+					listener: {
+						onCompileSuccess: ()=> {
+						},
+						onCompileFailed: ()=> {
+						}
 					},
 
 					builders: [builder],

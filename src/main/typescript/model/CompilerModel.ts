@@ -1,6 +1,7 @@
 ///<reference path='../i18n/i18n.ts' />
 ///<reference path='../parser/Parser.ts' />
 ///<reference path='../builder/Builder.ts' />
+///<reference path='../controller/Controller.ts' />
 
 // parser/ と builder/ で共用するモデル
 

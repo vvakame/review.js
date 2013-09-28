@@ -11,7 +11,7 @@ describe("ReVIEW.Controllerの", ()=> {
 		};
 		var result:any = {
 		};
-		var book = ReVIEW.start((review)=> {
+		var book = ReVIEW.start(review => {
 			review.initConfig({
 				read: function (path) {
 					return files[path];
@@ -20,9 +20,11 @@ describe("ReVIEW.Controllerの", ()=> {
 					result[path] = content;
 				},
 
-				compileSuccess: ()=> {
-				},
-				compileFailed: ()=> {
+				listener: {
+					onCompileSuccess: ()=> {
+					},
+					onCompileFailed: ()=> {
+					}
 				},
 
 				builders: [new ReVIEW.Build.TextBuilder()],
