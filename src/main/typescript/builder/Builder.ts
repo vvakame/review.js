@@ -30,7 +30,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		blockPost(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any;
 		inlinePre(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any;
 		inlinePost(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any;
-		text(process:BuilderProcess, name:string, node:TextNodeSyntaxTree):any;
+		text(process:BuilderProcess, node:TextNodeSyntaxTree):any;
 	}
 
 	export class DefaultBuilder implements IBuilder {
@@ -54,6 +54,12 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 						},
 						visitChapterPost: (node:ChapterSyntaxTree)=> {
 							return this.chapterPost(process, node);
+						},
+						visitChapterContentPre: (node:ChapterSyntaxTree)=> {
+							return this.chapterContentPre(process, node);
+						},
+						visitChapterContentPost: (node:ChapterSyntaxTree)=> {
+							return this.chapterContentPost(process, node);
 						},
 						visitHeadlinePre: (node:HeadlineSyntaxTree)=> {
 							return this.headlinePre(process, "hd", node);
@@ -80,7 +86,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 							return this.inlinePost(process, node.symbol, node);
 						},
 						visitTextPre: (node:TextNodeSyntaxTree) => {
-							this.text(process, node.text, node);
+							this.text(process, node);
 						}
 					});
 					this.processPost(process, chapter);
@@ -102,6 +108,12 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any {
 		}
 
+		chapterContentPre(process:BuilderProcess, node:ChapterSyntaxTree):any {
+		}
+
+		chapterContentPost(process:BuilderProcess, node:ChapterSyntaxTree):any {
+		}
+
 		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any {
 		}
 
@@ -114,7 +126,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
         ulistPost(process:BuilderProcess, name:string, node:UlistElementSyntaxTree):any {
         }
 
-		text(process:BuilderProcess, name:string, node:TextNodeSyntaxTree):any {
+		text(process:BuilderProcess, node:TextNodeSyntaxTree):any {
 			process.out(node.text);
 		}
 

@@ -67,7 +67,8 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 		];
 
 		var targetFiles = [
-			"block.re" // 手を加えて通した
+			"block.re", // 手を加えて通した
+			"at_without_inline.re" // 手を加えて通した
 		];
 
 		var path = "src/test/resources/valid/";

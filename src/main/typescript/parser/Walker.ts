@@ -61,6 +61,10 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 			visitChapterPre: v.visitChapterPre || v.visitNodePre || v.visitDefaultPre,
 			visitChapterPost: v.visitChapterPost || v.visitNodePost || v.visitDefaultPost || (()=> {
 			}),
+			visitChapterContentPre: v.visitChapterContentPre || (()=> {
+			}),
+			visitChapterContentPost: v.visitChapterContentPost || (()=> {
+			}),
 			visitHeadlinePre: v.visitHeadlinePre || v.visitDefaultPre,
 			visitHeadlinePost: v.visitHeadlinePost || v.visitDefaultPost || (()=> {
 			}),
@@ -89,6 +93,8 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 		newV.visitArgumentPost = newV.visitArgumentPost.bind(v);
 		newV.visitChapterPre = newV.visitChapterPre.bind(v);
 		newV.visitChapterPost = newV.visitChapterPost.bind(v);
+		newV.visitChapterContentPre = newV.visitChapterContentPre.bind(v);
+		newV.visitChapterContentPost = newV.visitChapterContentPost.bind(v);
 		newV.visitHeadlinePre = newV.visitHeadlinePre.bind(v);
 		newV.visitHeadlinePost = newV.visitHeadlinePost.bind(v);
 		newV.visitUlistPre = newV.visitUlistPre.bind(v);
@@ -140,6 +146,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 			var ret = v.visitChapterPre(chap, parent);
 			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
 				visitSub(ast, chap.headline, v);
+				v.visitChapterContentPre(chap, parent);
 				if (chap.text) {
 					chap.text.forEach((next)=> {
 						visitSub(ast, next, v);
@@ -148,6 +155,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 				chap.childNodes.forEach((next)=> {
 					visitSub(ast, next, v);
 				});
+				v.visitChapterContentPost(chap, parent);
 			} else if (typeof ret === "function") {
 				ret(v);
 			}
@@ -242,6 +250,8 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 		visitArgumentPost?(node:ArgumentSyntaxTree, parent:SyntaxTree);
 		visitChapterPre?(node:ChapterSyntaxTree, parent:SyntaxTree):any;
 		visitChapterPost?(node:ChapterSyntaxTree, parent:SyntaxTree);
+		visitChapterContentPre?(node:ChapterSyntaxTree, parent:SyntaxTree):any;
+		visitChapterContentPost?(node:ChapterSyntaxTree, parent:SyntaxTree);
 		visitHeadlinePre?(node:HeadlineSyntaxTree, parent:SyntaxTree):any;
 		visitHeadlinePost?(node:HeadlineSyntaxTree, parent:SyntaxTree);
 		visitUlistPre?(node:UlistElementSyntaxTree, parent:SyntaxTree):any;

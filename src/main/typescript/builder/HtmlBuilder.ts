@@ -53,7 +53,32 @@ import findChapter = ReVIEW.findChapter;
 			}
 		}
 
-		chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any {
+		text(process:BuilderProcess, node:TextNodeSyntaxTree):any {
+			var plane = false;
+			ReVIEW.walk(node, node => {
+				if (!node.parentNode) {
+					return null;
+				}
+				if (node instanceof BlockElementSyntaxTree) {
+					var block = node.toBlockElement();
+					if (block.symbol === "list") {
+						plane = true;
+						return null;
+					}
+				} else if (node instanceof HeadlineSyntaxTree) {
+					plane = true;
+					return null;
+				}
+				return node.parentNode;
+			});
+
+			if (plane) {
+				process.out(node.text);
+			} else {
+				process.out("<p>");
+				process.out(node.text);
+				process.out("</p>\n");
+			}
 		}
 
 		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
@@ -71,23 +96,23 @@ import findChapter = ReVIEW.findChapter;
 			process.out("</h").out(node.level).out(">\n");
 		}
 
-        ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
-            process.out("<li>");
-            if (node.childNodes.length > 0) {
-                return (v)=> {
-                    ReVIEW.visit(node.text, v);
-                    process.out("<ul>");
-                    node.childNodes.forEach(child=>{
-                        ReVIEW.visit(child, v);
-                    });
-                    process.out("</ul>");
-                };
-            }
-        }
+		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
+			process.out("<li>");
+			if (node.childNodes.length > 0) {
+				return (v)=> {
+					ReVIEW.visit(node.text, v);
+					process.out("<ul>");
+					node.childNodes.forEach(child=> {
+						ReVIEW.visit(child, v);
+					});
+					process.out("</ul>");
+				};
+			}
+		}
 
-        ulistPost(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
-            process.out("</li>");
-        }
+		ulistPost(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
+			process.out("</li>");
+		}
 
 		block_list_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
 			//TODO エスケープ処理

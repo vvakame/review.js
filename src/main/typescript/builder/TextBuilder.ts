@@ -37,24 +37,28 @@ import findChapter = ReVIEW.findChapter;
 		}
 
 		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
-			process.out("\n\n");
+			process.out("\n");
 		}
 
-        ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
-            process.out("・");
-            return (v)=> {
-                ReVIEW.visit(node.text, v);
-                process.out("\n");
-                node.childNodes.forEach(child=>{
-                    process.out(stringRepeat(child.toUlist().level - 1, "    "));
-                    ReVIEW.visit(child, v);
-                });
-            };
-        }
+		chapterContentPre(process:BuilderProcess, node:ChapterSyntaxTree) {
+			process.out("\n");
+		}
 
-        ulistPost(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
-            
-        }
+		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
+			process.out("・");
+			return (v)=> {
+				ReVIEW.visit(node.text, v);
+				process.out("\n");
+				node.childNodes.forEach(child=> {
+					process.out(stringRepeat(child.toUlist().level - 1, "    "));
+					ReVIEW.visit(child, v);
+				});
+			};
+		}
+
+		ulistPost(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
+
+		}
 
 		block_list_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
 			process.out("◆→開始:リスト←◆\n");
@@ -97,15 +101,15 @@ import findChapter = ReVIEW.findChapter;
 			process.out("」");
 		}
 
-        inline_br(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("\n");
-        }
+		inline_br(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("\n");
+		}
 
-        inline_b_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+		inline_b_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 
-        }
+		}
 
-        inline_b_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-        }
+		inline_b_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+		}
 	}
 }

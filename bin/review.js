@@ -4185,6 +4185,10 @@ var ReVIEW;
             visitChapterPre: v.visitChapterPre || v.visitNodePre || v.visitDefaultPre,
             visitChapterPost: v.visitChapterPost || v.visitNodePost || v.visitDefaultPost || (function () {
             }),
+            visitChapterContentPre: v.visitChapterContentPre || (function () {
+            }),
+            visitChapterContentPost: v.visitChapterContentPost || (function () {
+            }),
             visitHeadlinePre: v.visitHeadlinePre || v.visitDefaultPre,
             visitHeadlinePost: v.visitHeadlinePost || v.visitDefaultPost || (function () {
             }),
@@ -4213,6 +4217,8 @@ var ReVIEW;
         newV.visitArgumentPost = newV.visitArgumentPost.bind(v);
         newV.visitChapterPre = newV.visitChapterPre.bind(v);
         newV.visitChapterPost = newV.visitChapterPost.bind(v);
+        newV.visitChapterContentPre = newV.visitChapterContentPre.bind(v);
+        newV.visitChapterContentPost = newV.visitChapterContentPost.bind(v);
         newV.visitHeadlinePre = newV.visitHeadlinePre.bind(v);
         newV.visitHeadlinePost = newV.visitHeadlinePost.bind(v);
         newV.visitUlistPre = newV.visitUlistPre.bind(v);
@@ -4265,6 +4271,7 @@ var ReVIEW;
             var ret = v.visitChapterPre(chap, parent);
             if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
                 visitSub(ast, chap.headline, v);
+                v.visitChapterContentPre(chap, parent);
                 if (chap.text) {
                     chap.text.forEach(function (next) {
                         visitSub(ast, next, v);
@@ -4273,6 +4280,7 @@ var ReVIEW;
                 chap.childNodes.forEach(function (next) {
                     visitSub(ast, next, v);
                 });
+                v.visitChapterContentPost(chap, parent);
             } else if (typeof ret === "function") {
                 ret(v);
             }
@@ -5223,6 +5231,12 @@ var ReVIEW;
                             visitChapterPost: function (node) {
                                 return _this.chapterPost(process, node);
                             },
+                            visitChapterContentPre: function (node) {
+                                return _this.chapterContentPre(process, node);
+                            },
+                            visitChapterContentPost: function (node) {
+                                return _this.chapterContentPost(process, node);
+                            },
                             visitHeadlinePre: function (node) {
                                 return _this.headlinePre(process, "hd", node);
                             },
@@ -5248,7 +5262,7 @@ var ReVIEW;
                                 return _this.inlinePost(process, node.symbol, node);
                             },
                             visitTextPre: function (node) {
-                                _this.text(process, node.text, node);
+                                _this.text(process, node);
                             }
                         });
                         _this.processPost(process, chapter);
@@ -5270,6 +5284,12 @@ var ReVIEW;
             DefaultBuilder.prototype.chapterPost = function (process, node) {
             };
 
+            DefaultBuilder.prototype.chapterContentPre = function (process, node) {
+            };
+
+            DefaultBuilder.prototype.chapterContentPost = function (process, node) {
+            };
+
             DefaultBuilder.prototype.headlinePre = function (process, name, node) {
             };
 
@@ -5282,7 +5302,7 @@ var ReVIEW;
             DefaultBuilder.prototype.ulistPost = function (process, name, node) {
             };
 
-            DefaultBuilder.prototype.text = function (process, name, node) {
+            DefaultBuilder.prototype.text = function (process, node) {
                 process.out(node.text);
             };
 
@@ -6142,7 +6162,11 @@ var ReVIEW;
             };
 
             TextBuilder.prototype.headlinePost = function (process, name, node) {
-                process.out("\n\n");
+                process.out("\n");
+            };
+
+            TextBuilder.prototype.chapterContentPre = function (process, node) {
+                process.out("\n");
             };
 
             TextBuilder.prototype.ulistPre = function (process, name, node) {
@@ -6267,7 +6291,32 @@ var ReVIEW;
                 }
             };
 
-            HtmlBuilder.prototype.chapterPost = function (process, node) {
+            HtmlBuilder.prototype.text = function (process, node) {
+                var plane = false;
+                ReVIEW.walk(node, function (node) {
+                    if (!node.parentNode) {
+                        return null;
+                    }
+                    if (node instanceof BlockElementSyntaxTree) {
+                        var block = node.toBlockElement();
+                        if (block.symbol === "list") {
+                            plane = true;
+                            return null;
+                        }
+                    } else if (node instanceof HeadlineSyntaxTree) {
+                        plane = true;
+                        return null;
+                    }
+                    return node.parentNode;
+                });
+
+                if (plane) {
+                    process.out(node.text);
+                } else {
+                    process.out("<p>");
+                    process.out(node.text);
+                    process.out("</p>\n");
+                }
             };
 
             HtmlBuilder.prototype.headlinePre = function (process, name, node) {
