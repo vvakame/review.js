@@ -30,7 +30,7 @@
 <div id="info">
 </div>
 
-<textarea id="input">
+<textarea id="input" cols="40" rows="15">
 </textarea>
 <br>
 <input type="checkbox" id="check-text" checked> Text
@@ -54,14 +54,25 @@
         $child.addClass("error");
         $child.html("ReVIEW関連ファイルが正しく読み込めていません。<br>grunt default を実行してください。");
     } else {
+        var KEY = "backup";
+        function save(key, value){
+            window.localStorage.setItem(key, value);
+        }
+        function load(key){
+            return window.localStorage.getItem(key);
+        }
         var $input = $("#input");
-        var cache = $input.val();
+        var cache = load(KEY);
         $input.val('={sample} これが、これがサンプルだ！\n@<hd>{sample} を開始する！\n//list[hoge][きゃぷしょん]{\nalert("hello");\n//}\n@<list>{hoge}はJavaScriptのコードです。');
+        if(cache !== ""){
+            $input.val(cache);
+        }
         $input.on("keyup", function () {
             var val = $input.val();
             if(cache.length != val.length){
                 cache = val;
-                doCompile($input.val());
+                save(KEY, val);
+                doCompile(val);
             }
         });
         doCompile($input.val())
