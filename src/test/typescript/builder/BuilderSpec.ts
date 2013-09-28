@@ -73,6 +73,8 @@ describe("ReVIEW.Buildの", ()=> {
 					},
 
 					listener: {
+						onReports: () => {
+						},
 						onCompileSuccess: ()=> {
 						},
 						onCompileFailed: ()=> {
@@ -116,6 +118,8 @@ describe("ReVIEW.Buildの", ()=> {
 					},
 
 					listener: {
+						onReports: () => {
+						},
 						onCompileSuccess: ()=> {
 						},
 						onCompileFailed: ()=> {
@@ -156,6 +160,8 @@ describe("ReVIEW.Buildの", ()=> {
 					},
 
 					listener: {
+						onReports: () => {
+						},
 						onCompileSuccess: ()=> {
 						},
 						onCompileFailed: ()=> {
