@@ -4064,8 +4064,9 @@ var ReVIEW;
             "inline_code": "短いプログラムコードを記述します。\n@<code>{alert(\"Hello!\");}\n長いソースコードにはlist記法を使いましょう。",
             "inline_br": "改行を示します。リスト内での改行や、段落を変えずに改行をしたい場合に使います。",
             "ulist": "番号なし箇条書きを示します。*記号をつなげて書くとネストした箇条書きにする事ができます。",
-            "inline_b": "ボールドを示します。",
-            "inline_href": "リンクを示します。URLを書きたい場合に使います。\n@<href>{https://github.com/vvakame/review.js}"
+            "inline_b": "ボールド(太字)にします。\n@<b>{この部分が太字になる}",
+            "inline_href": "リンクを示します。URLを書きたい場合に使います。\n@<href>{https://github.com/vvakame/review.js}",
+            "inline_tt": "囲まれたテキストを等幅フォントで表示します。"
         },
         "compile": {
             "file_not_exists": "ファイル %s が開けません",
@@ -5196,6 +5197,19 @@ var ReVIEW;
                 });
             };
 
+            DefaultAnalyzer.prototype.inline_tt = function (builder) {
+                builder.setSyntaxType(SyntaxType.Inline);
+                builder.setSymbol("tt");
+                builder.setDescription(t("description.inline_tt"));
+                builder.processNode(function (process, n) {
+                    var node = n.toInlineElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
+
             DefaultAnalyzer.prototype.inline_href = function (builder) {
                 builder.setSyntaxType(SyntaxType.Inline);
                 builder.setSymbol("href");
@@ -6283,8 +6297,17 @@ var ReVIEW;
                 process.out("☆");
             };
 
+<<<<<<< HEAD
             TextBuilder.prototype.inline_kw = function (process, node) {
                 process.out("[p]");
+=======
+            TextBuilder.prototype.inline_tt_pre = function (process, node) {
+                process.out("△");
+            };
+
+            TextBuilder.prototype.inline_tt_post = function (process, node) {
+                process.out("☆");
+>>>>>>> e48d32fdf6bcf2d2d3e7eb9a2d553f1b64300b99
             };
             return TextBuilder;
         })(Build.DefaultBuilder);
@@ -6493,6 +6516,7 @@ var ReVIEW;
                 process.out("</a>");
             };
 
+<<<<<<< HEAD
             HtmlBuilder.prototype.inline_kw_pre = function (process, node) {
                 process.out("<b>");
             };
@@ -6500,6 +6524,14 @@ var ReVIEW;
             HtmlBuilder.prototype.inline_kw_post = function (process, node) {
                 process.out("</b>");
                 process.out(ReVIEW.nodeToString(process, node));
+=======
+            HtmlBuilder.prototype.inline_tt_pre = function (process, node) {
+                process.out("<tt>");
+            };
+
+            HtmlBuilder.prototype.inline_tt_post = function (process, node) {
+                process.out("</tt>");
+>>>>>>> e48d32fdf6bcf2d2d3e7eb9a2d553f1b64300b99
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);

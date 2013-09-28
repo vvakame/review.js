@@ -363,6 +363,19 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
+		inline_tt(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Inline);
+			builder.setSymbol("tt");
+			builder.setDescription(t("description.inline_tt"));
+			builder.processNode((process, n)=> {
+				var node = n.toInlineElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
+			});
+		}
+
 		inline_href(builder:IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Inline);
 			builder.setSymbol("href");
@@ -376,19 +389,18 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
-
-        inline_kw(builder:IAcceptableSyntaxBuilder) {
-            builder.setSyntaxType(SyntaxType.Inline);
-            builder.setSymbol("kw");
-            builder.setDescription(t("description.inline_kw"));
-            builder.processNode((process, n)=> {
-                var node = n.toInlineElement();
-                process.addSymbol({
-                    symbolName: node.symbol,
-                    node: node
-                });
-            });
-        }
+		inline_kw(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Inline);
+			builder.setSymbol("kw");
+			builder.setDescription(t("description.inline_kw"));
+			builder.processNode((process, n)=> {
+					var node = n.toInlineElement();
+					process.addSymbol({
+						symbolName: node.symbol,
+						node: node
+					});
+			});
+		}
 
 		// TODO 以下のものの実装をすすめる
 		// block_emlist
@@ -420,7 +432,6 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		// inline_i
 		// inline_strong
 		// inline_em
-		// inline_tt
 		// inline_tti
 		// inline_ttb
 		// inline_u
