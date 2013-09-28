@@ -5208,6 +5208,19 @@ var ReVIEW;
                     });
                 });
             };
+
+            DefaultAnalyzer.prototype.inline_kw = function (builder) {
+                builder.setSyntaxType(SyntaxType.Inline);
+                builder.setSymbol("kw");
+                builder.setDescription(t("description.inline_kw"));
+                builder.processNode(function (process, n) {
+                    var node = n.toInlineElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
             return DefaultAnalyzer;
         })();
         Build.DefaultAnalyzer = DefaultAnalyzer;
@@ -6269,6 +6282,10 @@ var ReVIEW;
             TextBuilder.prototype.inline_href_post = function (process, node) {
                 process.out("☆");
             };
+
+            TextBuilder.prototype.inline_kw = function (process, node) {
+                process.out("[p]");
+            };
             return TextBuilder;
         })(Build.DefaultBuilder);
         Build.TextBuilder = TextBuilder;
@@ -6474,6 +6491,15 @@ var ReVIEW;
 
             HtmlBuilder.prototype.inline_href_post = function (process, node) {
                 process.out("</a>");
+            };
+
+            HtmlBuilder.prototype.inline_kw_pre = function (process, node) {
+                process.out("<b>");
+            };
+
+            HtmlBuilder.prototype.inline_kw_post = function (process, node) {
+                process.out("</b>");
+                process.out(ReVIEW.nodeToString(process, node));
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);

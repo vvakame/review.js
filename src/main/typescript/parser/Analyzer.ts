@@ -376,6 +376,20 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
+
+        inline_kw(builder:IAcceptableSyntaxBuilder) {
+            builder.setSyntaxType(SyntaxType.Inline);
+            builder.setSymbol("kw");
+            builder.setDescription(t("description.inline_kw"));
+            builder.processNode((process, n)=> {
+                var node = n.toInlineElement();
+                process.addSymbol({
+                    symbolName: node.symbol,
+                    node: node
+                });
+            });
+        }
+
 		// TODO 以下のものの実装をすすめる
 		// block_emlist
 		// block_source
@@ -397,7 +411,6 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		// block_texequation
 		// block_noindent
 		// block_raw
-		// inline_kw
 		// inline_chap
 		// inline_title
 		// inline_chapref

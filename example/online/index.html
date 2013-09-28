@@ -64,8 +64,9 @@
         }
         var $input = $("#input");
         var cache = load(KEY);
-        $input.val('={sample} これが、これがサンプルだ！\n@<hd>{sample} を開始する！\n//list[hoge][きゃぷしょん]{\nalert("hello");\n//}\n@<list>{hoge}はJavaScriptのコードです。');
+        $input.val('={sample} これが、これがサンプルだ！\n@<hd>{sample} を開始する！\n//list[hoge][きゃぷしょん]{\nalert("hello");\n//}\n@<list>{hoge}はJavaScriptのコードです。\n@<kw>{JVM,java v m}です。');
         if(cache === null){
+            cache = "";
         }else if(cache !== ""){
             $input.val(cache);
         }
