@@ -4067,10 +4067,15 @@ var ReVIEW;
             "inline_b": "ボールド(太字)にします。\n@<b>{この部分が太字になる}",
 <<<<<<< HEAD
             "inline_href": "リンクを示します。URLを書きたい場合に使います。\n@<href>{https://github.com/vvakame/review.js}",
+<<<<<<< HEAD
             "inline_tt": "囲まれたテキストを等幅フォントで表示します。"
 =======
             "inline_href": "リンクを示します。URLを書きたい場合に使います。\n@<href>{https://github.com/vvakame/review.js}"
 >>>>>>> bols-blue
+=======
+            "inline_tt": "囲まれたテキストを等幅フォントで表示します。",
+            "inline_em": "テキストを強調します。\n@<em>{このように強調されます}"
+>>>>>>> 7899ec52e7eed2dcf3e4b921dfbd6dff47533b29
         },
         "compile": {
             "file_not_exists": "ファイル %s が開けません",
@@ -5231,6 +5236,19 @@ var ReVIEW;
                 builder.setSyntaxType(SyntaxType.Inline);
                 builder.setSymbol("kw");
                 builder.setDescription(t("description.inline_kw"));
+                builder.processNode(function (process, n) {
+                    var node = n.toInlineElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
+
+            DefaultAnalyzer.prototype.inline_em = function (builder) {
+                builder.setSyntaxType(SyntaxType.Inline);
+                builder.setSymbol("em");
+                builder.setDescription(t("description.inline_em"));
                 builder.processNode(function (process, n) {
                     var node = n.toInlineElement();
                     process.addSymbol({
@@ -6542,6 +6560,14 @@ var ReVIEW;
             HtmlBuilder.prototype.inline_kw_post = function (process, node) {
                 process.out("</b>");
 >>>>>>> bols-blue
+            };
+
+            HtmlBuilder.prototype.inline_em_pre = function (process, node) {
+                process.out("<em>");
+            };
+
+            HtmlBuilder.prototype.inline_em_post = function (process, node) {
+                process.out("</em>");
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);

@@ -218,5 +218,14 @@ import findChapter = ReVIEW.findChapter;
 			process.out(nodeToString(process,node));
 			return false;
 		}
+
+		inline_em_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("<em>");
+		}
+
+		inline_em_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("</em>");
+		}
+
 	}
 }
