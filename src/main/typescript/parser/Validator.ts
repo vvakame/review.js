@@ -49,6 +49,7 @@ import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 					var results = this.acceptableSyntaxes.find(node);
 					if (results.length !== 1) {
 						chapter.process.error(t("compile.syntax_definietion_error"), node);
+						return;
 					}
 					return results[0].process(chapter.process, node);
 				},
@@ -56,6 +57,7 @@ import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 					var results = this.acceptableSyntaxes.find(node);
 					if (results.length !== 1) {
 						chapter.process.error(t("compile.syntax_definietion_error"), node);
+						return;
 					}
 					var expects = results[0].argsLength;
 					var arg = node.args || [];
@@ -72,6 +74,7 @@ import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 					var results = this.acceptableSyntaxes.find(node);
 					if (results.length !== 1) {
 						chapter.process.error(t("compile.syntax_definietion_error"), node);
+						return;
 					}
 					return results[0].process(chapter.process, node);
 				}
