@@ -106,19 +106,19 @@ import findChapter = ReVIEW.findChapter;
 		}
 
         inline_b_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            //TODO
+            process.out("★");
         }
 
         inline_b_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            //TODO
+            process.out("☆");
         }
 
         inline_code_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            //TODO
+            process.out("△");
         }
 
         inline_code_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            //TODO
+            process.out("☆");
         }
 
         inline_href_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {

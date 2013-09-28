@@ -6255,15 +6255,19 @@ var ReVIEW;
             };
 
             TextBuilder.prototype.inline_b_pre = function (process, node) {
+                process.out("★");
             };
 
             TextBuilder.prototype.inline_b_post = function (process, node) {
+                process.out("☆");
             };
 
             TextBuilder.prototype.inline_code_pre = function (process, node) {
+                process.out("△");
             };
 
             TextBuilder.prototype.inline_code_post = function (process, node) {
+                process.out("☆");
             };
 
             TextBuilder.prototype.inline_href_pre = function (process, node) {
