@@ -173,6 +173,13 @@ module.exports = function (grunt) {
 					'<%= opt.jsMainOut %>/*.js'
 				],
 				dest: '<%= opt.outBase %>/review.js'
+			},
+			test: {
+				src: [
+					'<%= opt.peg %>/grammer.js',
+					'<%= opt.jsTestOut %>/main-spec.js'
+				],
+				dest: '<%= opt.jsTestOut %>/test.js'
 			}
 		},
 		uglify: {
@@ -188,25 +195,6 @@ module.exports = function (grunt) {
 						'<%= opt.jsLib %>/i18next-<%= bwr.dependencies.i18next %>.js',
 						'<%= opt.peg %>/grammer.js',
 						'<%= opt.jsMainOut %>/*.js'
-					]
-				}
-			},
-			test: {
-				options: {
-					report: 'min',
-					// 変数名の圧縮類は作業コストが大きすぎるのでやらない
-					beautify: true,
-					mangle: false,
-					preserveComments: 'some',
-
-					sourceMap: '<%= opt.jsMainOut %>/source.js.map',
-					sourceMapRoot: '',
-					sourceMappingURL: 'source.js.map'
-				},
-				files: {
-					'<%= opt.jsTestOut %>/test.js': [
-						'<%= opt.peg %>/grammer.js',
-						'<%= opt.jsTestOut %>/main-spec.js'
 					]
 				}
 			}
@@ -311,7 +299,7 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'test-preprocess',
 		"テストに必要な前準備を実行する。",
-		['clean:clientScript', 'typescript:test', 'tslint', 'exec:pegjs', 'concat:dev', 'uglify:test']);
+		['clean:clientScript', 'typescript:test', 'tslint', 'exec:pegjs', 'concat:dev', 'concat:test']);
 
 	grunt.registerTask(
 		'test',
