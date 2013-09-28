@@ -24,8 +24,8 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any;
 		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any;
 		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any;
-        ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree):any;
-        ulistPost(process:BuilderProcess, name:string, node:UlistElementSyntaxTree):any;
+		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree):any;
+		ulistPost(process:BuilderProcess, name:string, node:UlistElementSyntaxTree):any;
 		blockPre(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any;
 		blockPost(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any;
 		inlinePre(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any;
@@ -61,12 +61,12 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 						visitHeadlinePost: (node:HeadlineSyntaxTree)=> {
 							return this.headlinePost(process, "hd", node);
 						},
-                        visitUlistPre: (node:UlistElementSyntaxTree)=> {
-                            return this.ulistPre(process, "li", node);
-                        },
-                        visitUlistPost: (node:UlistElementSyntaxTree)=> {
-                            return this.ulistPost(process, "li", node);
-                        },
+						visitUlistPre: (node:UlistElementSyntaxTree)=> {
+							return this.ulistPre(process, "li", node);
+						},
+						visitUlistPost: (node:UlistElementSyntaxTree)=> {
+							return this.ulistPost(process, "li", node);
+						},
 						visitBlockElementPre: (node:BlockElementSyntaxTree)=> {
 							return this.blockPre(process, node.symbol, node);
 						},
@@ -108,11 +108,11 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any {
 		}
 
-        ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree):any {
-        }
+		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree):any {
+		}
 
-        ulistPost(process:BuilderProcess, name:string, node:UlistElementSyntaxTree):any {
-        }
+		ulistPost(process:BuilderProcess, name:string, node:UlistElementSyntaxTree):any {
+		}
 
 		text(process:BuilderProcess, node:TextNodeSyntaxTree):any {
 			process.out(node.text);
