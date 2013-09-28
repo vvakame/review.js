@@ -231,9 +231,9 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 					func = this[k];
 				} else if (k === "headline") {
 					func = this[k];
-				} else if(k === "ulist") {
-                    func = this[k];
-                }
+				} else if (k === "ulist") {
+					func = this[k];
+				}
 				if (func) {
 					process.prepare();
 					func(process);
@@ -265,20 +265,20 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
-        ulist(builder:IAcceptableSyntaxBuilder) {
-            builder.setSyntaxType(SyntaxType.Other);
-            builder.setClass(ReVIEW.Parse.UlistElementSyntaxTree);
-            builder.setDescription(t("description.ulist"));
-            builder.processNode((process, n)=> {
-                var node = n.toUlist();
-                process.addSymbol({
-                    symbolName: "li",
-                    level: node.level,
-                    text: node.text,
-                    node: node
-                });
-            });
-        }
+		ulist(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Other);
+			builder.setClass(ReVIEW.Parse.UlistElementSyntaxTree);
+			builder.setDescription(t("description.ulist"));
+			builder.processNode((process, n)=> {
+				var node = n.toUlist();
+				process.addSymbol({
+					symbolName: "li",
+					level: node.level,
+					text: node.text,
+					node: node
+				});
+			});
+		}
 
 		block_list(builder:IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
@@ -324,57 +324,57 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
-        inline_br(builder:IAcceptableSyntaxBuilder) {
-            builder.setSyntaxType(SyntaxType.Inline);
-            builder.setSymbol("br");
-            builder.setDescription(t("description.inline_br"));
-            builder.processNode((process, n)=> {
-                var node = n.toInlineElement();
-                process.addSymbol({
-                    symbolName: node.symbol,
-                    node: node
-                });
-            });
-        }
+		inline_br(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Inline);
+			builder.setSymbol("br");
+			builder.setDescription(t("description.inline_br"));
+			builder.processNode((process, n)=> {
+				var node = n.toInlineElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
+			});
+		}
 
-        inline_b(builder:IAcceptableSyntaxBuilder) {
-            builder.setSyntaxType(SyntaxType.Inline);
-            builder.setSymbol("b");
-            builder.setDescription(t("description.inline_b"));
-            builder.processNode((process, n)=> {
-                var node = n.toInlineElement();
-                process.addSymbol({
-                    symbolName: node.symbol,
-                    node: node
-                });
-            });
-        }
+		inline_b(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Inline);
+			builder.setSymbol("b");
+			builder.setDescription(t("description.inline_b"));
+			builder.processNode((process, n)=> {
+				var node = n.toInlineElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
+			});
+		}
 
-        inline_code(builder:IAcceptableSyntaxBuilder) {
-            builder.setSyntaxType(SyntaxType.Inline);
-            builder.setSymbol("code");
-            builder.setDescription(t("description.inline_code"));
-            builder.processNode((process, n)=> {
-                var node = n.toInlineElement();
-                process.addSymbol({
-                    symbolName: node.symbol,
-                    node: node
-                });
-            });
-        }
+		inline_code(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Inline);
+			builder.setSymbol("code");
+			builder.setDescription(t("description.inline_code"));
+			builder.processNode((process, n)=> {
+				var node = n.toInlineElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
+			});
+		}
 
-        inline_href(builder:IAcceptableSyntaxBuilder) {
-            builder.setSyntaxType(SyntaxType.Inline);
-            builder.setSymbol("href");
-            builder.setDescription(t("description.inline_href"));
-            builder.processNode((process, n)=> {
-                var node = n.toInlineElement();
-                process.addSymbol({
-                    symbolName: node.symbol,
-                    node: node
-                });
-            });
-        }
+		inline_href(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Inline);
+			builder.setSymbol("href");
+			builder.setDescription(t("description.inline_href"));
+			builder.processNode((process, n)=> {
+				var node = n.toInlineElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
+			});
+		}
 
 		// TODO 以下のものの実装をすすめる
 		// block_emlist
