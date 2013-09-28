@@ -1,7 +1,7 @@
-■H1■第2章　ブロック要素のテスト
+■H1■第1章　ブロック要素のテスト
 
 ◆→開始:リスト←◆
-リスト2.1　fuga
+リスト1.1　fuga
 
 var hoge = confirm("test");
 // JS comment

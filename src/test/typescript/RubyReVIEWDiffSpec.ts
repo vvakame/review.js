@@ -20,7 +20,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 		var error:any;
 		var done = false;
 		exec(
-			"review-compile --target=" + target + " " + fileName + ".re",
+			"review-compile  --level=1 --target=" + target + " " + fileName + ".re",
 			{
 				cwd: "src/test/resources/valid",
 				env: process.env
@@ -44,10 +44,16 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 	describe("正しい構文のファイルが処理できること", ()=> {
 		var fs = require("fs");
 
-		var typeList:{ext:string;target:string;}[] = [
+		var typeList:{ext:string;target:string;builder:()=>ReVIEW.Build.IBuilder;}[] = [
 			{
 				ext: "txt",
-				target: "text"
+				target: "text",
+				builder: ()=> new ReVIEW.Build.TextBuilder()
+			},
+			{
+				ext: "html",
+				target: "html",
+				builder: ()=> new ReVIEW.Build.HtmlBuilder()
 			}
 		];
 
@@ -61,6 +67,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 		];
 
 		var targetFiles = [
+			"block.re" // 手を加えて通した
 		];
 
 		var path = "src/test/resources/valid/";
@@ -91,7 +98,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 									}
 								},
 
-								builders: [new ReVIEW.Build.TextBuilder()],
+								builders: [typeInfo.builder()],
 
 								book: {
 									preface: [

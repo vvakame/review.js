@@ -189,6 +189,11 @@ import t = ReVIEW.i18n.t;
 			return this;
 		}
 
+		pushOut(data:string):BuilderProcess {
+			this.result = data + this.result;
+			return this;
+		}
+
 		get input():string {
 			return this.base.input;
 		}

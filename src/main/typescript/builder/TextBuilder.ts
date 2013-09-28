@@ -60,7 +60,7 @@ import findChapter = ReVIEW.findChapter;
 			process.out("◆→開始:リスト←◆\n");
 			var chapter = findChapter(node, 1);
 			var text = i18n.t("builder.list", chapter.fqn, node.no);
-			process.out(text).out("　").out(node.args[1].arg).out("\n");
+			process.out(text).out("　").out(node.args[1].arg).out("\n\n");
 			return (v) => {
 				// name, args はパスしたい
 				node.childNodes.forEach((node)=> {

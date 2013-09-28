@@ -5237,6 +5237,7 @@ var ReVIEW;
                                 _this.text(process, node.text, node);
                             }
                         });
+                        _this.processPost(process, chapter);
                     });
                 });
                 book.parts.forEach(function (part) {
@@ -5244,6 +5245,9 @@ var ReVIEW;
                         chapter.process.doAfterProcess();
                     });
                 });
+            };
+
+            DefaultBuilder.prototype.processPost = function (process, chapter) {
             };
 
             DefaultBuilder.prototype.chapterPre = function (process, node) {
@@ -5527,6 +5531,11 @@ var ReVIEW;
 
         BuilderProcess.prototype.out = function (data) {
             this.result += data;
+            return this;
+        };
+
+        BuilderProcess.prototype.pushOut = function (data) {
+            this.result = data + this.result;
             return this;
         };
 
@@ -6141,7 +6150,7 @@ var ReVIEW;
                 process.out("◆→開始:リスト←◆\n");
                 var chapter = findChapter(node, 1);
                 var text = i18n.t("builder.list", chapter.fqn, node.no);
-                process.out(text).out("　").out(node.args[1].arg).out("\n");
+                process.out(text).out("　").out(node.args[1].arg).out("\n\n");
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         ReVIEW.visit(node, v);
@@ -6205,15 +6214,45 @@ var ReVIEW;
 
         var HtmlBuilder = (function (_super) {
             __extends(HtmlBuilder, _super);
-            function HtmlBuilder() {
-                _super.apply(this, arguments);
+            function HtmlBuilder(standalone) {
+                if (typeof standalone === "undefined") { standalone = true; }
+                _super.call(this);
+                this.standalone = standalone;
             }
+            HtmlBuilder.prototype.processPost = function (process, chapter) {
+                if (this.standalone) {
+                    var pre = "";
+                    pre += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+                    pre += "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n";
+                    pre += "<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:ops=\"http://www.idpf.org/2007/ops\" xml:lang=\"ja\">\n";
+                    pre += "<head>\n";
+                    pre += "  <meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\" />\n";
+                    pre += "  <meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n";
+                    pre += "  <meta name=\"generator\" content=\"ReVIEW\" />\n";
+                    var name = null;
+                    ReVIEW.visit(chapter.root, {
+                        visitDefaultPre: function () {
+                        },
+                        visitChapterPre: function (node) {
+                            name = nodeContentToString(process, node.headline.caption);
+                        }
+                    });
+                    pre += "  <title>" + name + "</title>\n";
+                    pre += "</head>\n";
+                    pre += "<body>\n";
+                    process.pushOut(pre);
+
+                    process.out("</body>\n");
+                    process.out("</html>\n");
+                }
+            };
+
             HtmlBuilder.prototype.chapterPost = function (process, node) {
-                process.out("<br/>");
             };
 
             HtmlBuilder.prototype.headlinePre = function (process, name, node) {
                 process.out("<h").out(node.level).out(">");
+                process.out("<a id=\"h").out(node.level).out("\"></a>");
                 if (node.level === 1) {
                     var text = i18n.t("builder.chapter", node.parentNode.no);
                     process.out(text).out("　");
@@ -6223,7 +6262,7 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.headlinePost = function (process, name, node) {
-                process.out("</h").out(node.level).out(">");
+                process.out("</h").out(node.level).out(">\n");
             };
 
             HtmlBuilder.prototype.ulistPre = function (process, name, node) {
@@ -6245,21 +6284,20 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.block_list_pre = function (process, node) {
-                process.out("<div style='margin:20px;'>");
+                process.out("<div class=\"caption-code\">\n");
                 var chapter = findChapter(node, 1);
                 var text = i18n.t("builder.list", chapter.fqn, node.no);
-                process.out(text).out("　").out(node.args[1].arg).out("\n");
-                process.out(text).out("<pre style='padding:20px; border:1px solid #ccc;background-color: #eee;'>");
+                process.out("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).out("</p>\n");
+                process.out("<pre class=\"list\">");
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         ReVIEW.visit(node, v);
                     });
                 };
-                process.out(text).out("</pre>");
             };
 
             HtmlBuilder.prototype.block_list_post = function (process, node) {
-                process.out("</div>");
+                process.out("</pre>\n").out("</div>\n");
             };
 
             HtmlBuilder.prototype.inline_list = function (process, node) {

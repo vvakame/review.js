@@ -20,12 +20,45 @@ import findChapter = ReVIEW.findChapter;
 
 	export class HtmlBuilder extends DefaultBuilder {
 
+		constructor(private standalone = true) {
+			super();
+		}
+
+		processPost(process:BuilderProcess, chapter:Chapter):void {
+			if (this.standalone) {
+
+				var pre = "";
+				pre += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+				pre += "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n";
+				pre += "<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:ops=\"http://www.idpf.org/2007/ops\" xml:lang=\"ja\">\n";
+				pre += "<head>\n";
+				pre += "  <meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\" />\n";
+				pre += "  <meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n";
+				pre += "  <meta name=\"generator\" content=\"ReVIEW\" />\n";
+				var name:string = null;
+				ReVIEW.visit(chapter.root, {
+					visitDefaultPre: ()=> {
+					},
+					visitChapterPre: (node:ChapterSyntaxTree)=> {
+						name = nodeContentToString(process, node.headline.caption);
+					}
+				});
+				pre += "  <title>" + name + "</title>\n";
+				pre += "</head>\n";
+				pre += "<body>\n";
+				process.pushOut(pre);
+
+				process.out("</body>\n");
+				process.out("</html>\n");
+			}
+		}
+
 		chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any {
-			process.out("<br/>");
 		}
 
 		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
 			process.out("<h").out(node.level).out(">");
+			process.out("<a id=\"h").out(node.level).out("\"></a>");
 			if (node.level === 1) {
 				var text = i18n.t("builder.chapter", node.parentNode.no);
 				process.out(text).out("　");
@@ -35,7 +68,7 @@ import findChapter = ReVIEW.findChapter;
 		}
 
 		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
-			process.out("</h").out(node.level).out(">");
+			process.out("</h").out(node.level).out(">\n");
 		}
 
         ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
@@ -57,24 +90,22 @@ import findChapter = ReVIEW.findChapter;
         }
 
 		block_list_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			//TODO styleは外出す
 			//TODO エスケープ処理
-			process.out("<div style='margin:20px;'>");
+			process.out("<div class=\"caption-code\">\n");
 			var chapter = findChapter(node, 1);
 			var text = i18n.t("builder.list", chapter.fqn, node.no);
-			process.out(text).out("　").out(node.args[1].arg).out("\n");
-			process.out(text).out("<pre style='padding:20px; border:1px solid #ccc;background-color: #eee;'>");
+			process.out("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).out("</p>\n");
+			process.out("<pre class=\"list\">");
 			return (v) => {
 				// name, args はパスしたい
 				node.childNodes.forEach((node)=> {
 					ReVIEW.visit(node, v);
 				});
 			};
-			process.out(text).out("</pre>");
 		}
 
 		block_list_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("</div>");
+			process.out("</pre>\n").out("</div>\n");
 		}
 
 		inline_list(process:BuilderProcess, node:InlineElementSyntaxTree) {
@@ -101,8 +132,8 @@ import findChapter = ReVIEW.findChapter;
 			process.out("」");
 		}
 
-        inline_br(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("<br/>");
-        }
+		inline_br(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("<br/>");
+		}
 	}
 }

@@ -83,6 +83,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 							this.text(process, node.text, node);
 						}
 					});
+					this.processPost(process, chapter);
 				});
 			});
 			book.parts.forEach((part) => {
@@ -90,6 +91,9 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 					chapter.process.doAfterProcess();
 				});
 			});
+		}
+
+		processPost(process:BuilderProcess, chapter:Chapter):void {
 		}
 
 		chapterPre(process:BuilderProcess, node:ChapterSyntaxTree):any {
