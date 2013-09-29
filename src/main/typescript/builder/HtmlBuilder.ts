@@ -214,10 +214,20 @@ import findChapter = ReVIEW.findChapter;
 
 		// TODO 未完了
 		inline_kw_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<b>");
-			process.out(nodeToString(process, node));
-			return false;
+            process.out("<b>");
+			return (v) => {
+				// name, args はパス
+				node.childNodes.forEach((node)=> {
+					var contentString = nodeContentToString(process,node);
+					var keywordData = contentString.split(",");
+					process.out(keywordData[0] + "(" +keywordData[1]+")");
+				});
+			};
 		}
+
+        inline_kw_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+            process.out("</b>");
+        }
 
 		inline_em_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("<em>");

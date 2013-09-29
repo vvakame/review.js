@@ -6482,8 +6482,19 @@ var ReVIEW;
                 process.out("☆");
             };
 
-            TextBuilder.prototype.inline_kw = function (process, node) {
-                process.out("[p]");
+            TextBuilder.prototype.inline_kw_pre = function (process, node) {
+                process.out("★");
+                return function (v) {
+                    node.childNodes.forEach(function (node) {
+                        var contentString = nodeContentToString(process, node);
+                        var keywordData = contentString.split(",");
+                        process.out(keywordData[0] + "(" + keywordData[1] + ")");
+                    });
+                };
+            };
+
+            TextBuilder.prototype.inline_kw_post = function (process, node) {
+                process.out("☆");
             };
 
             TextBuilder.prototype.inline_tt_pre = function (process, node) {
@@ -6738,8 +6749,17 @@ var ReVIEW;
 
             HtmlBuilder.prototype.inline_kw_pre = function (process, node) {
                 process.out("<b>");
-                process.out(ReVIEW.nodeToString(process, node));
-                return false;
+                return function (v) {
+                    node.childNodes.forEach(function (node) {
+                        var contentString = nodeContentToString(process, node);
+                        var keywordData = contentString.split(",");
+                        process.out(keywordData[0] + "(" + keywordData[1] + ")");
+                    });
+                };
+            };
+
+            HtmlBuilder.prototype.inline_kw_post = function (process, node) {
+                process.out("</b>");
             };
 
             HtmlBuilder.prototype.inline_em_pre = function (process, node) {
