@@ -176,5 +176,11 @@ import findChapter = ReVIEW.findChapter;
 			process.out("◆→終了:図←◆\n");
 			return false;
 		}
+
+		inline_img(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			var imgNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+			process.out("図").out(process.base.chapter.no).out(".").out(imgNode.no).out("\n");
+			return false;
+		}
 	}
 }

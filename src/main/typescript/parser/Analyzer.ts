@@ -431,13 +431,26 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
+		inline_img(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Inline);
+			builder.setSymbol("img");
+			builder.setDescription(t("description.inline_img"));
+			builder.processNode((process, n)=> {
+				var node = n.toInlineElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					referenceTo: process.constructReferenceTo(node, nodeContentToString(process, node), "image"),
+					node: node
+				});
+			});
+		}
+
 		// TODO 以下のものの実装をすすめる
 		// block_emlist
 		// block_source
 		// block_listnum
 		// emlistnum
 		// block_cmd
-		// inline_img
 		// block_indepimage
 		// block_graph
 		// block_table

@@ -5266,6 +5266,20 @@ var ReVIEW;
                     });
                 });
             };
+
+            DefaultAnalyzer.prototype.inline_img = function (builder) {
+                builder.setSyntaxType(SyntaxType.Inline);
+                builder.setSymbol("img");
+                builder.setDescription(t("description.inline_img"));
+                builder.processNode(function (process, n) {
+                    var node = n.toInlineElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        referenceTo: process.constructReferenceTo(node, ReVIEW.nodeContentToString(process, node), "image"),
+                        node: node
+                    });
+                });
+            };
             return DefaultAnalyzer;
         })();
         Build.DefaultAnalyzer = DefaultAnalyzer;
@@ -6361,6 +6375,12 @@ var ReVIEW;
                 process.out("◆→終了:図←◆\n");
                 return false;
             };
+
+            TextBuilder.prototype.inline_img = function (process, node) {
+                var imgNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+                process.out("図").out(process.base.chapter.no).out(".").out(imgNode.no).out("\n");
+                return false;
+            };
             return TextBuilder;
         })(Build.DefaultBuilder);
         Build.TextBuilder = TextBuilder;
@@ -6610,6 +6630,12 @@ var ReVIEW;
                 process.out("図").out(process.base.chapter.no).out(".").out(node.no).out(": ").out(caption);
                 process.out("\n</p>\n");
                 process.out("</div>\n");
+                return false;
+            };
+
+            HtmlBuilder.prototype.inline_img = function (process, node) {
+                var imgNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+                process.out("<p>").out("図").out(process.base.chapter.no).out(".").out(imgNode.no).out("</p>\n");
                 return false;
             };
             return HtmlBuilder;

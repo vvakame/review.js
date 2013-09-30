@@ -3,21 +3,21 @@
   "offset": 0,
   "line": 1,
   "column": 1,
-  "endPos": 57,
+  "endPos": 72,
   "childNodes": [
     {
       "ruleName": "Chapters",
       "offset": 0,
       "line": 1,
       "column": 1,
-      "endPos": 56,
+      "endPos": 72,
       "childNodes": [
         {
           "ruleName": "Chapter",
           "offset": 0,
           "line": 1,
           "column": 1,
-          "endPos": 56,
+          "endPos": 72,
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
@@ -110,6 +110,51 @@
                           "arg": "scale=0.3"
                         }
                       ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 56,
+              "line": 7,
+              "column": 1,
+              "endPos": 72,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 56,
+                  "line": 7,
+                  "column": 1,
+                  "endPos": 72,
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElement",
+                      "offset": 56,
+                      "line": 7,
+                      "column": 1,
+                      "endPos": 71,
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContents",
+                          "offset": 63,
+                          "line": 7,
+                          "column": 8,
+                          "endPos": 70,
+                          "childNodes": [
+                            {
+                              "ruleName": "InlineElementContentText",
+                              "offset": 63,
+                              "line": 7,
+                              "column": 8,
+                              "endPos": 70,
+                              "text": "vvakame"
+                            }
+                          ]
+                        }
+                      ],
+                      "symbol": "img"
                     }
                   ]
                 }

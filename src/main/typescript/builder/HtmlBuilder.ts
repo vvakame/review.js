@@ -250,5 +250,11 @@ import findChapter = ReVIEW.findChapter;
 			process.out("</div>\n");
 			return false;
 		}
+
+		inline_img(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			var imgNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+			process.out("<p>").out("図").out(process.base.chapter.no).out(".").out(imgNode.no).out("</p>\n");
+			return false;
+		}
 	}
 }
