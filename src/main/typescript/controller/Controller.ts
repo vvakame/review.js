@@ -112,6 +112,7 @@ import flatten = ReVIEW.flatten;
 			if (book.reports.some(report=>report.level === ReVIEW.ReportLevel.Error)) {
 				// エラーがあったら処理中断
 				this.outputReport(book.reports);
+				this.compileFinished(book);
 				return book;
 			}
 

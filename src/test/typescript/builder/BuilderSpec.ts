@@ -42,43 +42,11 @@ describe("ReVIEW.Buildの", ()=> {
 
 	describe("DefaultAnalyzerの動作の確認として", () => {
 		it("正しくsymbolの解決が出来る", ()=> {
-			var files:any = {
-				"ch01.re": "={ch01} chapter01\n@<hd>{ch01}\n@<hd>{missing}"
-			};
-			var result:any = {
-			};
-			var book = ReVIEW.start((review)=> {
-				review.initConfig({
-					read: function (path) {
-						return files[path];
-					},
-					write: function (path, content) {
-						result[path] = content;
-					},
+			var failure = Test.compileSingle("={ch01} chapter01\n@<hd>{ch01}\n@<hd>{missing}")
+				.failure();
 
-					listener: {
-						onReports: () => {
-						},
-						onCompileSuccess: ()=> {
-						},
-						onCompileFailed: ()=> {
-						}
-					},
-
-					builders: [new ReVIEW.Build.TextBuilder()],
-
-					book: {
-						preface: [
-						],
-						chapters: [
-							"ch01.re"
-						],
-						afterword: [
-						]
-					}
-				});
-			});
-			var missingSymbols = book.parts[1].chapters[0].process.missingSymbols;
+			var book = failure.book;
+			var missingSymbols = book.parts[0].chapters[0].process.missingSymbols;
 			expect(missingSymbols.length).toBe(1);
 			expect(missingSymbols[0].referenceTo.label).toBe("missing");
 		});
@@ -86,132 +54,53 @@ describe("ReVIEW.Buildの", ()=> {
 
 	describe("DefaultValidatorの動作の確認として", () => {
 		it("トップレベルのChapterは必ず level 1 であること", ()=> {
-			var files:any = {
-				"ch01.re": "= level 1\n== level2",
-				"ch02.re": "== level 2"
-			};
-			var result:any = {
-			};
-			var book = ReVIEW.start((review)=> {
-				review.initConfig({
-					read: function (path) {
-						return files[path];
-					},
-					write: function (path, content) {
-						result[path] = content;
-					},
+			var failure = Test.compile({
+				read: path => {
+					return {
+						"ch01.re": "= level 1\n== level2",
+						"ch02.re": "== level 2"
+					}[path];
+				},
 
-					listener: {
-						onReports: () => {
-						},
-						onCompileSuccess: ()=> {
-						},
-						onCompileFailed: ()=> {
-						}
-					},
+				book: {
+					preface: [],
+					chapters: [
+						"ch01.re",
+						"ch02.re"
+					],
+					afterword: []
+				}
+			}).failure();
 
-					builders: [new ReVIEW.Build.TextBuilder()],
-
-					book: {
-						preface: [
-						],
-						chapters: [
-							"ch01.re",
-							"ch02.re"
-						],
-						afterword: [
-						]
-					}
-				});
-			});
+			var book = failure.book;
 			expect(book.reports.length).toBe(1);
 			expect(book.reports[0].level).toBe(ReVIEW.ReportLevel.Error);
 		});
 
 		it("あるChapterの親のChapterのレベル差が1であること", ()=> {
-			var files:any = {
-				"ch01.re": "= level 1\n=== level3"
-			};
-			var result:any = {
-			};
-			var book = ReVIEW.start((review)=> {
-				review.initConfig({
-					read: function (path) {
-						return files[path];
-					},
-					write: function (path, content) {
-						result[path] = content;
-					},
+			var failure = Test.compileSingle("= level 1\n=== level3")
+				.failure();
 
-					listener: {
-						onReports: () => {
-						},
-						onCompileSuccess: ()=> {
-						},
-						onCompileFailed: ()=> {
-						}
-					},
-
-					builders: [new ReVIEW.Build.TextBuilder()],
-
-					book: {
-						preface: [
-						],
-						chapters: [
-							"ch01.re"
-						],
-						afterword: [
-						]
-					}
-				});
-			});
+			var book = failure.book;
 			expect(book.reports.length).toBe(1);
 			expect(book.reports[0].level).toBe(ReVIEW.ReportLevel.Error);
 		});
 	});
 
-
 	describe("DefaultBuilderの動作の確認として", ()=> {
 		it("", ()=> {
-			var files:any = {
-				"ch01.re": "= hoge\n== fuga\n=== moge\n== piyo\n=== foo\n= bar\n"
-			};
-			var result:any = {
-			};
 			var builder = new ReVIEW.Build.TextBuilder();
-			var book = ReVIEW.start((review)=> {
-				review.initConfig({
-					read: function (path) {
-						return files[path];
-					},
-					write: function (path, content) {
-						result[path] = content;
-					},
+			var success = Test.compileSingle(
+				"= hoge\n== fuga\n=== moge\n== piyo\n=== foo\n= bar\n",
+				{builders: [builder]}
+			)
+				.success();
 
-					listener: {
-						onCompileSuccess: ()=> {
-						},
-						onCompileFailed: ()=> {
-						}
-					},
-
-					builders: [builder],
-
-					book: {
-						preface: [
-						],
-						chapters: [
-							"ch01.re"
-						],
-						afterword: [
-						]
-					}
-				});
-			});
+			var book = success.book;
 			// TODO 想定より改行が多い… みた感じLevel3以降でおかしくなってる？
 			// var expected = "■H1■第1章　hoge\n\n■H2■1.1　fuga\n\n■H3■moge\n\n■H2■1.2　piyo\n\n■H3■foo\n\n■H1■第2章　bar\n";
 			var expected = "■H1■第1章　hoge\n\n■H2■1.1　fuga\n\n■H3■moge\n\n\n\n■H2■1.2　piyo\n\n■H3■foo\n\n\n\n\n■H1■第2章　bar\n\n\n";
-			expect(book.parts[1].chapters[0].findResultByBuilder(builder)).toBe(expected);
+			expect(book.parts[0].chapters[0].findResultByBuilder(builder)).toBe(expected);
 		});
 	});
 });

@@ -15,7 +15,7 @@ module Test {
 	}
 
 	export interface ResultFailure {
-
+		book:ReVIEW.Book;
 	}
 
 	/**
@@ -41,21 +41,23 @@ module Test {
 		var results:any = {};
 		config.write = config.write || ((path, content) => results[path] = content);
 
-		var success:boolean;
 		config.listener = config.listener || {
+			onReports: () => {
+			},
 			onCompileSuccess: ()=> {
 			},
 			onCompileFailed: ()=> {
 			}
 		};
+		config.listener.onReports = config.listener.onReports || (()=> {
+		});
 		config.listener.onCompileSuccess = config.listener.onCompileSuccess || (()=> {
 		});
 		config.listener.onCompileFailed = config.listener.onCompileFailed || (()=> {
 		});
-		var resultBook:ReVIEW.Book;
+		var success:boolean;
 		var originalCompileSuccess = config.listener.onCompileSuccess;
 		config.listener.onCompileSuccess = (book) => {
-			resultBook = book;
 			success = true;
 			originalCompileSuccess(book);
 		};
@@ -65,7 +67,7 @@ module Test {
 			originalCompileFailed();
 		};
 
-		ReVIEW.start((review)=> {
+		var book = ReVIEW.start((review)=> {
 			review.initConfig(config);
 		});
 
@@ -73,13 +75,14 @@ module Test {
 			success: () => {
 				expect(success).toBe(true);
 				return {
-					book: resultBook,
+					book: book,
 					results: results
 				};
 			},
 			failure: () => {
 				expect(success).toBe(false);
 				return {
+					book: book
 				};
 			}
 		};
@@ -89,7 +92,7 @@ module Test {
 		var config:ReVIEW.IConfig = tmpConfig || <any>{};
 		config.read = config.read || (()=>input);
 		config.listener = config.listener || {
-			onCompileSuccess: ()=> {
+			onCompileSuccess: (book)=> {
 			}
 		};
 		var result:string;
