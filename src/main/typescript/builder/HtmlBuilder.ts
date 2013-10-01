@@ -96,7 +96,7 @@ import findChapter = ReVIEW.findChapter;
 				process.out("<a id=\"h").out(node.level).out("\"></a>");
 			}
 			if (node.cmd) {
-				return v => {
+				return (v:ITreeVisitor)=> {
 					ReVIEW.visit(node.caption, v);
 				};
 			} else if (node.level === 1) {
@@ -117,7 +117,7 @@ import findChapter = ReVIEW.findChapter;
 		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
 			process.out("<li>");
 			if (node.childNodes.length > 0) {
-				return (v)=> {
+				return (v:ITreeVisitor)=> {
 					ReVIEW.visit(node.text, v);
 					process.out("<ul>");
 					node.childNodes.forEach(child=> {
@@ -139,7 +139,7 @@ import findChapter = ReVIEW.findChapter;
 			var text = i18n.t("builder.list", chapter.fqn, node.no);
 			process.out("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).out("</p>\n");
 			process.out("<pre class=\"list\">");
-			return (v) => {
+			return (v:ITreeVisitor)=> {
 				// name, args はパスしたい
 				node.childNodes.forEach((node)=> {
 					ReVIEW.visit(node, v);

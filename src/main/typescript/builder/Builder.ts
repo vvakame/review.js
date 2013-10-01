@@ -19,7 +19,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 	 */
 	export interface IBuilder {
 		name:string;
-		init(book:Book);
+		init(book:Book):void;
 		chapterPre(process:BuilderProcess, node:ChapterSyntaxTree):any;
 		chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any;
 		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any;
@@ -43,8 +43,8 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		init(book:Book) {
 			this.book = book;
 
-			book.parts.forEach((part) => {
-				part.chapters.forEach((chapter) => {
+			book.parts.forEach(part => {
+				part.chapters.forEach(chapter => {
 					var process = chapter.createBuilderProcess(this);
 					ReVIEW.visit(chapter.root, {
 						visitDefaultPre: (node:SyntaxTree)=> {

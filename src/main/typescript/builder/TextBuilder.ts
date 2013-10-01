@@ -1,4 +1,5 @@
 ///<reference path='../utils/Utils.ts' />
+///<reference path='../parser/Walker.ts' />
 ///<reference path='Builder.ts' />
 ///<reference path='../i18n/i18n.ts' />
 
@@ -46,7 +47,7 @@ import findChapter = ReVIEW.findChapter;
 				// column
 				process.out("◆→開始:←◆\n");
 				process.out("■");
-				return v => {
+				return (v:ITreeVisitor) => {
 					ReVIEW.visit(node.caption, v);
 				};
 			}
@@ -58,7 +59,7 @@ import findChapter = ReVIEW.findChapter;
 
 		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
 			process.out("・");
-			return (v)=> {
+			return (v:ITreeVisitor)=> {
 				ReVIEW.visit(node.text, v);
 				process.out("\n");
 				node.childNodes.forEach(child=> {
@@ -77,7 +78,7 @@ import findChapter = ReVIEW.findChapter;
 			var chapter = findChapter(node, 1);
 			var text = i18n.t("builder.list", chapter.fqn, node.no);
 			process.out(text).out("　").out(node.args[1].arg).out("\n\n");
-			return (v) => {
+			return (v:ITreeVisitor)=> {
 				// name, args はパスしたい
 				node.childNodes.forEach((node)=> {
 					ReVIEW.visit(node, v);

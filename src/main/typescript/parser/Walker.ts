@@ -231,26 +231,26 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 	 */
 	export interface ITreeVisitor {
 		visitDefaultPre(node:SyntaxTree, parent:SyntaxTree):any;
-		visitDefaultPost?(node:SyntaxTree, parent:SyntaxTree);
+		visitDefaultPost?(node:SyntaxTree, parent:SyntaxTree):void;
 		visitNodePre?(node:NodeSyntaxTree, parent:SyntaxTree):any;
-		visitNodePost?(node:NodeSyntaxTree, parent:SyntaxTree);
+		visitNodePost?(node:NodeSyntaxTree, parent:SyntaxTree):void;
 		visitBlockElementPre?(node:BlockElementSyntaxTree, parent:SyntaxTree):any;
-		visitBlockElementPost?(node:BlockElementSyntaxTree, parent:SyntaxTree);
+		visitBlockElementPost?(node:BlockElementSyntaxTree, parent:SyntaxTree):void;
 		visitInlineElementPre?(node:InlineElementSyntaxTree, parent:SyntaxTree):any;
-		visitInlineElementPost?(node:InlineElementSyntaxTree, parent:SyntaxTree);
+		visitInlineElementPost?(node:InlineElementSyntaxTree, parent:SyntaxTree):void;
 		visitArgumentPre?(node:ArgumentSyntaxTree, parent:SyntaxTree):any;
-		visitArgumentPost?(node:ArgumentSyntaxTree, parent:SyntaxTree);
+		visitArgumentPost?(node:ArgumentSyntaxTree, parent:SyntaxTree):void;
 		visitChapterPre?(node:ChapterSyntaxTree, parent:SyntaxTree):any;
-		visitChapterPost?(node:ChapterSyntaxTree, parent:SyntaxTree);
+		visitChapterPost?(node:ChapterSyntaxTree, parent:SyntaxTree):void;
 		visitHeadlinePre?(node:HeadlineSyntaxTree, parent:SyntaxTree):any;
-		visitHeadlinePost?(node:HeadlineSyntaxTree, parent:SyntaxTree);
+		visitHeadlinePost?(node:HeadlineSyntaxTree, parent:SyntaxTree):void;
 		visitUlistPre?(node:UlistElementSyntaxTree, parent:SyntaxTree):any;
-		visitUlistPost?(node:UlistElementSyntaxTree, parent:SyntaxTree);
+		visitUlistPost?(node:UlistElementSyntaxTree, parent:SyntaxTree):void;
 		visitOlistPre?(node:OlistElementSyntaxTree, parent:SyntaxTree):any;
-		visitOlistPost?(node:OlistElementSyntaxTree, parent:SyntaxTree);
+		visitOlistPost?(node:OlistElementSyntaxTree, parent:SyntaxTree):void;
 		visitDlistPre?(node:DlistElementSyntaxTree, parent:SyntaxTree):any;
-		visitDlistPost?(node:DlistElementSyntaxTree, parent:SyntaxTree);
+		visitDlistPost?(node:DlistElementSyntaxTree, parent:SyntaxTree):void;
 		visitTextPre?(node:TextNodeSyntaxTree, parent:SyntaxTree):any;
-		visitTextPost?(node:TextNodeSyntaxTree, parent:SyntaxTree);
+		visitTextPost?(node:TextNodeSyntaxTree, parent:SyntaxTree):void;
 	}
 }

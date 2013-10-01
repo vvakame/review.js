@@ -23,47 +23,51 @@ describe("ReVIEW構文の", ()=> {
 		describe("正しい構文のファイルが処理できること", ()=> {
 			var path = "src/test/resources/valid/";
 			var files = fs.readdirSync(path);
-			files.filter((file) => file.indexOf(".re") !== -1).forEach((file)=> {
-				var astFilePath = path + file.substr(0, file.length - 3) + ".ast";
-				it("ファイル:" + file, ()=> {
-					var data = fs.readFileSync(path + file, "utf8");
-					try {
-						var result = ReVIEW.Parse.parse(data);
-						if (!fs.existsSync(astFilePath)) {
-							// ASTファイルが無い場合、現時点で生成されるASTを出力する
-							var ast = JSON.stringify(result.ast, null, 2);
-							fs.writeFileSync(astFilePath, ast);
-							throw new Error("ast file not exsists. (created)");
-						} else {
-							var expectedAST = fs.readFileSync(astFilePath, "utf8");
-							expect(JSON.parse(expectedAST)).toEqual(JSON.parse(JSON.stringify(result.ast, null, 2)));
+			files
+				.filter((file:string) => file.indexOf(".re") !== -1)
+				.forEach((file:string)=> {
+					var astFilePath = path + file.substr(0, file.length - 3) + ".ast";
+					it("ファイル:" + file, ()=> {
+						var data = fs.readFileSync(path + file, "utf8");
+						try {
+							var result = ReVIEW.Parse.parse(data);
+							if (!fs.existsSync(astFilePath)) {
+								// ASTファイルが無い場合、現時点で生成されるASTを出力する
+								var ast = JSON.stringify(result.ast, null, 2);
+								fs.writeFileSync(astFilePath, ast);
+								throw new Error("ast file not exsists. (created)");
+							} else {
+								var expectedAST = fs.readFileSync(astFilePath, "utf8");
+								expect(JSON.parse(expectedAST)).toEqual(JSON.parse(JSON.stringify(result.ast, null, 2)));
+							}
+						} catch (e) {
+							updateIfSyntaxError(e);
+							throw e;
 						}
-					} catch (e) {
-						updateIfSyntaxError(e);
-						throw e;
-					}
+					});
 				});
-			});
 		});
 
 		describe("正しくない構文のファイルが処理できること", ()=> {
 			var path = "src/test/resources/invalid/";
 			var files = fs.readdirSync(path);
-			files.filter((file) => file.indexOf(".re") !== -1).forEach((file)=> {
-				it("ファイル:" + file, ()=> {
-					var data = fs.readFileSync(path + file, "utf8");
-					try {
-						ReVIEW.Parse.parse(data);
-						throw new Error("正しく処理できてしまった");
-					} catch (e) {
-						if (e instanceof PEG.SyntaxError) {
-							// ok
-						} else {
-							throw e;
+			files
+				.filter((file:string) => file.indexOf(".re") !== -1)
+				.forEach((file:string)=> {
+					it("ファイル:" + file, ()=> {
+						var data = fs.readFileSync(path + file, "utf8");
+						try {
+							ReVIEW.Parse.parse(data);
+							throw new Error("正しく処理できてしまった");
+						} catch (e) {
+							if (e instanceof PEG.SyntaxError) {
+								// ok
+							} else {
+								throw e;
+							}
 						}
-					}
+					});
 				});
-			});
 		});
 	}
 

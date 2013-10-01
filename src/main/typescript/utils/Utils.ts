@@ -16,7 +16,7 @@ module ReVIEW {
 	 */
 	export function flatten(data:any[]):any[] {
 		if (data.some((d)=>Array.isArray(d))) {
-			return flatten(data.reduce((p, c)=> p.concat(c), []));
+			return flatten(data.reduce((p:any[], c:any[])=> p.concat(c), []));
 		} else {
 			return data;
 		}
@@ -139,7 +139,7 @@ module ReVIEW {
 		}
 	}
 
-    export function stringRepeat(times:number, src:string):string {
-        return new Array(times + 1).join(src);
-    }
+	export function stringRepeat(times:number, src:string):string {
+		return new Array(times + 1).join(src);
+	}
 }

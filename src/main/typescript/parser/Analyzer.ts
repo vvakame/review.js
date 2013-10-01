@@ -129,12 +129,12 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 	 * 1つの構文についての構成要素を組み立てるためのビルダ。
 	 */
 	export interface IAcceptableSyntaxBuilder {
-		setSyntaxType(type:SyntaxType);
-		setClass(clazz:any);
-		setSymbol(symbolName:string);
-		setDescription(description:string);
-		checkArgsLength(...argsLength:number[]);
-		processNode(func:IAnalyzeProcessor);
+		setSyntaxType(type:SyntaxType):void;
+		setClass(clazz:any):void;
+		setSymbol(symbolName:string):void;
+		setDescription(description:string):void;
+		checkArgsLength(...argsLength:number[]):void;
+		processNode(func:IAnalyzeProcessor):void;
 	}
 
 	class AnalyzeProcess implements IAcceptableSyntaxBuilder {

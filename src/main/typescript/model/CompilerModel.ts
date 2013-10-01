@@ -88,7 +88,7 @@ import t = ReVIEW.i18n.t;
 		}
 
 		get reports():ProcessReport[] {
-			return this._reports.sort((a, b) => {
+			return this._reports.sort((a:ProcessReport, b:ProcessReport) => {
 				if (a.nodes.length === 0 && b.nodes.length === 0) {
 					return 0;
 				} else if (a.nodes.length === 0) {
@@ -121,7 +121,7 @@ import t = ReVIEW.i18n.t;
 
 		constructReferenceTo(node:ReVIEW.Parse.BlockElementSyntaxTree, value:string, targetSymbol:string, separator?:string):IReferenceTo;
 
-		constructReferenceTo(node, value:string, targetSymbol = node.symbol, separator = "|"):IReferenceTo {
+		constructReferenceTo(node:any, value:string, targetSymbol = node.symbol, separator = "|"):IReferenceTo {
 			var splitted = value.split(separator);
 			if (splitted.length === 3) {
 				return {
@@ -213,14 +213,7 @@ import t = ReVIEW.i18n.t;
 		}
 
 		get reports():ProcessReport[] {
-			var flatten = (data:any[])=> {
-				if (data.some((d)=>Array.isArray(d))) {
-					return flatten(data.reduce((p, c)=> p.concat(c), []));
-				} else {
-					return data;
-				}
-			};
-			return flatten(this.parts.map(part=>part.chapters.map(chapter=>chapter.process.reports)));
+			return flatten(this.parts.map(part=>part.chapters.map((chapter:Chapter)=>chapter.process.reports)));
 		}
 	}
 
@@ -254,11 +247,11 @@ import t = ReVIEW.i18n.t;
 			return builderProcess;
 		}
 
-		findResultByBuilder(builderName:string);
+		findResultByBuilder(builderName:string):string;
 
-		findResultByBuilder(builder:ReVIEW.Build.IBuilder);
+		findResultByBuilder(builder:ReVIEW.Build.IBuilder):string;
 
-		findResultByBuilder(builder:any) {
+		findResultByBuilder(builder:any):string {
 			var founds:BuilderProcess[];
 			if (typeof builder === "string") {
 				founds = this.builderProcesses.filter(process => process.builder.name === builder);

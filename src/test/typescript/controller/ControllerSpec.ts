@@ -13,10 +13,10 @@ describe("ReVIEW.Controllerの", ()=> {
 		};
 		var book = ReVIEW.start(review => {
 			review.initConfig({
-				read: function (path) {
+				read: (path:string) => {
 					return files[path];
 				},
-				write: function (path, content) {
+				write: (path:string, content:any) => {
 					result[path] = content;
 				},
 
@@ -30,14 +30,12 @@ describe("ReVIEW.Controllerの", ()=> {
 				builders: [new ReVIEW.Build.TextBuilder()],
 
 				book: {
-					preface: [
-					],
+					preface: new Array<string>(),
 					chapters: [
 						"ch01.re",
 						"ch02.re"
 					],
-					afterword: [
-					]
+					afterword: new Array<string>()
 				}
 			});
 		});

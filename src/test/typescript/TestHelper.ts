@@ -39,7 +39,7 @@ module Test {
 		];
 
 		var results:any = {};
-		config.write = config.write || ((path, content) => results[path] = content);
+		config.write = config.write || ((path:string, content:any) => results[path] = content);
 
 		config.listener = config.listener || {
 			onReports: () => {

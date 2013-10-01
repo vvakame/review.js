@@ -27,9 +27,9 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 				cwd: "src/test/resources/valid",
 				env: process.env
 			},
-			(err, stdout, stderr)=> {
+			(err:Error, stdout:NodeBuffer, stderr:NodeBuffer)=> {
 				expect(error).toBeNull();
-				result = stdout;
+				result = stdout.toString();
 				error = err;
 				done = true;
 			}
@@ -85,9 +85,9 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 
 		var path = "src/test/resources/valid/";
 		fs.readdirSync(path)
-			.filter(file => file.indexOf(".re") !== -1 && !ignoreFiles.some(ignore => ignore === file))
-			.filter(file => targetFiles.some(target => target === file))
-			.forEach(file => {
+			.filter((file:string) => file.indexOf(".re") !== -1 && !ignoreFiles.some(ignore => ignore === file))
+			.filter((file:string) => targetFiles.some(target => target === file))
+			.forEach((file:string) => {
 
 				var baseName = file.substr(0, file.length - 3);
 

@@ -56,7 +56,7 @@ if (ReVIEW.isNodeJS()) {
 		.description("compile ReVIEW document")
 		.option("--ast", "output JSON format abstract syntax tree")
 		.option("-t, --target <target>", "output format of document")
-		.action((document, options)=> {
+		.action((document:any, options:any)=> {
 			var ast = options.ast || false;
 			// TODO
 		})
@@ -64,7 +64,7 @@ if (ReVIEW.isNodeJS()) {
 
 	program
 		.command("*")
-		.action((args, options)=> {
+		.action((args:any, options:any)=> {
 			var reviewfile = program.reviewfile || "./ReVIEWconfig";
 			var setup = require(reviewfile);
 			ReVIEW.start(setup, {
@@ -75,7 +75,7 @@ if (ReVIEW.isNodeJS()) {
 	;
 
 	// grunt test で動かれても困るので
-	var endWith = (str, target) => {
+	var endWith = (str:string, target:string) => {
 		return str.indexOf(target, str.length - target.length) !== -1;
 	};
 	if (endWith(process.argv[1], "review.js")) {

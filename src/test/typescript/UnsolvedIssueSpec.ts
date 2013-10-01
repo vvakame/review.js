@@ -22,10 +22,10 @@ describe("未解決のエラー", ()=> {
 			var builder = new ReVIEW.Build.TextBuilder();
 			var book = ReVIEW.start((review)=> {
 				review.initConfig({
-					read: function (path) {
+					read: (path:string) => {
 						return files[path];
 					},
-					write: function (path, content) {
+					write: (path:string, content:any) => {
 						result[path] = content;
 					},
 
@@ -37,13 +37,9 @@ describe("未解決のエラー", ()=> {
 					builders: [builder],
 
 					book: {
-						preface: [
-						],
 						chapters: [
 							"ch01.re"
 						],
-						afterword: [
-						]
 					}
 				});
 			});
@@ -52,8 +48,7 @@ describe("未解決のエラー", ()=> {
 			//死なないパターンのexpected
 			//var expected = "■H1■第1章　title\n\n◆→開始:リスト←◆\nリスト1.1　きゃぷしょん\nalert('hello');\n◆→終了:リスト←◆\n\n";
 
-
-			expect(book.parts[1].chapters[0].findResultByBuilder(builder)).toBe(expected);
+			expect(book.parts[0].chapters[0].findResultByBuilder(builder)).toBe(expected);
 		});
 	});
 });

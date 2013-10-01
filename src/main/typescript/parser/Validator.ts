@@ -11,13 +11,14 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
 import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
 import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
+import ArgumentSyntaxTree = ReVIEW.Parse.ArgumentSyntaxTree;
 
 	/**
 	 * IAnalyzerで処理した後の構文木について構文上のエラーがないかチェックする。
 	 * また、Builderと対比させて、未実装の候補がないかをチェックする。
 	 */
 	export interface IValidator {
-		start(book:Book, acceptableSyntaxes:AcceptableSyntaxes, builders:IBuilder[]);
+		start(book:Book, acceptableSyntaxes:AcceptableSyntaxes, builders:IBuilder[]):void;
 	}
 
 	export class DefaultValidator implements IValidator {
@@ -60,7 +61,7 @@ import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 						return;
 					}
 					var expects = results[0].argsLength;
-					var arg = node.args || [];
+					var arg:ArgumentSyntaxTree[] = node.args || [];
 					if (expects.indexOf(arg.length) === -1) {
 						var expected = expects.map((n)=>Number(n).toString()).join(" or ");
 						var message = t("compile.args_length_mismatch", expected, arg.length);
