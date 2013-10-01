@@ -25,6 +25,8 @@ import ArgumentSyntaxTree = ReVIEW.Parse.ArgumentSyntaxTree;
 		acceptableSyntaxes:AcceptableSyntaxes;
 		builders:IBuilder[];
 
+		// TODO Builderの実装漏れ検知ロジックを早めに追加する
+
 		start(book:Book, acceptableSyntaxes:AcceptableSyntaxes, builders:IBuilder[]) {
 			this.acceptableSyntaxes = acceptableSyntaxes;
 			this.builders = builders;
