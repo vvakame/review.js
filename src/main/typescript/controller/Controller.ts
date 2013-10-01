@@ -41,12 +41,12 @@ import flatten = ReVIEW.flatten;
 			onSymbols?:(symbols:ReVIEW.ISymbol[])=>any;
 			onReports?:(reports:ReVIEW.ProcessReport[])=>any;
 
-			onCompileSuccess?:()=>void;
+			onCompileSuccess?:(book:ReVIEW.Book)=>void;
 			onCompileFailed?:()=>void;
 		};
 
-		analyzer:Build.IAnalyzer;
-		validators:Build.IValidator[];
+		analyzer?:Build.IAnalyzer;
+		validators?:Build.IValidator[];
 		builders:Build.IBuilder[];
 
 		book:{
