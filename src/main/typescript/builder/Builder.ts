@@ -86,8 +86,8 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 					this.processPost(process, chapter);
 				});
 			});
-			book.parts.forEach((part) => {
-				part.chapters.forEach((chapter) => {
+			book.parts.forEach(part => {
+				part.chapters.forEach(chapter => {
 					chapter.process.doAfterProcess();
 				});
 			});
@@ -175,9 +175,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		}
 
 		findReference(process:BuilderProcess, node:SyntaxTree):ISymbol {
-			var founds = process.symbols.filter((symbol)=> {
-				return symbol.node === node;
-			});
+			var founds = process.symbols.filter(symbol => symbol.node === node);
 			if (founds.length !== 1) {
 				throw new AnalyzerError("invalid status.");
 			}

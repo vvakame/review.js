@@ -5740,297 +5740,6 @@ var ReVIEW;
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
-    var t = ReVIEW.i18n.t;
-
-    var SyntaxTree = ReVIEW.Parse.SyntaxTree;
-    var HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
-    var BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-    var InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-    var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
-    var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
-
-    var flatten = ReVIEW.flatten;
-
-    var Controller = (function () {
-        function Controller(options) {
-            if (typeof options === "undefined") { options = {}; }
-            this.options = options;
-        }
-        Controller.prototype.initConfig = function (data) {
-            this.config = data;
-
-            data.analyzer = data.analyzer || new ReVIEW.Build.DefaultAnalyzer();
-
-            if (!data.validators || data.validators.length === 0) {
-                this.config.validators = [new ReVIEW.Build.DefaultValidator()];
-            } else if (!Array.isArray(data.validators)) {
-                this.config.validators = [data.validators];
-            }
-
-            if (!data.builders || data.builders.length === 0) {
-                this.config.builders = [new ReVIEW.Build.DefaultBuilder()];
-            } else if (!Array.isArray(data.builders)) {
-                this.config.builders = [data.builders];
-            }
-        };
-
-        Controller.prototype.process = function () {
-            var _this = this;
-            var acceptableSyntaxes = this.config.analyzer.getAcceptableSyntaxes();
-
-            if (this.config.listener && this.config.listener.onAcceptables) {
-                if (this.config.listener.onAcceptables(acceptableSyntaxes) === false) {
-                    return null;
-                }
-            }
-
-            var book = this.processBook();
-            this.config.validators.forEach(function (validator) {
-                validator.start(book, acceptableSyntaxes, _this.config.builders);
-            });
-            if (book.reports.some(function (report) {
-                return report.level === ReVIEW.ReportLevel.Error;
-            })) {
-                this.outputReport(book.reports);
-                this.compileFinished(book);
-                return book;
-            }
-
-            if (this.config.listener && this.config.listener.onSymbols) {
-                var symbols = flatten(book.parts.map(function (part) {
-                    return part.chapters.map(function (chapter) {
-                        return chapter.process.symbols;
-                    });
-                }));
-                if (this.config.listener.onSymbols(symbols) === false) {
-                    return null;
-                }
-            }
-
-            this.config.builders.forEach(function (builder) {
-                builder.init(book);
-            });
-
-            this.outputReport(book.reports);
-
-            this.compileFinished(book);
-
-            return book;
-        };
-
-        Controller.prototype.processBook = function () {
-            var _this = this;
-            var book = new ReVIEW.Book(this.config);
-            book.parts = Object.keys(this.config.book).map(function (key, index) {
-                var chapters = _this.config.book[key];
-                return _this.processPart(book, index, key, chapters);
-            });
-
-            book.parts.forEach(function (part) {
-                var chapters = [];
-                part.chapters.forEach(function (chapter) {
-                    ReVIEW.visit(chapter.root, {
-                        visitDefaultPre: function (node) {
-                        },
-                        visitChapterPre: function (node) {
-                            chapters.push(node);
-                        }
-                    });
-                });
-                var counter = {};
-                var max = 0;
-                var currentLevel = 0;
-                chapters.forEach(function (chapter) {
-                    var level = chapter.headline.level;
-                    max = Math.max(max, level);
-                    if (currentLevel > level) {
-                        for (var i = level + 1; i <= max; i++) {
-                            counter[i] = 0;
-                        }
-                    } else if (currentLevel < level) {
-                        for (var i = level; i <= max; i++) {
-                            counter[i] = 0;
-                        }
-                    }
-                    currentLevel = level;
-                    counter[level] += 1;
-                    chapter.no = counter[level];
-                });
-            });
-            return book;
-        };
-
-        Controller.prototype.processPart = function (book, index, name, chapters) {
-            if (typeof chapters === "undefined") { chapters = []; }
-            var _this = this;
-            var part = new ReVIEW.Part(book, index + 1, name);
-            part.chapters = chapters.map(function (chapter, index) {
-                return _this.processChapter(book, part, index, chapter);
-            });
-            return part;
-        };
-
-        Controller.prototype.processChapter = function (book, part, index, chapterPath) {
-            var resolvedPath = this.resolvePath(chapterPath);
-            var data = this.read(resolvedPath);
-            if (!data) {
-                var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, null);
-                chapter.process.error(t("compile.file_not_exists", resolvedPath));
-                return chapter;
-            }
-            try  {
-                var parseResult = ReVIEW.Parse.parse(data);
-                var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, parseResult.ast);
-            } catch (e) {
-                if (!(e instanceof PEG.SyntaxError)) {
-                    throw e;
-                }
-                var se = e;
-                var errorNode = new SyntaxTree({
-                    syntax: se.name,
-                    line: se.line,
-                    column: se.column,
-                    offset: se.offset,
-                    endPos: -1
-                });
-                var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, null);
-                chapter.process.error(se.message, errorNode);
-            }
-            return chapter;
-        };
-
-        Object.defineProperty(Controller.prototype, "read", {
-            get: function () {
-                return this.config.read || ReVIEW.IO.read;
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        Object.defineProperty(Controller.prototype, "write", {
-            get: function () {
-                return this.config.write || ReVIEW.IO.write;
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        Object.defineProperty(Controller.prototype, "outputReport", {
-            get: function () {
-                if (this.config.listener && this.config.listener.onReports) {
-                    return this.config.listener.onReports;
-                } else if (ReVIEW.isNodeJS()) {
-                    return this.outputReportNodeJS;
-                } else {
-                    return this.outputReportBrowser;
-                }
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        Controller.prototype.outputReportNodeJS = function (reports) {
-            var colors = require("colors");
-            colors.setTheme({
-                info: "cyan",
-                warn: "yellow",
-                error: "red"
-            });
-
-            reports.forEach(function (report) {
-                var message = "";
-                message += report.chapter.name + " ";
-                report.nodes.forEach(function (node) {
-                    message += "[" + node.line + "," + node.column + "] ";
-                });
-                message += report.message;
-                if (report.level === ReVIEW.ReportLevel.Error) {
-                    console.warn(message.error);
-                } else if (report.level === ReVIEW.ReportLevel.Warning) {
-                    console.error(message.warn);
-                } else if (report.level === ReVIEW.ReportLevel.Info) {
-                    console.info(message.info);
-                } else {
-                    throw new Error("unknown report level.");
-                }
-            });
-        };
-
-        Controller.prototype.outputReportBrowser = function (reports) {
-            reports.forEach(function (report) {
-                var message = "";
-                message += report.chapter.name + " ";
-                report.nodes.forEach(function (node) {
-                    message += "[" + node.line + "," + node.column + "] ";
-                });
-                message += report.message;
-                if (report.level === ReVIEW.ReportLevel.Error) {
-                    console.warn(message);
-                } else if (report.level === ReVIEW.ReportLevel.Warning) {
-                    console.error(message);
-                } else if (report.level === ReVIEW.ReportLevel.Info) {
-                    console.info(message);
-                } else {
-                    throw new Error("unknown report level.");
-                }
-            });
-        };
-
-        Controller.prototype.compileFinished = function (book) {
-            var func = function () {
-            };
-            if (!book.reports.some(function (report) {
-                return report.level === ReVIEW.ReportLevel.Error;
-            })) {
-                if (this.config.listener && this.config.listener.onCompileSuccess) {
-                    func = this.config.listener.onCompileSuccess;
-                } else if (ReVIEW.isNodeJS()) {
-                    func = function () {
-                        process.exit(0);
-                    };
-                }
-            } else {
-                if (this.config.listener && this.config.listener.onCompileFailed) {
-                    func = this.config.listener.onCompileFailed;
-                } else if (ReVIEW.isNodeJS()) {
-                    func = function () {
-                        process.exit(1);
-                    };
-                }
-            }
-            func(book);
-        };
-
-        Controller.prototype.resolvePath = function (path) {
-            if (ReVIEW.isNodeJS()) {
-                var p = require("path");
-                var base = this.options.base || "./";
-                return p.join(base, path);
-            }
-
-            if (!this.options.base) {
-                return path;
-            }
-
-            if (!this.endWith(base, "/") && !this.startWith(path, "/")) {
-                base += "/";
-            }
-            return base + path;
-        };
-
-        Controller.prototype.startWith = function (str, target) {
-            return str.indexOf(target) === 0;
-        };
-
-        Controller.prototype.endWith = function (str, target) {
-            return str.indexOf(target, str.length - target.length) !== -1;
-        };
-        return Controller;
-    })();
-    ReVIEW.Controller = Controller;
-})(ReVIEW || (ReVIEW = {}));
-var ReVIEW;
-(function (ReVIEW) {
     (function (Build) {
         var t = ReVIEW.i18n.t;
 
@@ -6197,6 +5906,429 @@ var ReVIEW;
         Build.DefaultValidator = DefaultValidator;
     })(ReVIEW.Build || (ReVIEW.Build = {}));
     var Build = ReVIEW.Build;
+})(ReVIEW || (ReVIEW = {}));
+var ReVIEW;
+(function (ReVIEW) {
+    var t = ReVIEW.i18n.t;
+
+    var SyntaxTree = ReVIEW.Parse.SyntaxTree;
+    var HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+    var BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+    var InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
+    var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
+    var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+
+    var flatten = ReVIEW.flatten;
+
+    var Controller = (function () {
+        function Controller(options) {
+            if (typeof options === "undefined") { options = {}; }
+            this.options = options;
+        }
+        Controller.prototype.initConfig = function (data) {
+            if (ReVIEW.isNodeJS()) {
+                this.config = new NodeJSConfig(this.options, data);
+            } else {
+                this.config = new WebBrowserConfig(this.options, data);
+            }
+        };
+
+        Controller.prototype.process = function () {
+            var _this = this;
+            var acceptableSyntaxes = this.config.analyzer.getAcceptableSyntaxes();
+
+            if (this.config.listener.onAcceptables(acceptableSyntaxes) === false) {
+                this.config.listener.onCompileFailed();
+                return null;
+            }
+
+            var book = this.processBook();
+
+            this.config.validators.forEach(function (validator) {
+                validator.start(book, acceptableSyntaxes, _this.config.builders);
+            });
+            if (book.reports.some(function (report) {
+                return report.level === ReVIEW.ReportLevel.Error;
+            })) {
+                this.config.listener.onReports(book.reports);
+                this.config.listener.onCompileFailed();
+                return book;
+            }
+
+            var symbols = flatten(book.parts.map(function (part) {
+                return part.chapters.map(function (chapter) {
+                    return chapter.process.symbols;
+                });
+            }));
+            if (this.config.listener.onSymbols(symbols) === false) {
+                this.config.listener.onReports(book.reports);
+                this.config.listener.onCompileFailed();
+                return null;
+            }
+
+            this.config.builders.forEach(function (builder) {
+                return builder.init(book);
+            });
+
+            this.config.listener.onReports(book.reports);
+            this.config.listener.onCompileSuccess(book);
+
+            return book;
+        };
+
+        Controller.prototype.processBook = function () {
+            var _this = this;
+            var book = new ReVIEW.Book(this.config);
+            book.parts = Object.keys(this.config.book).map(function (key, index) {
+                var chapters = _this.config.book[key];
+                return _this.processPart(book, index, key, chapters);
+            });
+
+            book.parts.forEach(function (part) {
+                var chapters = [];
+                part.chapters.forEach(function (chapter) {
+                    ReVIEW.visit(chapter.root, {
+                        visitDefaultPre: function (node) {
+                        },
+                        visitChapterPre: function (node) {
+                            chapters.push(node);
+                        }
+                    });
+                });
+                var counter = {};
+                var max = 0;
+                var currentLevel = 0;
+                chapters.forEach(function (chapter) {
+                    var level = chapter.headline.level;
+                    max = Math.max(max, level);
+                    if (currentLevel > level) {
+                        for (var i = level + 1; i <= max; i++) {
+                            counter[i] = 0;
+                        }
+                    } else if (currentLevel < level) {
+                        for (var i = level; i <= max; i++) {
+                            counter[i] = 0;
+                        }
+                    }
+                    currentLevel = level;
+                    counter[level] += 1;
+                    chapter.no = counter[level];
+                });
+            });
+            return book;
+        };
+
+        Controller.prototype.processPart = function (book, index, name, chapters) {
+            if (typeof chapters === "undefined") { chapters = []; }
+            var _this = this;
+            var part = new ReVIEW.Part(book, index + 1, name);
+            part.chapters = chapters.map(function (chapter, index) {
+                return _this.processChapter(book, part, index, chapter);
+            });
+            return part;
+        };
+
+        Controller.prototype.processChapter = function (book, part, index, chapterPath) {
+            var resolvedPath = this.config.resolvePath(chapterPath);
+            var data = this.config.read(resolvedPath);
+            if (!data) {
+                var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, null);
+                chapter.process.error(t("compile.file_not_exists", resolvedPath));
+                return chapter;
+            }
+            try  {
+                var parseResult = ReVIEW.Parse.parse(data);
+                var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, parseResult.ast);
+            } catch (e) {
+                if (!(e instanceof PEG.SyntaxError)) {
+                    throw e;
+                }
+                var se = e;
+                var errorNode = new SyntaxTree({
+                    syntax: se.name,
+                    line: se.line,
+                    column: se.column,
+                    offset: se.offset,
+                    endPos: -1
+                });
+                var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, null);
+                chapter.process.error(se.message, errorNode);
+            }
+            return chapter;
+        };
+        return Controller;
+    })();
+    ReVIEW.Controller = Controller;
+
+    var ConfigWrapper = (function () {
+        function ConfigWrapper(original) {
+            this.original = original;
+        }
+        Object.defineProperty(ConfigWrapper.prototype, "read", {
+            get: function () {
+                throw new Error("please implements this method");
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(ConfigWrapper.prototype, "write", {
+            get: function () {
+                throw new Error("please implements this method");
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(ConfigWrapper.prototype, "analyzer", {
+            get: function () {
+                return this.original.analyzer || new ReVIEW.Build.DefaultAnalyzer();
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(ConfigWrapper.prototype, "validators", {
+            get: function () {
+                var config = this.original;
+                if (!config.validators || config.validators.length === 0) {
+                    return [new ReVIEW.Build.DefaultValidator()];
+                } else if (!Array.isArray(config.validators)) {
+                    return [config.validators];
+                } else {
+                    return config.validators;
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(ConfigWrapper.prototype, "builders", {
+            get: function () {
+                if (this._builders) {
+                    return this._builders;
+                }
+
+                var config = this.original;
+                if (!config.builders || config.builders.length === 0) {
+                    this._builders = [new ReVIEW.Build.DefaultBuilder()];
+                } else if (!Array.isArray(config.builders)) {
+                    this._builders = [config.builders];
+                } else {
+                    this._builders = config.builders;
+                }
+                return this._builders;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(ConfigWrapper.prototype, "listener", {
+            get: function () {
+                throw new Error("please implements this method");
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(ConfigWrapper.prototype, "book", {
+            get: function () {
+                return this.original.book;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        ConfigWrapper.prototype.resolvePath = function (path) {
+            throw new Error("please implements this method");
+        };
+        return ConfigWrapper;
+    })();
+
+    var NodeJSConfig = (function (_super) {
+        __extends(NodeJSConfig, _super);
+        function NodeJSConfig(options, original) {
+            _super.call(this, original);
+            this.options = options;
+            this.original = original;
+        }
+        Object.defineProperty(NodeJSConfig.prototype, "read", {
+            get: function () {
+                return this.original.read || ReVIEW.IO.read;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(NodeJSConfig.prototype, "write", {
+            get: function () {
+                return this.original.write || ReVIEW.IO.write;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(NodeJSConfig.prototype, "listener", {
+            get: function () {
+                if (this._listener) {
+                    return this._listener;
+                }
+
+                var listener = this.original.listener || {};
+                listener.onAcceptables = listener.onAcceptables || (function () {
+                });
+                listener.onSymbols = listener.onSymbols || (function () {
+                });
+                listener.onReports = listener.onReports || this.onReports;
+                listener.onCompileSuccess = listener.onCompileSuccess || this.onCompileSuccess;
+                listener.onCompileFailed = listener.onCompileFailed || this.onCompileFailed;
+
+                this._listener = listener;
+                return this._listener;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        NodeJSConfig.prototype.onReports = function (reports) {
+            var colors = require("colors");
+            colors.setTheme({
+                info: "cyan",
+                warn: "yellow",
+                error: "red"
+            });
+
+            reports.forEach(function (report) {
+                var message = "";
+                message += report.chapter.name + " ";
+                report.nodes.forEach(function (node) {
+                    message += "[" + node.line + "," + node.column + "] ";
+                });
+                message += report.message;
+                if (report.level === ReVIEW.ReportLevel.Error) {
+                    console.warn(message.error);
+                } else if (report.level === ReVIEW.ReportLevel.Warning) {
+                    console.error(message.warn);
+                } else if (report.level === ReVIEW.ReportLevel.Info) {
+                    console.info(message.info);
+                } else {
+                    throw new Error("unknown report level.");
+                }
+            });
+        };
+
+        NodeJSConfig.prototype.onCompileSuccess = function (book) {
+            process.exit(0);
+        };
+
+        NodeJSConfig.prototype.onCompileFailed = function () {
+            process.exit(1);
+        };
+
+        NodeJSConfig.prototype.resolvePath = function (path) {
+            var p = require("path");
+            var base = this.options.base || "./";
+            return p.join(base, path);
+        };
+        return NodeJSConfig;
+    })(ConfigWrapper);
+
+    var WebBrowserConfig = (function (_super) {
+        __extends(WebBrowserConfig, _super);
+        function WebBrowserConfig(options, original) {
+            _super.call(this, original);
+            this.options = options;
+            this.original = original;
+        }
+        Object.defineProperty(WebBrowserConfig.prototype, "read", {
+            get: function () {
+                return this.original.read || (function () {
+                    throw new Error("please implement config.read method");
+                });
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(WebBrowserConfig.prototype, "write", {
+            get: function () {
+                return this.original.write || (function () {
+                    throw new Error("please implement config.write method");
+                });
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(WebBrowserConfig.prototype, "listener", {
+            get: function () {
+                if (this._listener) {
+                    return this._listener;
+                }
+
+                var listener = this.original.listener || {};
+                listener.onAcceptables = listener.onAcceptables || (function () {
+                });
+                listener.onSymbols = listener.onSymbols || (function () {
+                });
+                listener.onReports = listener.onReports || this.onReports;
+                listener.onCompileSuccess = listener.onCompileSuccess || this.onCompileSuccess;
+                listener.onCompileFailed = listener.onCompileFailed || this.onCompileFailed;
+
+                this._listener = listener;
+                return this._listener;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        WebBrowserConfig.prototype.onReports = function (reports) {
+            reports.forEach(function (report) {
+                var message = "";
+                message += report.chapter.name + " ";
+                report.nodes.forEach(function (node) {
+                    message += "[" + node.line + "," + node.column + "] ";
+                });
+                message += report.message;
+                if (report.level === ReVIEW.ReportLevel.Error) {
+                    console.warn(message);
+                } else if (report.level === ReVIEW.ReportLevel.Warning) {
+                    console.error(message);
+                } else if (report.level === ReVIEW.ReportLevel.Info) {
+                    console.info(message);
+                } else {
+                    throw new Error("unknown report level.");
+                }
+            });
+        };
+
+        WebBrowserConfig.prototype.onCompileSuccess = function (book) {
+        };
+
+        WebBrowserConfig.prototype.onCompileFailed = function () {
+        };
+
+        WebBrowserConfig.prototype.resolvePath = function (path) {
+            if (!this.options.base) {
+                return path;
+            }
+
+            var base = this.options.base;
+            if (!this.endWith(base, "/") && !this.startWith(path, "/")) {
+                base += "/";
+            }
+            return base + path;
+        };
+
+        WebBrowserConfig.prototype.startWith = function (str, target) {
+            return str.indexOf(target) === 0;
+        };
+
+        WebBrowserConfig.prototype.endWith = function (str, target) {
+            return str.indexOf(target, str.length - target.length) !== -1;
+        };
+        return WebBrowserConfig;
+    })(ConfigWrapper);
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {

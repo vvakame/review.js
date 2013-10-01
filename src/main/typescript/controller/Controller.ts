@@ -4,6 +4,7 @@
 ///<reference path='../model/CompilerModel.ts' />
 ///<reference path='../parser/Parser.ts' />
 ///<reference path='../parser/Analyzer.ts' />
+///<reference path='../parser/Validator.ts' />
 
 module ReVIEW {
 
@@ -36,24 +37,28 @@ import flatten = ReVIEW.flatten;
 		read?:(path:string)=>string;
 		write?:(path:string, data:string)=>void;
 
-		listener?:{
-			onAcceptables?:(acceptableSyntaxes:ReVIEW.Build.AcceptableSyntaxes)=>any;
-			onSymbols?:(symbols:ReVIEW.ISymbol[])=>any;
-			onReports?:(reports:ReVIEW.ProcessReport[])=>any;
-
-			onCompileSuccess?:(book:ReVIEW.Book)=>void;
-			onCompileFailed?:()=>void;
-		};
+		listener?:IConfigListener;
 
 		analyzer?:Build.IAnalyzer;
 		validators?:Build.IValidator[];
 		builders:Build.IBuilder[];
 
-		book:{
-			preface?:string[];
-			chapters:string[];
-			afterword?:string[];
-		};
+		book:IConfigBook;
+	}
+
+	export interface IConfigListener {
+		onAcceptables?:(acceptableSyntaxes:ReVIEW.Build.AcceptableSyntaxes)=>any;
+		onSymbols?:(symbols:ReVIEW.ISymbol[])=>any;
+		onReports?:(reports:ReVIEW.ProcessReport[])=>any;
+
+		onCompileSuccess?:(book:ReVIEW.Book)=>void;
+		onCompileFailed?:()=>void;
+	}
+
+	export interface IConfigBook {
+		preface?:string[];
+		chapters:string[];
+		afterword?:string[];
 	}
 
 	/**
@@ -61,7 +66,7 @@ import flatten = ReVIEW.flatten;
 	 * 処理の起点。
 	 */
 	export class Controller {
-		config:ReVIEW.IConfig;
+		private config:ConfigWrapper;
 
 		constructor(public options:ReVIEW.IOptions = {}) {
 		}
@@ -72,22 +77,10 @@ import flatten = ReVIEW.flatten;
 		 * @param data
 		 */
 			initConfig(data:ReVIEW.IConfig):void {
-			this.config = data;
-
-			// analyzer の正規化
-			data.analyzer = data.analyzer || new Build.DefaultAnalyzer();
-			// validators の正規化
-			if (!data.validators || data.validators.length === 0) {
-				this.config.validators = [new Build.DefaultValidator()];
-			} else if (!Array.isArray(data.validators)) {
-				this.config.validators = [<any>data.validators];
-			}
-			// builders の正規化
-			if (!data.builders || data.builders.length === 0) {
-				// TODO DefaultBuilder は微妙感
-				this.config.builders = [new Build.DefaultBuilder()];
-			} else if (!Array.isArray(data.builders)) {
-				this.config.builders = [<any>data.builders];
+			if (ReVIEW.isNodeJS()) {
+				this.config = new NodeJSConfig(this.options, data);
+			} else {
+				this.config = new WebBrowserConfig(this.options, data);
 			}
 		}
 
@@ -98,41 +91,38 @@ import flatten = ReVIEW.flatten;
 			process():Book {
 			var acceptableSyntaxes = this.config.analyzer.getAcceptableSyntaxes();
 
-			if (this.config.listener && this.config.listener.onAcceptables) {
-				if (this.config.listener.onAcceptables(acceptableSyntaxes) === false) {
-					// false が帰ってきたら処理を中断する (undefined でも継続)
-					return null;
-				}
+			if (this.config.listener.onAcceptables(acceptableSyntaxes) === false) {
+				// false が帰ってきたら処理を中断する (undefined でも継続)
+				this.config.listener.onCompileFailed();
+				return null;
 			}
 
 			var book = this.processBook();
-			this.config.validators.forEach((validator)=> {
+
+			this.config.validators.forEach(validator=> {
 				validator.start(book, acceptableSyntaxes, this.config.builders);
 			});
 			if (book.reports.some(report=>report.level === ReVIEW.ReportLevel.Error)) {
 				// エラーがあったら処理中断
-				this.outputReport(book.reports);
-				this.compileFinished(book);
+				this.config.listener.onReports(book.reports);
+				this.config.listener.onCompileFailed();
 				return book;
 			}
 
-			if (this.config.listener && this.config.listener.onSymbols) {
-				var symbols:ReVIEW.ISymbol[] = flatten(book.parts.map(part=>part.chapters.map(chapter=>chapter.process.symbols)));
-				if (this.config.listener.onSymbols(symbols) === false) {
-					// false が帰ってきたら処理を中断する (undefined でも継続)
-					return null;
-				}
+			var symbols:ReVIEW.ISymbol[] = flatten(book.parts.map(part=>part.chapters.map(chapter=>chapter.process.symbols)));
+			if (this.config.listener.onSymbols(symbols) === false) {
+				// false が帰ってきたら処理を中断する (undefined でも継続)
+				this.config.listener.onReports(book.reports);
+				this.config.listener.onCompileFailed();
+				return null;
 			}
 
-			this.config.builders.forEach((builder)=> {
-				builder.init(book);
-			});
+			this.config.builders.forEach(builder=> builder.init(book));
 
 			// TODO write しないといけない
 
-			this.outputReport(book.reports);
-
-			this.compileFinished(book);
+			this.config.listener.onReports(book.reports);
+			this.config.listener.onCompileSuccess(book);
 
 			return book;
 		}
@@ -144,9 +134,9 @@ import flatten = ReVIEW.flatten;
 				return this.processPart(book, index, key, chapters);
 			});
 			// Chapterに採番を行う
-			book.parts.forEach((part)=> {
+			book.parts.forEach(part=> {
 				var chapters:ChapterSyntaxTree[] = [];
-				part.chapters.forEach((chapter)=> {
+				part.chapters.forEach(chapter=> {
 					ReVIEW.visit(chapter.root, {
 						visitDefaultPre: (node)=> {
 						},
@@ -187,8 +177,8 @@ import flatten = ReVIEW.flatten;
 		}
 
 		private processChapter(book:Book, part:Part, index:number, chapterPath:string):Chapter {
-			var resolvedPath = this.resolvePath(chapterPath);
-			var data = this.read(resolvedPath);
+			var resolvedPath = this.config.resolvePath(chapterPath);
+			var data = this.config.read(resolvedPath);
 			if (!data) {
 				var chapter = new Chapter(part, index + 1, chapterPath, data, null);
 				chapter.process.error(t("compile.file_not_exists", resolvedPath));
@@ -214,26 +204,102 @@ import flatten = ReVIEW.flatten;
 			}
 			return chapter;
 		}
+	}
+
+	class ConfigWrapper implements IConfig {
+		_builders:Build.IBuilder[];
+
+		constructor(public original:IConfig) {
+		}
 
 		get read():(path:string)=>string {
-			return this.config.read || ReVIEW.IO.read;
+			throw new Error("please implements this method");
 		}
 
 		get write():(path:string, data:string)=>void {
-			return this.config.write || ReVIEW.IO.write;
+			throw new Error("please implements this method");
 		}
 
-		get outputReport():(reports:ReVIEW.ProcessReport[])=>void {
-			if (this.config.listener && this.config.listener.onReports) {
-				return this.config.listener.onReports;
-			} else if (ReVIEW.isNodeJS()) {
-				return this.outputReportNodeJS;
+		get analyzer():Build.IAnalyzer {
+			return this.original.analyzer || new Build.DefaultAnalyzer();
+		}
+
+		get validators():Build.IValidator[] {
+			var config = this.original;
+			if (!config.validators || config.validators.length === 0) {
+				return [new Build.DefaultValidator()];
+			} else if (!Array.isArray(config.validators)) {
+				return [<any>config.validators];
 			} else {
-				return this.outputReportBrowser;
+				return config.validators;
 			}
 		}
 
-		private outputReportNodeJS(reports:ReVIEW.ProcessReport[]):void {
+		get builders():Build.IBuilder[] {
+			if (this._builders) {
+				return this._builders;
+			}
+
+			var config = this.original;
+			if (!config.builders || config.builders.length === 0) {
+				// TODO DefaultBuilder は微妙感
+				this._builders = [new Build.DefaultBuilder()];
+			} else if (!Array.isArray(config.builders)) {
+				this._builders = [<any>config.builders];
+			} else {
+				this._builders = config.builders;
+			}
+			return this._builders;
+		}
+
+		get listener():IConfigListener {
+			throw new Error("please implements this method");
+		}
+
+		get book():IConfigBook {
+			return this.original.book;
+		}
+
+		resolvePath(path:string):string {
+			throw new Error("please implements this method");
+		}
+	}
+
+	class NodeJSConfig extends ConfigWrapper implements IConfig {
+		_listener:IConfigListener;
+
+		constructor(public options:ReVIEW.IOptions, public original:IConfig) {
+			super(original);
+		}
+
+		get read():(path:string)=>string {
+			return this.original.read || ReVIEW.IO.read;
+		}
+
+		get write():(path:string, data:string)=>void {
+			return this.original.write || ReVIEW.IO.write;
+		}
+
+		get listener():IConfigListener {
+			if (this._listener) {
+				return this._listener;
+			}
+
+			var listener:IConfigListener = this.original.listener || {
+			};
+			listener.onAcceptables = listener.onAcceptables || (()=> {
+			});
+			listener.onSymbols = listener.onSymbols || (()=> {
+			});
+			listener.onReports = listener.onReports || this.onReports;
+			listener.onCompileSuccess = listener.onCompileSuccess || this.onCompileSuccess;
+			listener.onCompileFailed = listener.onCompileFailed || this.onCompileFailed;
+
+			this._listener = listener;
+			return this._listener;
+		}
+
+		onReports(reports:ReVIEW.ProcessReport[]):void {
 			var colors = require("colors");
 			colors.setTheme({
 				info: "cyan",
@@ -260,7 +326,60 @@ import flatten = ReVIEW.flatten;
 			});
 		}
 
-		private outputReportBrowser(reports:ReVIEW.ProcessReport[]):void {
+		onCompileSuccess(book:Book) {
+			process.exit(0);
+		}
+
+		onCompileFailed() {
+			process.exit(1);
+		}
+
+		resolvePath(path:string):string {
+			var p = require("path");
+			var base = this.options.base || "./";
+			return p.join(base, path);
+		}
+	}
+
+	class WebBrowserConfig extends ConfigWrapper implements IConfig {
+		_listener:IConfigListener;
+
+		constructor(public options:ReVIEW.IOptions, public original:IConfig) {
+			super(original);
+		}
+
+		get read():(path:string)=>string {
+			return this.original.read || (()=> {
+				throw new Error("please implement config.read method");
+			});
+		}
+
+		get write():(path:string, data:string)=>void {
+			return this.original.write || (()=> {
+				throw new Error("please implement config.write method");
+			});
+		}
+
+		get listener():IConfigListener {
+			if (this._listener) {
+				return this._listener;
+			}
+
+			var listener:IConfigListener = this.original.listener || {
+			};
+			listener.onAcceptables = listener.onAcceptables || (()=> {
+			});
+			listener.onSymbols = listener.onSymbols || (()=> {
+			});
+			listener.onReports = listener.onReports || this.onReports;
+			listener.onCompileSuccess = listener.onCompileSuccess || this.onCompileSuccess;
+			listener.onCompileFailed = listener.onCompileFailed || this.onCompileFailed;
+
+			this._listener = listener;
+			return this._listener;
+		}
+
+		onReports(reports:ReVIEW.ProcessReport[]):void {
 			reports.forEach(report=> {
 				var message = "";
 				message += report.chapter.name + " ";
@@ -280,40 +399,18 @@ import flatten = ReVIEW.flatten;
 			});
 		}
 
-		compileFinished(book:Book) {
-			var func:Function = ()=> {
-			};
-			if (!book.reports.some(report=>report.level === ReVIEW.ReportLevel.Error)) {
-				if (this.config.listener && this.config.listener.onCompileSuccess) {
-					func = this.config.listener.onCompileSuccess;
-				} else if (ReVIEW.isNodeJS()) {
-					func = ()=> {
-						process.exit(0);
-					};
-				}
-			} else {
-				if (this.config.listener && this.config.listener.onCompileFailed) {
-					func = this.config.listener.onCompileFailed;
-				} else if (ReVIEW.isNodeJS()) {
-					func = ()=> {
-						process.exit(1);
-					};
-				}
-			}
-			func(book);
+		onCompileSuccess(book:Book) {
+		}
+
+		onCompileFailed() {
 		}
 
 		resolvePath(path:string):string {
-			if (ReVIEW.isNodeJS()) {
-				var p = require("path");
-				var base = this.options.base || "./";
-				return p.join(base, path);
-			}
-
 			if (!this.options.base) {
 				return path;
 			}
 
+			var base = this.options.base;
 			if (!this.endWith(base, "/") && !this.startWith(path, "/")) {
 				base += "/";
 			}
