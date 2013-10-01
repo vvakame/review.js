@@ -1,3 +1,5 @@
+///<reference path='../libs/analyzer-error.d.ts' />
+
 ///<reference path='../i18n/i18n.ts' />
 ///<reference path='../model/CompilerModel.ts' />
 
@@ -107,22 +109,6 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 	 */
 	export interface IAnalyzer {
 		getAcceptableSyntaxes():AcceptableSyntaxes;
-	}
-
-	/**
-	 * 解析中に発生したエラーを表す。
-	 * この例外は実装に不備があった時のみ利用される。
-	 * ユーザの入力した文書に不備がある場合には Process.error を利用すること。
-	 */
-	export class AnalyzerError implements Error {
-		name = "AnalyzerError";
-
-		constructor(public message:string) {
-			var E = <any>Error;
-			if (E.captureStackTrace) {
-				E.captureStackTrace(this, AnalyzerError);
-			}
-		}
 	}
 
 	/**

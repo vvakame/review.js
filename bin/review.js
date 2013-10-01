@@ -3942,6 +3942,36 @@ var PEG = (function() {
     parse:       parse
   };
 })();
+;(function (ReVIEW) {
+	(function (Build) {
+		var __extends = this.__extends || function (d, b) {
+			for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+			function __() {
+				this.constructor = d;
+			}
+
+			__.prototype = b.prototype;
+			d.prototype = new __();
+		};
+
+		var AnalyzerError = (function (_super) {
+			__extends(AnalyzerError, _super);
+			function AnalyzerError(message) {
+				_super.call(this, message);
+				this.name = "AnalyzerError";
+				this.message = message;
+
+				if (Error.captureStackTrace) {
+					Error.captureStackTrace(this, AnalyzerError);
+				}
+			}
+
+			return AnalyzerError;
+		})(Error);
+		Build.AnalyzerError = AnalyzerError;
+
+	})(ReVIEW.Build || (ReVIEW.Build = {}));
+})(ReVIEW || (ReVIEW = {}));
 ;var ReVIEW;
 (function (ReVIEW) {
     function isNodeJS() {
@@ -4956,19 +4986,6 @@ var ReVIEW;
         })();
         Build.AcceptableSyntax = AcceptableSyntax;
 
-        var AnalyzerError = (function () {
-            function AnalyzerError(message) {
-                this.message = message;
-                this.name = "AnalyzerError";
-                var E = Error;
-                if (E.captureStackTrace) {
-                    E.captureStackTrace(this, AnalyzerError);
-                }
-            }
-            return AnalyzerError;
-        })();
-        Build.AnalyzerError = AnalyzerError;
-
         var AnalyzeProcess = (function () {
             function AnalyzeProcess() {
                 this.acceptableSyntaxes = [];
@@ -4992,22 +5009,22 @@ var ReVIEW;
                 switch (this.current.type) {
                     case SyntaxType.Block:
                         if (this.current.argsLength.length === 0) {
-                            throw new AnalyzerError("must call builder.checkArgsLength(...number[]) in " + methodName);
+                            throw new Build.AnalyzerError("must call builder.checkArgsLength(...number[]) in " + methodName);
                         }
                         break;
                     case SyntaxType.Other:
                         if (!this.current.clazz) {
-                            throw new AnalyzerError("must call builder.setClass(class) in " + methodName);
+                            throw new Build.AnalyzerError("must call builder.setClass(class) in " + methodName);
                         }
                         break;
                     case SyntaxType.Inline:
                         break;
                 }
                 if (!this.current.description) {
-                    throw new AnalyzerError("must call builder.setDescription(string) in " + methodName);
+                    throw new Build.AnalyzerError("must call builder.setDescription(string) in " + methodName);
                 }
                 if (!this.current.process) {
-                    throw new AnalyzerError("must call builder.processNode(func) in " + methodName);
+                    throw new Build.AnalyzerError("must call builder.processNode(func) in " + methodName);
                 }
 
                 this.acceptableSyntaxes.push(this.current);

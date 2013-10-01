@@ -4,6 +4,7 @@ module.exports = function (grunt) {
 		bwr: grunt.file.readJSON('bower.json'),
 		// Java用プロジェクト構成向け設定
 		opt: {
+			"jsMain": "src/main/javascript",
 			"tsMain": "src/main/typescript",
 			"tsMainLib": "src/main/typescript/libs",
 			"tsTest": "src/test/typescript",
@@ -170,6 +171,7 @@ module.exports = function (grunt) {
 			dev: {
 				src: [
 					'<%= opt.peg %>/grammer.js',
+					'<%= opt.jsMain %>/Exception.js',
 					'<%= opt.jsMainOut %>/*.js'
 				],
 				dest: '<%= opt.outBase %>/review.js'
@@ -177,6 +179,7 @@ module.exports = function (grunt) {
 			test: {
 				src: [
 					'<%= opt.peg %>/grammer.js',
+					'<%= opt.jsMain %>/Exception.js',
 					'<%= opt.jsTestOut %>/main-spec.js'
 				],
 				dest: '<%= opt.jsTestOut %>/test.js'
@@ -194,6 +197,7 @@ module.exports = function (grunt) {
 					'<%= opt.outBase %>/review.min.js': [
 						'<%= opt.jsLib %>/i18next-<%= bwr.dependencies.i18next %>.js',
 						'<%= opt.peg %>/grammer.js',
+						'<%= opt.jsMain %>/Exception.js',
 						'<%= opt.jsMainOut %>/*.js'
 					]
 				}
