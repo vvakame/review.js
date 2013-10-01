@@ -1,47 +1,31 @@
 ///<reference path='../libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
 
+///<reference path='../TestHelper.ts' />
+
 ///<reference path='../../../main/typescript/builder/Builder.ts' />
 ///<reference path='../../../main/typescript/builder/TextBuilder.ts' />
 
 describe("ReVIEW.Buildの", ()=> {
 	it("処理が正しく動くこと", ()=> {
-		var files:any = {
-			"ch01.re": "={ch01} ちゃぷたーだよ\n今日の晩ご飯はラフテーだった",
-			"ch02.re": "={ch02} チャプター2\n参照 @<hd>{ch02} とか\n//list[hoge][fuga]{\ntest\n//}"
-		};
-		var result:any = {
-		};
-		var book = ReVIEW.start(review=> {
-			review.initConfig({
-				read: function (path) {
-					return files[path];
-				},
-				write: function (path, content) {
-					result[path] = content;
-				},
+		var success = Test.compile({
+			read: path => {
+				return {
+					"ch01.re": "={ch01} ちゃぷたーだよ\n今日の晩ご飯はラフテーだった",
+					"ch02.re": "={ch02} チャプター2\n参照 @<hd>{ch02} とか\n//list[hoge][fuga]{\ntest\n//}"
+				}[path];
+			},
 
-				listener: {
-					onCompileSuccess: ()=> {
-					},
-					onCompileFailed: ()=> {
-					}
-				},
+			book: {
+				preface: [],
+				chapters: [
+					"ch01.re",
+					"ch02.re"
+				],
+				afterword: []
+			}
+		}).success();
 
-				builders: [new ReVIEW.Build.TextBuilder()],
-
-				book: {
-					preface: [
-					],
-					chapters: [
-						"ch01.re",
-						"ch02.re"
-					],
-					afterword: [
-					]
-				}
-			});
-		});
-
+		var book = success.book;
 		expect(book.parts.length).toBe(3);
 		expect(book.parts[0].chapters.length).toBe(0);
 		expect(book.parts[2].chapters.length).toBe(0);
