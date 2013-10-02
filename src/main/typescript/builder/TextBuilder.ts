@@ -143,21 +143,21 @@ import findChapter = ReVIEW.findChapter;
 		}
 
 		// TODO 未完了
-        inline_kw_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("★");
-            return (v) => {
-                // name, args はパス
-                node.childNodes.forEach((node)=> {
-                    var contentString = nodeContentToString(process,node);
-                    var keywordData = contentString.split(",");
-                    process.out(keywordData[0] + "(" +keywordData[1]+")");
-                });
-            };
-        }
+		inline_kw_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("★");
+			return (v) => {
+				// name, args はパス
+				node.childNodes.forEach(node=> {
+					var contentString = nodeContentToString(process, node);
+					var keywordData = contentString.split(",");
+					process.out(keywordData[0] + "(" + keywordData[1] + ")");
+				});
+			};
+		}
 
-        inline_kw_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("☆");
-        }
+		inline_kw_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("☆");
+		}
 
 		inline_tt_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("△");

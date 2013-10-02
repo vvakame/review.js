@@ -6753,6 +6753,7 @@ var ReVIEW;
                     node.childNodes.forEach(function (node) {
                         var contentString = nodeContentToString(process, node);
                         var keywordData = contentString.split(",");
+
                         process.out(keywordData[0] + "(" + keywordData[1] + ")");
                     });
                 };

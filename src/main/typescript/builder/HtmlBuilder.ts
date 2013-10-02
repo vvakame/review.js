@@ -212,22 +212,23 @@ import findChapter = ReVIEW.findChapter;
 			process.out("</tt>");
 		}
 
-		// TODO 未完了
+		// TODO 未完了 ←何が未完了なのかアウトラインを書く
 		inline_kw_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("<b>");
+			process.out("<b>");
 			return (v) => {
 				// name, args はパス
-				node.childNodes.forEach((node)=> {
-					var contentString = nodeContentToString(process,node);
+				node.childNodes.forEach(node=> {
+					var contentString = nodeContentToString(process, node);
 					var keywordData = contentString.split(",");
-					process.out(keywordData[0] + "(" +keywordData[1]+")");
+					// TODO ユーザの入力内容のチェックが必要
+					process.out(keywordData[0] + "(" + keywordData[1] + ")");
 				});
 			};
 		}
 
-        inline_kw_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("</b>");
-        }
+		inline_kw_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("</b>");
+		}
 
 		inline_em_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("<em>");
