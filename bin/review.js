@@ -5500,6 +5500,25 @@ var ReVIEW;
     })();
     ReVIEW.ProcessReport = ProcessReport;
 
+    var BookProcess = (function () {
+        function BookProcess() {
+            this.reports = [];
+        }
+        BookProcess.prototype.info = function (message) {
+            this.reports.push(new ProcessReport(ReportLevel.Info, null, null, message));
+        };
+
+        BookProcess.prototype.warn = function (message) {
+            this.reports.push(new ProcessReport(ReportLevel.Warning, null, null, message));
+        };
+
+        BookProcess.prototype.error = function (message) {
+            this.reports.push(new ProcessReport(ReportLevel.Error, null, null, message));
+        };
+        return BookProcess;
+    })();
+    ReVIEW.BookProcess = BookProcess;
+
     var Process = (function () {
         function Process(part, chapter, input) {
             this.part = part;
@@ -5694,15 +5713,19 @@ var ReVIEW;
     var Book = (function () {
         function Book(config) {
             this.config = config;
+            this.process = new BookProcess();
             this.parts = [];
         }
         Object.defineProperty(Book.prototype, "reports", {
             get: function () {
-                return ReVIEW.flatten(this.parts.map(function (part) {
+                var tmpArray = [];
+                tmpArray.push(this.process.reports);
+                tmpArray.push(this.parts.map(function (part) {
                     return part.chapters.map(function (chapter) {
                         return chapter.process.reports;
                     });
                 }));
+                return ReVIEW.flatten(tmpArray);
             },
             enumerable: true,
             configurable: true
@@ -5774,8 +5797,34 @@ var ReVIEW;
                 this.acceptableSyntaxes = acceptableSyntaxes;
                 this.builders = builders;
 
+                this.checkBuilder(book, acceptableSyntaxes, builders);
                 this.checkBook(book);
                 this.resolveSymbolAndReference(book);
+            };
+
+            DefaultValidator.prototype.checkBuilder = function (book, acceptableSyntaxes, builders) {
+                if (typeof builders === "undefined") { builders = []; }
+                acceptableSyntaxes.acceptableSyntaxes.forEach(function (syntax) {
+                    var prefix;
+                    switch (syntax.type) {
+                        case Build.SyntaxType.Other:
+                            return;
+                        case Build.SyntaxType.Block:
+                            prefix = "block_";
+                            break;
+                        case Build.SyntaxType.Inline:
+                            prefix = "inline_";
+                            break;
+                    }
+                    var funcName1 = prefix + syntax.symbolName;
+                    var funcName2 = prefix + syntax.symbolName + "_pre";
+                    builders.forEach(function (builder) {
+                        var func = builder[funcName1] || builder[funcName2];
+                        if (!func) {
+                            book.process.error(Build.SyntaxType[syntax.type] + " " + syntax.symbolName + " is not supported in " + builder.name);
+                        }
+                    });
+                });
             };
 
             DefaultValidator.prototype.checkBook = function (book) {
@@ -6217,10 +6266,14 @@ var ReVIEW;
 
             reports.forEach(function (report) {
                 var message = "";
-                message += report.chapter.name + " ";
-                report.nodes.forEach(function (node) {
-                    message += "[" + node.line + "," + node.column + "] ";
-                });
+                if (report.chapter) {
+                    message += report.chapter.name + " ";
+                }
+                if (report.nodes) {
+                    report.nodes.forEach(function (node) {
+                        message += "[" + node.line + "," + node.column + "] ";
+                    });
+                }
                 message += report.message;
                 if (report.level === ReVIEW.ReportLevel.Error) {
                     console.warn(message.error);
@@ -6302,10 +6355,14 @@ var ReVIEW;
         WebBrowserConfig.prototype.onReports = function (reports) {
             reports.forEach(function (report) {
                 var message = "";
-                message += report.chapter.name + " ";
-                report.nodes.forEach(function (node) {
-                    message += "[" + node.line + "," + node.column + "] ";
-                });
+                if (report.chapter) {
+                    message += report.chapter.name + " ";
+                }
+                if (report.nodes) {
+                    report.nodes.forEach(function (node) {
+                        message += "[" + node.line + "," + node.column + "] ";
+                    });
+                }
                 message += report.message;
                 if (report.level === ReVIEW.ReportLevel.Error) {
                     console.warn(message);

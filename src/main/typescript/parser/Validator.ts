@@ -25,14 +25,38 @@ import ArgumentSyntaxTree = ReVIEW.Parse.ArgumentSyntaxTree;
 		acceptableSyntaxes:AcceptableSyntaxes;
 		builders:IBuilder[];
 
-		// TODO Builderの実装漏れ検知ロジックを早めに追加する
-
 		start(book:Book, acceptableSyntaxes:AcceptableSyntaxes, builders:IBuilder[]) {
 			this.acceptableSyntaxes = acceptableSyntaxes;
 			this.builders = builders;
 
+			this.checkBuilder(book, acceptableSyntaxes, builders);
 			this.checkBook(book);
 			this.resolveSymbolAndReference(book);
+		}
+
+		checkBuilder(book:Book, acceptableSyntaxes:AcceptableSyntaxes, builders:IBuilder[] = []) {
+			acceptableSyntaxes.acceptableSyntaxes.forEach(syntax => {
+				var prefix:string;
+				switch (syntax.type) {
+					case SyntaxType.Other:
+						// Other系は実装をチェックする必要はない…。(ということにしておく
+						return;
+					case SyntaxType.Block:
+						prefix = "block_";
+						break;
+					case SyntaxType.Inline:
+						prefix = "inline_";
+						break;
+				}
+				var funcName1 = prefix + syntax.symbolName;
+				var funcName2 = prefix + syntax.symbolName + "_pre";
+				builders.forEach(builder=> {
+					var func = builder[funcName1] || builder[funcName2];
+					if (!func) {
+						book.process.error(SyntaxType[syntax.type] + " " + syntax.symbolName + " is not supported in " + builder.name);
+					}
+				});
+			});
 		}
 
 		checkBook(book:Book) {
@@ -57,7 +81,7 @@ import ArgumentSyntaxTree = ReVIEW.Parse.ArgumentSyntaxTree;
 					return results[0].process(chapter.process, node);
 				},
 				visitBlockElementPre: (node:BlockElementSyntaxTree) => {
-					var results = this.acceptableSyntaxes.find(node);
+					var results = this.acc	eptableSyntaxes.find(node);
 					if (results.length !== 1) {
 						chapter.process.error(t("compile.syntax_definietion_error"), node);
 						return;

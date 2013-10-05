@@ -309,10 +309,14 @@ import flatten = ReVIEW.flatten;
 
 			reports.forEach(report=> {
 				var message = "";
-				message += report.chapter.name + " ";
-				report.nodes.forEach(node => {
-					message += "[" + node.line + "," + node.column + "] ";
-				});
+				if (report.chapter) {
+					message += report.chapter.name + " ";
+				}
+				if (report.nodes) {
+					report.nodes.forEach(node => {
+						message += "[" + node.line + "," + node.column + "] ";
+					});
+				}
 				message += report.message;
 				if (report.level === ReVIEW.ReportLevel.Error) {
 					console.warn(message.error);
@@ -382,10 +386,14 @@ import flatten = ReVIEW.flatten;
 		onReports(reports:ReVIEW.ProcessReport[]):void {
 			reports.forEach(report=> {
 				var message = "";
-				message += report.chapter.name + " ";
-				report.nodes.forEach(node => {
-					message += "[" + node.line + "," + node.column + "] ";
-				});
+				if (report.chapter) {
+					message += report.chapter.name + " ";
+				}
+				if (report.nodes) {
+					report.nodes.forEach(node => {
+						message += "[" + node.line + "," + node.column + "] ";
+					});
+				}
 				message += report.message;
 				if (report.level === ReVIEW.ReportLevel.Error) {
 					console.warn(message);

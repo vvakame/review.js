@@ -55,6 +55,25 @@ import t = ReVIEW.i18n.t;
 	/**
 	 * コンパイル処理時の出力ハンドリング。
 	 */
+	export class BookProcess {
+		reports:ProcessReport[] = [];
+
+		info(message:string) {
+			this.reports.push(new ProcessReport(ReportLevel.Info, null, null, message));
+		}
+
+		warn(message:string) {
+			this.reports.push(new ProcessReport(ReportLevel.Warning, null, null, message));
+		}
+
+		error(message:string) {
+			this.reports.push(new ProcessReport(ReportLevel.Error, null, null, message));
+		}
+	}
+
+	/**
+	 * コンパイル処理時の出力ハンドリング。
+	 */
 	export class Process {
 		symbols:ISymbol[] = [];
 		indexCounter:{ [kind:string]:number; } = {};
@@ -207,13 +226,17 @@ import t = ReVIEW.i18n.t;
 	 * 本全体を表す。
 	 */
 	export class Book {
+		process:BookProcess = new BookProcess();
 		parts:Part[] = [];
 
 		constructor(public config:IConfig) {
 		}
 
 		get reports():ProcessReport[] {
-			return flatten(this.parts.map(part=>part.chapters.map((chapter:Chapter)=>chapter.process.reports)));
+			var tmpArray:any[] = [];
+			tmpArray.push(this.process.reports);
+			tmpArray.push(this.parts.map(part=>part.chapters.map((chapter:Chapter)=>chapter.process.reports)));
+			return flatten(tmpArray);
 		}
 	}
 
