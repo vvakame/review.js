@@ -260,7 +260,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			builder.processNode((process, n)=> {
 				var node = n.toUlist();
 				process.addSymbol({
-					symbolName: "li", // TODO ul に修正すること
+					symbolName: "ul",
 					node: node
 				});
 			});

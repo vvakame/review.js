@@ -5152,7 +5152,7 @@ var ReVIEW;
                 builder.processNode(function (process, n) {
                     var node = n.toUlist();
                     process.addSymbol({
-                        symbolName: "li",
+                        symbolName: "ul",
                         node: node
                     });
                 });
@@ -5388,10 +5388,10 @@ var ReVIEW;
                                 return _this.headlinePost(process, "hd", node);
                             },
                             visitUlistPre: function (node) {
-                                return _this.ulistPre(process, "li", node);
+                                return _this.ulistPre(process, "ul", node);
                             },
                             visitUlistPost: function (node) {
-                                return _this.ulistPost(process, "li", node);
+                                return _this.ulistPost(process, "ul", node);
                             },
                             visitOlistPre: function (node) {
                                 return _this.olistPre(process, "ol", node);

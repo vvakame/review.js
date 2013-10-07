@@ -65,10 +65,10 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 							return this.headlinePost(process, "hd", node);
 						},
 						visitUlistPre: (node:UlistElementSyntaxTree)=> {
-							return this.ulistPre(process, "li", node);
+							return this.ulistPre(process, "ul", node);
 						},
 						visitUlistPost: (node:UlistElementSyntaxTree)=> {
-							return this.ulistPost(process, "li", node);
+							return this.ulistPost(process, "ul", node);
 						},
 						visitOlistPre: (node:OlistElementSyntaxTree)=> {
 							return this.olistPre(process, "ol", node);
