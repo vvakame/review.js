@@ -132,37 +132,41 @@ module ReVIEW.Parse {
 	 */
 	function reconstruct(node:NodeSyntaxTree, pickLevel:(ast:NodeSyntaxTree)=>number) {
 		var originalChildNodes = node.childNodes;
-		node.childNodes = [];
 
-		var nodeSets:NodeSyntaxTree[][] = [];
-		var currentSet:NodeSyntaxTree[] = [];
+		var nodeSets:{parent:NodeSyntaxTree; children:NodeSyntaxTree[];}[] = [];
+		var currentSet:{parent:NodeSyntaxTree; children:NodeSyntaxTree[];} = {
+			parent: null,
+			children: []
+		};
 
 		originalChildNodes.forEach((child:NodeSyntaxTree)=> {
-			if (currentSet.length === 0) {
-				currentSet.push(child);
+			if (!currentSet.parent) {
+				currentSet.parent = child;
 
-			} else if (pickLevel(currentSet[0]) < pickLevel(child)) {
-				currentSet.push(child);
+			} else if (pickLevel(currentSet.parent) < pickLevel(child)) {
+				currentSet.children.push(child);
 
 			} else {
 				nodeSets.push(currentSet);
-				currentSet = [];
-				currentSet.push(child);
+				currentSet = {
+					parent: child,
+					children: []
+				};
 			}
 		});
-		if (currentSet.length !== 0) {
+		if (currentSet.parent) {
 			nodeSets.push(currentSet);
 		}
-		nodeSets.forEach((nodes:NodeSyntaxTree[])=> {
-			var parent = nodes[0];
+		node.childNodes = [];
+		nodeSets.forEach(nodes=> {
+			var parent = nodes.parent;
 			node.childNodes.push(parent);
-			nodes.splice(1).forEach((child) => {
+			nodes.children.forEach(child => {
 				parent.childNodes.push(child);
 			});
 			reconstruct(parent, pickLevel);
 		});
 	}
-
 
 	/**
 	 * 構文解析時に発生したエラー。
