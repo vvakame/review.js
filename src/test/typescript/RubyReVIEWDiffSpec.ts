@@ -81,7 +81,8 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 			"headline_only.re",
 			"image.re",
 			"ulist.re",
-			"olist.re"
+			"olist.re",
+			"dlist.re"
 			// "inline_with_newline.re", // Ruby版だと予想外の処理をする
 		];
 

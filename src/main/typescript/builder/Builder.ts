@@ -12,6 +12,7 @@ import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
 import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
 import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
+import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
 import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
@@ -76,6 +77,12 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 						visitOlistPost: (node:OlistElementSyntaxTree)=> {
 							return this.olistPost(process, "ol", node);
 						},
+						visitDlistPre: (node:DlistElementSyntaxTree)=> {
+							return this.dlistPre(process, "dl", node);
+						},
+						visitDlistPost: (node:DlistElementSyntaxTree)=> {
+							return this.dlistPost(process, "dl", node);
+						},
 						visitBlockElementPre: (node:BlockElementSyntaxTree)=> {
 							return this.blockPre(process, node.symbol, node);
 						},
@@ -127,6 +134,12 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		}
 
 		olistPost(process:BuilderProcess, name:string, node:OlistElementSyntaxTree):any {
+		}
+
+		dlistPre(process:BuilderProcess, name:string, node:DlistElementSyntaxTree):any {
+		}
+
+		dlistPost(process:BuilderProcess, name:string, node:DlistElementSyntaxTree):any {
 		}
 
 		text(process:BuilderProcess, node:TextNodeSyntaxTree):any {

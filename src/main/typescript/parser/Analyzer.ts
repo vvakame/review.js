@@ -279,6 +279,19 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
+		dlist(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Other);
+			builder.setClass(ReVIEW.Parse.DlistElementSyntaxTree);
+			builder.setDescription(t("description.dlist"));
+			builder.processNode((process, n)=> {
+				var node = n.toDlist();
+				process.addSymbol({
+					symbolName: "dl",
+					node: node
+				});
+			});
+		}
+
 		block_list(builder:IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
 			builder.setSymbol("list");

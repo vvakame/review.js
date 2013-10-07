@@ -13,6 +13,7 @@ import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
 import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
 import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
+import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
 import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
@@ -74,6 +75,9 @@ import findUp = ReVIEW.findUp;
 					plane = true;
 					return null;
 				} else if (node instanceof OlistElementSyntaxTree) {
+					plane = true;
+					return null;
+				} else if (node instanceof DlistElementSyntaxTree) {
 					plane = true;
 					return null;
 				}
@@ -154,6 +158,26 @@ import findUp = ReVIEW.findUp;
 			process.out("</li>\n");
 			if (node.next instanceof OlistElementSyntaxTree === false) {
 				process.out("</ol>\n");
+			}
+		}
+
+		dlistPre(process:BuilderProcess, name:string, node:DlistElementSyntaxTree) {
+			if (node.prev instanceof DlistElementSyntaxTree === false) {
+				process.out("<dl>\n");
+			}
+			return (v:ITreeVisitor)=> {
+				process.out("<dt>");
+				ReVIEW.visit(node.text, v);
+				process.out("</dt>\n");
+				process.out("<dd>");
+				ReVIEW.visit(node.content, v);
+				process.out("</dd>\n");
+			};
+		}
+
+		dlistPost(process:BuilderProcess, name:string, node:DlistElementSyntaxTree) {
+			if (node.next instanceof DlistElementSyntaxTree === false) {
+				process.out("</dl>\n");
 			}
 		}
 

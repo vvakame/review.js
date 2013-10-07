@@ -3427,7 +3427,7 @@ var PEG = (function() {
     }
 
     function peg$parseDlistElement() {
-      var s0, s1, s2, s3, s4, s5, s6;
+      var s0, s1, s2, s3, s4, s5, s6, s7;
 
       var key    = peg$currPos * 38 + 28,
           cached = peg$cache[key];
@@ -3480,13 +3480,19 @@ var PEG = (function() {
               if (s5 !== null) {
                 s6 = peg$parseDlistElementContent();
                 if (s6 !== null) {
-                  peg$reportedPos = s0;
-                  s1 = peg$c98(s5, s6);
-                  if (s1 === null) {
-                    peg$currPos = s0;
-                    s0 = s1;
+                  s7 = peg$parse_();
+                  if (s7 !== null) {
+                    peg$reportedPos = s0;
+                    s1 = peg$c98(s5, s6);
+                    if (s1 === null) {
+                      peg$currPos = s0;
+                      s0 = s1;
+                    } else {
+                      s0 = s1;
+                    }
                   } else {
-                    s0 = s1;
+                    peg$currPos = s0;
+                    s0 = peg$c1;
                   }
                 } else {
                   peg$currPos = s0;
@@ -5171,6 +5177,19 @@ var ReVIEW;
                 });
             };
 
+            DefaultAnalyzer.prototype.dlist = function (builder) {
+                builder.setSyntaxType(SyntaxType.Other);
+                builder.setClass(ReVIEW.Parse.DlistElementSyntaxTree);
+                builder.setDescription(t("description.dlist"));
+                builder.processNode(function (process, n) {
+                    var node = n.toDlist();
+                    process.addSymbol({
+                        symbolName: "dl",
+                        node: node
+                    });
+                });
+            };
+
             DefaultAnalyzer.prototype.block_list = function (builder) {
                 builder.setSyntaxType(SyntaxType.Block);
                 builder.setSymbol("list");
@@ -5351,6 +5370,7 @@ var ReVIEW;
         var HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
         var UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
         var OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
+        var DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
         var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
         var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
@@ -5398,6 +5418,12 @@ var ReVIEW;
                             },
                             visitOlistPost: function (node) {
                                 return _this.olistPost(process, "ol", node);
+                            },
+                            visitDlistPre: function (node) {
+                                return _this.dlistPre(process, "dl", node);
+                            },
+                            visitDlistPost: function (node) {
+                                return _this.dlistPost(process, "dl", node);
                             },
                             visitBlockElementPre: function (node) {
                                 return _this.blockPre(process, node.symbol, node);
@@ -5450,6 +5476,12 @@ var ReVIEW;
             };
 
             DefaultBuilder.prototype.olistPost = function (process, name, node) {
+            };
+
+            DefaultBuilder.prototype.dlistPre = function (process, name, node) {
+            };
+
+            DefaultBuilder.prototype.dlistPost = function (process, name, node) {
             };
 
             DefaultBuilder.prototype.text = function (process, node) {
@@ -6485,6 +6517,7 @@ var ReVIEW;
         var HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
         var UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
         var OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
+        var DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
         var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
         var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
@@ -6547,6 +6580,21 @@ var ReVIEW;
             };
 
             TextBuilder.prototype.olistPost = function (process, name, node) {
+                process.out("\n");
+            };
+
+            TextBuilder.prototype.dlistPre = function (process, name, node) {
+                return function (v) {
+                    process.out("★");
+                    ReVIEW.visit(node.text, v);
+                    process.out("☆\n");
+                    process.out("\t");
+                    ReVIEW.visit(node.content, v);
+                    process.out("\n");
+                };
+            };
+
+            TextBuilder.prototype.dlistPost = function (process, name, node) {
                 process.out("\n");
             };
 
@@ -6686,6 +6734,7 @@ var ReVIEW;
         var HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
         var UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
         var OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
+        var DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
         var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
         var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
@@ -6747,6 +6796,9 @@ var ReVIEW;
                         plane = true;
                         return null;
                     } else if (node instanceof OlistElementSyntaxTree) {
+                        plane = true;
+                        return null;
+                    } else if (node instanceof DlistElementSyntaxTree) {
                         plane = true;
                         return null;
                     }
@@ -6827,6 +6879,26 @@ var ReVIEW;
                 process.out("</li>\n");
                 if (node.next instanceof OlistElementSyntaxTree === false) {
                     process.out("</ol>\n");
+                }
+            };
+
+            HtmlBuilder.prototype.dlistPre = function (process, name, node) {
+                if (node.prev instanceof DlistElementSyntaxTree === false) {
+                    process.out("<dl>\n");
+                }
+                return function (v) {
+                    process.out("<dt>");
+                    ReVIEW.visit(node.text, v);
+                    process.out("</dt>\n");
+                    process.out("<dd>");
+                    ReVIEW.visit(node.content, v);
+                    process.out("</dd>\n");
+                };
+            };
+
+            HtmlBuilder.prototype.dlistPost = function (process, name, node) {
+                if (node.next instanceof DlistElementSyntaxTree === false) {
+                    process.out("</dl>\n");
                 }
             };
 

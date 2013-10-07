@@ -14,6 +14,7 @@ import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
 import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
 import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
+import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
 import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
@@ -79,6 +80,21 @@ import findChapter = ReVIEW.findChapter;
 		}
 
 		olistPost(process:BuilderProcess, name:string, node:OlistElementSyntaxTree) {
+			process.out("\n");
+		}
+
+		dlistPre(process:BuilderProcess, name:string, node:DlistElementSyntaxTree) {
+			return (v:ITreeVisitor)=> {
+				process.out("★");
+				ReVIEW.visit(node.text, v);
+				process.out("☆\n");
+				process.out("\t");
+				ReVIEW.visit(node.content, v);
+				process.out("\n");
+			};
+		}
+
+		dlistPost(process:BuilderProcess, name:string, node:DlistElementSyntaxTree) {
 			process.out("\n");
 		}
 

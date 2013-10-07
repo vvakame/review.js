@@ -123,7 +123,7 @@ Dlist "dlist"
     ;
 
 DlistElement "dlist element"
-    = " "* ":" " " _ text:SinglelineContent content:DlistElementContent
+    = " "* ":" " " _ text:SinglelineContent content:DlistElementContent _
     ;
 
 DlistElementContent "content of dlist element"
