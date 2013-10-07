@@ -81,7 +81,7 @@ import ArgumentSyntaxTree = ReVIEW.Parse.ArgumentSyntaxTree;
 					return results[0].process(chapter.process, node);
 				},
 				visitBlockElementPre: (node:BlockElementSyntaxTree) => {
-					var results = this.acc	eptableSyntaxes.find(node);
+					var results = this.acceptableSyntaxes.find(node);
 					if (results.length !== 1) {
 						chapter.process.error(t("compile.syntax_definietion_error"), node);
 						return;

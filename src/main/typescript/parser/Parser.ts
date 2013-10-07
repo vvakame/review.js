@@ -42,6 +42,17 @@ module ReVIEW.Parse {
 				ast.parentNode = parent;
 			}
 		});
+		// prev, next を設定
+		ReVIEW.visit(root, {
+			visitDefaultPre: (ast:SyntaxTree, parent:SyntaxTree)=> {
+			},
+			visitNodePre: (ast:NodeSyntaxTree) => {
+				ast.childNodes.forEach((node, i, nodes) => {
+					node.prev = nodes[i - 1];
+					node.next = nodes[i + 1];
+				});
+			}
+		});
 		return {
 			ast: root,
 			cst: rawResult
@@ -244,6 +255,8 @@ module ReVIEW.Parse {
 		ruleName:RuleName;
 		// analyzer 中で設定する項目
 		no:number;
+		prev:SyntaxTree;
+		next:SyntaxTree;
 
 		constructor(data:IConcreatSyntaxTree) {
 			this.ruleName = RuleName[data.syntax];
@@ -261,6 +274,8 @@ module ReVIEW.Parse {
 			for (var k in this) {
 				if (k === "ruleName") {
 					result[k] = RuleName[this[k]];
+				} else if (k === "prev" || k === "next") {
+					// 無視する
 				} else if (k === "fqn") {
 					// TODO あとでちゃんと出るようにする
 				} else if (k !== "parentNode" && typeof this[k] !== "function") {
