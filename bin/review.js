@@ -5119,6 +5119,8 @@ var ReVIEW;
                         func = this[k];
                     } else if (k === "olist") {
                         func = this[k];
+                    } else if (k === "dlist") {
+                        func = this[k];
                     }
                     if (func) {
                         process.prepare();
