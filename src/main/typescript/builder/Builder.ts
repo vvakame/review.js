@@ -11,6 +11,7 @@ import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
 import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
 import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
+import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
 import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
@@ -26,6 +27,8 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any;
 		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree):any;
 		ulistPost(process:BuilderProcess, name:string, node:UlistElementSyntaxTree):any;
+		olistPre(process:BuilderProcess, name:string, node:OlistElementSyntaxTree):any;
+		olistPost(process:BuilderProcess, name:string, node:OlistElementSyntaxTree):any;
 		blockPre(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any;
 		blockPost(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any;
 		inlinePre(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any;
@@ -66,6 +69,12 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 						},
 						visitUlistPost: (node:UlistElementSyntaxTree)=> {
 							return this.ulistPost(process, "li", node);
+						},
+						visitOlistPre: (node:OlistElementSyntaxTree)=> {
+							return this.olistPre(process, "ol", node);
+						},
+						visitOlistPost: (node:OlistElementSyntaxTree)=> {
+							return this.olistPost(process, "ol", node);
 						},
 						visitBlockElementPre: (node:BlockElementSyntaxTree)=> {
 							return this.blockPre(process, node.symbol, node);
@@ -112,6 +121,12 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		}
 
 		ulistPost(process:BuilderProcess, name:string, node:UlistElementSyntaxTree):any {
+		}
+
+		olistPre(process:BuilderProcess, name:string, node:OlistElementSyntaxTree):any {
+		}
+
+		olistPost(process:BuilderProcess, name:string, node:OlistElementSyntaxTree):any {
 		}
 
 		text(process:BuilderProcess, node:TextNodeSyntaxTree):any {
@@ -172,6 +187,23 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 				throw new AnalyzerError("inline_" + name + "_post is not Function");
 			}
 			return func.call(this, process, node);
+		}
+
+		ulistParentHelper(process:BuilderProcess, node:UlistElementSyntaxTree, action:()=>void, currentLevel:number = node.level) {
+			if (currentLevel !== 1) {
+				var result = findUp(node.parentNode, (n)=> {
+					if (n instanceof UlistElementSyntaxTree) {
+						var ulist = n.toUlist();
+						return ulist.level === (currentLevel - 1);
+					}
+					return false;
+				});
+				if (result) {
+					return;
+				}
+				action();
+				this.ulistParentHelper(process, node, action, currentLevel - 1);
+			}
 		}
 
 		findReference(process:BuilderProcess, node:SyntaxTree):ISymbol {

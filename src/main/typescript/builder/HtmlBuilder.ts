@@ -12,11 +12,13 @@ import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
 import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
 import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
+import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
 import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
 import nodeContentToString = ReVIEW.nodeContentToString;
 import findChapter = ReVIEW.findChapter;
+import findUp = ReVIEW.findUp;
 
 	export class HtmlBuilder extends DefaultBuilder {
 
@@ -115,21 +117,38 @@ import findChapter = ReVIEW.findChapter;
 		}
 
 		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
-			process.out("<li>");
-			if (node.childNodes.length > 0) {
-				return (v:ITreeVisitor)=> {
-					ReVIEW.visit(node.text, v);
-					process.out("<ul>");
-					node.childNodes.forEach(child=> {
-						ReVIEW.visit(child, v);
-					});
-					process.out("</ul>");
-				};
+			this.ulistParentHelper(process, node, ()=> {
+				process.out("<ul>\n");
+			});
+			// TODO <p> で囲まれないようにする
+			if (node.prev instanceof UlistElementSyntaxTree === false) {
+				process.out("<ul>\n");
 			}
+			process.out("<li>");
 		}
 
 		ulistPost(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
-			process.out("</li>");
+			process.out("</li>\n");
+			if (node.next instanceof UlistElementSyntaxTree === false) {
+				process.out("</ul>\n");
+			}
+			this.ulistParentHelper(process, node, ()=> {
+				process.out("</ul>\n");
+			});
+		}
+
+		olistPre(process:BuilderProcess, name:string, node:OlistElementSyntaxTree) {
+			if (node.prev instanceof OlistElementSyntaxTree === false) {
+				process.out("<ol>\n");
+			}
+			process.out("<li>");
+		}
+
+		olistPost(process:BuilderProcess, name:string, node:OlistElementSyntaxTree) {
+			process.out("</li>\n");
+			if (node.next instanceof OlistElementSyntaxTree === false) {
+				process.out("</ol>\n");
+			}
 		}
 
 		block_list_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {

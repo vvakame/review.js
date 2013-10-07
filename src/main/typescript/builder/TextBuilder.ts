@@ -13,6 +13,7 @@ import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
 import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
 import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
+import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
 import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
@@ -58,19 +59,24 @@ import findChapter = ReVIEW.findChapter;
 		}
 
 		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
-			process.out("・");
-			return (v:ITreeVisitor)=> {
-				ReVIEW.visit(node.text, v);
-				process.out("\n");
-				node.childNodes.forEach(child=> {
-					process.out(stringRepeat(child.toUlist().level - 1, "    "));
-					ReVIEW.visit(child, v);
-				});
-			};
+			if (node.parentNode instanceof UlistElementSyntaxTree && node.prev instanceof UlistElementSyntaxTree === false) {
+				process.out("\n\n");
+			} else if (node.parentNode instanceof UlistElementSyntaxTree) {
+				process.out("");
+			}
+			process.out("●\t");
 		}
 
 		ulistPost(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
+			process.out("\n");
+		}
 
+		olistPre(process:BuilderProcess, name:string, node:OlistElementSyntaxTree) {
+			process.out(node.no).out("\t");
+		}
+
+		olistPost(process:BuilderProcess, name:string, node:OlistElementSyntaxTree) {
+			process.out("\n");
 		}
 
 		block_list_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {

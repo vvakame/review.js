@@ -93,6 +93,25 @@ module ReVIEW {
 	}
 
 	/**
+	 * 渡した要素から一番近いマッチする要素を探して返す。
+	 * 見つからなかった場合 null を返す。
+	 * @param node
+	 * @param predicate
+	 * @returns {ReVIEW.Parse.SyntaxTree}
+	 */
+	export function findUp(node:ReVIEW.Parse.SyntaxTree, predicate:(node:ReVIEW.Parse.SyntaxTree)=>boolean):ReVIEW.Parse.SyntaxTree {
+		var result:ReVIEW.Parse.SyntaxTree = null;
+		ReVIEW.walk(node, (node:ReVIEW.Parse.SyntaxTree) => {
+			if (predicate(node)) {
+				result = node;
+				return null;
+			}
+			return node.parentNode;
+		});
+		return result;
+	}
+
+	/**
 	 * 渡した要素から直近のChapterを探して返す。
 	 * 見つからなかった場合 null を返す。
 	 * もし、渡した要素自身がChapterだった場合、自身を返すのでnode.parentNode を渡すこと。

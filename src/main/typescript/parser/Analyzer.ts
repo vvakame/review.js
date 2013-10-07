@@ -219,6 +219,8 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 					func = this[k];
 				} else if (k === "ulist") {
 					func = this[k];
+				} else if (k === "olist") {
+					func = this[k];
 				}
 				if (func) {
 					process.prepare();
@@ -258,9 +260,20 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			builder.processNode((process, n)=> {
 				var node = n.toUlist();
 				process.addSymbol({
-					symbolName: "li",
-					level: node.level,
-					text: node.text,
+					symbolName: "li", // TODO ul に修正すること
+					node: node
+				});
+			});
+		}
+
+		olist(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Other);
+			builder.setClass(ReVIEW.Parse.OlistElementSyntaxTree);
+			builder.setDescription(t("description.olist"));
+			builder.processNode((process, n)=> {
+				var node = n.toOlist();
+				process.addSymbol({
+					symbolName: "ol",
 					node: node
 				});
 			});
