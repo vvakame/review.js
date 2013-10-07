@@ -83,7 +83,7 @@ import ArgumentSyntaxTree = ReVIEW.Parse.ArgumentSyntaxTree;
 				visitBlockElementPre: (node:BlockElementSyntaxTree) => {
 					var results = this.acceptableSyntaxes.find(node);
 					if (results.length !== 1) {
-						chapter.process.error(t("compile.syntax_definietion_error"), node);
+						chapter.process.error(t("compile.block_not_supported", node.symbol), node);
 						return;
 					}
 					var expects = results[0].argsLength;
@@ -100,7 +100,7 @@ import ArgumentSyntaxTree = ReVIEW.Parse.ArgumentSyntaxTree;
 				visitInlineElementPre: (node:InlineElementSyntaxTree) => {
 					var results = this.acceptableSyntaxes.find(node);
 					if (results.length !== 1) {
-						chapter.process.error(t("compile.syntax_definietion_error"), node);
+						chapter.process.error(t("compile.inline_not_supported", node.symbol), node);
 						return;
 					}
 					return results[0].process(chapter.process, node);
