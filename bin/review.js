@@ -6527,6 +6527,9 @@ var ReVIEW;
             };
 
             TextBuilder.prototype.ulistPre = function (process, name, node) {
+                this.ulistParentHelper(process, node, function () {
+                    process.out("\n\n●\t");
+                });
                 if (node.parentNode instanceof UlistElementSyntaxTree && node.prev instanceof UlistElementSyntaxTree === false) {
                     process.out("\n\n");
                 } else if (node.parentNode instanceof UlistElementSyntaxTree) {
@@ -6740,6 +6743,12 @@ var ReVIEW;
                     } else if (node instanceof HeadlineSyntaxTree) {
                         plane = true;
                         return null;
+                    } else if (node instanceof UlistElementSyntaxTree) {
+                        plane = true;
+                        return null;
+                    } else if (node instanceof OlistElementSyntaxTree) {
+                        plane = true;
+                        return null;
                     }
                     return node.parentNode;
                 });
@@ -6788,7 +6797,7 @@ var ReVIEW;
 
             HtmlBuilder.prototype.ulistPre = function (process, name, node) {
                 this.ulistParentHelper(process, node, function () {
-                    process.out("<ul>\n");
+                    process.out("<ul>\n<li>");
                 });
 
                 if (node.prev instanceof UlistElementSyntaxTree === false) {
@@ -6803,7 +6812,7 @@ var ReVIEW;
                     process.out("</ul>\n");
                 }
                 this.ulistParentHelper(process, node, function () {
-                    process.out("</ul>\n");
+                    process.out("</li>\n</ul>\n");
                 });
             };
 

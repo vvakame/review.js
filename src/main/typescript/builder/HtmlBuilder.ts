@@ -70,6 +70,12 @@ import findUp = ReVIEW.findUp;
 				} else if (node instanceof HeadlineSyntaxTree) {
 					plane = true;
 					return null;
+				} else if (node instanceof UlistElementSyntaxTree) {
+					plane = true;
+					return null;
+				} else if (node instanceof OlistElementSyntaxTree) {
+					plane = true;
+					return null;
 				}
 				return node.parentNode;
 			});
@@ -118,7 +124,7 @@ import findUp = ReVIEW.findUp;
 
 		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
 			this.ulistParentHelper(process, node, ()=> {
-				process.out("<ul>\n");
+				process.out("<ul>\n<li>");
 			});
 			// TODO <p> で囲まれないようにする
 			if (node.prev instanceof UlistElementSyntaxTree === false) {
@@ -133,7 +139,7 @@ import findUp = ReVIEW.findUp;
 				process.out("</ul>\n");
 			}
 			this.ulistParentHelper(process, node, ()=> {
-				process.out("</ul>\n");
+				process.out("</li>\n</ul>\n");
 			});
 		}
 

@@ -59,6 +59,9 @@ import findChapter = ReVIEW.findChapter;
 		}
 
 		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
+			this.ulistParentHelper(process, node, ()=> {
+				process.out("\n\n●\t");
+			});
 			if (node.parentNode instanceof UlistElementSyntaxTree && node.prev instanceof UlistElementSyntaxTree === false) {
 				process.out("\n\n");
 			} else if (node.parentNode instanceof UlistElementSyntaxTree) {
