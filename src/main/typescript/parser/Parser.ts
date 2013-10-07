@@ -140,7 +140,9 @@ module ReVIEW.Parse {
 		};
 
 		originalChildNodes.forEach((child:NodeSyntaxTree)=> {
-			if (!currentSet.parent) {
+			if (child.ruleName === RuleName.SinglelineComment) {
+				currentSet.children.push(child);
+			} else if (!currentSet.parent) {
 				currentSet.parent = child;
 
 			} else if (pickLevel(currentSet.parent) < pickLevel(child)) {

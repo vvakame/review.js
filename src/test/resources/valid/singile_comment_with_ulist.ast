@@ -1,0 +1,107 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 56,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 56,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 56,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 39,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 37,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 37,
+                  "text": "Ulistにシングルラインコメントがくっついているとパーサエラーになる"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 39,
+              "line": 3,
+              "column": 1,
+              "endPos": 56,
+              "childNodes": [
+                {
+                  "ruleName": "Contents",
+                  "offset": 39,
+                  "line": 3,
+                  "column": 1,
+                  "endPos": 56,
+                  "childNodes": [
+                    {
+                      "ruleName": "Ulist",
+                      "offset": 39,
+                      "line": 3,
+                      "column": 1,
+                      "endPos": 56,
+                      "childNodes": [
+                        {
+                          "ruleName": "UlistElement",
+                          "offset": 39,
+                          "line": 3,
+                          "column": 1,
+                          "endPos": 47,
+                          "level": 1,
+                          "text": {
+                            "ruleName": "ContentInlines",
+                            "offset": 42,
+                            "line": 3,
+                            "column": 4,
+                            "endPos": 46,
+                            "childNodes": [
+                              {
+                                "ruleName": "ContentInlineText",
+                                "offset": 42,
+                                "line": 3,
+                                "column": 4,
+                                "endPos": 46,
+                                "text": "このあと"
+                              }
+                            ]
+                          },
+                          "childNodes": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "childNodes": [],
+          "level": 1
+        }
+      ]
+    }
+  ]
+}

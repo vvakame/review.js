@@ -4520,29 +4520,36 @@ var ReVIEW;
 
         function reconstruct(node, pickLevel) {
             var originalChildNodes = node.childNodes;
-            node.childNodes = [];
 
             var nodeSets = [];
-            var currentSet = [];
+            var currentSet = {
+                parent: null,
+                children: []
+            };
 
             originalChildNodes.forEach(function (child) {
-                if (currentSet.length === 0) {
-                    currentSet.push(child);
-                } else if (pickLevel(currentSet[0]) < pickLevel(child)) {
-                    currentSet.push(child);
+                if (child.ruleName === RuleName.SinglelineComment) {
+                    currentSet.children.push(child);
+                } else if (!currentSet.parent) {
+                    currentSet.parent = child;
+                } else if (pickLevel(currentSet.parent) < pickLevel(child)) {
+                    currentSet.children.push(child);
                 } else {
                     nodeSets.push(currentSet);
-                    currentSet = [];
-                    currentSet.push(child);
+                    currentSet = {
+                        parent: child,
+                        children: []
+                    };
                 }
             });
-            if (currentSet.length !== 0) {
+            if (currentSet.parent) {
                 nodeSets.push(currentSet);
             }
+            node.childNodes = [];
             nodeSets.forEach(function (nodes) {
-                var parent = nodes[0];
+                var parent = nodes.parent;
                 node.childNodes.push(parent);
-                nodes.splice(1).forEach(function (child) {
+                nodes.children.forEach(function (child) {
                     parent.childNodes.push(child);
                 });
                 reconstruct(parent, pickLevel);
