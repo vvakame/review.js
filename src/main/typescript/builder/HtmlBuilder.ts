@@ -316,5 +316,19 @@ import findUp = ReVIEW.findUp;
 			process.out("<p>").out("図").out(process.base.chapter.no).out(".").out(imgNode.no).out("</p>\n");
 			return false;
 		}
+
+		block_footnote(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("<div class=\"footnote\"><p class=\"footnote\">[<a id=\"fn-");
+			process.out(node.args[0].arg).out("\">*").out(node.no).out("</a>] ");
+			process.out(node.args[1].arg);
+			process.out("</p></div>\n");
+			return false;
+		}
+
+		inline_fn(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			var footnoteNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+			process.out("<a href=\"#fn-").out(footnoteNode.args[0].arg).out("\">*").out(footnoteNode.no).out("</a>");
+			return false;
+		}
 	}
 }

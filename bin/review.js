@@ -5363,6 +5363,36 @@ var ReVIEW;
                     });
                 });
             };
+
+            DefaultAnalyzer.prototype.block_footnote = function (builder) {
+                builder.setSyntaxType(SyntaxType.Block);
+                builder.setSymbol("footnote");
+                builder.setDescription(t("description.block_footnote"));
+                builder.checkArgsLength(2);
+                builder.processNode(function (process, n) {
+                    var node = n.toBlockElement();
+                    node.no = process.nextIndex("footnote");
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        labelName: node.args[0].arg,
+                        node: node
+                    });
+                });
+            };
+
+            DefaultAnalyzer.prototype.inline_fn = function (builder) {
+                builder.setSyntaxType(SyntaxType.Inline);
+                builder.setSymbol("fn");
+                builder.setDescription(t("description.inline_fn"));
+                builder.processNode(function (process, n) {
+                    var node = n.toInlineElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        referenceTo: process.constructReferenceTo(node, ReVIEW.nodeContentToString(process, node), "footnote"),
+                        node: node
+                    });
+                });
+            };
             return DefaultAnalyzer;
         })();
         Build.DefaultAnalyzer = DefaultAnalyzer;
@@ -6725,6 +6755,17 @@ var ReVIEW;
                 process.out("図").out(process.base.chapter.no).out(".").out(imgNode.no).out("\n");
                 return false;
             };
+
+            TextBuilder.prototype.block_footnote = function (process, node) {
+                process.out("【注").out(node.no).out("】").out(node.args[1].arg).out("\n");
+                return false;
+            };
+
+            TextBuilder.prototype.inline_fn = function (process, node) {
+                var footnoteNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+                process.out("【注").out(footnoteNode.no).out("】");
+                return false;
+            };
             return TextBuilder;
         })(Build.DefaultBuilder);
         Build.TextBuilder = TextBuilder;
@@ -7039,6 +7080,20 @@ var ReVIEW;
             HtmlBuilder.prototype.inline_img = function (process, node) {
                 var imgNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
                 process.out("<p>").out("図").out(process.base.chapter.no).out(".").out(imgNode.no).out("</p>\n");
+                return false;
+            };
+
+            HtmlBuilder.prototype.block_footnote = function (process, node) {
+                process.out("<div class=\"footnote\"><p class=\"footnote\">[<a id=\"fn-");
+                process.out(node.args[0].arg).out("\">*").out(node.no).out("</a>] ");
+                process.out(node.args[1].arg);
+                process.out("</p></div>\n");
+                return false;
+            };
+
+            HtmlBuilder.prototype.inline_fn = function (process, node) {
+                var footnoteNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+                process.out("<a href=\"#fn-").out(footnoteNode.args[0].arg).out("\">*").out(footnoteNode.no).out("</a>");
                 return false;
             };
             return HtmlBuilder;

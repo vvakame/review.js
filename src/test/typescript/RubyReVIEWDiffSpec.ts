@@ -83,6 +83,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 			"ulist.re",
 			"olist.re",
 			"dlist.re"
+			// "footnote.re", // HTML版で<p>の扱いが根本的におかしいので通らない
 			// "inline_with_newline.re", // Ruby版だと予想外の処理をする
 		];
 

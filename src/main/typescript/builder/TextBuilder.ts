@@ -220,5 +220,16 @@ import findChapter = ReVIEW.findChapter;
 			process.out("図").out(process.base.chapter.no).out(".").out(imgNode.no).out("\n");
 			return false;
 		}
+
+		block_footnote(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("【注").out(node.no).out("】").out(node.args[1].arg).out("\n");
+			return false;
+		}
+
+		inline_fn(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			var footnoteNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+			process.out("【注").out(footnoteNode.no).out("】");
+			return false;
+		}
 	}
 }

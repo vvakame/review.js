@@ -459,6 +459,36 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
+		block_footnote(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Block);
+			builder.setSymbol("footnote");
+			builder.setDescription(t("description.block_footnote"));
+			builder.checkArgsLength(2);
+			builder.processNode((process, n)=> {
+				var node = n.toBlockElement();
+				node.no = process.nextIndex("footnote");
+				process.addSymbol({
+					symbolName: node.symbol,
+					labelName: node.args[0].arg,
+					node: node
+				});
+			});
+		}
+
+		inline_fn(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Inline);
+			builder.setSymbol("fn");
+			builder.setDescription(t("description.inline_fn"));
+			builder.processNode((process, n)=> {
+				var node = n.toInlineElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					referenceTo: process.constructReferenceTo(node, nodeContentToString(process, node), "footnote"),
+					node: node
+				});
+			});
+		}
+
 		// TODO 以下のものの実装をすすめる
 		// block_emlist
 		// block_source
@@ -470,8 +500,6 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		// block_table
 		// inline_table
 		// block_quote
-		// block_footnote
-		// inline_fn
 		// block_bibpaper
 		// inline_bib
 		// block_lead
