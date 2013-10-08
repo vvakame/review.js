@@ -5504,6 +5504,12 @@ var ReVIEW;
                             visitHeadlinePost: function (node) {
                                 return _this.headlinePost(process, "hd", node);
                             },
+                            visitParagraphPre: function (node) {
+                                return _this.paragraphPre(process, "p", node);
+                            },
+                            visitParagraphPost: function (node) {
+                                return _this.paragraphPost(process, "p", node);
+                            },
                             visitUlistPre: function (node) {
                                 return _this.ulistPre(process, "ul", node);
                             },
@@ -5561,6 +5567,12 @@ var ReVIEW;
             };
 
             DefaultBuilder.prototype.headlinePost = function (process, name, node) {
+            };
+
+            DefaultBuilder.prototype.paragraphPre = function (process, name, node) {
+            };
+
+            DefaultBuilder.prototype.paragraphPost = function (process, name, node) {
             };
 
             DefaultBuilder.prototype.ulistPre = function (process, name, node) {
@@ -6627,9 +6639,7 @@ var ReVIEW;
                 _super.apply(this, arguments);
             }
             TextBuilder.prototype.chapterPost = function (process, node) {
-                if (!node.headline.cmd) {
-                    process.out("\n");
-                } else {
+                if (node.headline.cmd) {
                     process.out("◆→終了:←◆\n");
                 }
             };
@@ -6654,6 +6664,10 @@ var ReVIEW;
 
             TextBuilder.prototype.headlinePost = function (process, name, node) {
                 process.out("\n\n");
+            };
+
+            TextBuilder.prototype.paragraphPost = function (process, name, node) {
+                process.out("\n");
             };
 
             TextBuilder.prototype.ulistPre = function (process, name, node) {
@@ -6886,40 +6900,7 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.text = function (process, node) {
-                var plane = false;
-                ReVIEW.walk(node, function (node) {
-                    if (!node.parentNode) {
-                        return null;
-                    }
-                    if (node instanceof BlockElementSyntaxTree) {
-                        var block = node.toBlockElement();
-                        if (block.symbol === "list") {
-                            plane = true;
-                            return null;
-                        }
-                    } else if (node instanceof HeadlineSyntaxTree) {
-                        plane = true;
-                        return null;
-                    } else if (node instanceof UlistElementSyntaxTree) {
-                        plane = true;
-                        return null;
-                    } else if (node instanceof OlistElementSyntaxTree) {
-                        plane = true;
-                        return null;
-                    } else if (node instanceof DlistElementSyntaxTree) {
-                        plane = true;
-                        return null;
-                    }
-                    return node.parentNode;
-                });
-
-                if (plane) {
-                    process.out(node.text);
-                } else {
-                    process.out("<p>");
-                    process.out(node.text);
-                    process.out("</p>\n");
-                }
+                process.out(node.text);
             };
 
             HtmlBuilder.prototype.headlinePre = function (process, name, node) {
@@ -6953,6 +6934,14 @@ var ReVIEW;
                 if (node.cmd) {
                     process.out("</div>\n");
                 }
+            };
+
+            HtmlBuilder.prototype.paragraphPre = function (process, name, node) {
+                process.out("<p>");
+            };
+
+            HtmlBuilder.prototype.paragraphPost = function (process, name, node) {
+                process.out("</p>\n");
             };
 
             HtmlBuilder.prototype.ulistPre = function (process, name, node) {
@@ -7137,7 +7126,7 @@ var ReVIEW;
 
             HtmlBuilder.prototype.inline_img = function (process, node) {
                 var imgNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-                process.out("<p>").out("図").out(process.base.chapter.no).out(".").out(imgNode.no).out("</p>\n");
+                process.out("図").out(process.base.chapter.no).out(".").out(imgNode.no);
                 return false;
             };
 

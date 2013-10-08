@@ -57,40 +57,7 @@ import findUp = ReVIEW.findUp;
 		}
 
 		text(process:BuilderProcess, node:TextNodeSyntaxTree):any {
-			var plane = false;
-			ReVIEW.walk(node, node => {
-				if (!node.parentNode) {
-					return null;
-				}
-				if (node instanceof BlockElementSyntaxTree) {
-					var block = node.toBlockElement();
-					if (block.symbol === "list") {
-						plane = true;
-						return null;
-					}
-				} else if (node instanceof HeadlineSyntaxTree) {
-					plane = true;
-					return null;
-				} else if (node instanceof UlistElementSyntaxTree) {
-					plane = true;
-					return null;
-				} else if (node instanceof OlistElementSyntaxTree) {
-					plane = true;
-					return null;
-				} else if (node instanceof DlistElementSyntaxTree) {
-					plane = true;
-					return null;
-				}
-				return node.parentNode;
-			});
-
-			if (plane) {
-				process.out(node.text);
-			} else {
-				process.out("<p>");
-				process.out(node.text);
-				process.out("</p>\n");
-			}
+			process.out(node.text);
 		}
 
 		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
@@ -124,6 +91,14 @@ import findUp = ReVIEW.findUp;
 			if (node.cmd) {
 				process.out("</div>\n");
 			}
+		}
+
+		paragraphPre(process:BuilderProcess, name:string, node:NodeSyntaxTree) {
+			process.out("<p>");
+		}
+
+		paragraphPost(process:BuilderProcess, name:string, node:NodeSyntaxTree) {
+			process.out("</p>\n");
 		}
 
 		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
@@ -313,7 +288,7 @@ import findUp = ReVIEW.findUp;
 
 		inline_img(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			var imgNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-			process.out("<p>").out("図").out(process.base.chapter.no).out(".").out(imgNode.no).out("</p>\n");
+			process.out("図").out(process.base.chapter.no).out(".").out(imgNode.no);
 			return false;
 		}
 

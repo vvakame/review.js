@@ -24,10 +24,7 @@ import findChapter = ReVIEW.findChapter;
 	export class TextBuilder extends DefaultBuilder {
 
 		chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any {
-			if (!node.headline.cmd) {
-				// 非 column
-				process.out("\n");
-			} else {
+			if (node.headline.cmd) {
 				// column
 				process.out("◆→終了:←◆\n");
 			}
@@ -57,6 +54,10 @@ import findChapter = ReVIEW.findChapter;
 
 		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
 			process.out("\n\n");
+		}
+
+		paragraphPost(process:BuilderProcess, name:string, node:NodeSyntaxTree) {
+			process.out("\n");
 		}
 
 		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {

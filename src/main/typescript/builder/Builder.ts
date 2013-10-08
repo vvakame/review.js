@@ -65,6 +65,12 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 						visitHeadlinePost: (node:HeadlineSyntaxTree)=> {
 							return this.headlinePost(process, "hd", node);
 						},
+						visitParagraphPre: (node:NodeSyntaxTree) => {
+							return this.paragraphPre(process, "p", node);
+						},
+						visitParagraphPost: (node:NodeSyntaxTree) => {
+							return this.paragraphPost(process, "p", node);
+						},
 						visitUlistPre: (node:UlistElementSyntaxTree)=> {
 							return this.ulistPre(process, "ul", node);
 						},
@@ -122,6 +128,12 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		}
 
 		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any {
+		}
+
+		paragraphPre(process:BuilderProcess, name:string, node:NodeSyntaxTree):any {
+		}
+
+		paragraphPost(process:BuilderProcess, name:string, node:NodeSyntaxTree):any {
 		}
 
 		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree):any {

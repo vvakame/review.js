@@ -6,4 +6,3 @@
 var hoge = confirm("test");
 // JS comment
 ◆→終了:リスト←◆
-
