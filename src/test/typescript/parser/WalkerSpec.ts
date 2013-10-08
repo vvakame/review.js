@@ -50,7 +50,7 @@ describe("ReVIEW.visitについて", ()=> {
 				}
 			}
 		});
-		expect(actual).toBe("今日のお昼ごはん\n断固としてカレーライス！\n\n");
+		expect(actual).toBe("今日のお昼ごはん\n断固としてカレーライス！\n");
 	});
 
 	describe("visitBlockElementについて", () => {

@@ -64,7 +64,7 @@
                       "line": 4,
                       "column": 1,
                       "endPos": 64,
-                      "text": "#@mapfile(bin/grammer.js)\n"
+                      "text": "#@mapfile(bin/grammer.js)"
                     },
                     {
                       "ruleName": "SinglelineComment",
@@ -72,7 +72,7 @@
                       "line": 5,
                       "column": 1,
                       "endPos": 70,
-                      "text": "#@end\n"
+                      "text": "#@end"
                     }
                   ]
                 }

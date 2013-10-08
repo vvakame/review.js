@@ -629,7 +629,7 @@ module ReVIEW.Parse {
 
 		constructor(data:IConcreatSyntaxTree) {
 			super(data);
-			this.text = this.checkString(data.text);
+			this.text = this.checkString(data.text).trim();
 		}
 	}
 }

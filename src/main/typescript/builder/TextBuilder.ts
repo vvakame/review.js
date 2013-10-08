@@ -113,7 +113,7 @@ import findChapter = ReVIEW.findChapter;
 		}
 
 		block_list_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("◆→終了:リスト←◆\n");
+			process.out("\n◆→終了:リスト←◆\n");
 		}
 
 		inline_list(process:BuilderProcess, node:InlineElementSyntaxTree) {

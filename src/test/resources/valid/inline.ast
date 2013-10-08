@@ -93,7 +93,7 @@
                   "line": 4,
                   "column": 1,
                   "endPos": 39,
-                  "text": "というように、型を "
+                  "text": "というように、型を"
                 },
                 {
                   "ruleName": "InlineElement",
@@ -128,7 +128,7 @@
                   "line": 4,
                   "column": 20,
                   "endPos": 51,
-                  "text": " と　"
+                  "text": "と"
                 },
                 {
                   "ruleName": "InlineElement",
@@ -163,7 +163,7 @@
                   "line": 4,
                   "column": 32,
                   "endPos": 86,
-                  "text": " で囲んで式 expression の先頭に置くと\n"
+                  "text": "で囲んで式 expression の先頭に置くと"
                 },
                 {
                   "ruleName": "InlineElement",

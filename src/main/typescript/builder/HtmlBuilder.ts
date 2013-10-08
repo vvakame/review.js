@@ -172,7 +172,7 @@ import findUp = ReVIEW.findUp;
 		}
 
 		block_list_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("</pre>\n").out("</div>\n");
+			process.out("\n</pre>\n").out("</div>\n");
 		}
 
 		inline_list(process:BuilderProcess, node:InlineElementSyntaxTree) {
