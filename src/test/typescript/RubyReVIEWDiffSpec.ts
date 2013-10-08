@@ -60,28 +60,24 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 		];
 
 		var ignoreFiles = [
-			"block_dont_has_body.re",
-			"ch01.re",
-			"empty.re",
-			"headline.re",
-			"inline.re",
-			"inline_nested.re"
+			"headline.re"
 		];
 
 		var targetFiles = [
 			// TODO
-			"at_without_inline.re", // 手を加えて通した
+			"at_without_inline.re",
 			"block.re",
-			"block_dont_has_body.re",
-			// "ch01.re", // プロセス終了しない謎があるので
-			// "ch02.re", // めんどくさいので
+			// "block_dont_has_body.re", // noindent がまだサポートされていない
+			// "ch01.re", // lead, emplist がまだサポートされていない
+			"ch02.re",
 			"dlist.re",
-			// "empty.re", // プロセス終了しない謎があるので
+			// "empty.re", // empty への対応をまだ行っていない
 			"footnote.re",
 			// "headline.re" // プロセス終了しない謎があるので
 			"headline_only.re",
 			"image.re",
-			// "inline.re", // プロセス終了しない謎があるので
+			// "inline.re", tti がまだサポートされていない
+			// "inline_nested.re", // Ruby版はネストを許可しない
 			// "inline_with_newline.re", // Ruby版の処理が腐っている気がする
 			"olist.re",
 			// "preface.re", // めんどくさいので
