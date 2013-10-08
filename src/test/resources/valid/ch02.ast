@@ -52,21 +52,12 @@
               "endPos": 25,
               "childNodes": [
                 {
-                  "ruleName": "Contents",
+                  "ruleName": "ContentText",
                   "offset": 11,
                   "line": 3,
                   "column": 1,
                   "endPos": 25,
-                  "childNodes": [
-                    {
-                      "ruleName": "ContentText",
-                      "offset": 11,
-                      "line": 3,
-                      "column": 1,
-                      "endPos": 25,
-                      "text": "基本はサンプルと同様です。\n"
-                    }
-                  ]
+                  "text": "基本はサンプルと同様です。\n"
                 }
               ]
             }

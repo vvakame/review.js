@@ -61,6 +61,9 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 			visitChapterPre: v.visitChapterPre || v.visitNodePre || v.visitDefaultPre,
 			visitChapterPost: v.visitChapterPost || v.visitNodePost || v.visitDefaultPost || (()=> {
 			}),
+			visitParagraphPre: v.visitParagraphPre || v.visitNodePre || v.visitDefaultPre,
+			visitParagraphPost: v.visitParagraphPost || v.visitNodePost || (()=> {
+			}),
 			visitHeadlinePre: v.visitHeadlinePre || v.visitDefaultPre,
 			visitHeadlinePost: v.visitHeadlinePost || v.visitDefaultPost || (()=> {
 			}),
@@ -194,6 +197,17 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 				ret(v);
 			}
 			v.visitDlistPost(dl, parent);
+		} else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && ast.ruleName === ReVIEW.Parse.RuleName.Paragraph) {
+			var node = ast.toNode();
+			var ret = v.visitParagraphPre(node, parent);
+			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+				node.childNodes.forEach((next)=> {
+					visitSub(ast, next, v);
+				});
+			} else if (typeof ret === "function") {
+				ret(v);
+			}
+			v.visitParagraphPost(node, parent);
 		} else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree) {
 			var node = ast.toNode();
 			var ret = v.visitNodePre(node, parent);
@@ -242,6 +256,8 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 		visitArgumentPost?(node:ArgumentSyntaxTree, parent:SyntaxTree):void;
 		visitChapterPre?(node:ChapterSyntaxTree, parent:SyntaxTree):any;
 		visitChapterPost?(node:ChapterSyntaxTree, parent:SyntaxTree):void;
+		visitParagraphPre?(node:NodeSyntaxTree, parent:SyntaxTree):any;
+		visitParagraphPost?(node:NodeSyntaxTree, parent:SyntaxTree):void;
 		visitHeadlinePre?(node:HeadlineSyntaxTree, parent:SyntaxTree):any;
 		visitHeadlinePost?(node:HeadlineSyntaxTree, parent:SyntaxTree):void;
 		visitUlistPre?(node:UlistElementSyntaxTree, parent:SyntaxTree):any;

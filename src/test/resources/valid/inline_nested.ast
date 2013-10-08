@@ -52,67 +52,58 @@
               "endPos": 30,
               "childNodes": [
                 {
-                  "ruleName": "Contents",
+                  "ruleName": "InlineElement",
                   "offset": 11,
                   "line": 2,
                   "column": 1,
                   "endPos": 30,
                   "childNodes": [
                     {
-                      "ruleName": "InlineElement",
-                      "offset": 11,
+                      "ruleName": "InlineElementContents",
+                      "offset": 18,
                       "line": 2,
-                      "column": 1,
-                      "endPos": 30,
+                      "column": 8,
+                      "endPos": 29,
                       "childNodes": [
                         {
-                          "ruleName": "InlineElementContents",
+                          "ruleName": "InlineElementContentText",
                           "offset": 18,
                           "line": 2,
                           "column": 8,
+                          "endPos": 20,
+                          "text": "ほげ"
+                        },
+                        {
+                          "ruleName": "InlineElement",
+                          "offset": 20,
+                          "line": 2,
+                          "column": 10,
                           "endPos": 29,
                           "childNodes": [
                             {
-                              "ruleName": "InlineElementContentText",
-                              "offset": 18,
+                              "ruleName": "InlineElementContents",
+                              "offset": 26,
                               "line": 2,
-                              "column": 8,
-                              "endPos": 20,
-                              "text": "ほげ"
-                            },
-                            {
-                              "ruleName": "InlineElement",
-                              "offset": 20,
-                              "line": 2,
-                              "column": 10,
-                              "endPos": 29,
+                              "column": 16,
+                              "endPos": 28,
                               "childNodes": [
                                 {
-                                  "ruleName": "InlineElementContents",
+                                  "ruleName": "InlineElementContentText",
                                   "offset": 26,
                                   "line": 2,
                                   "column": 16,
                                   "endPos": 28,
-                                  "childNodes": [
-                                    {
-                                      "ruleName": "InlineElementContentText",
-                                      "offset": 26,
-                                      "line": 2,
-                                      "column": 16,
-                                      "endPos": 28,
-                                      "text": "ぽげ"
-                                    }
-                                  ]
+                                  "text": "ぽげ"
                                 }
-                              ],
-                              "symbol": "in"
+                              ]
                             }
-                          ]
+                          ],
+                          "symbol": "in"
                         }
-                      ],
-                      "symbol": "out"
+                      ]
                     }
-                  ]
+                  ],
+                  "symbol": "out"
                 }
               ]
             }

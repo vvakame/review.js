@@ -52,21 +52,12 @@
               "endPos": 41,
               "childNodes": [
                 {
-                  "ruleName": "Contents",
+                  "ruleName": "ContentText",
                   "offset": 23,
                   "line": 3,
                   "column": 1,
-                  "endPos": 41,
-                  "childNodes": [
-                    {
-                      "ruleName": "ContentText",
-                      "offset": 23,
-                      "line": 3,
-                      "column": 1,
-                      "endPos": 40,
-                      "text": "@<tt>{\n改行\nこみこみ\n}\n"
-                    }
-                  ]
+                  "endPos": 40,
+                  "text": "@<tt>{\n改行\nこみこみ\n}\n"
                 }
               ]
             },
@@ -78,21 +69,12 @@
               "endPos": 118,
               "childNodes": [
                 {
-                  "ruleName": "Contents",
+                  "ruleName": "ContentText",
                   "offset": 41,
                   "line": 8,
                   "column": 1,
                   "endPos": 118,
-                  "childNodes": [
-                    {
-                      "ruleName": "ContentText",
-                      "offset": 41,
-                      "line": 8,
-                      "column": 1,
-                      "endPos": 118,
-                      "text": "本家ReVIEWと見比べた結果、inline elementは改行を含むのを許さない(通常のテキストとして処理)が正しいのでは…？という結論に至るなど。\n"
-                    }
-                  ]
+                  "text": "本家ReVIEWと見比べた結果、inline elementは改行を含むのを許さない(通常のテキストとして処理)が正しいのでは…？という結論に至るなど。\n"
                 }
               ]
             }

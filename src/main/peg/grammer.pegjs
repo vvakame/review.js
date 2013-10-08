@@ -7,7 +7,7 @@ Chapters "chapters"
     ;
 
 Chapter "chapter"
-    = headline:Headline text:Paragraphs?
+    = headline:Headline text:Contents?
     ;
 
 // = 章タイトル
@@ -15,22 +15,26 @@ Headline "headline"
     = level:"="+ cmd:BracketArg? label:BraceArg? Space* caption:SinglelineContent Newline*
     ;
 
-Paragraphs "paragraphs"
-    = !"=" c:Paragraph cc:Paragraphs?
-    ;
-
-Paragraph "paragraph"
-    = Newline* c:Contents Newline?
-    ;
-
 Contents "contents"
     // eof 検出に &. を使っている
-    = &. !"=" c:Content cc:Contents? Newline?
+    = &. c:Content cc:Contents? Newline?
     ;
 
 Content "content"
     // TODO InlineElement の後に Ulist / Olist / Dlist が来ると先頭行じゃなくてマッチできてしまうかも
-    = c:SinglelineComment / c:BlockElement / c:InlineElement / c:Ulist / c:Olist / c:Dlist / c:ContentText
+    = c:SinglelineComment / c:BlockElement / c:Ulist / c:Olist / c:Dlist / c:Paragraph
+    ;
+
+Paragraph "paragraph"
+    = !"=" c:ParagraphSubs _
+    ;
+
+ParagraphSubs "paragraph subs"
+    = c: ParagraphSub cc:ParagraphSubs?
+
+ParagraphSub "paragraph sub"
+    = c:InlineElement
+    / c:ContentText
     ;
 
 ContentText "text of content"
@@ -38,8 +42,8 @@ ContentText "text of content"
     ;
 
 BlockElement "block element"
-    = "//" symbol:$(AZ+) args:BracketArg* "{" Newline contents:BlockElementContents? "//}"
-    / "//" symbol:$(AZ+) args:BracketArg*
+    = "//" symbol:$(AZ+) args:BracketArg* "{" Newline contents:BlockElementContents? "//}" _
+    / "//" symbol:$(AZ+) args:BracketArg* _
     ;
 
 InlineElement "inline element"
@@ -131,7 +135,7 @@ DlistElementContent "content of dlist element"
     ;
 
 SinglelineComment "signle line comment"
-    = text:$("#@" $([^\r\n]*) Newline?)
+    = text:$("#@" $([^\r\n]*) Newline?) _
     ;
 
 Digits "digits"

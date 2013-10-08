@@ -119,10 +119,11 @@ var options =
 					caption: caption
 				};
 			},
-			Paragraphs: template.contents("Paragraphs"),
-			Paragraph: template.content("Paragraph"),
 			Contents: template.contents("Contents"),
-			Content: template.repeat(7, template.content("Content")),
+			Content: template.repeat(6, template.content("Content")),
+			Paragraph: template.content("Paragraph"),
+			ParagraphSubs: template.contents("ParagraphSubs"),
+			ParagraphSub: template.repeat(2, template.content("ParagraphSub")),
 			ContentText: template.text("ContentText"),
 			BlockElement: [
 				function () {

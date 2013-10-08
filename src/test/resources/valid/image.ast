@@ -45,73 +45,55 @@
           },
           "text": [
             {
-              "ruleName": "Paragraph",
+              "ruleName": "BlockElement",
               "offset": 13,
               "line": 3,
               "column": 1,
               "endPos": 56,
               "childNodes": [
                 {
-                  "ruleName": "Contents",
-                  "offset": 13,
-                  "line": 3,
+                  "ruleName": "BlockElementContents",
+                  "offset": 48,
+                  "line": 4,
                   "column": 1,
-                  "endPos": 55,
+                  "endPos": 51,
                   "childNodes": [
                     {
-                      "ruleName": "BlockElement",
-                      "offset": 13,
-                      "line": 3,
+                      "ruleName": "BlockElementContentText",
+                      "offset": 48,
+                      "line": 4,
                       "column": 1,
-                      "endPos": 54,
-                      "childNodes": [
-                        {
-                          "ruleName": "BlockElementContents",
-                          "offset": 48,
-                          "line": 4,
-                          "column": 1,
-                          "endPos": 51,
-                          "childNodes": [
-                            {
-                              "ruleName": "BlockElementContentText",
-                              "offset": 48,
-                              "line": 4,
-                              "column": 1,
-                              "endPos": 51,
-                              "text": "メモ\n"
-                            }
-                          ]
-                        }
-                      ],
-                      "symbol": "image",
-                      "args": [
-                        {
-                          "ruleName": "BracketArg",
-                          "offset": 20,
-                          "line": 3,
-                          "column": 8,
-                          "endPos": 29,
-                          "arg": "vvakame"
-                        },
-                        {
-                          "ruleName": "BracketArg",
-                          "offset": 29,
-                          "line": 3,
-                          "column": 17,
-                          "endPos": 35,
-                          "arg": "サンプル"
-                        },
-                        {
-                          "ruleName": "BracketArg",
-                          "offset": 35,
-                          "line": 3,
-                          "column": 23,
-                          "endPos": 46,
-                          "arg": "scale=0.3"
-                        }
-                      ]
+                      "endPos": 51,
+                      "text": "メモ\n"
                     }
                   ]
+                }
+              ],
+              "symbol": "image",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 20,
+                  "line": 3,
+                  "column": 8,
+                  "endPos": 29,
+                  "arg": "vvakame"
+                },
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 29,
+                  "line": 3,
+                  "column": 17,
+                  "endPos": 35,
+                  "arg": "サンプル"
+                },
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 35,
+                  "line": 3,
+                  "column": 23,
+                  "endPos": 46,
+                  "arg": "scale=0.3"
                 }
               ]
             },
@@ -123,40 +105,31 @@
               "endPos": 72,
               "childNodes": [
                 {
-                  "ruleName": "Contents",
+                  "ruleName": "InlineElement",
                   "offset": 56,
                   "line": 7,
                   "column": 1,
-                  "endPos": 72,
+                  "endPos": 71,
                   "childNodes": [
                     {
-                      "ruleName": "InlineElement",
-                      "offset": 56,
+                      "ruleName": "InlineElementContents",
+                      "offset": 63,
                       "line": 7,
-                      "column": 1,
-                      "endPos": 71,
+                      "column": 8,
+                      "endPos": 70,
                       "childNodes": [
                         {
-                          "ruleName": "InlineElementContents",
+                          "ruleName": "InlineElementContentText",
                           "offset": 63,
                           "line": 7,
                           "column": 8,
                           "endPos": 70,
-                          "childNodes": [
-                            {
-                              "ruleName": "InlineElementContentText",
-                              "offset": 63,
-                              "line": 7,
-                              "column": 8,
-                              "endPos": 70,
-                              "text": "vvakame"
-                            }
-                          ]
+                          "text": "vvakame"
                         }
-                      ],
-                      "symbol": "img"
+                      ]
                     }
-                  ]
+                  ],
+                  "symbol": "img"
                 }
               ]
             }

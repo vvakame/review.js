@@ -18,6 +18,16 @@ module ReVIEW.Parse {
 		var rawResult = PEG.parse(input);
 		var root = transform(rawResult).toNode();
 
+		// ParagraphSubs は構文上の都合であるだけのものなので潰す
+		ReVIEW.visit(root, {
+			visitDefaultPre: (ast:SyntaxTree)=> {
+			},
+			visitParagraphPre: (ast:NodeSyntaxTree) => {
+				var subs = ast.childNodes[0].toNode();
+				ast.childNodes = subs.childNodes;
+			}
+		});
+
 		// Chapter を Headline の level に応じて構造を組み替える
 		//   level 2 は level 1 の下に来るようにしたい
 		if (root.childNodes.length !== 0) {
@@ -98,8 +108,8 @@ module ReVIEW.Parse {
 				return new TextNodeSyntaxTree(rawResult);
 			// c, cc パターン
 			case RuleName.Chapters:
-			case RuleName.Paragraphs:
 			case RuleName.Contents:
+			case RuleName.ParagraphSubs:
 			case RuleName.BlockElementContents:
 			case RuleName.InlineElementContents:
 			case RuleName.ContentInlines:
@@ -112,12 +122,13 @@ module ReVIEW.Parse {
 			case RuleName.Paragraph:
 			case RuleName.DlistElementContent:
 				return new NodeSyntaxTree(rawResult);
+			// パースした内容は直接役にたたない c / c / c 系
 			case RuleName.Content:
+			case RuleName.ParagraphSub:
 			case RuleName.BlockElementContent:
 			case RuleName.InlineElementContent:
 			case RuleName.SinglelineContent:
 			case RuleName.ContentInline:
-				// パースした内容は直接役にたたない c / c / c 系
 				return transform(rawResult.content);
 			default:
 				return new SyntaxTree(rawResult);
@@ -220,10 +231,11 @@ module ReVIEW.Parse {
 		Chapters,
 		Chapter,
 		Headline,
-		Paragraphs,
-		Paragraph,
 		Contents,
 		Content,
+		Paragraph,
+		ParagraphSubs,
+		ParagraphSub,
 		ContentText,
 		BlockElement,
 		InlineElement,

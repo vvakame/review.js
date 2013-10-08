@@ -45,65 +45,47 @@
           },
           "text": [
             {
-              "ruleName": "Paragraph",
+              "ruleName": "BlockElement",
               "offset": 14,
               "line": 3,
               "column": 1,
               "endPos": 80,
               "childNodes": [
                 {
-                  "ruleName": "Contents",
-                  "offset": 14,
-                  "line": 3,
+                  "ruleName": "BlockElementContents",
+                  "offset": 34,
+                  "line": 4,
                   "column": 1,
-                  "endPos": 80,
+                  "endPos": 76,
                   "childNodes": [
                     {
-                      "ruleName": "BlockElement",
-                      "offset": 14,
-                      "line": 3,
+                      "ruleName": "BlockElementContentText",
+                      "offset": 34,
+                      "line": 4,
                       "column": 1,
-                      "endPos": 79,
-                      "childNodes": [
-                        {
-                          "ruleName": "BlockElementContents",
-                          "offset": 34,
-                          "line": 4,
-                          "column": 1,
-                          "endPos": 76,
-                          "childNodes": [
-                            {
-                              "ruleName": "BlockElementContentText",
-                              "offset": 34,
-                              "line": 4,
-                              "column": 1,
-                              "endPos": 76,
-                              "text": "var hoge = confirm(\"test\");\n// JS comment\n"
-                            }
-                          ]
-                        }
-                      ],
-                      "symbol": "list",
-                      "args": [
-                        {
-                          "ruleName": "BracketArg",
-                          "offset": 20,
-                          "line": 3,
-                          "column": 7,
-                          "endPos": 26,
-                          "arg": "hoge"
-                        },
-                        {
-                          "ruleName": "BracketArg",
-                          "offset": 26,
-                          "line": 3,
-                          "column": 13,
-                          "endPos": 32,
-                          "arg": "fuga"
-                        }
-                      ]
+                      "endPos": 76,
+                      "text": "var hoge = confirm(\"test\");\n// JS comment\n"
                     }
                   ]
+                }
+              ],
+              "symbol": "list",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 20,
+                  "line": 3,
+                  "column": 7,
+                  "endPos": 26,
+                  "arg": "hoge"
+                },
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 26,
+                  "line": 3,
+                  "column": 13,
+                  "endPos": 32,
+                  "arg": "fuga"
                 }
               ]
             }

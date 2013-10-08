@@ -52,101 +52,74 @@
               "endPos": 43,
               "childNodes": [
                 {
-                  "ruleName": "Contents",
+                  "ruleName": "ContentText",
                   "offset": 6,
                   "line": 3,
                   "column": 1,
-                  "endPos": 43,
+                  "endPos": 26,
+                  "text": "もんじゃ焼きの焼き方を知っているとモテる"
+                },
+                {
+                  "ruleName": "InlineElement",
+                  "offset": 26,
+                  "line": 3,
+                  "column": 21,
+                  "endPos": 40,
                   "childNodes": [
                     {
-                      "ruleName": "ContentText",
-                      "offset": 6,
+                      "ruleName": "InlineElementContents",
+                      "offset": 32,
                       "line": 3,
-                      "column": 1,
-                      "endPos": 26,
-                      "text": "もんじゃ焼きの焼き方を知っているとモテる"
-                    },
-                    {
-                      "ruleName": "InlineElement",
-                      "offset": 26,
-                      "line": 3,
-                      "column": 21,
-                      "endPos": 40,
+                      "column": 27,
+                      "endPos": 39,
                       "childNodes": [
                         {
-                          "ruleName": "InlineElementContents",
+                          "ruleName": "InlineElementContentText",
                           "offset": 32,
                           "line": 3,
                           "column": 27,
                           "endPos": 39,
-                          "childNodes": [
-                            {
-                              "ruleName": "InlineElementContentText",
-                              "offset": 32,
-                              "line": 3,
-                              "column": 27,
-                              "endPos": 39,
-                              "text": "tadaike"
-                            }
-                          ]
+                          "text": "tadaike"
                         }
-                      ],
-                      "symbol": "fn"
-                    },
-                    {
-                      "ruleName": "ContentText",
-                      "offset": 40,
-                      "line": 3,
-                      "column": 35,
-                      "endPos": 42,
-                      "text": "。\n"
+                      ]
                     }
-                  ]
+                  ],
+                  "symbol": "fn"
+                },
+                {
+                  "ruleName": "ContentText",
+                  "offset": 40,
+                  "line": 3,
+                  "column": 35,
+                  "endPos": 42,
+                  "text": "。\n"
                 }
               ]
             },
             {
-              "ruleName": "Paragraph",
+              "ruleName": "BlockElement",
               "offset": 43,
               "line": 5,
               "column": 1,
               "endPos": 76,
-              "childNodes": [
+              "childNodes": [],
+              "symbol": "footnote",
+              "args": [
                 {
-                  "ruleName": "Contents",
-                  "offset": 43,
+                  "ruleName": "BracketArg",
+                  "offset": 53,
                   "line": 5,
-                  "column": 1,
-                  "endPos": 76,
-                  "childNodes": [
-                    {
-                      "ruleName": "BlockElement",
-                      "offset": 43,
-                      "line": 5,
-                      "column": 1,
-                      "endPos": 75,
-                      "childNodes": [],
-                      "symbol": "footnote",
-                      "args": [
-                        {
-                          "ruleName": "BracketArg",
-                          "offset": 53,
-                          "line": 5,
-                          "column": 11,
-                          "endPos": 62,
-                          "arg": "tadaike"
-                        },
-                        {
-                          "ruleName": "BracketArg",
-                          "offset": 62,
-                          "line": 5,
-                          "column": 20,
-                          "endPos": 75,
-                          "arg": "ただしイケメンに限る。"
-                        }
-                      ]
-                    }
-                  ]
+                  "column": 11,
+                  "endPos": 62,
+                  "arg": "tadaike"
+                },
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 62,
+                  "line": 5,
+                  "column": 20,
+                  "endPos": 75,
+                  "arg": "ただしイケメンに限る。"
                 }
               ]
             }

@@ -52,21 +52,12 @@
               "endPos": 46,
               "childNodes": [
                 {
-                  "ruleName": "Contents",
+                  "ruleName": "ContentText",
                   "offset": 20,
                   "line": 3,
                   "column": 1,
                   "endPos": 46,
-                  "childNodes": [
-                    {
-                      "ruleName": "ContentText",
-                      "offset": 20,
-                      "line": 3,
-                      "column": 1,
-                      "endPos": 46,
-                      "text": "例えば @Override アノテーションの話とか。"
-                    }
-                  ]
+                  "text": "例えば @Override アノテーションの話とか。"
                 }
               ]
             }
