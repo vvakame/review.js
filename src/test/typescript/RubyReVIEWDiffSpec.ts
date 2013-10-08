@@ -60,37 +60,21 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 		];
 
 		var ignoreFiles = [
-			"headline.re"
-		];
-
-		var targetFiles = [
-			// TODO
-			"at_without_inline.re",
-			"block.re",
-			// "block_dont_has_body.re", // noindent がまだサポートされていない
-			// "ch01.re", // lead, emplist がまだサポートされていない
-			"ch02.re",
-			"dlist.re",
-			// "empty.re", // empty への対応をまだ行っていない
-			"footnote.re",
-			// "headline.re" // プロセス終了しない謎があるので
-			"headline_only.re",
-			"image.re",
-			// "inline.re", tti がまだサポートされていない
-			// "inline_nested.re", // Ruby版はネストを許可しない
-			// "inline_with_newline.re", // Ruby版の処理が腐っている気がする
-			"olist.re",
-			// "preface.re", // めんどくさいので
-			// "preproc.re", // めんどくさいので
-			"sample.re",
-			"single_comment_with_ulist.re",
-			"ulist.re"
+			"block_dont_has_body.re", // noindent がまだサポートされていない
+			"ch01.re", // lead, emplist がまだサポートされていない
+			"empty.re", // empty への対応をまだ行っていない
+			"headline.re", // プロセス終了しない謎があるので
+			"inline.re", // tti がまだサポートされていない
+			"inline_nested.re", // Ruby版はネストを許可しない
+			"inline_with_newline.re", // Ruby版の処理が腐っている気がする
+			"preface.re", // めんどくさいので
+			"preproc.re", // めんどくさいので
+			"single_comment.re" // #@# をまだサポートしていない
 		];
 
 		var path = "src/test/resources/valid/";
 		fs.readdirSync(path)
 			.filter((file:string) => file.indexOf(".re") !== -1 && !ignoreFiles.some(ignore => ignore === file))
-			.filter((file:string) => targetFiles.some(target => target === file))
 			.forEach((file:string) => {
 
 				var baseName = file.substr(0, file.length - 3);
