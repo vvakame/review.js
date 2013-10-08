@@ -70,21 +70,25 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 
 		var targetFiles = [
 			// TODO
-			"block.re", // 手を加えて通した
 			"at_without_inline.re", // 手を加えて通した
+			"block.re",
 			// "block_dont_has_body.re", // プロセス終了しない謎があるので
 			// "ch01.re", // プロセス終了しない謎があるので
 			// "ch02.re", // めんどくさいので
-			// "dlist.re", // プロセス終了しない謎があるので
+			"dlist.re",
 			// "empty.re", // プロセス終了しない謎があるので
+			"footnote.re",
 			// "headline.re" // プロセス終了しない謎があるので
 			"headline_only.re",
 			"image.re",
-			"ulist.re",
+			// "inline.re", // プロセス終了しない謎があるので
+			// "inline_with_newline.re", // Ruby版の処理が腐っている気がする
 			"olist.re",
-			"dlist.re",
-			"footnote.re"
-			// "inline_with_newline.re", // Ruby版だと予想外の処理をする
+			// "preface.re", // めんどくさいので
+			// "preproc.re", // めんどくさいので
+			"sample.re",
+			"single_comment_with_ulist.re",
+			"ulist.re"
 		];
 
 		var path = "src/test/resources/valid/";
