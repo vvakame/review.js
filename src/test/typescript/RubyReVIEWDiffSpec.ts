@@ -72,7 +72,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 			// TODO
 			"at_without_inline.re", // 手を加えて通した
 			"block.re",
-			// "block_dont_has_body.re", // プロセス終了しない謎があるので
+			"block_dont_has_body.re",
 			// "ch01.re", // プロセス終了しない謎があるので
 			// "ch02.re", // めんどくさいので
 			"dlist.re",
