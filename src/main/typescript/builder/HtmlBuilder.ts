@@ -236,13 +236,30 @@ import findUp = ReVIEW.findUp;
 			process.out("</tt>");
 		}
 
-        inline_u_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("<u>");
-        }
+		inline_ruby_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("<ruby>");
+			return (v) => {
+				// name, args はパス
+				node.childNodes.forEach(node=> {
+					var contentString = nodeContentToString(process, node);
+					var keywordData = contentString.split(",");
+					// TODO ユーザの入力内容のチェックが必要
+					process.out(keywordData[0] + "<rp>(</rp><rt>" + keywordData[1] + "</rt><rp>)</rp");
+				});
+			};
+		}
 
-        inline_u_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("</u>");
-        }
+		inline_ruby_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("</ruby>");
+		}
+
+		inline_u_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("<u>");
+		}
+
+		inline_u_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("</u>");
+		}
 
 		inline_kw_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("<b>");

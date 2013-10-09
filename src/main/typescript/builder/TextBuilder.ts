@@ -168,14 +168,23 @@ import findChapter = ReVIEW.findChapter;
 			process.out("☆");
 		}
 
-        //TODO textの出力を確認して実装する
-        inline_u_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("★");
-        }
-        //TODO textの出力を確認して実装する
-        inline_u_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-            process.out("☆");
-        }
+		//TODO textの出力を確認して実装する
+		inline_ruby_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("★");
+		}
+
+		//TODO textの出力を確認して実装する
+		inline_ruby_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("★");
+		}
+		//TODO textの出力を確認して実装する
+		inline_u_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("★");
+		}
+		//TODO textの出力を確認して実装する
+		inline_u_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("☆");
+		}
 
 		inline_kw_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("★");

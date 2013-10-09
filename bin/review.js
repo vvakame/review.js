@@ -4146,6 +4146,7 @@ var ReVIEW;
             "inline_br": "改行を示します。リスト内での改行や、段落を変えずに改行をしたい場合に使います。",
             "ulist": "番号なし箇条書きを示します。*記号をつなげて書くとネストした箇条書きにする事ができます。",
             "inline_u": "下線にします。\n@<u>{この部分が下線になる}",
+            "inline_ruby": "読み仮名を振ります。\n@<ruby>{羊,ひつじ}",
             "inline_b": "ボールド(太字)にします。\n@<b>{この部分が太字になる}",
             "inline_href": "リンクを示します。URLを書きたい場合に使います。\n@<href>{https://github.com/vvakame/review.js}",
             "inline_tt": "囲まれたテキストを等幅フォントで表示します。",
@@ -5306,6 +5307,19 @@ var ReVIEW;
                 builder.setSyntaxType(SyntaxType.Inline);
                 builder.setSymbol("br");
                 builder.setDescription(t("description.inline_br"));
+                builder.processNode(function (process, n) {
+                    var node = n.toInlineElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
+
+            DefaultAnalyzer.prototype.inline_ruby = function (builder) {
+                builder.setSyntaxType(SyntaxType.Inline);
+                builder.setSymbol("ruby");
+                builder.setDescription(t("description.inline_ruby"));
                 builder.processNode(function (process, n) {
                     var node = n.toInlineElement();
                     process.addSymbol({
@@ -6790,6 +6804,14 @@ var ReVIEW;
                 process.out("☆");
             };
 
+            TextBuilder.prototype.inline_ruby_pre = function (process, node) {
+                process.out("★");
+            };
+
+            TextBuilder.prototype.inline_ruby_post = function (process, node) {
+                process.out("★");
+            };
+
             TextBuilder.prototype.inline_u_pre = function (process, node) {
                 process.out("★");
             };
@@ -7096,6 +7118,22 @@ var ReVIEW;
 
             HtmlBuilder.prototype.inline_tt_post = function (process, node) {
                 process.out("</tt>");
+            };
+
+            HtmlBuilder.prototype.inline_ruby_pre = function (process, node) {
+                process.out("<ruby>");
+                return function (v) {
+                    node.childNodes.forEach(function (node) {
+                        var contentString = nodeContentToString(process, node);
+                        var keywordData = contentString.split(",");
+
+                        process.out(keywordData[0] + "<rp>(</rp><rt>" + keywordData[1] + "</rt><rp>)</rp");
+                    });
+                };
+            };
+
+            HtmlBuilder.prototype.inline_ruby_post = function (process, node) {
+                process.out("</ruby>");
             };
 
             HtmlBuilder.prototype.inline_u_pre = function (process, node) {

@@ -351,6 +351,19 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
+		inline_ruby(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Inline);
+			builder.setSymbol("ruby");
+			builder.setDescription(t("description.inline_ruby"));
+			builder.processNode((process, n)=> {
+				var node = n.toInlineElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
+			});
+		}
+
 		inline_b(builder:IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Inline);
 			builder.setSymbol("b");
@@ -402,18 +415,19 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 				});
 			});
 		}
-        inline_u(builder:IAcceptableSyntaxBuilder) {
-            builder.setSyntaxType(SyntaxType.Inline);
-            builder.setSymbol("u");
-            builder.setDescription(t("description.inline_u"));
-            builder.processNode((process, n)=> {
-                var node = n.toInlineElement();
-                process.addSymbol({
-                    symbolName: node.symbol,
-                    node: node
-                });
-            });
-        }
+
+		inline_u(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Inline);
+			builder.setSymbol("u");
+			builder.setDescription(t("description.inline_u"));
+			builder.processNode((process, n)=> {
+				var node = n.toInlineElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
+			});
+		}
 
 		inline_kw(builder:IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Inline);
