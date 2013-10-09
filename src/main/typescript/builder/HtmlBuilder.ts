@@ -236,7 +236,14 @@ import findUp = ReVIEW.findUp;
 			process.out("</tt>");
 		}
 
-		// TODO 未完了 ←何が未完了なのかアウトラインを書く
+        inline_u_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+            process.out("<u>");
+        }
+
+        inline_u_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+            process.out("</u>");
+        }
+
 		inline_kw_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("<b>");
 			return (v) => {
