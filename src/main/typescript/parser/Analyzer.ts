@@ -89,6 +89,8 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		clazz:any;
 		symbolName:string;
 		argsLength:number[] = [];
+		allowInline:boolean = true;
+		allowFullySyntax:boolean = false;
 		description:string;
 		process:IAnalyzeProcessor;
 
@@ -120,6 +122,9 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		setSymbol(symbolName:string):void;
 		setDescription(description:string):void;
 		checkArgsLength(...argsLength:number[]):void;
+		setAllowInline(enable:boolean):void; // デフォルトtrue
+		setAllowFullySyntax(enable:boolean):void; // デフォルトfalse
+
 		processNode(func:IAnalyzeProcessor):void;
 	}
 
@@ -186,6 +191,14 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
 		checkArgsLength(...argsLength:number[]) {
 			this.current.argsLength = argsLength;
+		}
+
+		setAllowInline(enable:boolean) {
+			this.current.allowInline = enable;
+		}
+
+		setAllowFullySyntax(enable:boolean) {
+			this.current.allowFullySyntax = enable;
 		}
 
 		processNode(func:IAnalyzeProcessor) {
@@ -520,6 +533,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			builder.setSymbol("lead");
 			builder.setDescription(t("description.block_lead"));
 			builder.checkArgsLength(0);
+			builder.setAllowFullySyntax(true);
 			builder.processNode((process, n)=> {
 				var node = n.toBlockElement();
 				process.addSymbol({

@@ -335,7 +335,7 @@ import findUp = ReVIEW.findUp;
 		}
 
 		block_lead_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("\n</div>\n");
+			process.out("</div>\n");
 		}
 	}
 }

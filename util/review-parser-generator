@@ -182,7 +182,7 @@ var options =
 				};
 			},
 			BlockElementContents: template.contents("BlockElementContents"),
-			BlockElementContent: template.repeat(7, template.content("BlockElementContent")),
+			BlockElementContent: template.repeat(6, template.content("BlockElementContent")),
 			BlockElementParagraph: template.content("Paragraph"),
 			BlockElementParagraphSubs: template.contents("ParagraphSubs"),
 			BlockElementParagraphSub: template.repeat(2, template.content("ParagraphSub")),

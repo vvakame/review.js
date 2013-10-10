@@ -52,30 +52,12 @@
               "endPos": 80,
               "childNodes": [
                 {
-                  "ruleName": "BlockElementContents",
+                  "ruleName": "BlockElementContentText",
                   "offset": 34,
                   "line": 4,
                   "column": 1,
                   "endPos": 76,
-                  "childNodes": [
-                    {
-                      "ruleName": "Paragraph",
-                      "offset": 34,
-                      "line": 4,
-                      "column": 1,
-                      "endPos": 76,
-                      "childNodes": [
-                        {
-                          "ruleName": "ContentText",
-                          "offset": 34,
-                          "line": 4,
-                          "column": 1,
-                          "endPos": 76,
-                          "text": "var hoge = confirm(\"test\");\n// JS comment"
-                        }
-                      ]
-                    }
-                  ]
+                  "text": "var hoge = confirm(\"test\");\n// JS comment"
                 }
               ],
               "symbol": "list",
@@ -96,10 +78,12 @@
                   "endPos": 32,
                   "arg": "fuga"
                 }
-              ]
+              ],
+              "no": 1
             }
           ],
           "childNodes": [],
+          "no": 1,
           "level": 1
         }
       ]

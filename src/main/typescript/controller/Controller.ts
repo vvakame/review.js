@@ -4,6 +4,7 @@
 ///<reference path='../model/CompilerModel.ts' />
 ///<reference path='../parser/Parser.ts' />
 ///<reference path='../parser/Analyzer.ts' />
+///<reference path='../parser/Preprocessor.ts' />
 ///<reference path='../parser/Validator.ts' />
 
 module ReVIEW {
@@ -98,6 +99,9 @@ import flatten = ReVIEW.flatten;
 			}
 
 			var book = this.processBook();
+
+			var preprocessor = new ReVIEW.Build.SyntaxPreprocessor();
+			preprocessor.start(book, acceptableSyntaxes);
 
 			this.config.validators.forEach(validator=> {
 				validator.start(book, acceptableSyntaxes, this.config.builders);

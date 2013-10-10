@@ -278,12 +278,15 @@
                         }
                       ],
                       "childNodes": [],
+                      "no": 1,
                       "level": 4
                     }
                   ],
+                  "no": 1,
                   "level": 3
                 }
               ],
+              "no": 1,
               "level": 2
             },
             {
@@ -456,6 +459,7 @@
                 }
               ],
               "childNodes": [],
+              "no": 2,
               "level": 2
             },
             {
@@ -515,30 +519,12 @@
                   "endPos": 521,
                   "childNodes": [
                     {
-                      "ruleName": "BlockElementContents",
+                      "ruleName": "BlockElementContentText",
                       "offset": 454,
                       "line": 47,
                       "column": 1,
                       "endPos": 516,
-                      "childNodes": [
-                        {
-                          "ruleName": "Paragraph",
-                          "offset": 454,
-                          "line": 47,
-                          "column": 1,
-                          "endPos": 516,
-                          "childNodes": [
-                            {
-                              "ruleName": "ContentText",
-                              "offset": 454,
-                              "line": 47,
-                              "column": 1,
-                              "endPos": 516,
-                              "text": "int main(int argc, char **argv) {\n  puts(\"OK\");\n  return 0;\n}"
-                            }
-                          ]
-                        }
-                      ]
+                      "text": "int main(int argc, char **argv) {\n  puts(\"OK\");\n  return 0;\n}"
                     }
                   ],
                   "symbol": "list",
@@ -559,7 +545,8 @@
                       "endPos": 452,
                       "arg": "リストのサンプル"
                     }
-                  ]
+                  ],
+                  "no": 1
                 },
                 {
                   "ruleName": "Paragraph",
@@ -617,6 +604,7 @@
                 }
               ],
               "childNodes": [],
+              "no": 3,
               "level": 2
             },
             {
@@ -693,7 +681,8 @@
                       "endPos": 647,
                       "arg": "画像サンプル"
                     }
-                  ]
+                  ],
+                  "no": 1
                 },
                 {
                   "ruleName": "Paragraph",
@@ -758,9 +747,11 @@
                 }
               ],
               "childNodes": [],
+              "no": 4,
               "level": 2
             }
           ],
+          "no": 1,
           "level": 1
         }
       ]

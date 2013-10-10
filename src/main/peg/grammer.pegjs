@@ -65,7 +65,7 @@ BlockElementContents "contents of block element"
 
 BlockElementContent "content of block element"
     // 各要素は Newline で終わらなければならない
-    = c:SinglelineComment / c:BlockElement / c:InlineElement / c:Ulist / c:Olist / c:Dlist / c:BlockElementParagraph
+    = c:SinglelineComment / c:BlockElement / c:Ulist / c:Olist / c:Dlist / c:BlockElementParagraph
     ;
 
 BlockElementParagraph "paragraph in block"

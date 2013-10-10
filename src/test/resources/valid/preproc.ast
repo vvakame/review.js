@@ -52,29 +52,12 @@
               "endPos": 74,
               "childNodes": [
                 {
-                  "ruleName": "BlockElementContents",
+                  "ruleName": "BlockElementContentText",
                   "offset": 38,
                   "line": 4,
                   "column": 1,
                   "endPos": 70,
-                  "childNodes": [
-                    {
-                      "ruleName": "SinglelineComment",
-                      "offset": 38,
-                      "line": 4,
-                      "column": 1,
-                      "endPos": 64,
-                      "text": "#@mapfile(bin/grammer.js)"
-                    },
-                    {
-                      "ruleName": "SinglelineComment",
-                      "offset": 64,
-                      "line": 5,
-                      "column": 1,
-                      "endPos": 70,
-                      "text": "#@end"
-                    }
-                  ]
+                  "text": "#@mapfile(bin/grammer.js)\n#@end"
                 }
               ],
               "symbol": "list",
@@ -95,10 +78,12 @@
                   "endPos": 36,
                   "arg": ""
                 }
-              ]
+              ],
+              "no": 1
             }
           ],
           "childNodes": [],
+          "no": 1,
           "level": 1
         }
       ]

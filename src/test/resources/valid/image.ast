@@ -52,30 +52,12 @@
               "endPos": 56,
               "childNodes": [
                 {
-                  "ruleName": "BlockElementContents",
+                  "ruleName": "BlockElementContentText",
                   "offset": 48,
                   "line": 4,
                   "column": 1,
                   "endPos": 51,
-                  "childNodes": [
-                    {
-                      "ruleName": "Paragraph",
-                      "offset": 48,
-                      "line": 4,
-                      "column": 1,
-                      "endPos": 51,
-                      "childNodes": [
-                        {
-                          "ruleName": "ContentText",
-                          "offset": 48,
-                          "line": 4,
-                          "column": 1,
-                          "endPos": 51,
-                          "text": "メモ"
-                        }
-                      ]
-                    }
-                  ]
+                  "text": "メモ"
                 }
               ],
               "symbol": "image",
@@ -104,7 +86,8 @@
                   "endPos": 46,
                   "arg": "scale=0.3"
                 }
-              ]
+              ],
+              "no": 1
             },
             {
               "ruleName": "Paragraph",
@@ -144,6 +127,7 @@
             }
           ],
           "childNodes": [],
+          "no": 1,
           "level": 1
         }
       ]

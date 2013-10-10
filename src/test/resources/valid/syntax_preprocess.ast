@@ -1,0 +1,165 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 97,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 97,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 97,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 8,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 6,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 6,
+                  "text": "サンプル"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "BlockElement",
+              "offset": 8,
+              "line": 3,
+              "column": 1,
+              "endPos": 59,
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContents",
+                  "offset": 16,
+                  "line": 4,
+                  "column": 1,
+                  "endPos": 54,
+                  "childNodes": [
+                    {
+                      "ruleName": "Paragraph",
+                      "offset": 16,
+                      "line": 4,
+                      "column": 1,
+                      "endPos": 45,
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentText",
+                          "offset": 16,
+                          "line": 4,
+                          "column": 1,
+                          "endPos": 44,
+                          "text": "書き方のサンプルです。上書きするなりして消して下さい。"
+                        }
+                      ]
+                    },
+                    {
+                      "ruleName": "Paragraph",
+                      "offset": 45,
+                      "line": 6,
+                      "column": 1,
+                      "endPos": 54,
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElement",
+                          "offset": 45,
+                          "line": 6,
+                          "column": 1,
+                          "endPos": 53,
+                          "childNodes": [
+                            {
+                              "ruleName": "InlineElementContents",
+                              "offset": 50,
+                              "line": 6,
+                              "column": 6,
+                              "endPos": 52,
+                              "childNodes": [
+                                {
+                                  "ruleName": "InlineElementContentText",
+                                  "offset": 50,
+                                  "line": 6,
+                                  "column": 6,
+                                  "endPos": 52,
+                                  "text": "ほげ"
+                                }
+                              ]
+                            }
+                          ],
+                          "symbol": "b"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "symbol": "lead",
+              "args": []
+            },
+            {
+              "ruleName": "BlockElement",
+              "offset": 59,
+              "line": 9,
+              "column": 1,
+              "endPos": 97,
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "offset": 79,
+                  "line": 10,
+                  "column": 1,
+                  "endPos": 92,
+                  "text": "わかめ\n: 定義\n  解説"
+                }
+              ],
+              "symbol": "list",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 65,
+                  "line": 9,
+                  "column": 7,
+                  "endPos": 71,
+                  "arg": "hoge"
+                },
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 71,
+                  "line": 9,
+                  "column": 13,
+                  "endPos": 77,
+                  "arg": "hoge"
+                }
+              ],
+              "no": 1
+            }
+          ],
+          "childNodes": [],
+          "no": 1,
+          "level": 1
+        }
+      ]
+    }
+  ]
+}

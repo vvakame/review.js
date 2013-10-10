@@ -255,7 +255,7 @@ import findChapter = ReVIEW.findChapter;
 		}
 
 		block_lead_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("\n◆→終了:リード←◆\n");
+			process.out("◆→終了:リード←◆\n\n");
 		}
 	}
 }
