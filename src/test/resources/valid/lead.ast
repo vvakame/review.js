@@ -1,0 +1,82 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 26,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 26,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 26,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 8,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 6,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 6,
+                  "text": "リード文"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "BlockElement",
+              "offset": 8,
+              "line": 3,
+              "column": 1,
+              "endPos": 26,
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContents",
+                  "offset": 16,
+                  "line": 4,
+                  "column": 1,
+                  "endPos": 22,
+                  "childNodes": [
+                    {
+                      "ruleName": "BlockElementContentText",
+                      "offset": 16,
+                      "line": 4,
+                      "column": 1,
+                      "endPos": 22,
+                      "text": "ヒーロー！"
+                    }
+                  ]
+                }
+              ],
+              "symbol": "lead",
+              "args": []
+            }
+          ],
+          "childNodes": [],
+          "level": 1
+        }
+      ]
+    }
+  ]
+}

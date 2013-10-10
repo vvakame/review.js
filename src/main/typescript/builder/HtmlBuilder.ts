@@ -329,5 +329,13 @@ import findUp = ReVIEW.findUp;
 			process.out("<a href=\"#fn-").out(footnoteNode.args[0].arg).out("\">*").out(footnoteNode.no).out("</a>");
 			return false;
 		}
+
+		block_lead_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("<div class=\"lead\">\n");
+		}
+
+		block_lead_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("\n</div>\n");
+		}
 	}
 }

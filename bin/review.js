@@ -5380,6 +5380,7 @@ var ReVIEW;
                     });
                 });
             };
+
             DefaultAnalyzer.prototype.inline_u = function (builder) {
                 builder.setSyntaxType(SyntaxType.Inline);
                 builder.setSymbol("u");
@@ -5474,6 +5475,20 @@ var ReVIEW;
                     process.addSymbol({
                         symbolName: node.symbol,
                         referenceTo: process.constructReferenceTo(node, ReVIEW.nodeContentToString(process, node), "footnote"),
+                        node: node
+                    });
+                });
+            };
+
+            DefaultAnalyzer.prototype.block_lead = function (builder) {
+                builder.setSyntaxType(SyntaxType.Block);
+                builder.setSymbol("lead");
+                builder.setDescription(t("description.block_lead"));
+                builder.checkArgsLength(0);
+                builder.processNode(function (process, n) {
+                    var node = n.toBlockElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
                         node: node
                     });
                 });
@@ -6881,6 +6896,14 @@ var ReVIEW;
                 process.out("【注").out(footnoteNode.no).out("】");
                 return false;
             };
+
+            TextBuilder.prototype.block_lead_pre = function (process, node) {
+                process.out("◆→開始:リード←◆\n");
+            };
+
+            TextBuilder.prototype.block_lead_post = function (process, node) {
+                process.out("\n◆→終了:リード←◆\n");
+            };
             return TextBuilder;
         })(Build.DefaultBuilder);
         Build.TextBuilder = TextBuilder;
@@ -7209,6 +7232,14 @@ var ReVIEW;
                 var footnoteNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
                 process.out("<a href=\"#fn-").out(footnoteNode.args[0].arg).out("\">*").out(footnoteNode.no).out("</a>");
                 return false;
+            };
+
+            HtmlBuilder.prototype.block_lead_pre = function (process, node) {
+                process.out("<div class=\"lead\">\n");
+            };
+
+            HtmlBuilder.prototype.block_lead_post = function (process, node) {
+                process.out("\n</div>\n");
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);

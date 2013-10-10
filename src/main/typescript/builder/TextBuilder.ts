@@ -249,5 +249,13 @@ import findChapter = ReVIEW.findChapter;
 			process.out("【注").out(footnoteNode.no).out("】");
 			return false;
 		}
+
+		block_lead_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("◆→開始:リード←◆\n");
+		}
+
+		block_lead_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("\n◆→終了:リード←◆\n");
+		}
 	}
 }

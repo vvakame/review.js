@@ -515,6 +515,20 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
+		block_lead(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Block);
+			builder.setSymbol("lead");
+			builder.setDescription(t("description.block_lead"));
+			builder.checkArgsLength(0);
+			builder.processNode((process, n)=> {
+				var node = n.toBlockElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
+			});
+		}
+
 		// TODO 以下のものの実装をすすめる
 		// block_emlist
 		// block_source
@@ -528,7 +542,6 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		// block_quote
 		// block_bibpaper
 		// inline_bib
-		// block_lead
 		// block_texequation
 		// block_noindent
 		// block_raw
