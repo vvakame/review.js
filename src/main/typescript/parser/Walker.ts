@@ -197,7 +197,7 @@ import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 				ret(v);
 			}
 			v.visitDlistPost(dl, parent);
-		} else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && ast.ruleName === ReVIEW.Parse.RuleName.Paragraph) {
+		} else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && (ast.ruleName === ReVIEW.Parse.RuleName.Paragraph || ast.ruleName === ReVIEW.Parse.RuleName.BlockElementParagraph)) {
 			var node = ast.toNode();
 			var ret = v.visitParagraphPre(node, parent);
 			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {

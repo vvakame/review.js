@@ -59,12 +59,21 @@
                   "endPos": 44,
                   "childNodes": [
                     {
-                      "ruleName": "BlockElementContentText",
+                      "ruleName": "Paragraph",
                       "offset": 16,
                       "line": 4,
                       "column": 1,
                       "endPos": 44,
-                      "text": "書き方のサンプルです。上書きするなりして消して下さい。"
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentText",
+                          "offset": 16,
+                          "line": 4,
+                          "column": 1,
+                          "endPos": 44,
+                          "text": "書き方のサンプルです。上書きするなりして消して下さい。"
+                        }
+                      ]
                     }
                   ]
                 }
@@ -513,12 +522,21 @@
                       "endPos": 516,
                       "childNodes": [
                         {
-                          "ruleName": "BlockElementContentText",
+                          "ruleName": "Paragraph",
                           "offset": 454,
                           "line": 47,
                           "column": 1,
                           "endPos": 516,
-                          "text": "int main(int argc, char **argv) {\n  puts(\"OK\");\n  return 0;\n}"
+                          "childNodes": [
+                            {
+                              "ruleName": "ContentText",
+                              "offset": 454,
+                              "line": 47,
+                              "column": 1,
+                              "endPos": 516,
+                              "text": "int main(int argc, char **argv) {\n  puts(\"OK\");\n  return 0;\n}"
+                            }
+                          ]
                         }
                       ]
                     }
@@ -575,12 +593,21 @@
                       "endPos": 585,
                       "childNodes": [
                         {
-                          "ruleName": "BlockElementContentText",
+                          "ruleName": "Paragraph",
                           "offset": 560,
                           "line": 56,
                           "column": 1,
                           "endPos": 585,
-                          "text": "def main\n  puts \"ok\"\nend"
+                          "childNodes": [
+                            {
+                              "ruleName": "ContentText",
+                              "offset": 560,
+                              "line": 56,
+                              "column": 1,
+                              "endPos": 585,
+                              "text": "def main\n  puts \"ok\"\nend"
+                            }
+                          ]
                         }
                       ]
                     }

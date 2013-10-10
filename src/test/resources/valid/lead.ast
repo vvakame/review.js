@@ -59,12 +59,21 @@
                   "endPos": 22,
                   "childNodes": [
                     {
-                      "ruleName": "BlockElementContentText",
+                      "ruleName": "Paragraph",
                       "offset": 16,
                       "line": 4,
                       "column": 1,
                       "endPos": 22,
-                      "text": "ヒーロー！"
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentText",
+                          "offset": 16,
+                          "line": 4,
+                          "column": 1,
+                          "endPos": 22,
+                          "text": "ヒーロー！"
+                        }
+                      ]
                     }
                   ]
                 }

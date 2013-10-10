@@ -111,6 +111,7 @@ module ReVIEW.Parse {
 			case RuleName.Contents:
 			case RuleName.ParagraphSubs:
 			case RuleName.BlockElementContents:
+			case RuleName.BlockElementParagraphSubs:
 			case RuleName.InlineElementContents:
 			case RuleName.ContentInlines:
 			case RuleName.Ulist:
@@ -120,6 +121,8 @@ module ReVIEW.Parse {
 			// c パターン
 			case RuleName.Start:
 			case RuleName.Paragraph:
+			case RuleName.BlockElementParagraph:
+			case RuleName.BlockElementParagraphSub:
 			case RuleName.DlistElementContent:
 				return new NodeSyntaxTree(rawResult);
 			// パースした内容は直接役にたたない c / c / c 系
@@ -243,6 +246,9 @@ module ReVIEW.Parse {
 		BraceArg,
 		BlockElementContents,
 		BlockElementContent,
+		BlockElementParagraph,
+		BlockElementParagraphSubs,
+		BlockElementParagraphSub,
 		BlockElementContentText,
 		InlineElementContents,
 		InlineElementContent,

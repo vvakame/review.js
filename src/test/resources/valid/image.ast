@@ -59,12 +59,21 @@
                   "endPos": 51,
                   "childNodes": [
                     {
-                      "ruleName": "BlockElementContentText",
+                      "ruleName": "Paragraph",
                       "offset": 48,
                       "line": 4,
                       "column": 1,
                       "endPos": 51,
-                      "text": "メモ"
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentText",
+                          "offset": 48,
+                          "line": 4,
+                          "column": 1,
+                          "endPos": 51,
+                          "text": "メモ"
+                        }
+                      ]
                     }
                   ]
                 }
