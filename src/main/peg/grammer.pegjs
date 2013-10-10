@@ -60,7 +60,7 @@ BraceArg "brace argument"
 
 // contents との差は paragraph を切るか切らないか
 BlockElementContents "contents of block element"
-    = c:BlockElementContent cc:BlockElementContents?
+    = c:BlockElementContent cc:BlockElementContents? _
     ;
 
 BlockElementContent "content of block element"

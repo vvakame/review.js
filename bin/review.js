@@ -1985,7 +1985,7 @@ var PEG = (function() {
     }
 
     function peg$parseBlockElementContents() {
-      var s0, s1, s2;
+      var s0, s1, s2, s3;
 
       var key    = peg$currPos * 42 + 14,
           cached = peg$cache[key];
@@ -2004,13 +2004,19 @@ var PEG = (function() {
           s2 = peg$c2;
         }
         if (s2 !== null) {
-          peg$reportedPos = s0;
-          s1 = peg$c60(s1, s2);
-          if (s1 === null) {
-            peg$currPos = s0;
-            s0 = s1;
+          s3 = peg$parse_();
+          if (s3 !== null) {
+            peg$reportedPos = s0;
+            s1 = peg$c60(s1, s2);
+            if (s1 === null) {
+              peg$currPos = s0;
+              s0 = s1;
+            } else {
+              s0 = s1;
+            }
           } else {
-            s0 = s1;
+            peg$currPos = s0;
+            s0 = peg$c1;
           }
         } else {
           peg$currPos = s0;
