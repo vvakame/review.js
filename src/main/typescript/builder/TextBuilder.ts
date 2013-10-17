@@ -265,5 +265,13 @@ import findChapter = ReVIEW.findChapter;
 		inline_tti_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("☆◆→等幅フォントイタ←◆");
 		}
+
+		inline_ttb_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("★");
+		}
+
+		inline_ttb_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("☆◆→等幅フォント太字←◆");
+		}
 	}
 }

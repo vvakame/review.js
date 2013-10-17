@@ -345,5 +345,13 @@ import findUp = ReVIEW.findUp;
 		inline_tti_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("</i></tt>");
 		}
+
+		inline_ttb_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("<tt><b>");
+		}
+
+		inline_ttb_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("</b></tt>");
+		}
 	}
 }

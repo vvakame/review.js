@@ -5648,6 +5648,19 @@ var ReVIEW;
                     });
                 });
             };
+
+            DefaultAnalyzer.prototype.inline_ttb = function (builder) {
+                builder.setSyntaxType(SyntaxType.Inline);
+                builder.setSymbol("ttb");
+                builder.setDescription(t("description.inline_ttb"));
+                builder.processNode(function (process, n) {
+                    var node = n.toInlineElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
             return DefaultAnalyzer;
         })();
         Build.DefaultAnalyzer = DefaultAnalyzer;
@@ -7195,6 +7208,14 @@ var ReVIEW;
             TextBuilder.prototype.inline_tti_post = function (process, node) {
                 process.out("☆◆→等幅フォントイタ←◆");
             };
+
+            TextBuilder.prototype.inline_ttb_pre = function (process, node) {
+                process.out("★");
+            };
+
+            TextBuilder.prototype.inline_ttb_post = function (process, node) {
+                process.out("☆◆→等幅フォント太字←◆");
+            };
             return TextBuilder;
         })(Build.DefaultBuilder);
         Build.TextBuilder = TextBuilder;
@@ -7539,6 +7560,14 @@ var ReVIEW;
 
             HtmlBuilder.prototype.inline_tti_post = function (process, node) {
                 process.out("</i></tt>");
+            };
+
+            HtmlBuilder.prototype.inline_ttb_pre = function (process, node) {
+                process.out("<tt><b>");
+            };
+
+            HtmlBuilder.prototype.inline_ttb_post = function (process, node) {
+                process.out("</b></tt>");
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);
