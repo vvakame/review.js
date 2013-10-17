@@ -257,5 +257,13 @@ import findChapter = ReVIEW.findChapter;
 		block_lead_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
 			process.out("◆→終了:リード←◆\n\n");
 		}
+
+		inline_tti_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("▲");
+		}
+
+		inline_tti_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("☆◆→等幅フォントイタ←◆");
+		}
 	}
 }

@@ -5635,6 +5635,19 @@ var ReVIEW;
                     });
                 });
             };
+
+            DefaultAnalyzer.prototype.inline_tti = function (builder) {
+                builder.setSyntaxType(SyntaxType.Inline);
+                builder.setSymbol("tti");
+                builder.setDescription(t("description.inline_tti"));
+                builder.processNode(function (process, n) {
+                    var node = n.toInlineElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
             return DefaultAnalyzer;
         })();
         Build.DefaultAnalyzer = DefaultAnalyzer;
@@ -7174,6 +7187,14 @@ var ReVIEW;
             TextBuilder.prototype.block_lead_post = function (process, node) {
                 process.out("◆→終了:リード←◆\n\n");
             };
+
+            TextBuilder.prototype.inline_tti_pre = function (process, node) {
+                process.out("▲");
+            };
+
+            TextBuilder.prototype.inline_tti_post = function (process, node) {
+                process.out("☆◆→等幅フォントイタ←◆");
+            };
             return TextBuilder;
         })(Build.DefaultBuilder);
         Build.TextBuilder = TextBuilder;
@@ -7510,6 +7531,14 @@ var ReVIEW;
 
             HtmlBuilder.prototype.block_lead_post = function (process, node) {
                 process.out("</div>\n");
+            };
+
+            HtmlBuilder.prototype.inline_tti_pre = function (process, node) {
+                process.out("<tt><i>");
+            };
+
+            HtmlBuilder.prototype.inline_tti_post = function (process, node) {
+                process.out("</i></tt>");
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);

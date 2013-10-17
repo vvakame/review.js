@@ -337,5 +337,13 @@ import findUp = ReVIEW.findUp;
 		block_lead_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
 			process.out("</div>\n");
 		}
+
+		inline_tti_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("<tt><i>");
+		}
+
+		inline_tti_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("</i></tt>");
+		}
 	}
 }
