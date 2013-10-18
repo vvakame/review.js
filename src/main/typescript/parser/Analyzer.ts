@@ -570,34 +570,36 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		}
 
 		// TODO 以下のものの実装をすすめる
-		// block_emlist
+		// ↑実装が簡単
 		// block_source
-		// block_listnum
-		// emlistnum
 		// block_cmd
-		// block_indepimage
-		// block_graph
-		// block_table
-		// inline_table
 		// block_quote
-		// block_bibpaper
-		// inline_bib
-		// block_texequation
-		// block_noindent
-		// block_raw
-		// inline_chap
-		// inline_title
-		// inline_chapref
-		// inline_bou
-		// inline_ruby
 		// inline_ami
+		// inline_bou
 		// inline_i
 		// inline_strong
 		// inline_u
-		// inline_m
-		// inline_icon
+		// block_bibpaper
+		// inline_bib
+		// block_indepimage
+		// inline_ruby
 		// inline_uchar
-		// inline_raw
+		// block_emlist
+		// block_listnum
+		// block_emlistnum
 		// block_label
+		// inline_icon
+		// block_texequation
+		// inline_chap
+		// inline_title
+		// inline_chapref
+		// inline_m
+		// block_raw
+		// inline_raw
+		// block_graph
+		// block_table
+		// inline_table
+		// block_noindent
+		// ↓実装が難しい
 	}
 }
