@@ -94,7 +94,11 @@ import findUp = ReVIEW.findUp;
 		}
 
 		paragraphPre(process:BuilderProcess, name:string, node:NodeSyntaxTree) {
-			process.out("<p>");
+			if (node.prev && node.prev.isBlockElement() && node.prev.toBlockElement().symbol === "noindent") {
+				process.out("<p class=\"noindent\">");
+			} else {
+				process.out("<p>");
+			}
 		}
 
 		paragraphPost(process:BuilderProcess, name:string, node:NodeSyntaxTree) {
@@ -352,6 +356,11 @@ import findUp = ReVIEW.findUp;
 
 		inline_ttb_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("</b></tt>");
+		}
+
+		block_noindent(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			// paragraphPre 中で処理
+			return false;
 		}
 	}
 }

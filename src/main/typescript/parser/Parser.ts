@@ -384,6 +384,51 @@ module ReVIEW.Parse {
 			}
 		}
 
+		private checkSyntaxType(clazz:any):boolean {
+			return this instanceof clazz;
+		}
+
+
+		isNode():boolean {
+			return this.checkSyntaxType(NodeSyntaxTree);
+		}
+
+		isBlockElement():boolean {
+			return this.checkSyntaxType(BlockElementSyntaxTree);
+		}
+
+		isInlineElement():boolean {
+			return this.checkSyntaxType(InlineElementSyntaxTree);
+		}
+
+		isArgument():boolean {
+			return this.checkSyntaxType(ArgumentSyntaxTree);
+		}
+
+		isChapter():boolean {
+			return this.checkSyntaxType(ChapterSyntaxTree);
+		}
+
+		isHeadline():boolean {
+			return this.checkSyntaxType(HeadlineSyntaxTree);
+		}
+
+		isUlist():boolean {
+			return this.checkSyntaxType(UlistElementSyntaxTree);
+		}
+
+		isOlist():boolean {
+			return this.checkSyntaxType(OlistElementSyntaxTree);
+		}
+
+		isDlist():boolean {
+			return this.checkSyntaxType(DlistElementSyntaxTree);
+		}
+
+		isTextNode():boolean {
+			return this.checkSyntaxType(TextNodeSyntaxTree);
+		}
+
 		private toOtherNode<T extends SyntaxTree >(clazz:any):T {
 			if (this instanceof clazz) {
 				return <T>this;

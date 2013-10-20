@@ -56,6 +56,10 @@ import findChapter = ReVIEW.findChapter;
 			process.out("\n\n");
 		}
 
+		paragraphPre(process:BuilderProcess, name:string, node:NodeSyntaxTree) {
+			process.out("");
+		}
+
 		paragraphPost(process:BuilderProcess, name:string, node:NodeSyntaxTree) {
 			process.out("\n");
 		}
@@ -177,10 +181,12 @@ import findChapter = ReVIEW.findChapter;
 		inline_ruby_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("★");
 		}
+
 		//TODO textの出力を確認して実装する
 		inline_u_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("★");
 		}
+
 		//TODO textの出力を確認して実装する
 		inline_u_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("☆");
@@ -272,6 +278,11 @@ import findChapter = ReVIEW.findChapter;
 
 		inline_ttb_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("☆◆→等幅フォント太字←◆");
+		}
+
+		block_noindent(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("◆→DTP連絡:次の1行インデントなし←◆\n");
+			return false;
 		}
 	}
 }

@@ -569,6 +569,20 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
+		block_noindent(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Block);
+			builder.setSymbol("noindent");
+			builder.setDescription(t("description.block_noindent"));
+			builder.checkArgsLength(0);
+			builder.processNode((process, n)=> {
+				var node = n.toBlockElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
+			});
+		}
+
 		// TODO 以下のものの実装をすすめる
 		// ↑実装が簡単
 		// block_source

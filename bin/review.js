@@ -4878,6 +4878,50 @@ var ReVIEW;
                 }
             };
 
+            SyntaxTree.prototype.checkSyntaxType = function (clazz) {
+                return this instanceof clazz;
+            };
+
+            SyntaxTree.prototype.isNode = function () {
+                return this.checkSyntaxType(NodeSyntaxTree);
+            };
+
+            SyntaxTree.prototype.isBlockElement = function () {
+                return this.checkSyntaxType(BlockElementSyntaxTree);
+            };
+
+            SyntaxTree.prototype.isInlineElement = function () {
+                return this.checkSyntaxType(InlineElementSyntaxTree);
+            };
+
+            SyntaxTree.prototype.isArgument = function () {
+                return this.checkSyntaxType(ArgumentSyntaxTree);
+            };
+
+            SyntaxTree.prototype.isChapter = function () {
+                return this.checkSyntaxType(ChapterSyntaxTree);
+            };
+
+            SyntaxTree.prototype.isHeadline = function () {
+                return this.checkSyntaxType(HeadlineSyntaxTree);
+            };
+
+            SyntaxTree.prototype.isUlist = function () {
+                return this.checkSyntaxType(UlistElementSyntaxTree);
+            };
+
+            SyntaxTree.prototype.isOlist = function () {
+                return this.checkSyntaxType(OlistElementSyntaxTree);
+            };
+
+            SyntaxTree.prototype.isDlist = function () {
+                return this.checkSyntaxType(DlistElementSyntaxTree);
+            };
+
+            SyntaxTree.prototype.isTextNode = function () {
+                return this.checkSyntaxType(TextNodeSyntaxTree);
+            };
+
             SyntaxTree.prototype.toOtherNode = function (clazz) {
                 if (this instanceof clazz) {
                     return this;
@@ -5655,6 +5699,20 @@ var ReVIEW;
                 builder.setDescription(t("description.inline_ttb"));
                 builder.processNode(function (process, n) {
                     var node = n.toInlineElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
+
+            DefaultAnalyzer.prototype.block_noindent = function (builder) {
+                builder.setSyntaxType(SyntaxType.Block);
+                builder.setSymbol("noindent");
+                builder.setDescription(t("description.block_noindent"));
+                builder.checkArgsLength(0);
+                builder.processNode(function (process, n) {
+                    var node = n.toBlockElement();
                     process.addSymbol({
                         symbolName: node.symbol,
                         node: node
@@ -7004,6 +7062,10 @@ var ReVIEW;
                 process.out("\n\n");
             };
 
+            TextBuilder.prototype.paragraphPre = function (process, name, node) {
+                process.out("");
+            };
+
             TextBuilder.prototype.paragraphPost = function (process, name, node) {
                 process.out("\n");
             };
@@ -7216,6 +7278,11 @@ var ReVIEW;
             TextBuilder.prototype.inline_ttb_post = function (process, node) {
                 process.out("☆◆→等幅フォント太字←◆");
             };
+
+            TextBuilder.prototype.block_noindent = function (process, node) {
+                process.out("◆→DTP連絡:次の1行インデントなし←◆\n");
+                return false;
+            };
             return TextBuilder;
         })(Build.DefaultBuilder);
         Build.TextBuilder = TextBuilder;
@@ -7315,7 +7382,11 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.paragraphPre = function (process, name, node) {
-                process.out("<p>");
+                if (node.prev && node.prev.isBlockElement() && node.prev.toBlockElement().symbol === "noindent") {
+                    process.out("<p class=\"noindent\">");
+                } else {
+                    process.out("<p>");
+                }
             };
 
             HtmlBuilder.prototype.paragraphPost = function (process, name, node) {
@@ -7568,6 +7639,10 @@ var ReVIEW;
 
             HtmlBuilder.prototype.inline_ttb_post = function (process, node) {
                 process.out("</b></tt>");
+            };
+
+            HtmlBuilder.prototype.block_noindent = function (process, node) {
+                return false;
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);
