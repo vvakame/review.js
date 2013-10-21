@@ -613,7 +613,6 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		// block_graph
 		// block_table
 		// inline_table
-		// block_noindent
 		// ↓実装が難しい
 	}
 }
