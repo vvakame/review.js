@@ -687,7 +687,7 @@ module ReVIEW.Parse {
 
 		constructor(data:IConcreatSyntaxTree) {
 			super(data);
-			this.text = this.checkString(data.text).trim();
+			this.text = this.checkString(data.text).replace(/\n+$/, "");
 		}
 	}
 }
