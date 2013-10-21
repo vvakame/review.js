@@ -56,10 +56,6 @@ import findChapter = ReVIEW.findChapter;
 			process.out("\n\n");
 		}
 
-		paragraphPre(process:BuilderProcess, name:string, node:NodeSyntaxTree) {
-			process.out("");
-		}
-
 		paragraphPost(process:BuilderProcess, name:string, node:NodeSyntaxTree) {
 			process.out("\n");
 		}
