@@ -56,6 +56,12 @@ module ReVIEW.Parse {
 		ReVIEW.visit(root, {
 			visitDefaultPre: (ast:SyntaxTree, parent:SyntaxTree)=> {
 			},
+			visitChapterPre: (ast:ChapterSyntaxTree) => {
+				ast.text.forEach((node, i, nodes) => {
+					node.prev = nodes[i - 1];
+					node.next = nodes[i + 1];
+				});
+			},
 			visitNodePre: (ast:NodeSyntaxTree) => {
 				ast.childNodes.forEach((node, i, nodes) => {
 					node.prev = nodes[i - 1];
@@ -559,6 +565,7 @@ module ReVIEW.Parse {
 
 			this.headline = transform(this.checkObject(data.headline)).toHeadline();
 			if (typeof data.text === "string") {
+				this.text = [];
 				return;
 			}
 			this.text = this.checkArray(data.text.content).map((data:IConcreatSyntaxTree)=> {

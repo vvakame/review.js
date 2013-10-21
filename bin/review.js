@@ -4626,6 +4626,12 @@ var ReVIEW;
             ReVIEW.visit(root, {
                 visitDefaultPre: function (ast, parent) {
                 },
+                visitChapterPre: function (ast) {
+                    ast.text.forEach(function (node, i, nodes) {
+                        node.prev = nodes[i - 1];
+                        node.next = nodes[i + 1];
+                    });
+                },
                 visitNodePre: function (ast) {
                     ast.childNodes.forEach(function (node, i, nodes) {
                         node.prev = nodes[i - 1];
@@ -5020,6 +5026,7 @@ var ReVIEW;
 
                 this.headline = transform(this.checkObject(data.headline)).toHeadline();
                 if (typeof data.text === "string") {
+                    this.text = [];
                     return;
                 }
                 this.text = this.checkArray(data.text.content).map(function (data) {
