@@ -239,7 +239,7 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 				}
 				if (func) {
 					process.prepare();
-					func(process);
+					func.bind(this)(process);
 					process.build(k);
 				}
 			}
@@ -351,123 +351,6 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
-		inline_br(builder:IAcceptableSyntaxBuilder) {
-			builder.setSyntaxType(SyntaxType.Inline);
-			builder.setSymbol("br");
-			builder.setDescription(t("description.inline_br"));
-			builder.processNode((process, n)=> {
-				var node = n.toInlineElement();
-				process.addSymbol({
-					symbolName: node.symbol,
-					node: node
-				});
-			});
-		}
-
-		inline_ruby(builder:IAcceptableSyntaxBuilder) {
-			builder.setSyntaxType(SyntaxType.Inline);
-			builder.setSymbol("ruby");
-			builder.setDescription(t("description.inline_ruby"));
-			builder.processNode((process, n)=> {
-				var node = n.toInlineElement();
-				process.addSymbol({
-					symbolName: node.symbol,
-					node: node
-				});
-			});
-		}
-
-		inline_b(builder:IAcceptableSyntaxBuilder) {
-			builder.setSyntaxType(SyntaxType.Inline);
-			builder.setSymbol("b");
-			builder.setDescription(t("description.inline_b"));
-			builder.processNode((process, n)=> {
-				var node = n.toInlineElement();
-				process.addSymbol({
-					symbolName: node.symbol,
-					node: node
-				});
-			});
-		}
-
-		inline_code(builder:IAcceptableSyntaxBuilder) {
-			builder.setSyntaxType(SyntaxType.Inline);
-			builder.setSymbol("code");
-			builder.setDescription(t("description.inline_code"));
-			builder.processNode((process, n)=> {
-				var node = n.toInlineElement();
-				process.addSymbol({
-					symbolName: node.symbol,
-					node: node
-				});
-			});
-		}
-
-		inline_tt(builder:IAcceptableSyntaxBuilder) {
-			builder.setSyntaxType(SyntaxType.Inline);
-			builder.setSymbol("tt");
-			builder.setDescription(t("description.inline_tt"));
-			builder.processNode((process, n)=> {
-				var node = n.toInlineElement();
-				process.addSymbol({
-					symbolName: node.symbol,
-					node: node
-				});
-			});
-		}
-
-		inline_href(builder:IAcceptableSyntaxBuilder) {
-			builder.setSyntaxType(SyntaxType.Inline);
-			builder.setSymbol("href");
-			builder.setDescription(t("description.inline_href"));
-			builder.processNode((process, n)=> {
-				var node = n.toInlineElement();
-				process.addSymbol({
-					symbolName: node.symbol,
-					node: node
-				});
-			});
-		}
-
-		inline_u(builder:IAcceptableSyntaxBuilder) {
-			builder.setSyntaxType(SyntaxType.Inline);
-			builder.setSymbol("u");
-			builder.setDescription(t("description.inline_u"));
-			builder.processNode((process, n)=> {
-				var node = n.toInlineElement();
-				process.addSymbol({
-					symbolName: node.symbol,
-					node: node
-				});
-			});
-		}
-
-		inline_kw(builder:IAcceptableSyntaxBuilder) {
-			builder.setSyntaxType(SyntaxType.Inline);
-			builder.setSymbol("kw");
-			builder.setDescription(t("description.inline_kw"));
-			builder.processNode((process, n)=> {
-				var node = n.toInlineElement();
-				process.addSymbol({
-					symbolName: node.symbol,
-					node: node
-				});
-			});
-		}
-
-		inline_em(builder:IAcceptableSyntaxBuilder) {
-			builder.setSyntaxType(SyntaxType.Inline);
-			builder.setSymbol("em");
-			builder.setDescription(t("description.inline_em"));
-			builder.processNode((process, n)=> {
-				var node = n.toInlineElement();
-				process.addSymbol({
-					symbolName: node.symbol,
-					node: node
-				});
-			});
-		}
-
 		block_image(builder:IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
 			builder.setSymbol("image");
@@ -528,12 +411,11 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
-		block_lead(builder:IAcceptableSyntaxBuilder) {
+		blockDecorationSyntax(builder:IAcceptableSyntaxBuilder, symbol:string, ...argsLength:number[]) {
 			builder.setSyntaxType(SyntaxType.Block);
-			builder.setSymbol("lead");
-			builder.setDescription(t("description.block_lead"));
-			builder.checkArgsLength(0);
-			builder.setAllowFullySyntax(true);
+			builder.setSymbol(symbol);
+			builder.setDescription(t("description.block_" + symbol));
+			builder.checkArgsLength.apply(builder, argsLength);
 			builder.processNode((process, n)=> {
 				var node = n.toBlockElement();
 				process.addSymbol({
@@ -543,50 +425,19 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
-		inline_tti(builder:IAcceptableSyntaxBuilder) {
-			builder.setSyntaxType(SyntaxType.Inline);
-			builder.setSymbol("tti");
-			builder.setDescription(t("description.inline_tti"));
-			builder.processNode((process, n)=> {
-				var node = n.toInlineElement();
-				process.addSymbol({
-					symbolName: node.symbol,
-					node: node
-				});
-			});
-		}
-
-		inline_ttb(builder:IAcceptableSyntaxBuilder) {
-			builder.setSyntaxType(SyntaxType.Inline);
-			builder.setSymbol("ttb");
-			builder.setDescription(t("description.inline_ttb"));
-			builder.processNode((process, n)=> {
-				var node = n.toInlineElement();
-				process.addSymbol({
-					symbolName: node.symbol,
-					node: node
-				});
-			});
+		block_lead(builder:IAcceptableSyntaxBuilder) {
+			this.blockDecorationSyntax(builder, "lead", 0);
+			builder.setAllowFullySyntax(true);
 		}
 
 		block_noindent(builder:IAcceptableSyntaxBuilder) {
-			builder.setSyntaxType(SyntaxType.Block);
-			builder.setSymbol("noindent");
-			builder.setDescription(t("description.block_noindent"));
-			builder.checkArgsLength(0);
-			builder.processNode((process, n)=> {
-				var node = n.toBlockElement();
-				process.addSymbol({
-					symbolName: node.symbol,
-					node: node
-				});
-			});
+			this.blockDecorationSyntax(builder, "noindent", 0);
 		}
 
-		inline_ami(builder:IAcceptableSyntaxBuilder) {
+		inlineDecorationSyntax(builder:IAcceptableSyntaxBuilder, symbol:string) {
 			builder.setSyntaxType(SyntaxType.Inline);
-			builder.setSymbol("ami");
-			builder.setDescription(t("description.inline_ami"));
+			builder.setSymbol(symbol);
+			builder.setDescription(t("description.inline_" + symbol));
 			builder.processNode((process, n)=> {
 				var node = n.toInlineElement();
 				process.addSymbol({
@@ -594,6 +445,54 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 					node: node
 				});
 			});
+		}
+
+		inline_br(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "br");
+		}
+
+		inline_ruby(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "ruby");
+		}
+
+		inline_b(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "b");
+		}
+
+		inline_code(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "code");
+		}
+
+		inline_tt(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "tt");
+		}
+
+		inline_href(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "href");
+		}
+
+		inline_u(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "u");
+		}
+
+		inline_kw(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "kw");
+		}
+
+		inline_em(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "em");
+		}
+
+		inline_tti(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "tti");
+		}
+
+		inline_ttb(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "ttb");
+		}
+
+		inline_ami(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "ami");
 		}
 
 		// TODO 以下のものの実装をすすめる
@@ -604,7 +503,6 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		// inline_bou
 		// inline_i
 		// inline_strong
-		// inline_u
 		// block_bibpaper
 		// inline_bib
 		// block_indepimage

@@ -5383,7 +5383,7 @@ var ReVIEW;
                     }
                     if (func) {
                         process.prepare();
-                        func(process);
+                        func.bind(this)(process);
                         process.build(k);
                     }
                 }
@@ -5495,123 +5495,6 @@ var ReVIEW;
                 });
             };
 
-            DefaultAnalyzer.prototype.inline_br = function (builder) {
-                builder.setSyntaxType(SyntaxType.Inline);
-                builder.setSymbol("br");
-                builder.setDescription(t("description.inline_br"));
-                builder.processNode(function (process, n) {
-                    var node = n.toInlineElement();
-                    process.addSymbol({
-                        symbolName: node.symbol,
-                        node: node
-                    });
-                });
-            };
-
-            DefaultAnalyzer.prototype.inline_ruby = function (builder) {
-                builder.setSyntaxType(SyntaxType.Inline);
-                builder.setSymbol("ruby");
-                builder.setDescription(t("description.inline_ruby"));
-                builder.processNode(function (process, n) {
-                    var node = n.toInlineElement();
-                    process.addSymbol({
-                        symbolName: node.symbol,
-                        node: node
-                    });
-                });
-            };
-
-            DefaultAnalyzer.prototype.inline_b = function (builder) {
-                builder.setSyntaxType(SyntaxType.Inline);
-                builder.setSymbol("b");
-                builder.setDescription(t("description.inline_b"));
-                builder.processNode(function (process, n) {
-                    var node = n.toInlineElement();
-                    process.addSymbol({
-                        symbolName: node.symbol,
-                        node: node
-                    });
-                });
-            };
-
-            DefaultAnalyzer.prototype.inline_code = function (builder) {
-                builder.setSyntaxType(SyntaxType.Inline);
-                builder.setSymbol("code");
-                builder.setDescription(t("description.inline_code"));
-                builder.processNode(function (process, n) {
-                    var node = n.toInlineElement();
-                    process.addSymbol({
-                        symbolName: node.symbol,
-                        node: node
-                    });
-                });
-            };
-
-            DefaultAnalyzer.prototype.inline_tt = function (builder) {
-                builder.setSyntaxType(SyntaxType.Inline);
-                builder.setSymbol("tt");
-                builder.setDescription(t("description.inline_tt"));
-                builder.processNode(function (process, n) {
-                    var node = n.toInlineElement();
-                    process.addSymbol({
-                        symbolName: node.symbol,
-                        node: node
-                    });
-                });
-            };
-
-            DefaultAnalyzer.prototype.inline_href = function (builder) {
-                builder.setSyntaxType(SyntaxType.Inline);
-                builder.setSymbol("href");
-                builder.setDescription(t("description.inline_href"));
-                builder.processNode(function (process, n) {
-                    var node = n.toInlineElement();
-                    process.addSymbol({
-                        symbolName: node.symbol,
-                        node: node
-                    });
-                });
-            };
-
-            DefaultAnalyzer.prototype.inline_u = function (builder) {
-                builder.setSyntaxType(SyntaxType.Inline);
-                builder.setSymbol("u");
-                builder.setDescription(t("description.inline_u"));
-                builder.processNode(function (process, n) {
-                    var node = n.toInlineElement();
-                    process.addSymbol({
-                        symbolName: node.symbol,
-                        node: node
-                    });
-                });
-            };
-
-            DefaultAnalyzer.prototype.inline_kw = function (builder) {
-                builder.setSyntaxType(SyntaxType.Inline);
-                builder.setSymbol("kw");
-                builder.setDescription(t("description.inline_kw"));
-                builder.processNode(function (process, n) {
-                    var node = n.toInlineElement();
-                    process.addSymbol({
-                        symbolName: node.symbol,
-                        node: node
-                    });
-                });
-            };
-
-            DefaultAnalyzer.prototype.inline_em = function (builder) {
-                builder.setSyntaxType(SyntaxType.Inline);
-                builder.setSymbol("em");
-                builder.setDescription(t("description.inline_em"));
-                builder.processNode(function (process, n) {
-                    var node = n.toInlineElement();
-                    process.addSymbol({
-                        symbolName: node.symbol,
-                        node: node
-                    });
-                });
-            };
-
             DefaultAnalyzer.prototype.block_image = function (builder) {
                 builder.setSyntaxType(SyntaxType.Block);
                 builder.setSymbol("image");
@@ -5672,12 +5555,15 @@ var ReVIEW;
                 });
             };
 
-            DefaultAnalyzer.prototype.block_lead = function (builder) {
+            DefaultAnalyzer.prototype.blockDecorationSyntax = function (builder, symbol) {
+                var argsLength = [];
+                for (var _i = 0; _i < (arguments.length - 2); _i++) {
+                    argsLength[_i] = arguments[_i + 2];
+                }
                 builder.setSyntaxType(SyntaxType.Block);
-                builder.setSymbol("lead");
-                builder.setDescription(t("description.block_lead"));
-                builder.checkArgsLength(0);
-                builder.setAllowFullySyntax(true);
+                builder.setSymbol(symbol);
+                builder.setDescription(t("description.block_" + symbol));
+                builder.checkArgsLength.apply(builder, argsLength);
                 builder.processNode(function (process, n) {
                     var node = n.toBlockElement();
                     process.addSymbol({
@@ -5687,50 +5573,19 @@ var ReVIEW;
                 });
             };
 
-            DefaultAnalyzer.prototype.inline_tti = function (builder) {
-                builder.setSyntaxType(SyntaxType.Inline);
-                builder.setSymbol("tti");
-                builder.setDescription(t("description.inline_tti"));
-                builder.processNode(function (process, n) {
-                    var node = n.toInlineElement();
-                    process.addSymbol({
-                        symbolName: node.symbol,
-                        node: node
-                    });
-                });
-            };
-
-            DefaultAnalyzer.prototype.inline_ttb = function (builder) {
-                builder.setSyntaxType(SyntaxType.Inline);
-                builder.setSymbol("ttb");
-                builder.setDescription(t("description.inline_ttb"));
-                builder.processNode(function (process, n) {
-                    var node = n.toInlineElement();
-                    process.addSymbol({
-                        symbolName: node.symbol,
-                        node: node
-                    });
-                });
+            DefaultAnalyzer.prototype.block_lead = function (builder) {
+                this.blockDecorationSyntax(builder, "lead", 0);
+                builder.setAllowFullySyntax(true);
             };
 
             DefaultAnalyzer.prototype.block_noindent = function (builder) {
-                builder.setSyntaxType(SyntaxType.Block);
-                builder.setSymbol("noindent");
-                builder.setDescription(t("description.block_noindent"));
-                builder.checkArgsLength(0);
-                builder.processNode(function (process, n) {
-                    var node = n.toBlockElement();
-                    process.addSymbol({
-                        symbolName: node.symbol,
-                        node: node
-                    });
-                });
+                this.blockDecorationSyntax(builder, "noindent", 0);
             };
 
-            DefaultAnalyzer.prototype.inline_ami = function (builder) {
+            DefaultAnalyzer.prototype.inlineDecorationSyntax = function (builder, symbol) {
                 builder.setSyntaxType(SyntaxType.Inline);
-                builder.setSymbol("ami");
-                builder.setDescription(t("description.inline_ami"));
+                builder.setSymbol(symbol);
+                builder.setDescription(t("description.inline_" + symbol));
                 builder.processNode(function (process, n) {
                     var node = n.toInlineElement();
                     process.addSymbol({
@@ -5738,6 +5593,54 @@ var ReVIEW;
                         node: node
                     });
                 });
+            };
+
+            DefaultAnalyzer.prototype.inline_br = function (builder) {
+                this.inlineDecorationSyntax(builder, "br");
+            };
+
+            DefaultAnalyzer.prototype.inline_ruby = function (builder) {
+                this.inlineDecorationSyntax(builder, "ruby");
+            };
+
+            DefaultAnalyzer.prototype.inline_b = function (builder) {
+                this.inlineDecorationSyntax(builder, "b");
+            };
+
+            DefaultAnalyzer.prototype.inline_code = function (builder) {
+                this.inlineDecorationSyntax(builder, "code");
+            };
+
+            DefaultAnalyzer.prototype.inline_tt = function (builder) {
+                this.inlineDecorationSyntax(builder, "tt");
+            };
+
+            DefaultAnalyzer.prototype.inline_href = function (builder) {
+                this.inlineDecorationSyntax(builder, "href");
+            };
+
+            DefaultAnalyzer.prototype.inline_u = function (builder) {
+                this.inlineDecorationSyntax(builder, "u");
+            };
+
+            DefaultAnalyzer.prototype.inline_kw = function (builder) {
+                this.inlineDecorationSyntax(builder, "kw");
+            };
+
+            DefaultAnalyzer.prototype.inline_em = function (builder) {
+                this.inlineDecorationSyntax(builder, "em");
+            };
+
+            DefaultAnalyzer.prototype.inline_tti = function (builder) {
+                this.inlineDecorationSyntax(builder, "tti");
+            };
+
+            DefaultAnalyzer.prototype.inline_ttb = function (builder) {
+                this.inlineDecorationSyntax(builder, "ttb");
+            };
+
+            DefaultAnalyzer.prototype.inline_ami = function (builder) {
+                this.inlineDecorationSyntax(builder, "ami");
             };
             return DefaultAnalyzer;
         })();
