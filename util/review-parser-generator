@@ -4,8 +4,8 @@ var util = require("util");
 var fs = require("fs");
 var path = require("path");
 
-var peg = require('../node_modules/pegjs');
-var overrideAction = require('./pegjs-override-action-plugin');
+var peg = require('pegjs');
+var overrideAction = require('pegjs-override-action');
 
 var inputFile = "src/main/peg/grammer.pegjs";
 var exportVar = "var PEG";
