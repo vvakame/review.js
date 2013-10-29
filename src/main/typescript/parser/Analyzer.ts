@@ -608,9 +608,11 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 		// inline_title
 		// inline_chapref
 		// inline_m
+		// クソめんどくさいの壁
 		// block_raw
 		// inline_raw
 		// block_graph
+		// block_tsize
 		// block_table
 		// inline_table
 		// ↓実装が難しい
