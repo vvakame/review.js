@@ -370,5 +370,29 @@ import findUp = ReVIEW.findUp;
 		inline_ami_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("</span>");
 		}
+
+		inline_bou_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("<span class=\"bou\">");
+		}
+
+		inline_bou_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("</span>");
+		}
+
+		inline_i_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("<i>");
+		}
+
+		inline_i_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("</i>");
+		}
+
+		inline_strong_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("<strong>");
+		}
+
+		inline_strong_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("</strong>");
+		}
 	}
 }

@@ -5642,6 +5642,18 @@ var ReVIEW;
             DefaultAnalyzer.prototype.inline_ami = function (builder) {
                 this.inlineDecorationSyntax(builder, "ami");
             };
+
+            DefaultAnalyzer.prototype.inline_bou = function (builder) {
+                this.inlineDecorationSyntax(builder, "bou");
+            };
+
+            DefaultAnalyzer.prototype.inline_i = function (builder) {
+                this.inlineDecorationSyntax(builder, "i");
+            };
+
+            DefaultAnalyzer.prototype.inline_strong = function (builder) {
+                this.inlineDecorationSyntax(builder, "strong");
+            };
             return DefaultAnalyzer;
         })();
         Build.DefaultAnalyzer = DefaultAnalyzer;
@@ -7209,6 +7221,29 @@ var ReVIEW;
             TextBuilder.prototype.inline_ami_post = function (process, node) {
                 process.out("◆→DTP連絡:「").out(nodeContentToString(process, node)).out("」に網カケ←◆");
             };
+
+            TextBuilder.prototype.inline_bou_pre = function (process, node) {
+            };
+
+            TextBuilder.prototype.inline_bou_post = function (process, node) {
+                process.out("◆→DTP連絡:「").out(nodeContentToString(process, node)).out("」に傍点←◆");
+            };
+
+            TextBuilder.prototype.inline_i_pre = function (process, node) {
+                process.out("▲");
+            };
+
+            TextBuilder.prototype.inline_i_post = function (process, node) {
+                process.out("☆");
+            };
+
+            TextBuilder.prototype.inline_strong_pre = function (process, node) {
+                process.out("★");
+            };
+
+            TextBuilder.prototype.inline_strong_post = function (process, node) {
+                process.out("☆");
+            };
             return TextBuilder;
         })(Build.DefaultBuilder);
         Build.TextBuilder = TextBuilder;
@@ -7577,6 +7612,30 @@ var ReVIEW;
 
             HtmlBuilder.prototype.inline_ami_post = function (process, node) {
                 process.out("</span>");
+            };
+
+            HtmlBuilder.prototype.inline_bou_pre = function (process, node) {
+                process.out("<span class=\"bou\">");
+            };
+
+            HtmlBuilder.prototype.inline_bou_post = function (process, node) {
+                process.out("</span>");
+            };
+
+            HtmlBuilder.prototype.inline_i_pre = function (process, node) {
+                process.out("<i>");
+            };
+
+            HtmlBuilder.prototype.inline_i_post = function (process, node) {
+                process.out("</i>");
+            };
+
+            HtmlBuilder.prototype.inline_strong_pre = function (process, node) {
+                process.out("<strong>");
+            };
+
+            HtmlBuilder.prototype.inline_strong_post = function (process, node) {
+                process.out("</strong>");
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);

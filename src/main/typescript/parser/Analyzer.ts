@@ -495,14 +495,23 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			this.inlineDecorationSyntax(builder, "ami");
 		}
 
+		inline_bou(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "bou");
+		}
+
+		inline_i(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "i");
+		}
+
+		inline_strong(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "strong");
+		}
+
 		// TODO 以下のものの実装をすすめる
 		// ↑実装が簡単
 		// block_source
 		// block_cmd
 		// block_quote
-		// inline_bou
-		// inline_i
-		// inline_strong
 		// block_bibpaper
 		// inline_bib
 		// block_indepimage

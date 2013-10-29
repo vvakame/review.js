@@ -288,5 +288,29 @@ import findChapter = ReVIEW.findChapter;
 			// TODO 入れ子になっている場合オペレータさんにイミフな出力になっちゃう
 			process.out("◆→DTP連絡:「").out(nodeContentToString(process, node)).out("」に網カケ←◆");
 		}
+
+		inline_bou_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+		}
+
+		inline_bou_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			// TODO 入れ子になっている場合オペレータさんにイミフな出力になっちゃう
+			process.out("◆→DTP連絡:「").out(nodeContentToString(process, node)).out("」に傍点←◆");
+		}
+
+		inline_i_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("▲");
+		}
+
+		inline_i_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("☆");
+		}
+
+		inline_strong_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("★");
+		}
+
+		inline_strong_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("☆");
+		}
 	}
 }
