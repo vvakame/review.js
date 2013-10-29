@@ -583,12 +583,24 @@ import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 			});
 		}
 
+		inline_ami(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Inline);
+			builder.setSymbol("ami");
+			builder.setDescription(t("description.inline_ami"));
+			builder.processNode((process, n)=> {
+				var node = n.toInlineElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
+			});
+		}
+
 		// TODO 以下のものの実装をすすめる
 		// ↑実装が簡単
 		// block_source
 		// block_cmd
 		// block_quote
-		// inline_ami
 		// inline_bou
 		// inline_i
 		// inline_strong

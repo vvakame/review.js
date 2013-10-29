@@ -5726,6 +5726,19 @@ var ReVIEW;
                     });
                 });
             };
+
+            DefaultAnalyzer.prototype.inline_ami = function (builder) {
+                builder.setSyntaxType(SyntaxType.Inline);
+                builder.setSymbol("ami");
+                builder.setDescription(t("description.inline_ami"));
+                builder.processNode(function (process, n) {
+                    var node = n.toInlineElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
             return DefaultAnalyzer;
         })();
         Build.DefaultAnalyzer = DefaultAnalyzer;
@@ -7286,6 +7299,13 @@ var ReVIEW;
                 process.out("◆→DTP連絡:次の1行インデントなし←◆\n");
                 return false;
             };
+
+            TextBuilder.prototype.inline_ami_pre = function (process, node) {
+            };
+
+            TextBuilder.prototype.inline_ami_post = function (process, node) {
+                process.out("◆→DTP連絡:「").out(nodeContentToString(process, node)).out("」に網カケ←◆");
+            };
             return TextBuilder;
         })(Build.DefaultBuilder);
         Build.TextBuilder = TextBuilder;
@@ -7646,6 +7666,14 @@ var ReVIEW;
 
             HtmlBuilder.prototype.block_noindent = function (process, node) {
                 return false;
+            };
+
+            HtmlBuilder.prototype.inline_ami_pre = function (process, node) {
+                process.out("<span class=\"ami\">");
+            };
+
+            HtmlBuilder.prototype.inline_ami_post = function (process, node) {
+                process.out("</span>");
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);

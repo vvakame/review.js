@@ -362,5 +362,13 @@ import findUp = ReVIEW.findUp;
 			// paragraphPre 中で処理
 			return false;
 		}
+
+		inline_ami_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("<span class=\"ami\">");
+		}
+
+		inline_ami_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("</span>");
+		}
 	}
 }

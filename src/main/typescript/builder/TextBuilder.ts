@@ -280,5 +280,13 @@ import findChapter = ReVIEW.findChapter;
 			process.out("◆→DTP連絡:次の1行インデントなし←◆\n");
 			return false;
 		}
+
+		inline_ami_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+		}
+
+		inline_ami_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			// TODO 入れ子になっている場合オペレータさんにイミフな出力になっちゃう
+			process.out("◆→DTP連絡:「").out(nodeContentToString(process, node)).out("」に網カケ←◆");
+		}
 	}
 }
