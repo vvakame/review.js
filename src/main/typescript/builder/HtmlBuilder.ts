@@ -187,6 +187,25 @@ module ReVIEW.Build {
 			return false;
 		}
 
+		block_emlist_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			//TODO エスケープ処理
+			process.out("<div class=\"emlist-code\">\n");
+			if (node.args[0]) {
+				process.out("<p class=\"caption\">").out(node.args[0].arg).out("</p>\n");
+			}
+			process.out("<pre class=\"emlist\">");
+			return (v:ITreeVisitor)=> {
+				// name, args はパスしたい
+				node.childNodes.forEach((node)=> {
+					ReVIEW.visit(node, v);
+				});
+			};
+		}
+
+		block_emlist_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("\n</pre>\n").out("</div>\n");
+		}
+
 		inline_hd_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("「");
 			var chapter = findChapter(node);

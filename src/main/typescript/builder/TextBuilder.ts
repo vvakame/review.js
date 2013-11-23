@@ -124,6 +124,23 @@ module ReVIEW.Build {
 			return false;
 		}
 
+		block_emlist_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("◆→開始:インラインリスト←◆\n");
+			if (node.args[0]) {
+				process.out("■").out("").out(node.args[0].arg).out("\n");
+			}
+			return (v:ITreeVisitor)=> {
+				// name, args はパスしたい
+				node.childNodes.forEach((node)=> {
+					ReVIEW.visit(node, v);
+				});
+			};
+		}
+
+		block_emlist_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("\n◆→終了:インラインリスト←◆\n");
+		}
+
 		inline_hd_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("「");
 			var chapter = findChapter(node);

@@ -337,6 +337,20 @@ module ReVIEW.Build {
 			});
 		}
 
+		block_emlist(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Block);
+			builder.setSymbol("emlist");
+			builder.setDescription(t("description.block_emlist"));
+			builder.checkArgsLength(0, 1);
+			builder.processNode((process, n)=> {
+				var node = n.toBlockElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
+			});
+		}
+
 		inline_hd(builder:IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Inline);
 			builder.setSymbol("hd");
@@ -539,7 +553,6 @@ module ReVIEW.Build {
 
 		// TODO 以下のものの実装をすすめる
 		// ↑実装が簡単
-		// block_emlist
 		// block_listnum
 		// block_emlistnum
 		// block_label
