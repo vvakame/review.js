@@ -363,6 +363,23 @@ module ReVIEW.Build {
 			return false;
 		}
 
+		block_source_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			//TODO エスケープ処理
+			process.out("<div class=\"source-code\">\n");
+			process.out("<p class=\"caption\">").out(node.args[0].arg).out("</p>\n");
+			process.out("<pre class=\"source\">");
+			return (v:ITreeVisitor)=> {
+				// name, args はパスしたい
+				node.childNodes.forEach((node)=> {
+					ReVIEW.visit(node, v);
+				});
+			};
+		}
+
+		block_source_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("\n</pre>\n").out("</div>\n");
+		}
+
 		inline_ami_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("<span class=\"ami\">");
 		}

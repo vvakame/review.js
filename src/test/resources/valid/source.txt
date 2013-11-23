@@ -1,0 +1,7 @@
+■H1■第1章　source のテスト
+
+Hello world!
+◆→開始:ソースコードリスト←◆
+■/hello/world.ts
+console.log("Hello world");
+◆→終了:ソースコードリスト←◆

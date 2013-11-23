@@ -5582,6 +5582,10 @@ var ReVIEW;
                 this.blockDecorationSyntax(builder, "noindent", 0);
             };
 
+            DefaultAnalyzer.prototype.block_source = function (builder) {
+                this.blockDecorationSyntax(builder, "source", 1);
+            };
+
             DefaultAnalyzer.prototype.inlineDecorationSyntax = function (builder, symbol) {
                 builder.setSyntaxType(SyntaxType.Inline);
                 builder.setSymbol(symbol);
@@ -7215,6 +7219,21 @@ var ReVIEW;
                 return false;
             };
 
+            TextBuilder.prototype.block_source_pre = function (process, node) {
+                process.out("◆→開始:ソースコードリスト←◆\n");
+                process.out("■").out(node.args[0].arg).out("\n");
+
+                return function (v) {
+                    node.childNodes.forEach(function (node) {
+                        ReVIEW.visit(node, v);
+                    });
+                };
+            };
+
+            TextBuilder.prototype.block_source_post = function (process, node) {
+                process.out("\n◆→終了:ソースコードリスト←◆\n");
+            };
+
             TextBuilder.prototype.inline_ami_pre = function (process, node) {
             };
 
@@ -7604,6 +7623,21 @@ var ReVIEW;
 
             HtmlBuilder.prototype.block_noindent = function (process, node) {
                 return false;
+            };
+
+            HtmlBuilder.prototype.block_source_pre = function (process, node) {
+                process.out("<div class=\"source-code\">\n");
+                process.out("<p class=\"caption\">").out(node.args[0].arg).out("</p>\n");
+                process.out("<pre class=\"source\">");
+                return function (v) {
+                    node.childNodes.forEach(function (node) {
+                        ReVIEW.visit(node, v);
+                    });
+                };
+            };
+
+            HtmlBuilder.prototype.block_source_post = function (process, node) {
+                process.out("\n</pre>\n").out("</div>\n");
             };
 
             HtmlBuilder.prototype.inline_ami_pre = function (process, node) {

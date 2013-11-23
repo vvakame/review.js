@@ -281,6 +281,22 @@ module ReVIEW.Build {
 			return false;
 		}
 
+		block_source_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("◆→開始:ソースコードリスト←◆\n");
+			process.out("■").out(node.args[0].arg).out("\n");
+
+			return (v:ITreeVisitor)=> {
+				// name, args はパスしたい
+				node.childNodes.forEach((node)=> {
+					ReVIEW.visit(node, v);
+				});
+			};
+		}
+
+		block_source_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("\n◆→終了:ソースコードリスト←◆\n");
+		}
+
 		inline_ami_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 		}
 
