@@ -1,0 +1,163 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 133,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 133,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 133,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 18,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 16,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 16,
+                  "text": "indepimageのテスト"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "BlockElement",
+              "offset": 18,
+              "line": 3,
+              "column": 1,
+              "endPos": 66,
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "offset": 58,
+                  "line": 4,
+                  "column": 1,
+                  "endPos": 61,
+                  "text": "メモ"
+                }
+              ],
+              "symbol": "indepimage",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 30,
+                  "line": 3,
+                  "column": 13,
+                  "endPos": 39,
+                  "arg": "vvakame"
+                },
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 39,
+                  "line": 3,
+                  "column": 22,
+                  "endPos": 45,
+                  "arg": "サンプル"
+                },
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 45,
+                  "line": 3,
+                  "column": 28,
+                  "endPos": 56,
+                  "arg": "scale=0.3"
+                }
+              ]
+            },
+            {
+              "ruleName": "BlockElement",
+              "offset": 66,
+              "line": 7,
+              "column": 1,
+              "endPos": 103,
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "offset": 95,
+                  "line": 8,
+                  "column": 1,
+                  "endPos": 98,
+                  "text": "メモ"
+                }
+              ],
+              "symbol": "indepimage",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 78,
+                  "line": 7,
+                  "column": 13,
+                  "endPos": 87,
+                  "arg": "vvakame"
+                },
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 87,
+                  "line": 7,
+                  "column": 22,
+                  "endPos": 93,
+                  "arg": "サンプル"
+                }
+              ]
+            },
+            {
+              "ruleName": "BlockElement",
+              "offset": 103,
+              "line": 11,
+              "column": 1,
+              "endPos": 133,
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "offset": 126,
+                  "line": 12,
+                  "column": 1,
+                  "endPos": 129,
+                  "text": "メモ"
+                }
+              ],
+              "symbol": "indepimage",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 115,
+                  "line": 11,
+                  "column": 13,
+                  "endPos": 124,
+                  "arg": "vvakame"
+                }
+              ]
+            }
+          ],
+          "childNodes": [],
+          "no": 1,
+          "level": 1
+        }
+      ]
+    }
+  ]
+}

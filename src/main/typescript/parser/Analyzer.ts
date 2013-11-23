@@ -367,6 +367,20 @@ module ReVIEW.Build {
 			});
 		}
 
+		block_indepimage(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Block);
+			builder.setSymbol("indepimage");
+			builder.setDescription(t("description.block_indepimage"));
+			builder.checkArgsLength(1, 2, 3);
+			builder.processNode((process, n)=> {
+				var node = n.toBlockElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
+			});
+		}
+
 		inline_img(builder:IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Inline);
 			builder.setSymbol("img");
@@ -521,9 +535,6 @@ module ReVIEW.Build {
 
 		// TODO 以下のものの実装をすすめる
 		// ↑実装が簡単
-		// block_bibpaper
-		// inline_bib
-		// block_indepimage
 		// inline_ruby
 		// inline_uchar
 		// block_emlist
@@ -537,6 +548,8 @@ module ReVIEW.Build {
 		// inline_chapref
 		// inline_m
 		// クソめんどくさいの壁
+		// block_bibpaper
+		// inline_bib
 		// block_raw
 		// inline_raw
 		// block_graph

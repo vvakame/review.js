@@ -314,6 +314,39 @@ module ReVIEW.Build {
 			return false;
 		}
 
+		block_indepimage(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			// TODO ファイル名探索ロジックをもっと頑張る(jpgとかsvgとか)
+			var chapterFileName = process.base.chapter.name;
+			var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
+			var imagePath = "images/" + chapterName + "-" + node.args[0].arg + ".png";
+			var caption:string = "";
+			if (node.args[1]) {
+				caption = node.args[1].arg;
+			}
+			var scale:number = 1;
+			if (node.args[2]) {
+				var arg3 = node.args[2].arg;
+				var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
+				var result = regexp.exec(node.args[2].arg);
+				if (result) {
+					scale = parseFloat(result[1]);
+				}
+			}
+			process.out("<div class=\"image\">\n");
+			if (scale !== 1) {
+				process.out("<img src=\"" + imagePath + "\" alt=\"" + caption + "\" width=\"" + (scale * 100) + "%\" />\n");
+			} else {
+				process.out("<img src=\"" + imagePath + "\" alt=\"" + caption + "\" />\n");
+			}
+			if (node.args[1]) {
+				process.out("<p class=\"caption\">\n");
+				process.out("図: ").out(caption);
+				process.out("\n</p>\n");
+			}
+			process.out("</div>\n");
+			return false;
+		}
+
 		inline_img(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			var imgNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
 			process.out("図").out(process.base.chapter.no).out(".").out(imgNode.no);

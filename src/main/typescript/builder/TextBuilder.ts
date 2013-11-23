@@ -235,6 +235,14 @@ module ReVIEW.Build {
 			return false;
 		}
 
+		block_indepimage(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("◆→画像 ").out(node.args[0].arg).out("←◆\n");
+			if (node.args[1]) {
+				process.out("図　").out(node.args[1].arg).out("\n\n");
+			}
+			return false;
+		}
+
 		inline_img(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			var imgNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
 			process.out("図").out(process.base.chapter.no).out(".").out(imgNode.no).out("\n");
