@@ -168,14 +168,17 @@ module ReVIEW.Build {
 			process.out("☆");
 		}
 
-		//TODO textの出力を確認して実装する
-		inline_ruby_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("★");
-		}
-
-		//TODO textの出力を確認して実装する
-		inline_ruby_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("★");
+		inline_ruby(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			var contentString = nodeContentToString(process, node);
+			var keywordData = contentString.split(",");
+			process.out(keywordData[0]);
+			return (v) => {
+				// name, args はパス
+				node.childNodes.forEach(node=> {
+					process.out("◆→DTP連絡:「").out(keywordData[0]);
+					process.out("」に「 ").out(keywordData[1].trim()).out("」とルビ←◆");
+				});
+			};
 		}
 
 		//TODO textの出力を確認して実装する

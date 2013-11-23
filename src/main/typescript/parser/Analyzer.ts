@@ -535,7 +535,7 @@ module ReVIEW.Build {
 
 		// TODO 以下のものの実装をすすめる
 		// ↑実装が簡単
-		// inline_ruby
+		// inline_u
 		// inline_uchar
 		// block_emlist
 		// block_listnum

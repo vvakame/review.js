@@ -248,7 +248,10 @@ module ReVIEW.Build {
 					var contentString = nodeContentToString(process, node);
 					var keywordData = contentString.split(",");
 					// TODO ユーザの入力内容のチェックが必要
-					process.out(keywordData[0] + "<rp>(</rp><rt>" + keywordData[1] + "</rt><rp>)</rp");
+					process.out("<rb>").out(keywordData[0]).out("</rb>");
+					process.out("<rp>（</rp><rt>");
+					process.out(keywordData[1]);
+					process.out("</rt><rp>）</rp>");
 				});
 			};
 		}
