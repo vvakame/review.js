@@ -380,6 +380,22 @@ module ReVIEW.Build {
 			process.out("\n</pre>\n").out("</div>\n");
 		}
 
+		block_cmd_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			//TODO エスケープ処理
+			process.out("<div class=\"cmd-code\">\n");
+			process.out("<pre class=\"cmd\">");
+			return (v:ITreeVisitor)=> {
+				// name, args はパスしたい
+				node.childNodes.forEach((node)=> {
+					ReVIEW.visit(node, v);
+				});
+			};
+		}
+
+		block_cmd_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("\n</pre>\n").out("</div>\n");
+		}
+
 		inline_ami_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("<span class=\"ami\">");
 		}

@@ -438,6 +438,10 @@ module ReVIEW.Build {
 			this.blockDecorationSyntax(builder, "source", 1);
 		}
 
+		block_cmd(builder:IAcceptableSyntaxBuilder) {
+			this.blockDecorationSyntax(builder, "cmd", 0);
+		}
+
 		inlineDecorationSyntax(builder:IAcceptableSyntaxBuilder, symbol:string) {
 			builder.setSyntaxType(SyntaxType.Inline);
 			builder.setSymbol(symbol);
@@ -513,7 +517,6 @@ module ReVIEW.Build {
 
 		// TODO 以下のものの実装をすすめる
 		// ↑実装が簡単
-		// block_cmd
 		// block_quote
 		// block_bibpaper
 		// inline_bib

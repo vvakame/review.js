@@ -1,0 +1,6 @@
+■H1■第1章　cmd のテスト
+
+Hello world!
+◆→開始:コマンド←◆
+$ git clone https://github.com/borisyankov/DefinitelyTyped
+◆→終了:コマンド←◆

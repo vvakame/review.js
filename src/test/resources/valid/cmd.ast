@@ -1,0 +1,91 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 96,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 96,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 96,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 12,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 10,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 10,
+                  "text": "cmd のテスト"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 12,
+              "line": 3,
+              "column": 1,
+              "endPos": 26,
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "offset": 12,
+                  "line": 3,
+                  "column": 1,
+                  "endPos": 25,
+                  "text": "Hello world!"
+                }
+              ]
+            },
+            {
+              "ruleName": "BlockElement",
+              "offset": 26,
+              "line": 5,
+              "column": 1,
+              "endPos": 96,
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "offset": 33,
+                  "line": 6,
+                  "column": 1,
+                  "endPos": 92,
+                  "text": "$ git clone https://github.com/borisyankov/DefinitelyTyped"
+                }
+              ],
+              "symbol": "cmd",
+              "args": []
+            }
+          ],
+          "childNodes": [],
+          "no": 1,
+          "level": 1
+        }
+      ]
+    }
+  ]
+}

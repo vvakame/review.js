@@ -297,6 +297,21 @@ module ReVIEW.Build {
 			process.out("\n◆→終了:ソースコードリスト←◆\n");
 		}
 
+		block_cmd_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("◆→開始:コマンド←◆\n");
+
+			return (v:ITreeVisitor)=> {
+				// name, args はパスしたい
+				node.childNodes.forEach((node)=> {
+					ReVIEW.visit(node, v);
+				});
+			};
+		}
+
+		block_cmd_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("\n◆→終了:コマンド←◆\n");
+		}
+
 		inline_ami_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 		}
 
