@@ -533,9 +533,12 @@ module ReVIEW.Build {
 			this.inlineDecorationSyntax(builder, "strong");
 		}
 
+		inline_uchar(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "uchar");
+		}
+
 		// TODO 以下のものの実装をすすめる
 		// ↑実装が簡単
-		// inline_uchar
 		// block_emlist
 		// block_listnum
 		// block_emlistnum

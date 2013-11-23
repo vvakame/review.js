@@ -367,5 +367,12 @@ module ReVIEW.Build {
 		inline_strong_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("☆");
 		}
+
+		inline_uchar(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			var hexString = nodeContentToString(process, node);
+			var code = parseInt(hexString, 16);
+			process.out(String.fromCharCode(code));
+			return false;
+		}
 	}
 }

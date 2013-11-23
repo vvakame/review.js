@@ -477,5 +477,13 @@ module ReVIEW.Build {
 		inline_strong_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("</strong>");
 		}
+
+		inline_uchar_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("&#x");
+		}
+
+		inline_uchar_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out(";");
+		}
 	}
 }
