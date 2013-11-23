@@ -442,6 +442,10 @@ module ReVIEW.Build {
 			this.blockDecorationSyntax(builder, "cmd", 0);
 		}
 
+		block_quote(builder:IAcceptableSyntaxBuilder) {
+			this.blockDecorationSyntax(builder, "quote", 0);
+		}
+
 		inlineDecorationSyntax(builder:IAcceptableSyntaxBuilder, symbol:string) {
 			builder.setSyntaxType(SyntaxType.Inline);
 			builder.setSymbol(symbol);
@@ -517,7 +521,6 @@ module ReVIEW.Build {
 
 		// TODO 以下のものの実装をすすめる
 		// ↑実装が簡単
-		// block_quote
 		// block_bibpaper
 		// inline_bib
 		// block_indepimage

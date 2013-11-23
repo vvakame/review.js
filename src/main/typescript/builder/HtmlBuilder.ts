@@ -396,6 +396,20 @@ module ReVIEW.Build {
 			process.out("\n</pre>\n").out("</div>\n");
 		}
 
+		block_quote_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("<blockquote><p>");
+			return (v:ITreeVisitor)=> {
+				// name, args はパスしたい
+				node.childNodes.forEach((node)=> {
+					ReVIEW.visit(node, v);
+				});
+			};
+		}
+
+		block_quote_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("</p></blockquote>\n");
+		}
+
 		inline_ami_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("<span class=\"ami\">");
 		}

@@ -312,6 +312,21 @@ module ReVIEW.Build {
 			process.out("\n◆→終了:コマンド←◆\n");
 		}
 
+		block_quote_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("◆→開始:引用←◆\n");
+
+			return (v:ITreeVisitor)=> {
+				// name, args はパスしたい
+				node.childNodes.forEach((node)=> {
+					ReVIEW.visit(node, v);
+				});
+			};
+		}
+
+		block_quote_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("\n◆→終了:引用←◆\n");
+		}
+
 		inline_ami_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 		}
 
