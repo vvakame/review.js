@@ -323,6 +323,22 @@ module ReVIEW.Build {
 			});
 		}
 
+		block_listnum(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Block);
+			builder.setSymbol("listnum");
+			builder.setDescription(t("description.block_listnum"));
+			builder.checkArgsLength(2);
+			builder.processNode((process, n)=> {
+				var node = n.toBlockElement();
+				node.no = process.nextIndex("list");
+				process.addSymbol({
+					symbolName: "list",
+					labelName: node.args[0].arg,
+					node: node
+				});
+			});
+		}
+
 		inline_list(builder:IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Inline);
 			builder.setSymbol("list");
@@ -553,7 +569,6 @@ module ReVIEW.Build {
 
 		// TODO 以下のものの実装をすすめる
 		// ↑実装が簡単
-		// block_listnum
 		// block_emlistnum
 		// block_label
 		// inline_icon

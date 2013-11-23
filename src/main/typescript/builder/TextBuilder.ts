@@ -116,6 +116,39 @@ module ReVIEW.Build {
 			process.out("\n◆→終了:リスト←◆\n");
 		}
 
+		block_listnum_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("◆→開始:リスト←◆\n");
+			var chapter = findChapter(node, 1);
+			var text = i18n.t("builder.list", chapter.fqn, node.no);
+			process.out(text).out("　").out(node.args[1].arg).out("\n\n");
+			var lineCount = 1;
+			return (v:ITreeVisitor)=> {
+				// name, args はパスしたい
+				node.childNodes.forEach((node, index, childNodes)=> {
+					if (node.isTextNode()) {
+						// 改行する可能性があるのはTextNodeだけ…のはず
+						var hasNext = !!childNodes[index + 1];
+						var textNode = node.toTextNode();
+						var lines = textNode.text.split("\n");
+						lines.forEach((line, index)=> {
+							process.out(" ").out(lineCount).out(": ");
+							process.out(line);
+							if (!hasNext || lines.length - 1 !== index) {
+								lineCount++;
+							}
+							process.out("\n");
+						});
+					} else {
+						ReVIEW.visit(node, v);
+					}
+				});
+			};
+		}
+
+		block_listnum_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("◆→終了:リスト←◆\n");
+		}
+
 		inline_list(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			var chapter = findChapter(node, 1);
 			var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();

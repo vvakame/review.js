@@ -1,0 +1,144 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 121,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 121,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 121,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 15,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 13,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 13,
+                  "text": "listnumのテスト"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 15,
+              "line": 3,
+              "column": 1,
+              "endPos": 42,
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "offset": 15,
+                  "line": 3,
+                  "column": 1,
+                  "endPos": 24,
+                  "text": "わかんねんけどな("
+                },
+                {
+                  "ruleName": "InlineElement",
+                  "offset": 24,
+                  "line": 3,
+                  "column": 10,
+                  "endPos": 38,
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "offset": 32,
+                      "line": 3,
+                      "column": 18,
+                      "endPos": 37,
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "offset": 32,
+                          "line": 3,
+                          "column": 18,
+                          "endPos": 37,
+                          "text": "hello"
+                        }
+                      ]
+                    }
+                  ],
+                  "symbol": "list"
+                },
+                {
+                  "ruleName": "ContentText",
+                  "offset": 38,
+                  "line": 3,
+                  "column": 24,
+                  "endPos": 41,
+                  "text": ")。"
+                }
+              ]
+            },
+            {
+              "ruleName": "BlockElement",
+              "offset": 42,
+              "line": 5,
+              "column": 1,
+              "endPos": 121,
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "offset": 70,
+                  "line": 6,
+                  "column": 1,
+                  "endPos": 117,
+                  "text": "console.log(\"だと思ったか…！？\");\nconsole.log(\"はろわー\");"
+                }
+              ],
+              "symbol": "listnum",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 51,
+                  "line": 5,
+                  "column": 10,
+                  "endPos": 58,
+                  "arg": "hello"
+                },
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 58,
+                  "line": 5,
+                  "column": 17,
+                  "endPos": 68,
+                  "arg": "はろーわーるど！"
+                }
+              ],
+              "no": 1
+            }
+          ],
+          "childNodes": [],
+          "no": 1,
+          "level": 1
+        }
+      ]
+    }
+  ]
+}
