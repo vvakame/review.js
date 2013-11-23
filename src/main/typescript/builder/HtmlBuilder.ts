@@ -243,6 +243,40 @@ module ReVIEW.Build {
 			process.out("\n</pre>\n").out("</div>\n");
 		}
 
+		block_emlistnum_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			//TODO エスケープ処理
+			process.out("<div class=\"emlistnum-code\">\n");
+			process.out("<pre class=\"emlist\">");
+			var lineCount = 1;
+			return (v:ITreeVisitor)=> {
+				// name, args はパスしたい
+				node.childNodes.forEach((node, index, childNodes)=> {
+					if (node.isTextNode()) {
+						// 改行する可能性があるのはTextNodeだけ…のはず
+						var hasNext = !!childNodes[index + 1];
+						var textNode = node.toTextNode();
+						var lines = textNode.text.split("\n");
+						lines.forEach((line, index)=> {
+							process.out(" ").out(lineCount).out(": ");
+							process.out(line);
+							if (!hasNext || lines.length - 1 !== index) {
+								lineCount++;
+							}
+							if (lines.length - 1 !== index) {
+								process.out("\n");
+							}
+						});
+					} else {
+						ReVIEW.visit(node, v);
+					}
+				});
+			};
+		}
+
+		block_emlistnum_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("\n</pre>\n").out("</div>\n");
+		}
+
 		inline_hd_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("「");
 			var chapter = findChapter(node);

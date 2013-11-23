@@ -174,6 +174,39 @@ module ReVIEW.Build {
 			process.out("\n◆→終了:インラインリスト←◆\n");
 		}
 
+		block_emlistnum_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("◆→開始:インラインリスト←◆\n");
+			if (node.args[0]) {
+				process.out("■").out("").out(node.args[0].arg).out("\n");
+			}
+			var lineCount = 1;
+			return (v:ITreeVisitor)=> {
+				// name, args はパスしたい
+				node.childNodes.forEach((node, index, childNodes)=> {
+					if (node.isTextNode()) {
+						// 改行する可能性があるのはTextNodeだけ…のはず
+						var hasNext = !!childNodes[index + 1];
+						var textNode = node.toTextNode();
+						var lines = textNode.text.split("\n");
+						lines.forEach((line, index)=> {
+							process.out(" ").out(lineCount).out(": ");
+							process.out(line);
+							if (!hasNext || lines.length - 1 !== index) {
+								lineCount++;
+							}
+							process.out("\n");
+						});
+					} else {
+						ReVIEW.visit(node, v);
+					}
+				});
+			};
+		}
+
+		block_emlistnum_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("◆→終了:インラインリスト←◆\n");
+		}
+
 		inline_hd_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("「");
 			var chapter = findChapter(node);
