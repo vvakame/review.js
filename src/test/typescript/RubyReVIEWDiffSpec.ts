@@ -46,7 +46,8 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 	describe("正しい構文のファイルが処理できること", ()=> {
 		var fs = require("fs");
 
-		var typeList:{ext:string;target:string;builder:()=>ReVIEW.Build.IBuilder;}[] = [
+		var typeList:{ext:string;target:string;builder:()=>ReVIEW.Build.IBuilder;
+		}[] = [
 			{
 				ext: "txt",
 				target: "text",

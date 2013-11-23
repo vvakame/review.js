@@ -4,14 +4,14 @@
 
 module ReVIEW.Build {
 
-import t = ReVIEW.i18n.t;
+	import t = ReVIEW.i18n.t;
 
-import SyntaxTree = ReVIEW.Parse.SyntaxTree;
-import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
-import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
-import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-import ArgumentSyntaxTree = ReVIEW.Parse.ArgumentSyntaxTree;
+	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
+	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+	import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+	import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+	import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
+	import ArgumentSyntaxTree = ReVIEW.Parse.ArgumentSyntaxTree;
 
 	/**
 	 * IAnalyzerで処理した後の構文木について構文上のエラーがないかチェックする。

@@ -5,16 +5,16 @@
 
 module ReVIEW.Build {
 
-import SyntaxTree = ReVIEW.Parse.SyntaxTree;
-import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
-import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
-import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
-import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
-import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
-import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
-import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
+	import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
+	import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+	import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
+	import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+	import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
+	import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
+	import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
+	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
+	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
 	/**
 	 * IAnalyzerとIValidatorでチェックをした後に構文木から出力を生成する。

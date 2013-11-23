@@ -14,7 +14,8 @@ module ReVIEW.Parse {
 	 * @param input
 	 * @returns {{ast: NodeSyntaxTree, cst: *}}
 	 */
-	export function parse(input:string):{ast:NodeSyntaxTree;cst:IConcreatSyntaxTree;} {
+	export function parse(input:string):{ast:NodeSyntaxTree;cst:IConcreatSyntaxTree;
+	} {
 		var rawResult = PEG.parse(input);
 		var root = transform(rawResult).toNode();
 
@@ -153,8 +154,10 @@ module ReVIEW.Parse {
 	function reconstruct(node:NodeSyntaxTree, pickLevel:(ast:NodeSyntaxTree)=>number) {
 		var originalChildNodes = node.childNodes;
 
-		var nodeSets:{parent:NodeSyntaxTree; children:NodeSyntaxTree[];}[] = [];
-		var currentSet:{parent:NodeSyntaxTree; children:NodeSyntaxTree[];} = {
+		var nodeSets:{parent:NodeSyntaxTree; children:NodeSyntaxTree[];
+		}[] = [];
+		var currentSet:{parent:NodeSyntaxTree; children:NodeSyntaxTree[];
+		} = {
 			parent: null,
 			children: []
 		};

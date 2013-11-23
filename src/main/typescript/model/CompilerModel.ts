@@ -7,7 +7,7 @@
 
 module ReVIEW {
 
-import t = ReVIEW.i18n.t;
+	import t = ReVIEW.i18n.t;
 
 	/**
 	 * 参照先についての情報。
@@ -76,7 +76,8 @@ import t = ReVIEW.i18n.t;
 	 */
 	export class Process {
 		symbols:ISymbol[] = [];
-		indexCounter:{ [kind:string]:number; } = {};
+		indexCounter:{ [kind:string]:number;
+		} = {};
 		afterProcess:Function[] = [];
 		private _reports:ProcessReport[] = [];
 

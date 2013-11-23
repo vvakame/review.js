@@ -5,21 +5,21 @@
 
 module ReVIEW.Build {
 
-import t = ReVIEW.i18n.t;
+	import t = ReVIEW.i18n.t;
 
-import SyntaxTree = ReVIEW.Parse.SyntaxTree;
-import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
-import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
-import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
-import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
-import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
-import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
-import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
+	import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
+	import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+	import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
+	import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+	import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
+	import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
+	import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
+	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
+	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
-import nodeContentToString = ReVIEW.nodeContentToString;
-import findChapter = ReVIEW.findChapter;
+	import nodeContentToString = ReVIEW.nodeContentToString;
+	import findChapter = ReVIEW.findChapter;
 
 	export class TextBuilder extends DefaultBuilder {
 

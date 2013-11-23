@@ -8,17 +8,17 @@ module ReVIEW {
 		void 0;
 	}
 
-import SyntaxTree = ReVIEW.Parse.SyntaxTree;
-import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-import ArgumentSyntaxTree = ReVIEW.Parse.ArgumentSyntaxTree;
-import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
-import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
-import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
-import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
-import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
-import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
-import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
+	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
+	import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+	import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
+	import ArgumentSyntaxTree = ReVIEW.Parse.ArgumentSyntaxTree;
+	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+	import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+	import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
+	import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
+	import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
+	import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
+	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 
 	/**
 	 * 指定された構文木を歩きまわる。

@@ -4,15 +4,15 @@
 
 module ReVIEW.Build {
 
-import t = ReVIEW.i18n.t;
+	import t = ReVIEW.i18n.t;
 
-import SyntaxTree = ReVIEW.Parse.SyntaxTree;
-import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
-import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
+	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
+	import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
+	import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+	import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
+	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 
-import nodeContentToString = ReVIEW.nodeContentToString;
+	import nodeContentToString = ReVIEW.nodeContentToString;
 
 	/**
 	 * 構文木の組み換えを行う機会を提供する。

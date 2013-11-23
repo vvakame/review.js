@@ -9,16 +9,16 @@
 
 module ReVIEW {
 
-import t = ReVIEW.i18n.t;
+	import t = ReVIEW.i18n.t;
 
-import SyntaxTree = ReVIEW.Parse.SyntaxTree;
-import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
-import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
-import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
+	import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+	import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+	import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
+	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
+	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
-import flatten = ReVIEW.flatten;
+	import flatten = ReVIEW.flatten;
 
 	/**
 	 * コマンドライン引数を解釈した結果のオプション。
@@ -149,7 +149,8 @@ import flatten = ReVIEW.flatten;
 						}
 					});
 				});
-				var counter:{[index:number]:number;} = {};
+				var counter:{[index:number]:number;
+				} = {};
 				var max = 0;
 				var currentLevel = 0;
 				chapters.forEach((chapter)=> {
