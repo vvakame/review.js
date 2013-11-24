@@ -592,5 +592,5 @@ module ReVIEW.Build {
 		inline_uchar_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out(";");
 		}
-	}
+		}
 }

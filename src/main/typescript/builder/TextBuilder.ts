@@ -378,7 +378,7 @@ module ReVIEW.Build {
 		}
 
 		block_lead_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("◆→終了:リード←◆\n\n");
+			process.out("◆→終了:リード←◆\n");
 		}
 
 		inline_tti_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {

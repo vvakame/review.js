@@ -7437,7 +7437,7 @@ var ReVIEW;
             };
 
             TextBuilder.prototype.block_lead_post = function (process, node) {
-                process.out("◆→終了:リード←◆\n\n");
+                process.out("◆→終了:リード←◆\n");
             };
 
             TextBuilder.prototype.inline_tti_pre = function (process, node) {
