@@ -5895,6 +5895,7 @@ var ReVIEW;
 
         var DefaultBuilder = (function () {
             function DefaultBuilder() {
+                this.extention = "bug";
             }
             Object.defineProperty(DefaultBuilder.prototype, "name", {
                 get: function () {
@@ -6796,6 +6797,17 @@ var ReVIEW;
                 return builder.init(book);
             });
 
+            book.parts.forEach(function (part) {
+                part.chapters.forEach(function (chapter) {
+                    chapter.builderProcesses.forEach(function (process) {
+                        var baseName = chapter.name.substr(0, chapter.name.lastIndexOf(".re"));
+                        var fileName = baseName + "." + process.builder.extention;
+                        var result = process.result;
+                        _this.config.write(fileName, result);
+                    });
+                });
+            });
+
             this.config.listener.onReports(book.reports);
             this.config.listener.onCompileSuccess(book);
 
@@ -7187,6 +7199,7 @@ var ReVIEW;
             __extends(TextBuilder, _super);
             function TextBuilder() {
                 _super.apply(this, arguments);
+                this.extention = "txt";
             }
             TextBuilder.prototype.chapterPost = function (process, node) {
                 if (node.headline.cmd) {
@@ -7664,6 +7677,7 @@ var ReVIEW;
                 if (typeof standalone === "undefined") { standalone = true; }
                 _super.call(this);
                 this.standalone = standalone;
+                this.extention = "html";
             }
             HtmlBuilder.prototype.processPost = function (process, chapter) {
                 if (this.standalone) {
@@ -8281,9 +8295,13 @@ if (ReVIEW.isNodeJS()) {
         });
     });
 
-    program.command("*").action(function (args, options) {
+    program.command("build").description("build book").action(function (args, options) {
         var reviewfile = program.reviewfile || "./ReVIEWconfig.js";
-        var setup = require(reviewfile);
+        if (!fs.existsSync(process.cwd() + "/" + reviewfile)) {
+            console.error(reviewfile + " not exists");
+            process.exit(1);
+        }
+        var setup = require(process.cwd() + "/" + reviewfile);
         ReVIEW.start(setup, {
             reviewfile: reviewfile,
             base: program.base

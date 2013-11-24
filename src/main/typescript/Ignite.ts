@@ -115,10 +115,15 @@ if (ReVIEW.isNodeJS()) {
 	;
 
 	program
-		.command("*")
+		.command("build")
+		.description("build book")
 		.action((args:any, options:any)=> {
 			var reviewfile = program.reviewfile || "./ReVIEWconfig.js";
-			var setup = require(reviewfile);
+			if (!fs.existsSync(process.cwd() + "/" + reviewfile)) {
+				console.error(reviewfile + " not exists");
+				process.exit(1);
+			}
+			var setup = require(process.cwd() + "/" + reviewfile);
 			ReVIEW.start(setup, {
 				reviewfile: reviewfile,
 				base: program.base

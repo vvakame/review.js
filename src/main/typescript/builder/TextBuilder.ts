@@ -22,6 +22,7 @@ module ReVIEW.Build {
 	import findChapter = ReVIEW.findChapter;
 
 	export class TextBuilder extends DefaultBuilder {
+		extention = "txt";
 
 		chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any {
 			if (node.headline.cmd) {

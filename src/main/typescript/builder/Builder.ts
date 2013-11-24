@@ -21,6 +21,7 @@ module ReVIEW.Build {
 	 */
 	export interface IBuilder {
 		name:string;
+		extention:string;
 		init(book:Book):void;
 		chapterPre(process:BuilderProcess, node:ChapterSyntaxTree):any;
 		chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any;
@@ -39,6 +40,7 @@ module ReVIEW.Build {
 
 	export class DefaultBuilder implements IBuilder {
 		book:Book;
+		extention = "bug";
 
 		get name():string {
 			return (<any>this).constructor.name;

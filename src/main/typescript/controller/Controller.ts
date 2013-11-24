@@ -123,7 +123,17 @@ module ReVIEW {
 
 			this.config.builders.forEach(builder=> builder.init(book));
 
-			// TODO write しないといけない
+			// 結果を書き出す
+			book.parts.forEach(part=> {
+				part.chapters.forEach(chapter=> {
+					chapter.builderProcesses.forEach(process=> {
+						var baseName = chapter.name.substr(0, chapter.name.lastIndexOf(".re"));
+						var fileName = baseName + "." + process.builder.extention;
+						var result = process.result;
+						this.config.write(fileName, result);
+					});
+				});
+			});
 
 			this.config.listener.onReports(book.reports);
 			this.config.listener.onCompileSuccess(book);

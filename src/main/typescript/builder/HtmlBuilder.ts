@@ -22,6 +22,7 @@ module ReVIEW.Build {
 	import findUp = ReVIEW.findUp;
 
 	export class HtmlBuilder extends DefaultBuilder {
+		extention = "html";
 
 		constructor(private standalone = true) {
 			super();
