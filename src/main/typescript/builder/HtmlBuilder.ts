@@ -453,6 +453,16 @@ module ReVIEW.Build {
 			return false;
 		}
 
+		inline_icon(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			// TODO ファイル名探索ロジックをもっと頑張る(jpgとかsvgとか)
+			var chapterFileName = process.base.chapter.name;
+			var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
+			var imageName = nodeContentToString(process, node);
+			var imagePath = "images/" + chapterName + "-" + imageName + ".png";
+			process.out("<img src=\"").out(imagePath).out("\" alt=\"[").out(imageName).out("]\" />");
+			return false;
+		}
+
 		block_footnote(process:BuilderProcess, node:BlockElementSyntaxTree) {
 			process.out("<div class=\"footnote\"><p class=\"footnote\">[<a id=\"fn-");
 			process.out(node.args[0].arg).out("\">*").out(node.no).out("</a>] ");

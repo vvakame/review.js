@@ -439,6 +439,19 @@ module ReVIEW.Build {
 			});
 		}
 
+		inline_icon(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Block);
+			builder.setSymbol("icon");
+			builder.setDescription(t("description.inline_icon"));
+			builder.processNode((process, n)=> {
+				var node = n.toInlineElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
+			});
+		}
+
 		block_footnote(builder:IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
 			builder.setSymbol("footnote");
@@ -599,7 +612,6 @@ module ReVIEW.Build {
 
 		// TODO 以下のものの実装をすすめる
 		// ↑実装が簡単
-		// inline_icon
 		// block_texequation // latexの式のやつなので…
 		// inline_chap
 		// inline_title

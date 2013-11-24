@@ -352,6 +352,16 @@ module ReVIEW.Build {
 			return false;
 		}
 
+		inline_icon(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			// TODO ファイル名探索ロジックをもっと頑張る(jpgとかsvgとか)
+			var chapterFileName = process.base.chapter.name;
+			var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
+			var imageName = nodeContentToString(process, node);
+			var imagePath = "images/" + chapterName + "-" + imageName + ".png";
+			process.out("◆→画像 ").out(imagePath).out("←◆");
+			return false;
+		}
+
 		block_footnote(process:BuilderProcess, node:BlockElementSyntaxTree) {
 			process.out("【注").out(node.no).out("】").out(node.args[1].arg).out("\n");
 			return false;
