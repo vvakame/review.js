@@ -3,7 +3,7 @@
 	"version": "0.1.0",
 
 	"main": ["./bin/review.js"],
-	"private": true,
+	"private": false,
 	"ignore": [
 		"**/.*",
 		"node_modules",
