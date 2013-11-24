@@ -48,9 +48,21 @@ if (ReVIEW.isNodeJS()) {
 
 	// TODO i18n
 
+	var fs = require("fs");
+	var packageJson:any;
+	if (fs.existsSync(__dirname + "/../package.json")) {
+		// installed
+		packageJson = JSON.parse(fs.readFileSync(__dirname + "/../package.json", "utf8"));
+	} else {
+		// grunt test
+		packageJson = {
+			version: "develop"
+		};
+	}
+
 	var program = require("commander");
 	program
-		.version("TODO", "-v, --version")
+		.version(packageJson.version, "-v, --version")
 		.option("--reviewfile <file>", "where is ReVIEWconfig.js?")
 		.option("--base <path>", "alternative base path")
 	;
@@ -61,16 +73,51 @@ if (ReVIEW.isNodeJS()) {
 		.description("compile ReVIEW document")
 		.option("--ast", "output JSON format abstract syntax tree")
 		.option("-t, --target <target>", "output format of document")
-		.action((document:any, options:any)=> {
-			var ast = options.ast || false;
-			// TODO
+		.action((document:string, options:any)=> {
+			var ast = !!options.ast;
+			var target:string = options.target || "html";
+
+			var targetPath = process.cwd() + "/" + document;
+			if (!fs.existsSync(targetPath)) {
+				console.error(targetPath + " not exists");
+				process.exit(1);
+			}
+
+			var input = fs.readFileSync(targetPath, "utf8");
+			var result = ReVIEW.Exec.singleCompile(input, document, target, null);
+			result.success(result=> {
+				result.book.parts[0].chapters[0].builderProcesses.forEach(process=> {
+					console.log(process.result);
+				});
+				process.exit(0);
+			});
+			result.failure(result=> {
+				result.book.reports.forEach(report=> {
+					var log:Function;
+					switch (report.level) {
+						case ReVIEW.ReportLevel.Info:
+							log = console.log;
+						case ReVIEW.ReportLevel.Warning:
+							log = console.warn;
+						case ReVIEW.ReportLevel.Error:
+							log = console.error;
+					}
+					var message = "";
+					report.nodes.forEach(function (node) {
+						message += "[" + node.line + "," + node.column + "] ";
+					});
+					message += report.message;
+					log(message);
+				});
+				process.exit(1);
+			});
 		})
 	;
 
 	program
 		.command("*")
 		.action((args:any, options:any)=> {
-			var reviewfile = program.reviewfile || "./ReVIEWconfig";
+			var reviewfile = program.reviewfile || "./ReVIEWconfig.js";
 			var setup = require(reviewfile);
 			ReVIEW.start(setup, {
 				reviewfile: reviewfile,
@@ -83,7 +130,7 @@ if (ReVIEW.isNodeJS()) {
 	var endWith = (str:string, target:string) => {
 		return str.indexOf(target, str.length - target.length) !== -1;
 	};
-	if (endWith(process.argv[1], "review.js")) {
+	if (endWith(process.argv[1], "reviewjs")) {
 		program.parse(process.argv);
 	}
 }

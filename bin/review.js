@@ -4238,6 +4238,17 @@ var PEG = (function() {
     }
     ReVIEW.findChapter = findChapter;
 
+    function target2builder(target) {
+        var builderName = target.charAt(0).toUpperCase() + target.substring(1) + "Builder";
+        for (var name in ReVIEW.Build) {
+            if (name === builderName) {
+                return new ReVIEW.Build[name]();
+            }
+        }
+        return null;
+    }
+    ReVIEW.target2builder = target2builder;
+
     (function (IO) {
         function read(path) {
             var fs = require("fs");
@@ -4257,6 +4268,86 @@ var PEG = (function() {
         return new Array(times + 1).join(src);
     }
     ReVIEW.stringRepeat = stringRepeat;
+
+    (function (Exec) {
+        function singleCompile(input, fileName, target, tmpConfig) {
+            var config = tmpConfig || {};
+            config.read = config.read || (function () {
+                return input;
+            });
+
+            config.analyzer = config.analyzer || new ReVIEW.Build.DefaultAnalyzer();
+            config.validators = config.validators || [new ReVIEW.Build.DefaultValidator()];
+            if (target && ReVIEW.target2builder(target) == null) {
+                console.error(target + " is not exists in builder");
+                process.exit(1);
+            }
+            config.builders = config.builders || target ? [ReVIEW.target2builder(target)] : [new ReVIEW.Build.TextBuilder()];
+            config.book = config.book || {
+                chapters: [
+                    fileName
+                ]
+            };
+            config.book.chapters = config.book.chapters || [
+                fileName
+            ];
+
+            var results = {};
+            config.write = config.write || (function (path, content) {
+                return results[path] = content;
+            });
+
+            config.listener = config.listener || {
+                onReports: function () {
+                },
+                onCompileSuccess: function () {
+                },
+                onCompileFailed: function () {
+                }
+            };
+            config.listener.onReports = config.listener.onReports || (function () {
+            });
+            config.listener.onCompileSuccess = config.listener.onCompileSuccess || (function () {
+            });
+            config.listener.onCompileFailed = config.listener.onCompileFailed || (function () {
+            });
+            var success;
+            var originalCompileSuccess = config.listener.onCompileSuccess;
+            config.listener.onCompileSuccess = function (book) {
+                success = true;
+                originalCompileSuccess(book);
+            };
+            var originalCompileFailed = config.listener.onCompileFailed;
+            config.listener.onCompileFailed = function () {
+                success = false;
+                originalCompileFailed();
+            };
+
+            var book = ReVIEW.start(function (review) {
+                review.initConfig(config);
+            });
+
+            return {
+                success: function (callback) {
+                    if (success) {
+                        callback({
+                            book: book,
+                            results: results
+                        });
+                    }
+                },
+                failure: function (callback) {
+                    if (!success) {
+                        callback({
+                            book: book
+                        });
+                    }
+                }
+            };
+        }
+        Exec.singleCompile = singleCompile;
+    })(ReVIEW.Exec || (ReVIEW.Exec = {}));
+    var Exec = ReVIEW.Exec;
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
@@ -8137,15 +8228,61 @@ if (ReVIEW.isNodeJS()) {
 }
 
 if (ReVIEW.isNodeJS()) {
+    var fs = require("fs");
+    var packageJson;
+    if (fs.existsSync(__dirname + "/../package.json")) {
+        packageJson = JSON.parse(fs.readFileSync(__dirname + "/../package.json", "utf8"));
+    } else {
+        packageJson = {
+            version: "develop"
+        };
+    }
+
     var program = require("commander");
-    program.version("TODO", "-v, --version").option("--reviewfile <file>", "where is ReVIEWconfig.js?").option("--base <path>", "alternative base path");
+    program.version(packageJson.version, "-v, --version").option("--reviewfile <file>", "where is ReVIEWconfig.js?").option("--base <path>", "alternative base path");
 
     program.command("compile <document>").description("compile ReVIEW document").option("--ast", "output JSON format abstract syntax tree").option("-t, --target <target>", "output format of document").action(function (document, options) {
-        var ast = options.ast || false;
+        var ast = !!options.ast;
+        var target = options.target || "html";
+
+        var targetPath = process.cwd() + "/" + document;
+        if (!fs.existsSync(targetPath)) {
+            console.error(targetPath + " not exists");
+            process.exit(1);
+        }
+
+        var input = fs.readFileSync(targetPath, "utf8");
+        var result = ReVIEW.Exec.singleCompile(input, document, target, null);
+        result.success(function (result) {
+            result.book.parts[0].chapters[0].builderProcesses.forEach(function (process) {
+                console.log(process.result);
+            });
+            process.exit(0);
+        });
+        result.failure(function (result) {
+            result.book.reports.forEach(function (report) {
+                var log;
+                switch (report.level) {
+                    case ReVIEW.ReportLevel.Info:
+                        log = console.log;
+                    case ReVIEW.ReportLevel.Warning:
+                        log = console.warn;
+                    case ReVIEW.ReportLevel.Error:
+                        log = console.error;
+                }
+                var message = "";
+                report.nodes.forEach(function (node) {
+                    message += "[" + node.line + "," + node.column + "] ";
+                });
+                message += report.message;
+                log(message);
+            });
+            process.exit(1);
+        });
     });
 
     program.command("*").action(function (args, options) {
-        var reviewfile = program.reviewfile || "./ReVIEWconfig";
+        var reviewfile = program.reviewfile || "./ReVIEWconfig.js";
         var setup = require(reviewfile);
         ReVIEW.start(setup, {
             reviewfile: reviewfile,
@@ -8156,7 +8293,7 @@ if (ReVIEW.isNodeJS()) {
     var endWith = function (str, target) {
         return str.indexOf(target, str.length - target.length) !== -1;
     };
-    if (endWith(process.argv[1], "review.js")) {
+    if (endWith(process.argv[1], "reviewjs")) {
         program.parse(process.argv);
     }
 }

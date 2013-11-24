@@ -9,7 +9,7 @@
 
 	"main": "./bin/review.js",
 	"bin": {
-		"reviewjs": "./bin/review.js"
+		"reviewjs": "./index.js"
 	},
 	"scripts": {
 		"build": "grunt default",

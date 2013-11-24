@@ -133,6 +133,17 @@ module ReVIEW {
 		return chapter;
 	}
 
+	export function target2builder(target:string):ReVIEW.Build.IBuilder {
+		// TODO minifyに弱い構造になってる…
+		var builderName = target.charAt(0).toUpperCase() + target.substring(1) + "Builder";
+		for (var name in ReVIEW.Build) {
+			if (name === builderName) {
+				return new ReVIEW.Build[name];
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Node.jsでのIOをざっくり行うためのモジュール。
 	 */
@@ -160,5 +171,96 @@ module ReVIEW {
 
 	export function stringRepeat(times:number, src:string):string {
 		return new Array(times + 1).join(src);
+	}
+
+	/**
+	 * 実行するためのヘルパクラス群
+	 */
+	export module Exec {
+		export interface ResultPromise {
+			success():ResultSuccess;
+			failure():ResultFailure;
+		}
+
+		export interface ResultSuccess {
+			book:ReVIEW.Book;
+			results?:any;
+		}
+
+		export interface ResultFailure {
+			book:ReVIEW.Book;
+		}
+
+		export function singleCompile(input:string, fileName?:string, target?:string, tmpConfig?:any /* ReVIEW.IConfig */) {
+			var config:ReVIEW.IConfig = tmpConfig || <any>{};
+			config.read = config.read || (()=>input);
+
+			config.analyzer = config.analyzer || new ReVIEW.Build.DefaultAnalyzer();
+			config.validators = config.validators || [new ReVIEW.Build.DefaultValidator()];
+			if (target && target2builder(target) == null) {
+				console.error(target + " is not exists in builder");
+				process.exit(1);
+			}
+			config.builders = config.builders || target ? [target2builder(target)] : [new ReVIEW.Build.TextBuilder()];
+			config.book = config.book || {
+				chapters: [
+					fileName
+				]
+			};
+			config.book.chapters = config.book.chapters || [
+				fileName
+			];
+
+			var results:any = {};
+			config.write = config.write || ((path:string, content:any) => results[path] = content);
+
+			config.listener = config.listener || {
+				onReports: () => {
+				},
+				onCompileSuccess: ()=> {
+				},
+				onCompileFailed: ()=> {
+				}
+			};
+			config.listener.onReports = config.listener.onReports || (()=> {
+			});
+			config.listener.onCompileSuccess = config.listener.onCompileSuccess || (()=> {
+			});
+			config.listener.onCompileFailed = config.listener.onCompileFailed || (()=> {
+			});
+			var success:boolean;
+			var originalCompileSuccess = config.listener.onCompileSuccess;
+			config.listener.onCompileSuccess = (book) => {
+				success = true;
+				originalCompileSuccess(book);
+			};
+			var originalCompileFailed = config.listener.onCompileFailed;
+			config.listener.onCompileFailed = ()=> {
+				success = false;
+				originalCompileFailed();
+			};
+
+			var book = ReVIEW.start((review)=> {
+				review.initConfig(config);
+			});
+
+			return {
+				success: (callback:(result:ResultSuccess)=>void) => {
+					if (success) {
+						callback({
+							book: book,
+							results: results
+						});
+					}
+				},
+				failure: (callback:(result:ResultFailure)=>void) => {
+					if (!success) {
+						callback({
+							book: book
+						});
+					}
+				}
+			};
+		}
 	}
 }
