@@ -2,7 +2,7 @@
 	"name": "reviewjs",
 	"author": "vvakame",
 
-	"private": true,
+	"private": false,
 
 	"version": "0.1.0",
 	"description": "ReVIEW implementation by JavaScript",
