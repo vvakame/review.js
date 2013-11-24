@@ -1,17 +1,42 @@
 # ReVIEW.js
 
+## What is ReVIEW?
+
+Composition system for Japanese environment.
+ReVIEW is flexible and powerful more than Markdown and textile.
+
+ReVIEW.js is implemented by TypeScript :)
+
+## ReVIEWとは？
+
 [ReVIEW](https://github.com/kmuto/review) のJavaScript実装です。
 Node.js上とモダンなWebブラウザ上で動作することを目指します。
 
 # 現状
 
-意味解析ができるようになりました。
-example/online/index.html を開いて試してみてください。
+それなりに多くの構文をサポートしています。
+現状Ruby版で使えて、ReVIEW.jsで使えない記法は以下の通りです。
+
+* texequation ブロック記法
+* chap インライン記法
+* title インライン記法
+* chapref インライン記法
+* m インライン記法
+* bibpaper ブロック記法
+* bib インライン記法
+* raw インライン記法
+* graph ブロック記法
+* tsize ブロック記法
+* table ブロック記法
+* table インライン記法
+
+サポートしている変換先はTextとHTMLのみです。
+LaTeXやPDF, EPUBなどはサポートしていません。
 
 # インストール
 
-とりあえず npm install git@github.com:vvakame/review.js.git で動くんじゃないかなぁと思います。
-npm publish するのはもう少しちゃんと実用できるようになってから…。
+npm または bower が利用できます。用途にあったものを利用してください。
+[こちら](https://github.com/vvakame/review.js/tree/master/example)にサンプルを用意してあります。
 
 # 開発方法
 
@@ -25,7 +50,11 @@ npm publish するのはもう少しちゃんと実用できるようになっ�
 
 * src/test/resource/valid へのファイルの追加
 * DefaultAnalyzerが対応する構文の追加
-* 各種Builderの実装
+* 各種Builderの実装 (LaTeXとか)
+* 説明文の改善
+  * ja.ts を書き換えればできます。
+* バグを見つけたら報告してください
+  * 報告は日本語が良いです。日本語向けの組版システムだし。
 
 # 構文追加のための最初の一歩
 
