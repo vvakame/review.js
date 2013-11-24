@@ -483,7 +483,12 @@ module ReVIEW.Build {
 		inline_uchar(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			var hexString = nodeContentToString(process, node);
 			var code = parseInt(hexString, 16);
-			process.out(String.fromCharCode(code));
+			var result = "";
+			while (code !== 0) {
+				result = String.fromCharCode(code & 0xFFFF) + result;
+				code >>>= 16;
+			}
+			process.out(result);
 			return false;
 		}
 	}
