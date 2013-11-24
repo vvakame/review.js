@@ -1,0 +1,107 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 27,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 27,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 27,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 11,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 9,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 9,
+                  "text": "em のテスト"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 11,
+              "line": 3,
+              "column": 1,
+              "endPos": 27,
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "offset": 11,
+                  "line": 3,
+                  "column": 1,
+                  "endPos": 14,
+                  "text": "今日は"
+                },
+                {
+                  "ruleName": "InlineElement",
+                  "offset": 14,
+                  "line": 3,
+                  "column": 4,
+                  "endPos": 24,
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "offset": 20,
+                      "line": 3,
+                      "column": 10,
+                      "endPos": 23,
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "offset": 20,
+                          "line": 3,
+                          "column": 10,
+                          "endPos": 23,
+                          "text": "焼き肉"
+                        }
+                      ]
+                    }
+                  ],
+                  "symbol": "em"
+                },
+                {
+                  "ruleName": "ContentText",
+                  "offset": 24,
+                  "line": 3,
+                  "column": 14,
+                  "endPos": 27,
+                  "text": "だ！"
+                }
+              ]
+            }
+          ],
+          "childNodes": [],
+          "no": 1,
+          "level": 1
+        }
+      ]
+    }
+  ]
+}

@@ -56,10 +56,6 @@ module ReVIEW.Build {
 			}
 		}
 
-		text(process:BuilderProcess, node:TextNodeSyntaxTree):any {
-			process.out(node.text);
-		}
-
 		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
 			if (node.cmd) {
 				process.out("<div class=\"column\">\n");
@@ -294,7 +290,7 @@ module ReVIEW.Build {
 		}
 
 		inline_br(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<br/>");
+			process.out("<br />");
 		}
 
 		inline_b_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
@@ -306,7 +302,7 @@ module ReVIEW.Build {
 		}
 
 		inline_code_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<tt class='inline-code'>");
+			process.out("<tt class=\"inline-code\">");
 		}
 
 		inline_code_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
@@ -366,20 +362,22 @@ module ReVIEW.Build {
 		}
 
 		inline_kw_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<b>");
+			process.out("<b class=\"kw\">");
 			return (v) => {
 				// name, args はパス
 				node.childNodes.forEach(node=> {
 					var contentString = nodeContentToString(process, node);
 					var keywordData = contentString.split(",");
 					// TODO ユーザの入力内容のチェックが必要
-					process.out(keywordData[0] + "(" + keywordData[1] + ")");
+					process.out(keywordData[0] + " (" + keywordData[1].trimLeft() + ")");
 				});
 			};
 		}
 
 		inline_kw_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("</b>");
+			var contentString = nodeContentToString(process, node);
+			var keywordData = contentString.split(",");
+			process.out("</b>").out("<!-- IDX:").out(keywordData[0]).out(" -->");
 		}
 
 		inline_em_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
@@ -592,5 +590,5 @@ module ReVIEW.Build {
 		inline_uchar_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out(";");
 		}
-		}
+	}
 }

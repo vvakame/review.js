@@ -155,6 +155,7 @@ module ReVIEW.Build {
 		}
 
 		text(process:BuilderProcess, node:TextNodeSyntaxTree):any {
+			// TODO in paragraph だったら note.text.replace("\n", "") したほうが良い…
 			process.out(node.text);
 		}
 

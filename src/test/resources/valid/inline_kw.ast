@@ -1,0 +1,107 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 43,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 43,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 43,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 10,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 8,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 8,
+                  "text": "kwのテスト"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 10,
+              "line": 3,
+              "column": 1,
+              "endPos": 43,
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "offset": 10,
+                  "line": 3,
+                  "column": 1,
+                  "endPos": 15,
+                  "text": "人類の至宝"
+                },
+                {
+                  "ruleName": "InlineElement",
+                  "offset": 15,
+                  "line": 3,
+                  "column": 6,
+                  "endPos": 41,
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "offset": 21,
+                      "line": 3,
+                      "column": 12,
+                      "endPos": 40,
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "offset": 21,
+                          "line": 3,
+                          "column": 12,
+                          "endPos": 40,
+                          "text": "型推論, Type inference"
+                        }
+                      ]
+                    }
+                  ],
+                  "symbol": "kw"
+                },
+                {
+                  "ruleName": "ContentText",
+                  "offset": 41,
+                  "line": 3,
+                  "column": 32,
+                  "endPos": 43,
+                  "text": "。"
+                }
+              ]
+            }
+          ],
+          "childNodes": [],
+          "no": 1,
+          "level": 1
+        }
+      ]
+    }
+  ]
+}

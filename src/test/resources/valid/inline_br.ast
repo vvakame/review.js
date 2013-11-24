@@ -1,0 +1,89 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 36,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 36,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 36,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 11,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 9,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 9,
+                  "text": "br のテスト"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 11,
+              "line": 3,
+              "column": 1,
+              "endPos": 36,
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "offset": 11,
+                  "line": 3,
+                  "column": 1,
+                  "endPos": 23,
+                  "text": "Hello world!"
+                },
+                {
+                  "ruleName": "InlineElement",
+                  "offset": 23,
+                  "line": 3,
+                  "column": 13,
+                  "endPos": 30,
+                  "childNodes": [],
+                  "symbol": "br"
+                },
+                {
+                  "ruleName": "ContentText",
+                  "offset": 30,
+                  "line": 3,
+                  "column": 20,
+                  "endPos": 36,
+                  "text": "ですねー！"
+                }
+              ]
+            }
+          ],
+          "childNodes": [],
+          "no": 1,
+          "level": 1
+        }
+      ]
+    }
+  ]
+}

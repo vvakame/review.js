@@ -7353,19 +7353,15 @@ var ReVIEW;
                 process.out("＠◆→＠〜＠部分に下線←◆");
             };
 
-            TextBuilder.prototype.inline_kw_pre = function (process, node) {
+            TextBuilder.prototype.inline_kw = function (process, node) {
                 process.out("★");
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         var contentString = nodeContentToString(process, node);
                         var keywordData = contentString.split(",");
-                        process.out(keywordData[0] + "(" + keywordData[1] + ")");
+                        process.out(keywordData[0] + "☆（" + keywordData[1].trimLeft() + "）");
                     });
                 };
-            };
-
-            TextBuilder.prototype.inline_kw_post = function (process, node) {
-                process.out("☆");
             };
 
             TextBuilder.prototype.inline_tt_pre = function (process, node) {
@@ -7606,10 +7602,6 @@ var ReVIEW;
                 }
             };
 
-            HtmlBuilder.prototype.text = function (process, node) {
-                process.out(node.text);
-            };
-
             HtmlBuilder.prototype.headlinePre = function (process, name, node) {
                 if (node.cmd) {
                     process.out("<div class=\"column\">\n");
@@ -7834,7 +7826,7 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.inline_br = function (process, node) {
-                process.out("<br/>");
+                process.out("<br />");
             };
 
             HtmlBuilder.prototype.inline_b_pre = function (process, node) {
@@ -7846,7 +7838,7 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.inline_code_pre = function (process, node) {
-                process.out("<tt class='inline-code'>");
+                process.out("<tt class=\"inline-code\">");
             };
 
             HtmlBuilder.prototype.inline_code_post = function (process, node) {
@@ -7905,19 +7897,21 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.inline_kw_pre = function (process, node) {
-                process.out("<b>");
+                process.out("<b class=\"kw\">");
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         var contentString = nodeContentToString(process, node);
                         var keywordData = contentString.split(",");
 
-                        process.out(keywordData[0] + "(" + keywordData[1] + ")");
+                        process.out(keywordData[0] + " (" + keywordData[1].trimLeft() + ")");
                     });
                 };
             };
 
             HtmlBuilder.prototype.inline_kw_post = function (process, node) {
-                process.out("</b>");
+                var contentString = nodeContentToString(process, node);
+                var keywordData = contentString.split(",");
+                process.out("</b>").out("<!-- IDX:").out(keywordData[0]).out(" -->");
             };
 
             HtmlBuilder.prototype.inline_em_pre = function (process, node) {

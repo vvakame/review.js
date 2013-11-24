@@ -291,20 +291,16 @@ module ReVIEW.Build {
 			process.out("＠◆→＠〜＠部分に下線←◆");
 		}
 
-		inline_kw_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+		inline_kw(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("★");
 			return (v) => {
 				// name, args はパス
 				node.childNodes.forEach(node=> {
 					var contentString = nodeContentToString(process, node);
 					var keywordData = contentString.split(",");
-					process.out(keywordData[0] + "(" + keywordData[1] + ")");
+					process.out(keywordData[0] + "☆（" + keywordData[1].trimLeft() + "）");
 				});
 			};
-		}
-
-		inline_kw_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("☆");
 		}
 
 		inline_tt_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {

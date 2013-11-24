@@ -1,0 +1,196 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 120,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 120,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 120,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 13,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 11,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 11,
+                  "text": "href のテスト"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 13,
+              "line": 3,
+              "column": 1,
+              "endPos": 88,
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "offset": 13,
+                  "line": 3,
+                  "column": 1,
+                  "endPos": 32,
+                  "text": "へーい提督ゥー、触るのもいいけどサー、"
+                },
+                {
+                  "ruleName": "InlineElement",
+                  "offset": 32,
+                  "line": 3,
+                  "column": 20,
+                  "endPos": 52,
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "offset": 40,
+                      "line": 3,
+                      "column": 28,
+                      "endPos": 51,
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "offset": 40,
+                          "line": 3,
+                          "column": 28,
+                          "endPos": 51,
+                          "text": "#label, ラベル"
+                        }
+                      ]
+                    }
+                  ],
+                  "symbol": "href"
+                },
+                {
+                  "ruleName": "ContentText",
+                  "offset": 52,
+                  "line": 3,
+                  "column": 40,
+                  "endPos": 67,
+                  "text": "の場所をわきまえなヨー！\nあと"
+                },
+                {
+                  "ruleName": "InlineElement",
+                  "offset": 67,
+                  "line": 4,
+                  "column": 3,
+                  "endPos": 82,
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "offset": 75,
+                      "line": 4,
+                      "column": 11,
+                      "endPos": 81,
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "offset": 75,
+                          "line": 4,
+                          "column": 11,
+                          "endPos": 81,
+                          "text": "#label"
+                        }
+                      ]
+                    }
+                  ],
+                  "symbol": "href"
+                },
+                {
+                  "ruleName": "ContentText",
+                  "offset": 82,
+                  "line": 4,
+                  "column": 18,
+                  "endPos": 87,
+                  "text": "だよー。"
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 88,
+              "line": 6,
+              "column": 1,
+              "endPos": 95,
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "offset": 88,
+                  "line": 6,
+                  "column": 1,
+                  "endPos": 95,
+                  "text": "え？ラベル？"
+                }
+              ]
+            },
+            {
+              "ruleName": "BlockElement",
+              "offset": 95,
+              "line": 7,
+              "column": 1,
+              "endPos": 110,
+              "childNodes": [],
+              "symbol": "label",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 102,
+                  "line": 7,
+                  "column": 8,
+                  "endPos": 109,
+                  "arg": "label"
+                }
+              ],
+              "no": 1
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 110,
+              "line": 8,
+              "column": 1,
+              "endPos": 120,
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "offset": 110,
+                  "line": 8,
+                  "column": 1,
+                  "endPos": 120,
+                  "text": "ここっすわ、ここ。"
+                }
+              ]
+            }
+          ],
+          "childNodes": [],
+          "no": 1,
+          "level": 1
+        }
+      ]
+    }
+  ]
+}
