@@ -1,4 +1,4 @@
-# ReVIEW.js
+# ReVIEW.js [![Build Status](https://travis-ci.org/vvakame/review.js.png?branch=master)](https://travis-ci.org/vvakame/review.js) [![Dependency Status](https://david-dm.org/vvakame/review.js.png)](https://david-dm.org/vvakame/review.js) [![devDependency Status](https://david-dm.org/vvakame/review.js/dev-status.png)](https://david-dm.org/vvakame/review.js#info=devDependencies)
 
 ## What is ReVIEW?
 
