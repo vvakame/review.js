@@ -541,6 +541,22 @@ module ReVIEW.Build {
 			this.inlineDecorationSyntax(builder, "href");
 		}
 
+		block_label(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Block);
+			builder.setSymbol("label");
+			builder.setDescription(t("description.block_label"));
+			builder.checkArgsLength(1);
+			builder.processNode((process, n)=> {
+				var node = n.toBlockElement();
+				node.no = process.nextIndex("label");
+				process.addSymbol({
+					symbolName: node.symbol,
+					labelName: node.args[0].arg,
+					node: node
+				});
+			});
+		}
+
 		inline_u(builder:IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "u");
 		}
@@ -583,13 +599,12 @@ module ReVIEW.Build {
 
 		// TODO 以下のものの実装をすすめる
 		// ↑実装が簡単
-		// block_label
 		// inline_icon
-		// block_texequation
+		// block_texequation // latexの式のやつなので…
 		// inline_chap
 		// inline_title
 		// inline_chapref
-		// inline_m
+		// inline_m // latex のインラインのやつなので…
 		// クソめんどくさいの壁
 		// block_bibpaper
 		// inline_bib

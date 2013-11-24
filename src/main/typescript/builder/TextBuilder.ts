@@ -251,6 +251,25 @@ module ReVIEW.Build {
 			process.out("☆");
 		}
 
+		inline_href(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			var href:string = null;
+			var text = nodeContentToString(process, node);
+			if (text.indexOf(",") !== -1) {
+				href = text.slice(0, text.indexOf(","));
+				text = text.slice(text.indexOf(",") + 1).trimLeft();
+			}
+			if (href) {
+				process.out(text).out("（△").out(href).out("☆）");
+			} else {
+				process.out("△").out(text).out("☆");
+			}
+			return false;
+		}
+
+		block_label(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			return false;
+		}
+
 		inline_ruby(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			var contentString = nodeContentToString(process, node);
 			var keywordData = contentString.split(",");

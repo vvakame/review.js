@@ -18,6 +18,11 @@
 // Cmd+Option+Shift+N で 指定したクラスやインタフェースを開く
 // Cmd+クリック 定義へジャンプ
 
+// extend lib.d.ts declaration.
+interface String {
+	trimLeft():string;
+}
+
 module ReVIEW {
 
 	/**

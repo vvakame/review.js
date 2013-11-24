@@ -1,0 +1,161 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 99,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 99,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 99,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 14,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 12,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 12,
+                  "text": "label のテスト"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 14,
+              "line": 3,
+              "column": 1,
+              "endPos": 67,
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "offset": 14,
+                  "line": 3,
+                  "column": 1,
+                  "endPos": 33,
+                  "text": "へーい提督ゥー、触るのもいいけどサー、"
+                },
+                {
+                  "ruleName": "InlineElement",
+                  "offset": 33,
+                  "line": 3,
+                  "column": 20,
+                  "endPos": 53,
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "offset": 41,
+                      "line": 3,
+                      "column": 28,
+                      "endPos": 52,
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "offset": 41,
+                          "line": 3,
+                          "column": 28,
+                          "endPos": 52,
+                          "text": "#label, ラベル"
+                        }
+                      ]
+                    }
+                  ],
+                  "symbol": "href"
+                },
+                {
+                  "ruleName": "ContentText",
+                  "offset": 53,
+                  "line": 3,
+                  "column": 40,
+                  "endPos": 66,
+                  "text": "の場所をわきまえなヨー！"
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 67,
+              "line": 5,
+              "column": 1,
+              "endPos": 74,
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "offset": 67,
+                  "line": 5,
+                  "column": 1,
+                  "endPos": 74,
+                  "text": "え？ラベル？"
+                }
+              ]
+            },
+            {
+              "ruleName": "BlockElement",
+              "offset": 74,
+              "line": 6,
+              "column": 1,
+              "endPos": 89,
+              "childNodes": [],
+              "symbol": "label",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 81,
+                  "line": 6,
+                  "column": 8,
+                  "endPos": 88,
+                  "arg": "label"
+                }
+              ],
+              "no": 1
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 89,
+              "line": 7,
+              "column": 1,
+              "endPos": 99,
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "offset": 89,
+                  "line": 7,
+                  "column": 1,
+                  "endPos": 99,
+                  "text": "ここっすわ、ここ。"
+                }
+              ]
+            }
+          ],
+          "childNodes": [],
+          "no": 1,
+          "level": 1
+        }
+      ]
+    }
+  ]
+}

@@ -313,13 +313,20 @@ module ReVIEW.Build {
 			process.out("</tt>");
 		}
 
-		inline_href_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+		inline_href(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			var href = nodeContentToString(process, node);
-			process.out("<a href=\"" + href + "\">");
+			var text = href;
+			if (href.indexOf(",") !== -1) {
+				text = href.slice(href.indexOf(",") + 1).trimLeft();
+				href = href.slice(0, href.indexOf(","));
+			}
+			process.out("<a href=\"" + href + "\" class=\"link\">").out(text).out("</a>");
+			return false;
 		}
 
-		inline_href_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("</a>");
+		block_label(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("<a id=\"").out(node.args[0].arg).out("\"></a>\n");
+			return false;
 		}
 
 		inline_tt_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
