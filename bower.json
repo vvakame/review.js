@@ -1,0 +1,20 @@
+{
+	"name": "review.js-browser-sample",
+	"version": "0.0.0",
+	"homepage": "https://github.com/vvakame/review.js",
+	"authors": [
+		"vvakame <vvakame+dev@gmail.com>"
+	],
+	"license": "MIT",
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests"
+	],
+	"dependencies": {
+		"review.js": "0.1.0",
+		"jquery": "2.0.3"
+	}
+}
