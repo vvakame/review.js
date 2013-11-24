@@ -1,4 +1,4 @@
-# ReVIEW.js をブラウザ版で動かすサンプル
+# ReVIEW.js をブラウザ上で動かすサンプル
 
 以下のコマンドを実行する。
 $ bower install

@@ -1,0 +1,20 @@
+{
+	"name": "review.js-nodejs-sample",
+	"version": "0.0.0",
+	"description": "",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:vvakame/review.js.git"
+	},
+	"author": "vvakame",
+	"license": "BSD-2-Clause",
+	"bugs": {
+		"url": "https://github.com/vvakame/review.js/issues"
+	},
+	"dependencies": {
+		"review.js": "0.1.0"
+	}
+}

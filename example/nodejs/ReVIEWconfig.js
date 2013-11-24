@@ -1,5 +1,5 @@
 module.exports = function (review) {
-	var ReVIEW = require("../../bin/review.js");
+	var ReVIEW = require("review.js");
 
 	review.initConfig({
 
