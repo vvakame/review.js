@@ -31,6 +31,7 @@ Paragraph "paragraph"
 
 ParagraphSubs "paragraph subs"
     = c: ParagraphSub cc:ParagraphSubs?
+    ;
 
 ParagraphSub "paragraph sub"
     = c:InlineElement
@@ -74,6 +75,7 @@ BlockElementParagraph "paragraph in block"
 
 BlockElementParagraphSubs "paragraph subs in block"
     = c: BlockElementParagraphSub cc:BlockElementParagraphSubs?
+    ;
 
 BlockElementParagraphSub "paragraph sub in block"
     = c:InlineElement
