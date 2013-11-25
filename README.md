@@ -85,5 +85,6 @@ rc/main/typescript/i18n/ja.ts の中に説明の文章を追加します。
 オブジェクト記法の中の"description"の中に追加したメソッド名と同じものを追加します。
 そうすることで構文の説明が追加されます。
 
+# シンタックスダイアグラムを作るには？
 
-
+http://bottlecaps.de/convert/ を使うとよい。
