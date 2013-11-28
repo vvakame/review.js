@@ -9,21 +9,19 @@ module.exports = function (config) {
 
 
 		// frameworks to use
-		frameworks: ['jasmine'],
+		frameworks: ['mocha'],
 
 
 		// list of files / patterns to load in the browser
 		files: [
-			'bin/**/*.js',
-			'src/test/typescript/libs/*.js',
-			'src/test/typescript/*.js'
+			'bin/lib/*.js',
+			'src/test/typescript/libs/expectations.js',
+			'src/test/typescript/test.js'
 		],
 
 
 		// list of files to exclude
 		exclude: [
-			'bin/main.min.js',
-			'src/test/typescript/libs/jasmine*.js'
 		],
 
 

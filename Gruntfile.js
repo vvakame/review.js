@@ -238,24 +238,17 @@ module.exports = function (grunt) {
 				]
 			}
 		},
-		jasmine: {
-			all: {
-				src: ['<%= opt.tsTest %>/SpecRunner.html'],
-				errorReporting: true
+		mochaTest: {
+			test: {
+				options: {
+					reporter: 'spec'
+				},
+				src: [
+					'bin/lib/*.js',
+					'src/test/typescript/libs/expectations.js',
+					'src/test/typescript/test.js'
+				]
 			}
-		},
-		"jasmine-node": {
-			options: {
-				match: "test.",
-				matchall: true
-			},
-			run: {
-				spec: "<%= opt.jsTestOut %>/"
-			},
-			env: {
-				NODE_PATH: "lib"
-			},
-			executable: './node_modules/.bin/jasmine-node'
 		},
 		karma: {
 			unit: {
@@ -271,14 +264,13 @@ module.exports = function (grunt) {
 		},
 		open: {
 			"test-browser": {
-				path: '<%= opt.tsTest %>/SpecRunner.html'
+				path: '<%= opt.tsTest %>/index.html'
 			}
 		},
 		exec: {
-			tsd: {
+			DefinitelyTyped: {
 				cmd: function () {
-					// jquery は i18next がコンパイル時に依存している
-					return "./node_modules/.bin/tsd install node jasmine jquery i18next";
+					return "./download-d.ts.sh";
 				}
 			},
 			"pegjs": {
@@ -293,7 +285,7 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'setup',
 		"プロジェクトの初期セットアップを行う。",
-		['clean', 'bower', 'exec:tsd', 'copy']);
+		['clean', 'bower', 'exec:DefinitelyTyped', 'copy']);
 
 	grunt.registerTask(
 		'default',
@@ -312,8 +304,8 @@ module.exports = function (grunt) {
 
 	grunt.registerTask(
 		'test-node',
-		"必要なコンパイルを行いjasmine-nodeでテストを実行する。",
-		['test-preprocess', 'jasmine-node']);
+		"必要なコンパイルを行いnode.js上でテストを実行する。",
+		['test-preprocess', 'mochaTest']);
 
 	grunt.registerTask(
 		'test-karma',

@@ -1,4 +1,5 @@
-///<reference path='../libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
+///<reference path='../libs/DefinitelyTyped/mocha/mocha.d.ts' />
+///<reference path='../libs/DefinitelyTyped/expectations/expectations.d.ts' />
 
 ///<reference path='../TestHelper.ts' />
 
@@ -88,7 +89,7 @@ describe("ReVIEW.Buildの", ()=> {
 	});
 
 	describe("DefaultBuilderの動作の確認として", ()=> {
-		it("", ()=> {
+		it("正常に処理が完了できること", ()=> {
 			var builder = new ReVIEW.Build.TextBuilder();
 			var success = Test.compileSingle(
 				"= hoge\n== fuga\n=== moge\n== piyo\n=== foo\n= bar\n",

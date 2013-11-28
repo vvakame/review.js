@@ -55,11 +55,16 @@
 		"grunt-tslint": "0.3.2",
 		"grunt-bower-task": "0.3.4",
 
+		"mocha": "1.13.0",
+		"expectations": "0.2.5",
+		"grunt-mocha": "0.4.1",
+		"grunt-mocha-test": "0.7.0",
+
 		"grunt-karma": "0.6.2",
+		"karma-mocha": "0.1.1",
 		"karma-phantomjs-launcher": "0.1.0",
 		"karma-junit-reporter": "0.1.0",
-		"grunt-jasmine-node": "git://github.com/tmtk75/grunt-jasmine-node-deprecated.git#142e99002d5d4d1f5a700e3de073ce30744f75fb",
-		"jasmine-node": "1.11.0",
+
 		"grunt-exec": "0.4.2",
 		"grunt-open": "0.2.2",
 

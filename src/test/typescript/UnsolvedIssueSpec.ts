@@ -1,4 +1,6 @@
-///<reference path='libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
+///<reference path='libs/DefinitelyTyped/mocha/mocha.d.ts' />
+///<reference path='libs/DefinitelyTyped/expectations/expectations.d.ts' />
+
 ///<reference path='../../main/typescript/libs/DefinitelyTyped/node/node.d.ts' />
 
 ///<reference path='../../main/typescript/Ignite.ts' />
@@ -10,7 +12,7 @@
 
 describe("未解決のエラー", ()=> {
 	describe("Builderのパース", ()=> {
-		xit("listの中身の途中に改行を含んでいる", ()=> {
+		it.skip("listの中身の途中に改行を含んでいる", ()=> {
 			var files:any = {
 				"./ch01.re": "= title\n//list[hoge][きゃぷしょん]{\nalert('hello');\n\n//}\n"
 

@@ -1,4 +1,6 @@
-///<reference path='libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
+///<reference path='libs/DefinitelyTyped/mocha/mocha.d.ts' />
+///<reference path='libs/DefinitelyTyped/expectations/expectations.d.ts' />
+
 ///<reference path='../../main/typescript/libs/DefinitelyTyped/node/node.d.ts' />
 
 ///<reference path='TestHelper.ts' />
@@ -20,7 +22,6 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 	function convertByRubyReVIEW(fileName:string, target:string, callback?:(result:string, error:any)=>void):void {
 		var result:string;
 		var error:any;
-		var done = false;
 		exec(
 			"review-compile  --level=1 --target=" + target + " " + fileName + ".re",
 			{
@@ -28,18 +29,14 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 				env: process.env
 			},
 			(err:Error, stdout:NodeBuffer, stderr:NodeBuffer)=> {
-				expect(error).toBeNull();
+				expect(err).toBeNull();
 				result = stdout.toString();
 				error = err;
-				done = true;
+				if (callback) {
+					callback(result, error);
+				}
 			}
 		);
-		waitsFor(()=> done, "ReVIEW is gone...");
-		runs(()=> {
-			if (callback) {
-				callback(result, error);
-			}
-		});
 	}
 
 	// PhantomJS 環境下専用のテスト
@@ -83,7 +80,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 
 				typeList.forEach(typeInfo => {
 					var targetFileName = path + baseName + "." + typeInfo.ext;
-					it("ファイル:" + targetFileName, ()=> {
+					it("ファイル:" + targetFileName, (done)=> {
 
 						var s = Test.compileSingle(
 							fs.readFileSync(path + file, "utf8"),
@@ -96,6 +93,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 						var assertResult = () => {
 							var expected = fs.readFileSync(targetFileName, "utf8");
 							expect(s.result).toBe(expected);
+							done();
 						};
 
 						if (!fs.existsSync(targetFileName)) {

@@ -1,4 +1,6 @@
-///<reference path='../libs/DefinitelyTyped/jasmine/jasmine.d.ts' />
+///<reference path='../libs/DefinitelyTyped/mocha/mocha.d.ts' />
+///<reference path='../libs/DefinitelyTyped/expectations/expectations.d.ts' />
+
 ///<reference path='../../../main/typescript/libs/DefinitelyTyped/node/node.d.ts' />
 
 ///<reference path='../../../main/typescript/libs/peg.js.d.ts' />
