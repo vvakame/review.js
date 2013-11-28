@@ -83,7 +83,7 @@ BlockElementParagraphSub "paragraph sub in block"
     ;
 
 BlockElementContentText "text of content in block"
-    = text:$( ( &. !"//}" !SinglelineComment !BlockElement !InlineElement !Ulist !Olist !Dlist ( !InlineElement [^\r\n] )+ Newline? )+ )
+    = text:$( ( &. !"//}" !SinglelineComment !BlockElement !Ulist !Olist !Dlist ( !InlineElement [^\r\n] )+ Newline? )+ )
     ;
 
 InlineElementContents "contents of inline element"
@@ -121,7 +121,7 @@ Ulist "ulist"
     ;
 
 UlistElement "ulist element"
-    = " "+ level:"*"+ _ text:SinglelineContent
+    = " "+ level:"*"+ Space* text:SinglelineContent
     ;
 
 // 1. 番号付き箇条書き
@@ -131,7 +131,7 @@ Olist "olist"
     ;
 
 OlistElement "olist element"
-    = " "+ n:Digits "." _ text:SinglelineContent
+    = " "+ n:Digits "." Space* text:SinglelineContent
     ;
 
 // : 用語リスト
@@ -141,7 +141,7 @@ Dlist "dlist"
     ;
 
 DlistElement "dlist element"
-    = " "* ":" " " _ text:SinglelineContent content:DlistElementContent _
+    = " "* ":" " " Space* text:SinglelineContent content:DlistElementContent _
     ;
 
 DlistElementContent "content of dlist element"
@@ -170,11 +170,11 @@ Newline "newline"
     ;
 
 _ "spacer"
-    = $(Space*)
+    = $([ \t\r\n]*)
     ;
 
 Space "space"
-    = [ \t\r\n]
+    = [ 　\t]
     ;
 
 EOF "end of file"
