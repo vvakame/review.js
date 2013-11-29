@@ -13,7 +13,7 @@
 	},
 	"scripts": {
 		"build": "grunt default",
-		"test": "grunt test test-karma"
+		"test": "grunt test-node test-karma"
 	},
 	"keywords": [
 		"ReVIEW"
