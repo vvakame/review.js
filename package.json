@@ -19,6 +19,7 @@
 		"ReVIEW"
 	],
 
+	"license": "MIT",
 	"homepage": "https://github.com/vvakame/review.js",
 	"repository": {
 		"type": "git",
