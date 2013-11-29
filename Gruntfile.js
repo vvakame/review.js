@@ -309,7 +309,7 @@ module.exports = function (grunt) {
 
 	grunt.registerTask(
 		'test-karma',
-		"必要なコンパイルを行いブラウザ上でテストを実行する。",
+		"必要なコンパイルを行いkarma上でテストを実行する。",
 		['test-preprocess', 'karma']);
 
 	grunt.registerTask(
