@@ -4,6 +4,7 @@
 ///<reference path='../model/CompilerModel.ts' />
 
 module ReVIEW.Build {
+	"use strict";
 
 	import t = ReVIEW.i18n.t;
 

@@ -6,6 +6,7 @@
 // parser/ と builder/ で共用するモデル
 
 module ReVIEW {
+	"use strict";
 
 	import t = ReVIEW.i18n.t;
 

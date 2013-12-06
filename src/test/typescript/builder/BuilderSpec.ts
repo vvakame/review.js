@@ -7,6 +7,8 @@
 ///<reference path='../../../main/typescript/builder/TextBuilder.ts' />
 
 describe("ReVIEW.Buildの", ()=> {
+	"use strict";
+
 	it("処理が正しく動くこと", ()=> {
 		var success = Test.compile({
 			read: path => {

@@ -13,6 +13,8 @@
 "use strict";
 
 describe("Ruby版ReVIEWとの出力差確認", () => {
+	"use strict";
+
 	if (!ReVIEW.isNodeJS()) {
 		return;
 	}

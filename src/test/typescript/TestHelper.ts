@@ -4,6 +4,8 @@
 ///<reference path='../../main/typescript/Ignite.ts' />
 
 module Test {
+	"use strict";
+
 	export interface ResultPromise {
 		success():ResultSuccess;
 		failure():ResultFailure;

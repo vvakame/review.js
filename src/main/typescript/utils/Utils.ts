@@ -1,4 +1,5 @@
 module ReVIEW {
+	"use strict";
 
 	/**
 	 * Node.js上での実行かどうかを判別する。

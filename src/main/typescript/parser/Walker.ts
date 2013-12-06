@@ -2,6 +2,7 @@
 ///<reference path='Parser.ts' />
 
 module ReVIEW {
+	"use strict";
 
 	export module Parse {
 		// Parser.ts との読み込み順序の関係で undefined を参照するエラーを避ける

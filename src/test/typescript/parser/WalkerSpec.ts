@@ -8,6 +8,7 @@
 import RuleName = ReVIEW.Parse.RuleName;
 
 describe("ReVIEW.walkについて", ()=> {
+	"use strict";
 
 	it("目的のNodeを発見できること", ()=> {
 		var input = "= level1\n== level2\n=== level3\n==== level4\n===== level5";

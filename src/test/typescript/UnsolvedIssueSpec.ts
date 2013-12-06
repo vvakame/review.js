@@ -11,6 +11,8 @@
 "use strict";
 
 describe("未解決のエラー", ()=> {
+	"use strict";
+
 	describe("Builderのパース", ()=> {
 		it.skip("listの中身の途中に改行を含んでいる", ()=> {
 			var files:any = {

@@ -24,6 +24,7 @@ interface String {
 }
 
 module ReVIEW {
+	"use strict";
 
 	/**
 	 * ReVIEW文書のコンパイルを開始する。

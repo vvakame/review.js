@@ -21,6 +21,8 @@ function updateIfSyntaxError(e:any) {
 }
 
 describe("ReVIEW構文の", ()=> {
+	"use strict";
+
 	if (ReVIEW.isNodeJS()) {
 		var fs = require("fs");
 		// PhantomJS 環境下専用のテスト

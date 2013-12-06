@@ -4,6 +4,7 @@
 ///<reference path='../parser/Analyzer.ts' />
 
 module ReVIEW.Build {
+	"use strict";
 
 	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
 	import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;

@@ -4,6 +4,8 @@
 ///<reference path='../../../main/typescript/i18n/i18n.ts' />
 
 describe("ReVIEW.i18nの", ()=> {
+	"use strict";
+
 	it("tで正しく文字列が取れること", ()=> {
 		expect(ReVIEW.i18n.t("sample")).toBe("こんちゃーす！");
 

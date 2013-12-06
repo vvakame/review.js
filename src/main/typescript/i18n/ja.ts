@@ -1,4 +1,6 @@
 module ReVIEW {
+	"use strict";
+
 	export var ja = {
 		"sample": "こんちゃーす！",
 		"description": {

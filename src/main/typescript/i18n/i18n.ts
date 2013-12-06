@@ -8,6 +8,8 @@
  * 国際化対応のためのモジュール。デフォルトでは日本語。
  */
 module ReVIEW.i18n {
+	"use strict";
+
 	export function setup(lang = "ja") {
 		if (typeof (<any>i18next).backend !== "undefined") {
 			(<any>i18next).backend({

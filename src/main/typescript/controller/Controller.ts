@@ -8,6 +8,7 @@
 ///<reference path='../parser/Validator.ts' />
 
 module ReVIEW {
+	"use strict";
 
 	import t = ReVIEW.i18n.t;
 

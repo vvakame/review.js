@@ -3,6 +3,7 @@
 ///<reference path='../i18n/i18n.ts' />
 
 module ReVIEW.Build {
+	"use strict";
 
 	import i18n = ReVIEW.i18n;
 

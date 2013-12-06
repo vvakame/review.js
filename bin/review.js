@@ -4134,6 +4134,8 @@ var PEG = (function() {
 })(ReVIEW || (ReVIEW = {}));
 ;var ReVIEW;
 (function (ReVIEW) {
+    "use strict";
+
     function isNodeJS() {
         return typeof window === "undefined";
     }
@@ -4348,6 +4350,8 @@ var PEG = (function() {
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
+    "use strict";
+
     ReVIEW.ja = {
         "sample": "こんちゃーす！",
         "description": {
@@ -4413,6 +4417,8 @@ var ReVIEW;
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
+    "use strict";
+
     ReVIEW.en = {
         "sample": "Hello!"
     };
@@ -4420,6 +4426,8 @@ var ReVIEW;
 var ReVIEW;
 (function (ReVIEW) {
     (function (i18n) {
+        "use strict";
+
         function setup(lang) {
             if (typeof lang === "undefined") { lang = "ja"; }
             if (typeof (i18next).backend !== "undefined") {
@@ -4468,6 +4476,8 @@ var ReVIEW;
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
+    "use strict";
+
     (function (Parse) {
         void 0;
     })(ReVIEW.Parse || (ReVIEW.Parse = {}));
@@ -4697,6 +4707,8 @@ var __extends = this.__extends || function (d, b) {
 var ReVIEW;
 (function (ReVIEW) {
     (function (Parse) {
+        "use strict";
+
         function parse(input) {
             var rawResult = PEG.parse(input);
             var root = transform(rawResult).toNode();
@@ -5280,6 +5292,8 @@ var ReVIEW;
 var ReVIEW;
 (function (ReVIEW) {
     (function (Build) {
+        "use strict";
+
         var t = ReVIEW.i18n.t;
 
         var SyntaxTree = ReVIEW.Parse.SyntaxTree;
@@ -5879,6 +5893,8 @@ var ReVIEW;
 var ReVIEW;
 (function (ReVIEW) {
     (function (Build) {
+        "use strict";
+
         var SyntaxTree = ReVIEW.Parse.SyntaxTree;
         var NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
         var BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
@@ -6108,6 +6124,8 @@ var ReVIEW;
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
+    "use strict";
+
     var t = ReVIEW.i18n.t;
 
     (function (ReportLevel) {
@@ -6411,6 +6429,8 @@ var ReVIEW;
 var ReVIEW;
 (function (ReVIEW) {
     (function (Build) {
+        "use strict";
+
         var t = ReVIEW.i18n.t;
 
         var SyntaxTree = ReVIEW.Parse.SyntaxTree;
@@ -6536,6 +6556,8 @@ var ReVIEW;
 var ReVIEW;
 (function (ReVIEW) {
     (function (Build) {
+        "use strict";
+
         var t = ReVIEW.i18n.t;
 
         var SyntaxTree = ReVIEW.Parse.SyntaxTree;
@@ -6730,6 +6752,8 @@ var ReVIEW;
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
+    "use strict";
+
     var t = ReVIEW.i18n.t;
 
     var SyntaxTree = ReVIEW.Parse.SyntaxTree;
@@ -7176,6 +7200,8 @@ var ReVIEW;
 var ReVIEW;
 (function (ReVIEW) {
     (function (Build) {
+        "use strict";
+
         var t = ReVIEW.i18n.t;
 
         var SyntaxTree = ReVIEW.Parse.SyntaxTree;
@@ -7651,6 +7677,8 @@ var ReVIEW;
 var ReVIEW;
 (function (ReVIEW) {
     (function (Build) {
+        "use strict";
+
         var i18n = ReVIEW.i18n;
 
         var SyntaxTree = ReVIEW.Parse.SyntaxTree;
@@ -8225,6 +8253,8 @@ var ReVIEW;
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
+    "use strict";
+
     function start(setup, options) {
         var controller = new ReVIEW.Controller(options);
 

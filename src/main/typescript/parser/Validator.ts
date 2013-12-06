@@ -3,6 +3,7 @@
 ///<reference path='Analyzer.ts' />
 
 module ReVIEW.Build {
+	"use strict";
 
 	import t = ReVIEW.i18n.t;
 

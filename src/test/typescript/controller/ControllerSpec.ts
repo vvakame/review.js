@@ -5,6 +5,8 @@
 ///<reference path='../../../main/typescript/builder/TextBuilder.ts' />
 
 describe("ReVIEW.Controllerの", ()=> {
+	"use strict";
+
 	it("処理が正しく動くこと", ()=> {
 		var files:any = {
 			"ch01.re": "={ch01} ちゃぷたーだよ\n今日の晩ご飯はラフテーだった",

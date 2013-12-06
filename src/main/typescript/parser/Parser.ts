@@ -7,6 +7,7 @@
  * 構文解析用途のモジュール。
  */
 module ReVIEW.Parse {
+	"use strict";
 
 	/**
 	 * 文字列をReVIEW文書として解釈し構文木を返す。
