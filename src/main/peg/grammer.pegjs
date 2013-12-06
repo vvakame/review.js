@@ -52,11 +52,11 @@ InlineElement "inline element"
     ;
 
 BracketArg "bracket argument"
-    = "[" arg:$([^\n\]]*) "]"
+    = "[" arg:$([^\r\n\]]*) "]"
     ;
 
 BraceArg "brace argument"
-    = "{" arg:$([^\n\}]*) "}"
+    = "{" arg:$([^\r\n\}]*) "}"
     ;
 
 // contents との差は paragraph を切るか切らないか
