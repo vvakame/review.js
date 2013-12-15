@@ -47,6 +47,14 @@ if (ReVIEW.isNodeJS()) {
 if (ReVIEW.isNodeJS()) {
 	// Node.js 上で実行されている場合はコマンドライン引数を解釈して処理を実行する。
 
+	var updateNotifier:any = require("update-notifier");
+	var notifier = updateNotifier({
+		"packagePath": "../package.json"
+	});
+	if (notifier.update) {
+		notifier.notify();
+	}
+
 	// TODO i18n
 
 	var fs = require("fs");

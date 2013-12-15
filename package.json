@@ -34,6 +34,7 @@
 	},
 
 	"dependencies": {
+		"update-notifier": "0.1.7",
 		"commander": "2.1.0",
 		"i18next": "1.7.1",
 		"colors": "0.6.2"

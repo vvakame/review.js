@@ -8298,6 +8298,14 @@ if (ReVIEW.isNodeJS()) {
 }
 
 if (ReVIEW.isNodeJS()) {
+    var updateNotifier = require("update-notifier");
+    var notifier = updateNotifier({
+        "packagePath": "../package.json"
+    });
+    if (notifier.update) {
+        notifier.notify();
+    }
+
     var fs = require("fs");
     var packageJson;
     if (fs.existsSync(__dirname + "/../package.json")) {
