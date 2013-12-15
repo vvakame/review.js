@@ -369,7 +369,7 @@ module ReVIEW {
 		}
 
 		get read():(path:string)=>string {
-			return this.original.read || (()=> {
+			return this.original.read || (():string=> {
 				throw new Error("please implement config.read method");
 			});
 		}

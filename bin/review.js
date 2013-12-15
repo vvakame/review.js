@@ -4154,10 +4154,14 @@ var PEG = (function() {
     }
     ReVIEW.flatten = flatten;
 
+    
+
     function nodeToString(process, node) {
         return process.input.substring(node.offset, node.endPos);
     }
     ReVIEW.nodeToString = nodeToString;
+
+    
 
     function nodeContentToString(process, node) {
         var minPos = Number.MAX_VALUE;
@@ -4241,7 +4245,7 @@ var PEG = (function() {
         var builderName = target.charAt(0).toUpperCase() + target.substring(1) + "Builder";
         for (var name in ReVIEW.Build) {
             if (name === builderName) {
-                return new ReVIEW.Build[name]();
+                return new ReVIEW.Build[name];
             }
         }
         return null;
@@ -4430,8 +4434,8 @@ var ReVIEW;
 
         function setup(lang) {
             if (typeof lang === "undefined") { lang = "ja"; }
-            if (typeof (i18next).backend !== "undefined") {
-                (i18next).backend({
+            if (typeof i18next.backend !== "undefined") {
+                i18next.backend({
                     fetchOne: function (lng, ns, func) {
                         func(null, data[lng] || data[lang]);
                     }
@@ -4462,7 +4466,7 @@ var ReVIEW;
         if (ReVIEW.isNodeJS()) {
             i18next = require("i18next");
         } else {
-            i18next = (window).i18n;
+            i18next = window.i18n;
         }
 
         var data = {
@@ -4660,7 +4664,7 @@ var ReVIEW;
                 ret(v);
             }
             v.visitDlistPost(dl, parent);
-        } else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && (ast.ruleName === ReVIEW.Parse.RuleName.Paragraph || ast.ruleName === ReVIEW.Parse.RuleName.BlockElementParagraph)) {
+        } else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && (ast.ruleName === 7 /* Paragraph */ || ast.ruleName === 17 /* BlockElementParagraph */)) {
             var node = ast.toNode();
             var ret = v.visitParagraphPre(node, parent);
             if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
@@ -4697,6 +4701,8 @@ var ReVIEW;
             v.visitDefaultPost(parent, ast);
         }
     }
+
+    
 })(ReVIEW || (ReVIEW = {}));
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -4731,7 +4737,7 @@ var ReVIEW;
             var ulistSet = [];
             ReVIEW.visit(root, {
                 visitDefaultPre: function (ast) {
-                    if (ast.ruleName === RuleName.Ulist) {
+                    if (ast.ruleName === 28 /* Ulist */) {
                         ulistSet.push(ast.toNode());
                     }
                 }
@@ -4780,55 +4786,55 @@ var ReVIEW;
                 throw new ParseError(rawResult, "unknown rule: " + rawResult.syntax);
             }
             switch (rule) {
-                case RuleName.Chapter:
+                case 3 /* Chapter */:
                     return new ChapterSyntaxTree(rawResult);
-                case RuleName.BlockElement:
+                case 11 /* BlockElement */:
                     return new BlockElementSyntaxTree(rawResult);
-                case RuleName.Headline:
+                case 4 /* Headline */:
                     return new HeadlineSyntaxTree(rawResult);
-                case RuleName.InlineElement:
+                case 12 /* InlineElement */:
                     return new InlineElementSyntaxTree(rawResult);
-                case RuleName.BracketArg:
-                case RuleName.BraceArg:
+                case 13 /* BracketArg */:
+                case 14 /* BraceArg */:
                     return new ArgumentSyntaxTree(rawResult);
-                case RuleName.UlistElement:
+                case 29 /* UlistElement */:
                     return new UlistElementSyntaxTree(rawResult);
-                case RuleName.OlistElement:
+                case 31 /* OlistElement */:
                     return new OlistElementSyntaxTree(rawResult);
-                case RuleName.DlistElement:
+                case 33 /* DlistElement */:
                     return new DlistElementSyntaxTree(rawResult);
-                case RuleName.ContentText:
-                case RuleName.BlockElementContentText:
-                case RuleName.InlineElementContentText:
-                case RuleName.ContentInlineText:
-                case RuleName.SinglelineComment:
+                case 10 /* ContentText */:
+                case 20 /* BlockElementContentText */:
+                case 23 /* InlineElementContentText */:
+                case 27 /* ContentInlineText */:
+                case 35 /* SinglelineComment */:
                     return new TextNodeSyntaxTree(rawResult);
 
-                case RuleName.Chapters:
-                case RuleName.Contents:
-                case RuleName.ParagraphSubs:
-                case RuleName.BlockElementContents:
-                case RuleName.BlockElementParagraphSubs:
-                case RuleName.InlineElementContents:
-                case RuleName.ContentInlines:
-                case RuleName.Ulist:
-                case RuleName.Olist:
-                case RuleName.Dlist:
+                case 2 /* Chapters */:
+                case 5 /* Contents */:
+                case 8 /* ParagraphSubs */:
+                case 15 /* BlockElementContents */:
+                case 18 /* BlockElementParagraphSubs */:
+                case 21 /* InlineElementContents */:
+                case 25 /* ContentInlines */:
+                case 28 /* Ulist */:
+                case 30 /* Olist */:
+                case 32 /* Dlist */:
                     return new NodeSyntaxTree(rawResult);
 
-                case RuleName.Start:
-                case RuleName.Paragraph:
-                case RuleName.BlockElementParagraph:
-                case RuleName.BlockElementParagraphSub:
-                case RuleName.DlistElementContent:
+                case 1 /* Start */:
+                case 7 /* Paragraph */:
+                case 17 /* BlockElementParagraph */:
+                case 19 /* BlockElementParagraphSub */:
+                case 34 /* DlistElementContent */:
                     return new NodeSyntaxTree(rawResult);
 
-                case RuleName.Content:
-                case RuleName.ParagraphSub:
-                case RuleName.BlockElementContent:
-                case RuleName.InlineElementContent:
-                case RuleName.SinglelineContent:
-                case RuleName.ContentInline:
+                case 6 /* Content */:
+                case 9 /* ParagraphSub */:
+                case 16 /* BlockElementContent */:
+                case 22 /* InlineElementContent */:
+                case 24 /* SinglelineContent */:
+                case 26 /* ContentInline */:
                     return transform(rawResult.content);
                 default:
                     return new SyntaxTree(rawResult);
@@ -4846,7 +4852,7 @@ var ReVIEW;
             };
 
             originalChildNodes.forEach(function (child) {
-                if (child.ruleName === RuleName.SinglelineComment) {
+                if (child.ruleName === 35 /* SinglelineComment */) {
                     currentSet.children.push(child);
                 } else if (!currentSet.parent) {
                     currentSet.parent = child;
@@ -4878,14 +4884,16 @@ var ReVIEW;
             function ParseError(syntax, message) {
                 this.syntax = syntax;
                 this.message = message;
-                if ((Error).captureStackTrace) {
-                    (Error).captureStackTrace(this, ParseError);
+                if (Error.captureStackTrace) {
+                    Error.captureStackTrace(this, ParseError);
                 }
                 this.name = "ParseError";
             }
             return ParseError;
         })();
         Parse.ParseError = ParseError;
+
+        
 
         (function (RuleName) {
             RuleName[RuleName["SyntaxError"] = 0] = "SyntaxError";
@@ -5057,7 +5065,7 @@ var ReVIEW;
                 if (this instanceof clazz) {
                     return this;
                 } else {
-                    throw new Error("this node is not " + clazz.name + ", actual " + (this).constructor.name);
+                    throw new Error("this node is not " + clazz.name + ", actual " + this.constructor.name);
                 }
             };
 
@@ -5311,6 +5319,8 @@ var ReVIEW;
         })(Build.SyntaxType || (Build.SyntaxType = {}));
         var SyntaxType = Build.SyntaxType;
 
+        
+
         var AcceptableSyntaxes = (function () {
             function AcceptableSyntaxes(acceptableSyntaxes) {
                 this.acceptableSyntaxes = acceptableSyntaxes;
@@ -5338,7 +5348,7 @@ var ReVIEW;
             Object.defineProperty(AcceptableSyntaxes.prototype, "inlines", {
                 get: function () {
                     return this.acceptableSyntaxes.filter(function (s) {
-                        return s.type === SyntaxType.Inline;
+                        return s.type === 1 /* Inline */;
                     });
                 },
                 enumerable: true,
@@ -5348,7 +5358,7 @@ var ReVIEW;
             Object.defineProperty(AcceptableSyntaxes.prototype, "blocks", {
                 get: function () {
                     return this.acceptableSyntaxes.filter(function (s) {
-                        return s.type === SyntaxType.Block;
+                        return s.type === 0 /* Block */;
                     });
                 },
                 enumerable: true,
@@ -5358,7 +5368,7 @@ var ReVIEW;
             Object.defineProperty(AcceptableSyntaxes.prototype, "others", {
                 get: function () {
                     return this.acceptableSyntaxes.filter(function (s) {
-                        return s.type === SyntaxType.Other;
+                        return s.type === 2 /* Other */;
                     });
                 },
                 enumerable: true,
@@ -5395,6 +5405,10 @@ var ReVIEW;
         })();
         Build.AcceptableSyntax = AcceptableSyntax;
 
+        
+
+        
+
         var AnalyzeProcess = (function () {
             function AnalyzeProcess() {
                 this.acceptableSyntaxes = [];
@@ -5405,35 +5419,35 @@ var ReVIEW;
 
             AnalyzeProcess.prototype.build = function (methodName) {
                 if (methodName.indexOf("block_") === 0) {
-                    this.current.type = this.current.type || SyntaxType.Block;
+                    this.current.type = this.current.type || 0 /* Block */;
                     this.current.symbolName = this.current.symbolName || methodName.substring("block_".length);
                 } else if (methodName.indexOf("inline_") === 0) {
-                    this.current.type = this.current.type || SyntaxType.Inline;
+                    this.current.type = this.current.type || 1 /* Inline */;
                     this.current.symbolName = this.current.symbolName || methodName.substring("inline_".length);
                 } else {
-                    this.current.type = this.current.type || SyntaxType.Other;
+                    this.current.type = this.current.type || 2 /* Other */;
                     this.current.symbolName = this.current.symbolName || methodName;
                 }
 
                 switch (this.current.type) {
-                    case SyntaxType.Block:
+                    case 0 /* Block */:
                         if (this.current.argsLength.length === 0) {
-                            throw new Build.AnalyzerError("must call builder.checkArgsLength(...number[]) in " + methodName);
+                            throw new ReVIEW.Build.AnalyzerError("must call builder.checkArgsLength(...number[]) in " + methodName);
                         }
                         break;
-                    case SyntaxType.Other:
+                    case 2 /* Other */:
                         if (!this.current.clazz) {
-                            throw new Build.AnalyzerError("must call builder.setClass(class) in " + methodName);
+                            throw new ReVIEW.Build.AnalyzerError("must call builder.setClass(class) in " + methodName);
                         }
                         break;
-                    case SyntaxType.Inline:
+                    case 1 /* Inline */:
                         break;
                 }
                 if (!this.current.description) {
-                    throw new Build.AnalyzerError("must call builder.setDescription(string) in " + methodName);
+                    throw new ReVIEW.Build.AnalyzerError("must call builder.setDescription(string) in " + methodName);
                 }
                 if (!this.current.process) {
-                    throw new Build.AnalyzerError("must call builder.processNode(func) in " + methodName);
+                    throw new ReVIEW.Build.AnalyzerError("must call builder.processNode(func) in " + methodName);
                 }
 
                 this.acceptableSyntaxes.push(this.current);
@@ -5519,7 +5533,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.headline = function (builder) {
-                builder.setSyntaxType(SyntaxType.Other);
+                builder.setSyntaxType(2 /* Other */);
                 builder.setClass(ReVIEW.Parse.HeadlineSyntaxTree);
                 builder.setDescription(t("description.headline"));
                 builder.processNode(function (process, n) {
@@ -5540,7 +5554,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.ulist = function (builder) {
-                builder.setSyntaxType(SyntaxType.Other);
+                builder.setSyntaxType(2 /* Other */);
                 builder.setClass(ReVIEW.Parse.UlistElementSyntaxTree);
                 builder.setDescription(t("description.ulist"));
                 builder.processNode(function (process, n) {
@@ -5553,7 +5567,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.olist = function (builder) {
-                builder.setSyntaxType(SyntaxType.Other);
+                builder.setSyntaxType(2 /* Other */);
                 builder.setClass(ReVIEW.Parse.OlistElementSyntaxTree);
                 builder.setDescription(t("description.olist"));
                 builder.processNode(function (process, n) {
@@ -5566,7 +5580,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.dlist = function (builder) {
-                builder.setSyntaxType(SyntaxType.Other);
+                builder.setSyntaxType(2 /* Other */);
                 builder.setClass(ReVIEW.Parse.DlistElementSyntaxTree);
                 builder.setDescription(t("description.dlist"));
                 builder.processNode(function (process, n) {
@@ -5579,7 +5593,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.block_list = function (builder) {
-                builder.setSyntaxType(SyntaxType.Block);
+                builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("list");
                 builder.setDescription(t("description.block_list"));
                 builder.checkArgsLength(2);
@@ -5595,7 +5609,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.block_listnum = function (builder) {
-                builder.setSyntaxType(SyntaxType.Block);
+                builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("listnum");
                 builder.setDescription(t("description.block_listnum"));
                 builder.checkArgsLength(2);
@@ -5611,7 +5625,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.inline_list = function (builder) {
-                builder.setSyntaxType(SyntaxType.Inline);
+                builder.setSyntaxType(1 /* Inline */);
                 builder.setSymbol("list");
                 builder.setDescription(t("description.inline_list"));
                 builder.processNode(function (process, n) {
@@ -5625,7 +5639,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.block_emlist = function (builder) {
-                builder.setSyntaxType(SyntaxType.Block);
+                builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("emlist");
                 builder.setDescription(t("description.block_emlist"));
                 builder.checkArgsLength(0, 1);
@@ -5639,7 +5653,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.block_emlistnum = function (builder) {
-                builder.setSyntaxType(SyntaxType.Block);
+                builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("emlistnum");
                 builder.setDescription(t("description.block_emlistnum"));
                 builder.checkArgsLength(0);
@@ -5653,7 +5667,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.inline_hd = function (builder) {
-                builder.setSyntaxType(SyntaxType.Inline);
+                builder.setSyntaxType(1 /* Inline */);
                 builder.setSymbol("hd");
                 builder.setDescription(t("description.inline_hd"));
                 builder.processNode(function (process, n) {
@@ -5667,7 +5681,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.block_image = function (builder) {
-                builder.setSyntaxType(SyntaxType.Block);
+                builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("image");
                 builder.setDescription(t("description.block_image"));
                 builder.checkArgsLength(2, 3);
@@ -5683,7 +5697,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.block_indepimage = function (builder) {
-                builder.setSyntaxType(SyntaxType.Block);
+                builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("indepimage");
                 builder.setDescription(t("description.block_indepimage"));
                 builder.checkArgsLength(1, 2, 3);
@@ -5697,7 +5711,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.inline_img = function (builder) {
-                builder.setSyntaxType(SyntaxType.Inline);
+                builder.setSyntaxType(1 /* Inline */);
                 builder.setSymbol("img");
                 builder.setDescription(t("description.inline_img"));
                 builder.processNode(function (process, n) {
@@ -5711,7 +5725,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.inline_icon = function (builder) {
-                builder.setSyntaxType(SyntaxType.Block);
+                builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("icon");
                 builder.setDescription(t("description.inline_icon"));
                 builder.processNode(function (process, n) {
@@ -5724,7 +5738,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.block_footnote = function (builder) {
-                builder.setSyntaxType(SyntaxType.Block);
+                builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("footnote");
                 builder.setDescription(t("description.block_footnote"));
                 builder.checkArgsLength(2);
@@ -5740,7 +5754,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.inline_fn = function (builder) {
-                builder.setSyntaxType(SyntaxType.Inline);
+                builder.setSyntaxType(1 /* Inline */);
                 builder.setSymbol("fn");
                 builder.setDescription(t("description.inline_fn"));
                 builder.processNode(function (process, n) {
@@ -5758,7 +5772,7 @@ var ReVIEW;
                 for (var _i = 0; _i < (arguments.length - 2); _i++) {
                     argsLength[_i] = arguments[_i + 2];
                 }
-                builder.setSyntaxType(SyntaxType.Block);
+                builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol(symbol);
                 builder.setDescription(t("description.block_" + symbol));
                 builder.checkArgsLength.apply(builder, argsLength);
@@ -5793,7 +5807,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.inlineDecorationSyntax = function (builder, symbol) {
-                builder.setSyntaxType(SyntaxType.Inline);
+                builder.setSyntaxType(1 /* Inline */);
                 builder.setSymbol(symbol);
                 builder.setDescription(t("description.inline_" + symbol));
                 builder.processNode(function (process, n) {
@@ -5830,7 +5844,7 @@ var ReVIEW;
             };
 
             DefaultAnalyzer.prototype.block_label = function (builder) {
-                builder.setSyntaxType(SyntaxType.Block);
+                builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("label");
                 builder.setDescription(t("description.block_label"));
                 builder.checkArgsLength(1);
@@ -5906,13 +5920,15 @@ var ReVIEW;
         var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
         var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
+        
+
         var DefaultBuilder = (function () {
             function DefaultBuilder() {
                 this.extention = "bug";
             }
             Object.defineProperty(DefaultBuilder.prototype, "name", {
                 get: function () {
-                    return (this).constructor.name;
+                    return this.constructor.name;
                 },
                 enumerable: true,
                 configurable: true
@@ -6042,7 +6058,7 @@ var ReVIEW;
 
                 func = this["block_" + name + "_pre"];
                 if (typeof func !== "function") {
-                    throw new Build.AnalyzerError("block_" + name + "_pre or block_" + name + " is not Function");
+                    throw new ReVIEW.Build.AnalyzerError("block_" + name + "_pre or block_" + name + " is not Function");
                 }
                 return func.call(this, process, node);
             };
@@ -6056,7 +6072,7 @@ var ReVIEW;
 
                 func = this["block_" + name + "_post"];
                 if (typeof func !== "function") {
-                    throw new Build.AnalyzerError("block_" + name + "_post is not Function");
+                    throw new ReVIEW.Build.AnalyzerError("block_" + name + "_post is not Function");
                 }
                 return func.call(this, process, node);
             };
@@ -6070,7 +6086,7 @@ var ReVIEW;
 
                 func = this["inline_" + name + "_pre"];
                 if (typeof func !== "function") {
-                    throw new Build.AnalyzerError("inline_" + name + "_pre or inline_" + name + " is not Function");
+                    throw new ReVIEW.Build.AnalyzerError("inline_" + name + "_pre or inline_" + name + " is not Function");
                 }
                 return func.call(this, process, node);
             };
@@ -6084,7 +6100,7 @@ var ReVIEW;
 
                 func = this["inline_" + name + "_post"];
                 if (typeof func !== "function") {
-                    throw new Build.AnalyzerError("inline_" + name + "_post is not Function");
+                    throw new ReVIEW.Build.AnalyzerError("inline_" + name + "_post is not Function");
                 }
                 return func.call(this, process, node);
             };
@@ -6112,7 +6128,7 @@ var ReVIEW;
                     return symbol.node === node;
                 });
                 if (founds.length !== 1) {
-                    throw new Build.AnalyzerError("invalid status.");
+                    throw new ReVIEW.Build.AnalyzerError("invalid status.");
                 }
                 return founds[0];
             };
@@ -6127,6 +6143,10 @@ var ReVIEW;
     "use strict";
 
     var t = ReVIEW.i18n.t;
+
+    
+
+    
 
     (function (ReportLevel) {
         ReportLevel[ReportLevel["Info"] = 0] = "Info";
@@ -6153,15 +6173,15 @@ var ReVIEW;
             this.reports = [];
         }
         BookProcess.prototype.info = function (message) {
-            this.reports.push(new ProcessReport(ReportLevel.Info, null, null, message));
+            this.reports.push(new ProcessReport(0 /* Info */, null, null, message));
         };
 
         BookProcess.prototype.warn = function (message) {
-            this.reports.push(new ProcessReport(ReportLevel.Warning, null, null, message));
+            this.reports.push(new ProcessReport(1 /* Warning */, null, null, message));
         };
 
         BookProcess.prototype.error = function (message) {
-            this.reports.push(new ProcessReport(ReportLevel.Error, null, null, message));
+            this.reports.push(new ProcessReport(2 /* Error */, null, null, message));
         };
         return BookProcess;
     })();
@@ -6182,7 +6202,7 @@ var ReVIEW;
             for (var _i = 0; _i < (arguments.length - 1); _i++) {
                 nodes[_i] = arguments[_i + 1];
             }
-            this._reports.push(new ProcessReport(ReportLevel.Info, this.part, this.chapter, message, nodes));
+            this._reports.push(new ProcessReport(0 /* Info */, this.part, this.chapter, message, nodes));
         };
 
         Process.prototype.warn = function (message) {
@@ -6190,7 +6210,7 @@ var ReVIEW;
             for (var _i = 0; _i < (arguments.length - 1); _i++) {
                 nodes[_i] = arguments[_i + 1];
             }
-            this._reports.push(new ProcessReport(ReportLevel.Warning, this.part, this.chapter, message, nodes));
+            this._reports.push(new ProcessReport(1 /* Warning */, this.part, this.chapter, message, nodes));
         };
 
         Process.prototype.error = function (message) {
@@ -6198,7 +6218,7 @@ var ReVIEW;
             for (var _i = 0; _i < (arguments.length - 1); _i++) {
                 nodes[_i] = arguments[_i + 1];
             }
-            this._reports.push(new ProcessReport(ReportLevel.Error, this.part, this.chapter, message, nodes));
+            this._reports.push(new ProcessReport(2 /* Error */, this.part, this.chapter, message, nodes));
         };
 
         Process.prototype.nextIndex = function (kind) {
@@ -6441,6 +6461,8 @@ var ReVIEW;
 
         var nodeContentToString = ReVIEW.nodeContentToString;
 
+        
+
         var SyntaxPreprocessor = (function () {
             function SyntaxPreprocessor() {
             }
@@ -6567,6 +6589,8 @@ var ReVIEW;
         var InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
         var ArgumentSyntaxTree = ReVIEW.Parse.ArgumentSyntaxTree;
 
+        
+
         var DefaultValidator = (function () {
             function DefaultValidator() {
             }
@@ -6584,12 +6608,12 @@ var ReVIEW;
                 acceptableSyntaxes.acceptableSyntaxes.forEach(function (syntax) {
                     var prefix;
                     switch (syntax.type) {
-                        case Build.SyntaxType.Other:
+                        case 2 /* Other */:
                             return;
-                        case Build.SyntaxType.Block:
+                        case 0 /* Block */:
                             prefix = "block_";
                             break;
-                        case Build.SyntaxType.Inline:
+                        case 1 /* Inline */:
                             prefix = "inline_";
                             break;
                     }
@@ -6598,7 +6622,7 @@ var ReVIEW;
                     builders.forEach(function (builder) {
                         var func = builder[funcName1] || builder[funcName2];
                         if (!func) {
-                            book.process.error(Build.SyntaxType[syntax.type] + " " + syntax.symbolName + " is not supported in " + builder.name);
+                            book.process.error(ReVIEW.Build.SyntaxType[syntax.type] + " " + syntax.symbolName + " is not supported in " + builder.name);
                         }
                     });
                 });
@@ -6765,6 +6789,10 @@ var ReVIEW;
 
     var flatten = ReVIEW.flatten;
 
+    
+
+    
+
     var Controller = (function () {
         function Controller(options) {
             if (typeof options === "undefined") { options = {}; }
@@ -6796,7 +6824,7 @@ var ReVIEW;
                 validator.start(book, acceptableSyntaxes, _this.config.builders);
             });
             if (book.reports.some(function (report) {
-                return report.level === ReVIEW.ReportLevel.Error;
+                return report.level === 2 /* Error */;
             })) {
                 this.config.listener.onReports(book.reports);
                 this.config.listener.onCompileFailed();
@@ -7068,11 +7096,11 @@ var ReVIEW;
                     });
                 }
                 message += report.message;
-                if (report.level === ReVIEW.ReportLevel.Error) {
+                if (report.level === 2 /* Error */) {
                     console.warn(message.error);
-                } else if (report.level === ReVIEW.ReportLevel.Warning) {
+                } else if (report.level === 1 /* Warning */) {
                     console.error(message.warn);
-                } else if (report.level === ReVIEW.ReportLevel.Info) {
+                } else if (report.level === 0 /* Info */) {
                     console.info(message.info);
                 } else {
                     throw new Error("unknown report level.");
@@ -7157,11 +7185,11 @@ var ReVIEW;
                     });
                 }
                 message += report.message;
-                if (report.level === ReVIEW.ReportLevel.Error) {
+                if (report.level === 2 /* Error */) {
                     console.warn(message);
-                } else if (report.level === ReVIEW.ReportLevel.Warning) {
+                } else if (report.level === 1 /* Warning */) {
                     console.error(message);
-                } else if (report.level === ReVIEW.ReportLevel.Info) {
+                } else if (report.level === 0 /* Info */) {
                     console.info(message);
                 } else {
                     throw new Error("unknown report level.");
@@ -7669,7 +7697,7 @@ var ReVIEW;
                 return false;
             };
             return TextBuilder;
-        })(Build.DefaultBuilder);
+        })(ReVIEW.Build.DefaultBuilder);
         Build.TextBuilder = TextBuilder;
     })(ReVIEW.Build || (ReVIEW.Build = {}));
     var Build = ReVIEW.Build;
@@ -8246,11 +8274,12 @@ var ReVIEW;
                 process.out(";");
             };
             return HtmlBuilder;
-        })(Build.DefaultBuilder);
+        })(ReVIEW.Build.DefaultBuilder);
         Build.HtmlBuilder = HtmlBuilder;
     })(ReVIEW.Build || (ReVIEW.Build = {}));
     var Build = ReVIEW.Build;
 })(ReVIEW || (ReVIEW = {}));
+
 var ReVIEW;
 (function (ReVIEW) {
     "use strict";
@@ -8304,11 +8333,11 @@ if (ReVIEW.isNodeJS()) {
             result.book.reports.forEach(function (report) {
                 var log;
                 switch (report.level) {
-                    case ReVIEW.ReportLevel.Info:
+                    case 0 /* Info */:
                         log = console.log;
-                    case ReVIEW.ReportLevel.Warning:
+                    case 1 /* Warning */:
                         log = console.warn;
-                    case ReVIEW.ReportLevel.Error:
+                    case 2 /* Error */:
                         log = console.error;
                 }
                 var message = "";

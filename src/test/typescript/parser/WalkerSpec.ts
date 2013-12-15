@@ -405,7 +405,7 @@ describe("ReVIEW.visitについて", ()=> {
 		it("探索方法を指定できる", ()=> {
 			var count = 0;
 			ReVIEW.visit(result.ast, {
-				visitDefaultPre: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				visitDefaultPre: (ast:ReVIEW.Parse.SyntaxTree):any=> {
 					count++;
 					if (ast.ruleName === ReVIEW.Parse.RuleName.Start) {
 						return (v:ReVIEW.ITreeVisitor) => {
