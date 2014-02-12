@@ -46,7 +46,7 @@ module ReVIEW.Build {
 		 * @param node
 		 * @returns {AcceptableSyntax[]}
 		 */
-			find(node:SyntaxTree):AcceptableSyntax[] {
+		find(node:SyntaxTree):AcceptableSyntax[] {
 			var results:AcceptableSyntax[];
 			if (node instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
 				var inline = node.toInlineElement();

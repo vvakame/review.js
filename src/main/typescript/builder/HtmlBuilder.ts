@@ -337,7 +337,7 @@ module ReVIEW.Build {
 
 		inline_ruby_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("<ruby>");
-			return (v) => {
+			return (v: ReVIEW.ITreeVisitor) => {
 				// name, args はパス
 				node.childNodes.forEach(node=> {
 					var contentString = nodeContentToString(process, node);
@@ -365,7 +365,7 @@ module ReVIEW.Build {
 
 		inline_kw_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("<b class=\"kw\">");
-			return (v) => {
+			return (v: ReVIEW.ITreeVisitor) => {
 				// name, args はパス
 				node.childNodes.forEach(node=> {
 					var contentString = nodeContentToString(process, node);

@@ -83,7 +83,7 @@ module ReVIEW.Parse {
 	 * @returns {*}
 	 */
 	export function transform(rawResult:IConcreatSyntaxTree):SyntaxTree {
-		if (<any>rawResult === "") {
+		if (!rawResult) {
 			return null;
 		}
 		var rule = RuleName[rawResult.syntax];
@@ -347,7 +347,7 @@ module ReVIEW.Parse {
 		 * @param value
 		 * @returns {*=}
 		 */
-			checkNumber(value:any):number {
+		checkNumber(value:any):number {
 			if (typeof value !== "number") {
 				throw new Error("number required. actual:" + (typeof value) + ":" + value);
 			} else {
@@ -360,7 +360,7 @@ module ReVIEW.Parse {
 		 * @param value
 		 * @returns {*=}
 		 */
-			checkString(value:any):string {
+		checkString(value:any):string {
 			if (typeof value !== "string") {
 				throw new Error("string required. actual:" + (typeof value) + ":" + value);
 			} else {
@@ -373,7 +373,7 @@ module ReVIEW.Parse {
 		 * @param value
 		 * @returns {*=}
 		 */
-			checkObject(value:any):any {
+		checkObject(value:any):any {
 			if (typeof value !== "object") {
 				throw new Error("object required. actual:" + (typeof value) + ":" + value);
 			} else {
@@ -386,7 +386,7 @@ module ReVIEW.Parse {
 		 * @param value
 		 * @returns {*=}
 		 */
-			checkArray(value:any):any[] {
+		checkArray(value:any):any[] {
 			if (!Array.isArray(value)) {
 				throw new Error("array required. actual:" + (typeof value) + ":" + value);
 			} else {
@@ -450,70 +450,70 @@ module ReVIEW.Parse {
 		/**
 		 * thisをNodeSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-			toNode():NodeSyntaxTree {
+		toNode():NodeSyntaxTree {
 			return this.toOtherNode<NodeSyntaxTree>(NodeSyntaxTree);
 		}
 
 		/**
 		 * thisをBlockElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-			toBlockElement():BlockElementSyntaxTree {
+		toBlockElement():BlockElementSyntaxTree {
 			return this.toOtherNode<BlockElementSyntaxTree>(BlockElementSyntaxTree);
 		}
 
 		/**
 		 * thisをInlineElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-			toInlineElement():InlineElementSyntaxTree {
+		toInlineElement():InlineElementSyntaxTree {
 			return this.toOtherNode<InlineElementSyntaxTree>(InlineElementSyntaxTree);
 		}
 
 		/**
 		 * thisをArgumentSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-			toArgument():ArgumentSyntaxTree {
+		toArgument():ArgumentSyntaxTree {
 			return this.toOtherNode<ArgumentSyntaxTree>(ArgumentSyntaxTree);
 		}
 
 		/**
 		 * thisをChapterSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-			toChapter():ChapterSyntaxTree {
+		toChapter():ChapterSyntaxTree {
 			return this.toOtherNode<ChapterSyntaxTree>(ChapterSyntaxTree);
 		}
 
 		/**
 		 * thisをHeadlineSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-			toHeadline():HeadlineSyntaxTree {
+		toHeadline():HeadlineSyntaxTree {
 			return this.toOtherNode<HeadlineSyntaxTree>(HeadlineSyntaxTree);
 		}
 
 		/**
 		 * thisをUlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-			toUlist():UlistElementSyntaxTree {
+		toUlist():UlistElementSyntaxTree {
 			return this.toOtherNode<UlistElementSyntaxTree>(UlistElementSyntaxTree);
 		}
 
 		/**
 		 * thisをOlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-			toOlist():OlistElementSyntaxTree {
+		toOlist():OlistElementSyntaxTree {
 			return this.toOtherNode<OlistElementSyntaxTree>(OlistElementSyntaxTree);
 		}
 
 		/**
 		 * thisをDlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-			toDlist():DlistElementSyntaxTree {
+		toDlist():DlistElementSyntaxTree {
 			return this.toOtherNode<DlistElementSyntaxTree>(DlistElementSyntaxTree);
 		}
 
 		/**
 		 * thisをTextNodeSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-			toTextNode():TextNodeSyntaxTree {
+		toTextNode():TextNodeSyntaxTree {
 			return this.toOtherNode<TextNodeSyntaxTree>(TextNodeSyntaxTree);
 		}
 	}
@@ -568,7 +568,7 @@ module ReVIEW.Parse {
 			super(data);
 
 			this.headline = transform(this.checkObject(data.headline)).toHeadline();
-			if (typeof data.text === "string") {
+			if (typeof data.text === "string" || data.text === null) {
 				this.text = [];
 				return;
 			}
@@ -609,10 +609,10 @@ module ReVIEW.Parse {
 			super(data);
 
 			this.level = this.checkNumber(data.level);
-			if (data.cmd !== "") {
+			if (data.cmd) {
 				this.cmd = transform(this.checkObject(data.cmd)).toArgument();
 			}
-			if (data.label !== "") {
+			if (data.label) {
 				this.label = transform(this.checkObject(data.label)).toArgument();
 			}
 			this.caption = transform(this.checkObject(data.caption)).toNode();

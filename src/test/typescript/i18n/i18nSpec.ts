@@ -1,5 +1,5 @@
-///<reference path='../libs/DefinitelyTyped/mocha/mocha.d.ts' />
-///<reference path='../libs/DefinitelyTyped/expectations/expectations.d.ts' />
+///<reference path='../../../main/typescript/libs/typings/mocha/mocha.d.ts' />
+///<reference path='../../../main/typescript/libs/typings/expectations/expectations.d.ts' />
 
 ///<reference path='../../../main/typescript/i18n/i18n.ts' />
 

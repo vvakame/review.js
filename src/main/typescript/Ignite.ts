@@ -1,4 +1,4 @@
-///<reference path='libs/DefinitelyTyped/node/node.d.ts' />
+///<reference path='libs/typings/node/node.d.ts' />
 
 ///<reference path='utils/Utils.ts' />
 ///<reference path='i18n/i18n.ts' />
@@ -47,9 +47,17 @@ if (ReVIEW.isNodeJS()) {
 if (ReVIEW.isNodeJS()) {
 	// Node.js 上で実行されている場合はコマンドライン引数を解釈して処理を実行する。
 
+	var fs = require("fs");
+	var recursivePackageFinder = (path:string) => {
+		if (fs.existsSync(fs.realpathSync(path))) {
+			return fs.realpathSync(path);
+		} else {
+			return recursivePackageFinder("../" + path);
+		}
+	};
 	var updateNotifier:any = require("update-notifier");
 	var notifier = updateNotifier({
-		"packagePath": "../package.json"
+		"packagePath": recursivePackageFinder("./package.json")
 	});
 	if (notifier.update) {
 		notifier.notify();
@@ -57,7 +65,6 @@ if (ReVIEW.isNodeJS()) {
 
 	// TODO i18n
 
-	var fs = require("fs");
 	var packageJson:any;
 	if (fs.existsSync(__dirname + "/../package.json")) {
 		// installed

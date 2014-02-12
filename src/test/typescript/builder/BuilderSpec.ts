@@ -1,5 +1,5 @@
-///<reference path='../libs/DefinitelyTyped/mocha/mocha.d.ts' />
-///<reference path='../libs/DefinitelyTyped/expectations/expectations.d.ts' />
+///<reference path='../../../main/typescript/libs/typings/mocha/mocha.d.ts' />
+///<reference path='../../../main/typescript/libs/typings/expectations/expectations.d.ts' />
 
 ///<reference path='../TestHelper.ts' />
 
@@ -11,7 +11,7 @@ describe("ReVIEW.Buildの", ()=> {
 
 	it("処理が正しく動くこと", ()=> {
 		var success = Test.compile({
-			read: path => {
+			read: (path: any) => {
 				return {
 					"ch01.re": "={ch01} ちゃぷたーだよ\n今日の晩ご飯はラフテーだった",
 					"ch02.re": "={ch02} チャプター2\n参照 @<hd>{ch02} とか\n//list[hoge][fuga]{\ntest\n//}"
@@ -58,7 +58,7 @@ describe("ReVIEW.Buildの", ()=> {
 	describe("DefaultValidatorの動作の確認として", () => {
 		it("トップレベルのChapterは必ず level 1 であること", ()=> {
 			var failure = Test.compile({
-				read: path => {
+				read: (path: any) => {
 					return {
 						"ch01.re": "= level 1\n== level2",
 						"ch02.re": "== level 2"

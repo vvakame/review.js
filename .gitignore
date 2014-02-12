@@ -8,6 +8,7 @@ reviewjs-*.tgz
 # for grunt
 bower_components/
 bower-task/
+tsd-cache/
 d.ts/
 src/main/typescript/libs/
 src/test/typescript/libs/
@@ -18,3 +19,4 @@ src/main/peg/*.js
 test-results.xml
 
 bin/out/
+tscommand.tmp.txt

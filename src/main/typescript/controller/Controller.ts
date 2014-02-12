@@ -78,7 +78,7 @@ module ReVIEW {
 		 * 通常、 ReVIEW.start 経由で呼び出される。
 		 * @param data
 		 */
-			initConfig(data:ReVIEW.IConfig):void {
+		initConfig(data:ReVIEW.IConfig):void {
 			if (ReVIEW.isNodeJS()) {
 				this.config = new NodeJSConfig(this.options, data);
 			} else {
@@ -90,7 +90,7 @@ module ReVIEW {
 		 * 処理開始
 		 * @returns {Book}
 		 */
-			process():Book {
+		process():Book {
 			var acceptableSyntaxes = this.config.analyzer.getAcceptableSyntaxes();
 
 			if (this.config.listener.onAcceptables(acceptableSyntaxes) === false) {

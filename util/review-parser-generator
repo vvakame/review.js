@@ -26,7 +26,7 @@ var template = {
 	contents: function (ruleName) {
 		var func = (function () {
 			var processed = [c];
-			if (cc !== "") {
+			if (cc) {
 				if (Array.isArray(cc.content)) {
 					cc.content.forEach(function (c) {
 						processed.push(c);

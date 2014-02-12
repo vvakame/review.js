@@ -4,41 +4,41 @@ module.exports = function (grunt) {
 		bwr: grunt.file.readJSON('bower.json'),
 		// Java用プロジェクト構成向け設定
 		opt: {
-			"jsMain": "src/main/javascript",
-			"tsMain": "src/main/typescript",
-			"tsMainLib": "src/main/typescript/libs",
-			"tsTest": "src/test/typescript",
-			"tsTestLib": "src/test/typescript/libs",
-			"peg": "src/main/peg",
-			"res": "src/main/resources",
-			"jsLib": "bin/lib",
+			client: {
+				"jsMain": "src/main/javascript",
+				"tsMain": "src/main/typescript",
+				"tsMainLib": "src/main/typescript/libs",
+				"tsTest": "src/test/typescript",
+				"tsTestLib": "src/test/typescript/libs",
+				"peg": "src/main/peg",
+				"res": "src/main/resources",
+				"jsLib": "bin/lib",
 
-			"outBase": "bin",
-			"jsMainOut": "bin/out",
-			"jsTestOut": "src/test/typescript"
+				"outBase": "bin",
+				"jsMainOut": "bin/out",
+				"jsTestOut": "src/test/typescript"
+			}
 		},
 
-		typescript: {
-			main: { // --declarations --sourcemap --target ES5 --out client/scripts/main.js client/scripts/main.ts
-				src: ['<%= opt.tsMain %>/Ignite.ts'],
-				dest: '<%= opt.jsMainOut %>/main.js',
-				options: {
-					target: 'es5',
-					base_path: '<%= opt.tsMain %>',
-					sourcemap: false,
-					declaration: true,
-					noImplicitAny: false // node.d.ts がエラー吐く
-				}
+		ts: {
+			options: {
+				compile: true,                 // perform compilation. [true (default) | false]
+				comments: false,               // same as !removeComments. [true | false (default)]
+				target: 'es5',                 // target javascript language. [es3 (default) | es5]
+				module: 'commonjs',            // target javascript module style. [amd (default) | commonjs]
+				noImplicitAny: true,
+				sourceMap: false,              // generate a source map for every output js file. [true (default) | false]
+				sourceRoot: '',                // where to locate TypeScript files. [(default) '' == source ts location]
+				mapRoot: '',                   // where to locate .map.js files. [(default) '' == generated js location.]
+				declaration: false             // generate a declaration .d.ts file for every output js file. [true | false (default)]
 			},
-			test: {
-				src: ['<%= opt.tsTest %>/MainSpec.ts'],
-				dest: '<%= opt.tsTest %>/main-spec.js',
-				options: {
-					target: 'es5',
-					sourcemap: false,
-					declaration: false,
-					noImplicitAny: false // node.d.ts がエラー吐く
-				}
+			clientMain: {
+				src: ['<%= opt.client.tsMain %>/Ignite.ts'],
+				out: '<%= opt.client.jsMainOut %>/main.js'
+			},
+			clientTest: {
+				src: ['<%= opt.client.tsTest %>/MainSpec.ts'],
+				out: '<%= opt.client.jsTestOut %>/main-spec.js'
 			}
 		},
 		tslint: {
@@ -94,10 +94,10 @@ module.exports = function (grunt) {
 				}
 			},
 			files: {
-				src: ['<%= opt.tsMain %>/**/*.ts', '<%= opt.tsTest %>/**/*.ts'],
+				src: ['<%= opt.client.tsMain %>/**/*.ts', '<%= opt.client.tsTest %>/**/*.ts'],
 				filter: function (filepath) {
-					var mainLib = grunt.config.get("opt.tsMainLib") + "/";
-					var testLib = grunt.config.get("opt.tsTestLib") + "/";
+					var mainLib = grunt.config.get("opt.client.tsMainLib") + "/";
+					var testLib = grunt.config.get("opt.client.tsTestLib") + "/";
 					if (filepath.indexOf(mainLib) !== -1 || filepath.indexOf(testLib) !== -1) {
 						return false;
 					}
@@ -108,11 +108,11 @@ module.exports = function (grunt) {
 		},
 		watch: {
 			"typescript-main": {
-				files: ['<%= opt.tsMain %>/**/*.ts'],
+				files: ['<%= opt.client.tsMain %>/**/*.ts'],
 				tasks: ['typescript:main']
 			},
 			"typescript-test": {
-				files: [ '<%= opt.tsTest %>/**/*.ts'],
+				files: [ '<%= opt.client.tsTest %>/**/*.ts'],
 				tasks: ['typescript']
 			}
 		},
@@ -128,6 +128,20 @@ module.exports = function (grunt) {
 				}
 			}
 		},
+		tsd: {
+			client: {
+				options: {
+					// execute a command
+					command: 'reinstall',
+
+					//optional: always get from HEAD
+					latest: false,
+
+					// optional: specify config file
+					config: './tsd.json'
+				}
+			}
+		},
 		copy: {
 			bower: {
 				files: [
@@ -136,14 +150,14 @@ module.exports = function (grunt) {
 						flatten: true,
 						cwd: 'bower-task/',
 						src: ['main-js/**/*.js'],
-						dest: '<%= opt.jsLib %>/'
+						dest: '<%= opt.client.jsLib %>/'
 					},
 					{
 						expand: true,
 						flatten: true,
 						cwd: 'bower-task/',
 						src: ['test-js/**/*.js', 'test-css/**/*.css'],
-						dest: '<%= opt.tsTest %>/libs/'
+						dest: '<%= opt.client.tsTest %>/libs/'
 					}
 				]
 			},
@@ -153,13 +167,13 @@ module.exports = function (grunt) {
 						expand: true,
 						cwd: 'd.ts/DefinitelyTyped/',
 						src: ['*/*.d.ts'],
-						dest: '<%= opt.tsMain %>/libs/DefinitelyTyped/'
+						dest: '<%= opt.client.tsMain %>/libs/DefinitelyTyped/'
 					},
 					{
 						expand: true,
 						cwd: 'd.ts/DefinitelyTyped/',
 						src: ['*/*.d.ts'],
-						dest: '<%= opt.tsTest %>/libs/DefinitelyTyped/'
+						dest: '<%= opt.client.tsTest %>/libs/DefinitelyTyped/'
 					}
 				]
 			}
@@ -170,19 +184,19 @@ module.exports = function (grunt) {
 			},
 			dev: {
 				src: [
-					'<%= opt.peg %>/grammer.js',
-					'<%= opt.jsMain %>/Exception.js',
-					'<%= opt.jsMainOut %>/*.js'
+					'<%= opt.client.peg %>/grammer.js',
+					'<%= opt.client.jsMain %>/Exception.js',
+					'<%= opt.client.jsMainOut %>/*.js'
 				],
-				dest: '<%= opt.outBase %>/review.js'
+				dest: '<%= opt.client.outBase %>/review.js'
 			},
 			test: {
 				src: [
-					'<%= opt.peg %>/grammer.js',
-					'<%= opt.jsMain %>/Exception.js',
-					'<%= opt.jsTestOut %>/main-spec.js'
+					'<%= opt.client.peg %>/grammer.js',
+					'<%= opt.client.jsMain %>/Exception.js',
+					'<%= opt.client.jsTestOut %>/main-spec.js'
 				],
-				dest: '<%= opt.jsTestOut %>/test.js'
+				dest: '<%= opt.client.jsTestOut %>/test.js'
 			}
 		},
 		uglify: {
@@ -194,11 +208,11 @@ module.exports = function (grunt) {
 					preserveComments: 'some'
 				},
 				files: {
-					'<%= opt.outBase %>/review.min.js': [
-						'<%= opt.jsLib %>/i18next-<%= bwr.dependencies.i18next %>.js',
-						'<%= opt.peg %>/grammer.js',
-						'<%= opt.jsMain %>/Exception.js',
-						'<%= opt.jsMainOut %>/*.js'
+					'<%= opt.client.outBase %>/review.min.js': [
+						'<%= opt.client.jsLib %>/i18next-<%= bwr.dependencies.i18next %>.js',
+						'<%= opt.client.peg %>/grammer.js',
+						'<%= opt.client.jsMain %>/Exception.js',
+						'<%= opt.client.jsMainOut %>/*.js'
 					]
 				}
 			}
@@ -207,23 +221,23 @@ module.exports = function (grunt) {
 			clientScript: {
 				src: [
 					// client
-					'<%= opt.jsMainOut %>/*.js',
-					'<%= opt.jsMainOut %>/*.d.ts',
-					'<%= opt.jsMainOut %>/*.js.map',
+					'<%= opt.client.jsMainOut %>/*.js',
+					'<%= opt.client.jsMainOut %>/*.d.ts',
+					'<%= opt.client.jsMainOut %>/*.js.map',
 					// client test
-					'<%= opt.jsTestOut %>/*.js',
-					'<%= opt.jsTestOut %>/*.js.map',
-					'<%= opt.jsTestOut %>/*.d.ts',
+					'<%= opt.client.jsTestOut %>/*.js',
+					'<%= opt.client.jsTestOut %>/*.js.map',
+					'<%= opt.client.jsTestOut %>/*.d.ts',
 					// peg.js
-					'<%= opt.peg %>/grammer.js'
+					'<%= opt.client.peg %>/grammer.js'
 				]
 			},
 			tsd: {
 				src: [
 					// tsd installed
 					"d.ts/",
-					'<%= opt.tsMain %>/libs/DefinitelyTyped',
-					'<%= opt.tsTest %>/libs/DefinitelyTyped'
+					'<%= opt.client.tsMain %>/libs/DefinitelyTyped',
+					'<%= opt.client.tsTest %>/libs/DefinitelyTyped'
 				]
 			},
 			bower: {
@@ -231,22 +245,23 @@ module.exports = function (grunt) {
 					// bower installed
 					"bower-task/",
 					"bower_componenets",
-					'<%= opt.jsLib %>',
-					'<%= opt.jsMainOut %>/libs',
-					'<%= opt.jsTestOut %>/libs/*.js',
-					'<%= opt.tsTest %>/libs/*.css'
+					'<%= opt.client.jsLib %>',
+					'<%= opt.client.jsMainOut %>/libs',
+					'<%= opt.client.jsTestOut %>/libs/*.js',
+					'<%= opt.client.tsTest %>/libs/*.css'
 				]
 			}
 		},
 		mochaTest: {
 			test: {
 				options: {
-					reporter: 'spec'
+					reporter: 'spec',
+					require: 'expectations'
 				},
 				src: [
 					'bin/lib/*.js',
-					'src/test/typescript/libs/expectations.js',
-					'src/test/typescript/test.js'
+					'<%= opt.client.tsTestLib %>/expectations.js',
+					'<%= opt.client.tsTest %>/test.js'
 				]
 			}
 		},
@@ -264,18 +279,13 @@ module.exports = function (grunt) {
 		},
 		open: {
 			"test-browser": {
-				path: '<%= opt.tsTest %>/index.html'
+				path: '<%= opt.client.tsTest %>/index.html'
 			}
 		},
 		exec: {
-			DefinitelyTyped: {
-				cmd: function () {
-					return "./download-d.ts.sh";
-				}
-			},
 			"pegjs": {
 				cmd: function () {
-					var peg = grunt.config.get("opt.peg") + "/";
+					var peg = grunt.config.get("opt.client.peg") + "/";
 					return "./util/review-parser-generator > " + peg + "/grammer.js";
 				}
 			}
@@ -285,17 +295,17 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'setup',
 		"プロジェクトの初期セットアップを行う。",
-		['clean', 'bower', 'exec:DefinitelyTyped', 'copy']);
+		['clean', 'bower', 'tsd', 'copy']);
 
 	grunt.registerTask(
 		'default',
 		"必要なコンパイルを行い画面表示できるようにする。",
-		['clean:clientScript', 'typescript:main', 'tslint', 'exec:pegjs', 'concat:dev', 'uglify:browser']);
+		['clean:clientScript', 'ts:clientMain', 'tslint', 'exec:pegjs', 'concat:dev', 'uglify:browser']);
 
 	grunt.registerTask(
 		'test-preprocess',
 		"テストに必要な前準備を実行する。",
-		['clean:clientScript', 'typescript:test', 'tslint', 'exec:pegjs', 'concat:dev', 'concat:test']);
+		['clean:clientScript', 'ts:clientTest', 'tslint', 'exec:pegjs', 'concat:dev', 'concat:test']);
 
 	grunt.registerTask(
 		'test',

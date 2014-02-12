@@ -276,7 +276,7 @@ module ReVIEW.Build {
 			var contentString = nodeContentToString(process, node);
 			var keywordData = contentString.split(",");
 			process.out(keywordData[0]);
-			return (v) => {
+			return (v: ReVIEW.ITreeVisitor) => {
 				// name, args はパス
 				node.childNodes.forEach(node=> {
 					process.out("◆→DTP連絡:「").out(keywordData[0]);
@@ -295,7 +295,7 @@ module ReVIEW.Build {
 
 		inline_kw(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("★");
-			return (v) => {
+			return (v: ReVIEW.ITreeVisitor) => {
 				// name, args はパス
 				node.childNodes.forEach(node=> {
 					var contentString = nodeContentToString(process, node);

@@ -1,4 +1,4 @@
-///<reference path='../libs/DefinitelyTyped/i18next/i18next.d.ts' />
+///<reference path='../libs/typings/i18next/i18next.d.ts' />
 
 ///<reference path='../utils/Utils.ts' />
 ///<reference path='ja.ts' />
@@ -13,7 +13,7 @@ module ReVIEW.i18n {
 	export function setup(lang = "ja") {
 		if (typeof (<any>i18next).backend !== "undefined") {
 			(<any>i18next).backend({
-				fetchOne: (lng, ns, func) => {
+				fetchOne: (lng:any, ns:any, func:Function) => {
 					func(null, data[lng] || data[lang]);
 				}
 			});
@@ -21,7 +21,7 @@ module ReVIEW.i18n {
 		} else {
 			i18next.init({
 				lng: lang,
-				customLoad: function (lng, ns, options, loadComplete) {
+				customLoad: function (lng:any, ns:any, options:any, loadComplete:Function) {
 					loadComplete(null, data[lng] || data["ja-JP"]);
 				}
 			});
