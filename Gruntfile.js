@@ -209,7 +209,7 @@ module.exports = function (grunt) {
 				},
 				files: {
 					'<%= opt.client.outBase %>/review.min.js': [
-						'<%= opt.client.jsLib %>/i18next-<%= bwr.dependencies.i18next %>.js',
+						'<%= opt.client.jsLib %>/i18next.js',
 						'<%= opt.client.peg %>/grammer.js',
 						'<%= opt.client.jsMain %>/Exception.js',
 						'<%= opt.client.jsMainOut %>/*.js'

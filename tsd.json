@@ -6,20 +6,19 @@
 	"bundle": "src/main/typescript/libs/typings/bundle.d.ts",
 	"installed": {
 		"jquery/jquery.d.ts": {
-			"commit": "1a6eaf4055a28f16bbbf664df0c19cad0d6dfeda"
+			"commit": "0854df3b0f7187ae445453aaad2563a97b70df08"
 		},
 		"i18next/i18next.d.ts": {
-			"commit": "1a6eaf4055a28f16bbbf664df0c19cad0d6dfeda"
+			"commit": "0854df3b0f7187ae445453aaad2563a97b70df08"
 		},
 		"node/node.d.ts": {
-			"commit": "1a6eaf4055a28f16bbbf664df0c19cad0d6dfeda"
+			"commit": "0854df3b0f7187ae445453aaad2563a97b70df08"
 		},
-
 		"mocha/mocha.d.ts": {
-			"commit": "1a6eaf4055a28f16bbbf664df0c19cad0d6dfeda"
+			"commit": "0854df3b0f7187ae445453aaad2563a97b70df08"
 		},
 		"expectations/expectations.d.ts": {
-			"commit": "1a6eaf4055a28f16bbbf664df0c19cad0d6dfeda"
+			"commit": "0854df3b0f7187ae445453aaad2563a97b70df08"
 		}
 	}
 }

@@ -43,7 +43,7 @@ describe("未解決のエラー", ()=> {
 					book: {
 						chapters: [
 							"ch01.re"
-						],
+						]
 					}
 				});
 			});
