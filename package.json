@@ -52,6 +52,7 @@
 		"grunt-contrib-watch": "0.5.3",
 
 		"grunt-ts": "1.7.2-2",
+		"typescript": "0.9.7",
 		"grunt-tslint": "0.4.1",
 		"grunt-tsd": "0.0.4",
 		"grunt-bower-task": "0.3.4",

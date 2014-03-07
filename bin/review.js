@@ -4269,18 +4269,6 @@ var ReVIEW;
     })(ReVIEW.Parse || (ReVIEW.Parse = {}));
     var Parse = ReVIEW.Parse;
 
-    var SyntaxTree = ReVIEW.Parse.SyntaxTree;
-    var BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-    var InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-    var ArgumentSyntaxTree = ReVIEW.Parse.ArgumentSyntaxTree;
-    var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
-    var HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
-    var UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
-    var OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
-    var DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
-    var NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
-    var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
-
     function walk(ast, actor) {
         var next = actor(ast);
         if (next) {
@@ -5086,14 +5074,6 @@ var ReVIEW;
 
         var t = ReVIEW.i18n.t;
 
-        var SyntaxTree = ReVIEW.Parse.SyntaxTree;
-        var NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
-        var BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-        var InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-        var HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
-        var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
-        var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
-
         (function (SyntaxType) {
             SyntaxType[SyntaxType["Block"] = 0] = "Block";
             SyntaxType[SyntaxType["Inline"] = 1] = "Inline";
@@ -5691,16 +5671,7 @@ var ReVIEW;
     (function (Build) {
         "use strict";
 
-        var SyntaxTree = ReVIEW.Parse.SyntaxTree;
-        var NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
-        var BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-        var InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-        var HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
         var UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
-        var OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
-        var DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
-        var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
-        var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
         
 
@@ -6233,12 +6204,6 @@ var ReVIEW;
     (function (Build) {
         "use strict";
 
-        var t = ReVIEW.i18n.t;
-
-        var SyntaxTree = ReVIEW.Parse.SyntaxTree;
-        var NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
-        var BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-        var InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
         var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 
         var nodeContentToString = ReVIEW.nodeContentToString;
@@ -6363,13 +6328,6 @@ var ReVIEW;
         "use strict";
 
         var t = ReVIEW.i18n.t;
-
-        var SyntaxTree = ReVIEW.Parse.SyntaxTree;
-        var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
-        var HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
-        var BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-        var InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-        var ArgumentSyntaxTree = ReVIEW.Parse.ArgumentSyntaxTree;
 
         
 
@@ -6563,11 +6521,6 @@ var ReVIEW;
     var t = ReVIEW.i18n.t;
 
     var SyntaxTree = ReVIEW.Parse.SyntaxTree;
-    var HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
-    var BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-    var InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-    var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
-    var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
     var flatten = ReVIEW.flatten;
 
@@ -6688,8 +6641,8 @@ var ReVIEW;
         };
 
         Controller.prototype.processPart = function (book, index, name, chapters) {
-            if (typeof chapters === "undefined") { chapters = []; }
             var _this = this;
+            if (typeof chapters === "undefined") { chapters = []; }
             var part = new ReVIEW.Part(book, index + 1, name);
             part.chapters = chapters.map(function (chapter, index) {
                 return _this.processChapter(book, part, index, chapter);
@@ -7014,16 +6967,7 @@ var ReVIEW;
 
         var t = ReVIEW.i18n.t;
 
-        var SyntaxTree = ReVIEW.Parse.SyntaxTree;
-        var NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
-        var BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-        var InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-        var HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
         var UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
-        var OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
-        var DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
-        var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
-        var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
         var nodeContentToString = ReVIEW.nodeContentToString;
         var findChapter = ReVIEW.findChapter;
@@ -7491,20 +7435,12 @@ var ReVIEW;
 
         var i18n = ReVIEW.i18n;
 
-        var SyntaxTree = ReVIEW.Parse.SyntaxTree;
-        var NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
-        var BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-        var InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-        var HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
         var UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
         var OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
         var DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
-        var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
-        var ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
         var nodeContentToString = ReVIEW.nodeContentToString;
         var findChapter = ReVIEW.findChapter;
-        var findUp = ReVIEW.findUp;
 
         var HtmlBuilder = (function (_super) {
             __extends(HtmlBuilder, _super);
