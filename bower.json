@@ -21,7 +21,7 @@
 		"es5-shim": "2.3.0"
 	},
 	"devDependencies": {
-		"mocha": "1.17.1",
+		"mocha": "1.18.2",
 		"expectations": "0.2.5"
 	},
 	"exportsOverride": {
