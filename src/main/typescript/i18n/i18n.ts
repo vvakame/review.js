@@ -40,7 +40,7 @@ module ReVIEW.i18n {
 		i18next = (<any>window).i18n;
 	}
 
-	var data = {
+	var data:{[lang:string]:any;} = {
 		"ja": ReVIEW.ja,
 		"en": ReVIEW.en
 	};

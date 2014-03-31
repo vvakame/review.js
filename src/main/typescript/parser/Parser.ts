@@ -86,7 +86,7 @@ module ReVIEW.Parse {
 		if (!rawResult) {
 			return null;
 		}
-		var rule = RuleName[rawResult.syntax];
+		var rule:number = RuleName[rawResult.syntax];
 		if (typeof rule === "undefined") {
 			throw new ParseError(rawResult, "unknown rule: " + rawResult.syntax);
 		}
