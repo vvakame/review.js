@@ -7,7 +7,7 @@
 	"version": "0.1.1",
 	"description": "ReVIEW implementation by JavaScript",
 
-	"main": "./bin/review.js",
+	"main": "./index",
 	"bin": {
 		"reviewjs": "./index.js"
 	},

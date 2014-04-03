@@ -5,18 +5,16 @@ module.exports = function (grunt) {
 		// Java用プロジェクト構成向け設定
 		opt: {
 			client: {
-				"jsMain": "src/main/javascript",
-				"tsMain": "src/main/typescript",
-				"tsMainLib": "src/main/typescript/libs",
-				"tsTest": "src/test/typescript",
-				"tsTestLib": "src/test/typescript/libs",
-				"peg": "src/main/peg",
-				"res": "src/main/resources",
-				"jsLib": "bin/lib",
+				"jsMain": "lib/js",
+				"tsMain": "lib",
+				"tsMainLib": "lib/typings",
+				"tsTest": "test/suite",
+				"tsTestLib": "test/suite/libs",
+				"peg": "resources",
 
-				"outBase": "bin",
-				"jsMainOut": "bin/out",
-				"jsTestOut": "src/test/typescript"
+				"outBase": "dest",
+				"jsMainOut": "lib",
+				"jsTestOut": "test"
 			}
 		},
 
@@ -32,9 +30,18 @@ module.exports = function (grunt) {
 				mapRoot: '',                   // where to locate .map.js files. [(default) '' == generated js location.]
 				declaration: false             // generate a declaration .d.ts file for every output js file. [true | false (default)]
 			},
+			clientCli: {
+				src: ['<%= opt.client.tsMain %>/Cli.ts'],
+				options: {
+					module: 'commonjs'
+				}
+			},
 			clientMain: {
-				src: ['<%= opt.client.tsMain %>/Ignite.ts'],
-				out: '<%= opt.client.jsMainOut %>/main.js'
+				src: ['<%= opt.client.tsMain %>/Main.ts'],
+				out: '<%= opt.client.jsMainOut %>/main.js',
+				options: {
+					declaration: true
+				}
 			},
 			clientTest: {
 				src: ['<%= opt.client.tsTest %>/MainSpec.ts'],
@@ -150,7 +157,7 @@ module.exports = function (grunt) {
 						flatten: true,
 						cwd: 'bower-task/',
 						src: ['main-js/**/*.js'],
-						dest: '<%= opt.client.jsLib %>/'
+						dest: '<%= opt.client.tsTest %>/libs/'
 					},
 					{
 						expand: true,
@@ -209,7 +216,6 @@ module.exports = function (grunt) {
 				},
 				files: {
 					'<%= opt.client.outBase %>/review.min.js': [
-						'<%= opt.client.jsLib %>/i18next.js',
 						'<%= opt.client.peg %>/grammer.js',
 						'<%= opt.client.jsMain %>/Exception.js',
 						'<%= opt.client.jsMainOut %>/*.js'
@@ -245,7 +251,6 @@ module.exports = function (grunt) {
 					// bower installed
 					"bower-task/",
 					"bower_componenets",
-					'<%= opt.client.jsLib %>',
 					'<%= opt.client.jsMainOut %>/libs',
 					'<%= opt.client.jsTestOut %>/libs/*.js',
 					'<%= opt.client.tsTest %>/libs/*.css'
@@ -261,7 +266,7 @@ module.exports = function (grunt) {
 				src: [
 					'bin/lib/*.js',
 					'<%= opt.client.tsTestLib %>/expectations.js',
-					'<%= opt.client.tsTest %>/test.js'
+					'<%= opt.client.jsTestOut %>/test.js'
 				]
 			}
 		},
@@ -279,7 +284,7 @@ module.exports = function (grunt) {
 		},
 		open: {
 			"test-browser": {
-				path: '<%= opt.client.tsTest %>/index.html'
+				path: '<%= opt.client.jsTestOut %>/index.html'
 			}
 		},
 		exec: {
@@ -300,7 +305,7 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'default',
 		"必要なコンパイルを行い画面表示できるようにする。",
-		['clean:clientScript', 'ts:clientMain', 'tslint', 'exec:pegjs', 'concat:dev', 'uglify:browser']);
+		['clean:clientScript', 'ts:clientMain', 'ts:clientCli', 'tslint', 'exec:pegjs', 'concat:dev', 'uglify:browser']);
 
 	grunt.registerTask(
 		'test-preprocess',

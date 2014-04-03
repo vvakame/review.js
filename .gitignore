@@ -9,11 +9,14 @@ reviewjs-*.tgz
 bower_components/
 bower-task/
 .tscache/
-src/main/typescript/libs/
-src/test/typescript/libs/
-src/test/typescript/*.js
-src/test/typescript/*.js.map
-src/test/typescript/*.d.ts
+typings/
+lib/*.js
+lib/*.js.map
+lib/*.d.ts
+test/**/*.js
+test/**/*.js.map
+test/**/*.d.ts
+test/suite/libs/
 src/main/peg/*.js
 test-results.xml
 

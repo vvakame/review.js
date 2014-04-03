@@ -7,7 +7,7 @@ var path = require("path");
 var peg = require('pegjs');
 var overrideAction = require('pegjs-override-action');
 
-var inputFile = "src/main/peg/grammer.pegjs";
+var inputFile = "resources/grammer.pegjs";
 var exportVar = "var PEG";
 
 /* generate ReVIEW parser */

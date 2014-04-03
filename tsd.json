@@ -2,23 +2,29 @@
 	"version": "v4",
 	"repo": "borisyankov/DefinitelyTyped",
 	"ref": "master",
-	"path": "src/main/typescript/libs/typings",
-	"bundle": "src/main/typescript/libs/typings/bundle.d.ts",
+	"path": "typings",
+	"bundle": "typings/bundle.d.ts",
 	"installed": {
 		"jquery/jquery.d.ts": {
-			"commit": "1fccd80d059c277792a3fada34b4445e9c9674ed"
+			"commit": "8c78492e7b82383efc4bcf2a8119725b1a4d42b4"
 		},
 		"i18next/i18next.d.ts": {
-			"commit": "1fccd80d059c277792a3fada34b4445e9c9674ed"
+			"commit": "8c78492e7b82383efc4bcf2a8119725b1a4d42b4"
 		},
 		"node/node.d.ts": {
-			"commit": "1fccd80d059c277792a3fada34b4445e9c9674ed"
+			"commit": "8c78492e7b82383efc4bcf2a8119725b1a4d42b4"
 		},
 		"mocha/mocha.d.ts": {
-			"commit": "1fccd80d059c277792a3fada34b4445e9c9674ed"
+			"commit": "8c78492e7b82383efc4bcf2a8119725b1a4d42b4"
 		},
 		"expectations/expectations.d.ts": {
-			"commit": "1fccd80d059c277792a3fada34b4445e9c9674ed"
+			"commit": "8c78492e7b82383efc4bcf2a8119725b1a4d42b4"
+		},
+		"update-notifier/update-notifier.d.ts": {
+			"commit": "8c78492e7b82383efc4bcf2a8119725b1a4d42b4"
+		},
+		"commander/commander.d.ts": {
+			"commit": "8c78492e7b82383efc4bcf2a8119725b1a4d42b4"
 		}
 	}
 }

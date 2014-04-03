@@ -10,18 +10,26 @@ reviewjs-*.tgz
 # for grunt
 bower_components/
 bower-task/
-d.ts/
+typings/
+.tscache/
 
 # codes
-bin/out/
-src/
+resources/
 util/
+test/
 example/
+
+# bower
+dest/
 
 # misc
 .gitignore
+.editorconfig
+.travis.yml
 setup.sh
 bower.json
+tsd.json
+Gruntfile.js
 karma.conf.js
 
 test-results.xml

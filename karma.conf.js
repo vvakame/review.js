@@ -14,9 +14,10 @@ module.exports = function (config) {
 
 		// list of files / patterns to load in the browser
 		files: [
-			'bin/lib/*.js',
-			'src/test/typescript/libs/expectations.js',
-			'src/test/typescript/test.js'
+			'test/suite/libs/es5-shim.js',
+			'test/suite/libs/i18next.js',
+			'test/suite/libs/expectations.js',
+			'test/test.js'
 		],
 
 
