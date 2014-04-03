@@ -4154,11 +4154,11 @@ program.parse(process.argv);
 
             config.analyzer = config.analyzer || new ReVIEW.Build.DefaultAnalyzer();
             config.validators = config.validators || [new ReVIEW.Build.DefaultValidator()];
-            if (target && ReVIEW.target2builder(target) == null) {
+            if (target && target2builder(target) == null) {
                 console.error(target + " is not exists in builder");
                 process.exit(1);
             }
-            config.builders = config.builders || target ? [ReVIEW.target2builder(target)] : [new ReVIEW.Build.TextBuilder()];
+            config.builders = config.builders || target ? [target2builder(target)] : [new ReVIEW.Build.TextBuilder()];
             config.book = config.book || {
                 chapters: [
                     fileName
@@ -5285,22 +5285,22 @@ var ReVIEW;
                 switch (this.current.type) {
                     case 0 /* Block */:
                         if (this.current.argsLength.length === 0) {
-                            throw new ReVIEW.Build.AnalyzerError("must call builder.checkArgsLength(...number[]) in " + methodName);
+                            throw new Build.AnalyzerError("must call builder.checkArgsLength(...number[]) in " + methodName);
                         }
                         break;
                     case 2 /* Other */:
                         if (!this.current.clazz) {
-                            throw new ReVIEW.Build.AnalyzerError("must call builder.setClass(class) in " + methodName);
+                            throw new Build.AnalyzerError("must call builder.setClass(class) in " + methodName);
                         }
                         break;
                     case 1 /* Inline */:
                         break;
                 }
                 if (!this.current.description) {
-                    throw new ReVIEW.Build.AnalyzerError("must call builder.setDescription(string) in " + methodName);
+                    throw new Build.AnalyzerError("must call builder.setDescription(string) in " + methodName);
                 }
                 if (!this.current.process) {
-                    throw new ReVIEW.Build.AnalyzerError("must call builder.processNode(func) in " + methodName);
+                    throw new Build.AnalyzerError("must call builder.processNode(func) in " + methodName);
                 }
 
                 this.acceptableSyntaxes.push(this.current);
@@ -5902,7 +5902,7 @@ var ReVIEW;
 
                 func = this["block_" + name + "_pre"];
                 if (typeof func !== "function") {
-                    throw new ReVIEW.Build.AnalyzerError("block_" + name + "_pre or block_" + name + " is not Function");
+                    throw new Build.AnalyzerError("block_" + name + "_pre or block_" + name + " is not Function");
                 }
                 return func.call(this, process, node);
             };
@@ -5916,7 +5916,7 @@ var ReVIEW;
 
                 func = this["block_" + name + "_post"];
                 if (typeof func !== "function") {
-                    throw new ReVIEW.Build.AnalyzerError("block_" + name + "_post is not Function");
+                    throw new Build.AnalyzerError("block_" + name + "_post is not Function");
                 }
                 return func.call(this, process, node);
             };
@@ -5930,7 +5930,7 @@ var ReVIEW;
 
                 func = this["inline_" + name + "_pre"];
                 if (typeof func !== "function") {
-                    throw new ReVIEW.Build.AnalyzerError("inline_" + name + "_pre or inline_" + name + " is not Function");
+                    throw new Build.AnalyzerError("inline_" + name + "_pre or inline_" + name + " is not Function");
                 }
                 return func.call(this, process, node);
             };
@@ -5944,7 +5944,7 @@ var ReVIEW;
 
                 func = this["inline_" + name + "_post"];
                 if (typeof func !== "function") {
-                    throw new ReVIEW.Build.AnalyzerError("inline_" + name + "_post is not Function");
+                    throw new Build.AnalyzerError("inline_" + name + "_post is not Function");
                 }
                 return func.call(this, process, node);
             };
@@ -5972,7 +5972,7 @@ var ReVIEW;
                     return symbol.node === node;
                 });
                 if (founds.length !== 1) {
-                    throw new ReVIEW.Build.AnalyzerError("invalid status.");
+                    throw new Build.AnalyzerError("invalid status.");
                 }
                 return founds[0];
             };
@@ -6453,7 +6453,7 @@ var ReVIEW;
                     builders.forEach(function (builder) {
                         var func = builder[funcName1] || builder[funcName2];
                         if (!func) {
-                            book.process.error(ReVIEW.Build.SyntaxType[syntax.type] + " " + syntax.symbolName + " is not supported in " + builder.name);
+                            book.process.error(Build.SyntaxType[syntax.type] + " " + syntax.symbolName + " is not supported in " + builder.name);
                         }
                     });
                 });
@@ -7514,7 +7514,7 @@ var ReVIEW;
                 return false;
             };
             return TextBuilder;
-        })(ReVIEW.Build.DefaultBuilder);
+        })(Build.DefaultBuilder);
         Build.TextBuilder = TextBuilder;
     })(ReVIEW.Build || (ReVIEW.Build = {}));
     var Build = ReVIEW.Build;
@@ -8083,7 +8083,7 @@ var ReVIEW;
                 process.out(";");
             };
             return HtmlBuilder;
-        })(ReVIEW.Build.DefaultBuilder);
+        })(Build.DefaultBuilder);
         Build.HtmlBuilder = HtmlBuilder;
     })(ReVIEW.Build || (ReVIEW.Build = {}));
     var Build = ReVIEW.Build;
