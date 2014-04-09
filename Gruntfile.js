@@ -189,11 +189,13 @@ module.exports = function (grunt) {
 			options: {
 				separator: ';'
 			},
-			dev: {
+			browser: {
 				src: [
 					'<%= opt.client.peg %>/grammer.js',
 					'<%= opt.client.jsMain %>/Exception.js',
-					'<%= opt.client.jsMainOut %>/*.js'
+					'<%= opt.client.jsMainOut %>/*.js',
+					'!<%= opt.client.jsMainOut %>/Cli.js',
+					'!<%= opt.client.jsMainOut %>/api.js'
 				],
 				dest: '<%= opt.client.outBase %>/review.js'
 			},
@@ -204,6 +206,20 @@ module.exports = function (grunt) {
 					'<%= opt.client.jsTestOut %>/main-spec.js'
 				],
 				dest: '<%= opt.client.jsTestOut %>/test.js'
+			},
+			nodeRuntime: {
+				src: [
+					'<%= opt.client.peg %>/grammer.js',
+					'<%= opt.client.jsMain %>/Exception.js',
+					'<%= opt.client.jsMainOut %>/main.js'
+				],
+				dest: '<%= opt.client.jsMainOut %>/api.js'
+			},
+			nodeDeclaration: {
+				src: [
+					'<%= opt.client.jsMainOut %>/main.d.ts'
+				],
+				dest: '<%= opt.client.jsMainOut %>/api.d.ts'
 			}
 		},
 		uglify: {
@@ -218,7 +234,9 @@ module.exports = function (grunt) {
 					'<%= opt.client.outBase %>/review.min.js': [
 						'<%= opt.client.peg %>/grammer.js',
 						'<%= opt.client.jsMain %>/Exception.js',
-						'<%= opt.client.jsMainOut %>/*.js'
+						'<%= opt.client.jsMainOut %>/*.js',
+						'!<%= opt.client.jsMainOut %>/Cli.js',
+						'!<%= opt.client.jsMainOut %>/api.js'
 					]
 				}
 			}
@@ -303,14 +321,29 @@ module.exports = function (grunt) {
 		['clean', 'bower', 'tsd', 'copy']);
 
 	grunt.registerTask(
+		'compile-prepare',
+		"npm用(nodeモジュール兼コマンドラインクライアント)のコンパイルを行う",
+		['clean:clientScript', 'ts:clientMain', 'exec:pegjs']);
+
+	grunt.registerTask(
+		'compile-for-npm',
+		"npm用(nodeモジュール兼コマンドラインクライアント)のコンパイルを行う",
+		['concat:nodeRuntime', 'concat:nodeDeclaration', 'ts:clientCli', 'tslint']);
+
+	grunt.registerTask(
+		'compile-for-browser',
+		"ブラウザライブラリ用のコンパイルを行う",
+		['concat:browser', 'uglify:browser']);
+
+	grunt.registerTask(
 		'default',
 		"必要なコンパイルを行い画面表示できるようにする。",
-		['clean:clientScript', 'ts:clientMain', 'ts:clientCli', 'tslint', 'exec:pegjs', 'concat:dev', 'uglify:browser']);
+		['compile-prepare', 'compile-for-npm', 'compile-for-browser', 'tslint']);
 
 	grunt.registerTask(
 		'test-preprocess',
 		"テストに必要な前準備を実行する。",
-		['clean:clientScript', 'ts:clientTest', 'tslint', 'exec:pegjs', 'concat:dev', 'concat:test']);
+		['default', 'ts:clientTest', 'concat:test']);
 
 	grunt.registerTask(
 		'test',

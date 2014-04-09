@@ -2,7 +2,7 @@
 /// <reference path="../typings/update-notifier/update-notifier.d.ts" />
 /// <reference path="../typings/commander/commander.d.ts" />
 
-/// <reference path="./main.d.ts" />
+/// <reference path="./api.d.ts" />
 
 import fs = require("fs");
 
@@ -36,7 +36,7 @@ if (fs.existsSync(__dirname + "/../package.json")) {
 	};
 }
 
-var r:typeof ReVIEW = require("./main");
+var r:typeof ReVIEW = require("./api");
 import program = require("commander");
 (<any>program)
 	.version(packageJson.version, "-v, --version")

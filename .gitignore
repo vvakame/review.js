@@ -22,3 +22,4 @@ test-results.xml
 
 bin/out/
 tscommand.tmp.txt
+.baseDir.ts
