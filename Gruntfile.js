@@ -12,7 +12,7 @@ module.exports = function (grunt) {
 				"tsTestLib": "test/suite/libs",
 				"peg": "resources",
 
-				"outBase": "dest",
+				"outBase": "dist",
 				"jsMainOut": "lib",
 				"jsTestOut": "test"
 			}
