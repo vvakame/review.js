@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ReVIEW.js 利用サンプル</title>
-    <script type="application/javascript" src="../../bin/lib/i18next-1.6.3.js"></script>
-    <script type="application/javascript" src="../../bin/review.js"></script>
+	<title>ReVIEW.js 利用サンプル</title>
+	<script type="application/javascript" src="../../bower-task/main-js/i18next/i18next.js"></script>
+	<script type="application/javascript" src="../../dist/review.js"></script>
 
-    <script type="application/javascript" src="jquery-2.0.3.js"></script>
+	<script type="application/javascript" src="jquery-2.0.3.js"></script>
 
-    <style type="text/css">
-        .info {
-            color: blue;
-        }
+	<style type="text/css">
+		.info {
+			color: blue;
+		}
 
-        .warn {
-            color: orange;
-        }
+		.warn {
+			color: orange;
+		}
 
-        .error {
-            color: tomato;
-        }
+		.error {
+			color: tomato;
+		}
 
-        .hidden {
-            display: none;
-        }
-    </style>
-    <meta charset="UTF-8">
+		.hidden {
+			display: none;
+		}
+	</style>
+	<meta charset="UTF-8">
 </head>
 <body>
 
@@ -38,173 +38,173 @@
 <input type="checkbox" id="check-html" checked> HTML
 
 <pre id="result-text">
-    テキストへのコンパイル結果がここに出る。
+	テキストへのコンパイル結果がここに出る。
 </pre>
 
 <pre id="result-html">
-    HTMLへのコンパイル結果がここに出る。
+	HTMLへのコンパイル結果がここに出る。
 </pre>
 
 <pre id="hint">
-    ヒント！
+	ヒント！
 </pre>
 
 <script type="application/javascript">
-    if (!window.ReVIEW) {
-        var $child = $("<div>").appendTo($("#info"));
-        $child.addClass("error");
-        $child.html("ReVIEW関連ファイルが正しく読み込めていません。<br>grunt default を実行してください。");
-    } else {
-        var KEY = "backup";
-        function save(key, value){
-            window.localStorage.setItem(key, value);
-        }
-        function load(key){
-            return window.localStorage.getItem(key);
-        }
-        var $input = $("#input");
-        var cache = load(KEY);
-        $input.val('={sample} これが、これがサンプルだ！\n@<hd>{sample} を開始する！\n//list[hoge][きゃぷしょん]{\nalert("hello");\n//}\n@<list>{hoge}はJavaScriptのコードです。\n@<kw>{JVM,java v m}です。');
-        if(cache === null){
-            cache = "";
-        }else if(cache !== ""){
-            $input.val(cache);
-        }
-        $input.on("keyup", function () {
-            var val = $input.val();
-            if(cache.length != val.length){
-                cache = val;
-                save(KEY, val);
-                doCompile(val);
-            }
-        });
-        doCompile($input.val())
-    }
+	if (!window.ReVIEW) {
+		var $child = $("<div>").appendTo($("#info"));
+		$child.addClass("error");
+		$child.html("ReVIEW関連ファイルが正しく読み込めていません。<br>grunt default を実行してください。");
+	} else {
+		var KEY = "backup";
+		function save(key, value){
+			window.localStorage.setItem(key, value);
+		}
+		function load(key){
+			return window.localStorage.getItem(key);
+		}
+		var $input = $("#input");
+		var cache = load(KEY);
+		$input.val('={sample} これが、これがサンプルだ！\n@<hd>{sample} を開始する！\n//list[hoge][きゃぷしょん]{\nalert("hello");\n//}\n@<list>{hoge}はJavaScriptのコードです。\n@<kw>{JVM,java v m}です。');
+		if(cache === null){
+			cache = "";
+		}else if(cache !== ""){
+			$input.val(cache);
+		}
+		$input.on("keyup", function () {
+			var val = $input.val();
+			if(cache.length != val.length){
+				cache = val;
+				save(KEY, val);
+				doCompile(val);
+			}
+		});
+		doCompile($input.val())
+	}
 
-    switchVisible();
-    ["text", "html"].forEach(function (type) {
-        $("#check-" + type).on("click", switchVisible);
-    });
+	switchVisible();
+	["text", "html"].forEach(function (type) {
+		$("#check-" + type).on("click", switchVisible);
+	});
 
-    function doCompile(text) {
-        var files = {
-            "ch01.re": text
-        };
-        var result = {
-        };
-        ReVIEW.start(function (review) {
-            review.initConfig({
-                read: function (path) {
-                    return files[path];
-                },
-                write: function (path, content) {
-                    result[path] = content;
-                },
+	function doCompile(text) {
+		var files = {
+			"ch01.re": text
+		};
+		var result = {
+		};
+		ReVIEW.start(function (review) {
+			review.initConfig({
+				read: function (path) {
+					return files[path];
+				},
+				write: function (path, content) {
+					result[path] = content;
+				},
 
-                listener: {
-                    onAcceptables: function (syntaxes) {
-                        var $hint = $("#hint").empty();
-                        var text = "サポートしている構文\n";
-                        syntaxes.acceptableSyntaxes.forEach(function (acceptable) {
-                            var SyntaxType = ReVIEW.Build.SyntaxType;
-                            switch (acceptable.type) {
-                                case SyntaxType.Other:
-                                    switch (acceptable.symbolName) {
-                                        case "headline":
-                                            text += "={???} タイトル\n";
-                                            break;
-                                        case "ulist":
-                                            text += " * 文字列\n";
-                                            break;
-                                    }
-                                    break;
-                                case SyntaxType.Inline:
-                                    text += "@<" + acceptable.symbolName + ">{}\n";
-                                    break;
-                                case SyntaxType.Block:
-                                    acceptable.argsLength.forEach(function (len) {
-                                        text += "//" + acceptable.symbolName;
-                                        for (var i = 0; i < len; i++) {
-                                            text += "[???]";
-                                        }
-                                        text += "\n";
-                                    });
-                                    break;
-                            }
-                            text += acceptable.description;
-                            text += "\n\n";
-                        });
-                        
-                        $hint.text(text);
-                        $hint.prepend("<hr/>");
-                    },
-                    onReports: function (reports) {
-                        outputReports(reports);
-                    },
+				listener: {
+					onAcceptables: function (syntaxes) {
+						var $hint = $("#hint").empty();
+						var text = "サポートしている構文\n";
+						syntaxes.acceptableSyntaxes.forEach(function (acceptable) {
+							var SyntaxType = ReVIEW.Build.SyntaxType;
+							switch (acceptable.type) {
+								case SyntaxType.Other:
+									switch (acceptable.symbolName) {
+										case "headline":
+											text += "={???} タイトル\n";
+											break;
+										case "ulist":
+											text += " * 文字列\n";
+											break;
+									}
+									break;
+								case SyntaxType.Inline:
+									text += "@<" + acceptable.symbolName + ">{}\n";
+									break;
+								case SyntaxType.Block:
+									acceptable.argsLength.forEach(function (len) {
+										text += "//" + acceptable.symbolName;
+										for (var i = 0; i < len; i++) {
+											text += "[???]";
+										}
+										text += "\n";
+									});
+									break;
+							}
+							text += acceptable.description;
+							text += "\n\n";
+						});
 
-                    onCompileSuccess: function (book) {
-                        book.parts[1].chapters[0].builderProcesses.forEach(function (process) {
-                            var $result;
-                            switch (process.builder.name) {
-                                case "TextBuilder":
-                                    $result = $("#result-text");
-                                    break;
-                                case "HtmlBuilder":
-                                    $result = $("#result-html");
-                                    break;
-                            }
-                            $result.html(process.result);
-                        });
-                    }
-                },
+						$hint.text(text);
+						$hint.prepend("<hr/>");
+					},
+					onReports: function (reports) {
+						outputReports(reports);
+					},
 
-                builders: [new ReVIEW.Build.TextBuilder(), new ReVIEW.Build.HtmlBuilder(false)],
+					onCompileSuccess: function (book) {
+						book.parts[1].chapters[0].builderProcesses.forEach(function (process) {
+							var $result;
+							switch (process.builder.name) {
+								case "TextBuilder":
+									$result = $("#result-text");
+									break;
+								case "HtmlBuilder":
+									$result = $("#result-html");
+									break;
+							}
+							$result.html(process.result);
+						});
+					}
+				},
 
-                book: {
-                    preface: [
-                    ],
-                    chapters: [
-                        "ch01.re"
-                    ],
-                    afterword: [
-                    ]
-                }
-            });
-        });
-    }
+				builders: [new ReVIEW.Build.TextBuilder(), new ReVIEW.Build.HtmlBuilder(false)],
 
-    function outputReports(reports) {
-        var $base = $("#info").empty();
-        reports.forEach(function (report, i) {
-            var $child = $("<div>").appendTo($base);
-            switch (report.level) {
-                case ReVIEW.ReportLevel.Info:
-                    $child.addClass("info");
-                case ReVIEW.ReportLevel.Warning:
-                    $child.addClass("warn");
-                case ReVIEW.ReportLevel.Error:
-                    $child.addClass("error");
-            }
-            var message = "";
-            report.nodes.forEach(function (node) {
-                message += "[" + node.line + "," + node.column + "] ";
-            });
-            message += report.message;
-            $child.text(message);
-        });
-    }
+				book: {
+					preface: [
+					],
+					chapters: [
+						"ch01.re"
+					],
+					afterword: [
+					]
+				}
+			});
+		});
+	}
 
-    function switchVisible() {
-        var type = ["text", "html"];
-        type.forEach(function (type) {
-            var check = $("#check-" + type).prop("checked");
-            if (check) {
-                $("#result-" + type).removeClass("hidden");
-            } else {
-                $("#result-" + type).addClass("hidden");
-            }
-        });
-    }
+	function outputReports(reports) {
+		var $base = $("#info").empty();
+		reports.forEach(function (report, i) {
+			var $child = $("<div>").appendTo($base);
+			switch (report.level) {
+				case ReVIEW.ReportLevel.Info:
+					$child.addClass("info");
+				case ReVIEW.ReportLevel.Warning:
+					$child.addClass("warn");
+				case ReVIEW.ReportLevel.Error:
+					$child.addClass("error");
+			}
+			var message = "";
+			report.nodes.forEach(function (node) {
+				message += "[" + node.line + "," + node.column + "] ";
+			});
+			message += report.message;
+			$child.text(message);
+		});
+	}
+
+	function switchVisible() {
+		var type = ["text", "html"];
+		type.forEach(function (type) {
+			var check = $("#check-" + type).prop("checked");
+			if (check) {
+				$("#result-" + type).removeClass("hidden");
+			} else {
+				$("#result-" + type).addClass("hidden");
+			}
+		});
+	}
 </script>
 </body>
 </html>
