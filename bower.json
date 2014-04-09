@@ -2,7 +2,7 @@
 	"name": "reviewjs",
 	"version": "0.2.0",
 
-	"main": ["./dest/review.js"],
+	"main": ["./dist/review.js"],
 	"private": false,
 	"ignore": [
 		"**/.*",
