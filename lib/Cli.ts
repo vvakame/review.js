@@ -5,19 +5,10 @@
 /// <reference path="./main.d.ts" />
 
 import fs = require("fs");
-
-var recursivePackageFinder = (path:string) => {
-	if (fs.existsSync(fs.realpathSync(path))) {
-		return fs.realpathSync(path);
-	} else {
-		return recursivePackageFinder("../" + path);
-	}
-};
-
 import updateNotifier = require("update-notifier");
 
 var notifier = updateNotifier({
-	packagePath: recursivePackageFinder("./package.json")
+	packagePath: "../package"
 });
 if (notifier.update) {
 	notifier.notify();
@@ -25,16 +16,7 @@ if (notifier.update) {
 
 // TODO i18n
 
-var packageJson:any;
-if (fs.existsSync(__dirname + "/../package.json")) {
-	// installed
-	packageJson = JSON.parse(fs.readFileSync(__dirname + "/../package.json", "utf8"));
-} else {
-	// grunt test
-	packageJson = {
-		version: "develop"
-	};
-}
+var packageJson = JSON.parse(fs.readFileSync(__dirname + "/../package.json", "utf8"));
 
 var r:typeof ReVIEW = require("./api");
 import program = require("commander");
