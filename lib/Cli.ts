@@ -2,7 +2,7 @@
 /// <reference path="../typings/update-notifier/update-notifier.d.ts" />
 /// <reference path="../typings/commander/commander.d.ts" />
 
-/// <reference path="./api.d.ts" />
+/// <reference path="./main.d.ts" />
 
 import fs = require("fs");
 

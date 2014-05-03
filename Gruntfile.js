@@ -214,12 +214,30 @@ module.exports = function (grunt) {
 					'<%= opt.client.jsMainOut %>/main.js'
 				],
 				dest: '<%= opt.client.jsMainOut %>/api.js'
-			},
-			nodeDeclaration: {
-				src: [
-					'<%= opt.client.jsMainOut %>/main.d.ts'
-				],
-				dest: '<%= opt.client.jsMainOut %>/api.d.ts'
+			}
+		},
+		replace: {
+			definitions: {
+				src: ['<%= opt.client.jsMainOut %>/main.d.ts'],
+				dest: '<%= opt.client.outBase %>/review.js.d.ts',
+				replacements: [
+					{
+						from: /^\/\/\/.*$/gm,
+						to: ''
+					},
+					{
+						from: /interface String \{[^}]*\}/gm,
+						to: ''
+					},
+					{
+						from: "declare var define: any;",
+						to: ''
+					},
+					{
+						from: /$/g,
+						to: '\ndeclare module "review.js" {\n    export = ReVIEW;\n}\n'
+					}
+				]
 			}
 		},
 		uglify: {
@@ -328,12 +346,12 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'compile-for-npm',
 		"npm用(nodeモジュール兼コマンドラインクライアント)のコンパイルを行う",
-		['concat:nodeRuntime', 'concat:nodeDeclaration', 'ts:clientCli', 'tslint']);
+		['concat:nodeRuntime', 'replace:definitions', 'ts:clientCli', 'tslint']);
 
 	grunt.registerTask(
 		'compile-for-browser',
 		"ブラウザライブラリ用のコンパイルを行う",
-		['concat:browser', 'uglify:browser']);
+		['concat:browser', 'replace:definitions', 'uglify:browser']);
 
 	grunt.registerTask(
 		'default',
