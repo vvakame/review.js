@@ -17,10 +17,10 @@
 	],
 
 	"dependencies": {
-		"i18next": "1.7.2"
+		"i18next": "1.7.3"
 	},
 	"devDependencies": {
-		"es5-shim": "2.3.0",
+		"es5-shim": "3.0.2",
 		"mocha": "1.18.2",
 		"expectations": "0.2.5"
 	},
