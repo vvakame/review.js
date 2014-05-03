@@ -755,7 +755,7 @@ declare module ReVIEW.Build {
 
 
 declare module ReVIEW {
-    function start(setup: (review: any) => void, options?: IOptions): Book;
+    function start(setup: (review: Controller) => void, options?: IOptions): Book;
 }
 
 declare module "review.js" {
