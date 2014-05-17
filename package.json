@@ -34,7 +34,7 @@
     "colors": "0.6.2"
   },
   "devDependencies": {
-    "grunt": "0.4.4",
+    "grunt": "0.4.5",
     "pegjs": "0.8.0",
     "pegjs-override-action": "0.0.7",
     "grunt-contrib-clean": "0.5.0",
@@ -44,7 +44,7 @@
     "grunt-text-replace": "0.3.11",
     "grunt-contrib-watch": "0.6.1",
     "grunt-ts": "1.11.2",
-    "typescript": "1.0.0",
+    "typescript": "1.0.1",
     "grunt-tslint": "0.4.1",
     "grunt-tsd": "0.1.0",
     "grunt-bower-task": "0.3.4",
