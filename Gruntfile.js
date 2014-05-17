@@ -312,14 +312,11 @@ module.exports = function (grunt) {
 				options: {
 					reporter: 'spec',
 					require: [
-						'expectations',
 						function(){ assert = require('power-assert'); }
 					]
 				},
 				src: [
 					'bin/lib/*.js',
-					'<%= opt.client.tsTestLib %>/expectations.js',
-					'<%= opt.client.tsTestLib %>/power-assert.js',
 					'<%= opt.client.jsEspowerOut %>/test.js'
 				]
 			}

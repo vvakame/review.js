@@ -1,5 +1,5 @@
 ///<reference path='../../../typings/mocha/mocha.d.ts' />
-///<reference path='../../../typings/expectations/expectations.d.ts' />
+///<reference path='../../../typings/assert/assert.d.ts' />
 
 ///<reference path='../../../typings/node/node.d.ts' />
 
@@ -51,7 +51,7 @@ describe("ReVIEW構文の", ()=> {
 									builders: [new ReVIEW.Build.TextBuilder()]
 								})
 								.success();
-							expect(s.result).not.toBeNull();
+							assert(s.result !== null);
 
 							var ast = JSON.stringify(s.book.parts[0].chapters[0].root, null, 2);
 							if (!fs.existsSync(astFilePath)) {
@@ -59,7 +59,7 @@ describe("ReVIEW構文の", ()=> {
 								fs.writeFileSync(astFilePath, ast);
 							}
 							var expectedAST = fs.readFileSync(astFilePath, "utf8");
-							expect(JSON.parse(expectedAST)).toEqual(JSON.parse(ast));
+							assert.deepEqual(JSON.parse(ast), JSON.parse(expectedAST));
 						} catch (e) {
 							updateIfSyntaxError(e);
 							throw e;
@@ -130,7 +130,7 @@ describe("ReVIEW構文の", ()=> {
 			});
 			// syntax.parentNode = syntax;
 			var json = JSON.stringify(syntax);
-			expect(json).toBe("{\"ruleName\":\"SinglelineComment\",\"offset\":0,\"line\":0,\"column\":0,\"endPos\":0}");
+			assert(json === "{\"ruleName\":\"SinglelineComment\",\"offset\":0,\"line\":0,\"column\":0,\"endPos\":0}");
 		});
 	});
 });

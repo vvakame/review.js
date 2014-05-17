@@ -22,8 +22,7 @@
 	"devDependencies": {
 		"es5-shim": "3.3.0",
 		"mocha": "1.18.2",
-		"power-assert": "0.7.2",
-		"expectations": "0.2.5"
+		"power-assert": "0.7.2"
 	},
 	"exportsOverride": {
 		"i18next": {
@@ -38,9 +37,6 @@
 		},
 		"power-assert": {
 			"test-js": "build/*.js"
-		},
-		"expectations": {
-			"test-js": "expectations.js"
 		}
 	}
 }
