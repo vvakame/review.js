@@ -14,8 +14,6 @@ if (notifier.update) {
 	notifier.notify();
 }
 
-// TODO i18n
-
 var packageJson = JSON.parse(fs.readFileSync(__dirname + "/../package.json", "utf8"));
 
 var r:typeof ReVIEW = require("./api");
