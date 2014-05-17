@@ -1,5 +1,5 @@
 ///<reference path='../../../typings/mocha/mocha.d.ts' />
-///<reference path='../../../typings/expectations/expectations.d.ts' />
+///<reference path='../../../typings/assert/assert.d.ts' />
 
 ///<reference path='../TestHelper.ts' />
 
@@ -11,7 +11,7 @@ describe("ReVIEW.Buildの", ()=> {
 
 	it("処理が正しく動くこと", ()=> {
 		var success = Test.compile({
-			read: (path: any) => {
+			read: (path:any) => {
 				return (<any>{
 					"ch01.re": "={ch01} ちゃぷたーだよ\n今日の晩ご飯はラフテーだった",
 					"ch02.re": "={ch02} チャプター2\n参照 @<hd>{ch02} とか\n//list[hoge][fuga]{\ntest\n//}"
@@ -29,18 +29,18 @@ describe("ReVIEW.Buildの", ()=> {
 		}).success();
 
 		var book = success.book;
-		expect(book.parts.length).toBe(3);
-		expect(book.parts[0].chapters.length).toBe(0);
-		expect(book.parts[2].chapters.length).toBe(0);
+		assert(book.parts.length === 3);
+		assert(book.parts[0].chapters.length === 0);
+		assert(book.parts[2].chapters.length === 0);
 
 		var part = book.parts[1];
-		expect(part.chapters.length).toBe(2);
+		assert(part.chapters.length === 2);
 		part.chapters.forEach((chapter)=> {
-			expect(chapter.root).toBeDefined();
+			assert(!!chapter.root);
 		});
 
-		expect(part.chapters[0].process.symbols.length).toBe(1);
-		expect(part.chapters[1].process.symbols.length).toBe(3);
+		assert(part.chapters[0].process.symbols.length === 1);
+		assert(part.chapters[1].process.symbols.length === 3);
 	});
 
 	describe("DefaultAnalyzerの動作の確認として", () => {
@@ -50,15 +50,15 @@ describe("ReVIEW.Buildの", ()=> {
 
 			var book = failure.book;
 			var missingSymbols = book.parts[0].chapters[0].process.missingSymbols;
-			expect(missingSymbols.length).toBe(1);
-			expect(missingSymbols[0].referenceTo.label).toBe("missing");
+			assert(missingSymbols.length === 1);
+			assert(missingSymbols[0].referenceTo.label === "missing");
 		});
 	});
 
 	describe("DefaultValidatorの動作の確認として", () => {
 		it("トップレベルのChapterは必ず level 1 であること", ()=> {
 			var failure = Test.compile({
-				read: (path: any) => {
+				read: (path:any) => {
 					return (<any>{
 						"ch01.re": "= level 1\n== level2",
 						"ch02.re": "== level 2"
@@ -76,8 +76,8 @@ describe("ReVIEW.Buildの", ()=> {
 			}).failure();
 
 			var book = failure.book;
-			expect(book.reports.length).toBe(1);
-			expect(book.reports[0].level).toBe(ReVIEW.ReportLevel.Error);
+			assert(book.reports.length === 1);
+			assert(book.reports[0].level === ReVIEW.ReportLevel.Error);
 		});
 
 		it("あるChapterの親のChapterのレベル差が1であること", ()=> {
@@ -85,8 +85,8 @@ describe("ReVIEW.Buildの", ()=> {
 				.failure();
 
 			var book = failure.book;
-			expect(book.reports.length).toBe(1);
-			expect(book.reports[0].level).toBe(ReVIEW.ReportLevel.Error);
+			assert(book.reports.length === 1);
+			assert(book.reports[0].level === ReVIEW.ReportLevel.Error);
 		});
 	});
 
@@ -103,7 +103,7 @@ describe("ReVIEW.Buildの", ()=> {
 			// TODO 想定より改行が多い… みた感じLevel3以降でおかしくなってる？
 			// var expected = "■H1■第1章　hoge\n\n■H2■1.1　fuga\n\n■H3■moge\n\n■H2■1.2　piyo\n\n■H3■foo\n\n■H1■第2章　bar\n";
 			var expected = "■H1■第1章　hoge\n\n■H2■1.1　fuga\n\n■H3■moge\n\n■H2■1.2　piyo\n\n■H3■foo\n\n■H1■第2章　bar\n\n";
-			expect(book.parts[0].chapters[0].findResultByBuilder(builder)).toBe(expected);
+			assert(book.parts[0].chapters[0].findResultByBuilder(builder) === expected);
 		});
 	});
 });

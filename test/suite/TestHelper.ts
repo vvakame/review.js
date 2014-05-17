@@ -1,5 +1,5 @@
 ///<reference path='../../typings/mocha/mocha.d.ts' />
-///<reference path='../../typings/expectations/expectations.d.ts' />
+///<reference path='../../typings/assert/assert.d.ts' />
 
 ///<reference path='../../lib/Main.ts' />
 
@@ -76,14 +76,14 @@ module Test {
 
 		return {
 			success: () => {
-				expect(success).toBe(true);
+				assert(success);
 				return {
 					book: book,
 					results: results
 				};
 			},
 			failure: () => {
-				expect(success).toBe(false);
+				assert(!success);
 				return {
 					book: book
 				};

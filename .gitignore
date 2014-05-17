@@ -17,6 +17,7 @@ test/**/*.js
 test/**/*.js.map
 test/**/*.d.ts
 test/suite/libs/
+testEspowered/
 src/main/peg/*.js
 test-results.xml
 

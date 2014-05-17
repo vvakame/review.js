@@ -1,5 +1,5 @@
 ///<reference path='../../../typings/mocha/mocha.d.ts' />
-///<reference path='../../../typings/expectations/expectations.d.ts' />
+///<reference path='../../../typings/assert/assert.d.ts' />
 
 ///<reference path='../../../lib/parser/Walker.ts' />
 
@@ -23,7 +23,7 @@ describe("ReVIEW.walkについて", ()=> {
 		});
 
 		// 最後のやつが取れる
-		expect(headline.level).toBe(5);
+		assert(headline.level === 5);
 
 		var result:ReVIEW.Parse.ChapterSyntaxTree = null;
 		ReVIEW.walk(headline, (ast)=> {
@@ -35,7 +35,7 @@ describe("ReVIEW.walkについて", ()=> {
 			}
 		});
 		// level に応じた適切な構造になってないの忘れてた
-		expect(result.level).toBe(2);
+		assert(result.level === 2);
 	});
 });
 
@@ -52,7 +52,7 @@ describe("ReVIEW.visitについて", ()=> {
 				}
 			}
 		});
-		expect(actual).toBe("今日のお昼ごはん\n断固としてカレーライス！\n");
+		assert(actual === "今日のお昼ごはん\n断固としてカレーライス！\n");
 	});
 
 	describe("visitBlockElementについて", () => {
@@ -68,7 +68,7 @@ describe("ReVIEW.visitについて", ()=> {
 					actual += "n";
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 		it("visitBlockElementが無い時visitNodeに行く", ()=> {
 			var actual = "";
@@ -81,7 +81,7 @@ describe("ReVIEW.visitについて", ()=> {
 					}
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 		it("visitBlockElementもvisitNodeも無い時visitDefaultに行く", ()=> {
 			var actual = "";
@@ -92,7 +92,7 @@ describe("ReVIEW.visitについて", ()=> {
 					}
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 	});
 
@@ -109,7 +109,7 @@ describe("ReVIEW.visitについて", ()=> {
 					actual += "n";
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 		it("visitInlineElementが無い時visitNodeに行く", ()=> {
 			var actual = "";
@@ -122,7 +122,7 @@ describe("ReVIEW.visitについて", ()=> {
 					}
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 		it("visitInlineElementもvisitNodeも無い時visitDefaultに行く", ()=> {
 			var actual = "";
@@ -133,7 +133,7 @@ describe("ReVIEW.visitについて", ()=> {
 					}
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 	});
 
@@ -151,7 +151,7 @@ describe("ReVIEW.visitについて", ()=> {
 				}
 			});
 			// Start, Chapters, ContentInlines
-			expect(actual).toBe("nnnn");
+			assert(actual === "nnnn");
 		});
 		it("visitNodeが無い時visitDefaultに行く", ()=> {
 			var actual = "";
@@ -161,7 +161,7 @@ describe("ReVIEW.visitについて", ()=> {
 				}
 			});
 			// Start, Chapters, Chapter, Headline, ContentInlines, ContentInlineText
-			expect(actual).toBe("nnnnnn");
+			assert(actual === "nnnnnn");
 		});
 	});
 
@@ -178,7 +178,7 @@ describe("ReVIEW.visitについて", ()=> {
 					actual += "n";
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 		it("visitArgumentが無い時visitDefaultに行く", ()=> {
 			var actual = "";
@@ -189,7 +189,7 @@ describe("ReVIEW.visitについて", ()=> {
 					}
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 	});
 
@@ -206,7 +206,7 @@ describe("ReVIEW.visitについて", ()=> {
 					actual += "n";
 				}
 			});
-			expect(actual).toBe("nn");
+			assert(actual === "nn");
 		});
 		it("visitChapterが無い時visitNodeに行く", ()=> {
 			var actual = "";
@@ -219,7 +219,7 @@ describe("ReVIEW.visitについて", ()=> {
 					}
 				}
 			});
-			expect(actual).toBe("nn");
+			assert(actual === "nn");
 		});
 		it("visitChapterが無い時visitDefaultに行く", ()=> {
 			var actual = "";
@@ -230,7 +230,7 @@ describe("ReVIEW.visitについて", ()=> {
 					}
 				}
 			});
-			expect(actual).toBe("nn");
+			assert(actual === "nn");
 		});
 	});
 
@@ -247,7 +247,7 @@ describe("ReVIEW.visitについて", ()=> {
 					actual += "n";
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 		it("visitHeadlineが無い時visitDefaultに行く", ()=> {
 			var actual = "";
@@ -258,7 +258,7 @@ describe("ReVIEW.visitについて", ()=> {
 					}
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 	});
 
@@ -275,7 +275,7 @@ describe("ReVIEW.visitについて", ()=> {
 					actual += "n";
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 		it("visitUlistが無い時visitNodeに行く", ()=> {
 			var actual = "";
@@ -288,7 +288,7 @@ describe("ReVIEW.visitについて", ()=> {
 					}
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 		it("visitUlistが無い時visitDefaultに行く", ()=> {
 			var actual = "";
@@ -299,7 +299,7 @@ describe("ReVIEW.visitについて", ()=> {
 					}
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 	});
 
@@ -316,7 +316,7 @@ describe("ReVIEW.visitについて", ()=> {
 					actual += "n";
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 		it("visitOlistが無い時visitDefaultに行く", ()=> {
 			var actual = "";
@@ -327,7 +327,7 @@ describe("ReVIEW.visitについて", ()=> {
 					}
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 	});
 
@@ -344,7 +344,7 @@ describe("ReVIEW.visitについて", ()=> {
 					actual += "n";
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 		it("visitDlistが無い時visitDefaultに行く", ()=> {
 			var actual = "";
@@ -355,7 +355,7 @@ describe("ReVIEW.visitについて", ()=> {
 					}
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 	});
 
@@ -372,7 +372,7 @@ describe("ReVIEW.visitについて", ()=> {
 					actual += "n";
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 		it("visitTextが無い時visitDefaultに行く", ()=> {
 			var actual = "";
@@ -383,7 +383,7 @@ describe("ReVIEW.visitについて", ()=> {
 					}
 				}
 			});
-			expect(actual).toBe("n");
+			assert(actual === "n");
 		});
 	});
 
@@ -399,7 +399,7 @@ describe("ReVIEW.visitについて", ()=> {
 					return false;
 				}
 			});
-			expect(count).toBe(1);
+			assert(count === 1);
 		});
 
 		it("探索方法を指定できる", ()=> {
@@ -419,7 +419,7 @@ describe("ReVIEW.visitについて", ()=> {
 					count++;
 				}
 			});
-			expect(count).toBe(2);
+			assert(count === 2);
 		});
 	});
 });

@@ -1,5 +1,5 @@
 ///<reference path='../../typings/mocha/mocha.d.ts' />
-///<reference path='../../typings/expectations/expectations.d.ts' />
+///<reference path='../../typings/assert/assert.d.ts' />
 
 ///<reference path='i18n/i18nSpec.ts' />
 ///<reference path='parser/ParserSpec.ts' />

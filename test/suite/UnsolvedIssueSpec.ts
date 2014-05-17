@@ -1,5 +1,5 @@
 ///<reference path='../../typings/mocha/mocha.d.ts' />
-///<reference path='../../typings/expectations/expectations.d.ts' />
+///<reference path='../../typings/assert/assert.d.ts' />
 
 ///<reference path='../../typings/node/node.d.ts' />
 
@@ -52,7 +52,7 @@ describe("未解決のエラー", ()=> {
 			//死なないパターンのexpected
 			//var expected = "■H1■第1章　title\n\n◆→開始:リスト←◆\nリスト1.1　きゃぷしょん\nalert('hello');\n◆→終了:リスト←◆\n\n";
 
-			expect(book.parts[0].chapters[0].findResultByBuilder(builder)).toBe(expected);
+			assert(book.parts[0].chapters[0].findResultByBuilder(builder) === expected);
 		});
 	});
 });

@@ -1,5 +1,5 @@
 ///<reference path='../../typings/mocha/mocha.d.ts' />
-///<reference path='../../typings/expectations/expectations.d.ts' />
+///<reference path='../../typings/assert/assert.d.ts' />
 
 ///<reference path='../../typings/node/node.d.ts' />
 
@@ -25,13 +25,13 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 		var result:string;
 		var error:any;
 		exec(
-			"review-compile  --level=1 --target=" + target + " " + fileName + ".re",
+				"review-compile  --level=1 --target=" + target + " " + fileName + ".re",
 			{
 				cwd: "test/fixture/valid",
 				env: process.env
 			},
 			(err:Error, stdout:NodeBuffer, stderr:NodeBuffer)=> {
-				expect(err).toBeNull();
+				assert(!err);
 				result = stdout.toString();
 				error = err;
 				if (callback) {
@@ -90,18 +90,18 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 								builders: [typeInfo.builder()]
 							})
 							.success();
-						expect(s.result).not.toBeNull();
+						assert(s.result !== null);
 
 						var assertResult = () => {
 							var expected = fs.readFileSync(targetFileName, "utf8");
-							expect(s.result).toBe(expected);
+							assert(s.result === expected);
 							done();
 						};
 
 						if (!fs.existsSync(targetFileName)) {
 							// Ruby版の出力ファイルがない場合、出力処理を行う
 							convertByRubyReVIEW(baseName, typeInfo.target, (data, error) => {
-								expect(error).toBeNull();
+								assert(!error);
 								fs.writeFileSync(targetFileName, data);
 
 								assertResult();

@@ -1,5 +1,5 @@
 ///<reference path='../../../typings/mocha/mocha.d.ts' />
-///<reference path='../../../typings/expectations/expectations.d.ts' />
+///<reference path='../../../typings/assert/assert.d.ts' />
 
 ///<reference path='../../../lib/model/CompilerModel.ts' />
 ///<reference path='../../../lib/builder/TextBuilder.ts' />
@@ -43,17 +43,17 @@ describe("ReVIEW.Controllerの", ()=> {
 			});
 		});
 
-		expect(book.parts.length).toBe(3);
-		expect(book.parts[0].chapters.length).toBe(0);
-		expect(book.parts[2].chapters.length).toBe(0);
+		assert(book.parts.length === 3);
+		assert(book.parts[0].chapters.length === 0);
+		assert(book.parts[2].chapters.length === 0);
 
 		var part = book.parts[1];
-		expect(part.chapters.length).toBe(2);
+		assert(part.chapters.length === 2);
 		part.chapters.forEach((chapter)=> {
-			expect(chapter.root).toBeDefined();
+			assert(!!chapter.root);
 		});
 
-		expect(part.chapters[0].process.symbols.length).toBe(1);
-		expect(part.chapters[1].process.symbols.length).toBe(3);
+		assert(part.chapters[0].process.symbols.length === 1);
+		assert(part.chapters[1].process.symbols.length === 3);
 	});
 });
