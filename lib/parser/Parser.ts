@@ -86,7 +86,7 @@ module ReVIEW.Parse {
 		if (!rawResult) {
 			return null;
 		}
-		var rule:number = RuleName[rawResult.syntax];
+		var rule:number = (<any>RuleName)[rawResult.syntax];
 		if (typeof rule === "undefined") {
 			throw new ParseError(rawResult, "unknown rule: " + rawResult.syntax);
 		}
@@ -293,7 +293,7 @@ module ReVIEW.Parse {
 		next:SyntaxTree;
 
 		constructor(data:IConcreatSyntaxTree) {
-			this.ruleName = RuleName[data.syntax];
+			this.ruleName = (<any>RuleName)[data.syntax];
 			if (typeof this.ruleName === "undefined") {
 				throw new ParseError(data, "unknown rule: " + data.syntax);
 			}
@@ -304,16 +304,16 @@ module ReVIEW.Parse {
 		}
 
 		toJSON():any {
-			var result = {};
+			var result:any = {};
 			for (var k in this) {
 				if (k === "ruleName") {
-					result[k] = RuleName[this[k]];
+					result[k] = (<any>RuleName)[this.ruleName];
 				} else if (k === "prev" || k === "next") {
 					// 無視する
 				} else if (k === "fqn") {
 					// TODO あとでちゃんと出るようにする
-				} else if (k !== "parentNode" && typeof this[k] !== "function") {
-					result[k] = this[k];
+				} else if (k !== "parentNode" && typeof (<any>this)[k] !== "function") {
+					result[k] = (<any>this)[k];
 				}
 			}
 			return result;

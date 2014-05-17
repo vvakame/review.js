@@ -221,22 +221,22 @@ module ReVIEW.Build {
 			var process = new AnalyzeProcess();
 
 			for (var k in this) {
-				if (typeof this[k] !== "function") {
+				if (typeof (<any>this)[k] !== "function") {
 					continue;
 				}
 				var func:Function = null;
 				if (k.indexOf("block_") === 0) {
-					func = this[k];
+					func = (<any>this)[k];
 				} else if (k.indexOf("inline_") === 0) {
-					func = this[k];
+					func = (<any>this)[k];
 				} else if (k === "headline") {
-					func = this[k];
+					func = (<any>this)[k];
 				} else if (k === "ulist") {
-					func = this[k];
+					func = (<any>this)[k];
 				} else if (k === "olist") {
-					func = this[k];
+					func = (<any>this)[k];
 				} else if (k === "dlist") {
-					func = this[k];
+					func = (<any>this)[k];
 				}
 				if (func) {
 					process.prepare();

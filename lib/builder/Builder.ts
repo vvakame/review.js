@@ -164,12 +164,12 @@ module ReVIEW.Build {
 
 		blockPre(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any {
 			var func:Function;
-			func = this["block_" + name];
+			func = (<any>this)["block_" + name];
 			if (typeof func === "function") {
 				return func.call(this, process, node);
 			}
 
-			func = this["block_" + name + "_pre"];
+			func = (<any>this)["block_" + name + "_pre"];
 			if (typeof func !== "function") {
 				throw new AnalyzerError("block_" + name + "_pre or block_" + name + " is not Function");
 			}
@@ -178,12 +178,12 @@ module ReVIEW.Build {
 
 		blockPost(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any {
 			var func:Function;
-			func = this["block_" + name];
+			func = (<any>this)["block_" + name];
 			if (typeof func === "function") {
 				return;
 			}
 
-			func = this["block_" + name + "_post"];
+			func = (<any>this)["block_" + name + "_post"];
 			if (typeof func !== "function") {
 				throw new AnalyzerError("block_" + name + "_post is not Function");
 			}
@@ -192,12 +192,12 @@ module ReVIEW.Build {
 
 		inlinePre(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any {
 			var func:Function;
-			func = this["inline_" + name];
+			func = (<any>this)["inline_" + name];
 			if (typeof func === "function") {
 				return func.call(this, process, node);
 			}
 
-			func = this["inline_" + name + "_pre"];
+			func = (<any>this)["inline_" + name + "_pre"];
 			if (typeof func !== "function") {
 				throw new AnalyzerError("inline_" + name + "_pre or inline_" + name + " is not Function");
 			}
@@ -206,12 +206,12 @@ module ReVIEW.Build {
 
 		inlinePost(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any {
 			var func:Function;
-			func = this["inline_" + name];
+			func = (<any>this)["inline_" + name];
 			if (typeof func === "function") {
 				return;
 			}
 
-			func = this["inline_" + name + "_post"];
+			func = (<any>this)["inline_" + name + "_post"];
 			if (typeof func !== "function") {
 				throw new AnalyzerError("inline_" + name + "_post is not Function");
 			}

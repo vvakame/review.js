@@ -5,7 +5,7 @@ module ReVIEW {
 	 * Node.js上での実行かどうかを判別する。
 	 * @returns {boolean}
 	 */
-	export function isNodeJS(): boolean {
+	export function isNodeJS():boolean {
 		return !isAMD() && typeof exports === "object";
 	}
 
@@ -13,7 +13,7 @@ module ReVIEW {
 	 * AMD環境下での実行かどうかを判別する。
 	 * @returns {boolean|any}
 	 */
-	export function isAMD(): boolean {
+	export function isAMD():boolean {
 		return typeof define === "function" && define.amd;
 	}
 
@@ -147,7 +147,8 @@ module ReVIEW {
 		var builderName = target.charAt(0).toUpperCase() + target.substring(1) + "Builder";
 		for (var name in ReVIEW.Build) {
 			if (name === builderName) {
-				return new ReVIEW.Build[name];
+				var ctor = (<any>ReVIEW.Build)[name];
+				return new ctor();
 			}
 		}
 		return null;

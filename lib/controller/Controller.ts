@@ -145,7 +145,7 @@ module ReVIEW {
 		private processBook():Book {
 			var book = new Book(this.config);
 			book.parts = Object.keys(this.config.book).map((key, index) => {
-				var chapters:string[] = this.config.book[key];
+				var chapters:string[] = (<any>this.config.book)[key];
 				return this.processPart(book, index, key, chapters);
 			});
 			// Chapterに採番を行う

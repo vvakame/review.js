@@ -12,10 +12,10 @@ describe("ReVIEW.Buildの", ()=> {
 	it("処理が正しく動くこと", ()=> {
 		var success = Test.compile({
 			read: (path: any) => {
-				return {
+				return (<any>{
 					"ch01.re": "={ch01} ちゃぷたーだよ\n今日の晩ご飯はラフテーだった",
 					"ch02.re": "={ch02} チャプター2\n参照 @<hd>{ch02} とか\n//list[hoge][fuga]{\ntest\n//}"
-				}[path];
+				})[path];
 			},
 
 			book: {
@@ -59,10 +59,10 @@ describe("ReVIEW.Buildの", ()=> {
 		it("トップレベルのChapterは必ず level 1 であること", ()=> {
 			var failure = Test.compile({
 				read: (path: any) => {
-					return {
+					return (<any>{
 						"ch01.re": "= level 1\n== level2",
 						"ch02.re": "== level 2"
-					}[path];
+					})[path];
 				},
 
 				book: {

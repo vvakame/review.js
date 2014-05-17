@@ -52,7 +52,7 @@ module ReVIEW.Build {
 				var funcName1 = prefix + syntax.symbolName;
 				var funcName2 = prefix + syntax.symbolName + "_pre";
 				builders.forEach(builder=> {
-					var func = builder[funcName1] || builder[funcName2];
+					var func = (<any>builder)[funcName1] || (<any>builder)[funcName2];
 					if (!func) {
 						book.process.error(SyntaxType[syntax.type] + " " + syntax.symbolName + " is not supported in " + builder.name);
 					}

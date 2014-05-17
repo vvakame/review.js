@@ -4032,7 +4032,8 @@ var PEG = (function() {
         var builderName = target.charAt(0).toUpperCase() + target.substring(1) + "Builder";
         for (var name in ReVIEW.Build) {
             if (name === builderName) {
-                return new ReVIEW.Build[name];
+                var ctor = ReVIEW.Build[name];
+                return new ctor();
             }
         }
         return null;
@@ -4726,7 +4727,7 @@ var ReVIEW;
                 var result = {};
                 for (var k in this) {
                     if (k === "ruleName") {
-                        result[k] = RuleName[this[k]];
+                        result[k] = RuleName[this.ruleName];
                     } else if (k === "prev" || k === "next") {
                     } else if (k === "fqn") {
                     } else if (k !== "parentNode" && typeof this[k] !== "function") {
