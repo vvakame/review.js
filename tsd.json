@@ -20,6 +20,9 @@
 		"expectations/expectations.d.ts": {
 			"commit": "bb59fade926c39c73f0c23781a7db60d51fbcff3"
 		},
+		"assert/assert.d.ts": {
+			"commit": "bb59fade926c39c73f0c23781a7db60d51fbcff3"
+		},
 		"update-notifier/update-notifier.d.ts": {
 			"commit": "bb59fade926c39c73f0c23781a7db60d51fbcff3"
 		},

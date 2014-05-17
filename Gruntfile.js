@@ -14,7 +14,8 @@ module.exports = function (grunt) {
 
 				"outBase": "dist",
 				"jsMainOut": "lib",
-				"jsTestOut": "test"
+				"jsTestOut": "test",
+				"jsEspowerOut": "testEspowered"
 			}
 		},
 
@@ -111,6 +112,19 @@ module.exports = function (grunt) {
 
 					return true;
 				}
+			}
+		},
+		espower: {
+			test: {
+				files: [
+					{
+						expand: true,        // Enable dynamic expansion.
+						cwd: '<%= opt.client.jsTestOut %>/',        // Src matches are relative to this path.
+						src: ['**/*.js'],    // Actual pattern(s) to match.
+						dest: '<%= opt.client.jsEspowerOut %>/',  // Destination path prefix.
+						ext: '.js'           // Dest filepaths will have this extension.
+					}
+				]
 			}
 		},
 		watch: {
@@ -297,12 +311,16 @@ module.exports = function (grunt) {
 			test: {
 				options: {
 					reporter: 'spec',
-					require: 'expectations'
+					require: [
+						'expectations',
+						function(){ assert = require('power-assert'); }
+					]
 				},
 				src: [
 					'bin/lib/*.js',
 					'<%= opt.client.tsTestLib %>/expectations.js',
-					'<%= opt.client.jsTestOut %>/test.js'
+					'<%= opt.client.tsTestLib %>/power-assert.js',
+					'<%= opt.client.jsEspowerOut %>/test.js'
 				]
 			}
 		},
@@ -361,7 +379,7 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'test-preprocess',
 		"テストに必要な前準備を実行する。",
-		['default', 'ts:clientTest', 'concat:test']);
+		['default', 'ts:clientTest', 'concat:test', 'espower']);
 
 	grunt.registerTask(
 		'test',
