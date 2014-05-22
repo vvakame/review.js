@@ -55,7 +55,7 @@
 
     "mocha": "1.18.2",
     "power-assert": "0.7.2",
-    "grunt-espower": "0.7.0",
+    "espower-loader": "0.7.1",
 
     "grunt-mocha": "0.4.10",
     "grunt-mocha-test": "0.10.2",
