@@ -20,8 +20,8 @@
 		"i18next": "1.7.3"
 	},
 	"devDependencies": {
-		"es5-shim": "3.3.0",
-		"mocha": "1.18.2",
+		"es5-shim": "3.4.0",
+		"mocha": "1.19.0",
 		"power-assert": "0.7.2"
 	},
 	"exportsOverride": {

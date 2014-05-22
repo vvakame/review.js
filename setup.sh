@@ -19,7 +19,7 @@ if [ $ISERROR == 1 ] ; then
 	exit
 fi
 
-rm -rf node_modules bower-task bower_components src/main/typescript/libs/typings && \
+rm -rf node_modules bower-task bower_components typings && \
 npm install && \
 grunt setup && \
 echo "OK!"
