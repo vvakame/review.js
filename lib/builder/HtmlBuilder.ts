@@ -105,7 +105,6 @@ module ReVIEW.Build {
 
 		columnHeadlinePre(process:BuilderProcess, node:ColumnHeadlineSyntaxTree) {
 			process.out("<h").out(node.level).out(">");
-			console.log(node);
 			process.out("<a id=\"column-").out(node.parentNode.no).out("\"></a>");
 
 			return (v:ITreeVisitor)=> {

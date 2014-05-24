@@ -8336,7 +8336,6 @@ var ReVIEW;
 
             HtmlBuilder.prototype.columnHeadlinePre = function (process, node) {
                 process.out("<h").out(node.level).out(">");
-                console.log(node);
                 process.out("<a id=\"column-").out(node.parentNode.no).out("\"></a>");
 
                 return function (v) {

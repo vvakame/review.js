@@ -59,11 +59,9 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 		];
 
 		var ignoreFiles = [
-			"block.re", // ブロック構文にParagraphを持ち込んだ影響で
 			"ch01.re", // lead, emplist がまだサポートされていない
-			"empty.re", // empty への対応をまだ行っていない
-			"headline.re", // プロセス終了しない謎があるので
-			"inline.re", // tti がまだサポートされていない
+			"empty.re", // empty への対応をまだ行っていない ファイル実体は存在していない
+			"inline.re", // tti がまだサポートされていない < のエスケープとかも
 			"inline_nested.re", // Ruby版はネストを許可しない
 			"inline_with_newline.re", // Ruby版の処理が腐っている気がする
 			"lead.re", // ブロック構文内でのParagraphの扱いがおかしいのを直していない
@@ -99,7 +97,6 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 						if (!fs.existsSync(targetFileName)) {
 							// Ruby版の出力ファイルがない場合、出力処理を行う
 							convertByRubyReVIEW(baseName, typeInfo.target, (data, error) => {
-								console.log(error);
 								assert(!error);
 								fs.writeFileSync(targetFileName, data);
 
