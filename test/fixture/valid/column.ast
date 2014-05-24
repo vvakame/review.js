@@ -1,0 +1,396 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 176,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 176,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 8,
+          "childNodes": [
+            {
+              "ruleName": "Chapter",
+              "offset": 8,
+              "line": 3,
+              "column": 1,
+              "endPos": 69,
+              "headline": {
+                "ruleName": "Headline",
+                "offset": 8,
+                "line": 3,
+                "column": 1,
+                "endPos": 24,
+                "level": 2,
+                "caption": {
+                  "ruleName": "ContentInlines",
+                  "offset": 11,
+                  "line": 3,
+                  "column": 4,
+                  "endPos": 22,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentInlineText",
+                      "offset": 11,
+                      "line": 3,
+                      "column": 4,
+                      "endPos": 22,
+                      "text": "普通にコラム 閉じ有り"
+                    }
+                  ]
+                }
+              },
+              "text": [
+                {
+                  "ruleName": "Paragraph",
+                  "offset": 24,
+                  "line": 5,
+                  "column": 1,
+                  "endPos": 28,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentText",
+                      "offset": 24,
+                      "line": 5,
+                      "column": 1,
+                      "endPos": 27,
+                      "text": "本文"
+                    }
+                  ]
+                },
+                {
+                  "ruleName": "Column",
+                  "offset": 28,
+                  "line": 7,
+                  "column": 1,
+                  "endPos": 69,
+                  "headline": {
+                    "ruleName": "ColumnHeadline",
+                    "offset": 28,
+                    "line": 7,
+                    "column": 1,
+                    "endPos": 47,
+                    "level": 3,
+                    "caption": {
+                      "ruleName": "ContentInlines",
+                      "offset": 40,
+                      "line": 7,
+                      "column": 13,
+                      "endPos": 45,
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentInlineText",
+                          "offset": 40,
+                          "line": 7,
+                          "column": 13,
+                          "endPos": 45,
+                          "text": "コラムです"
+                        }
+                      ]
+                    }
+                  },
+                  "text": [
+                    {
+                      "ruleName": "Paragraph",
+                      "offset": 47,
+                      "line": 9,
+                      "column": 1,
+                      "endPos": 55,
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentText",
+                          "offset": 47,
+                          "line": 9,
+                          "column": 1,
+                          "endPos": 54,
+                          "text": "コラム本文1"
+                        }
+                      ]
+                    }
+                  ],
+                  "childNodes": [],
+                  "no": 1,
+                  "level": 3
+                }
+              ],
+              "childNodes": [],
+              "no": 1,
+              "level": 2
+            },
+            {
+              "ruleName": "Chapter",
+              "offset": 69,
+              "line": 13,
+              "column": 1,
+              "endPos": 116,
+              "headline": {
+                "ruleName": "Headline",
+                "offset": 69,
+                "line": 13,
+                "column": 1,
+                "endPos": 85,
+                "level": 2,
+                "caption": {
+                  "ruleName": "ContentInlines",
+                  "offset": 72,
+                  "line": 13,
+                  "column": 4,
+                  "endPos": 83,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentInlineText",
+                      "offset": 72,
+                      "line": 13,
+                      "column": 4,
+                      "endPos": 83,
+                      "text": "普通にコラム 閉じ無し"
+                    }
+                  ]
+                }
+              },
+              "text": [
+                {
+                  "ruleName": "Paragraph",
+                  "offset": 85,
+                  "line": 15,
+                  "column": 1,
+                  "endPos": 89,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentText",
+                      "offset": 85,
+                      "line": 15,
+                      "column": 1,
+                      "endPos": 88,
+                      "text": "本文"
+                    }
+                  ]
+                },
+                {
+                  "ruleName": "Column",
+                  "offset": 89,
+                  "line": 17,
+                  "column": 1,
+                  "endPos": 116,
+                  "headline": {
+                    "ruleName": "ColumnHeadline",
+                    "offset": 89,
+                    "line": 17,
+                    "column": 1,
+                    "endPos": 108,
+                    "level": 3,
+                    "caption": {
+                      "ruleName": "ContentInlines",
+                      "offset": 101,
+                      "line": 17,
+                      "column": 13,
+                      "endPos": 106,
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentInlineText",
+                          "offset": 101,
+                          "line": 17,
+                          "column": 13,
+                          "endPos": 106,
+                          "text": "コラムです"
+                        }
+                      ]
+                    }
+                  },
+                  "text": [
+                    {
+                      "ruleName": "Paragraph",
+                      "offset": 108,
+                      "line": 19,
+                      "column": 1,
+                      "endPos": 116,
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentText",
+                          "offset": 108,
+                          "line": 19,
+                          "column": 1,
+                          "endPos": 115,
+                          "text": "コラム本文2"
+                        }
+                      ]
+                    }
+                  ],
+                  "childNodes": [],
+                  "no": 2,
+                  "level": 3
+                }
+              ],
+              "childNodes": [],
+              "no": 2,
+              "level": 2
+            },
+            {
+              "ruleName": "Chapter",
+              "offset": 116,
+              "line": 21,
+              "column": 1,
+              "endPos": 176,
+              "headline": {
+                "ruleName": "Headline",
+                "offset": 116,
+                "line": 21,
+                "column": 1,
+                "endPos": 126,
+                "level": 2,
+                "caption": {
+                  "ruleName": "ContentInlines",
+                  "offset": 119,
+                  "line": 21,
+                  "column": 4,
+                  "endPos": 124,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentInlineText",
+                      "offset": 119,
+                      "line": 21,
+                      "column": 4,
+                      "endPos": 124,
+                      "text": "間にコラム"
+                    }
+                  ]
+                }
+              },
+              "text": [
+                {
+                  "ruleName": "Paragraph",
+                  "offset": 126,
+                  "line": 23,
+                  "column": 1,
+                  "endPos": 131,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentText",
+                      "offset": 126,
+                      "line": 23,
+                      "column": 1,
+                      "endPos": 130,
+                      "text": "本文前"
+                    }
+                  ]
+                },
+                {
+                  "ruleName": "Column",
+                  "offset": 131,
+                  "line": 25,
+                  "column": 1,
+                  "endPos": 172,
+                  "headline": {
+                    "ruleName": "ColumnHeadline",
+                    "offset": 131,
+                    "line": 25,
+                    "column": 1,
+                    "endPos": 150,
+                    "level": 3,
+                    "caption": {
+                      "ruleName": "ContentInlines",
+                      "offset": 143,
+                      "line": 25,
+                      "column": 13,
+                      "endPos": 148,
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentInlineText",
+                          "offset": 143,
+                          "line": 25,
+                          "column": 13,
+                          "endPos": 148,
+                          "text": "コラムです"
+                        }
+                      ]
+                    }
+                  },
+                  "text": [
+                    {
+                      "ruleName": "Paragraph",
+                      "offset": 150,
+                      "line": 27,
+                      "column": 1,
+                      "endPos": 158,
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentText",
+                          "offset": 150,
+                          "line": 27,
+                          "column": 1,
+                          "endPos": 157,
+                          "text": "コラム本文3"
+                        }
+                      ]
+                    }
+                  ],
+                  "childNodes": [],
+                  "no": 3,
+                  "level": 3
+                },
+                {
+                  "ruleName": "Paragraph",
+                  "offset": 172,
+                  "line": 31,
+                  "column": 1,
+                  "endPos": 176,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentText",
+                      "offset": 172,
+                      "line": 31,
+                      "column": 1,
+                      "endPos": 176,
+                      "text": "本文後"
+                    }
+                  ]
+                }
+              ],
+              "childNodes": [],
+              "no": 3,
+              "level": 2
+            }
+          ],
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 8,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 6,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 6,
+                  "text": "サンプル"
+                }
+              ]
+            }
+          },
+          "text": [],
+          "no": 1,
+          "level": 1
+        }
+      ]
+    }
+  ]
+}

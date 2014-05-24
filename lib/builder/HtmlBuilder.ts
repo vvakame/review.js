@@ -17,6 +17,8 @@ module ReVIEW.Build {
 	import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
 	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+	import ColumnSyntaxTree = ReVIEW.Parse.ColumnSyntaxTree;
+	import ColumnHeadlineSyntaxTree = ReVIEW.Parse.ColumnHeadlineSyntaxTree;
 
 	import nodeContentToString = ReVIEW.nodeContentToString;
 	import findChapter = ReVIEW.findChapter;
@@ -45,7 +47,9 @@ module ReVIEW.Build {
 					visitDefaultPre: ()=> {
 					},
 					visitChapterPre: (node:ChapterSyntaxTree)=> {
-						name = nodeContentToString(process, node.headline.caption);
+						if (node.headline.level === 1) {
+							name = nodeContentToString(process, node.headline.caption);
+						}
 					}
 				});
 				pre += "  <title>" + name + "</title>\n";
@@ -59,36 +63,58 @@ module ReVIEW.Build {
 		}
 
 		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
-			if (node.cmd) {
-				process.out("<div class=\"column\">\n");
-			}
 			process.out("<h").out(node.level);
 			if (node.label) {
 				process.out(" id=\"").out(node.label.arg).out("\"");
 			}
 			process.out(">");
-			if (node.cmd) {
-				process.out("<a id=\"column-").out(node.parentNode.no).out("\"></a>");
-			} else {
-				process.out("<a id=\"h").out(node.level).out("\"></a>");
-			}
-			if (node.cmd) {
-				return (v:ITreeVisitor)=> {
-					ReVIEW.visit(node.caption, v);
-				};
-			} else if (node.level === 1) {
+			var constructLabel = (node:SyntaxTree) => {
+				var chapters:ChapterSyntaxTree[] = [];
+				ReVIEW.walk(node, (node:SyntaxTree) => {
+					if (node instanceof ReVIEW.Parse.ChapterSyntaxTree) {
+						chapters.unshift(node.toChapter());
+					}
+					return node.parentNode;
+				});
+				var result = chapters.map((chapter)=> {
+					return chapter.no;
+				}).join("-");
+				return result;
+			};
+			process.out("<a id=\"h").out(constructLabel(node)).out("\"></a>");
+
+			if (node.level === 1) {
 				var text = i18n.t("builder.chapter", node.parentNode.no);
 				process.out(text).out("　");
 			} else if (node.level === 2) {
-				process.out(node.parentNode.toChapter().fqn).out("　");
+				// process.out(node.parentNode.toChapter().fqn).out("　");
 			}
 		}
 
 		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
 			process.out("</h").out(node.level).out(">\n");
-			if (node.cmd) {
-				process.out("</div>\n");
-			}
+		}
+
+		columnPre(process:BuilderProcess, node:ColumnSyntaxTree) {
+			process.out("<div class=\"column\">\n\n");
+		}
+
+		columnPost(process:BuilderProcess, node:ColumnSyntaxTree) {
+			process.out("</div>\n");
+		}
+
+		columnHeadlinePre(process:BuilderProcess, node:ColumnHeadlineSyntaxTree) {
+			process.out("<h").out(node.level).out(">");
+			console.log(node);
+			process.out("<a id=\"column-").out(node.parentNode.no).out("\"></a>");
+
+			return (v:ITreeVisitor)=> {
+				ReVIEW.visit(node.caption, v);
+			};
+		}
+
+		columnHeadlinePost(process:BuilderProcess, node:ColumnHeadlineSyntaxTree) {
+			process.out("</h").out(node.level).out(">\n");
 		}
 
 		paragraphPre(process:BuilderProcess, name:string, node:NodeSyntaxTree) {
@@ -337,7 +363,7 @@ module ReVIEW.Build {
 
 		inline_ruby_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("<ruby>");
-			return (v: ReVIEW.ITreeVisitor) => {
+			return (v:ReVIEW.ITreeVisitor) => {
 				// name, args はパス
 				node.childNodes.forEach(node=> {
 					var contentString = nodeContentToString(process, node);
@@ -365,7 +391,7 @@ module ReVIEW.Build {
 
 		inline_kw_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("<b class=\"kw\">");
-			return (v: ReVIEW.ITreeVisitor) => {
+			return (v:ReVIEW.ITreeVisitor) => {
 				// name, args はパス
 				node.childNodes.forEach(node=> {
 					var contentString = nodeContentToString(process, node);

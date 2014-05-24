@@ -12,7 +12,7 @@ Chapter "chapter"
 
 // = 章タイトル
 Headline "headline"
-    = level:"="+ cmd:BracketArg? label:BraceArg? Space* caption:SinglelineContent Newline*
+    = level:"="+ label:BraceArg? Space* caption:SinglelineContent Newline*
     ;
 
 Contents "contents"
@@ -22,7 +22,7 @@ Contents "contents"
 
 Content "content"
     // TODO InlineElement の後に Ulist / Olist / Dlist が来ると先頭行じゃなくてマッチできてしまうかも
-    = c:SinglelineComment / c:BlockElement / c:Ulist / c:Olist / c:Dlist / c:Paragraph
+    = c:SinglelineComment / c:BlockElement / c:Ulist / c:Olist / c:Dlist / c:Paragraph / c:Column
     ;
 
 Paragraph "paragraph"
@@ -50,6 +50,32 @@ BlockElement "block element"
 InlineElement "inline element"
     = "@<" symbol:$([^>\r\n]+) ">" "{" contents:InlineElementContents? "}"
     ;
+
+Column "column"
+    = headline:ColumnHeadline text:ColumnContents? ColumnTerminator?
+    ;
+
+ColumnHeadline "column headline"
+    = level:"="+ "[column]" Space* caption:SinglelineContent Newline*
+    ;
+
+ColumnContents "column contents"
+    // eof 検出に &. を使っている
+    = &. c:ColumnContent cc:ColumnContents? Newline?
+    ;
+
+ColumnContent "column content"
+    // TODO InlineElement の後に Ulist / Olist / Dlist が来ると先頭行じゃなくてマッチできてしまうかも
+    = !Headline !ColumnTerminator c:SinglelineComment
+    / !Headline !ColumnTerminator c:BlockElement
+    / !Headline !ColumnTerminator c:Ulist
+    / !Headline !ColumnTerminator c:Olist
+    / !Headline !ColumnTerminator c:Dlist
+    / !Headline !ColumnTerminator c:Paragraph
+    ;
+
+ColumnTerminator "column terminator"
+    = level:"="+ "[/column]" Space* Newline+
 
 BracketArg "bracket argument"
     = "[" arg:$([^\r\n\]]*) "]"

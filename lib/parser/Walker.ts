@@ -18,6 +18,8 @@ module ReVIEW {
 	import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
 	import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
 	import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
+	import ColumnSyntaxTree = ReVIEW.Parse.ColumnSyntaxTree;
+	import ColumnHeadlineSyntaxTree = ReVIEW.Parse.ColumnHeadlineSyntaxTree;
 	import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
 	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 
@@ -77,6 +79,12 @@ module ReVIEW {
 			visitDlistPre: v.visitDlistPre || v.visitDefaultPre,
 			visitDlistPost: v.visitDlistPost || v.visitDefaultPost || (()=> {
 			}),
+			visitColumnPre: v.visitColumnPre || v.visitNodePre || v.visitDefaultPre,
+			visitColumnPost: v.visitColumnPost || v.visitNodePost || v.visitDefaultPost || (()=> {
+			}),
+			visitColumnHeadlinePre: v.visitColumnHeadlinePre || v.visitDefaultPre,
+			visitColumnHeadlinePost: v.visitColumnHeadlinePost || v.visitDefaultPost || (()=> {
+			}),
 			visitTextPre: v.visitTextPre || v.visitDefaultPre,
 			visitTextPost: v.visitTextPost || v.visitDefaultPost || (()=> {
 			})
@@ -101,6 +109,10 @@ module ReVIEW {
 		newV.visitOlistPost = newV.visitOlistPost.bind(v);
 		newV.visitDlistPre = newV.visitDlistPre.bind(v);
 		newV.visitDlistPost = newV.visitDlistPost.bind(v);
+		newV.visitColumnPre = newV.visitColumnPre.bind(v);
+		newV.visitColumnPost = newV.visitColumnPost.bind(v);
+		newV.visitColumnHeadlinePre = newV.visitColumnHeadlinePre.bind(v);
+		newV.visitColumnHeadlinePost = newV.visitColumnHeadlinePost.bind(v);
 		newV.visitTextPre = newV.visitTextPre.bind(v);
 		newV.visitTextPost = newV.visitTextPost.bind(v);
 		visitSub(null, ast, newV);
@@ -160,13 +172,35 @@ module ReVIEW {
 			var head = ast.toHeadline();
 			var ret = v.visitHeadlinePre(head, parent);
 			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-				visitSub(ast, head.cmd, v);
 				visitSub(ast, head.label, v);
 				visitSub(ast, head.caption, v);
 			} else if (typeof ret === "function") {
 				ret(v);
 			}
 			v.visitHeadlinePost(head, parent);
+		} else if (ast instanceof ReVIEW.Parse.ColumnSyntaxTree) {
+			var column = ast.toColumn();
+			var ret = v.visitColumnPre(column, parent);
+			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+				visitSub(ast, column.headline, v);
+				if (column.text) {
+					column.text.forEach((next)=> {
+						visitSub(ast, next, v);
+					});
+				}
+			} else if (typeof ret === "function") {
+				ret(v);
+			}
+			v.visitColumnPost(column, parent);
+		} else if (ast instanceof ReVIEW.Parse.ColumnHeadlineSyntaxTree) {
+			var columnHead = ast.toColumnHeadline();
+			var ret = v.visitColumnHeadlinePre(columnHead, parent);
+			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+				visitSub(ast, columnHead.caption, v);
+			} else if (typeof ret === "function") {
+				ret(v);
+			}
+			v.visitColumnHeadlinePost(columnHead, parent);
 		} else if (ast instanceof ReVIEW.Parse.UlistElementSyntaxTree) {
 			var ul = ast.toUlist();
 			var ret = v.visitUlistPre(ul, parent);
@@ -267,6 +301,10 @@ module ReVIEW {
 		visitOlistPost?(node:OlistElementSyntaxTree, parent:SyntaxTree):void;
 		visitDlistPre?(node:DlistElementSyntaxTree, parent:SyntaxTree):any;
 		visitDlistPost?(node:DlistElementSyntaxTree, parent:SyntaxTree):void;
+		visitColumnPre?(node:ColumnSyntaxTree, parent:SyntaxTree):any;
+		visitColumnPost?(node:ColumnSyntaxTree, parent:SyntaxTree):void;
+		visitColumnHeadlinePre?(node:ColumnHeadlineSyntaxTree, parent:SyntaxTree):any;
+		visitColumnHeadlinePost?(node:ColumnHeadlineSyntaxTree, parent:SyntaxTree):void;
 		visitTextPre?(node:TextNodeSyntaxTree, parent:SyntaxTree):any;
 		visitTextPost?(node:TextNodeSyntaxTree, parent:SyntaxTree):void;
 	}

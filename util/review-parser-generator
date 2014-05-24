@@ -114,13 +114,12 @@ var options =
 					offset: offset(),
 					endPos: peg$currPos,
 					level: level.length,
-					cmd: cmd,
 					label: label,
 					caption: caption
 				};
 			},
 			Contents: template.contents("Contents"),
-			Content: template.repeat(6, template.content("Content")),
+			Content: template.repeat(7, template.content("Content")),
 			Paragraph: template.content("Paragraph"),
 			ParagraphSubs: template.contents("ParagraphSubs"),
 			ParagraphSub: template.repeat(2, template.content("ParagraphSub")),
@@ -159,6 +158,40 @@ var options =
 					endPos: peg$currPos,
 					symbol: symbol,
 					content: contents
+				};
+			},
+			Column: function () {
+				return {
+					syntax: "Column",
+					line: line(),
+					column: column(),
+					offset: offset(),
+					endPos: peg$currPos,
+					headline: headline,
+					text: text
+				};
+			},
+			ColumnHeadline: function () {
+				return {
+					syntax: "ColumnHeadline",
+					line: line(),
+					column: column(),
+					offset: offset(),
+					endPos: peg$currPos,
+					level: level.length,
+					caption: caption
+				};
+			},
+			ColumnContents: template.contents("ColumnContents"),
+			ColumnContent: template.repeat(6, template.content("ColumnContent")),
+			ColumnTerminator: function () {
+				return {
+					syntax: "ColumnTerminator",
+					line: line(),
+					column: column(),
+					offset: offset(),
+					endPos: peg$currPos,
+					level: level.length
 				};
 			},
 			BracketArg: function () {

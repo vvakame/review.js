@@ -166,7 +166,7 @@ describe("ReVIEW.visitについて", ()=> {
 	});
 
 	describe("visitArgumentについて", () => {
-		var input = "=[column] hoge";
+		var input = "={fuga} hoge";
 		var result = ReVIEW.Parse.parse(input);
 
 		it("ArgumentSyntaxTreeが処理できる", ()=> {
@@ -351,6 +351,75 @@ describe("ReVIEW.visitについて", ()=> {
 			ReVIEW.visit(result.ast, {
 				visitDefaultPre: (ast:ReVIEW.Parse.SyntaxTree)=> {
 					if (ast.ruleName === RuleName.DlistElement) {
+						actual += "n";
+					}
+				}
+			});
+			assert(actual === "n");
+		});
+	});
+
+	describe("visitColumnについて", () => {
+		var input = "= chap1\n===[column] コラム\n";
+		var result = ReVIEW.Parse.parse(input);
+
+		it("ColumnSyntaxTreeが処理できる", ()=> {
+			var actual = "";
+			ReVIEW.visit(result.ast, {
+				visitDefaultPre: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				},
+				visitColumnPre: (ast:ReVIEW.Parse.ColumnSyntaxTree) => {
+					actual += "n";
+				}
+			});
+			assert(actual === "n");
+		});
+		it("visitColumnが無い時visitNodeに行く", ()=> {
+			var actual = "";
+			ReVIEW.visit(result.ast, {
+				visitDefaultPre: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				},
+				visitNodePre: (ast:ReVIEW.Parse.NodeSyntaxTree) => {
+					if (ast.ruleName === RuleName.Column) {
+						actual += "n";
+					}
+				}
+			});
+			assert(actual === "n");
+		});
+		it("visitColumnが無い時visitDefaultに行く", ()=> {
+			var actual = "";
+			ReVIEW.visit(result.ast, {
+				visitDefaultPre: (ast:ReVIEW.Parse.SyntaxTree)=> {
+					if (ast.ruleName === RuleName.Column) {
+						actual += "n";
+					}
+				}
+			});
+			assert(actual === "n");
+		});
+	});
+
+	describe("visitColumnHeadlineについて", () => {
+		var input = "= chap1\n===[column] コラム\n";
+		var result = ReVIEW.Parse.parse(input);
+
+		it("ColumnHeadlineSyntaxTreeが処理できる", ()=> {
+			var actual = "";
+			ReVIEW.visit(result.ast, {
+				visitDefaultPre: (ast:ReVIEW.Parse.SyntaxTree)=> {
+				},
+				visitColumnHeadlinePre: (ast:ReVIEW.Parse.ColumnHeadlineSyntaxTree) => {
+					actual += "n";
+				}
+			});
+			assert(actual === "n");
+		});
+		it("visitColumnHeaderが無い時visitDefaultに行く", ()=> {
+			var actual = "";
+			ReVIEW.visit(result.ast, {
+				visitDefaultPre: (ast:ReVIEW.Parse.SyntaxTree)=> {
+					if (ast.ruleName === RuleName.ColumnHeadline) {
 						actual += "n";
 					}
 				}

@@ -105,7 +105,9 @@ describe("ReVIEW構文の", ()=> {
 			"= level 1\n== level 2\n===level 3\n====     level 4\n\n=[hoge] []付き\n={fuga} {}付き\n=[hoge]{fuga} 両方付き\n",
 			"= ulist\n\n * level 1\n ** level 2\n *** level 3",
 			"= olist\n\n 1. No. 1\n 2. No. 2\n 3. No. 3\n",
-			"= dlist\n\n: hoge\n  これはマジマッハ\n\n: fuga\n	これはマジファンキー\n"
+			"= dlist\n\n: hoge\n  これはマジマッハ\n\n: fuga\n	これはマジファンキー\n",
+			"= コラム\n===[column] コラム\nコラムです。\n",
+			"= コラム\n===[column] コラム\nコラムです。\n===[/column]"
 		];
 		strings.forEach((str)=> {
 			it("try: " + str.substr(0, 15), ()=> {

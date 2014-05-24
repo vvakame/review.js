@@ -45,8 +45,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 	describe("正しい構文のファイルが処理できること", ()=> {
 		var fs = require("fs");
 
-		var typeList:{ext:string;target:string;builder:()=>ReVIEW.Build.IBuilder;
-		}[] = [
+		var typeList:{ext:string;target:string;builder:()=>ReVIEW.Build.IBuilder;}[] = [
 			{
 				ext: "txt",
 				target: "text",
@@ -77,7 +76,6 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 		fs.readdirSync(path)
 			.filter((file:string) => file.indexOf(".re") !== -1 && !ignoreFiles.some(ignore => ignore === file))
 			.forEach((file:string) => {
-
 				var baseName = file.substr(0, file.length - 3);
 
 				typeList.forEach(typeInfo => {
@@ -101,6 +99,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 						if (!fs.existsSync(targetFileName)) {
 							// Ruby版の出力ファイルがない場合、出力処理を行う
 							convertByRubyReVIEW(baseName, typeInfo.target, (data, error) => {
+								console.log(error);
 								assert(!error);
 								fs.writeFileSync(targetFileName, data);
 

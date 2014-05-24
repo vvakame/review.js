@@ -99,6 +99,10 @@ module ReVIEW.Parse {
 				return new HeadlineSyntaxTree(rawResult);
 			case RuleName.InlineElement:
 				return new InlineElementSyntaxTree(rawResult);
+			case RuleName.Column:
+				return new ColumnSyntaxTree(rawResult);
+			case RuleName.ColumnHeadline:
+				return new ColumnHeadlineSyntaxTree(rawResult);
 			case RuleName.BracketArg:
 			case RuleName.BraceArg:
 				return new ArgumentSyntaxTree(rawResult);
@@ -121,6 +125,7 @@ module ReVIEW.Parse {
 			case RuleName.BlockElementContents:
 			case RuleName.BlockElementParagraphSubs:
 			case RuleName.InlineElementContents:
+			case RuleName.ColumnContents:
 			case RuleName.ContentInlines:
 			case RuleName.Ulist:
 			case RuleName.Olist:
@@ -138,6 +143,7 @@ module ReVIEW.Parse {
 			case RuleName.ParagraphSub:
 			case RuleName.BlockElementContent:
 			case RuleName.InlineElementContent:
+			case RuleName.ColumnContent:
 			case RuleName.SinglelineContent:
 			case RuleName.ContentInline:
 				return transform(rawResult.content);
@@ -274,6 +280,11 @@ module ReVIEW.Parse {
 		Dlist,
 		DlistElement,
 		DlistElementContent,
+		Column,
+		ColumnHeadline,
+		ColumnContents,
+		ColumnContent,
+		ColumnTerminator,
 		SinglelineComment,
 	}
 
@@ -483,10 +494,24 @@ module ReVIEW.Parse {
 		}
 
 		/**
+		 * thisをColumnSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+		 */
+		toColumn():ColumnSyntaxTree {
+			return this.toOtherNode<ColumnSyntaxTree>(ColumnSyntaxTree);
+		}
+
+		/**
 		 * thisをHeadlineSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
 		toHeadline():HeadlineSyntaxTree {
 			return this.toOtherNode<HeadlineSyntaxTree>(HeadlineSyntaxTree);
+		}
+
+		/**
+		 * thisをColumnHeadlineSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+		 */
+		toColumnHeadline():ColumnHeadlineSyntaxTree {
+			return this.toOtherNode<ColumnHeadlineSyntaxTree>(ColumnHeadlineSyntaxTree);
 		}
 
 		/**
@@ -559,7 +584,6 @@ module ReVIEW.Parse {
 
 	// TODO SyntaxTree と指定されている所についてもっと細かく書けるはず…
 
-	// TODO Chapter も NodeSyntaxTree を継承するべき
 	export class ChapterSyntaxTree extends NodeSyntaxTree {
 		headline:HeadlineSyntaxTree;
 		text:SyntaxTree[];
@@ -601,7 +625,6 @@ module ReVIEW.Parse {
 
 	export class HeadlineSyntaxTree extends SyntaxTree {
 		level:number;
-		cmd:ArgumentSyntaxTree;
 		label:ArgumentSyntaxTree;
 		caption:NodeSyntaxTree;
 
@@ -609,9 +632,6 @@ module ReVIEW.Parse {
 			super(data);
 
 			this.level = this.checkNumber(data.level);
-			if (data.cmd) {
-				this.cmd = transform(this.checkObject(data.cmd)).toArgument();
-			}
 			if (data.label) {
 				this.label = transform(this.checkObject(data.label)).toArgument();
 			}
@@ -638,6 +658,57 @@ module ReVIEW.Parse {
 		constructor(data:IConcreatSyntaxTree) {
 			super(data);
 			this.symbol = this.checkString(data.symbol);
+		}
+	}
+
+	export class ColumnSyntaxTree extends NodeSyntaxTree {
+		headline:ColumnHeadlineSyntaxTree;
+		text:SyntaxTree[];
+
+		constructor(data:IConcreatSyntaxTree) {
+			super(data);
+
+			this.headline = transform(this.checkObject(data.headline)).toColumnHeadline();
+			if (typeof data.text === "string" || data.text === null) {
+				this.text = [];
+				return;
+			}
+			this.text = this.checkArray(data.text.content).map((data:IConcreatSyntaxTree)=> {
+				return transform(data);
+			});
+
+			delete this.childNodes; // JSON化した時の属性順制御のため…
+			this.childNodes = [];
+		}
+
+		get level():number {
+			return this.headline.level;
+		}
+
+		get fqn():string {
+			var chapters:ChapterSyntaxTree[] = [];
+			ReVIEW.walk(this, (node:SyntaxTree) => {
+				if (node instanceof ReVIEW.Parse.ChapterSyntaxTree) {
+					chapters.unshift(node.toChapter());
+				}
+				return node.parentNode;
+			});
+			var result = chapters.map((chapter)=> {
+				return chapter.no;
+			}).join(".");
+			return result;
+		}
+	}
+
+	export class ColumnHeadlineSyntaxTree extends SyntaxTree {
+		level:number;
+		caption:NodeSyntaxTree;
+
+		constructor(data:IConcreatSyntaxTree) {
+			super(data);
+
+			this.level = this.checkNumber(data.level);
+			this.caption = transform(this.checkObject(data.caption)).toNode();
 		}
 	}
 

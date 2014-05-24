@@ -16,6 +16,8 @@ module ReVIEW.Build {
 	import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
 	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+	import ColumnSyntaxTree = ReVIEW.Parse.ColumnSyntaxTree;
+	import ColumnHeadlineSyntaxTree = ReVIEW.Parse.ColumnHeadlineSyntaxTree;
 
 	/**
 	 * IAnalyzerとIValidatorでチェックをした後に構文木から出力を生成する。
@@ -28,6 +30,10 @@ module ReVIEW.Build {
 		chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any;
 		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any;
 		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any;
+		columnPre(process:BuilderProcess, node:ColumnSyntaxTree):any;
+		columnPost(process:BuilderProcess, node:ColumnSyntaxTree):any;
+		columnHeadlinePre(process:BuilderProcess, node:ColumnHeadlineSyntaxTree):any;
+		columnHeadlinePost(process:BuilderProcess, node:ColumnHeadlineSyntaxTree):any;
 		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree):any;
 		ulistPost(process:BuilderProcess, name:string, node:UlistElementSyntaxTree):any;
 		olistPre(process:BuilderProcess, name:string, node:OlistElementSyntaxTree):any;
@@ -67,6 +73,18 @@ module ReVIEW.Build {
 						},
 						visitHeadlinePost: (node:HeadlineSyntaxTree)=> {
 							return this.headlinePost(process, "hd", node);
+						},
+						visitColumnPre: (node:ColumnSyntaxTree)=> {
+							return this.columnPre(process, node);
+						},
+						visitColumnPost: (node:ColumnSyntaxTree)=> {
+							return this.columnPost(process, node);
+						},
+						visitColumnHeadlinePre: (node:ColumnHeadlineSyntaxTree)=> {
+							return this.columnHeadlinePre(process, node);
+						},
+						visitColumnHeadlinePost: (node:ColumnHeadlineSyntaxTree)=> {
+							return this.columnHeadlinePost(process, node);
 						},
 						visitParagraphPre: (node:NodeSyntaxTree) => {
 							return this.paragraphPre(process, "p", node);
@@ -131,6 +149,18 @@ module ReVIEW.Build {
 		}
 
 		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any {
+		}
+
+		columnPre(process:BuilderProcess, node:ColumnSyntaxTree):any {
+		}
+
+		columnPost(process:BuilderProcess, node:ColumnSyntaxTree):any {
+		}
+
+		columnHeadlinePre(process:BuilderProcess, node:ColumnHeadlineSyntaxTree):any {
+		}
+
+		columnHeadlinePost(process:BuilderProcess, node:ColumnHeadlineSyntaxTree):any {
 		}
 
 		paragraphPre(process:BuilderProcess, name:string, node:NodeSyntaxTree):any {

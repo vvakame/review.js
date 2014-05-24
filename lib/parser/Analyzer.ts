@@ -231,6 +231,8 @@ module ReVIEW.Build {
 					func = (<any>this)[k];
 				} else if (k === "headline") {
 					func = (<any>this)[k];
+				} else if (k === "column") {
+					func = (<any>this)[k];
 				} else if (k === "ulist") {
 					func = (<any>this)[k];
 				} else if (k === "olist") {
@@ -264,6 +266,20 @@ module ReVIEW.Build {
 				process.addSymbol({
 					symbolName: "hd",
 					labelName: label,
+					node: node
+				});
+			});
+		}
+
+		column(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Other);
+			builder.setClass(ReVIEW.Parse.ColumnSyntaxTree);
+			builder.setDescription(t("description.column"));
+			builder.processNode((process, n)=> {
+				var node = n.toColumn();
+				node.no = process.nextIndex("column");
+				process.addSymbol({
+					symbolName: "column",
 					node: node
 				});
 			});

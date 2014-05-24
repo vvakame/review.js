@@ -100,9 +100,7 @@ describe("ReVIEW.Buildの", ()=> {
 				.success();
 
 			var book = success.book;
-			// TODO 想定より改行が多い… みた感じLevel3以降でおかしくなってる？
-			// var expected = "■H1■第1章　hoge\n\n■H2■1.1　fuga\n\n■H3■moge\n\n■H2■1.2　piyo\n\n■H3■foo\n\n■H1■第2章　bar\n";
-			var expected = "■H1■第1章　hoge\n\n■H2■1.1　fuga\n\n■H3■moge\n\n■H2■1.2　piyo\n\n■H3■foo\n\n■H1■第2章　bar\n\n";
+			var expected = "■H1■第1章　hoge\n\n■H2■fuga\n\n■H3■moge\n\n■H2■piyo\n\n■H3■foo\n\n■H1■第2章　bar\n\n";
 			assert(book.parts[0].chapters[0].findResultByBuilder(builder) === expected);
 		});
 	});

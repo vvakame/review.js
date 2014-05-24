@@ -9,6 +9,7 @@ module ReVIEW.Build {
 
 	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
 	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+	import ColumnSyntaxTree = ReVIEW.Parse.ColumnSyntaxTree;
 	import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
 	import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
 	import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
@@ -74,6 +75,14 @@ module ReVIEW.Build {
 				visitDefaultPre: (node:SyntaxTree)=> {
 				},
 				visitHeadlinePre: (node:HeadlineSyntaxTree) => {
+					var results = this.acceptableSyntaxes.find(node);
+					if (results.length !== 1) {
+						chapter.process.error(t("compile.syntax_definietion_error"), node);
+						return;
+					}
+					return results[0].process(chapter.process, node);
+				},
+				visitColumnPre: (node:ColumnSyntaxTree) => {
 					var results = this.acceptableSyntaxes.find(node);
 					if (results.length !== 1) {
 						chapter.process.error(t("compile.syntax_definietion_error"), node);

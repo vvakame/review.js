@@ -18,6 +18,8 @@ module ReVIEW.Build {
 	import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
 	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+	import ColumnSyntaxTree = ReVIEW.Parse.ColumnSyntaxTree;
+	import ColumnHeadlineSyntaxTree = ReVIEW.Parse.ColumnHeadlineSyntaxTree;
 
 	import nodeContentToString = ReVIEW.nodeContentToString;
 	import findChapter = ReVIEW.findChapter;
@@ -25,37 +27,36 @@ module ReVIEW.Build {
 	export class TextBuilder extends DefaultBuilder {
 		extention = "txt";
 
-		chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any {
-			if (node.headline.cmd) {
-				// column
-				process.out("◆→終了:←◆\n");
-			}
-		}
-
 		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
 			// TODO no の採番がレベル別になっていない
 			// TODO 2.3.2 みたいな階層を返せるメソッドが何かほしい
-			if (!node.cmd) {
-				// 非 column
-				process.out("■H").out(node.level).out("■");
-				if (node.level === 1) {
-					var text = i18n.t("builder.chapter", node.parentNode.no);
-					process.out(text).out("　");
-				} else if (node.level === 2) {
-					process.out(node.parentNode.toChapter().fqn).out("　");
-				}
-			} else {
-				// column
-				process.out("◆→開始:←◆\n");
-				process.out("■");
-				return (v:ITreeVisitor) => {
-					ReVIEW.visit(node.caption, v);
-				};
+			process.out("■H").out(node.level).out("■");
+			if (node.level === 1) {
+				var text = i18n.t("builder.chapter", node.parentNode.no);
+				process.out(text).out("　");
+			} else if (node.level === 2) {
+				// process.out(node.parentNode.toChapter().fqn).out("　");
 			}
 		}
 
 		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
 			process.out("\n\n");
+		}
+
+		columnHeadlinePre(process:BuilderProcess, node:ColumnHeadlineSyntaxTree) {
+			process.out("\n◆→開始:←◆\n");
+			process.out("■");
+			return (v:ITreeVisitor) => {
+				ReVIEW.visit(node.caption, v);
+			};
+		}
+
+		columnHeadlinePost(process:BuilderProcess, node:ColumnHeadlineSyntaxTree) {
+			process.out("\n");
+		}
+
+		columnPost(process:BuilderProcess, node:ColumnSyntaxTree) {
+			process.out("◆→終了:←◆\n\n");
 		}
 
 		paragraphPost(process:BuilderProcess, name:string, node:NodeSyntaxTree) {
@@ -276,7 +277,7 @@ module ReVIEW.Build {
 			var contentString = nodeContentToString(process, node);
 			var keywordData = contentString.split(",");
 			process.out(keywordData[0]);
-			return (v: ReVIEW.ITreeVisitor) => {
+			return (v:ReVIEW.ITreeVisitor) => {
 				// name, args はパス
 				node.childNodes.forEach(node=> {
 					process.out("◆→DTP連絡:「").out(keywordData[0]);
@@ -295,7 +296,7 @@ module ReVIEW.Build {
 
 		inline_kw(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out("★");
-			return (v: ReVIEW.ITreeVisitor) => {
+			return (v:ReVIEW.ITreeVisitor) => {
 				// name, args はパス
 				node.childNodes.forEach(node=> {
 					var contentString = nodeContentToString(process, node);

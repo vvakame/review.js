@@ -3,59 +3,51 @@
   "offset": 0,
   "line": 1,
   "column": 1,
-  "endPos": 18,
+  "endPos": 14,
   "childNodes": [
     {
       "ruleName": "Chapters",
       "offset": 0,
       "line": 1,
       "column": 1,
-      "endPos": 18,
+      "endPos": 14,
       "childNodes": [
         {
           "ruleName": "Chapter",
           "offset": 0,
           "line": 1,
           "column": 1,
-          "endPos": 18,
+          "endPos": 14,
           "childNodes": [],
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
             "line": 1,
             "column": 1,
-            "endPos": 18,
+            "endPos": 14,
             "level": 1,
-            "cmd": {
-              "ruleName": "BracketArg",
+            "label": {
+              "ruleName": "BraceArg",
               "offset": 1,
               "line": 1,
               "column": 2,
               "endPos": 7,
-              "arg": "hoge"
-            },
-            "label": {
-              "ruleName": "BraceArg",
-              "offset": 7,
-              "line": 1,
-              "column": 8,
-              "endPos": 13,
               "arg": "fuga"
             },
             "caption": {
               "ruleName": "ContentInlines",
-              "offset": 14,
+              "offset": 8,
               "line": 1,
-              "column": 15,
-              "endPos": 18,
+              "column": 9,
+              "endPos": 13,
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
-                  "offset": 14,
+                  "offset": 8,
                   "line": 1,
-                  "column": 15,
-                  "endPos": 18,
-                  "text": "両方付き"
+                  "column": 9,
+                  "endPos": 13,
+                  "text": "ヘッダのみ"
                 }
               ]
             }

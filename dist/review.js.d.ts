@@ -42,6 +42,7 @@ declare module ReVIEW {
         "sample": string;
         "description": {
             "headline": string;
+            "column": string;
             "ulist": string;
             "olist": string;
             "dlist": string;
@@ -138,6 +139,10 @@ declare module ReVIEW {
         visitOlistPost? (node: Parse.OlistElementSyntaxTree, parent: Parse.SyntaxTree): void;
         visitDlistPre? (node: Parse.DlistElementSyntaxTree, parent: Parse.SyntaxTree): any;
         visitDlistPost? (node: Parse.DlistElementSyntaxTree, parent: Parse.SyntaxTree): void;
+        visitColumnPre? (node: Parse.ColumnSyntaxTree, parent: Parse.SyntaxTree): any;
+        visitColumnPost? (node: Parse.ColumnSyntaxTree, parent: Parse.SyntaxTree): void;
+        visitColumnHeadlinePre? (node: Parse.ColumnHeadlineSyntaxTree, parent: Parse.SyntaxTree): any;
+        visitColumnHeadlinePost? (node: Parse.ColumnHeadlineSyntaxTree, parent: Parse.SyntaxTree): void;
         visitTextPre? (node: Parse.TextNodeSyntaxTree, parent: Parse.SyntaxTree): any;
         visitTextPost? (node: Parse.TextNodeSyntaxTree, parent: Parse.SyntaxTree): void;
     }
@@ -209,7 +214,12 @@ declare module ReVIEW.Parse {
         Dlist = 32,
         DlistElement = 33,
         DlistElementContent = 34,
-        SinglelineComment = 35,
+        Column = 35,
+        ColumnHeadline = 36,
+        ColumnContents = 37,
+        ColumnContent = 38,
+        ColumnTerminator = 39,
+        SinglelineComment = 40,
     }
     class SyntaxTree {
         public parentNode: SyntaxTree;
@@ -247,7 +257,9 @@ declare module ReVIEW.Parse {
         public toInlineElement(): InlineElementSyntaxTree;
         public toArgument(): ArgumentSyntaxTree;
         public toChapter(): ChapterSyntaxTree;
+        public toColumn(): ColumnSyntaxTree;
         public toHeadline(): HeadlineSyntaxTree;
+        public toColumnHeadline(): ColumnHeadlineSyntaxTree;
         public toUlist(): UlistElementSyntaxTree;
         public toOlist(): OlistElementSyntaxTree;
         public toDlist(): DlistElementSyntaxTree;
@@ -268,7 +280,6 @@ declare module ReVIEW.Parse {
     }
     class HeadlineSyntaxTree extends SyntaxTree {
         public level: number;
-        public cmd: ArgumentSyntaxTree;
         public label: ArgumentSyntaxTree;
         public caption: NodeSyntaxTree;
         constructor(data: IConcreatSyntaxTree);
@@ -280,6 +291,18 @@ declare module ReVIEW.Parse {
     }
     class InlineElementSyntaxTree extends NodeSyntaxTree {
         public symbol: string;
+        constructor(data: IConcreatSyntaxTree);
+    }
+    class ColumnSyntaxTree extends NodeSyntaxTree {
+        public headline: ColumnHeadlineSyntaxTree;
+        public text: SyntaxTree[];
+        constructor(data: IConcreatSyntaxTree);
+        public level : number;
+        public fqn : string;
+    }
+    class ColumnHeadlineSyntaxTree extends SyntaxTree {
+        public level: number;
+        public caption: NodeSyntaxTree;
         constructor(data: IConcreatSyntaxTree);
     }
     class ArgumentSyntaxTree extends SyntaxTree {
@@ -353,6 +376,7 @@ declare module ReVIEW.Build {
         public getAcceptableSyntaxes(): AcceptableSyntaxes;
         public constructAcceptableSyntaxes(): AcceptableSyntax[];
         public headline(builder: IAcceptableSyntaxBuilder): void;
+        public column(builder: IAcceptableSyntaxBuilder): void;
         public ulist(builder: IAcceptableSyntaxBuilder): void;
         public olist(builder: IAcceptableSyntaxBuilder): void;
         public dlist(builder: IAcceptableSyntaxBuilder): void;
@@ -403,6 +427,10 @@ declare module ReVIEW.Build {
         chapterPost(process: BuilderProcess, node: Parse.ChapterSyntaxTree): any;
         headlinePre(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): any;
         headlinePost(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): any;
+        columnPre(process: BuilderProcess, node: Parse.ColumnSyntaxTree): any;
+        columnPost(process: BuilderProcess, node: Parse.ColumnSyntaxTree): any;
+        columnHeadlinePre(process: BuilderProcess, node: Parse.ColumnHeadlineSyntaxTree): any;
+        columnHeadlinePost(process: BuilderProcess, node: Parse.ColumnHeadlineSyntaxTree): any;
         ulistPre(process: BuilderProcess, name: string, node: Parse.UlistElementSyntaxTree): any;
         ulistPost(process: BuilderProcess, name: string, node: Parse.UlistElementSyntaxTree): any;
         olistPre(process: BuilderProcess, name: string, node: Parse.OlistElementSyntaxTree): any;
@@ -423,6 +451,10 @@ declare module ReVIEW.Build {
         public chapterPost(process: BuilderProcess, node: Parse.ChapterSyntaxTree): any;
         public headlinePre(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): any;
         public headlinePost(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): any;
+        public columnPre(process: BuilderProcess, node: Parse.ColumnSyntaxTree): any;
+        public columnPost(process: BuilderProcess, node: Parse.ColumnSyntaxTree): any;
+        public columnHeadlinePre(process: BuilderProcess, node: Parse.ColumnHeadlineSyntaxTree): any;
+        public columnHeadlinePost(process: BuilderProcess, node: Parse.ColumnHeadlineSyntaxTree): any;
         public paragraphPre(process: BuilderProcess, name: string, node: Parse.NodeSyntaxTree): any;
         public paragraphPost(process: BuilderProcess, name: string, node: Parse.NodeSyntaxTree): any;
         public ulistPre(process: BuilderProcess, name: string, node: Parse.UlistElementSyntaxTree): any;
@@ -609,9 +641,11 @@ declare module ReVIEW {
 declare module ReVIEW.Build {
     class TextBuilder extends DefaultBuilder {
         public extention: string;
-        public chapterPost(process: BuilderProcess, node: Parse.ChapterSyntaxTree): any;
-        public headlinePre(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): (v: ITreeVisitor) => void;
+        public headlinePre(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): void;
         public headlinePost(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): void;
+        public columnHeadlinePre(process: BuilderProcess, node: Parse.ColumnHeadlineSyntaxTree): (v: ITreeVisitor) => void;
+        public columnHeadlinePost(process: BuilderProcess, node: Parse.ColumnHeadlineSyntaxTree): void;
+        public columnPost(process: BuilderProcess, node: Parse.ColumnSyntaxTree): void;
         public paragraphPost(process: BuilderProcess, name: string, node: Parse.NodeSyntaxTree): void;
         public ulistPre(process: BuilderProcess, name: string, node: Parse.UlistElementSyntaxTree): void;
         public ulistPost(process: BuilderProcess, name: string, node: Parse.UlistElementSyntaxTree): void;
@@ -683,8 +717,12 @@ declare module ReVIEW.Build {
         public extention: string;
         constructor(standalone?: boolean);
         public processPost(process: BuilderProcess, chapter: Chapter): void;
-        public headlinePre(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): (v: ITreeVisitor) => void;
+        public headlinePre(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): void;
         public headlinePost(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): void;
+        public columnPre(process: BuilderProcess, node: Parse.ColumnSyntaxTree): void;
+        public columnPost(process: BuilderProcess, node: Parse.ColumnSyntaxTree): void;
+        public columnHeadlinePre(process: BuilderProcess, node: Parse.ColumnHeadlineSyntaxTree): (v: ITreeVisitor) => void;
+        public columnHeadlinePost(process: BuilderProcess, node: Parse.ColumnHeadlineSyntaxTree): void;
         public paragraphPre(process: BuilderProcess, name: string, node: Parse.NodeSyntaxTree): void;
         public paragraphPost(process: BuilderProcess, name: string, node: Parse.NodeSyntaxTree): void;
         public ulistPre(process: BuilderProcess, name: string, node: Parse.UlistElementSyntaxTree): void;
