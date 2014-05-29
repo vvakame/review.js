@@ -14,11 +14,10 @@ module.exports = function (config) {
 
 		// list of files / patterns to load in the browser
 		files: [
-			'testEspowered/suite/libs/es5-shim.js',
-			'testEspowered/suite/libs/i18next.js',
-			'testEspowered/suite/libs/expectations.js',
-			'testEspowered/suite/libs/power-assert.js',
-			'testEspowered/test.js'
+			'test/suite/libs/es5-shim.js',
+			'test/suite/libs/i18next.js',
+			'test/suite/libs/power-assert.js',
+			'test/test.js'
 		],
 
 
