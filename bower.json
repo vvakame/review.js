@@ -21,7 +21,7 @@
 	},
 	"devDependencies": {
 		"es5-shim": "3.4.0",
-		"mocha": "1.19.0",
+		"mocha": "1.20.1",
 		"power-assert": "0.7.2"
 	},
 	"exportsOverride": {
