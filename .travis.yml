@@ -1,4 +1,5 @@
 language: node_js
+
 node_js:
   - 0.10
 
@@ -8,5 +9,30 @@ before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
+before_script:
+  # for gh-pages
+  - git clone --quiet https://github.com/vvakame/review.js.git pages
+  - cd pages
+  - git checkout -b gh-pages origin/gh-pages
+  - git clean -df
+  - cd ..
+
+after_success:
+  # for gh-pages
+  - grunt typedoc:travisCI
+  - cd pages
+  - git add ./docs
+  - git commit -m "generate typedoc build #${TRAVIS_BUILD_NUMBER} commit:${TRAVIS_COMMIT}"
+  - '[ "$TRAVIS_BRANCH" == "master" ] && [ $GH_TOKEN ] && git push --quiet https://$GH_TOKEN@github.com/review.js.git gh-pages 2> /dev/null'
+
 notifications:
   email: false
+
+env:
+  global:
+    # for gh-pages
+    - GIT_COMMITTER_NAME=vvakame
+    - GIT_COMMITTER_EMAIL=vvakame+dev@gmail.com
+    - GIT_AUTHOR_NAME=vvakame
+    - GIT_AUTHOR_EMAIL=vvakame+dev@gmail.com
+    - secure: Hry+3xZh+Dx4HaAlqSjwNjVvLGuG3s2W/eJBIAvOuBiFA8u+FZLOmBwxdR1wwopPXAhMXfW2lu70yzIVxRR/Hy96Dz++FkZH5U0glU53A1EsuwXX+zllXqsjZLr/MxF64G/ej+tsHO70f86hurVbSh5SFTYCaX5TlhNmr5zjG9I=
