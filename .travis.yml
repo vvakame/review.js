@@ -14,8 +14,9 @@ before_script:
   - git clone --quiet https://github.com/vvakame/review.js.git pages
   - cd pages
   - git checkout -b gh-pages origin/gh-pages
-  - git clean -df
   - cd ..
+  - ls -la
+  - cat build.sh
 
 after_success:
   # for gh-pages
