@@ -9,6 +9,7 @@ reviewjs-*.tgz
 bower_components/
 bower-task/
 .tscache/
+docs/
 typings/
 lib/*.js
 lib/*.js.map

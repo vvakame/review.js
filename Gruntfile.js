@@ -115,6 +115,21 @@ module.exports = function (grunt) {
 				}
 			}
 		},
+		typedoc: {
+			main: {
+				options: {
+					module: "<%= ts.options.module %>",
+					out: './docs',
+					name: '<%= pkg.name %>',
+					target: "<%= ts.options.target %>"
+				},
+				src: [
+					'<%= opt.client.tsMain %>/**/*.ts',
+					'!<%= opt.client.tsMain %>/main.d.ts',
+					'!<%= opt.client.tsMain %>/Cli.ts' // main.d.ts読み込んでて重複が発生するので
+				]
+			}
+		},
 		watch: {
 			"typescript-main": {
 				files: ['<%= opt.client.tsMain %>/**/*.ts'],

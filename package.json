@@ -51,6 +51,7 @@
     "grunt-tslint": "0.4.1",
     "grunt-tsd": "0.1.0",
     "grunt-bower-task": "0.3.4",
+    "grunt-typedoc": "0.1.1",
 
     "mocha": "1.20.1",
     "power-assert": "0.7.2",
