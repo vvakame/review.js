@@ -16,7 +16,6 @@ before_script:
   - git checkout -b gh-pages origin/gh-pages
   - cd ..
   - ls -la
-  - cat build.sh
 
 after_success:
   # for gh-pages
