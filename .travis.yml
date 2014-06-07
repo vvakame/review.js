@@ -15,8 +15,6 @@ before_script:
   - cd pages
   - git checkout -b gh-pages origin/gh-pages
   - cd ..
-  - ls -la
-  - cat /home/travis/build.sh
 
 after_success:
   # for gh-pages
@@ -24,7 +22,7 @@ after_success:
   - cd pages
   - git add ./docs
   - git commit -m "generate typedoc build #${TRAVIS_BUILD_NUMBER} commit:${TRAVIS_COMMIT}"
-  - '[ "$TRAVIS_BRANCH" == "master" ] && [ $GH_TOKEN ] && git push --quiet https://$GH_TOKEN@github.com/review.js.git gh-pages 2> /dev/null'
+  - [ "$TRAVIS_BRANCH" == "master" ] && [ $GH_TOKEN ] && git push --quiet https://$GH_TOKEN@github.com/review.js.git gh-pages 2> /dev/null
 
 notifications:
   email: false
