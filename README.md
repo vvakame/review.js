@@ -61,7 +61,7 @@ npm または bower が利用できます。用途にあったものを利用し
 # 構文追加のための最初の一歩
 
  1. 構文のノード構築部分を追加する
-src/main/typescript/parser/Analyzer.ts の DefaultAnalyzer に構文用のメソッドを追加すします。
+src/main/typescript/parser/Analyzer.ts の DefaultAnalyzer に構文用のメソッドを追加します。
 Analyzer.tsの末尾にある TODO 以下のものの実装をすすめます。
 Analyzer.tsの中でinlineが先頭になっているものが簡単に実装できる。実装はまわりのメソッドを参考に。
  2. 出力部分を追加する
