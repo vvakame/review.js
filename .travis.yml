@@ -22,10 +22,6 @@ after_success:
   - cd pages
   - git add ./docs
   - git commit -m "generate typedoc build ${TRAVIS_BUILD_NUMBER} commit:${TRAVIS_COMMIT}"
-  - '[ "$TRAVIS_BRANCH" = "master" ]'
-  - echo $?
-  - '[ $GH_TOKEN ]'
-  - echo $?
   - '[ "$TRAVIS_BRANCH" = "master" ] && [ $GH_TOKEN ] && git push --quiet https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages'
 
 notifications:
@@ -38,4 +34,4 @@ env:
     - GIT_COMMITTER_EMAIL=vvakame+dev@gmail.com
     - GIT_AUTHOR_NAME=vvakame
     - GIT_AUTHOR_EMAIL=vvakame+dev@gmail.com
-    - secure: Hry+3xZh+Dx4HaAlqSjwNjVvLGuG3s2W/eJBIAvOuBiFA8u+FZLOmBwxdR1wwopPXAhMXfW2lu70yzIVxRR/Hy96Dz++FkZH5U0glU53A1EsuwXX+zllXqsjZLr/MxF64G/ej+tsHO70f86hurVbSh5SFTYCaX5TlhNmr5zjG9I=
+    - secure: fwAb1aeh9MZ32/uEiKDxrP534BEhLA79AI3/jzwrMD7vHobmECUn7RNv5SmyhbkbC3Svvd8B7GcJkebDXZIdO3Gd9N6xcAQn2zAhkmO/ZHu92OZlq+kGwmxcCl3ZBen8JJcIoE8ZF+RBjakf3GNZWHaT+7EJHDfUmsxuJlrC5uQ=
