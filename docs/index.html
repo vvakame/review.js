@@ -1,0 +1,176 @@
+﻿<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>review.js | review.js</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<header>
+    <div class="tsd-page-toolbar">
+        <div class="container">
+            <div id="tsd-filter">
+                <input type="checkbox" id="tsd-filter-inherited" checked />
+                <label for="tsd-filter-inherited">Inherited</label>
+
+                <input type="checkbox" id="tsd-filter-private" checked />
+                <label for="tsd-filter-private">Private</label>
+
+                <input type="checkbox" id="tsd-filter-only-exported" />
+                <label for="tsd-filter-only-exported">Only exported</label>
+            </div>
+
+            <a href="index.html">review.js</a>
+        </div>
+    </div>
+    <div class="tsd-page-title">
+        <div class="container">
+            <ul class="breadcrumb">
+                
+            </ul>
+            <h1> review.js</h1>
+        </div>
+    </div>
+</header>
+
+<div class="container container-main">
+    <div class="row">
+        <div class="col-8">
+            <h1 id="review-js-build-status-https-travis-ci-org-vvakame-review-js-png-branch-master-https-travis-ci-org-vvakame-review-js-dependency-status-https-david-dm-org-vvakame-review-js-png-https-david-dm-org-vvakame-review-js-devdependency-status-https-david-dm-org-vvakame-review-js-dev-status-png-https-david-dm-org-vvakame-review-js-info-devdependencies-">ReVIEW.js <a href="https://travis-ci.org/vvakame/review.js"><img src="https://travis-ci.org/vvakame/review.js.png?branch=master" alt="Build Status"></a> <a href="https://david-dm.org/vvakame/review.js"><img src="https://david-dm.org/vvakame/review.js.png" alt="Dependency Status"></a> <a href="https://david-dm.org/vvakame/review.js#info=devDependencies"><img src="https://david-dm.org/vvakame/review.js/dev-status.png" alt="devDependency Status"></a></h1>
+<h2 id="what-is-review-">What is ReVIEW?</h2>
+<p>Composition system for Japanese environment.
+ReVIEW is flexible and powerful more than Markdown and textile.</p>
+<p>ReVIEW.js is implemented by TypeScript :)</p>
+<h2 id="review-">ReVIEWとは？</h2>
+<p><a href="https://github.com/kmuto/review">ReVIEW</a> のJavaScript実装です。
+Node.js上とモダンなWebブラウザ上で動作することを目指します。</p>
+<h1 id="-">現状</h1>
+<p>それなりに多くの構文をサポートしています。
+現状Ruby版で使えて、ReVIEW.jsで使えない記法は以下の通りです。</p>
+<ul>
+<li>texequation ブロック記法</li>
+<li>chap インライン記法</li>
+<li>title インライン記法</li>
+<li>chapref インライン記法</li>
+<li>m インライン記法</li>
+<li>bibpaper ブロック記法</li>
+<li>bib インライン記法</li>
+<li>raw インライン記法</li>
+<li>graph ブロック記法</li>
+<li>tsize ブロック記法</li>
+<li>table ブロック記法</li>
+<li>table インライン記法</li>
+</ul>
+<p>サポートしている変換先はTextとHTMLのみです。
+LaTeXやPDF, EPUBなどはサポートしていません。</p>
+<h1 id="-">インストール</h1>
+<p>npm または bower が利用できます。用途にあったものを利用してください。
+<a href="https://github.com/vvakame/review.js/tree/master/example">こちら</a>にサンプルを用意してあります。</p>
+<h1 id="-">開発方法</h1>
+<p><code>./setup.sh</code> を叩きます。
+その後、<code>grunt</code> で /bin に実行可能なJSが出力されます。
+<code>grunt test</code>, <code>grunt test-browser</code>, <code>grunt-karma</code> でテストを実行することができます。</p>
+<h1 id="-">協力</h1>
+<p>今貰えると嬉しい手助けはいくつかあります。</p>
+<ul>
+<li>src/test/resource/valid へのファイルの追加</li>
+<li>DefaultAnalyzerが対応する構文の追加</li>
+<li>各種Builderの実装 (LaTeXとか)</li>
+<li>説明文の改善<ul>
+<li>ja.ts を書き換えればできます。</li>
+</ul>
+</li>
+<li>バグを見つけたら報告してください<ul>
+<li>報告は日本語が良いです。日本語向けの組版システムだし。</li>
+</ul>
+</li>
+</ul>
+<h1 id="-">構文追加のための最初の一歩</h1>
+<ol>
+<li>構文のノード構築部分を追加する
+src/main/typescript/parser/Analyzer.ts の DefaultAnalyzer に構文用のメソッドを追加すします。
+Analyzer.tsの末尾にある TODO 以下のものの実装をすすめます。
+Analyzer.tsの中でinlineが先頭になっているものが簡単に実装できる。実装はまわりのメソッドを参考に。</li>
+<li>出力部分を追加する
+src/main/typescript/builder/ のなかに出力用ファイルがあります。
+HtmlBuilder.ts,TextBuilder.ts のファイルにも1と同様に同名のメソッドを追加します。
+メソッド名＿pre,メソッド名＿postの関数を用意した場合にはメソッドの実行前、実行後にそれぞれ処理が実行されます。
+まずはテキストのデータを表示してみましょう。
+テキストのデータを取り出したい場合は以下の様に記述すると文字の部分が取得できます。</li>
+</ol>
+<p>process.out(nodeToString(process,node));</p>
+<p>nodeの中に文字列があるので構築されたnodeを利用して出力を作りましょう。</p>
+<p>nodeの処理を大きく変更したい場合はpre(もしくはサフィックスなし)でリターンすると
+trueを返すと処理を続行する
+false を返すと処理打ちきって次のノードを処理を行う
+関数を返すとその関数でノードの評価を行うことができる。
+TODO:図を入れる</p>
+<ol>
+<li>構文の説明を入れる。
+最後に構文の説明を追加します。
+rc/main/typescript/i18n/ja.ts の中に説明の文章を追加します。
+オブジェクト記法の中の&quot;description&quot;の中に追加したメソッド名と同じものを追加します。
+そうすることで構文の説明が追加されます。</li>
+</ol>
+<h1 id="-">シンタックスダイアグラムを作るには？</h1>
+<p><a href="http://bottlecaps.de/convert/">http://bottlecaps.de/convert/</a> を使うとよい。</p>
+
+        </div>
+        <div class="offset-1 col-3">
+            <nav class="tsd-navigation primary">
+                <ul>
+                    
+                        <li class=" ">
+    <a href="globals.html"><em>Globals</em></a>
+    
+</li>
+                    
+                        <li class=" tsd-kind-container">
+    <a href="modules/review.html">ReVIEW</a>
+    
+</li>
+                    
+                        <li class=" tsd-kind-container tsd-parent-kind-container">
+    <a href="modules/review.io.html">ReVIEW.IO</a>
+    
+</li>
+                    
+                        <li class=" tsd-kind-container tsd-parent-kind-container">
+    <a href="modules/review.exec.html">ReVIEW.Exec</a>
+    
+</li>
+                    
+                        <li class=" tsd-kind-container tsd-parent-kind-container">
+    <a href="modules/review.i18n.html">ReVIEW.i18n</a>
+    
+</li>
+                    
+                        <li class=" tsd-kind-container tsd-parent-kind-container">
+    <a href="modules/review.parse.html">ReVIEW.Parse</a>
+    
+</li>
+                    
+                        <li class=" tsd-kind-container tsd-parent-kind-container">
+    <a href="modules/review.build.html">ReVIEW.Build</a>
+    
+</li>
+                    
+                </ul>
+            </nav>
+
+            <nav class="tsd-navigation secondary">
+                
+            </nav>
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>

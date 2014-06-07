@@ -1,0 +1,1586 @@
+﻿<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Process | review.js</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header>
+    <div class="tsd-page-toolbar">
+        <div class="container">
+            <div id="tsd-filter">
+                <input type="checkbox" id="tsd-filter-inherited" checked />
+                <label for="tsd-filter-inherited">Inherited</label>
+
+                <input type="checkbox" id="tsd-filter-private" checked />
+                <label for="tsd-filter-private">Private</label>
+
+                <input type="checkbox" id="tsd-filter-only-exported" />
+                <label for="tsd-filter-only-exported">Only exported</label>
+            </div>
+
+            <a href="../index.html">review.js</a>
+        </div>
+    </div>
+    <div class="tsd-page-title">
+        <div class="container">
+            <ul class="breadcrumb">
+                
+    
+    
+    <li>
+        <a href="../modules/review.html">ReVIEW</a>
+    </li>
+
+    <li>
+        <a href="review.process.html">Process</a>
+    </li>
+
+            </ul>
+            <h1>Class Process</h1>
+        </div>
+    </div>
+</header>
+
+<div class="container container-main">
+    <div class="row">
+        <div class="col-8">
+            
+    
+    <p>コンパイル処理時の出力ハンドリング。</p>
+
+
+
+
+
+
+
+
+
+
+
+    <section class="tsd-member-index">
+    <h2>Index</h2>
+    
+        <section class="tsd-member-index-group ">
+            <h3>Constructor methods</h3>
+            <ul class="tsd-member-index">
+                
+                    <li class="tsd-kind-constructor-method tsd-parent-kind-class"><a href="review.process.html#constructor" class="tsd-kind-icon">constructor</a></li>
+                
+            </ul>
+        </section>
+    
+        <section class="tsd-member-index-group ">
+            <h3>Properties</h3>
+            <ul class="tsd-member-index">
+                
+                    <li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="review.process.html#_reports" class="tsd-kind-icon">_reports</a></li>
+                
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.process.html#afterprocess" class="tsd-kind-icon">afterProcess</a></li>
+                
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.process.html#chapter" class="tsd-kind-icon">chapter</a></li>
+                
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.process.html#indexcounter" class="tsd-kind-icon">indexCounter</a></li>
+                
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.process.html#input" class="tsd-kind-icon">input</a></li>
+                
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.process.html#part" class="tsd-kind-icon">part</a></li>
+                
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.process.html#symbols" class="tsd-kind-icon">symbols</a></li>
+                
+            </ul>
+        </section>
+    
+        <section class="tsd-member-index-group ">
+            <h3>Get accessors</h3>
+            <ul class="tsd-member-index">
+                
+                    <li class="tsd-kind-get-accessor tsd-parent-kind-class"><a href="review.process.html#missingsymbols" class="tsd-kind-icon">missingSymbols</a></li>
+                
+                    <li class="tsd-kind-get-accessor tsd-parent-kind-class"><a href="review.process.html#reports" class="tsd-kind-icon">reports</a></li>
+                
+            </ul>
+        </section>
+    
+        <section class="tsd-member-index-group ">
+            <h3>Methods</h3>
+            <ul class="tsd-member-index">
+                
+                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.process.html#addafterprocess" class="tsd-kind-icon">addAfterProcess</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.process.html#addsymbol" class="tsd-kind-icon">addSymbol</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.process.html#constructreferenceto" class="tsd-kind-icon">constructReferenceTo</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.process.html#doafterprocess" class="tsd-kind-icon">doAfterProcess</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.process.html#error" class="tsd-kind-icon">error</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.process.html#info" class="tsd-kind-icon">info</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.process.html#nextindex" class="tsd-kind-icon">nextIndex</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.process.html#warn" class="tsd-kind-icon">warn</a></li>
+                
+            </ul>
+        </section>
+    
+</section>
+    
+    
+        <section class="tsd-member-group ">
+    <h2>Constructor methods</h2>
+    
+        
+            <section class="tsd-member tsd-kind-constructor-method tsd-parent-kind-class">
+    <a name="constructor"></a>
+    
+        
+            <h3 class="tsd-kind-icon">constructor<span class="tsd-signature-symbols">(</span>part<span class="tsd-signature-symbols">: </span><a href="review.part.html" class="tsd-signature-type">Part</a>, chapter<span class="tsd-signature-symbols">: </span><a href="review.chapter.html" class="tsd-signature-type">Chapter</a>, input<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.process.html" class="tsd-signature-type">Process</a></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:84</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>part: <a href="review.part.html" class="tsd-signature-type">Part</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>chapter: <a href="review.chapter.html" class="tsd-signature-type">Chapter</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>input: <span class="tsd-signature-type">string</span></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <a href="review.process.html" class="tsd-signature-type">Process</a>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+</section>
+    
+
+    
+        <section class="tsd-member-group ">
+    <h2>Properties</h2>
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+    <a name="_reports"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagprivate">private</span> _reports<span class="tsd-signature-symbols">:</span> <a href="review.processreport.html" class="tsd-signature-type">ProcessReport</a><span class="tsd-signature-symbols">[]</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:82</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
+    <a name="afterprocess"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> afterProcess<span class="tsd-signature-symbols">:</span> <span class="tsd-signature-type">Array&lt;Function&gt;</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:81</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
+    <a name="chapter"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> chapter<span class="tsd-signature-symbols">:</span> <a href="review.chapter.html" class="tsd-signature-type">Chapter</a></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:84</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
+    <a name="indexcounter"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> indexCounter<span class="tsd-signature-symbols">:</span> <span class="tsd-signature-type">{ [kind: string]: number; }</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:79</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+        
+            
+                <section class="tsd-member tsd-kind-index-signature tsd-parent-kind-property">
+    <a name="indexcounter."></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-signature-symbols">(</span><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:79</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+</section>
+            
+        
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
+    <a name="input"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> input<span class="tsd-signature-symbols">:</span> <span class="tsd-signature-type">string</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:84</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
+    <a name="part"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> part<span class="tsd-signature-symbols">:</span> <a href="review.part.html" class="tsd-signature-type">Part</a></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:84</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
+    <a name="symbols"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> symbols<span class="tsd-signature-symbols">:</span> <a href="../interfaces/review.isymbol.html" class="tsd-signature-type">ISymbol</a><span class="tsd-signature-symbols">[]</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:78</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+        
+    
+</section>
+    
+
+    
+        <section class="tsd-member-group ">
+    <h2>Get accessors</h2>
+    
+        
+            <section class="tsd-member tsd-kind-get-accessor tsd-parent-kind-class">
+    <a name="missingsymbols"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> missingSymbols<span class="tsd-signature-symbols">(</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="../interfaces/review.isymbol.html" class="tsd-signature-type">ISymbol</a><span class="tsd-signature-symbols">[]</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:130</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <a href="../interfaces/review.isymbol.html" class="tsd-signature-type">ISymbol</a><span class="tsd-signature-symbols">[]</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-get-accessor tsd-parent-kind-class">
+    <a name="reports"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> reports<span class="tsd-signature-symbols">(</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.processreport.html" class="tsd-signature-type">ProcessReport</a><span class="tsd-signature-symbols">[]</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:110</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <a href="review.processreport.html" class="tsd-signature-type">ProcessReport</a><span class="tsd-signature-symbols">[]</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+</section>
+    
+
+    
+        <section class="tsd-member-group ">
+    <h2>Methods</h2>
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
+    <a name="addafterprocess"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> addAfterProcess<span class="tsd-signature-symbols">(</span>func<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:177</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>func: <span class="tsd-signature-type">Function</span></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
+    <a name="addsymbol"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> addSymbol<span class="tsd-signature-symbols">(</span>symbol<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.isymbol.html" class="tsd-signature-type">ISymbol</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:124</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>symbol: <a href="../interfaces/review.isymbol.html" class="tsd-signature-type">ISymbol</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
+    <a name="constructreferenceto"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> constructReferenceTo<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="review.parse.inlineelementsyntaxtree.html" class="tsd-signature-type">InlineElementSyntaxTree</a>, value<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span>, targetSymbol<span class="tsd-signature-symbols">?: </span><span class="tsd-signature-type">string</span>, separator<span class="tsd-signature-symbols">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="../interfaces/review.ireferenceto.html" class="tsd-signature-type">IReferenceTo</a></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:140</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="review.parse.inlineelementsyntaxtree.html" class="tsd-signature-type">InlineElementSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>value: <span class="tsd-signature-type">string</span></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>targetSymbol?: <span class="tsd-signature-type">string</span> <span class="tsd-flag ts-flagoptional">optional</span></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>separator?: <span class="tsd-signature-type">string</span> <span class="tsd-flag ts-flagoptional">optional</span></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <a href="../interfaces/review.ireferenceto.html" class="tsd-signature-type">IReferenceTo</a>
+    
+</p>
+    
+
+
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> constructReferenceTo<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="review.parse.blockelementsyntaxtree.html" class="tsd-signature-type">BlockElementSyntaxTree</a>, value<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span>, targetSymbol<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span>, separator<span class="tsd-signature-symbols">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="../interfaces/review.ireferenceto.html" class="tsd-signature-type">IReferenceTo</a></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:142</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="review.parse.blockelementsyntaxtree.html" class="tsd-signature-type">BlockElementSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>value: <span class="tsd-signature-type">string</span></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>targetSymbol: <span class="tsd-signature-type">string</span></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>separator?: <span class="tsd-signature-type">string</span> <span class="tsd-flag ts-flagoptional">optional</span></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <a href="../interfaces/review.ireferenceto.html" class="tsd-signature-type">IReferenceTo</a>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
+    <a name="doafterprocess"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> doAfterProcess<span class="tsd-signature-symbols">(</span><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:181</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
+    <a name="error"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> error<span class="tsd-signature-symbols">(</span>message<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span>, nodes<span class="tsd-signature-symbols">?: </span><a href="review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">[]</span><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:95</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>message: <span class="tsd-signature-type">string</span></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>nodes?: <a href="review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">[]</span> <span class="tsd-flag ts-flagoptional">optional</span></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
+    <a name="info"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> info<span class="tsd-signature-symbols">(</span>message<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span>, nodes<span class="tsd-signature-symbols">?: </span><a href="review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">[]</span><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:87</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>message: <span class="tsd-signature-type">string</span></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>nodes?: <a href="review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">[]</span> <span class="tsd-flag ts-flagoptional">optional</span></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
+    <a name="nextindex"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> nextIndex<span class="tsd-signature-symbols">(</span>kind<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">number</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:99</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>kind: <span class="tsd-signature-type">string</span></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <span class="tsd-signature-type">number</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
+    <a name="warn"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> warn<span class="tsd-signature-symbols">(</span>message<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span>, nodes<span class="tsd-signature-symbols">?: </span><a href="review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">[]</span><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in model/CompilerModel.ts:91</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>message: <span class="tsd-signature-type">string</span></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>nodes?: <a href="review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">[]</span> <span class="tsd-flag ts-flagoptional">optional</span></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+</section>
+    
+
+
+        </div>
+        <div class="offset-1 col-3">
+            <nav class="tsd-navigation primary">
+                <ul>
+                    
+                        <li class=" ">
+    <a href="../globals.html"><em>Globals</em></a>
+    
+</li>
+                    
+                        <li class="current tsd-kind-container">
+    <a href="../modules/review.html">ReVIEW</a>
+    
+        
+            <ul>
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+            </ul>
+        
+    
+</li>
+                    
+                        <li class=" tsd-kind-container tsd-parent-kind-container">
+    <a href="../modules/review.io.html">ReVIEW.IO</a>
+    
+</li>
+                    
+                        <li class=" tsd-kind-container tsd-parent-kind-container">
+    <a href="../modules/review.exec.html">ReVIEW.Exec</a>
+    
+</li>
+                    
+                        <li class=" tsd-kind-container tsd-parent-kind-container">
+    <a href="../modules/review.i18n.html">ReVIEW.i18n</a>
+    
+</li>
+                    
+                        <li class=" tsd-kind-container tsd-parent-kind-container">
+    <a href="../modules/review.parse.html">ReVIEW.Parse</a>
+    
+</li>
+                    
+                        <li class=" tsd-kind-container tsd-parent-kind-container">
+    <a href="../modules/review.build.html">ReVIEW.Build</a>
+    
+</li>
+                    
+                </ul>
+            </nav>
+
+            <nav class="tsd-navigation secondary">
+                
+                    
+
+    <ul>
+        
+            
+                <li class=" tsd-kind-variable tsd-parent-kind-container">
+                    <a href="../modules/review.html#en" class="tsd-kind-icon">en</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-variable tsd-parent-kind-container">
+                    <a href="../modules/review.html#ja" class="tsd-kind-icon">ja</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-enum tsd-parent-kind-container">
+                    <a href="../enums/review.reportlevel.html" class="tsd-kind-icon">ReportLevel</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="../interfaces/review.iconfig.html" class="tsd-kind-icon">IConfig</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="../interfaces/review.iconfigbook.html" class="tsd-kind-icon">IConfigBook</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="../interfaces/review.iconfiglistener.html" class="tsd-kind-icon">IConfigListener</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="../interfaces/review.ioptions.html" class="tsd-kind-icon">IOptions</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="../interfaces/review.ireferenceto.html" class="tsd-kind-icon">IReferenceTo</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="../interfaces/review.isymbol.html" class="tsd-kind-icon">ISymbol</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="../interfaces/review.itreevisitor.html" class="tsd-kind-icon">ITreeVisitor</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.book.html" class="tsd-kind-icon">Book</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.bookprocess.html" class="tsd-kind-icon">BookProcess</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.builderprocess.html" class="tsd-kind-icon">BuilderProcess</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.chapter.html" class="tsd-kind-icon">Chapter</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container tsd-is-not-exported">
+                    <a href="review.configwrapper.html" class="tsd-kind-icon">ConfigWrapper</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.controller.html" class="tsd-kind-icon">Controller</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container tsd-is-not-exported">
+                    <a href="review.nodejsconfig.html" class="tsd-kind-icon">NodeJSConfig</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.part.html" class="tsd-kind-icon">Part</a>
+                    
+                </li>
+            
+        
+            
+                <li class="current tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.process.html" class="tsd-kind-icon">Process</a>
+                    
+
+    <ul>
+        
+            
+                <li class=" tsd-kind-constructor-method tsd-parent-kind-class">
+                    <a href="review.process.html#constructor" class="tsd-kind-icon">constructor</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+                    <a href="review.process.html#_reports" class="tsd-kind-icon">_reports</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.process.html#afterprocess" class="tsd-kind-icon">afterProcess</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.process.html#chapter" class="tsd-kind-icon">chapter</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.process.html#indexcounter" class="tsd-kind-icon">indexCounter</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.process.html#input" class="tsd-kind-icon">input</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.process.html#part" class="tsd-kind-icon">part</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.process.html#symbols" class="tsd-kind-icon">symbols</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-get-accessor tsd-parent-kind-class">
+                    <a href="review.process.html#missingsymbols" class="tsd-kind-icon">missingSymbols</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-get-accessor tsd-parent-kind-class">
+                    <a href="review.process.html#reports" class="tsd-kind-icon">reports</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-class">
+                    <a href="review.process.html#addafterprocess" class="tsd-kind-icon">addAfterProcess</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-class">
+                    <a href="review.process.html#addsymbol" class="tsd-kind-icon">addSymbol</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-class">
+                    <a href="review.process.html#constructreferenceto" class="tsd-kind-icon">constructReferenceTo</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-class">
+                    <a href="review.process.html#doafterprocess" class="tsd-kind-icon">doAfterProcess</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-class">
+                    <a href="review.process.html#error" class="tsd-kind-icon">error</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-class">
+                    <a href="review.process.html#info" class="tsd-kind-icon">info</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-class">
+                    <a href="review.process.html#nextindex" class="tsd-kind-icon">nextIndex</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-class">
+                    <a href="review.process.html#warn" class="tsd-kind-icon">warn</a>
+                    
+                </li>
+            
+        
+    </ul>
+
+
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.processreport.html" class="tsd-kind-icon">ProcessReport</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container tsd-is-not-exported">
+                    <a href="review.webbrowserconfig.html" class="tsd-kind-icon">WebBrowserConfig</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#findchapter" class="tsd-kind-icon">findChapter</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#findup" class="tsd-kind-icon">findUp</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#flatten" class="tsd-kind-icon">flatten</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#isamd" class="tsd-kind-icon">isAMD</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#isnodejs" class="tsd-kind-icon">isNodeJS</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#nodecontenttostring" class="tsd-kind-icon">nodeContentToString</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#nodetostring" class="tsd-kind-icon">nodeToString</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#start" class="tsd-kind-icon">start</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#stringrepeat" class="tsd-kind-icon">stringRepeat</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#target2builder" class="tsd-kind-icon">target2builder</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#visit" class="tsd-kind-icon">visit</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container tsd-is-not-exported">
+                    <a href="../modules/review.html#visitsub" class="tsd-kind-icon">visitSub</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#walk" class="tsd-kind-icon">walk</a>
+                    
+                </li>
+            
+        
+    </ul>
+
+
+                
+            </nav>
+        </div>
+    </div>
+</div>
+
+<script src="../assets/js/main.js"></script>
+
+</body>
+</html>

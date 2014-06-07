@@ -1,0 +1,2460 @@
+﻿<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ITreeVisitor | review.js</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header>
+    <div class="tsd-page-toolbar">
+        <div class="container">
+            <div id="tsd-filter">
+                <input type="checkbox" id="tsd-filter-inherited" checked />
+                <label for="tsd-filter-inherited">Inherited</label>
+
+                <input type="checkbox" id="tsd-filter-private" checked />
+                <label for="tsd-filter-private">Private</label>
+
+                <input type="checkbox" id="tsd-filter-only-exported" />
+                <label for="tsd-filter-only-exported">Only exported</label>
+            </div>
+
+            <a href="../index.html">review.js</a>
+        </div>
+    </div>
+    <div class="tsd-page-title">
+        <div class="container">
+            <ul class="breadcrumb">
+                
+    
+    
+    <li>
+        <a href="../modules/review.html">ReVIEW</a>
+    </li>
+
+    <li>
+        <a href="review.itreevisitor.html">ITreeVisitor</a>
+    </li>
+
+            </ul>
+            <h1>Interface ITreeVisitor</h1>
+        </div>
+    </div>
+</header>
+
+<div class="container container-main">
+    <div class="row">
+        <div class="col-8">
+            
+    
+    <p>構文木を渡り歩くためのVisitor。
+実装されなかったメソッドは、visitDefault または NodeSyntaxTree を継承している場合 visitNode にフォールバックする。
+各メソッドの返り値としてanyを返す。
+undefined, true を返した時、子要素の探索は継続される。
+false を返した時、子要素の探索は行われない。
+Function を返した時、子要素の探索を行う代わりにその関数が実行される。Functionには引数として実行中のTreeVisitorが渡される。</p>
+
+
+
+
+
+
+
+
+
+
+
+    <section class="tsd-member-index">
+    <h2>Index</h2>
+    
+        <section class="tsd-member-index-group ">
+            <h3>Methods</h3>
+            <ul class="tsd-member-index">
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitargumentpost" class="tsd-kind-icon">visitArgumentPost</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitargumentpre" class="tsd-kind-icon">visitArgumentPre</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitblockelementpost" class="tsd-kind-icon">visitBlockElementPost</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitblockelementpre" class="tsd-kind-icon">visitBlockElementPre</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitchapterpost" class="tsd-kind-icon">visitChapterPost</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitchapterpre" class="tsd-kind-icon">visitChapterPre</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitcolumnheadlinepost" class="tsd-kind-icon">visitColumnHeadlinePost</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitcolumnheadlinepre" class="tsd-kind-icon">visitColumnHeadlinePre</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitcolumnpost" class="tsd-kind-icon">visitColumnPost</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitcolumnpre" class="tsd-kind-icon">visitColumnPre</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitdefaultpost" class="tsd-kind-icon">visitDefaultPost</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitdefaultpre" class="tsd-kind-icon">visitDefaultPre</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitdlistpost" class="tsd-kind-icon">visitDlistPost</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitdlistpre" class="tsd-kind-icon">visitDlistPre</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitheadlinepost" class="tsd-kind-icon">visitHeadlinePost</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitheadlinepre" class="tsd-kind-icon">visitHeadlinePre</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitinlineelementpost" class="tsd-kind-icon">visitInlineElementPost</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitinlineelementpre" class="tsd-kind-icon">visitInlineElementPre</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitnodepost" class="tsd-kind-icon">visitNodePost</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitnodepre" class="tsd-kind-icon">visitNodePre</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitolistpost" class="tsd-kind-icon">visitOlistPost</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitolistpre" class="tsd-kind-icon">visitOlistPre</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitparagraphpost" class="tsd-kind-icon">visitParagraphPost</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitparagraphpre" class="tsd-kind-icon">visitParagraphPre</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visittextpost" class="tsd-kind-icon">visitTextPost</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visittextpre" class="tsd-kind-icon">visitTextPre</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitulistpost" class="tsd-kind-icon">visitUlistPost</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-interface"><a href="review.itreevisitor.html#visitulistpre" class="tsd-kind-icon">visitUlistPre</a></li>
+                
+            </ul>
+        </section>
+    
+</section>
+    
+    
+        <section class="tsd-member-group ">
+    <h2>Methods</h2>
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitargumentpost"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitArgumentPost<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.argumentsyntaxtree.html" class="tsd-signature-type">ArgumentSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:290</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.argumentsyntaxtree.html" class="tsd-signature-type">ArgumentSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitargumentpre"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitArgumentPre<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.argumentsyntaxtree.html" class="tsd-signature-type">ArgumentSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:289</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.argumentsyntaxtree.html" class="tsd-signature-type">ArgumentSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <span class="tsd-signature-type">any</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitblockelementpost"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitBlockElementPost<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.blockelementsyntaxtree.html" class="tsd-signature-type">BlockElementSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:286</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.blockelementsyntaxtree.html" class="tsd-signature-type">BlockElementSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitblockelementpre"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitBlockElementPre<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.blockelementsyntaxtree.html" class="tsd-signature-type">BlockElementSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:285</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.blockelementsyntaxtree.html" class="tsd-signature-type">BlockElementSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <span class="tsd-signature-type">any</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitchapterpost"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitChapterPost<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.chaptersyntaxtree.html" class="tsd-signature-type">ChapterSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:292</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.chaptersyntaxtree.html" class="tsd-signature-type">ChapterSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitchapterpre"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitChapterPre<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.chaptersyntaxtree.html" class="tsd-signature-type">ChapterSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:291</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.chaptersyntaxtree.html" class="tsd-signature-type">ChapterSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <span class="tsd-signature-type">any</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitcolumnheadlinepost"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitColumnHeadlinePost<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.columnheadlinesyntaxtree.html" class="tsd-signature-type">ColumnHeadlineSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:306</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.columnheadlinesyntaxtree.html" class="tsd-signature-type">ColumnHeadlineSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitcolumnheadlinepre"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitColumnHeadlinePre<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.columnheadlinesyntaxtree.html" class="tsd-signature-type">ColumnHeadlineSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:305</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.columnheadlinesyntaxtree.html" class="tsd-signature-type">ColumnHeadlineSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <span class="tsd-signature-type">any</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitcolumnpost"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitColumnPost<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.columnsyntaxtree.html" class="tsd-signature-type">ColumnSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:304</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.columnsyntaxtree.html" class="tsd-signature-type">ColumnSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitcolumnpre"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitColumnPre<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.columnsyntaxtree.html" class="tsd-signature-type">ColumnSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:303</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.columnsyntaxtree.html" class="tsd-signature-type">ColumnSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <span class="tsd-signature-type">any</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitdefaultpost"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitDefaultPost<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:282</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitdefaultpre"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> visitDefaultPre<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:281</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <span class="tsd-signature-type">any</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitdlistpost"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitDlistPost<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.dlistelementsyntaxtree.html" class="tsd-signature-type">DlistElementSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:302</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.dlistelementsyntaxtree.html" class="tsd-signature-type">DlistElementSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitdlistpre"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitDlistPre<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.dlistelementsyntaxtree.html" class="tsd-signature-type">DlistElementSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:301</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.dlistelementsyntaxtree.html" class="tsd-signature-type">DlistElementSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <span class="tsd-signature-type">any</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitheadlinepost"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitHeadlinePost<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.headlinesyntaxtree.html" class="tsd-signature-type">HeadlineSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:296</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.headlinesyntaxtree.html" class="tsd-signature-type">HeadlineSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitheadlinepre"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitHeadlinePre<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.headlinesyntaxtree.html" class="tsd-signature-type">HeadlineSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:295</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.headlinesyntaxtree.html" class="tsd-signature-type">HeadlineSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <span class="tsd-signature-type">any</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitinlineelementpost"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitInlineElementPost<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.inlineelementsyntaxtree.html" class="tsd-signature-type">InlineElementSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:288</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.inlineelementsyntaxtree.html" class="tsd-signature-type">InlineElementSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitinlineelementpre"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitInlineElementPre<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.inlineelementsyntaxtree.html" class="tsd-signature-type">InlineElementSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:287</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.inlineelementsyntaxtree.html" class="tsd-signature-type">InlineElementSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <span class="tsd-signature-type">any</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitnodepost"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitNodePost<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.nodesyntaxtree.html" class="tsd-signature-type">NodeSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:284</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.nodesyntaxtree.html" class="tsd-signature-type">NodeSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitnodepre"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitNodePre<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.nodesyntaxtree.html" class="tsd-signature-type">NodeSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:283</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.nodesyntaxtree.html" class="tsd-signature-type">NodeSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <span class="tsd-signature-type">any</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitolistpost"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitOlistPost<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.olistelementsyntaxtree.html" class="tsd-signature-type">OlistElementSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:300</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.olistelementsyntaxtree.html" class="tsd-signature-type">OlistElementSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitolistpre"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitOlistPre<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.olistelementsyntaxtree.html" class="tsd-signature-type">OlistElementSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:299</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.olistelementsyntaxtree.html" class="tsd-signature-type">OlistElementSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <span class="tsd-signature-type">any</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitparagraphpost"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitParagraphPost<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.nodesyntaxtree.html" class="tsd-signature-type">NodeSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:294</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.nodesyntaxtree.html" class="tsd-signature-type">NodeSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitparagraphpre"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitParagraphPre<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.nodesyntaxtree.html" class="tsd-signature-type">NodeSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:293</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.nodesyntaxtree.html" class="tsd-signature-type">NodeSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <span class="tsd-signature-type">any</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visittextpost"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitTextPost<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.textnodesyntaxtree.html" class="tsd-signature-type">TextNodeSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:308</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.textnodesyntaxtree.html" class="tsd-signature-type">TextNodeSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visittextpre"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitTextPre<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.textnodesyntaxtree.html" class="tsd-signature-type">TextNodeSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:307</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.textnodesyntaxtree.html" class="tsd-signature-type">TextNodeSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <span class="tsd-signature-type">any</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitulistpost"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitUlistPost<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.ulistelementsyntaxtree.html" class="tsd-signature-type">UlistElementSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:298</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.ulistelementsyntaxtree.html" class="tsd-signature-type">UlistElementSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-interface">
+    <a name="visitulistpre"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> visitUlistPre<span class="tsd-signature-symbols">(</span>node<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.ulistelementsyntaxtree.html" class="tsd-signature-type">UlistElementSyntaxTree</a>, parent<span class="tsd-signature-symbols">: </span><a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Walker.ts:297</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>node: <a href="../classes/review.parse.ulistelementsyntaxtree.html" class="tsd-signature-type">UlistElementSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>parent: <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <span class="tsd-signature-type">any</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+</section>
+    
+
+
+        </div>
+        <div class="offset-1 col-3">
+            <nav class="tsd-navigation primary">
+                <ul>
+                    
+                        <li class=" ">
+    <a href="../globals.html"><em>Globals</em></a>
+    
+</li>
+                    
+                        <li class="current tsd-kind-container">
+    <a href="../modules/review.html">ReVIEW</a>
+    
+        
+            <ul>
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+            </ul>
+        
+    
+</li>
+                    
+                        <li class=" tsd-kind-container tsd-parent-kind-container">
+    <a href="../modules/review.io.html">ReVIEW.IO</a>
+    
+</li>
+                    
+                        <li class=" tsd-kind-container tsd-parent-kind-container">
+    <a href="../modules/review.exec.html">ReVIEW.Exec</a>
+    
+</li>
+                    
+                        <li class=" tsd-kind-container tsd-parent-kind-container">
+    <a href="../modules/review.i18n.html">ReVIEW.i18n</a>
+    
+</li>
+                    
+                        <li class=" tsd-kind-container tsd-parent-kind-container">
+    <a href="../modules/review.parse.html">ReVIEW.Parse</a>
+    
+</li>
+                    
+                        <li class=" tsd-kind-container tsd-parent-kind-container">
+    <a href="../modules/review.build.html">ReVIEW.Build</a>
+    
+</li>
+                    
+                </ul>
+            </nav>
+
+            <nav class="tsd-navigation secondary">
+                
+                    
+
+    <ul>
+        
+            
+                <li class=" tsd-kind-variable tsd-parent-kind-container">
+                    <a href="../modules/review.html#en" class="tsd-kind-icon">en</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-variable tsd-parent-kind-container">
+                    <a href="../modules/review.html#ja" class="tsd-kind-icon">ja</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-enum tsd-parent-kind-container">
+                    <a href="../enums/review.reportlevel.html" class="tsd-kind-icon">ReportLevel</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="review.iconfig.html" class="tsd-kind-icon">IConfig</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="review.iconfigbook.html" class="tsd-kind-icon">IConfigBook</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="review.iconfiglistener.html" class="tsd-kind-icon">IConfigListener</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="review.ioptions.html" class="tsd-kind-icon">IOptions</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="review.ireferenceto.html" class="tsd-kind-icon">IReferenceTo</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="review.isymbol.html" class="tsd-kind-icon">ISymbol</a>
+                    
+                </li>
+            
+        
+            
+                <li class="current tsd-kind-interface tsd-parent-kind-container">
+                    <a href="review.itreevisitor.html" class="tsd-kind-icon">ITreeVisitor</a>
+                    
+
+    <ul>
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitargumentpost" class="tsd-kind-icon">visitArgumentPost</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitargumentpre" class="tsd-kind-icon">visitArgumentPre</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitblockelementpost" class="tsd-kind-icon">visitBlockElementPost</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitblockelementpre" class="tsd-kind-icon">visitBlockElementPre</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitchapterpost" class="tsd-kind-icon">visitChapterPost</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitchapterpre" class="tsd-kind-icon">visitChapterPre</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitcolumnheadlinepost" class="tsd-kind-icon">visitColumnHeadlinePost</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitcolumnheadlinepre" class="tsd-kind-icon">visitColumnHeadlinePre</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitcolumnpost" class="tsd-kind-icon">visitColumnPost</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitcolumnpre" class="tsd-kind-icon">visitColumnPre</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitdefaultpost" class="tsd-kind-icon">visitDefaultPost</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitdefaultpre" class="tsd-kind-icon">visitDefaultPre</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitdlistpost" class="tsd-kind-icon">visitDlistPost</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitdlistpre" class="tsd-kind-icon">visitDlistPre</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitheadlinepost" class="tsd-kind-icon">visitHeadlinePost</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitheadlinepre" class="tsd-kind-icon">visitHeadlinePre</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitinlineelementpost" class="tsd-kind-icon">visitInlineElementPost</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitinlineelementpre" class="tsd-kind-icon">visitInlineElementPre</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitnodepost" class="tsd-kind-icon">visitNodePost</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitnodepre" class="tsd-kind-icon">visitNodePre</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitolistpost" class="tsd-kind-icon">visitOlistPost</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitolistpre" class="tsd-kind-icon">visitOlistPre</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitparagraphpost" class="tsd-kind-icon">visitParagraphPost</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitparagraphpre" class="tsd-kind-icon">visitParagraphPre</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visittextpost" class="tsd-kind-icon">visitTextPost</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visittextpre" class="tsd-kind-icon">visitTextPre</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitulistpost" class="tsd-kind-icon">visitUlistPost</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-interface">
+                    <a href="review.itreevisitor.html#visitulistpre" class="tsd-kind-icon">visitUlistPre</a>
+                    
+                </li>
+            
+        
+    </ul>
+
+
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="../classes/review.book.html" class="tsd-kind-icon">Book</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="../classes/review.bookprocess.html" class="tsd-kind-icon">BookProcess</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="../classes/review.builderprocess.html" class="tsd-kind-icon">BuilderProcess</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="../classes/review.chapter.html" class="tsd-kind-icon">Chapter</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container tsd-is-not-exported">
+                    <a href="../classes/review.configwrapper.html" class="tsd-kind-icon">ConfigWrapper</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="../classes/review.controller.html" class="tsd-kind-icon">Controller</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container tsd-is-not-exported">
+                    <a href="../classes/review.nodejsconfig.html" class="tsd-kind-icon">NodeJSConfig</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="../classes/review.part.html" class="tsd-kind-icon">Part</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="../classes/review.process.html" class="tsd-kind-icon">Process</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="../classes/review.processreport.html" class="tsd-kind-icon">ProcessReport</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container tsd-is-not-exported">
+                    <a href="../classes/review.webbrowserconfig.html" class="tsd-kind-icon">WebBrowserConfig</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#findchapter" class="tsd-kind-icon">findChapter</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#findup" class="tsd-kind-icon">findUp</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#flatten" class="tsd-kind-icon">flatten</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#isamd" class="tsd-kind-icon">isAMD</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#isnodejs" class="tsd-kind-icon">isNodeJS</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#nodecontenttostring" class="tsd-kind-icon">nodeContentToString</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#nodetostring" class="tsd-kind-icon">nodeToString</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#start" class="tsd-kind-icon">start</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#stringrepeat" class="tsd-kind-icon">stringRepeat</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#target2builder" class="tsd-kind-icon">target2builder</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#visit" class="tsd-kind-icon">visit</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container tsd-is-not-exported">
+                    <a href="../modules/review.html#visitsub" class="tsd-kind-icon">visitSub</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#walk" class="tsd-kind-icon">walk</a>
+                    
+                </li>
+            
+        
+    </ul>
+
+
+                
+            </nav>
+        </div>
+    </div>
+</div>
+
+<script src="../assets/js/main.js"></script>
+
+</body>
+</html>
