@@ -12,6 +12,8 @@ ReVIEW.js is implemented by TypeScript :)
 [ReVIEW](https://github.com/kmuto/review) のJavaScript実装です。
 Node.js上とモダンなWebブラウザ上で動作することを目指します。
 
+[ドキュメント](https://vvakame.github.io/review.js/docs/)
+
 # 現状
 
 それなりに多くの構文をサポートしています。
