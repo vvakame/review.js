@@ -23,7 +23,7 @@ after_success:
   - git add ./docs
   - git commit -m "generate typedoc build ${TRAVIS_BUILD_NUMBER} commit:${TRAVIS_COMMIT}"
   - git push --quiet "https://$GH_TOKEN@github.com/review.js.git" gh-pages
-  - '[ "$TRAVIS_BRANCH" = "master" ] && [ $GH_TOKEN ] && git push --quiet "https://$GH_TOKEN@github.com/review.js.git" gh-pages
+  - '[ "$TRAVIS_BRANCH" = "master" ] && [ $GH_TOKEN ] && git push --quiet "https://$GH_TOKEN@github.com/review.js.git" gh-pages'
 
 notifications:
   email: false
