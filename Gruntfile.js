@@ -221,7 +221,7 @@ module.exports = function (grunt) {
 			},
 			browser: {
 				src: [
-					'<%= opt.client.peg %>/grammer.js',
+					'<%= opt.client.peg %>/grammar.js',
 					'<%= opt.client.jsMain %>/Exception.js',
 					'<%= opt.client.jsMainOut %>/*.js',
 					'!<%= opt.client.jsMainOut %>/Cli.js',
@@ -231,7 +231,7 @@ module.exports = function (grunt) {
 			},
 			test: {
 				src: [
-					'<%= opt.client.peg %>/grammer.js',
+					'<%= opt.client.peg %>/grammar.js',
 					'<%= opt.client.jsMain %>/Exception.js',
 					'<%= opt.client.jsTestOut %>/main-spec.js'
 				],
@@ -239,7 +239,7 @@ module.exports = function (grunt) {
 			},
 			nodeRuntime: {
 				src: [
-					'<%= opt.client.peg %>/grammer.js',
+					'<%= opt.client.peg %>/grammar.js',
 					'<%= opt.client.jsMain %>/Exception.js',
 					'<%= opt.client.jsMainOut %>/main.js'
 				],
@@ -280,7 +280,7 @@ module.exports = function (grunt) {
 				},
 				files: {
 					'<%= opt.client.outBase %>/review.min.js': [
-						'<%= opt.client.peg %>/grammer.js',
+						'<%= opt.client.peg %>/grammar.js',
 						'<%= opt.client.jsMain %>/Exception.js',
 						'<%= opt.client.jsMainOut %>/*.js',
 						'!<%= opt.client.jsMainOut %>/Cli.js',
@@ -301,7 +301,7 @@ module.exports = function (grunt) {
 					'<%= opt.client.jsTestOut %>/*.js.map',
 					'<%= opt.client.jsTestOut %>/*.d.ts',
 					// peg.js
-					'<%= opt.client.peg %>/grammer.js'
+					'<%= opt.client.peg %>/grammar.js'
 				]
 			},
 			tsd: {
@@ -365,7 +365,7 @@ module.exports = function (grunt) {
 			"pegjs": {
 				cmd: function () {
 					var peg = grunt.config.get("opt.client.peg") + "/";
-					return "./util/review-parser-generator > " + peg + "/grammer.js";
+					return "./util/review-parser-generator > " + peg + "/grammar.js";
 				}
 			}
 		}

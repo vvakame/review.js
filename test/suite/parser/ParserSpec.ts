@@ -98,7 +98,7 @@ describe("ReVIEW構文の", ()=> {
 			"=[hoge]{fuga} 両方付き",
 			"= headline\n@<kw>{hoge,fuga}\n",
 			"= ＼(^o^)／\n\n#@# コメント\n",
-			"= use review-preproc\n//list[hoge][]{\n#@mapfile(bin/grammer.js)\n#@end\n//}",
+			"= use review-preproc\n//list[hoge][]{\n#@mapfile(bin/grammar.js)\n#@end\n//}",
 			"= headline\nというように、型を @<tti>{<} と　@<tti>{>} で囲んで式 expression の先頭に置くと\n",
 			"= @がinlineじゃなく出てくる\n\n例えば @Override アノテーションの話とか。",
 			"= 1つ目\n= 2つ目\n\n段落1\n\n段落2\n段落2続き\n\n段落3\n= 3つ目",

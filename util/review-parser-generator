@@ -7,7 +7,7 @@ var path = require("path");
 var peg = require('pegjs');
 var overrideAction = require('pegjs-override-action');
 
-var inputFile = "resources/grammer.pegjs";
+var inputFile = "resources/grammar.pegjs";
 var exportVar = "var PEG";
 
 /* generate ReVIEW parser */
@@ -92,7 +92,7 @@ var options =
 	plugins: [overrideAction],
 	overrideActionPlugin: {
 		rules: {
-			// 注意 Rule置き換えのfunctionは構文解析されて引数がgrammer中のラベル名に置き換えられます。
+			// 注意 Rule置き換えのfunctionは構文解析されて引数がgrammar中のラベル名に置き換えられます。
 			Start: template.content("Start"),
 			Chapters: template.contents("Chapters"),
 			Chapter: function () {

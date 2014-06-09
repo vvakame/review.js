@@ -57,7 +57,7 @@
                   "line": 4,
                   "column": 1,
                   "endPos": 70,
-                  "text": "#@mapfile(bin/grammer.js)\n#@end"
+                  "text": "#@mapfile(bin/grammar.js)\n#@end"
                 }
               ],
               "symbol": "list",

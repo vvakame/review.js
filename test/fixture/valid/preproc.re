@@ -1,6 +1,6 @@
 = use review-preproc
 
 //list[hoge][]{
-#@mapfile(bin/grammer.js)
+#@mapfile(bin/grammar.js)
 #@end
 //}
