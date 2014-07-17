@@ -26,7 +26,7 @@ Content "content"
     ;
 
 Paragraph "paragraph"
-    = !"=" c:ParagraphSubs _
+    = !"=" c:ParagraphSubs _l
     ;
 
 ParagraphSubs "paragraph subs"
@@ -43,8 +43,8 @@ ContentText "text of content"
     ;
 
 BlockElement "block element"
-    = "//" symbol:$(AZ+) args:BracketArg* "{" Newline contents:BlockElementContents? "//}" _
-    / "//" symbol:$(AZ+) args:BracketArg* _
+    = "//" symbol:$(AZ+) args:BracketArg* "{" Newline contents:BlockElementContents? "//}" _l
+    / "//" symbol:$(AZ+) args:BracketArg* _l
     ;
 
 InlineElement "inline element"
@@ -88,7 +88,7 @@ BraceArg "brace argument"
 
 // contents との差は paragraph を切るか切らないか
 BlockElementContents "contents of block element"
-    = c:BlockElementContent cc:BlockElementContents? _
+    = c:BlockElementContent cc:BlockElementContents? _l
     ;
 
 BlockElementContent "content of block element"
@@ -97,7 +97,7 @@ BlockElementContent "content of block element"
     ;
 
 BlockElementParagraph "paragraph in block"
-    = c:BlockElementParagraphSubs _
+    = c:BlockElementParagraphSubs _l
     ;
 
 BlockElementParagraphSubs "paragraph subs in block"
@@ -144,7 +144,7 @@ ContentInlineText "text of child of inline content"
 // * 箇条書き
 Ulist "ulist"
     // 行頭から… の指定がない
-    = c:(UlistElement / SinglelineComment) cc:Ulist? _
+    = c:(UlistElement / SinglelineComment) cc:Ulist? _l
     ;
 
 UlistElement "ulist element"
@@ -154,7 +154,7 @@ UlistElement "ulist element"
 // 1. 番号付き箇条書き
 Olist "olist"
     // 行頭から… の指定がない
-    = c:(OlistElement / SinglelineComment) cc:Olist? _
+    = c:(OlistElement / SinglelineComment) cc:Olist? _l
     ;
 
 OlistElement "olist element"
@@ -164,11 +164,11 @@ OlistElement "olist element"
 // : 用語リスト
 Dlist "dlist"
     // 行頭から… の指定がない
-    = c:(DlistElement / SinglelineComment) cc:Dlist? _
+    = c:(DlistElement / SinglelineComment) cc:Dlist? _l
     ;
 
 DlistElement "dlist element"
-    = " "* ":" " " Space* text:SinglelineContent content:DlistElementContent _
+    = " "* ":" " " Space* text:SinglelineContent content:DlistElementContent _l
     ;
 
 DlistElementContent "content of dlist element"
@@ -176,7 +176,7 @@ DlistElementContent "content of dlist element"
     ;
 
 SinglelineComment "signle line comment"
-    = text:$("#@" $([^\r\n]*) Newline?) _
+    = text:$("#@" $([^\r\n]*) Newline?) _l
     ;
 
 Digits "digits"
@@ -195,6 +195,10 @@ Newline "newline"
     = "\r\n"
     / "\n"
     ;
+
+// 単に _ を使うと "hoge\n * fuga" の "\n " が食べられてしまいUlistにならなくなってしまう
+_l "blank lines"
+    = $([ \t]* Newline)*
 
 _ "spacer"
     = $([ \t\r\n]*)
