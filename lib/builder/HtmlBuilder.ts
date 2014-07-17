@@ -69,17 +69,29 @@ module ReVIEW.Build {
 			}
 			process.out(">");
 			var constructLabel = (node:SyntaxTree) => {
-				var chapters:ChapterSyntaxTree[] = [];
+				var numbers:{[no:number]:number;} = {};
+				var maxLevel = 0;
 				ReVIEW.walk(node, (node:SyntaxTree) => {
 					if (node instanceof ReVIEW.Parse.ChapterSyntaxTree) {
-						chapters.unshift(node.toChapter());
+						numbers[node.toChapter().level] = node.no;
+						maxLevel = Math.max(maxLevel, node.toChapter().level);
+					} else if (node instanceof  ReVIEW.Parse.ColumnSyntaxTree) {
+						numbers[node.toColumn().level] = -1;
+						maxLevel = Math.max(maxLevel, node.toColumn().level);
 					}
 					return node.parentNode;
 				});
-				var result = chapters.map((chapter)=> {
-					return chapter.no;
-				}).join("-");
-				return result;
+				var result:number[] = [];
+				for (var i = 1; i <= maxLevel; i++) {
+					if (numbers[i] === -1) {
+						result.push(0);
+					} else if (typeof numbers[i] === "undefined") {
+						result.push(1);
+					} else {
+						result.push(numbers[i] || 0);
+					}
+				}
+				return result.join("-");
 			};
 			process.out("<a id=\"h").out(constructLabel(node)).out("\"></a>");
 

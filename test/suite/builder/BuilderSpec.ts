@@ -79,15 +79,6 @@ describe("ReVIEW.Buildの", ()=> {
 			assert(book.reports.length === 1);
 			assert(book.reports[0].level === ReVIEW.ReportLevel.Error);
 		});
-
-		it("あるChapterの親のChapterのレベル差が1であること", ()=> {
-			var failure = Test.compileSingle("= level 1\n=== level3")
-				.failure();
-
-			var book = failure.book;
-			assert(book.reports.length === 1);
-			assert(book.reports[0].level === ReVIEW.ReportLevel.Error);
-		});
 	});
 
 	describe("DefaultBuilderの動作の確認として", ()=> {

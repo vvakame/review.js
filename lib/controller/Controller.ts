@@ -177,7 +177,7 @@ module ReVIEW {
 						}
 					}
 					currentLevel = level;
-					counter[level] += 1;
+					counter[level] = (counter[level] || 0) + 1;
 					chapter.no = counter[level];
 				});
 			});

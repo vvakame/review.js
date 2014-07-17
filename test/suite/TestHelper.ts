@@ -64,6 +64,12 @@ module Test {
 			success = true;
 			originalCompileSuccess(book);
 		};
+		var originalReports = config.listener.onReports;
+		var reports:ReVIEW.ProcessReport[];
+		config.listener.onReports = _reports => {
+			reports = _reports;
+			originalReports(_reports);
+		};
 		var originalCompileFailed = config.listener.onCompileFailed;
 		config.listener.onCompileFailed = ()=> {
 			success = false;

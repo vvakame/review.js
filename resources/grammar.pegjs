@@ -66,12 +66,13 @@ ColumnContents "column contents"
 
 ColumnContent "column content"
     // TODO InlineElement の後に Ulist / Olist / Dlist が来ると先頭行じゃなくてマッチできてしまうかも
-    = !Headline !ColumnTerminator c:SinglelineComment
-    / !Headline !ColumnTerminator c:BlockElement
-    / !Headline !ColumnTerminator c:Ulist
-    / !Headline !ColumnTerminator c:Olist
-    / !Headline !ColumnTerminator c:Dlist
-    / !Headline !ColumnTerminator c:Paragraph
+    = !ColumnTerminator c:SinglelineComment
+    / !ColumnTerminator c:BlockElement
+    / !ColumnTerminator c:Ulist
+    / !ColumnTerminator c:Olist
+    / !ColumnTerminator c:Dlist
+    / !ColumnTerminator c:Paragraph
+    / !ColumnTerminator c:Chapter
     ;
 
 ColumnTerminator "column terminator"

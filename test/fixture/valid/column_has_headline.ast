@@ -1,0 +1,218 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 106,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 106,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 106,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 6,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 4,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 4,
+                  "text": "章1"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 6,
+              "line": 3,
+              "column": 1,
+              "endPos": 55,
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "offset": 6,
+                  "line": 3,
+                  "column": 1,
+                  "endPos": 54,
+                  "text": "https://github.com/kmuto/review/issues/275 を参照。"
+                }
+              ]
+            },
+            {
+              "ruleName": "Column",
+              "offset": 55,
+              "line": 5,
+              "column": 1,
+              "endPos": 106,
+              "headline": {
+                "ruleName": "ColumnHeadline",
+                "offset": 55,
+                "line": 5,
+                "column": 1,
+                "endPos": 73,
+                "level": 2,
+                "caption": {
+                  "ruleName": "ContentInlines",
+                  "offset": 66,
+                  "line": 5,
+                  "column": 12,
+                  "endPos": 72,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentInlineText",
+                      "offset": 66,
+                      "line": 5,
+                      "column": 12,
+                      "endPos": 72,
+                      "text": "こらむだよー"
+                    }
+                  ]
+                }
+              },
+              "text": [
+                {
+                  "ruleName": "Chapter",
+                  "offset": 73,
+                  "line": 6,
+                  "column": 1,
+                  "endPos": 85,
+                  "headline": {
+                    "ruleName": "Headline",
+                    "offset": 73,
+                    "line": 6,
+                    "column": 1,
+                    "endPos": 85,
+                    "level": 3,
+                    "caption": {
+                      "ruleName": "ContentInlines",
+                      "offset": 77,
+                      "line": 6,
+                      "column": 5,
+                      "endPos": 84,
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentInlineText",
+                          "offset": 77,
+                          "line": 6,
+                          "column": 5,
+                          "endPos": 84,
+                          "text": "コラム見出し1"
+                        }
+                      ]
+                    }
+                  },
+                  "text": [],
+                  "no": 1,
+                  "level": 3,
+                  "childNodes": []
+                },
+                {
+                  "ruleName": "Chapter",
+                  "offset": 85,
+                  "line": 7,
+                  "column": 1,
+                  "endPos": 98,
+                  "headline": {
+                    "ruleName": "Headline",
+                    "offset": 85,
+                    "line": 7,
+                    "column": 1,
+                    "endPos": 98,
+                    "level": 4,
+                    "caption": {
+                      "ruleName": "ContentInlines",
+                      "offset": 90,
+                      "line": 7,
+                      "column": 6,
+                      "endPos": 97,
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentInlineText",
+                          "offset": 90,
+                          "line": 7,
+                          "column": 6,
+                          "endPos": 97,
+                          "text": "コラム見出し2"
+                        }
+                      ]
+                    }
+                  },
+                  "text": [],
+                  "no": 1,
+                  "level": 4,
+                  "childNodes": []
+                }
+              ],
+              "no": 1,
+              "level": 2,
+              "childNodes": []
+            }
+          ],
+          "no": 1,
+          "level": 1,
+          "childNodes": [
+            {
+              "ruleName": "Chapter",
+              "offset": 98,
+              "line": 8,
+              "column": 1,
+              "endPos": 106,
+              "headline": {
+                "ruleName": "Headline",
+                "offset": 98,
+                "line": 8,
+                "column": 1,
+                "endPos": 106,
+                "level": 2,
+                "caption": {
+                  "ruleName": "ContentInlines",
+                  "offset": 101,
+                  "line": 8,
+                  "column": 4,
+                  "endPos": 105,
+                  "childNodes": [
+                    {
+                      "ruleName": "ContentInlineText",
+                      "offset": 101,
+                      "line": 8,
+                      "column": 4,
+                      "endPos": 105,
+                      "text": "節だよー"
+                    }
+                  ]
+                }
+              },
+              "text": [],
+              "no": 1,
+              "level": 2,
+              "childNodes": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

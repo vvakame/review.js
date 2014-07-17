@@ -57,7 +57,6 @@ module ReVIEW {
 			"body_string_only": "内容は全て文字でなければいけません",
 			"chapter_not_toplevel": "深さ1のチャプターは最上位になければいけません",
 			"chapter_topleve_eq1": "最上位のチャプターは深さ1のものでなければいけません",
-			"chapter_level_omission": "深さ%sのチャプターは深さ%sのチャプターに属していなければいけません 今は深さ%sのチャプターの下にいます",
 			"deprecated_inline_symbol": "%s というインライン構文は非推奨です。"
 		},
 		"builder": {

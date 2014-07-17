@@ -142,6 +142,26 @@ module ReVIEW {
 		return chapter;
 	}
 
+	export function findChapterOrColumn(node:ReVIEW.Parse.SyntaxTree, level?:number):ReVIEW.Parse.NodeSyntaxTree {
+		var chapter:ReVIEW.Parse.ChapterSyntaxTree = null;
+		var column:ReVIEW.Parse.ColumnSyntaxTree = null;
+		ReVIEW.walk(node, (node:ReVIEW.Parse.SyntaxTree) => {
+			if (node instanceof ReVIEW.Parse.ChapterSyntaxTree) {
+				chapter = node.toChapter();
+				if (typeof level === "undefined" || chapter.level === level) {
+					return null;
+				}
+			} else if (node instanceof  ReVIEW.Parse.ColumnSyntaxTree) {
+				column = node.toColumn();
+				if (typeof level === "undefined" || column.level === level) {
+					return null;
+				}
+			}
+			return node.parentNode;
+		});
+		return chapter || column;
+	}
+
 	export function target2builder(target:string):ReVIEW.Build.IBuilder {
 		// TODO minifyに弱い構造になってる…
 		var builderName = target.charAt(0).toUpperCase() + target.substring(1) + "Builder";

@@ -2046,7 +2046,7 @@ var PEG = (function() {
     }
 
     function peg$parseColumnContent() {
-      var s0, s1, s2, s3;
+      var s0, s1, s2;
 
       var key    = peg$currPos * 47 + 15,
           cached = peg$cache[key];
@@ -2060,7 +2060,7 @@ var PEG = (function() {
       s0 = peg$currPos;
       s1 = peg$currPos;
       peg$silentFails++;
-      s2 = peg$parseHeadline();
+      s2 = peg$parseColumnTerminator();
       peg$silentFails--;
       if (s2 === peg$FAILED) {
         s1 = peg$c14;
@@ -2069,26 +2069,11 @@ var PEG = (function() {
         s1 = peg$c1;
       }
       if (s1 !== peg$FAILED) {
-        s2 = peg$currPos;
-        peg$silentFails++;
-        s3 = peg$parseColumnTerminator();
-        peg$silentFails--;
-        if (s3 === peg$FAILED) {
-          s2 = peg$c14;
-        } else {
-          peg$currPos = s2;
-          s2 = peg$c1;
-        }
+        s2 = peg$parseSinglelineComment();
         if (s2 !== peg$FAILED) {
-          s3 = peg$parseSinglelineComment();
-          if (s3 !== peg$FAILED) {
-            peg$reportedPos = s0;
-            s1 = peg$c57(s3);
-            s0 = s1;
-          } else {
-            peg$currPos = s0;
-            s0 = peg$c1;
-          }
+          peg$reportedPos = s0;
+          s1 = peg$c57(s2);
+          s0 = s1;
         } else {
           peg$currPos = s0;
           s0 = peg$c1;
@@ -2101,7 +2086,7 @@ var PEG = (function() {
         s0 = peg$currPos;
         s1 = peg$currPos;
         peg$silentFails++;
-        s2 = peg$parseHeadline();
+        s2 = peg$parseColumnTerminator();
         peg$silentFails--;
         if (s2 === peg$FAILED) {
           s1 = peg$c14;
@@ -2110,26 +2095,11 @@ var PEG = (function() {
           s1 = peg$c1;
         }
         if (s1 !== peg$FAILED) {
-          s2 = peg$currPos;
-          peg$silentFails++;
-          s3 = peg$parseColumnTerminator();
-          peg$silentFails--;
-          if (s3 === peg$FAILED) {
-            s2 = peg$c14;
-          } else {
-            peg$currPos = s2;
-            s2 = peg$c1;
-          }
+          s2 = peg$parseBlockElement();
           if (s2 !== peg$FAILED) {
-            s3 = peg$parseBlockElement();
-            if (s3 !== peg$FAILED) {
-              peg$reportedPos = s0;
-              s1 = peg$c57(s3);
-              s0 = s1;
-            } else {
-              peg$currPos = s0;
-              s0 = peg$c1;
-            }
+            peg$reportedPos = s0;
+            s1 = peg$c57(s2);
+            s0 = s1;
           } else {
             peg$currPos = s0;
             s0 = peg$c1;
@@ -2142,7 +2112,7 @@ var PEG = (function() {
           s0 = peg$currPos;
           s1 = peg$currPos;
           peg$silentFails++;
-          s2 = peg$parseHeadline();
+          s2 = peg$parseColumnTerminator();
           peg$silentFails--;
           if (s2 === peg$FAILED) {
             s1 = peg$c14;
@@ -2151,26 +2121,11 @@ var PEG = (function() {
             s1 = peg$c1;
           }
           if (s1 !== peg$FAILED) {
-            s2 = peg$currPos;
-            peg$silentFails++;
-            s3 = peg$parseColumnTerminator();
-            peg$silentFails--;
-            if (s3 === peg$FAILED) {
-              s2 = peg$c14;
-            } else {
-              peg$currPos = s2;
-              s2 = peg$c1;
-            }
+            s2 = peg$parseUlist();
             if (s2 !== peg$FAILED) {
-              s3 = peg$parseUlist();
-              if (s3 !== peg$FAILED) {
-                peg$reportedPos = s0;
-                s1 = peg$c57(s3);
-                s0 = s1;
-              } else {
-                peg$currPos = s0;
-                s0 = peg$c1;
-              }
+              peg$reportedPos = s0;
+              s1 = peg$c57(s2);
+              s0 = s1;
             } else {
               peg$currPos = s0;
               s0 = peg$c1;
@@ -2183,7 +2138,7 @@ var PEG = (function() {
             s0 = peg$currPos;
             s1 = peg$currPos;
             peg$silentFails++;
-            s2 = peg$parseHeadline();
+            s2 = peg$parseColumnTerminator();
             peg$silentFails--;
             if (s2 === peg$FAILED) {
               s1 = peg$c14;
@@ -2192,26 +2147,11 @@ var PEG = (function() {
               s1 = peg$c1;
             }
             if (s1 !== peg$FAILED) {
-              s2 = peg$currPos;
-              peg$silentFails++;
-              s3 = peg$parseColumnTerminator();
-              peg$silentFails--;
-              if (s3 === peg$FAILED) {
-                s2 = peg$c14;
-              } else {
-                peg$currPos = s2;
-                s2 = peg$c1;
-              }
+              s2 = peg$parseOlist();
               if (s2 !== peg$FAILED) {
-                s3 = peg$parseOlist();
-                if (s3 !== peg$FAILED) {
-                  peg$reportedPos = s0;
-                  s1 = peg$c57(s3);
-                  s0 = s1;
-                } else {
-                  peg$currPos = s0;
-                  s0 = peg$c1;
-                }
+                peg$reportedPos = s0;
+                s1 = peg$c57(s2);
+                s0 = s1;
               } else {
                 peg$currPos = s0;
                 s0 = peg$c1;
@@ -2224,7 +2164,7 @@ var PEG = (function() {
               s0 = peg$currPos;
               s1 = peg$currPos;
               peg$silentFails++;
-              s2 = peg$parseHeadline();
+              s2 = peg$parseColumnTerminator();
               peg$silentFails--;
               if (s2 === peg$FAILED) {
                 s1 = peg$c14;
@@ -2233,26 +2173,11 @@ var PEG = (function() {
                 s1 = peg$c1;
               }
               if (s1 !== peg$FAILED) {
-                s2 = peg$currPos;
-                peg$silentFails++;
-                s3 = peg$parseColumnTerminator();
-                peg$silentFails--;
-                if (s3 === peg$FAILED) {
-                  s2 = peg$c14;
-                } else {
-                  peg$currPos = s2;
-                  s2 = peg$c1;
-                }
+                s2 = peg$parseDlist();
                 if (s2 !== peg$FAILED) {
-                  s3 = peg$parseDlist();
-                  if (s3 !== peg$FAILED) {
-                    peg$reportedPos = s0;
-                    s1 = peg$c57(s3);
-                    s0 = s1;
-                  } else {
-                    peg$currPos = s0;
-                    s0 = peg$c1;
-                  }
+                  peg$reportedPos = s0;
+                  s1 = peg$c57(s2);
+                  s0 = s1;
                 } else {
                   peg$currPos = s0;
                   s0 = peg$c1;
@@ -2265,7 +2190,7 @@ var PEG = (function() {
                 s0 = peg$currPos;
                 s1 = peg$currPos;
                 peg$silentFails++;
-                s2 = peg$parseHeadline();
+                s2 = peg$parseColumnTerminator();
                 peg$silentFails--;
                 if (s2 === peg$FAILED) {
                   s1 = peg$c14;
@@ -2274,21 +2199,36 @@ var PEG = (function() {
                   s1 = peg$c1;
                 }
                 if (s1 !== peg$FAILED) {
-                  s2 = peg$currPos;
-                  peg$silentFails++;
-                  s3 = peg$parseColumnTerminator();
-                  peg$silentFails--;
-                  if (s3 === peg$FAILED) {
-                    s2 = peg$c14;
-                  } else {
-                    peg$currPos = s2;
-                    s2 = peg$c1;
-                  }
+                  s2 = peg$parseParagraph();
                   if (s2 !== peg$FAILED) {
-                    s3 = peg$parseParagraph();
-                    if (s3 !== peg$FAILED) {
+                    peg$reportedPos = s0;
+                    s1 = peg$c57(s2);
+                    s0 = s1;
+                  } else {
+                    peg$currPos = s0;
+                    s0 = peg$c1;
+                  }
+                } else {
+                  peg$currPos = s0;
+                  s0 = peg$c1;
+                }
+                if (s0 === peg$FAILED) {
+                  s0 = peg$currPos;
+                  s1 = peg$currPos;
+                  peg$silentFails++;
+                  s2 = peg$parseColumnTerminator();
+                  peg$silentFails--;
+                  if (s2 === peg$FAILED) {
+                    s1 = peg$c14;
+                  } else {
+                    peg$currPos = s1;
+                    s1 = peg$c1;
+                  }
+                  if (s1 !== peg$FAILED) {
+                    s2 = peg$parseChapter();
+                    if (s2 !== peg$FAILED) {
                       peg$reportedPos = s0;
-                      s1 = peg$c57(s3);
+                      s1 = peg$c57(s2);
                       s0 = s1;
                     } else {
                       peg$currPos = s0;
@@ -2298,9 +2238,6 @@ var PEG = (function() {
                     peg$currPos = s0;
                     s0 = peg$c1;
                   }
-                } else {
-                  peg$currPos = s0;
-                  s0 = peg$c1;
                 }
               }
             }
@@ -4680,6 +4617,27 @@ var PEG = (function() {
     }
     ReVIEW.findChapter = findChapter;
 
+    function findChapterOrColumn(node, level) {
+        var chapter = null;
+        var column = null;
+        ReVIEW.walk(node, function (node) {
+            if (node instanceof ReVIEW.Parse.ChapterSyntaxTree) {
+                chapter = node.toChapter();
+                if (typeof level === "undefined" || chapter.level === level) {
+                    return null;
+                }
+            } else if (node instanceof ReVIEW.Parse.ColumnSyntaxTree) {
+                column = node.toColumn();
+                if (typeof level === "undefined" || column.level === level) {
+                    return null;
+                }
+            }
+            return node.parentNode;
+        });
+        return chapter || column;
+    }
+    ReVIEW.findChapterOrColumn = findChapterOrColumn;
+
     function target2builder(target) {
         var builderName = target.charAt(0).toUpperCase() + target.substring(1) + "Builder";
         for (var name in ReVIEW.Build) {
@@ -4851,7 +4809,6 @@ var ReVIEW;
             "body_string_only": "内容は全て文字でなければいけません",
             "chapter_not_toplevel": "深さ1のチャプターは最上位になければいけません",
             "chapter_topleve_eq1": "最上位のチャプターは深さ1のものでなければいけません",
-            "chapter_level_omission": "深さ%sのチャプターは深さ%sのチャプターに属していなければいけません 今は深さ%sのチャプターの下にいます",
             "deprecated_inline_symbol": "%s というインライン構文は非推奨です。"
         },
         "builder": {
@@ -5420,16 +5377,27 @@ var ReVIEW;
                 this.endPos = data.endPos;
             }
             SyntaxTree.prototype.toJSON = function () {
+                var _this = this;
                 var result = {};
+                var lowPriorities = [];
                 for (var k in this) {
                     if (k === "ruleName") {
                         result[k] = RuleName[this.ruleName];
-                    } else if (k === "prev" || k === "next") {
+                    } else if (k === "prev" || k === "next" || k === "parentNode") {
+                    } else if (k === "childNodes") {
+                        lowPriorities.push((function (k) {
+                            return function () {
+                                result[k] = _this[k];
+                            };
+                        })(k));
                     } else if (k === "fqn") {
-                    } else if (k !== "parentNode" && typeof this[k] !== "function") {
+                    } else if (typeof this[k] !== "function") {
                         result[k] = this[k];
                     }
                 }
+                lowPriorities.forEach(function (fn) {
+                    return fn();
+                });
                 return result;
             };
 
@@ -7043,8 +7011,60 @@ var ReVIEW;
                 ReVIEW.visit(chapter.root, {
                     visitDefaultPre: function (node) {
                     },
+                    visitColumnPre: function (node) {
+                        _this.preprocessColumnSyntax(chapter, node);
+                    },
                     visitBlockElementPre: function (node) {
                         _this.preprocessBlockSyntax(chapter, node);
+                    }
+                });
+            };
+
+            SyntaxPreprocessor.prototype.preprocessColumnSyntax = function (chapter, column) {
+                function reconstruct(parent, target, to) {
+                    if (typeof to === "undefined") { to = column.parentNode.toChapter(); }
+                    if (target.level <= to.level) {
+                        reconstruct(parent.parentNode.toNode(), target, to.parentNode.toChapter());
+                        return;
+                    }
+
+                    to.childNodes.splice(to.childNodes.indexOf(parent) + 1, 0, target);
+                    column.text.splice(column.text.indexOf(target), 1);
+                }
+
+                ReVIEW.visit(column, {
+                    visitDefaultPre: function (node) {
+                    },
+                    visitColumnPre: function (node) {
+                    },
+                    visitChapterPre: function (node) {
+                        if (column.level < node.headline.level) {
+                            return;
+                        }
+                        reconstruct(column, node);
+                    }
+                });
+
+                ReVIEW.visit(chapter.root, {
+                    visitDefaultPre: function (ast, parent) {
+                        ast.parentNode = parent;
+                    }
+                });
+
+                ReVIEW.visit(chapter.root, {
+                    visitDefaultPre: function (ast, parent) {
+                    },
+                    visitChapterPre: function (ast) {
+                        ast.text.forEach(function (node, i, nodes) {
+                            node.prev = nodes[i - 1];
+                            node.next = nodes[i + 1];
+                        });
+                    },
+                    visitNodePre: function (ast) {
+                        ast.childNodes.forEach(function (node, i, nodes) {
+                            node.prev = nodes[i - 1];
+                            node.next = nodes[i + 1];
+                        });
                     }
                 });
             };
@@ -7249,8 +7269,6 @@ var ReVIEW;
                             var parent = ReVIEW.findChapter(node.parentNode);
                             if (!parent) {
                                 chapter.process.error(t("compile.chapter_topleve_eq1"), node);
-                            } else if (parent.level !== node.level - 1) {
-                                chapter.process.error(t("compile.chapter_level_omission", node.level, node.level - 1, parent ? String(parent.level) : "none"), node);
                             }
                         }
                     }
@@ -7446,7 +7464,7 @@ var ReVIEW;
                         }
                     }
                     currentLevel = level;
-                    counter[level] += 1;
+                    counter[level] = (counter[level] || 0) + 1;
                     chapter.no = counter[level];
                 });
             });
@@ -8301,17 +8319,29 @@ var ReVIEW;
                 }
                 process.out(">");
                 var constructLabel = function (node) {
-                    var chapters = [];
+                    var numbers = {};
+                    var maxLevel = 0;
                     ReVIEW.walk(node, function (node) {
                         if (node instanceof ReVIEW.Parse.ChapterSyntaxTree) {
-                            chapters.unshift(node.toChapter());
+                            numbers[node.toChapter().level] = node.no;
+                            maxLevel = Math.max(maxLevel, node.toChapter().level);
+                        } else if (node instanceof ReVIEW.Parse.ColumnSyntaxTree) {
+                            numbers[node.toColumn().level] = -1;
+                            maxLevel = Math.max(maxLevel, node.toColumn().level);
                         }
                         return node.parentNode;
                     });
-                    var result = chapters.map(function (chapter) {
-                        return chapter.no;
-                    }).join("-");
-                    return result;
+                    var result = [];
+                    for (var i = 1; i <= maxLevel; i++) {
+                        if (numbers[i] === -1) {
+                            result.push(0);
+                        } else if (typeof numbers[i] === "undefined") {
+                            result.push(1);
+                        } else {
+                            result.push(numbers[i] || 0);
+                        }
+                    }
+                    return result.join("-");
                 };
                 process.out("<a id=\"h").out(constructLabel(node)).out("\"></a>");
 

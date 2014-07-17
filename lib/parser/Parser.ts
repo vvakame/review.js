@@ -15,8 +15,7 @@ module ReVIEW.Parse {
 	 * @param input
 	 * @returns {{ast: NodeSyntaxTree, cst: *}}
 	 */
-	export function parse(input:string):{ast:NodeSyntaxTree;cst:IConcreatSyntaxTree;
-	} {
+	export function parse(input:string):{ast:NodeSyntaxTree;cst:IConcreatSyntaxTree;} {
 		var rawResult = PEG.parse(input);
 		var root = transform(rawResult).toNode();
 
@@ -161,10 +160,8 @@ module ReVIEW.Parse {
 	function reconstruct(node:NodeSyntaxTree, pickLevel:(ast:NodeSyntaxTree)=>number) {
 		var originalChildNodes = node.childNodes;
 
-		var nodeSets:{parent:NodeSyntaxTree; children:NodeSyntaxTree[];
-		}[] = [];
-		var currentSet:{parent:NodeSyntaxTree; children:NodeSyntaxTree[];
-		} = {
+		var nodeSets:{parent:NodeSyntaxTree; children:NodeSyntaxTree[];}[] = [];
+		var currentSet:{parent:NodeSyntaxTree; children:NodeSyntaxTree[];} = {
 			parent: null,
 			children: []
 		};
@@ -316,17 +313,26 @@ module ReVIEW.Parse {
 
 		toJSON():any {
 			var result:any = {};
+			var lowPriorities:{():void;}[] = [];
 			for (var k in this) {
 				if (k === "ruleName") {
 					result[k] = (<any>RuleName)[this.ruleName];
-				} else if (k === "prev" || k === "next") {
+				} else if (k === "prev" || k === "next" || k === "parentNode") {
 					// 無視する
+				} else if (k === "childNodes") {
+					// childNodesが先に来ると見づらいので
+					lowPriorities.push(((k:string)=> {
+						return ()=> {
+							result[k] = (<any>this)[k];
+						};
+					})(k));
 				} else if (k === "fqn") {
 					// TODO あとでちゃんと出るようにする
-				} else if (k !== "parentNode" && typeof (<any>this)[k] !== "function") {
+				} else if (typeof (<any>this)[k] !== "function") {
 					result[k] = (<any>this)[k];
 				}
 			}
+			lowPriorities.forEach(fn=>fn());
 			return result;
 		}
 

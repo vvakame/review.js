@@ -183,7 +183,7 @@ var options =
 				};
 			},
 			ColumnContents: template.contents("ColumnContents"),
-			ColumnContent: template.repeat(6, template.content("ColumnContent")),
+			ColumnContent: template.repeat(7, template.content("ColumnContent")),
 			ColumnTerminator: function () {
 				return {
 					syntax: "ColumnTerminator",

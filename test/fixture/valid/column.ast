@@ -18,6 +18,34 @@
           "line": 1,
           "column": 1,
           "endPos": 8,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 8,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 6,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 6,
+                  "text": "サンプル"
+                }
+              ]
+            }
+          },
+          "text": [],
+          "no": 1,
+          "level": 1,
           "childNodes": [
             {
               "ruleName": "Chapter",
@@ -118,21 +146,21 @@
                       ]
                     }
                   ],
-                  "childNodes": [],
                   "no": 1,
-                  "level": 3
+                  "level": 3,
+                  "childNodes": []
                 }
               ],
-              "childNodes": [],
               "no": 1,
-              "level": 2
+              "level": 2,
+              "childNodes": []
             },
             {
               "ruleName": "Chapter",
               "offset": 69,
               "line": 13,
               "column": 1,
-              "endPos": 116,
+              "endPos": 176,
               "headline": {
                 "ruleName": "Headline",
                 "offset": 69,
@@ -181,7 +209,7 @@
                   "offset": 89,
                   "line": 17,
                   "column": 1,
-                  "endPos": 116,
+                  "endPos": 176,
                   "headline": {
                     "ruleName": "ColumnHeadline",
                     "offset": 89,
@@ -226,14 +254,14 @@
                       ]
                     }
                   ],
-                  "childNodes": [],
                   "no": 2,
-                  "level": 3
+                  "level": 3,
+                  "childNodes": []
                 }
               ],
-              "childNodes": [],
               "no": 2,
-              "level": 2
+              "level": 2,
+              "childNodes": []
             },
             {
               "ruleName": "Chapter",
@@ -334,9 +362,9 @@
                       ]
                     }
                   ],
-                  "childNodes": [],
                   "no": 3,
-                  "level": 3
+                  "level": 3,
+                  "childNodes": []
                 },
                 {
                   "ruleName": "Paragraph",
@@ -356,39 +384,11 @@
                   ]
                 }
               ],
-              "childNodes": [],
               "no": 3,
-              "level": 2
+              "level": 2,
+              "childNodes": []
             }
-          ],
-          "headline": {
-            "ruleName": "Headline",
-            "offset": 0,
-            "line": 1,
-            "column": 1,
-            "endPos": 8,
-            "level": 1,
-            "caption": {
-              "ruleName": "ContentInlines",
-              "offset": 2,
-              "line": 1,
-              "column": 3,
-              "endPos": 6,
-              "childNodes": [
-                {
-                  "ruleName": "ContentInlineText",
-                  "offset": 2,
-                  "line": 1,
-                  "column": 3,
-                  "endPos": 6,
-                  "text": "サンプル"
-                }
-              ]
-            }
-          },
-          "text": [],
-          "no": 1,
-          "level": 1
+          ]
         }
       ]
     }

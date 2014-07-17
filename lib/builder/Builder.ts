@@ -45,6 +45,10 @@ module ReVIEW.Build {
 		text(process:BuilderProcess, node:TextNodeSyntaxTree):any;
 	}
 
+	/**
+	 * デフォルトのビルダ。
+	 * Re:VIEWのASTから何らかのテキストに変換する時はこのクラスを拡張し作成する。
+	 */
 	export class DefaultBuilder implements IBuilder {
 		book:Book;
 		extention = "bug";

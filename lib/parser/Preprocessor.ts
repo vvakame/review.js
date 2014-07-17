@@ -12,6 +12,8 @@ module ReVIEW.Build {
 	import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
 	import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
 	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
+	import ColumnSyntaxTree = ReVIEW.Parse.ColumnSyntaxTree;
+	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
 	import nodeContentToString = ReVIEW.nodeContentToString;
 
@@ -51,12 +53,82 @@ module ReVIEW.Build {
 			ReVIEW.visit(chapter.root, {
 				visitDefaultPre: (node:SyntaxTree)=> {
 				},
+				visitColumnPre: (node:ColumnSyntaxTree)=> {
+					this.preprocessColumnSyntax(chapter, node);
+				},
 				visitBlockElementPre: (node:BlockElementSyntaxTree) => {
 					this.preprocessBlockSyntax(chapter, node);
 				}
 			});
 		}
 
+		/**
+		 * コラム記法を組み替える。
+		 * コラムの中ではHeadlineが使えるが、コラム自体の見出しレベルより深いレベルのHeadlineしか許可されない。
+		 * そのため、コラム自体より浅いレベルの見出しレベルを見つけたらコラム内から脱出させる。
+		 * @param chapter
+		 * @param column
+		 */
+		preprocessColumnSyntax(chapter:Chapter, column:ColumnSyntaxTree) {
+			function reconstruct(parent:NodeSyntaxTree, target:ChapterSyntaxTree, to = column.parentNode.toChapter()) {
+				if (target.level <= to.level) {
+					reconstruct(parent.parentNode.toNode(), target, to.parentNode.toChapter());
+					return;
+				}
+				// コラムより大きなChapterを見つけた場合、それ以下のノードは全て引き上げる
+				to.childNodes.splice(to.childNodes.indexOf(parent) + 1, 0, target);
+				column.text.splice(column.text.indexOf(target), 1);
+			}
+
+			// 組み換え
+			ReVIEW.visit(column, {
+				visitDefaultPre: (node:SyntaxTree)=> {
+				},
+				visitColumnPre: (node:ColumnSyntaxTree)=> {
+					// TODO ここに来たらエラーにするべき
+				},
+				visitChapterPre: (node:ChapterSyntaxTree) => {
+					if (column.level < node.headline.level) {
+						return;
+					}
+					reconstruct(column, node);
+				}
+			});
+
+			// Parser.ts からのコピペなので共通ロジックとしてリファクタリングする
+
+			// parentNode を設定
+			ReVIEW.visit(chapter.root, {
+				visitDefaultPre: (ast:SyntaxTree, parent:SyntaxTree)=> {
+					ast.parentNode = parent;
+				}
+			});
+			// prev, next を設定
+			ReVIEW.visit(chapter.root, {
+				visitDefaultPre: (ast:SyntaxTree, parent:SyntaxTree)=> {
+				},
+				visitChapterPre: (ast:ChapterSyntaxTree) => {
+					ast.text.forEach((node, i, nodes) => {
+						node.prev = nodes[i - 1];
+						node.next = nodes[i + 1];
+					});
+				},
+				visitNodePre: (ast:NodeSyntaxTree) => {
+					ast.childNodes.forEach((node, i, nodes) => {
+						node.prev = nodes[i - 1];
+						node.next = nodes[i + 1];
+					});
+				}
+			});
+
+		}
+
+		/**
+		 * ブロック記法の中身を組み替える。
+		 * ブロック記法は 1. 全ての記法を許可 2. インライン記法のみ許可 3. 全てを許可しない の3パターンの組み換えがある。
+		 * @param chapter
+		 * @param node
+		 */
 		preprocessBlockSyntax(chapter:Chapter, node:BlockElementSyntaxTree) {
 			if (node.childNodes.length === 0) {
 				return;

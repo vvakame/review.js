@@ -107,7 +107,8 @@ describe("ReVIEW構文の", ()=> {
 			"= olist\n\n 1. No. 1\n 2. No. 2\n 3. No. 3\n",
 			"= dlist\n\n: hoge\n  これはマジマッハ\n\n: fuga\n	これはマジファンキー\n",
 			"= コラム\n===[column] コラム\nコラムです。\n",
-			"= コラム\n===[column] コラム\nコラムです。\n===[/column]"
+			"= コラム\n===[column] コラム\nコラムです。\n===[/column]",
+			"= 章1\n==[column] こらむだよー\n=== コラム見出し1\n==== コラム見出し2\n== 節だよー\n= 章2"
 		];
 		strings.forEach((str)=> {
 			it("try: " + str.substr(0, 15), ()=> {

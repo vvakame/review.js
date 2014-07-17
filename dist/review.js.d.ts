@@ -13,6 +13,7 @@ declare module ReVIEW {
     function nodeContentToString(process: BuilderProcess, node: Parse.SyntaxTree): string;
     function findUp(node: Parse.SyntaxTree, predicate: (node: Parse.SyntaxTree) => boolean): Parse.SyntaxTree;
     function findChapter(node: Parse.SyntaxTree, level?: number): Parse.ChapterSyntaxTree;
+    function findChapterOrColumn(node: Parse.SyntaxTree, level?: number): Parse.NodeSyntaxTree;
     function target2builder(target: string): Build.IBuilder;
     module IO {
         function read(path: string): string;
@@ -93,7 +94,6 @@ declare module ReVIEW {
             "body_string_only": string;
             "chapter_not_toplevel": string;
             "chapter_topleve_eq1": string;
-            "chapter_level_omission": string;
             "deprecated_inline_symbol": string;
         };
         "builder": {
@@ -583,6 +583,7 @@ declare module ReVIEW.Build {
         public preprocessBook(book: Book): void;
         public preprocessPart(part: Part): void;
         public preprocessChapter(chapter: Chapter): void;
+        public preprocessColumnSyntax(chapter: Chapter, column: Parse.ColumnSyntaxTree): void;
         public preprocessBlockSyntax(chapter: Chapter, node: Parse.BlockElementSyntaxTree): void;
     }
 }

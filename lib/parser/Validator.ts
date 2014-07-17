@@ -117,8 +117,7 @@ module ReVIEW.Build {
 				}
 			});
 
-			// 章の下に項がいきなり来ていないか(節のレベルを飛ばしている)
-			// 最初は必ず Level 1, 1以外の場合は1つ上のChapterとのレベル差が1でなければならない
+			// 最初は必ず Level 1
 			ReVIEW.visit(chapter.root, {
 				visitDefaultPre: (node:SyntaxTree) => {
 				},
@@ -132,8 +131,6 @@ module ReVIEW.Build {
 						var parent = findChapter(node.parentNode);
 						if (!parent) {
 							chapter.process.error(t("compile.chapter_topleve_eq1"), node);
-						} else if (parent.level !== node.level - 1) {
-							chapter.process.error(t("compile.chapter_level_omission", node.level, node.level - 1, parent ? String(parent.level) : "none"), node);
 						}
 					}
 				}
