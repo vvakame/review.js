@@ -1,0 +1,107 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 22,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 22,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 22,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 8,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 6,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 6,
+                  "text": "サンプル"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Ulist",
+              "offset": 8,
+              "line": 3,
+              "column": 1,
+              "endPos": 17,
+              "childNodes": [
+                {
+                  "ruleName": "UlistElement",
+                  "offset": 8,
+                  "line": 3,
+                  "column": 1,
+                  "endPos": 16,
+                  "level": 1,
+                  "text": {
+                    "ruleName": "ContentInlines",
+                    "offset": 11,
+                    "line": 3,
+                    "column": 4,
+                    "endPos": 15,
+                    "childNodes": [
+                      {
+                        "ruleName": "ContentInlineText",
+                        "offset": 11,
+                        "line": 3,
+                        "column": 4,
+                        "endPos": 15,
+                        "text": "hoge"
+                      }
+                    ]
+                  },
+                  "childNodes": []
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 17,
+              "line": 5,
+              "column": 1,
+              "endPos": 22,
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "offset": 17,
+                  "line": 5,
+                  "column": 1,
+                  "endPos": 22,
+                  "text": "test"
+                }
+              ]
+            }
+          ],
+          "no": 1,
+          "level": 1,
+          "childNodes": []
+        }
+      ]
+    }
+  ]
+}

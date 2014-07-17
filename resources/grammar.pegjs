@@ -144,7 +144,7 @@ ContentInlineText "text of child of inline content"
 // * 箇条書き
 Ulist "ulist"
     // 行頭から… の指定がない
-    = c:(UlistElement / SinglelineComment) cc:Ulist?
+    = c:(UlistElement / SinglelineComment) cc:Ulist? _
     ;
 
 UlistElement "ulist element"
@@ -154,7 +154,7 @@ UlistElement "ulist element"
 // 1. 番号付き箇条書き
 Olist "olist"
     // 行頭から… の指定がない
-    = c:(OlistElement / SinglelineComment) cc:Olist?
+    = c:(OlistElement / SinglelineComment) cc:Olist? _
     ;
 
 OlistElement "olist element"
@@ -164,7 +164,7 @@ OlistElement "olist element"
 // : 用語リスト
 Dlist "dlist"
     // 行頭から… の指定がない
-    = c:(DlistElement / SinglelineComment) cc:Dlist?
+    = c:(DlistElement / SinglelineComment) cc:Dlist? _
     ;
 
 DlistElement "dlist element"
