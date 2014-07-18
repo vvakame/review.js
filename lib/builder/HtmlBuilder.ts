@@ -41,7 +41,7 @@ module ReVIEW.Build {
 				pre += "<head>\n";
 				pre += "  <meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\" />\n";
 				pre += "  <meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n";
-				pre += "  <meta name=\"generator\" content=\"ReVIEW\" />\n";
+				pre += "  <meta name=\"generator\" content=\"Re:VIEW\" />\n";
 				var name:string = null;
 				ReVIEW.visit(chapter.root, {
 					visitDefaultPre: ()=> {
