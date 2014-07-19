@@ -81,6 +81,9 @@ declare module ReVIEW {
             "inline_uchar": string;
             "inline_tt": string;
             "inline_em": string;
+            "block_table": string;
+            "inline_table": string;
+            "block_tsize": string;
         };
         "compile": {
             "file_not_exists": string;
@@ -99,6 +102,7 @@ declare module ReVIEW {
         "builder": {
             "chapter": string;
             "list": string;
+            "table": string;
         };
     };
 }
@@ -416,6 +420,9 @@ declare module ReVIEW.Build {
         public inline_i(builder: IAcceptableSyntaxBuilder): void;
         public inline_strong(builder: IAcceptableSyntaxBuilder): void;
         public inline_uchar(builder: IAcceptableSyntaxBuilder): void;
+        public block_table(builder: IAcceptableSyntaxBuilder): void;
+        public inline_table(builder: IAcceptableSyntaxBuilder): void;
+        public block_tsize(builder: IAcceptableSyntaxBuilder): void;
     }
 }
 declare module ReVIEW.Build {
@@ -710,6 +717,10 @@ declare module ReVIEW.Build {
         public inline_strong_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
         public inline_strong_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
         public inline_uchar(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
+        public block_table_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        public block_table_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
+        public inline_table(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
+        public block_tsize(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
     }
 }
 declare module ReVIEW.Build {
@@ -789,6 +800,10 @@ declare module ReVIEW.Build {
         public inline_strong_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
         public inline_uchar_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
         public inline_uchar_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
+        public block_table_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        public block_table_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
+        public inline_table(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
+        public block_tsize(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
     }
 }
 

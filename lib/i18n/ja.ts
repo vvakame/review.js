@@ -42,7 +42,12 @@ module ReVIEW {
 			"inline_strong": "ボールドで出力することを示します。\n@<strong>{強調！}\nという形式で書きます。",
 			"inline_uchar": "指定された値を16進数の値として扱い、Unicode文字として出力することを示します。\n@<uchar>{1F64B}\nという形式で書きます。",
 			"inline_tt": "囲まれたテキストを等幅フォントで表示します。",
-			"inline_em": "テキストを強調します。\n@<em>{このように強調されます}"
+			"inline_em": "テキストを強調します。\n@<em>{このように強調されます}",
+
+			// TODO 以下は今後書き直す
+			"block_table": "テーブルを示します。\nTODO 正しく実装した後に書く",
+			"inline_table": "テーブルへの参照を示します。\nTODO 正しく実装した後に書く",
+			"block_tsize": "テーブルの大きさを指定します。\nTODO 正しく実装した後に書く"
 		},
 		"compile": {
 			"file_not_exists": "ファイル %s が開けません",
@@ -61,7 +66,8 @@ module ReVIEW {
 		},
 		"builder": {
 			"chapter": "第%d章",
-			"list": "リスト%s.%s"
+			"list": "リスト%s.%s",
+			"table": "表%s.%s"
 		}
 	};
 }

@@ -627,6 +627,49 @@ module ReVIEW.Build {
 			this.inlineDecorationSyntax(builder, "uchar");
 		}
 
+		block_table(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Block);
+			builder.setSymbol("table");
+			builder.setDescription(t("description.block_table"));
+			builder.checkArgsLength(2);
+			builder.processNode((process, n)=> {
+				var node = n.toBlockElement();
+				node.no = process.nextIndex("table");
+				process.addSymbol({
+					symbolName: node.symbol,
+					labelName: node.args[0].arg,
+					node: node
+				});
+			});
+		}
+
+		inline_table(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Inline);
+			builder.setSymbol("table");
+			builder.setDescription(t("description.inline_table"));
+			builder.processNode((process, n)=> {
+				var node = n.toInlineElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					referenceTo: process.constructReferenceTo(node, nodeContentToString(process, node)),
+					node: node
+				});
+			});
+		}
+
+		block_tsize(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Block);
+			builder.setDescription(t("description.block_tsize"));
+			builder.checkArgsLength(1);
+			builder.processNode((process, n)=> {
+				var node = n.toBlockElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
+			});
+		}
+
 		// TODO 以下のものの実装をすすめる
 		// ↑実装が簡単
 		// block_texequation // latexの式のやつなので…
@@ -640,9 +683,6 @@ module ReVIEW.Build {
 		// block_raw
 		// inline_raw
 		// block_graph
-		// block_tsize
-		// block_table
-		// inline_table
 		// ↓実装が難しい
 	}
 }

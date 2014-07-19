@@ -629,5 +629,40 @@ module ReVIEW.Build {
 		inline_uchar_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			process.out(";");
 		}
+
+		block_table_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			// TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
+			//TODO エスケープ処理
+			process.out("<div>\n");
+			var chapter = findChapter(node, 1);
+			var text = i18n.t("builder.table", chapter.fqn, node.no);
+			process.out("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).out("</p>\n");
+			process.out("<pre>");
+			return (v:ITreeVisitor)=> {
+				// name, args はパスしたい
+				node.childNodes.forEach((node)=> {
+					ReVIEW.visit(node, v);
+				});
+			};
+		}
+
+		block_table_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			// TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
+			process.out("\n</pre>\n").out("</div>\n");
+		}
+
+		inline_table(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			// TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
+			var chapter = findChapter(node, 1);
+			var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+			var text = i18n.t("builder.table", chapter.fqn, listNode.no);
+			process.out(text);
+			return false;
+		}
+
+		block_tsize(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			// TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
+			return false;
+		}
 	}
 }
