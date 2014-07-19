@@ -99,6 +99,8 @@ AcceptableSyntaxes にしたがって処理する。</li>
                 
                     <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.syntaxpreprocessor.html#preprocesschapter" class="tsd-kind-icon">preprocessChapter</a></li>
                 
+                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.syntaxpreprocessor.html#preprocesscolumnsyntax" class="tsd-kind-icon">preprocessColumnSyntax</a></li>
+                
                     <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.syntaxpreprocessor.html#preprocesspart" class="tsd-kind-icon">preprocessPart</a></li>
                 
                     <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.syntaxpreprocessor.html#start" class="tsd-kind-icon">start</a></li>
@@ -124,7 +126,7 @@ AcceptableSyntaxes にしたがって処理する。</li>
     
         <ul>
             
-                <li>Defined in parser/Preprocessor.ts:33</li>
+                <li>Defined in parser/Preprocessor.ts:35</li>
             
         </ul>
     
@@ -160,11 +162,15 @@ AcceptableSyntaxes にしたがって処理する。</li>
     
         <ul>
             
-                <li>Defined in parser/Preprocessor.ts:59</li>
+                <li>Defined in parser/Preprocessor.ts:131</li>
             
         </ul>
     
 </aside>
+
+    <p>ブロック記法の中身を組み替える。
+ブロック記法は 1. 全ての記法を許可 2. インライン記法のみ許可 3. 全てを許可しない の3パターンの組み換えがある。</p>
+
 
 
 
@@ -187,6 +193,8 @@ AcceptableSyntaxes にしたがって処理する。</li>
             <li>
                 <h5>node: <a href="review.parse.blockelementsyntaxtree.html" class="tsd-signature-type">BlockElementSyntaxTree</a></h5>
                 
+    
+
 
 
 
@@ -218,7 +226,7 @@ AcceptableSyntaxes にしたがって処理する。</li>
     
         <ul>
             
-                <li>Defined in parser/Preprocessor.ts:41</li>
+                <li>Defined in parser/Preprocessor.ts:43</li>
             
         </ul>
     
@@ -267,7 +275,7 @@ AcceptableSyntaxes にしたがって処理する。</li>
     
         <ul>
             
-                <li>Defined in parser/Preprocessor.ts:49</li>
+                <li>Defined in parser/Preprocessor.ts:51</li>
             
         </ul>
     
@@ -305,6 +313,71 @@ AcceptableSyntaxes にしたがって処理する。</li>
     
         
             <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
+    <a name="preprocesscolumnsyntax"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> preprocessColumnSyntax<span class="tsd-signature-symbols">(</span>chapter<span class="tsd-signature-symbols">: </span><a href="review.chapter.html" class="tsd-signature-type">Chapter</a>, column<span class="tsd-signature-symbols">: </span><a href="review.parse.columnsyntaxtree.html" class="tsd-signature-type">ColumnSyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in parser/Preprocessor.ts:71</li>
+            
+        </ul>
+    
+</aside>
+
+    <p>コラム記法を組み替える。
+コラムの中ではHeadlineが使えるが、コラム自体の見出しレベルより深いレベルのHeadlineしか許可されない。
+そのため、コラム自体より浅いレベルの見出しレベルを見つけたらコラム内から脱出させる。</p>
+
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>chapter: <a href="review.chapter.html" class="tsd-signature-type">Chapter</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>column: <a href="review.parse.columnsyntaxtree.html" class="tsd-signature-type">ColumnSyntaxTree</a></h5>
+                
+    
+
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
     <a name="preprocesspart"></a>
     
         
@@ -316,7 +389,7 @@ AcceptableSyntaxes にしたがって処理する。</li>
     
         <ul>
             
-                <li>Defined in parser/Preprocessor.ts:45</li>
+                <li>Defined in parser/Preprocessor.ts:47</li>
             
         </ul>
     
@@ -365,7 +438,7 @@ AcceptableSyntaxes にしたがって処理する。</li>
     
         <ul>
             
-                <li>Defined in parser/Preprocessor.ts:35</li>
+                <li>Defined in parser/Preprocessor.ts:37</li>
             
         </ul>
     
@@ -630,6 +703,13 @@ AcceptableSyntaxes にしたがって処理する。</li>
             
                 <li class=" tsd-kind-method tsd-parent-kind-class">
                     <a href="review.build.syntaxpreprocessor.html#preprocesschapter" class="tsd-kind-icon">preprocessChapter</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-class">
+                    <a href="review.build.syntaxpreprocessor.html#preprocesscolumnsyntax" class="tsd-kind-icon">preprocessColumnSyntax</a>
                     
                 </li>
             
