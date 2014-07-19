@@ -21,6 +21,7 @@ test/suite/libs/
 testEspowered/
 src/main/peg/*.js
 test-results.xml
+pages/
 
 bin/out/
 tscommand.tmp.txt

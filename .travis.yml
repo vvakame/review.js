@@ -20,7 +20,8 @@ after_success:
   # for gh-pages
   - grunt typedoc:travisCI
   - cd pages
-  - git add ./docs
+  - ./setup.sh
+  - git add .
   - git commit -m "generate typedoc build ${TRAVIS_BUILD_NUMBER} commit:${TRAVIS_COMMIT}"
   - '[ "$TRAVIS_BRANCH" = "master" ] && [ $GH_TOKEN ] && git push --quiet https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages'
 
