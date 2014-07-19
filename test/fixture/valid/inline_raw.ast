@@ -1,0 +1,199 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 112,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 112,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 112,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 14,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 12,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 12,
+                  "text": "rawインライン記法"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 14,
+              "line": 3,
+              "column": 1,
+              "endPos": 29,
+              "childNodes": [
+                {
+                  "ruleName": "InlineElement",
+                  "offset": 14,
+                  "line": 3,
+                  "column": 1,
+                  "endPos": 27,
+                  "symbol": "raw",
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "offset": 21,
+                      "line": 3,
+                      "column": 8,
+                      "endPos": 26,
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "offset": 21,
+                          "line": 3,
+                          "column": 8,
+                          "endPos": 26,
+                          "text": "生で出る。"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 29,
+              "line": 5,
+              "column": 1,
+              "endPos": 54,
+              "childNodes": [
+                {
+                  "ruleName": "InlineElement",
+                  "offset": 29,
+                  "line": 5,
+                  "column": 1,
+                  "endPos": 53,
+                  "symbol": "raw",
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "offset": 36,
+                      "line": 5,
+                      "column": 8,
+                      "endPos": 52,
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "offset": 36,
+                          "line": 5,
+                          "column": 8,
+                          "endPos": 52,
+                          "text": "|text|textでだけ出る。"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 54,
+              "line": 6,
+              "column": 1,
+              "endPos": 79,
+              "childNodes": [
+                {
+                  "ruleName": "InlineElement",
+                  "offset": 54,
+                  "line": 6,
+                  "column": 1,
+                  "endPos": 78,
+                  "symbol": "raw",
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "offset": 61,
+                      "line": 6,
+                      "column": 8,
+                      "endPos": 77,
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "offset": 61,
+                          "line": 6,
+                          "column": 8,
+                          "endPos": 77,
+                          "text": "|html|htmlでだけ出る。"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 79,
+              "line": 7,
+              "column": 1,
+              "endPos": 112,
+              "childNodes": [
+                {
+                  "ruleName": "InlineElement",
+                  "offset": 79,
+                  "line": 7,
+                  "column": 1,
+                  "endPos": 111,
+                  "symbol": "raw",
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "offset": 86,
+                      "line": 7,
+                      "column": 8,
+                      "endPos": 110,
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "offset": 86,
+                          "line": 7,
+                          "column": 8,
+                          "endPos": 110,
+                          "text": "|text,html|textとhtmlで出る。"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "no": 1,
+          "level": 1,
+          "childNodes": []
+        }
+      ]
+    }
+  ]
+}

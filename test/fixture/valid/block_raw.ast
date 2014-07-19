@@ -1,0 +1,131 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 107,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 107,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 107,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 13,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 11,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 11,
+                  "text": "rawブロック記法"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "BlockElement",
+              "offset": 13,
+              "line": 3,
+              "column": 1,
+              "endPos": 27,
+              "symbol": "raw",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 18,
+                  "line": 3,
+                  "column": 6,
+                  "endPos": 25,
+                  "arg": "生で出る。"
+                }
+              ],
+              "childNodes": []
+            },
+            {
+              "ruleName": "BlockElement",
+              "offset": 27,
+              "line": 5,
+              "column": 1,
+              "endPos": 51,
+              "symbol": "raw",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 32,
+                  "line": 5,
+                  "column": 6,
+                  "endPos": 50,
+                  "arg": "|text|textでだけ出る。"
+                }
+              ],
+              "childNodes": []
+            },
+            {
+              "ruleName": "BlockElement",
+              "offset": 51,
+              "line": 6,
+              "column": 1,
+              "endPos": 75,
+              "symbol": "raw",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 56,
+                  "line": 6,
+                  "column": 6,
+                  "endPos": 74,
+                  "arg": "|html|htmlでだけ出る。"
+                }
+              ],
+              "childNodes": []
+            },
+            {
+              "ruleName": "BlockElement",
+              "offset": 75,
+              "line": 7,
+              "column": 1,
+              "endPos": 107,
+              "symbol": "raw",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 80,
+                  "line": 7,
+                  "column": 6,
+                  "endPos": 106,
+                  "arg": "|text,html|textとhtmlで出る。"
+                }
+              ],
+              "childNodes": []
+            }
+          ],
+          "no": 1,
+          "level": 1,
+          "childNodes": []
+        }
+      ]
+    }
+  ]
+}

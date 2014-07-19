@@ -81,6 +81,8 @@ declare module ReVIEW {
             "inline_uchar": string;
             "inline_tt": string;
             "inline_em": string;
+            "block_raw": string;
+            "inline_raw": string;
             "block_table": string;
             "inline_table": string;
             "block_tsize": string;
@@ -423,6 +425,8 @@ declare module ReVIEW.Build {
         public block_table(builder: IAcceptableSyntaxBuilder): void;
         public inline_table(builder: IAcceptableSyntaxBuilder): void;
         public block_tsize(builder: IAcceptableSyntaxBuilder): void;
+        public block_raw(builder: IAcceptableSyntaxBuilder): void;
+        public inline_raw(builder: IAcceptableSyntaxBuilder): void;
     }
 }
 declare module ReVIEW.Build {
@@ -477,6 +481,8 @@ declare module ReVIEW.Build {
         public inlinePost(process: BuilderProcess, name: string, node: Parse.InlineElementSyntaxTree): any;
         public ulistParentHelper(process: BuilderProcess, node: Parse.UlistElementSyntaxTree, action: () => void, currentLevel?: number): void;
         public findReference(process: BuilderProcess, node: Parse.SyntaxTree): ISymbol;
+        public block_raw(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): any;
+        public inline_raw(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): any;
     }
 }
 declare module ReVIEW {

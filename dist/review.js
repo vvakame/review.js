@@ -4911,6 +4911,8 @@ var ReVIEW;
             "inline_uchar": "指定された値を16進数の値として扱い、Unicode文字として出力することを示します。\n@<uchar>{1F64B}\nという形式で書きます。",
             "inline_tt": "囲まれたテキストを等幅フォントで表示します。",
             "inline_em": "テキストを強調します。\n@<em>{このように強調されます}",
+            "block_raw": "生データを表します。\n//raw[|html,text|ほげ]と書くと、出力先がhtmlかtextの時のみ内容がそのまま出力されます。\nRe:VIEWの記法を超えてそのまま出力されるので、構造を壊さぬよう慎重に使ってください。",
+            "inline_raw": "生データを表します。\n@<raw>{|html,text|ほげ}と書くと、出力先がhtmlかtextの時のみ内容がそのまま出力されます。\nRe:VIEWの記法を超えてそのまま出力されるので、構造を壊さぬよう慎重に使ってください。",
             "block_table": "テーブルを示します。\nTODO 正しく実装した後に書く",
             "inline_table": "テーブルへの参照を示します。\nTODO 正しく実装した後に書く",
             "block_tsize": "テーブルの大きさを指定します。\nTODO 正しく実装した後に書く"
@@ -6571,6 +6573,33 @@ var ReVIEW;
                     });
                 });
             };
+
+            DefaultAnalyzer.prototype.block_raw = function (builder) {
+                builder.setSyntaxType(0 /* Block */);
+                builder.setSymbol("raw");
+                builder.setDescription(t("description.block_raw"));
+                builder.checkArgsLength(1);
+                builder.processNode(function (process, n) {
+                    var node = n.toBlockElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
+
+            DefaultAnalyzer.prototype.inline_raw = function (builder) {
+                builder.setSyntaxType(1 /* Inline */);
+                builder.setSymbol("raw");
+                builder.setDescription(t("description.inline_raw"));
+                builder.processNode(function (process, n) {
+                    var node = n.toInlineElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
             return DefaultAnalyzer;
         })();
         Build.DefaultAnalyzer = DefaultAnalyzer;
@@ -6819,6 +6848,40 @@ var ReVIEW;
                     throw new Build.AnalyzerError("invalid status.");
                 }
                 return founds[0];
+            };
+
+            DefaultBuilder.prototype.block_raw = function (process, node) {
+                var _this = this;
+                var content = node.args[0].arg;
+                var matches = content.match(/\|(.+)\|/);
+                if (matches && matches[1]) {
+                    var target = matches[1].split(",").some(function (name) {
+                        return _this.name.toLowerCase() === name + "builder";
+                    });
+                    if (target) {
+                        process.out(content.substring(matches[0].length));
+                    }
+                } else {
+                    process.out(content);
+                }
+                return false;
+            };
+
+            DefaultBuilder.prototype.inline_raw = function (process, node) {
+                var _this = this;
+                var content = ReVIEW.nodeContentToString(process, node);
+                var matches = content.match(/\|(.+)\|/);
+                if (matches && matches[1]) {
+                    var target = matches[1].split(",").some(function (name) {
+                        return _this.name.toLowerCase() === name + "builder";
+                    });
+                    if (target) {
+                        process.out(content.substring(matches[0].length));
+                    }
+                } else {
+                    process.out(content);
+                }
+                return false;
             };
             return DefaultBuilder;
         })();

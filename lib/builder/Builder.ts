@@ -276,5 +276,36 @@ module ReVIEW.Build {
 			}
 			return founds[0];
 		}
+
+		block_raw(process:BuilderProcess, node:BlockElementSyntaxTree):any {
+			// TODO Ruby版との出力差が結構あるのでテスト含め直す
+			var content = node.args[0].arg;
+			var matches = content.match(/\|(.+)\|/);
+			if (matches && matches[1]) {
+				var target = matches[1].split(",").some(name => this.name.toLowerCase() === name + "builder");
+				if (target) {
+					// "|hoge,fuga| piyo" の場合 matches[1] === "hoge,fuga"
+					process.out(content.substring(matches[0].length));
+				}
+			} else {
+				process.out(content);
+			}
+			return false;
+		}
+
+		inline_raw(process:BuilderProcess, node:InlineElementSyntaxTree):any {
+			var content = nodeContentToString(process, node);
+			var matches = content.match(/\|(.+)\|/);
+			if (matches && matches[1]) {
+				var target = matches[1].split(",").some(name => this.name.toLowerCase() === name + "builder");
+				if (target) {
+					// "|hoge,fuga| piyo" の場合 matches[1] === "hoge,fuga"
+					process.out(content.substring(matches[0].length));
+				}
+			} else {
+				process.out(content);
+			}
+			return false;
+		}
 	}
 }

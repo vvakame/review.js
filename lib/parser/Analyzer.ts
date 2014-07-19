@@ -670,6 +670,33 @@ module ReVIEW.Build {
 			});
 		}
 
+		block_raw(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Block);
+			builder.setSymbol("raw");
+			builder.setDescription(t("description.block_raw"));
+			builder.checkArgsLength(1);
+			builder.processNode((process, n)=> {
+				var node = n.toBlockElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
+			});
+		}
+
+		inline_raw(builder:IAcceptableSyntaxBuilder) {
+			builder.setSyntaxType(SyntaxType.Inline);
+			builder.setSymbol("raw");
+			builder.setDescription(t("description.inline_raw"));
+			builder.processNode((process, n)=> {
+				var node = n.toInlineElement();
+				process.addSymbol({
+					symbolName: node.symbol,
+					node: node
+				});
+			});
+		}
+
 		// TODO 以下のものの実装をすすめる
 		// ↑実装が簡単
 		// block_texequation // latexの式のやつなので…
@@ -680,8 +707,6 @@ module ReVIEW.Build {
 		// クソめんどくさいの壁
 		// block_bibpaper
 		// inline_bib
-		// block_raw
-		// inline_raw
 		// block_graph
 		// ↓実装が難しい
 	}
