@@ -1,6 +1,7 @@
 {
 	"name": "review.js-browser-sample",
 	"version": "0.0.0",
+	"private": true,
 	"homepage": "https://github.com/vvakame/review.js",
 	"authors": [
 		"vvakame <vvakame+dev@gmail.com>"
@@ -14,7 +15,7 @@
 		"tests"
 	],
 	"dependencies": {
-		"review.js": "0.1.0",
-		"jquery": "2.0.3"
+		"review.js": "~0",
+		"jquery": "~2"
 	}
 }

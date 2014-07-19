@@ -2,10 +2,11 @@
 <html>
 <head>
     <title>ReVIEW.js 利用サンプル</title>
-    <script type="application/javascript" src="bower_components/i18next/release/i18next-1.6.3.js"></script>
-    <script type="application/javascript" src="bower_components/review.js/bin/review.js"></script>
-
-    <script type="application/javascript" src="bower_components/jquery/jquery.js"></script>
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/i18next/i18next.js"></script>
+    <script src="bower_components/review.js/dist/review.js"></script>
+    <!-- endbower -->
 
     <style type="text/css">
         .info {
@@ -134,7 +135,7 @@
                             text += acceptable.description;
                             text += "\n\n";
                         });
-                        
+
                         $hint.text(text);
                         $hint.prepend("<hr/>");
                     },
