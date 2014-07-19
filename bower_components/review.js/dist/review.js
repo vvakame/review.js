@@ -4910,7 +4910,12 @@ var ReVIEW;
             "inline_strong": "ボールドで出力することを示します。\n@<strong>{強調！}\nという形式で書きます。",
             "inline_uchar": "指定された値を16進数の値として扱い、Unicode文字として出力することを示します。\n@<uchar>{1F64B}\nという形式で書きます。",
             "inline_tt": "囲まれたテキストを等幅フォントで表示します。",
-            "inline_em": "テキストを強調します。\n@<em>{このように強調されます}"
+            "inline_em": "テキストを強調します。\n@<em>{このように強調されます}",
+            "block_raw": "生データを表します。\n//raw[|html,text|ほげ]と書くと、出力先がhtmlかtextの時のみ内容がそのまま出力されます。\nRe:VIEWの記法を超えてそのまま出力されるので、構造を壊さぬよう慎重に使ってください。",
+            "inline_raw": "生データを表します。\n@<raw>{|html,text|ほげ}と書くと、出力先がhtmlかtextの時のみ内容がそのまま出力されます。\nRe:VIEWの記法を超えてそのまま出力されるので、構造を壊さぬよう慎重に使ってください。",
+            "block_table": "テーブルを示します。\nTODO 正しく実装した後に書く",
+            "inline_table": "テーブルへの参照を示します。\nTODO 正しく実装した後に書く",
+            "block_tsize": "テーブルの大きさを指定します。\nTODO 正しく実装した後に書く"
         },
         "compile": {
             "file_not_exists": "ファイル %s が開けません",
@@ -4928,7 +4933,8 @@ var ReVIEW;
         },
         "builder": {
             "chapter": "第%d章",
-            "list": "リスト%s.%s"
+            "list": "リスト%s.%s",
+            "table": "表%s.%s"
         }
     };
 })(ReVIEW || (ReVIEW = {}));
@@ -6524,6 +6530,76 @@ var ReVIEW;
             DefaultAnalyzer.prototype.inline_uchar = function (builder) {
                 this.inlineDecorationSyntax(builder, "uchar");
             };
+
+            DefaultAnalyzer.prototype.block_table = function (builder) {
+                builder.setSyntaxType(0 /* Block */);
+                builder.setSymbol("table");
+                builder.setDescription(t("description.block_table"));
+                builder.checkArgsLength(2);
+                builder.processNode(function (process, n) {
+                    var node = n.toBlockElement();
+                    node.no = process.nextIndex("table");
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        labelName: node.args[0].arg,
+                        node: node
+                    });
+                });
+            };
+
+            DefaultAnalyzer.prototype.inline_table = function (builder) {
+                builder.setSyntaxType(1 /* Inline */);
+                builder.setSymbol("table");
+                builder.setDescription(t("description.inline_table"));
+                builder.processNode(function (process, n) {
+                    var node = n.toInlineElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        referenceTo: process.constructReferenceTo(node, ReVIEW.nodeContentToString(process, node)),
+                        node: node
+                    });
+                });
+            };
+
+            DefaultAnalyzer.prototype.block_tsize = function (builder) {
+                builder.setSyntaxType(0 /* Block */);
+                builder.setDescription(t("description.block_tsize"));
+                builder.checkArgsLength(1);
+                builder.processNode(function (process, n) {
+                    var node = n.toBlockElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
+
+            DefaultAnalyzer.prototype.block_raw = function (builder) {
+                builder.setSyntaxType(0 /* Block */);
+                builder.setSymbol("raw");
+                builder.setDescription(t("description.block_raw"));
+                builder.checkArgsLength(1);
+                builder.processNode(function (process, n) {
+                    var node = n.toBlockElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
+
+            DefaultAnalyzer.prototype.inline_raw = function (builder) {
+                builder.setSyntaxType(1 /* Inline */);
+                builder.setSymbol("raw");
+                builder.setDescription(t("description.inline_raw"));
+                builder.processNode(function (process, n) {
+                    var node = n.toInlineElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
             return DefaultAnalyzer;
         })();
         Build.DefaultAnalyzer = DefaultAnalyzer;
@@ -6772,6 +6848,40 @@ var ReVIEW;
                     throw new Build.AnalyzerError("invalid status.");
                 }
                 return founds[0];
+            };
+
+            DefaultBuilder.prototype.block_raw = function (process, node) {
+                var _this = this;
+                var content = node.args[0].arg;
+                var matches = content.match(/\|(.+)\|/);
+                if (matches && matches[1]) {
+                    var target = matches[1].split(",").some(function (name) {
+                        return _this.name.toLowerCase() === name + "builder";
+                    });
+                    if (target) {
+                        process.out(content.substring(matches[0].length));
+                    }
+                } else {
+                    process.out(content);
+                }
+                return false;
+            };
+
+            DefaultBuilder.prototype.inline_raw = function (process, node) {
+                var _this = this;
+                var content = ReVIEW.nodeContentToString(process, node);
+                var matches = content.match(/\|(.+)\|/);
+                if (matches && matches[1]) {
+                    var target = matches[1].split(",").some(function (name) {
+                        return _this.name.toLowerCase() === name + "builder";
+                    });
+                    if (target) {
+                        process.out(content.substring(matches[0].length));
+                    }
+                } else {
+                    process.out(content);
+                }
+                return false;
             };
             return DefaultBuilder;
         })();
@@ -8369,6 +8479,35 @@ var ReVIEW;
                 process.out(result);
                 return false;
             };
+
+            TextBuilder.prototype.block_table_pre = function (process, node) {
+                process.out("◆→開始:表←◆\n");
+                process.out("TODO 現在table記法は仮実装です\n");
+                var chapter = findChapter(node, 1);
+                var text = ReVIEW.i18n.t("builder.table", chapter.fqn, node.no);
+                process.out(text).out("　").out(node.args[1].arg).out("\n\n");
+                return function (v) {
+                    node.childNodes.forEach(function (node) {
+                        ReVIEW.visit(node, v);
+                    });
+                };
+            };
+
+            TextBuilder.prototype.block_table_post = function (process, node) {
+                process.out("\n◆→終了:表←◆\n");
+            };
+
+            TextBuilder.prototype.inline_table = function (process, node) {
+                var chapter = findChapter(node, 1);
+                var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+                var text = ReVIEW.i18n.t("builder.table", chapter.fqn, listNode.no);
+                process.out(text);
+                return false;
+            };
+
+            TextBuilder.prototype.block_tsize = function (process, node) {
+                return false;
+            };
             return TextBuilder;
         })(Build.DefaultBuilder);
         Build.TextBuilder = TextBuilder;
@@ -8406,7 +8545,7 @@ var ReVIEW;
                     pre += "<head>\n";
                     pre += "  <meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\" />\n";
                     pre += "  <meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n";
-                    pre += "  <meta name=\"generator\" content=\"ReVIEW\" />\n";
+                    pre += "  <meta name=\"generator\" content=\"Re:VIEW\" />\n";
                     var name = null;
                     ReVIEW.visit(chapter.root, {
                         visitDefaultPre: function () {
@@ -8971,6 +9110,35 @@ var ReVIEW;
 
             HtmlBuilder.prototype.inline_uchar_post = function (process, node) {
                 process.out(";");
+            };
+
+            HtmlBuilder.prototype.block_table_pre = function (process, node) {
+                process.out("<div>\n");
+                var chapter = findChapter(node, 1);
+                var text = i18n.t("builder.table", chapter.fqn, node.no);
+                process.out("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).out("</p>\n");
+                process.out("<pre>");
+                return function (v) {
+                    node.childNodes.forEach(function (node) {
+                        ReVIEW.visit(node, v);
+                    });
+                };
+            };
+
+            HtmlBuilder.prototype.block_table_post = function (process, node) {
+                process.out("\n</pre>\n").out("</div>\n");
+            };
+
+            HtmlBuilder.prototype.inline_table = function (process, node) {
+                var chapter = findChapter(node, 1);
+                var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+                var text = i18n.t("builder.table", chapter.fqn, listNode.no);
+                process.out(text);
+                return false;
+            };
+
+            HtmlBuilder.prototype.block_tsize = function (process, node) {
+                return false;
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);
