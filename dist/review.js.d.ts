@@ -83,6 +83,8 @@ declare module ReVIEW {
             "inline_em": string;
             "block_raw": string;
             "inline_raw": string;
+            "block_comment": string;
+            "inline_comment": string;
             "block_table": string;
             "inline_table": string;
             "block_tsize": string;
@@ -427,6 +429,8 @@ declare module ReVIEW.Build {
         public block_tsize(builder: IAcceptableSyntaxBuilder): void;
         public block_raw(builder: IAcceptableSyntaxBuilder): void;
         public inline_raw(builder: IAcceptableSyntaxBuilder): void;
+        public block_comment(builder: IAcceptableSyntaxBuilder): void;
+        public inline_comment(builder: IAcceptableSyntaxBuilder): void;
     }
 }
 declare module ReVIEW.Build {
@@ -727,6 +731,10 @@ declare module ReVIEW.Build {
         public block_table_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
         public inline_table(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
         public block_tsize(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
+        public block_comment_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        public block_comment_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
+        public inline_comment_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
+        public inline_comment_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
     }
 }
 declare module ReVIEW.Build {
@@ -810,6 +818,10 @@ declare module ReVIEW.Build {
         public block_table_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
         public inline_table(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
         public block_tsize(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
+        public block_comment_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        public block_comment_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
+        public inline_comment_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
+        public inline_comment_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
     }
 }
 

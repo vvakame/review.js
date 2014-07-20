@@ -4913,6 +4913,8 @@ var ReVIEW;
             "inline_em": "テキストを強調します。\n@<em>{このように強調されます}",
             "block_raw": "生データを表します。\n//raw[|html,text|ほげ]と書くと、出力先がhtmlかtextの時のみ内容がそのまま出力されます。\nRe:VIEWの記法を超えてそのまま出力されるので、構造を壊さぬよう慎重に使ってください。",
             "inline_raw": "生データを表します。\n@<raw>{|html,text|ほげ}と書くと、出力先がhtmlかtextの時のみ内容がそのまま出力されます。\nRe:VIEWの記法を超えてそのまま出力されるので、構造を壊さぬよう慎重に使ってください。",
+            "block_comment": "コメントを示します。\n//comment{\nコメントですよー\n//}\nと書くことにより、文書には出力されない文を書くことができます。",
+            "inline_comment": "コメントを示します。\n@<comment>{コメントですよー}と書くことにより、文書には出力されない文を書くことができます。",
             "block_table": "テーブルを示します。\nTODO 正しく実装した後に書く",
             "inline_table": "テーブルへの参照を示します。\nTODO 正しく実装した後に書く",
             "block_tsize": "テーブルの大きさを指定します。\nTODO 正しく実装した後に書く"
@@ -6592,6 +6594,33 @@ var ReVIEW;
                 builder.setSyntaxType(1 /* Inline */);
                 builder.setSymbol("raw");
                 builder.setDescription(t("description.inline_raw"));
+                builder.processNode(function (process, n) {
+                    var node = n.toInlineElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
+
+            DefaultAnalyzer.prototype.block_comment = function (builder) {
+                builder.setSyntaxType(0 /* Block */);
+                builder.setSymbol("comment");
+                builder.setDescription(t("description.block_comment"));
+                builder.checkArgsLength(0);
+                builder.processNode(function (process, n) {
+                    var node = n.toBlockElement();
+                    process.addSymbol({
+                        symbolName: node.symbol,
+                        node: node
+                    });
+                });
+            };
+
+            DefaultAnalyzer.prototype.inline_comment = function (builder) {
+                builder.setSyntaxType(1 /* Inline */);
+                builder.setSymbol("comment");
+                builder.setDescription(t("description.inline_comment"));
                 builder.processNode(function (process, n) {
                     var node = n.toInlineElement();
                     process.addSymbol({
@@ -8508,6 +8537,28 @@ var ReVIEW;
             TextBuilder.prototype.block_tsize = function (process, node) {
                 return false;
             };
+
+            TextBuilder.prototype.block_comment_pre = function (process, node) {
+                process.out("◆→DTP連絡:");
+
+                return function (v) {
+                    node.childNodes.forEach(function (node) {
+                        ReVIEW.visit(node, v);
+                    });
+                };
+            };
+
+            TextBuilder.prototype.block_comment_post = function (process, node) {
+                process.out("←◆\n");
+            };
+
+            TextBuilder.prototype.inline_comment_pre = function (process, node) {
+                process.out("◆→DTP連絡:");
+            };
+
+            TextBuilder.prototype.inline_comment_post = function (process, node) {
+                process.out("←◆");
+            };
             return TextBuilder;
         })(Build.DefaultBuilder);
         Build.TextBuilder = TextBuilder;
@@ -9139,6 +9190,28 @@ var ReVIEW;
 
             HtmlBuilder.prototype.block_tsize = function (process, node) {
                 return false;
+            };
+
+            HtmlBuilder.prototype.block_comment_pre = function (process, node) {
+                process.out("<!-- ");
+
+                return function (v) {
+                    node.childNodes.forEach(function (node) {
+                        ReVIEW.visit(node, v);
+                    });
+                };
+            };
+
+            HtmlBuilder.prototype.block_comment_post = function (process, node) {
+                process.out(" -->\n");
+            };
+
+            HtmlBuilder.prototype.inline_comment_pre = function (process, node) {
+                process.out("<!-- ");
+            };
+
+            HtmlBuilder.prototype.inline_comment_post = function (process, node) {
+                process.out(" -->");
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);

@@ -664,5 +664,28 @@ module ReVIEW.Build {
 			// TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
 			return false;
 		}
+
+		block_comment_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out("<!-- ");
+
+			return (v:ITreeVisitor)=> {
+				// name, args はパスしたい
+				node.childNodes.forEach((node)=> {
+					ReVIEW.visit(node, v);
+				});
+			};
+		}
+
+		block_comment_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
+			process.out(" -->\n");
+		}
+
+		inline_comment_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out("<!-- ");
+		}
+
+		inline_comment_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
+			process.out(" -->");
+		}
 	}
 }
