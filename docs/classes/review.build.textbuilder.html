@@ -137,6 +137,10 @@ Re:VIEWのASTから何らかのテキストに変換する時はこのクラス�
                 
                     <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.textbuilder.html#block_cmd_pre" class="tsd-kind-icon">block_cmd_pre</a></li>
                 
+                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.textbuilder.html#block_comment_post" class="tsd-kind-icon">block_comment_post</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.textbuilder.html#block_comment_pre" class="tsd-kind-icon">block_comment_pre</a></li>
+                
                     <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.textbuilder.html#block_emlist_post" class="tsd-kind-icon">block_emlist_post</a></li>
                 
                     <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.textbuilder.html#block_emlist_pre" class="tsd-kind-icon">block_emlist_pre</a></li>
@@ -228,6 +232,10 @@ Re:VIEWのASTから何らかのテキストに変換する時はこのクラス�
                     <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.textbuilder.html#inline_code_post" class="tsd-kind-icon">inline_code_post</a></li>
                 
                     <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.textbuilder.html#inline_code_pre" class="tsd-kind-icon">inline_code_pre</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.textbuilder.html#inline_comment_post" class="tsd-kind-icon">inline_comment_post</a></li>
+                
+                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.textbuilder.html#inline_comment_pre" class="tsd-kind-icon">inline_comment_pre</a></li>
                 
                     <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.textbuilder.html#inline_em_post" class="tsd-kind-icon">inline_em_post</a></li>
                 
@@ -677,6 +685,130 @@ Re:VIEWのASTから何らかのテキストに変換する時はこのクラス�
         <ul>
             
                 <li>Defined in builder/TextBuilder.ts:419</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>process: <a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>node: <a href="review.parse.blockelementsyntaxtree.html" class="tsd-signature-type">BlockElementSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <span class="tsd-signature-type">(v: ReVIEW.ITreeVisitor) =&gt; void</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
+    <a name="block_comment_post"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_comment_post<span class="tsd-signature-symbols">(</span>process<span class="tsd-signature-symbols">: </span><a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a>, node<span class="tsd-signature-symbols">: </span><a href="review.parse.blockelementsyntaxtree.html" class="tsd-signature-type">BlockElementSyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in builder/TextBuilder.ts:538</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>process: <a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>node: <a href="review.parse.blockelementsyntaxtree.html" class="tsd-signature-type">BlockElementSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
+    <a name="block_comment_pre"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_comment_pre<span class="tsd-signature-symbols">(</span>process<span class="tsd-signature-symbols">: </span><a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a>, node<span class="tsd-signature-symbols">: </span><a href="review.parse.blockelementsyntaxtree.html" class="tsd-signature-type">BlockElementSyntaxTree</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">(v: ReVIEW.ITreeVisitor) =&gt; void</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in builder/TextBuilder.ts:527</li>
             
         </ul>
     
@@ -3710,6 +3842,122 @@ Re:VIEWのASTから何らかのテキストに変換する時はこのクラス�
     
         
             <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
+    <a name="inline_comment_post"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_comment_post<span class="tsd-signature-symbols">(</span>process<span class="tsd-signature-symbols">: </span><a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a>, node<span class="tsd-signature-symbols">: </span><a href="review.parse.inlineelementsyntaxtree.html" class="tsd-signature-type">InlineElementSyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in builder/TextBuilder.ts:546</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>process: <a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>node: <a href="review.parse.inlineelementsyntaxtree.html" class="tsd-signature-type">InlineElementSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
+    <a name="inline_comment_pre"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_comment_pre<span class="tsd-signature-symbols">(</span>process<span class="tsd-signature-symbols">: </span><a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a>, node<span class="tsd-signature-symbols">: </span><a href="review.parse.inlineelementsyntaxtree.html" class="tsd-signature-type">InlineElementSyntaxTree</a><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in builder/TextBuilder.ts:542</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>process: <a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>node: <a href="review.parse.inlineelementsyntaxtree.html" class="tsd-signature-type">InlineElementSyntaxTree</a></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
     <a name="inline_em_post"></a>
     
         
@@ -6344,6 +6592,20 @@ Re:VIEWのASTから何らかのテキストに変換する時はこのクラス�
         
             
                 <li class=" tsd-kind-method tsd-parent-kind-class">
+                    <a href="review.build.textbuilder.html#block_comment_post" class="tsd-kind-icon">block_comment_post</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-class">
+                    <a href="review.build.textbuilder.html#block_comment_pre" class="tsd-kind-icon">block_comment_pre</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-class">
                     <a href="review.build.textbuilder.html#block_emlist_post" class="tsd-kind-icon">block_emlist_post</a>
                     
                 </li>
@@ -6660,6 +6922,20 @@ Re:VIEWのASTから何らかのテキストに変換する時はこのクラス�
             
                 <li class=" tsd-kind-method tsd-parent-kind-class">
                     <a href="review.build.textbuilder.html#inline_code_pre" class="tsd-kind-icon">inline_code_pre</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-class">
+                    <a href="review.build.textbuilder.html#inline_comment_post" class="tsd-kind-icon">inline_comment_post</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-class">
+                    <a href="review.build.textbuilder.html#inline_comment_pre" class="tsd-kind-icon">inline_comment_pre</a>
                     
                 </li>
             
