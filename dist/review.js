@@ -4618,7 +4618,10 @@ var PEG = (function() {
 
 	})(ReVIEW.Build || (ReVIEW.Build = {}));
 })(ReVIEW || (ReVIEW = {}));
-;var ReVIEW;
+;if (typeof Promise === "undefined" && typeof global !== "undefined") {
+    global.Promise = require("ypromise");
+}
+var ReVIEW;
 (function (ReVIEW) {
     "use strict";
 

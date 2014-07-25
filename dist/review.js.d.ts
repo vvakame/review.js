@@ -3,6 +3,7 @@
 
 
 
+
 declare module ReVIEW {
     function isNodeJS(): boolean;
     function isAMD(): boolean;

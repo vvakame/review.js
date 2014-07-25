@@ -31,7 +31,8 @@
     "update-notifier": "0.2.0",
     "commander": "2.3.0",
     "i18next": "1.7.4",
-    "colors": "0.6.2"
+    "colors": "0.6.2",
+    "ypromise": "0.2.3"
   },
   "devDependencies": {
     "grunt": "0.4.5",

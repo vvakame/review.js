@@ -1,5 +1,7 @@
 ///<reference path='../typings/node/node.d.ts' />
+///<reference path='../typings/es6-promise/es6-promise.d.ts' />
 
+///<reference path='utils/Polyfill.ts' />
 ///<reference path='utils/Utils.ts' />
 ///<reference path='i18n/i18n.ts' />
 ///<reference path='controller/Controller.ts' />
