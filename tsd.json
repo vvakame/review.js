@@ -6,25 +6,25 @@
 	"bundle": "typings/bundle.d.ts",
 	"installed": {
 		"jquery/jquery.d.ts": {
-			"commit": "298b893f08957e2409cd7c6056a29808426a4f54"
+			"commit": "570b7601303866ec145b0620acb982cfe2e5ed41"
 		},
 		"i18next/i18next.d.ts": {
-			"commit": "298b893f08957e2409cd7c6056a29808426a4f54"
+			"commit": "570b7601303866ec145b0620acb982cfe2e5ed41"
 		},
 		"node/node.d.ts": {
-			"commit": "298b893f08957e2409cd7c6056a29808426a4f54"
+			"commit": "570b7601303866ec145b0620acb982cfe2e5ed41"
 		},
 		"mocha/mocha.d.ts": {
-			"commit": "298b893f08957e2409cd7c6056a29808426a4f54"
+			"commit": "570b7601303866ec145b0620acb982cfe2e5ed41"
 		},
 		"assert/assert.d.ts": {
-			"commit": "298b893f08957e2409cd7c6056a29808426a4f54"
+			"commit": "570b7601303866ec145b0620acb982cfe2e5ed41"
 		},
 		"update-notifier/update-notifier.d.ts": {
-			"commit": "298b893f08957e2409cd7c6056a29808426a4f54"
+			"commit": "570b7601303866ec145b0620acb982cfe2e5ed41"
 		},
 		"commander/commander.d.ts": {
-			"commit": "298b893f08957e2409cd7c6056a29808426a4f54"
+			"commit": "570b7601303866ec145b0620acb982cfe2e5ed41"
 		}
 	}
 }
