@@ -97,10 +97,11 @@
         ReVIEW.start(function (review) {
             review.initConfig({
                 read: function (path) {
-                    return files[path];
+                    return Promise.resolve(files[path]);
                 },
                 write: function (path, content) {
                     result[path] = content;
+                    return Promise.resolve(null);
                 },
 
                 listener: {
