@@ -63,7 +63,6 @@
     "grunt-exec": "0.4.6",
     "grunt-open": "0.2.3",
     "matchdep": "0.3.0",
-    "grunt-notify": "0.3.0",
     "time-grunt": "0.4.0"
   }
 }
