@@ -11,11 +11,11 @@
 		"url": "git@github.com:vvakame/review.js.git"
 	},
 	"author": "vvakame",
-	"license": "BSD-2-Clause",
+	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/vvakame/review.js/issues"
 	},
 	"dependencies": {
-		"review.js": "0.1.0"
+		"review.js": "0.3.4"
 	}
 }
