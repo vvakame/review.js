@@ -183,9 +183,13 @@ module ReVIEW {
 		 * @param path
 		 * @returns {*}
 		 */
-		export function read(path:string):string {
+		export function read(path:string):Promise<string> {
 			var fs = require("fs");
-			return fs.readFileSync(path, "utf8");
+			return new Promise((resolve, reject)=> {
+				fs.readFile(path, {encoding: "utf8"}, (err:any, data:string)=> {
+					Promise.resolve(data);
+				});
+			});
 		}
 
 		/**
@@ -193,9 +197,13 @@ module ReVIEW {
 		 * @param path
 		 * @param content
 		 */
-		export function write(path:string, content:string):void {
+		export function write(path:string, content:string):Promise<void> {
 			var fs = require("fs");
-			fs.writeFileSync(path, content);
+			return new Promise<void>((resolve, reject)=> {
+				fs.writeFile(path, content, (err:any)=> {
+					resolve();
+				});
+			});
 		}
 	}
 
@@ -223,7 +231,7 @@ module ReVIEW {
 
 		export function singleCompile(input:string, fileName?:string, target?:string, tmpConfig?:any /* ReVIEW.IConfig */) {
 			var config:ReVIEW.IConfig = tmpConfig || <any>{};
-			config.read = config.read || (()=>input);
+			config.read = config.read || (()=> Promise.resolve(input));
 
 			config.analyzer = config.analyzer || new ReVIEW.Build.DefaultAnalyzer();
 			config.validators = config.validators || [new ReVIEW.Build.DefaultValidator()];
@@ -270,27 +278,16 @@ module ReVIEW {
 				originalCompileFailed();
 			};
 
-			var book = ReVIEW.start((review)=> {
-				review.initConfig(config);
-			});
-
-			return {
-				success: (callback:(result:ResultSuccess)=>void) => {
-					if (success) {
-						callback({
-							book: book,
-							results: results
-						});
-					}
-				},
-				failure: (callback:(result:ResultFailure)=>void) => {
-					if (!success) {
-						callback({
-							book: book
-						});
-					}
-				}
-			};
+			return ReVIEW
+				.start((review)=> {
+					review.initConfig(config);
+				})
+				.then(book=> {
+					return    {
+						book: book,
+						results: results
+					};
+				});
 		}
 	}
 }

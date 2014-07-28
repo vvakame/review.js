@@ -41,35 +41,36 @@ program
 		}
 
 		var input = fs.readFileSync(targetPath, "utf8");
-		var result = r.Exec.singleCompile(input, document, target, null);
-		result.success(result=> {
-			result.book.parts[0].chapters[0].builderProcesses.forEach(process=> {
-				console.log(process.result);
-			});
-			process.exit(0);
-		});
-		result.failure(result=> {
-			result.book.reports.forEach(report=> {
-				var log:Function;
-				switch (report.level) {
-					case r.ReportLevel.Info:
-						log = console.log;
-					case r.ReportLevel.Warning:
-						log = console.warn;
-					case r.ReportLevel.Error:
-						log = console.error;
+
+		r.Exec.singleCompile(input, document, target, null)
+			.then(result=> {
+				if (!result.book.hasError) {
+					result.book.parts[0].chapters[0].builderProcesses.forEach(process=> {
+						console.log(process.result);
+					});
+					process.exit(0);
+				} else {
+					result.book.reports.forEach(report=> {
+						var log:Function;
+						switch (report.level) {
+							case r.ReportLevel.Info:
+								log = console.log;
+							case r.ReportLevel.Warning:
+								log = console.warn;
+							case r.ReportLevel.Error:
+								log = console.error;
+						}
+						var message = "";
+						report.nodes.forEach(function (node) {
+							message += "[" + node.line + "," + node.column + "] ";
+						});
+						message += report.message;
+						log(message);
+					});
+					process.exit(1);
 				}
-				var message = "";
-				report.nodes.forEach(function (node) {
-					message += "[" + node.line + "," + node.column + "] ";
-				});
-				message += report.message;
-				log(message);
 			});
-			process.exit(1);
-		});
-	})
-;
+	});
 
 program
 	.command("build")

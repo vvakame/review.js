@@ -24,13 +24,14 @@ describe("未解決のエラー", ()=> {
 			var result:any = {
 			};
 			var builder = new ReVIEW.Build.TextBuilder();
-			var book = ReVIEW.start((review)=> {
+			return ReVIEW.start((review)=> {
 				review.initConfig({
 					read: (path:string) => {
-						return files[path];
+						return Promise.resolve(files[path]);
 					},
-					write: (path:string, content:any) => {
+					write: (path:string, content:string) => {
 						result[path] = content;
+						return Promise.resolve<void>(null);
 					},
 
 					compileSuccess: ()=> {
@@ -46,13 +47,14 @@ describe("未解決のエラー", ()=> {
 						]
 					}
 				});
+			}).then(book=> {
+				var expected = "■H1■第1章　title\n\n◆→開始:リスト←◆\nリスト1.1　きゃぷしょん\nalert('hello');\n\n◆→終了:リスト←◆\n\n";
+
+				//死なないパターンのexpected
+				//var expected = "■H1■第1章　title\n\n◆→開始:リスト←◆\nリスト1.1　きゃぷしょん\nalert('hello');\n◆→終了:リスト←◆\n\n";
+
+				assert(book.parts[0].chapters[0].findResultByBuilder(builder) === expected);
 			});
-			var expected = "■H1■第1章　title\n\n◆→開始:リスト←◆\nリスト1.1　きゃぷしょん\nalert('hello');\n\n◆→終了:リスト←◆\n\n";
-
-			//死なないパターンのexpected
-			//var expected = "■H1■第1章　title\n\n◆→開始:リスト←◆\nリスト1.1　きゃぷしょん\nalert('hello');\n◆→終了:リスト←◆\n\n";
-
-			assert(book.parts[0].chapters[0].findResultByBuilder(builder) === expected);
 		});
 	});
 });

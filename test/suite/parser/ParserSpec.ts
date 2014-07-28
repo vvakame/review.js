@@ -44,26 +44,27 @@ describe("ReVIEW構文の", ()=> {
 				.forEach((file:string)=> {
 					var astFilePath = path + file.substr(0, file.length - 3) + ".ast";
 					it("ファイル:" + file, ()=> {
-						try {
-							var s = Test.compileSingle(
-								fs.readFileSync(path + file, "utf8"),
-								{
-									builders: [new ReVIEW.Build.TextBuilder()]
-								})
-								.success();
-							assert(s.result !== null);
-
-							var ast = JSON.stringify(s.book.parts[0].chapters[0].root, null, 2);
-							if (!fs.existsSync(astFilePath)) {
-								// ASTファイルが無い場合、現時点で生成されるASTを出力する
-								fs.writeFileSync(astFilePath, ast);
+						return Test.compileSingle(
+							fs.readFileSync(path + file, "utf8"),
+							{
+								builders: [new ReVIEW.Build.TextBuilder()]
 							}
-							var expectedAST = fs.readFileSync(astFilePath, "utf8");
-							assert.deepEqual(JSON.parse(ast), JSON.parse(expectedAST));
-						} catch (e) {
-							updateIfSyntaxError(e);
-							throw e;
-						}
+						)
+							.then(s=> {
+								assert(s.result !== null);
+
+								var ast = JSON.stringify(s.book.parts[0].chapters[0].root, null, 2);
+								if (!fs.existsSync(astFilePath)) {
+									// ASTファイルが無い場合、現時点で生成されるASTを出力する
+									fs.writeFileSync(astFilePath, ast);
+								}
+								var expectedAST = fs.readFileSync(astFilePath, "utf8");
+								assert.deepEqual(JSON.parse(ast), JSON.parse(expectedAST));
+							}).
+							catch(e=> {
+								updateIfSyntaxError(e);
+								throw e;
+							});
 					});
 				});
 		});

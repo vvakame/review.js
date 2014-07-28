@@ -4771,13 +4771,21 @@ var ReVIEW;
     (function (IO) {
         function read(path) {
             var fs = require("fs");
-            return fs.readFileSync(path, "utf8");
+            return new Promise(function (resolve, reject) {
+                fs.readFile(path, { encoding: "utf8" }, function (err, data) {
+                    Promise.resolve(data);
+                });
+            });
         }
         IO.read = read;
 
         function write(path, content) {
             var fs = require("fs");
-            fs.writeFileSync(path, content);
+            return new Promise(function (resolve, reject) {
+                fs.writeFile(path, content, function (err) {
+                    resolve();
+                });
+            });
         }
         IO.write = write;
     })(ReVIEW.IO || (ReVIEW.IO = {}));
@@ -4792,7 +4800,7 @@ var ReVIEW;
         function singleCompile(input, fileName, target, tmpConfig) {
             var config = tmpConfig || {};
             config.read = config.read || (function () {
-                return input;
+                return Promise.resolve(input);
             });
 
             config.analyzer = config.analyzer || new ReVIEW.Build.DefaultAnalyzer();
@@ -4842,27 +4850,14 @@ var ReVIEW;
                 originalCompileFailed();
             };
 
-            var book = ReVIEW.start(function (review) {
+            return ReVIEW.start(function (review) {
                 review.initConfig(config);
+            }).then(function (book) {
+                return {
+                    book: book,
+                    results: results
+                };
             });
-
-            return {
-                success: function (callback) {
-                    if (success) {
-                        callback({
-                            book: book,
-                            results: results
-                        });
-                    }
-                },
-                failure: function (callback) {
-                    if (!success) {
-                        callback({
-                            book: book
-                        });
-                    }
-                }
-            };
         }
         Exec.singleCompile = singleCompile;
     })(ReVIEW.Exec || (ReVIEW.Exec = {}));
@@ -7181,6 +7176,18 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
+
+        Book.prototype.hasError = function () {
+            return this.reports.some(function (report) {
+                return report.level === 2 /* Error */;
+            });
+        };
+
+        Book.prototype.hasWarning = function () {
+            return this.reports.some(function (report) {
+                return report.level === 1 /* Warning */;
+            });
+        };
         return Book;
     })();
     ReVIEW.Book = Book;
@@ -7638,133 +7645,150 @@ var ReVIEW;
                 return null;
             }
 
-            var book = this.processBook();
+            var promise = this.processBook().then(function (book) {
+                var preprocessor = new ReVIEW.Build.SyntaxPreprocessor();
+                preprocessor.start(book, acceptableSyntaxes);
 
-            var preprocessor = new ReVIEW.Build.SyntaxPreprocessor();
-            preprocessor.start(book, acceptableSyntaxes);
-
-            this.config.validators.forEach(function (validator) {
-                validator.start(book, acceptableSyntaxes, _this.config.builders);
-            });
-            if (book.reports.some(function (report) {
-                return report.level === 2 /* Error */;
-            })) {
-                this.config.listener.onReports(book.reports);
-                this.config.listener.onCompileFailed();
-                return book;
-            }
-
-            var symbols = flatten(book.parts.map(function (part) {
-                return part.chapters.map(function (chapter) {
-                    return chapter.process.symbols;
+                _this.config.validators.forEach(function (validator) {
+                    validator.start(book, acceptableSyntaxes, _this.config.builders);
                 });
-            }));
-            if (this.config.listener.onSymbols(symbols) === false) {
-                this.config.listener.onReports(book.reports);
-                this.config.listener.onCompileFailed();
-                return null;
-            }
+                if (book.reports.some(function (report) {
+                    return report.level === 2 /* Error */;
+                })) {
+                    _this.config.listener.onReports(book.reports);
+                    _this.config.listener.onCompileFailed();
+                    return book;
+                }
 
-            this.config.builders.forEach(function (builder) {
-                return builder.init(book);
-            });
+                var symbols = flatten(book.parts.map(function (part) {
+                    return part.chapters.map(function (chapter) {
+                        return chapter.process.symbols;
+                    });
+                }));
+                if (_this.config.listener.onSymbols(symbols) === false) {
+                    _this.config.listener.onReports(book.reports);
+                    _this.config.listener.onCompileFailed();
+                    return null;
+                }
 
-            book.parts.forEach(function (part) {
-                part.chapters.forEach(function (chapter) {
-                    chapter.builderProcesses.forEach(function (process) {
-                        var baseName = chapter.name.substr(0, chapter.name.lastIndexOf(".re"));
-                        var fileName = baseName + "." + process.builder.extention;
-                        var result = process.result;
-                        _this.config.write(fileName, result);
+                _this.config.builders.forEach(function (builder) {
+                    return builder.init(book);
+                });
+
+                book.parts.forEach(function (part) {
+                    part.chapters.forEach(function (chapter) {
+                        chapter.builderProcesses.forEach(function (process) {
+                            var baseName = chapter.name.substr(0, chapter.name.lastIndexOf(".re"));
+                            var fileName = baseName + "." + process.builder.extention;
+                            var result = process.result;
+                            _this.config.write(fileName, result);
+                        });
                     });
                 });
+
+                _this.config.listener.onReports(book.reports);
+                _this.config.listener.onCompileSuccess(book);
+
+                return book;
             });
-
-            this.config.listener.onReports(book.reports);
-            this.config.listener.onCompileSuccess(book);
-
-            return book;
+            return promise;
         };
 
         Controller.prototype.processBook = function () {
             var _this = this;
             var book = new ReVIEW.Book(this.config);
-            book.parts = Object.keys(this.config.book).map(function (key, index) {
+            var promise = Promise.all(Object.keys(this.config.book).map(function (key, index) {
                 var chapters = _this.config.book[key];
                 return _this.processPart(book, index, key, chapters);
-            });
+            })).then(function (parts) {
+                book.parts = parts;
 
-            book.parts.forEach(function (part) {
-                var chapters = [];
-                part.chapters.forEach(function (chapter) {
-                    ReVIEW.visit(chapter.root, {
-                        visitDefaultPre: function (node) {
-                        },
-                        visitChapterPre: function (node) {
-                            chapters.push(node);
+                book.parts.forEach(function (part) {
+                    var chapters = [];
+                    part.chapters.forEach(function (chapter) {
+                        ReVIEW.visit(chapter.root, {
+                            visitDefaultPre: function (node) {
+                            },
+                            visitChapterPre: function (node) {
+                                chapters.push(node);
+                            }
+                        });
+                    });
+                    var counter = {};
+                    var max = 0;
+                    var currentLevel = 0;
+                    chapters.forEach(function (chapter) {
+                        var level = chapter.headline.level;
+                        max = Math.max(max, level);
+                        if (currentLevel > level) {
+                            for (var i = level + 1; i <= max; i++) {
+                                counter[i] = 0;
+                            }
+                        } else if (currentLevel < level) {
+                            for (var i = level; i <= max; i++) {
+                                counter[i] = 0;
+                            }
                         }
+                        currentLevel = level;
+                        counter[level] = (counter[level] || 0) + 1;
+                        chapter.no = counter[level];
                     });
                 });
-                var counter = {};
-                var max = 0;
-                var currentLevel = 0;
-                chapters.forEach(function (chapter) {
-                    var level = chapter.headline.level;
-                    max = Math.max(max, level);
-                    if (currentLevel > level) {
-                        for (var i = level + 1; i <= max; i++) {
-                            counter[i] = 0;
-                        }
-                    } else if (currentLevel < level) {
-                        for (var i = level; i <= max; i++) {
-                            counter[i] = 0;
-                        }
-                    }
-                    currentLevel = level;
-                    counter[level] = (counter[level] || 0) + 1;
-                    chapter.no = counter[level];
-                });
+                return book;
             });
-            return book;
+            return promise;
         };
 
         Controller.prototype.processPart = function (book, index, name, chapters) {
             var _this = this;
             if (typeof chapters === "undefined") { chapters = []; }
             var part = new ReVIEW.Part(book, index + 1, name);
-            part.chapters = chapters.map(function (chapter, index) {
+            var promise = Promise.all(chapters.map(function (chapter, index) {
                 return _this.processChapter(book, part, index, chapter);
+            })).then(function (chapters) {
+                part.chapters = chapters;
+                return part;
             });
-            return part;
+            return promise;
         };
 
         Controller.prototype.processChapter = function (book, part, index, chapterPath) {
+            var _this = this;
             var resolvedPath = this.config.resolvePath(chapterPath);
-            var data = this.config.read(resolvedPath);
-            if (!data) {
-                var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, null);
-                chapter.process.error(t("compile.file_not_exists", resolvedPath));
-                return chapter;
-            }
-            try  {
-                var parseResult = ReVIEW.Parse.parse(data);
-                var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, parseResult.ast);
-            } catch (e) {
-                if (!(e instanceof PEG.SyntaxError)) {
-                    throw e;
+
+            var promise = new Promise(function (resolve, reject) {
+                try  {
+                    _this.config.read(resolvedPath).then(function (data) {
+                        try  {
+                            var parseResult = ReVIEW.Parse.parse(data);
+                            var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, parseResult.ast);
+                            resolve(chapter);
+                        } catch (e) {
+                            if (!(e instanceof PEG.SyntaxError)) {
+                                throw e;
+                            }
+                            var se = e;
+                            var errorNode = new SyntaxTree({
+                                syntax: se.name,
+                                line: se.line,
+                                column: se.column,
+                                offset: se.offset,
+                                endPos: -1
+                            });
+                            var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, null);
+                            chapter.process.error(se.message, errorNode);
+                            resolve(chapter);
+                        }
+                    }).catch(function (err) {
+                        var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, null, null);
+                        chapter.process.error(t("compile.file_not_exists", resolvedPath));
+                        resolve(chapter);
+                    });
+                } catch (e) {
+                    reject(e);
                 }
-                var se = e;
-                var errorNode = new SyntaxTree({
-                    syntax: se.name,
-                    line: se.line,
-                    column: se.column,
-                    offset: se.offset,
-                    endPos: -1
-                });
-                var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, null);
-                chapter.process.error(se.message, errorNode);
-            }
-            return chapter;
+            });
+            return promise;
         };
         return Controller;
     })();

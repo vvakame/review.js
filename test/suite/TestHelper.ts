@@ -6,28 +6,13 @@
 module Test {
 	"use strict";
 
-	export interface ResultPromise {
-		success():ResultSuccess;
-		failure():ResultFailure;
-	}
-
-	export interface ResultSuccess {
-		book:ReVIEW.Book;
-		result?:string;
-		results?:any;
-	}
-
-	export interface ResultFailure {
-		book:ReVIEW.Book;
-	}
-
 	/**
 	 * コンパイルを行う。
 	 * すべての処理は同期的に行われる。
 	 * @param tmpConfig
 	 * @returns {{success: (function(): {book: ReVIEW.Book, results: *}), failure: (function(): {})}}
 	 */
-	export function compile(tmpConfig?:any /* ReVIEW.IConfig */):ResultPromise {
+	export function compile(tmpConfig?:any /* ReVIEW.IConfig */) {
 		var config:ReVIEW.IConfig = tmpConfig || <any>{};
 		config.analyzer = config.analyzer || new ReVIEW.Build.DefaultAnalyzer();
 		config.validators = config.validators || [new ReVIEW.Build.DefaultValidator()];
@@ -76,51 +61,38 @@ module Test {
 			originalCompileFailed();
 		};
 
-		var book = ReVIEW.start((review)=> {
-			review.initConfig(config);
-		});
-
-		return {
-			success: () => {
-				assert(success);
-				return {
+		return ReVIEW
+			.start((review)=> {
+				review.initConfig(config);
+			})
+			.then(book=> {
+				return    {
 					book: book,
 					results: results
 				};
-			},
-			failure: () => {
-				assert(!success);
-				return {
-					book: book
-				};
-			}
-		};
+			});
 	}
 
-	export function compileSingle(input:string, tmpConfig?:any /* ReVIEW.IConfig */):ResultPromise {
+	export function compileSingle(input:string, tmpConfig?:any /* ReVIEW.IConfig */) {
 		var config:ReVIEW.IConfig = tmpConfig || <any>{};
-		config.read = config.read || (()=>input);
+		config.read = config.read || (()=>Promise.resolve(input));
 		config.listener = config.listener || {
 			onCompileSuccess: (book)=> {
 			}
 		};
-		var result:string;
+		var resultString:string;
 		var originalCompileSuccess = config.listener.onCompileSuccess;
 		config.listener.onCompileSuccess = (book) => {
-			result = book.parts[0].chapters[0].builderProcesses[0].result;
+			resultString = book.parts[0].chapters[0].builderProcesses[0].result;
 			originalCompileSuccess(book);
 		};
 
-		var ret = compile(config);
-		return {
-			success: () => {
-				var success = ret.success();
-				success.result = result;
-				return success;
-			},
-			failure: () => {
-				return ret.failure();
-			}
-		};
+		return compile(config).then(result=> {
+			return {
+				book: result.book,
+				results: result.results,
+				result: resultString
+			};
+		});
 	}
 }

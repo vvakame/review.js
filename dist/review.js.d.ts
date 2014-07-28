@@ -17,8 +17,8 @@ declare module ReVIEW {
     function findChapterOrColumn(node: Parse.SyntaxTree, level?: number): Parse.NodeSyntaxTree;
     function target2builder(target: string): Build.IBuilder;
     module IO {
-        function read(path: string): string;
-        function write(path: string, content: string): void;
+        function read(path: string): Promise<string>;
+        function write(path: string, content: string): Promise<void>;
     }
     function stringRepeat(times: number, src: string): string;
     module Exec {
@@ -33,10 +33,10 @@ declare module ReVIEW {
         interface ResultFailure {
             book: Book;
         }
-        function singleCompile(input: string, fileName?: string, target?: string, tmpConfig?: any): {
-            success: (callback: (result: ResultSuccess) => void) => void;
-            failure: (callback: (result: ResultFailure) => void) => void;
-        };
+        function singleCompile(input: string, fileName?: string, target?: string, tmpConfig?: any): Promise<{
+            book: Book;
+            results: any;
+        }>;
     }
 }
 declare module ReVIEW {
@@ -569,6 +569,8 @@ declare module ReVIEW {
         public parts: Part[];
         constructor(config: IConfig);
         public reports : ProcessReport[];
+        public hasError(): boolean;
+        public hasWarning(): boolean;
     }
     class Part {
         public parent: Book;
@@ -626,8 +628,8 @@ declare module ReVIEW {
         base?: string;
     }
     interface IConfig {
-        read?: (path: string) => string;
-        write?: (path: string, data: string) => void;
+        read?: (path: string) => Promise<string>;
+        write?: (path: string, data: string) => Promise<void>;
         listener?: IConfigListener;
         analyzer?: Build.IAnalyzer;
         validators?: Build.IValidator[];
@@ -651,7 +653,7 @@ declare module ReVIEW {
         private config;
         constructor(options?: IOptions);
         public initConfig(data: IConfig): void;
-        public process(): Book;
+        public process(): Promise<Book>;
         private processBook();
         private processPart(book, index, name, chapters?);
         private processChapter(book, part, index, chapterPath);
@@ -828,7 +830,7 @@ declare module ReVIEW.Build {
 
 
 declare module ReVIEW {
-    function start(setup: (review: Controller) => void, options?: IOptions): Book;
+    function start(setup: (review: Controller) => void, options?: IOptions): Promise<Book>;
 }
 
 declare module "review.js" {

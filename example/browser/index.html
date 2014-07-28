@@ -95,10 +95,11 @@
         ReVIEW.start(function (review) {
             review.initConfig({
                 read: function (path) {
-                    return files[path];
+                    return Promise.resolve(files[path]);
                 },
                 write: function (path, content) {
                     result[path] = content;
+                    return Promise.resolve(null);
                 },
 
                 listener: {
@@ -134,7 +135,7 @@
                             text += acceptable.description;
                             text += "\n\n";
                         });
-                        
+
                         $hint.text(text);
                         $hint.prepend("<hr/>");
                     },
@@ -170,7 +171,7 @@
                     ]
                 }
             });
-        });
+        }).then(function(book){});
     }
 
     function outputReports(reports) {

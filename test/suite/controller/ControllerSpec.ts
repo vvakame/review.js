@@ -14,13 +14,14 @@ describe("ReVIEW.Controllerの", ()=> {
 		};
 		var result:any = {
 		};
-		var book = ReVIEW.start(review => {
+		return ReVIEW.start(review => {
 			review.initConfig({
 				read: (path:string) => {
-					return files[path];
+					return Promise.resolve(files[path]);
 				},
 				write: (path:string, content:any) => {
 					result[path] = content;
+					return Promise.resolve<void>(null);
 				},
 
 				listener: {
@@ -41,19 +42,19 @@ describe("ReVIEW.Controllerの", ()=> {
 					afterword: new Array<string>()
 				}
 			});
+		}).then(book=> {
+			assert(book.parts.length === 3);
+			assert(book.parts[0].chapters.length === 0);
+			assert(book.parts[2].chapters.length === 0);
+
+			var part = book.parts[1];
+			assert(part.chapters.length === 2);
+			part.chapters.forEach((chapter)=> {
+				assert(!!chapter.root);
+			});
+
+			assert(part.chapters[0].process.symbols.length === 1);
+			assert(part.chapters[1].process.symbols.length === 3);
 		});
-
-		assert(book.parts.length === 3);
-		assert(book.parts[0].chapters.length === 0);
-		assert(book.parts[2].chapters.length === 0);
-
-		var part = book.parts[1];
-		assert(part.chapters.length === 2);
-		part.chapters.forEach((chapter)=> {
-			assert(!!chapter.root);
-		});
-
-		assert(part.chapters[0].process.symbols.length === 1);
-		assert(part.chapters[1].process.symbols.length === 3);
 	});
 });

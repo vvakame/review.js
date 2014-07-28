@@ -240,6 +240,14 @@ module ReVIEW {
 			tmpArray.push(this.parts.map(part=>part.chapters.map((chapter:Chapter)=>chapter.process.reports)));
 			return flatten(tmpArray);
 		}
+
+		hasError():boolean {
+			return this.reports.some(report => report.level === ReportLevel.Error);
+		}
+
+		hasWarning():boolean {
+			return this.reports.some(report => report.level === ReportLevel.Warning);
+		}
 	}
 
 	/**

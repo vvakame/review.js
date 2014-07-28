@@ -78,33 +78,32 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 
 				typeList.forEach(typeInfo => {
 					var targetFileName = path + baseName + "." + typeInfo.ext;
-					it("ファイル:" + targetFileName, (done)=> {
-
-						var s = Test.compileSingle(
+					it("ファイル:" + targetFileName, ()=> {
+						return Test.compileSingle(
 							fs.readFileSync(path + file, "utf8"),
 							{
 								builders: [typeInfo.builder()]
 							})
-							.success();
-						assert(s.result !== null);
+							.then(s=> {
+								assert(s.result !== null);
 
-						var assertResult = () => {
-							var expected = fs.readFileSync(targetFileName, "utf8");
-							assert(s.result === expected);
-							done();
-						};
+								var assertResult = () => {
+									var expected = fs.readFileSync(targetFileName, "utf8");
+									assert(s.result === expected);
+								};
 
-						if (!fs.existsSync(targetFileName)) {
-							// Ruby版の出力ファイルがない場合、出力処理を行う
-							convertByRubyReVIEW(baseName, typeInfo.target, (data, error) => {
-								assert(!error);
-								fs.writeFileSync(targetFileName, data);
+								if (!fs.existsSync(targetFileName)) {
+									// Ruby版の出力ファイルがない場合、出力処理を行う
+									convertByRubyReVIEW(baseName, typeInfo.target, (data, error) => {
+										assert(!error);
+										fs.writeFileSync(targetFileName, data);
 
-								assertResult();
+										assertResult();
+									});
+								} else {
+									assertResult();
+								}
 							});
-						} else {
-							assertResult();
-						}
 					});
 				});
 			});

@@ -36,8 +36,8 @@ module ReVIEW {
 	export interface IConfig {
 		// TODO めんどくさくてまだ書いてない要素がたくさんある
 
-		read?:(path:string)=>string;
-		write?:(path:string, data:string)=>void;
+		read?:(path:string)=>Promise<string>;
+		write?:(path:string, data:string)=>Promise<void>;
 
 		listener?:IConfigListener;
 
@@ -90,7 +90,7 @@ module ReVIEW {
 		 * 処理開始
 		 * @returns {Book}
 		 */
-		process():Book {
+		process():Promise<Book> {
 			var acceptableSyntaxes = this.config.analyzer.getAcceptableSyntaxes();
 
 			if (this.config.listener.onAcceptables(acceptableSyntaxes) === false) {
@@ -99,126 +99,148 @@ module ReVIEW {
 				return null;
 			}
 
-			var book = this.processBook();
+			var promise = this.processBook().then(book=> {
+				var preprocessor = new ReVIEW.Build.SyntaxPreprocessor();
+				preprocessor.start(book, acceptableSyntaxes);
 
-			var preprocessor = new ReVIEW.Build.SyntaxPreprocessor();
-			preprocessor.start(book, acceptableSyntaxes);
-
-			this.config.validators.forEach(validator=> {
-				validator.start(book, acceptableSyntaxes, this.config.builders);
-			});
-			if (book.reports.some(report=>report.level === ReVIEW.ReportLevel.Error)) {
-				// エラーがあったら処理中断
-				this.config.listener.onReports(book.reports);
-				this.config.listener.onCompileFailed();
-				return book;
-			}
-
-			var symbols:ReVIEW.ISymbol[] = flatten(book.parts.map(part=>part.chapters.map(chapter=>chapter.process.symbols)));
-			if (this.config.listener.onSymbols(symbols) === false) {
-				// false が帰ってきたら処理を中断する (undefined でも継続)
-				this.config.listener.onReports(book.reports);
-				this.config.listener.onCompileFailed();
-				return null;
-			}
-
-			this.config.builders.forEach(builder=> builder.init(book));
-
-			// 結果を書き出す
-			book.parts.forEach(part=> {
-				part.chapters.forEach(chapter=> {
-					chapter.builderProcesses.forEach(process=> {
-						var baseName = chapter.name.substr(0, chapter.name.lastIndexOf(".re"));
-						var fileName = baseName + "." + process.builder.extention;
-						var result = process.result;
-						this.config.write(fileName, result);
-					});
+				this.config.validators.forEach(validator=> {
+					validator.start(book, acceptableSyntaxes, this.config.builders);
 				});
-			});
-
-			this.config.listener.onReports(book.reports);
-			this.config.listener.onCompileSuccess(book);
-
-			return book;
-		}
-
-		private processBook():Book {
-			var book = new Book(this.config);
-			book.parts = Object.keys(this.config.book).map((key, index) => {
-				var chapters:string[] = (<any>this.config.book)[key];
-				return this.processPart(book, index, key, chapters);
-			});
-			// Chapterに採番を行う
-			book.parts.forEach(part=> {
-				var chapters:ChapterSyntaxTree[] = [];
-				part.chapters.forEach(chapter=> {
-					ReVIEW.visit(chapter.root, {
-						visitDefaultPre: (node)=> {
-						},
-						visitChapterPre: (node:ChapterSyntaxTree) => {
-							chapters.push(node);
-						}
-					});
-				});
-				var counter:{[index:number]:number;
-				} = {};
-				var max = 0;
-				var currentLevel = 0;
-				chapters.forEach((chapter)=> {
-					var level = chapter.headline.level;
-					max = Math.max(max, level);
-					if (currentLevel > level) {
-						for (var i = level + 1; i <= max; i++) {
-							counter[i] = 0;
-						}
-					} else if (currentLevel < level) {
-						for (var i = level; i <= max; i++) {
-							counter[i] = 0;
-						}
-					}
-					currentLevel = level;
-					counter[level] = (counter[level] || 0) + 1;
-					chapter.no = counter[level];
-				});
-			});
-			return book;
-		}
-
-		private processPart(book:Book, index:number, name:string, chapters:string[] = []):Part {
-			var part = new Part(book, index + 1, name);
-			part.chapters = chapters.map((chapter, index) => {
-				return this.processChapter(book, part, index, chapter);
-			});
-			return part;
-		}
-
-		private processChapter(book:Book, part:Part, index:number, chapterPath:string):Chapter {
-			var resolvedPath = this.config.resolvePath(chapterPath);
-			var data = this.config.read(resolvedPath);
-			if (!data) {
-				var chapter = new Chapter(part, index + 1, chapterPath, data, null);
-				chapter.process.error(t("compile.file_not_exists", resolvedPath));
-				return chapter;
-			}
-			try {
-				var parseResult = ReVIEW.Parse.parse(data);
-				var chapter = new Chapter(part, index + 1, chapterPath, data, parseResult.ast);
-			} catch (e) {
-				if (!(e instanceof PEG.SyntaxError)) {
-					throw e;
+				if (book.reports.some(report=>report.level === ReVIEW.ReportLevel.Error)) {
+					// エラーがあったら処理中断
+					this.config.listener.onReports(book.reports);
+					this.config.listener.onCompileFailed();
+					return book;
 				}
-				var se:PEG.SyntaxError = e;
-				var errorNode = new SyntaxTree({
-					syntax: se.name,
-					line: se.line,
-					column: se.column,
-					offset: se.offset,
-					endPos: -1 // TODO SyntaxError が置き換えられたらなんとかできるかも…
+
+				var symbols:ReVIEW.ISymbol[] = flatten(book.parts.map(part=>part.chapters.map(chapter=>chapter.process.symbols)));
+				if (this.config.listener.onSymbols(symbols) === false) {
+					// false が帰ってきたら処理を中断する (undefined でも継続)
+					this.config.listener.onReports(book.reports);
+					this.config.listener.onCompileFailed();
+					return null;
+				}
+
+				this.config.builders.forEach(builder=> builder.init(book));
+
+				// 結果を書き出す
+				book.parts.forEach(part=> {
+					part.chapters.forEach(chapter=> {
+						chapter.builderProcesses.forEach(process=> {
+							var baseName = chapter.name.substr(0, chapter.name.lastIndexOf(".re"));
+							var fileName = baseName + "." + process.builder.extention;
+							var result = process.result;
+							this.config.write(fileName, result);
+						});
+					});
 				});
-				var chapter = new Chapter(part, index + 1, chapterPath, data, null);
-				chapter.process.error(se.message, errorNode);
-			}
-			return chapter;
+
+				this.config.listener.onReports(book.reports);
+				this.config.listener.onCompileSuccess(book);
+
+				return book;
+			});
+			return promise;
+		}
+
+		private processBook():Promise<Book> {
+			var book = new Book(this.config);
+			var promise = Promise
+				.all(Object.keys(this.config.book).map((key, index) => {
+					var chapters:string[] = (<any>this.config.book)[key];
+					return this.processPart(book, index, key, chapters);
+				}))
+				.then(parts=> {
+					book.parts = parts;
+
+					// Chapterに採番を行う
+					book.parts.forEach(part=> {
+						var chapters:ChapterSyntaxTree[] = [];
+						part.chapters.forEach(chapter=> {
+							ReVIEW.visit(chapter.root, {
+								visitDefaultPre: (node)=> {
+								},
+								visitChapterPre: (node:ChapterSyntaxTree) => {
+									chapters.push(node);
+								}
+							});
+						});
+						var counter:{[index:number]:number;} = {};
+						var max = 0;
+						var currentLevel = 0;
+						chapters.forEach((chapter)=> {
+							var level = chapter.headline.level;
+							max = Math.max(max, level);
+							if (currentLevel > level) {
+								for (var i = level + 1; i <= max; i++) {
+									counter[i] = 0;
+								}
+							} else if (currentLevel < level) {
+								for (var i = level; i <= max; i++) {
+									counter[i] = 0;
+								}
+							}
+							currentLevel = level;
+							counter[level] = (counter[level] || 0) + 1;
+							chapter.no = counter[level];
+						});
+					});
+					return book;
+				});
+			return promise;
+		}
+
+		private processPart(book:Book, index:number, name:string, chapters:string[] = []):Promise<Part> {
+			var part = new Part(book, index + 1, name);
+			var promise = Promise
+				.all(chapters.map((chapter, index) => {
+					return this.processChapter(book, part, index, chapter);
+				}))
+				.then(chapters=> {
+					part.chapters = chapters;
+					return part;
+				});
+			return promise;
+		}
+
+		private processChapter(book:Book, part:Part, index:number, chapterPath:string):Promise<Chapter> {
+			var resolvedPath = this.config.resolvePath(chapterPath);
+
+			var promise = new Promise<Chapter>((resolve, reject)=> {
+				try {
+					this.config.read(resolvedPath)
+						.then(data=> {
+							try {
+								var parseResult = ReVIEW.Parse.parse(data);
+								var chapter = new Chapter(part, index + 1, chapterPath, data, parseResult.ast);
+								resolve(chapter);
+							} catch (e) {
+								if (!(e instanceof PEG.SyntaxError)) {
+									throw e;
+								}
+								var se:PEG.SyntaxError = e;
+								var errorNode = new SyntaxTree({
+									syntax: se.name,
+									line: se.line,
+									column: se.column,
+									offset: se.offset,
+									endPos: -1 // TODO SyntaxError が置き換えられたらなんとかできるかも…
+								});
+								var chapter = new Chapter(part, index + 1, chapterPath, data, null);
+								chapter.process.error(se.message, errorNode);
+								resolve(chapter);
+							}
+						})
+						.catch(err=> {
+							var chapter = new Chapter(part, index + 1, chapterPath, null, null);
+							chapter.process.error(t("compile.file_not_exists", resolvedPath));
+							resolve(chapter);
+						});
+				} catch (e) {
+					reject(e);
+				}
+			});
+			return promise;
 		}
 	}
 
@@ -228,11 +250,11 @@ module ReVIEW {
 		constructor(public original:IConfig) {
 		}
 
-		get read():(path:string)=>string {
+		get read():(path:string)=>Promise<string> {
 			throw new Error("please implements this method");
 		}
 
-		get write():(path:string, data:string)=>void {
+		get write():(path:string, data:string)=>Promise<void> {
 			throw new Error("please implements this method");
 		}
 
@@ -288,11 +310,11 @@ module ReVIEW {
 			super(original);
 		}
 
-		get read():(path:string)=>string {
+		get read():(path:string)=>Promise<string> {
 			return this.original.read || ReVIEW.IO.read;
 		}
 
-		get write():(path:string, data:string)=>void {
+		get write():(path:string, data:string)=>Promise<void> {
 			return this.original.write || ReVIEW.IO.write;
 		}
 
@@ -368,14 +390,14 @@ module ReVIEW {
 			super(original);
 		}
 
-		get read():(path:string)=>string {
-			return this.original.read || (():string=> {
+		get read():(path:string)=>Promise<string> {
+			return this.original.read || (():Promise<string>=> {
 				throw new Error("please implement config.read method");
 			});
 		}
 
-		get write():(path:string, data:string)=>void {
-			return this.original.write || (()=> {
+		get write():(path:string, data:string)=>Promise<void> {
+			return this.original.write || (():Promise<void>=> {
 				throw new Error("please implement config.write method");
 			});
 		}
