@@ -15,6 +15,7 @@ module.exports = function (config) {
 		// list of files / patterns to load in the browser
 		files: [
 			'test/suite/libs/es5-shim.js',
+			'test/suite/libs/promise.js',
 			'test/suite/libs/i18next.js',
 			'test/suite/libs/power-assert.js',
 			'test/test.js'
