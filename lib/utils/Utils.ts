@@ -187,7 +187,11 @@ module ReVIEW {
 			var fs = require("fs");
 			return new Promise((resolve, reject)=> {
 				fs.readFile(path, {encoding: "utf8"}, (err:any, data:string)=> {
-					Promise.resolve(data);
+					if (err) {
+						reject(err);
+					} else {
+						resolve(data);
+					}
 				});
 			});
 		}
@@ -201,8 +205,11 @@ module ReVIEW {
 			var fs = require("fs");
 			return new Promise<void>((resolve, reject)=> {
 				fs.writeFile(path, content, (err:any)=> {
-					// TODO エラー処理を正しく
-					resolve();
+					if (err) {
+						reject(err);
+					} else {
+						resolve(null);
+					}
 				});
 			});
 		}

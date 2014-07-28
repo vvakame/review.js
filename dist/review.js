@@ -4773,7 +4773,11 @@ var ReVIEW;
             var fs = require("fs");
             return new Promise(function (resolve, reject) {
                 fs.readFile(path, { encoding: "utf8" }, function (err, data) {
-                    Promise.resolve(data);
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(data);
+                    }
                 });
             });
         }
@@ -4783,7 +4787,11 @@ var ReVIEW;
             var fs = require("fs");
             return new Promise(function (resolve, reject) {
                 fs.writeFile(path, content, function (err) {
-                    resolve();
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(null);
+                    }
                 });
             });
         }
