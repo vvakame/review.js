@@ -6,9 +6,11 @@
 
 import fs = require("fs");
 import updateNotifier = require("update-notifier");
+var pkg = require("../package.json");
 
 var notifier = updateNotifier({
-	packagePath: "../package"
+	packageName: pkg.name,
+	packageVersion: pkg.version
 });
 if (notifier.update) {
 	notifier.notify();
