@@ -46,10 +46,14 @@ program
 
 		r.Exec.singleCompile(input, document, target, null)
 			.then(result=> {
-				if (!result.book.hasError) {
+				if (!result.book.hasError && !ast) {
 					result.book.parts[0].chapters[0].builderProcesses.forEach(process=> {
 						console.log(process.result);
 					});
+					process.exit(0);
+				} else if (!result.book.hasError) {
+					var jsonString = JSON.stringify(result.book.parts[0].chapters[0].root, null, 2);
+					console.log(jsonString);
 					process.exit(0);
 				} else {
 					result.book.reports.forEach(report=> {
