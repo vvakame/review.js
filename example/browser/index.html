@@ -2,10 +2,10 @@
 <html>
 <head>
     <title>ReVIEW.js 利用サンプル</title>
-    <script type="application/javascript" src="bower_components/i18next/release/i18next-1.6.3.js"></script>
-    <script type="application/javascript" src="bower_components/review.js/bin/review.js"></script>
+    <script type="application/javascript" src="bower_components/i18next/i18next.js"></script>
+    <script type="application/javascript" src="bower_components/review.js/dist/review.js"></script>
 
-    <script type="application/javascript" src="bower_components/jquery/jquery.js"></script>
+    <script type="application/javascript" src="bower_components/jquery/dist/jquery.js"></script>
 
     <style type="text/css">
         .info {
@@ -95,11 +95,10 @@
         ReVIEW.start(function (review) {
             review.initConfig({
                 read: function (path) {
-                    return Promise.resolve(files[path]);
+                    return files[path];
                 },
                 write: function (path, content) {
                     result[path] = content;
-                    return Promise.resolve(null);
                 },
 
                 listener: {
@@ -171,7 +170,7 @@
                     ]
                 }
             });
-        }).then(function(book){});
+        });
     }
 
     function outputReports(reports) {
