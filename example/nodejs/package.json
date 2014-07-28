@@ -16,6 +16,6 @@
 		"url": "https://github.com/vvakame/review.js/issues"
 	},
 	"dependencies": {
-		"review.js": "0.4.0"
+		"review.js": "0.4.1"
 	}
 }
