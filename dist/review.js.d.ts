@@ -569,8 +569,8 @@ declare module ReVIEW {
         public parts: Part[];
         constructor(config: IConfig);
         public reports : ProcessReport[];
-        public hasError(): boolean;
-        public hasWarning(): boolean;
+        public hasError : boolean;
+        public hasWarning : boolean;
     }
     class Part {
         public parent: Book;

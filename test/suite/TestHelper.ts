@@ -27,7 +27,10 @@ module Test {
 		];
 
 		var results:any = {};
-		config.write = config.write || ((path:string, content:any) => results[path] = content);
+		config.write = config.write || ((path:string, content:any) => {
+			results[path] = content;
+			return Promise.resolve<void>(null);
+		});
 
 		config.listener = config.listener || {
 			onReports: () => {

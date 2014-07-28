@@ -7177,17 +7177,25 @@ var ReVIEW;
             configurable: true
         });
 
-        Book.prototype.hasError = function () {
-            return this.reports.some(function (report) {
-                return report.level === 2 /* Error */;
-            });
-        };
+        Object.defineProperty(Book.prototype, "hasError", {
+            get: function () {
+                return this.reports.some(function (report) {
+                    return report.level === 2 /* Error */;
+                });
+            },
+            enumerable: true,
+            configurable: true
+        });
 
-        Book.prototype.hasWarning = function () {
-            return this.reports.some(function (report) {
-                return report.level === 1 /* Warning */;
-            });
-        };
+        Object.defineProperty(Book.prototype, "hasWarning", {
+            get: function () {
+                return this.reports.some(function (report) {
+                    return report.level === 1 /* Warning */;
+                });
+            },
+            enumerable: true,
+            configurable: true
+        });
         return Book;
     })();
     ReVIEW.Book = Book;
@@ -7642,10 +7650,10 @@ var ReVIEW;
 
             if (this.config.listener.onAcceptables(acceptableSyntaxes) === false) {
                 this.config.listener.onCompileFailed();
-                return null;
+                return Promise.reject(null);
             }
 
-            var promise = this.processBook().then(function (book) {
+            return this.processBook().then(function (book) {
                 var preprocessor = new ReVIEW.Build.SyntaxPreprocessor();
                 preprocessor.start(book, acceptableSyntaxes);
 
@@ -7655,9 +7663,7 @@ var ReVIEW;
                 if (book.reports.some(function (report) {
                     return report.level === 2 /* Error */;
                 })) {
-                    _this.config.listener.onReports(book.reports);
-                    _this.config.listener.onCompileFailed();
-                    return book;
+                    return Promise.resolve(book);
                 }
 
                 var symbols = flatten(book.parts.map(function (part) {
@@ -7666,32 +7672,37 @@ var ReVIEW;
                     });
                 }));
                 if (_this.config.listener.onSymbols(symbols) === false) {
-                    _this.config.listener.onReports(book.reports);
-                    _this.config.listener.onCompileFailed();
-                    return null;
+                    return Promise.resolve(book);
                 }
 
                 _this.config.builders.forEach(function (builder) {
                     return builder.init(book);
                 });
 
+                var writePromises = [];
                 book.parts.forEach(function (part) {
                     part.chapters.forEach(function (chapter) {
                         chapter.builderProcesses.forEach(function (process) {
                             var baseName = chapter.name.substr(0, chapter.name.lastIndexOf(".re"));
                             var fileName = baseName + "." + process.builder.extention;
                             var result = process.result;
-                            _this.config.write(fileName, result);
+                            writePromises.push(_this.config.write(fileName, result));
                         });
                     });
                 });
-
+                return Promise.all(writePromises).then(function () {
+                    return book;
+                });
+            }).then(function (book) {
                 _this.config.listener.onReports(book.reports);
-                _this.config.listener.onCompileSuccess(book);
+                if (!book.hasError) {
+                    _this.config.listener.onCompileSuccess(book);
+                } else {
+                    _this.config.listener.onCompileFailed();
+                }
 
                 return book;
             });
-            return promise;
         };
 
         Controller.prototype.processBook = function () {

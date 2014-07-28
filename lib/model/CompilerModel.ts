@@ -241,11 +241,11 @@ module ReVIEW {
 			return flatten(tmpArray);
 		}
 
-		hasError():boolean {
+		get hasError():boolean {
 			return this.reports.some(report => report.level === ReportLevel.Error);
 		}
 
-		hasWarning():boolean {
+		get hasWarning():boolean {
 			return this.reports.some(report => report.level === ReportLevel.Warning);
 		}
 	}

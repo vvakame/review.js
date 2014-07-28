@@ -96,10 +96,10 @@ module ReVIEW {
 			if (this.config.listener.onAcceptables(acceptableSyntaxes) === false) {
 				// false が帰ってきたら処理を中断する (undefined でも継続)
 				this.config.listener.onCompileFailed();
-				return null;
+				return Promise.reject(null);
 			}
 
-			var promise = this.processBook().then(book=> {
+			return this.processBook().then(book=> {
 				var preprocessor = new ReVIEW.Build.SyntaxPreprocessor();
 				preprocessor.start(book, acceptableSyntaxes);
 
@@ -108,39 +108,40 @@ module ReVIEW {
 				});
 				if (book.reports.some(report=>report.level === ReVIEW.ReportLevel.Error)) {
 					// エラーがあったら処理中断
-					this.config.listener.onReports(book.reports);
-					this.config.listener.onCompileFailed();
-					return book;
+					return Promise.resolve(book);
 				}
 
 				var symbols:ReVIEW.ISymbol[] = flatten(book.parts.map(part=>part.chapters.map(chapter=>chapter.process.symbols)));
 				if (this.config.listener.onSymbols(symbols) === false) {
 					// false が帰ってきたら処理を中断する (undefined でも継続)
-					this.config.listener.onReports(book.reports);
-					this.config.listener.onCompileFailed();
-					return null;
+					return Promise.resolve(book);
 				}
 
 				this.config.builders.forEach(builder=> builder.init(book));
 
 				// 結果を書き出す
+				var writePromises:Promise<void>[] = [];
 				book.parts.forEach(part=> {
 					part.chapters.forEach(chapter=> {
 						chapter.builderProcesses.forEach(process=> {
 							var baseName = chapter.name.substr(0, chapter.name.lastIndexOf(".re"));
 							var fileName = baseName + "." + process.builder.extention;
 							var result = process.result;
-							this.config.write(fileName, result);
+							writePromises.push(this.config.write(fileName, result));
 						});
 					});
 				});
-
+				return Promise.all(writePromises).then<Book>(()=> book);
+			}).then(book=> {
 				this.config.listener.onReports(book.reports);
-				this.config.listener.onCompileSuccess(book);
+				if (!book.hasError) {
+					this.config.listener.onCompileSuccess(book);
+				} else {
+					this.config.listener.onCompileFailed();
+				}
 
 				return book;
 			});
-			return promise;
 		}
 
 		private processBook():Promise<Book> {

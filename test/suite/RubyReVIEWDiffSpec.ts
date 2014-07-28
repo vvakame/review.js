@@ -79,11 +79,8 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 				typeList.forEach(typeInfo => {
 					var targetFileName = path + baseName + "." + typeInfo.ext;
 					it("ファイル:" + targetFileName, ()=> {
-						return Test.compileSingle(
-							fs.readFileSync(path + file, "utf8"),
-							{
-								builders: [typeInfo.builder()]
-							})
+						var text = fs.readFileSync(path + file, "utf8");
+						return Test.compileSingle(text, {builders: [typeInfo.builder()]})
 							.then(s=> {
 								assert(s.result !== null);
 

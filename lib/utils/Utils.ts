@@ -201,6 +201,7 @@ module ReVIEW {
 			var fs = require("fs");
 			return new Promise<void>((resolve, reject)=> {
 				fs.writeFile(path, content, (err:any)=> {
+					// TODO エラー処理を正しく
 					resolve();
 				});
 			});
