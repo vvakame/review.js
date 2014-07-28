@@ -1,23 +1,7 @@
-///<reference path='../utils/Utils.ts' />
 ///<reference path='../model/CompilerModel.ts' />
-///<reference path='../parser/Parser.ts' />
-///<reference path='../parser/Analyzer.ts' />
-///<reference path='../parser/Preprocessor.ts' />
-///<reference path='../parser/Validator.ts' />
 
 module ReVIEW {
 	"use strict";
-
-	import t = ReVIEW.i18n.t;
-
-	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
-	import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
-	import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-	import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
-	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
-
-	import flatten = ReVIEW.flatten;
 
 	/**
 	 * コマンドライン引数を解釈した結果のオプション。

@@ -5,8 +5,6 @@
 module ReVIEW.Build {
 	"use strict";
 
-	import t = ReVIEW.i18n.t;
-
 	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
 	import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
 	import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
@@ -183,32 +181,36 @@ module ReVIEW.Build {
 					});
 				});
 				if (info) {
-					var textNode = new TextNodeSyntaxTree({
-						syntax: "BlockElementContentText",
-						offset: info.offset,
-						line: info.line,
-						column: info.column,
-						endPos: lastNode.endPos,
-						text: chapter.process.input.substring(info.offset, lastNode.endPos)
-					});
-					resultNodes.push(textNode);
+					(()=> {
+						var textNode = new TextNodeSyntaxTree({
+							syntax: "BlockElementContentText",
+							offset: info.offset,
+							line: info.line,
+							column: info.column,
+							endPos: lastNode.endPos,
+							text: chapter.process.input.substring(info.offset, lastNode.endPos)
+						});
+						resultNodes.push(textNode);
+					})();
 				}
 
 				node.childNodes = resultNodes;
 
 			} else {
-				// 全て不許可(テキスト化
-				var first = node.childNodes[0];
-				var last = node.childNodes[node.childNodes.length - 1];
-				var textNode = new TextNodeSyntaxTree({
-					syntax: "BlockElementContentText",
-					offset: first.offset,
-					line: first.line,
-					column: first.column,
-					endPos: last.endPos,
-					text: nodeContentToString(chapter.process, node)
-				});
-				node.childNodes = [textNode];
+				(()=> {
+					// 全て不許可(テキスト化
+					var first = node.childNodes[0];
+					var last = node.childNodes[node.childNodes.length - 1];
+					var textNode = new TextNodeSyntaxTree({
+						syntax: "BlockElementContentText",
+						offset: first.offset,
+						line: first.line,
+						column: first.column,
+						endPos: last.endPos,
+						text: nodeContentToString(chapter.process, node)
+					});
+					node.childNodes = [textNode];
+				})();
 			}
 		}
 	}

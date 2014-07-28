@@ -9,12 +9,6 @@ module ReVIEW.Build {
 	import t = ReVIEW.i18n.t;
 
 	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
-	import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
-	import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-	import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-	import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
-	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
-	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
 	/**
 	 * 構文のタイプ。

@@ -8,7 +8,6 @@ module ReVIEW.Build {
 
 	import t = ReVIEW.i18n.t;
 
-	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
 	import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
 	import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
 	import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
@@ -16,8 +15,6 @@ module ReVIEW.Build {
 	import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
 	import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
 	import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
-	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
-	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 	import ColumnSyntaxTree = ReVIEW.Parse.ColumnSyntaxTree;
 	import ColumnHeadlineSyntaxTree = ReVIEW.Parse.ColumnHeadlineSyntaxTree;
 
@@ -483,10 +480,12 @@ module ReVIEW.Build {
 			var hexString = nodeContentToString(process, node);
 			var code = parseInt(hexString, 16);
 			var result = "";
+			/* tslint:disable:no-bitwise */
 			while (code !== 0) {
 				result = String.fromCharCode(code & 0xFFFF) + result;
 				code >>>= 16;
 			}
+			/* tslint:enable:no-bitwise */
 			process.out(result);
 			return false;
 		}

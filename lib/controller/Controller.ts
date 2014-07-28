@@ -15,10 +15,6 @@ module ReVIEW {
 	import t = ReVIEW.i18n.t;
 
 	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
-	import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
-	import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
-	import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
-	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
 	import flatten = ReVIEW.flatten;
@@ -136,12 +132,13 @@ module ReVIEW {
 						chapters.forEach((chapter)=> {
 							var level = chapter.headline.level;
 							max = Math.max(max, level);
+							var i:number;
 							if (currentLevel > level) {
-								for (var i = level + 1; i <= max; i++) {
+								for (i = level + 1; i <= max; i++) {
 									counter[i] = 0;
 								}
 							} else if (currentLevel < level) {
-								for (var i = level; i <= max; i++) {
+								for (i = level; i <= max; i++) {
 									counter[i] = 0;
 								}
 							}
@@ -175,9 +172,10 @@ module ReVIEW {
 				try {
 					this.config.read(resolvedPath)
 						.then(data=> {
+							var chapter:Chapter;
 							try {
 								var parseResult = ReVIEW.Parse.parse(data);
-								var chapter = new Chapter(part, index + 1, chapterPath, data, parseResult.ast);
+								chapter = new Chapter(part, index + 1, chapterPath, data, parseResult.ast);
 								resolve(chapter);
 							} catch (e) {
 								if (!(e instanceof PEG.SyntaxError)) {
@@ -191,7 +189,7 @@ module ReVIEW {
 									offset: se.offset,
 									endPos: -1 // TODO SyntaxError が置き換えられたらなんとかできるかも…
 								});
-								var chapter = new Chapter(part, index + 1, chapterPath, data, null);
+								chapter = new Chapter(part, index + 1, chapterPath, data, null);
 								chapter.process.error(se.message, errorNode);
 								resolve(chapter);
 							}

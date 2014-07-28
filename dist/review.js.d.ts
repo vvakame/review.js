@@ -22,17 +22,6 @@ declare module ReVIEW {
     }
     function stringRepeat(times: number, src: string): string;
     module Exec {
-        interface ResultPromise {
-            success(): ResultSuccess;
-            failure(): ResultFailure;
-        }
-        interface ResultSuccess {
-            book: Book;
-            results?: any;
-        }
-        interface ResultFailure {
-            book: Book;
-        }
         function singleCompile(input: string, fileName?: string, target?: string, tmpConfig?: any): Promise<{
             book: Book;
             results: any;
@@ -648,6 +637,49 @@ declare module ReVIEW {
         chapters: string[];
         afterword?: string[];
     }
+    class ConfigWrapper implements IConfig {
+        public original: IConfig;
+        public _builders: Build.IBuilder[];
+        constructor(original: IConfig);
+        public read : (path: string) => Promise<string>;
+        public write : (path: string, data: string) => Promise<void>;
+        public analyzer : Build.IAnalyzer;
+        public validators : Build.IValidator[];
+        public builders : Build.IBuilder[];
+        public listener : IConfigListener;
+        public book : IConfigBook;
+        public resolvePath(path: string): string;
+    }
+    class NodeJSConfig extends ConfigWrapper implements IConfig {
+        public options: IOptions;
+        public original: IConfig;
+        public _listener: IConfigListener;
+        constructor(options: IOptions, original: IConfig);
+        public read : (path: string) => Promise<string>;
+        public write : (path: string, data: string) => Promise<void>;
+        public listener : IConfigListener;
+        public onReports(reports: ProcessReport[]): void;
+        public onCompileSuccess(book: Book): void;
+        public onCompileFailed(): void;
+        public resolvePath(path: string): string;
+    }
+    class WebBrowserConfig extends ConfigWrapper implements IConfig {
+        public options: IOptions;
+        public original: IConfig;
+        public _listener: IConfigListener;
+        constructor(options: IOptions, original: IConfig);
+        public read : (path: string) => Promise<string>;
+        public write : (path: string, data: string) => Promise<void>;
+        public listener : IConfigListener;
+        public onReports(reports: ProcessReport[]): void;
+        public onCompileSuccess(book: Book): void;
+        public onCompileFailed(book?: Book): void;
+        public resolvePath(path: string): string;
+        private startWith(str, target);
+        private endWith(str, target);
+    }
+}
+declare module ReVIEW {
     class Controller {
         public options: IOptions;
         private config;

@@ -120,153 +120,181 @@ module ReVIEW {
 
 	function visitSub(parent:SyntaxTree, ast:SyntaxTree, v:ITreeVisitor) {
 		if (ast instanceof ReVIEW.Parse.BlockElementSyntaxTree) {
-			var block = ast.toBlockElement();
-			var ret = v.visitBlockElementPre(block, parent);
-			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-				block.args.forEach((next)=> {
-					visitSub(ast, next, v);
-				});
-				block.childNodes.forEach((next)=> {
-					visitSub(ast, next, v);
-				});
-			} else if (typeof ret === "function") {
-				ret(v);
-			}
-			v.visitBlockElementPost(block, parent);
+			(()=> {
+				var block = ast.toBlockElement();
+				var ret = v.visitBlockElementPre(block, parent);
+				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+					block.args.forEach((next)=> {
+						visitSub(ast, next, v);
+					});
+					block.childNodes.forEach((next)=> {
+						visitSub(ast, next, v);
+					});
+				} else if (typeof ret === "function") {
+					ret(v);
+				}
+				v.visitBlockElementPost(block, parent);
+			})();
 		} else if (ast instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
-			var inline = ast.toInlineElement();
-			var ret = v.visitInlineElementPre(inline, parent);
-			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-				inline.childNodes.forEach((next)=> {
-					visitSub(ast, next, v);
-				});
-			} else if (typeof ret === "function") {
-				ret(v);
-			}
-			v.visitInlineElementPost(inline, parent);
+			(()=> {
+				var inline = ast.toInlineElement();
+				var ret = v.visitInlineElementPre(inline, parent);
+				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+					inline.childNodes.forEach((next)=> {
+						visitSub(ast, next, v);
+					});
+				} else if (typeof ret === "function") {
+					ret(v);
+				}
+				v.visitInlineElementPost(inline, parent);
+			})();
 		} else if (ast instanceof ReVIEW.Parse.ArgumentSyntaxTree) {
-			var arg = ast.toArgument();
-			var ret = v.visitArgumentPre(arg, parent);
-			if (typeof ret === "function") {
-				ret(v);
-			}
-			v.visitArgumentPost(arg, parent);
+			(()=> {
+				var arg = ast.toArgument();
+				var ret = v.visitArgumentPre(arg, parent);
+				if (typeof ret === "function") {
+					ret(v);
+				}
+				v.visitArgumentPost(arg, parent);
+			})();
 		} else if (ast instanceof ReVIEW.Parse.ChapterSyntaxTree) {
-			var chap = ast.toChapter();
-			var ret = v.visitChapterPre(chap, parent);
-			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-				visitSub(ast, chap.headline, v);
-				if (chap.text) {
-					chap.text.forEach((next)=> {
+			(()=> {
+				var chap = ast.toChapter();
+				var ret = v.visitChapterPre(chap, parent);
+				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+					visitSub(ast, chap.headline, v);
+					if (chap.text) {
+						chap.text.forEach((next)=> {
+							visitSub(ast, next, v);
+						});
+					}
+					chap.childNodes.forEach((next)=> {
 						visitSub(ast, next, v);
 					});
+				} else if (typeof ret === "function") {
+					ret(v);
 				}
-				chap.childNodes.forEach((next)=> {
-					visitSub(ast, next, v);
-				});
-			} else if (typeof ret === "function") {
-				ret(v);
-			}
-			v.visitChapterPost(chap, parent);
+				v.visitChapterPost(chap, parent);
+			})();
 		} else if (ast instanceof ReVIEW.Parse.HeadlineSyntaxTree) {
-			var head = ast.toHeadline();
-			var ret = v.visitHeadlinePre(head, parent);
-			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-				visitSub(ast, head.label, v);
-				visitSub(ast, head.caption, v);
-			} else if (typeof ret === "function") {
-				ret(v);
-			}
-			v.visitHeadlinePost(head, parent);
+			(()=> {
+				var head = ast.toHeadline();
+				var ret = v.visitHeadlinePre(head, parent);
+				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+					visitSub(ast, head.label, v);
+					visitSub(ast, head.caption, v);
+				} else if (typeof ret === "function") {
+					ret(v);
+				}
+				v.visitHeadlinePost(head, parent);
+			})();
 		} else if (ast instanceof ReVIEW.Parse.ColumnSyntaxTree) {
-			var column = ast.toColumn();
-			var ret = v.visitColumnPre(column, parent);
-			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-				visitSub(ast, column.headline, v);
-				if (column.text) {
-					column.text.forEach((next)=> {
+			(()=> {
+				var column = ast.toColumn();
+				var ret = v.visitColumnPre(column, parent);
+				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+					visitSub(ast, column.headline, v);
+					if (column.text) {
+						column.text.forEach((next)=> {
+							visitSub(ast, next, v);
+						});
+					}
+				} else if (typeof ret === "function") {
+					ret(v);
+				}
+				v.visitColumnPost(column, parent);
+			})();
+		} else if (ast instanceof ReVIEW.Parse.ColumnHeadlineSyntaxTree) {
+			(()=> {
+				var columnHead = ast.toColumnHeadline();
+				var ret = v.visitColumnHeadlinePre(columnHead, parent);
+				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+					visitSub(ast, columnHead.caption, v);
+				} else if (typeof ret === "function") {
+					ret(v);
+				}
+				v.visitColumnHeadlinePost(columnHead, parent);
+			})();
+		} else if (ast instanceof ReVIEW.Parse.UlistElementSyntaxTree) {
+			(()=> {
+				var ul = ast.toUlist();
+				var ret = v.visitUlistPre(ul, parent);
+				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+					visitSub(ast, ul.text, v);
+					ul.childNodes.forEach((next)=> {
 						visitSub(ast, next, v);
 					});
+				} else if (typeof ret === "function") {
+					ret(v);
 				}
-			} else if (typeof ret === "function") {
-				ret(v);
-			}
-			v.visitColumnPost(column, parent);
-		} else if (ast instanceof ReVIEW.Parse.ColumnHeadlineSyntaxTree) {
-			var columnHead = ast.toColumnHeadline();
-			var ret = v.visitColumnHeadlinePre(columnHead, parent);
-			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-				visitSub(ast, columnHead.caption, v);
-			} else if (typeof ret === "function") {
-				ret(v);
-			}
-			v.visitColumnHeadlinePost(columnHead, parent);
-		} else if (ast instanceof ReVIEW.Parse.UlistElementSyntaxTree) {
-			var ul = ast.toUlist();
-			var ret = v.visitUlistPre(ul, parent);
-			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-				visitSub(ast, ul.text, v);
-				ul.childNodes.forEach((next)=> {
-					visitSub(ast, next, v);
-				});
-			} else if (typeof ret === "function") {
-				ret(v);
-			}
-			v.visitUlistPost(ul, parent);
+				v.visitUlistPost(ul, parent);
+			})();
 		} else if (ast instanceof ReVIEW.Parse.OlistElementSyntaxTree) {
-			var ol = ast.toOlist();
-			var ret = v.visitOlistPre(ol, parent);
-			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-				visitSub(ast, ol.text, v);
-			} else if (typeof ret === "function") {
-				ret(v);
-			}
-			v.visitOlistPost(ol, parent);
+			(()=> {
+				var ol = ast.toOlist();
+				var ret = v.visitOlistPre(ol, parent);
+				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+					visitSub(ast, ol.text, v);
+				} else if (typeof ret === "function") {
+					ret(v);
+				}
+				v.visitOlistPost(ol, parent);
+			})();
 		} else if (ast instanceof ReVIEW.Parse.DlistElementSyntaxTree) {
-			var dl = ast.toDlist();
-			var ret = v.visitDlistPre(dl, parent);
-			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-				visitSub(ast, dl.text, v);
-				visitSub(ast, dl.content, v);
-			} else if (typeof ret === "function") {
-				ret(v);
-			}
-			v.visitDlistPost(dl, parent);
+			(()=> {
+				var dl = ast.toDlist();
+				var ret = v.visitDlistPre(dl, parent);
+				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+					visitSub(ast, dl.text, v);
+					visitSub(ast, dl.content, v);
+				} else if (typeof ret === "function") {
+					ret(v);
+				}
+				v.visitDlistPost(dl, parent);
+			})();
 		} else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && (ast.ruleName === ReVIEW.Parse.RuleName.Paragraph || ast.ruleName === ReVIEW.Parse.RuleName.BlockElementParagraph)) {
-			var node = ast.toNode();
-			var ret = v.visitParagraphPre(node, parent);
-			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-				node.childNodes.forEach((next)=> {
-					visitSub(ast, next, v);
-				});
-			} else if (typeof ret === "function") {
-				ret(v);
-			}
-			v.visitParagraphPost(node, parent);
+			(()=> {
+				var node = ast.toNode();
+				var ret = v.visitParagraphPre(node, parent);
+				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+					node.childNodes.forEach((next)=> {
+						visitSub(ast, next, v);
+					});
+				} else if (typeof ret === "function") {
+					ret(v);
+				}
+				v.visitParagraphPost(node, parent);
+			})();
 		} else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree) {
-			var node = ast.toNode();
-			var ret = v.visitNodePre(node, parent);
-			if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-				node.childNodes.forEach((next)=> {
-					visitSub(ast, next, v);
-				});
-			} else if (typeof ret === "function") {
-				ret(v);
-			}
-			v.visitNodePost(node, parent);
+			(()=> {
+				var node = ast.toNode();
+				var ret = v.visitNodePre(node, parent);
+				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+					node.childNodes.forEach((next)=> {
+						visitSub(ast, next, v);
+					});
+				} else if (typeof ret === "function") {
+					ret(v);
+				}
+				v.visitNodePost(node, parent);
+			})();
 		} else if (ast instanceof ReVIEW.Parse.TextNodeSyntaxTree) {
-			var text = ast.toTextNode();
-			var ret = v.visitTextPre(text, parent);
-			if (typeof ret === "function") {
-				ret(v);
-			}
-			v.visitTextPost(text, parent);
+			(()=> {
+				var text = ast.toTextNode();
+				var ret = v.visitTextPre(text, parent);
+				if (typeof ret === "function") {
+					ret(v);
+				}
+				v.visitTextPost(text, parent);
+			})();
 		} else if (ast) {
-			var ret = v.visitDefaultPre(parent, ast);
-			if (typeof ret === "function") {
-				ret(v);
-			}
-			v.visitDefaultPost(parent, ast);
+			(()=> {
+				var ret = v.visitDefaultPre(parent, ast);
+				if (typeof ret === "function") {
+					ret(v);
+				}
+				v.visitDefaultPost(parent, ast);
+			})();
 		}
 	}
 

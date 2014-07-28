@@ -13,6 +13,8 @@
 "use strict";
 
 function updateIfSyntaxError(e:any) {
+	"use strict";
+
 	if (e instanceof PEG.SyntaxError) {
 		var se:PEG.SyntaxError = e;
 		var additionalInfo = "raised: offset=" + se.offset + ", line=" + se.line + ", column=" + se.column;
@@ -115,8 +117,7 @@ describe("ReVIEW構文の", ()=> {
 			it("try: " + str.substr(0, 15), ()=> {
 				try {
 					var result = ReVIEW.Parse.parse(str);
-					// console.log(result);
-					// console.log(JSON.stringify(result));
+					false && console.log(JSON.stringify(result));
 				} catch (e) {
 					updateIfSyntaxError(e);
 					throw e;

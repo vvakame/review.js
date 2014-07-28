@@ -15,14 +15,12 @@ module ReVIEW.Build {
 	import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
 	import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
 	import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
-	import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
 	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 	import ColumnSyntaxTree = ReVIEW.Parse.ColumnSyntaxTree;
 	import ColumnHeadlineSyntaxTree = ReVIEW.Parse.ColumnHeadlineSyntaxTree;
 
 	import nodeContentToString = ReVIEW.nodeContentToString;
 	import findChapter = ReVIEW.findChapter;
-	import findUp = ReVIEW.findUp;
 
 	export class HtmlBuilder extends DefaultBuilder {
 		extention = "html";
@@ -435,7 +433,7 @@ module ReVIEW.Build {
 			var caption = node.args[1].arg;
 			var scale:number = 1;
 			if (node.args[2]) {
-				var arg3 = node.args[2].arg;
+				// var arg3 = node.args[2].arg;
 				var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
 				var result = regexp.exec(node.args[2].arg);
 				if (result) {
@@ -462,7 +460,7 @@ module ReVIEW.Build {
 			}
 			var scale:number = 1;
 			if (node.args[2]) {
-				var arg3 = node.args[2].arg;
+				// var arg3 = node.args[2].arg;
 				var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
 				var result = regexp.exec(node.args[2].arg);
 				if (result) {

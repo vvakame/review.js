@@ -10,6 +10,8 @@
 module ReVIEW.i18n {
 	"use strict";
 
+	/* tslint:disable:no-use-before-declare */
+
 	export function setup(lang = "ja") {
 		if (typeof (<any>i18next).backend !== "undefined") {
 			(<any>i18next).backend({
@@ -44,6 +46,8 @@ module ReVIEW.i18n {
 		"ja": ReVIEW.ja,
 		"en": ReVIEW.en
 	};
+
+	/* tslint:enable:no-use-before-declare */
 
 	setup();
 }

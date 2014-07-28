@@ -5099,153 +5099,181 @@ var ReVIEW;
 
     function visitSub(parent, ast, v) {
         if (ast instanceof ReVIEW.Parse.BlockElementSyntaxTree) {
-            var block = ast.toBlockElement();
-            var ret = v.visitBlockElementPre(block, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                block.args.forEach(function (next) {
-                    visitSub(ast, next, v);
-                });
-                block.childNodes.forEach(function (next) {
-                    visitSub(ast, next, v);
-                });
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitBlockElementPost(block, parent);
+            (function () {
+                var block = ast.toBlockElement();
+                var ret = v.visitBlockElementPre(block, parent);
+                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+                    block.args.forEach(function (next) {
+                        visitSub(ast, next, v);
+                    });
+                    block.childNodes.forEach(function (next) {
+                        visitSub(ast, next, v);
+                    });
+                } else if (typeof ret === "function") {
+                    ret(v);
+                }
+                v.visitBlockElementPost(block, parent);
+            })();
         } else if (ast instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
-            var inline = ast.toInlineElement();
-            var ret = v.visitInlineElementPre(inline, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                inline.childNodes.forEach(function (next) {
-                    visitSub(ast, next, v);
-                });
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitInlineElementPost(inline, parent);
+            (function () {
+                var inline = ast.toInlineElement();
+                var ret = v.visitInlineElementPre(inline, parent);
+                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+                    inline.childNodes.forEach(function (next) {
+                        visitSub(ast, next, v);
+                    });
+                } else if (typeof ret === "function") {
+                    ret(v);
+                }
+                v.visitInlineElementPost(inline, parent);
+            })();
         } else if (ast instanceof ReVIEW.Parse.ArgumentSyntaxTree) {
-            var arg = ast.toArgument();
-            var ret = v.visitArgumentPre(arg, parent);
-            if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitArgumentPost(arg, parent);
+            (function () {
+                var arg = ast.toArgument();
+                var ret = v.visitArgumentPre(arg, parent);
+                if (typeof ret === "function") {
+                    ret(v);
+                }
+                v.visitArgumentPost(arg, parent);
+            })();
         } else if (ast instanceof ReVIEW.Parse.ChapterSyntaxTree) {
-            var chap = ast.toChapter();
-            var ret = v.visitChapterPre(chap, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                visitSub(ast, chap.headline, v);
-                if (chap.text) {
-                    chap.text.forEach(function (next) {
+            (function () {
+                var chap = ast.toChapter();
+                var ret = v.visitChapterPre(chap, parent);
+                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+                    visitSub(ast, chap.headline, v);
+                    if (chap.text) {
+                        chap.text.forEach(function (next) {
+                            visitSub(ast, next, v);
+                        });
+                    }
+                    chap.childNodes.forEach(function (next) {
                         visitSub(ast, next, v);
                     });
+                } else if (typeof ret === "function") {
+                    ret(v);
                 }
-                chap.childNodes.forEach(function (next) {
-                    visitSub(ast, next, v);
-                });
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitChapterPost(chap, parent);
+                v.visitChapterPost(chap, parent);
+            })();
         } else if (ast instanceof ReVIEW.Parse.HeadlineSyntaxTree) {
-            var head = ast.toHeadline();
-            var ret = v.visitHeadlinePre(head, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                visitSub(ast, head.label, v);
-                visitSub(ast, head.caption, v);
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitHeadlinePost(head, parent);
+            (function () {
+                var head = ast.toHeadline();
+                var ret = v.visitHeadlinePre(head, parent);
+                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+                    visitSub(ast, head.label, v);
+                    visitSub(ast, head.caption, v);
+                } else if (typeof ret === "function") {
+                    ret(v);
+                }
+                v.visitHeadlinePost(head, parent);
+            })();
         } else if (ast instanceof ReVIEW.Parse.ColumnSyntaxTree) {
-            var column = ast.toColumn();
-            var ret = v.visitColumnPre(column, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                visitSub(ast, column.headline, v);
-                if (column.text) {
-                    column.text.forEach(function (next) {
+            (function () {
+                var column = ast.toColumn();
+                var ret = v.visitColumnPre(column, parent);
+                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+                    visitSub(ast, column.headline, v);
+                    if (column.text) {
+                        column.text.forEach(function (next) {
+                            visitSub(ast, next, v);
+                        });
+                    }
+                } else if (typeof ret === "function") {
+                    ret(v);
+                }
+                v.visitColumnPost(column, parent);
+            })();
+        } else if (ast instanceof ReVIEW.Parse.ColumnHeadlineSyntaxTree) {
+            (function () {
+                var columnHead = ast.toColumnHeadline();
+                var ret = v.visitColumnHeadlinePre(columnHead, parent);
+                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+                    visitSub(ast, columnHead.caption, v);
+                } else if (typeof ret === "function") {
+                    ret(v);
+                }
+                v.visitColumnHeadlinePost(columnHead, parent);
+            })();
+        } else if (ast instanceof ReVIEW.Parse.UlistElementSyntaxTree) {
+            (function () {
+                var ul = ast.toUlist();
+                var ret = v.visitUlistPre(ul, parent);
+                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+                    visitSub(ast, ul.text, v);
+                    ul.childNodes.forEach(function (next) {
                         visitSub(ast, next, v);
                     });
+                } else if (typeof ret === "function") {
+                    ret(v);
                 }
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitColumnPost(column, parent);
-        } else if (ast instanceof ReVIEW.Parse.ColumnHeadlineSyntaxTree) {
-            var columnHead = ast.toColumnHeadline();
-            var ret = v.visitColumnHeadlinePre(columnHead, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                visitSub(ast, columnHead.caption, v);
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitColumnHeadlinePost(columnHead, parent);
-        } else if (ast instanceof ReVIEW.Parse.UlistElementSyntaxTree) {
-            var ul = ast.toUlist();
-            var ret = v.visitUlistPre(ul, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                visitSub(ast, ul.text, v);
-                ul.childNodes.forEach(function (next) {
-                    visitSub(ast, next, v);
-                });
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitUlistPost(ul, parent);
+                v.visitUlistPost(ul, parent);
+            })();
         } else if (ast instanceof ReVIEW.Parse.OlistElementSyntaxTree) {
-            var ol = ast.toOlist();
-            var ret = v.visitOlistPre(ol, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                visitSub(ast, ol.text, v);
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitOlistPost(ol, parent);
+            (function () {
+                var ol = ast.toOlist();
+                var ret = v.visitOlistPre(ol, parent);
+                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+                    visitSub(ast, ol.text, v);
+                } else if (typeof ret === "function") {
+                    ret(v);
+                }
+                v.visitOlistPost(ol, parent);
+            })();
         } else if (ast instanceof ReVIEW.Parse.DlistElementSyntaxTree) {
-            var dl = ast.toDlist();
-            var ret = v.visitDlistPre(dl, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                visitSub(ast, dl.text, v);
-                visitSub(ast, dl.content, v);
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitDlistPost(dl, parent);
+            (function () {
+                var dl = ast.toDlist();
+                var ret = v.visitDlistPre(dl, parent);
+                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+                    visitSub(ast, dl.text, v);
+                    visitSub(ast, dl.content, v);
+                } else if (typeof ret === "function") {
+                    ret(v);
+                }
+                v.visitDlistPost(dl, parent);
+            })();
         } else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && (ast.ruleName === 7 /* Paragraph */ || ast.ruleName === 17 /* BlockElementParagraph */)) {
-            var node = ast.toNode();
-            var ret = v.visitParagraphPre(node, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                node.childNodes.forEach(function (next) {
-                    visitSub(ast, next, v);
-                });
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitParagraphPost(node, parent);
+            (function () {
+                var node = ast.toNode();
+                var ret = v.visitParagraphPre(node, parent);
+                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+                    node.childNodes.forEach(function (next) {
+                        visitSub(ast, next, v);
+                    });
+                } else if (typeof ret === "function") {
+                    ret(v);
+                }
+                v.visitParagraphPost(node, parent);
+            })();
         } else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree) {
-            var node = ast.toNode();
-            var ret = v.visitNodePre(node, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                node.childNodes.forEach(function (next) {
-                    visitSub(ast, next, v);
-                });
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitNodePost(node, parent);
+            (function () {
+                var node = ast.toNode();
+                var ret = v.visitNodePre(node, parent);
+                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
+                    node.childNodes.forEach(function (next) {
+                        visitSub(ast, next, v);
+                    });
+                } else if (typeof ret === "function") {
+                    ret(v);
+                }
+                v.visitNodePost(node, parent);
+            })();
         } else if (ast instanceof ReVIEW.Parse.TextNodeSyntaxTree) {
-            var text = ast.toTextNode();
-            var ret = v.visitTextPre(text, parent);
-            if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitTextPost(text, parent);
+            (function () {
+                var text = ast.toTextNode();
+                var ret = v.visitTextPre(text, parent);
+                if (typeof ret === "function") {
+                    ret(v);
+                }
+                v.visitTextPost(text, parent);
+            })();
         } else if (ast) {
-            var ret = v.visitDefaultPre(parent, ast);
-            if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitDefaultPost(parent, ast);
+            (function () {
+                var ret = v.visitDefaultPre(parent, ast);
+                if (typeof ret === "function") {
+                    ret(v);
+                }
+                v.visitDefaultPost(parent, ast);
+            })();
         }
     }
 
@@ -7395,30 +7423,34 @@ var ReVIEW;
                         });
                     });
                     if (info) {
-                        var textNode = new TextNodeSyntaxTree({
-                            syntax: "BlockElementContentText",
-                            offset: info.offset,
-                            line: info.line,
-                            column: info.column,
-                            endPos: lastNode.endPos,
-                            text: chapter.process.input.substring(info.offset, lastNode.endPos)
-                        });
-                        resultNodes.push(textNode);
+                        (function () {
+                            var textNode = new TextNodeSyntaxTree({
+                                syntax: "BlockElementContentText",
+                                offset: info.offset,
+                                line: info.line,
+                                column: info.column,
+                                endPos: lastNode.endPos,
+                                text: chapter.process.input.substring(info.offset, lastNode.endPos)
+                            });
+                            resultNodes.push(textNode);
+                        })();
                     }
 
                     node.childNodes = resultNodes;
                 } else {
-                    var first = node.childNodes[0];
-                    var last = node.childNodes[node.childNodes.length - 1];
-                    var textNode = new TextNodeSyntaxTree({
-                        syntax: "BlockElementContentText",
-                        offset: first.offset,
-                        line: first.line,
-                        column: first.column,
-                        endPos: last.endPos,
-                        text: nodeContentToString(chapter.process, node)
-                    });
-                    node.childNodes = [textNode];
+                    (function () {
+                        var first = node.childNodes[0];
+                        var last = node.childNodes[node.childNodes.length - 1];
+                        var textNode = new TextNodeSyntaxTree({
+                            syntax: "BlockElementContentText",
+                            offset: first.offset,
+                            line: first.line,
+                            column: first.column,
+                            endPos: last.endPos,
+                            text: nodeContentToString(chapter.process, node)
+                        });
+                        node.childNodes = [textNode];
+                    })();
                 }
             };
             return SyntaxPreprocessor;
@@ -7629,189 +7661,9 @@ var ReVIEW;
 (function (ReVIEW) {
     "use strict";
 
-    var t = ReVIEW.i18n.t;
-
-    var SyntaxTree = ReVIEW.Parse.SyntaxTree;
-
-    var flatten = ReVIEW.flatten;
-
     
 
     
-
-    var Controller = (function () {
-        function Controller(options) {
-            if (typeof options === "undefined") { options = {}; }
-            this.options = options;
-        }
-        Controller.prototype.initConfig = function (data) {
-            if (ReVIEW.isNodeJS()) {
-                this.config = new NodeJSConfig(this.options, data);
-            } else {
-                this.config = new WebBrowserConfig(this.options, data);
-            }
-        };
-
-        Controller.prototype.process = function () {
-            var _this = this;
-            var acceptableSyntaxes = this.config.analyzer.getAcceptableSyntaxes();
-
-            if (this.config.listener.onAcceptables(acceptableSyntaxes) === false) {
-                this.config.listener.onCompileFailed();
-                return Promise.reject(null);
-            }
-
-            return this.processBook().then(function (book) {
-                var preprocessor = new ReVIEW.Build.SyntaxPreprocessor();
-                preprocessor.start(book, acceptableSyntaxes);
-
-                _this.config.validators.forEach(function (validator) {
-                    validator.start(book, acceptableSyntaxes, _this.config.builders);
-                });
-                if (book.reports.some(function (report) {
-                    return report.level === 2 /* Error */;
-                })) {
-                    return Promise.resolve(book);
-                }
-
-                var symbols = flatten(book.parts.map(function (part) {
-                    return part.chapters.map(function (chapter) {
-                        return chapter.process.symbols;
-                    });
-                }));
-                if (_this.config.listener.onSymbols(symbols) === false) {
-                    return Promise.resolve(book);
-                }
-
-                _this.config.builders.forEach(function (builder) {
-                    return builder.init(book);
-                });
-
-                var writePromises = [];
-                book.parts.forEach(function (part) {
-                    part.chapters.forEach(function (chapter) {
-                        chapter.builderProcesses.forEach(function (process) {
-                            var baseName = chapter.name.substr(0, chapter.name.lastIndexOf(".re"));
-                            var fileName = baseName + "." + process.builder.extention;
-                            var result = process.result;
-                            writePromises.push(_this.config.write(fileName, result));
-                        });
-                    });
-                });
-                return Promise.all(writePromises).then(function () {
-                    return book;
-                });
-            }).then(function (book) {
-                _this.config.listener.onReports(book.reports);
-                if (!book.hasError) {
-                    _this.config.listener.onCompileSuccess(book);
-                } else {
-                    _this.config.listener.onCompileFailed(book);
-                }
-
-                return book;
-            });
-        };
-
-        Controller.prototype.processBook = function () {
-            var _this = this;
-            var book = new ReVIEW.Book(this.config);
-            var promise = Promise.all(Object.keys(this.config.book).map(function (key, index) {
-                var chapters = _this.config.book[key];
-                return _this.processPart(book, index, key, chapters);
-            })).then(function (parts) {
-                book.parts = parts;
-
-                book.parts.forEach(function (part) {
-                    var chapters = [];
-                    part.chapters.forEach(function (chapter) {
-                        ReVIEW.visit(chapter.root, {
-                            visitDefaultPre: function (node) {
-                            },
-                            visitChapterPre: function (node) {
-                                chapters.push(node);
-                            }
-                        });
-                    });
-                    var counter = {};
-                    var max = 0;
-                    var currentLevel = 0;
-                    chapters.forEach(function (chapter) {
-                        var level = chapter.headline.level;
-                        max = Math.max(max, level);
-                        if (currentLevel > level) {
-                            for (var i = level + 1; i <= max; i++) {
-                                counter[i] = 0;
-                            }
-                        } else if (currentLevel < level) {
-                            for (var i = level; i <= max; i++) {
-                                counter[i] = 0;
-                            }
-                        }
-                        currentLevel = level;
-                        counter[level] = (counter[level] || 0) + 1;
-                        chapter.no = counter[level];
-                    });
-                });
-                return book;
-            });
-            return promise;
-        };
-
-        Controller.prototype.processPart = function (book, index, name, chapters) {
-            var _this = this;
-            if (typeof chapters === "undefined") { chapters = []; }
-            var part = new ReVIEW.Part(book, index + 1, name);
-            var promise = Promise.all(chapters.map(function (chapter, index) {
-                return _this.processChapter(book, part, index, chapter);
-            })).then(function (chapters) {
-                part.chapters = chapters;
-                return part;
-            });
-            return promise;
-        };
-
-        Controller.prototype.processChapter = function (book, part, index, chapterPath) {
-            var _this = this;
-            var resolvedPath = this.config.resolvePath(chapterPath);
-
-            var promise = new Promise(function (resolve, reject) {
-                try  {
-                    _this.config.read(resolvedPath).then(function (data) {
-                        try  {
-                            var parseResult = ReVIEW.Parse.parse(data);
-                            var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, parseResult.ast);
-                            resolve(chapter);
-                        } catch (e) {
-                            if (!(e instanceof PEG.SyntaxError)) {
-                                throw e;
-                            }
-                            var se = e;
-                            var errorNode = new SyntaxTree({
-                                syntax: se.name,
-                                line: se.line,
-                                column: se.column,
-                                offset: se.offset,
-                                endPos: -1
-                            });
-                            var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, null);
-                            chapter.process.error(se.message, errorNode);
-                            resolve(chapter);
-                        }
-                    }).catch(function (err) {
-                        var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, null, null);
-                        chapter.process.error(t("compile.file_not_exists", resolvedPath));
-                        resolve(chapter);
-                    });
-                } catch (e) {
-                    reject(e);
-                }
-            });
-            return promise;
-        };
-        return Controller;
-    })();
-    ReVIEW.Controller = Controller;
 
     var ConfigWrapper = (function () {
         function ConfigWrapper(original) {
@@ -7897,6 +7749,7 @@ var ReVIEW;
         };
         return ConfigWrapper;
     })();
+    ReVIEW.ConfigWrapper = ConfigWrapper;
 
     var NodeJSConfig = (function (_super) {
         __extends(NodeJSConfig, _super);
@@ -7989,6 +7842,7 @@ var ReVIEW;
         };
         return NodeJSConfig;
     })(ConfigWrapper);
+    ReVIEW.NodeJSConfig = NodeJSConfig;
 
     var WebBrowserConfig = (function (_super) {
         __extends(WebBrowserConfig, _super);
@@ -8090,6 +7944,196 @@ var ReVIEW;
         };
         return WebBrowserConfig;
     })(ConfigWrapper);
+    ReVIEW.WebBrowserConfig = WebBrowserConfig;
+})(ReVIEW || (ReVIEW = {}));
+var ReVIEW;
+(function (ReVIEW) {
+    "use strict";
+
+    var t = ReVIEW.i18n.t;
+
+    var SyntaxTree = ReVIEW.Parse.SyntaxTree;
+
+    var flatten = ReVIEW.flatten;
+
+    var NodeJSConfig = ReVIEW.NodeJSConfig;
+    var WebBrowserConfig = ReVIEW.WebBrowserConfig;
+
+    var Controller = (function () {
+        function Controller(options) {
+            if (typeof options === "undefined") { options = {}; }
+            this.options = options;
+        }
+        Controller.prototype.initConfig = function (data) {
+            if (ReVIEW.isNodeJS()) {
+                this.config = new NodeJSConfig(this.options, data);
+            } else {
+                this.config = new WebBrowserConfig(this.options, data);
+            }
+        };
+
+        Controller.prototype.process = function () {
+            var _this = this;
+            var acceptableSyntaxes = this.config.analyzer.getAcceptableSyntaxes();
+
+            if (this.config.listener.onAcceptables(acceptableSyntaxes) === false) {
+                this.config.listener.onCompileFailed();
+                return Promise.reject(null);
+            }
+
+            return this.processBook().then(function (book) {
+                var preprocessor = new ReVIEW.Build.SyntaxPreprocessor();
+                preprocessor.start(book, acceptableSyntaxes);
+
+                _this.config.validators.forEach(function (validator) {
+                    validator.start(book, acceptableSyntaxes, _this.config.builders);
+                });
+                if (book.reports.some(function (report) {
+                    return report.level === 2 /* Error */;
+                })) {
+                    return Promise.resolve(book);
+                }
+
+                var symbols = flatten(book.parts.map(function (part) {
+                    return part.chapters.map(function (chapter) {
+                        return chapter.process.symbols;
+                    });
+                }));
+                if (_this.config.listener.onSymbols(symbols) === false) {
+                    return Promise.resolve(book);
+                }
+
+                _this.config.builders.forEach(function (builder) {
+                    return builder.init(book);
+                });
+
+                var writePromises = [];
+                book.parts.forEach(function (part) {
+                    part.chapters.forEach(function (chapter) {
+                        chapter.builderProcesses.forEach(function (process) {
+                            var baseName = chapter.name.substr(0, chapter.name.lastIndexOf(".re"));
+                            var fileName = baseName + "." + process.builder.extention;
+                            var result = process.result;
+                            writePromises.push(_this.config.write(fileName, result));
+                        });
+                    });
+                });
+                return Promise.all(writePromises).then(function () {
+                    return book;
+                });
+            }).then(function (book) {
+                _this.config.listener.onReports(book.reports);
+                if (!book.hasError) {
+                    _this.config.listener.onCompileSuccess(book);
+                } else {
+                    _this.config.listener.onCompileFailed(book);
+                }
+
+                return book;
+            });
+        };
+
+        Controller.prototype.processBook = function () {
+            var _this = this;
+            var book = new ReVIEW.Book(this.config);
+            var promise = Promise.all(Object.keys(this.config.book).map(function (key, index) {
+                var chapters = _this.config.book[key];
+                return _this.processPart(book, index, key, chapters);
+            })).then(function (parts) {
+                book.parts = parts;
+
+                book.parts.forEach(function (part) {
+                    var chapters = [];
+                    part.chapters.forEach(function (chapter) {
+                        ReVIEW.visit(chapter.root, {
+                            visitDefaultPre: function (node) {
+                            },
+                            visitChapterPre: function (node) {
+                                chapters.push(node);
+                            }
+                        });
+                    });
+                    var counter = {};
+                    var max = 0;
+                    var currentLevel = 0;
+                    chapters.forEach(function (chapter) {
+                        var level = chapter.headline.level;
+                        max = Math.max(max, level);
+                        var i;
+                        if (currentLevel > level) {
+                            for (i = level + 1; i <= max; i++) {
+                                counter[i] = 0;
+                            }
+                        } else if (currentLevel < level) {
+                            for (i = level; i <= max; i++) {
+                                counter[i] = 0;
+                            }
+                        }
+                        currentLevel = level;
+                        counter[level] = (counter[level] || 0) + 1;
+                        chapter.no = counter[level];
+                    });
+                });
+                return book;
+            });
+            return promise;
+        };
+
+        Controller.prototype.processPart = function (book, index, name, chapters) {
+            var _this = this;
+            if (typeof chapters === "undefined") { chapters = []; }
+            var part = new ReVIEW.Part(book, index + 1, name);
+            var promise = Promise.all(chapters.map(function (chapter, index) {
+                return _this.processChapter(book, part, index, chapter);
+            })).then(function (chapters) {
+                part.chapters = chapters;
+                return part;
+            });
+            return promise;
+        };
+
+        Controller.prototype.processChapter = function (book, part, index, chapterPath) {
+            var _this = this;
+            var resolvedPath = this.config.resolvePath(chapterPath);
+
+            var promise = new Promise(function (resolve, reject) {
+                try  {
+                    _this.config.read(resolvedPath).then(function (data) {
+                        var chapter;
+                        try  {
+                            var parseResult = ReVIEW.Parse.parse(data);
+                            chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, parseResult.ast);
+                            resolve(chapter);
+                        } catch (e) {
+                            if (!(e instanceof PEG.SyntaxError)) {
+                                throw e;
+                            }
+                            var se = e;
+                            var errorNode = new SyntaxTree({
+                                syntax: se.name,
+                                line: se.line,
+                                column: se.column,
+                                offset: se.offset,
+                                endPos: -1
+                            });
+                            chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, null);
+                            chapter.process.error(se.message, errorNode);
+                            resolve(chapter);
+                        }
+                    }).catch(function (err) {
+                        var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, null, null);
+                        chapter.process.error(t("compile.file_not_exists", resolvedPath));
+                        resolve(chapter);
+                    });
+                } catch (e) {
+                    reject(e);
+                }
+            });
+            return promise;
+        };
+        return Controller;
+    })();
+    ReVIEW.Controller = Controller;
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
@@ -8547,10 +8591,12 @@ var ReVIEW;
                 var hexString = nodeContentToString(process, node);
                 var code = parseInt(hexString, 16);
                 var result = "";
+
                 while (code !== 0) {
                     result = String.fromCharCode(code & 0xFFFF) + result;
                     code >>>= 16;
                 }
+
                 process.out(result);
                 return false;
             };
@@ -9022,7 +9068,6 @@ var ReVIEW;
                 var caption = node.args[1].arg;
                 var scale = 1;
                 if (node.args[2]) {
-                    var arg3 = node.args[2].arg;
                     var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
                     var result = regexp.exec(node.args[2].arg);
                     if (result) {
@@ -9048,7 +9093,6 @@ var ReVIEW;
                 }
                 var scale = 1;
                 if (node.args[2]) {
-                    var arg3 = node.args[2].arg;
                     var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
                     var result = regexp.exec(node.args[2].arg);
                     if (result) {

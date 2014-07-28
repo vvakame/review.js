@@ -21,9 +21,11 @@
 // Cmd+クリック 定義へジャンプ
 
 // extend lib.d.ts declaration.
+/* tslint:disable:interface-name */
 interface String {
 	trimLeft():string;
 }
+/* tslint:enable:interface-name */
 
 // AMD用
 declare var define:any;

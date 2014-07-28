@@ -223,20 +223,6 @@ module ReVIEW {
 	 * 実行するためのヘルパクラス群
 	 */
 	export module Exec {
-		export interface ResultPromise {
-			success():ResultSuccess;
-			failure():ResultFailure;
-		}
-
-		export interface ResultSuccess {
-			book:ReVIEW.Book;
-			results?:any;
-		}
-
-		export interface ResultFailure {
-			book:ReVIEW.Book;
-		}
-
 		export function singleCompile(input:string, fileName?:string, target?:string, tmpConfig?:any /* ReVIEW.IConfig */) {
 			var config:ReVIEW.IConfig = tmpConfig || <any>{};
 			config.read = config.read || (()=> Promise.resolve(input));
