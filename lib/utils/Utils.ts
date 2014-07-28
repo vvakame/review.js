@@ -281,9 +281,9 @@ module ReVIEW {
 				originalCompileSuccess(book);
 			};
 			var originalCompileFailed = config.listener.onCompileFailed;
-			config.listener.onCompileFailed = ()=> {
+			config.listener.onCompileFailed = (book)=> {
 				success = false;
-				originalCompileFailed();
+				originalCompileFailed(book);
 			};
 
 			return ReVIEW

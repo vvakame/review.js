@@ -4853,9 +4853,9 @@ var ReVIEW;
                 originalCompileSuccess(book);
             };
             var originalCompileFailed = config.listener.onCompileFailed;
-            config.listener.onCompileFailed = function () {
+            config.listener.onCompileFailed = function (book) {
                 success = false;
-                originalCompileFailed();
+                originalCompileFailed(book);
             };
 
             return ReVIEW.start(function (review) {
@@ -7706,7 +7706,7 @@ var ReVIEW;
                 if (!book.hasError) {
                     _this.config.listener.onCompileSuccess(book);
                 } else {
-                    _this.config.listener.onCompileFailed();
+                    _this.config.listener.onCompileFailed(book);
                 }
 
                 return book;
@@ -8066,7 +8066,7 @@ var ReVIEW;
         WebBrowserConfig.prototype.onCompileSuccess = function (book) {
         };
 
-        WebBrowserConfig.prototype.onCompileFailed = function () {
+        WebBrowserConfig.prototype.onCompileFailed = function (book) {
         };
 
         WebBrowserConfig.prototype.resolvePath = function (path) {

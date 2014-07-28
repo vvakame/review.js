@@ -641,7 +641,7 @@ declare module ReVIEW {
         onSymbols?: (symbols: ISymbol[]) => any;
         onReports?: (reports: ProcessReport[]) => any;
         onCompileSuccess?: (book: Book) => void;
-        onCompileFailed?: () => void;
+        onCompileFailed?: (book?: Book) => void;
     }
     interface IConfigBook {
         preface?: string[];

@@ -54,7 +54,7 @@ module ReVIEW {
 		onReports?:(reports:ReVIEW.ProcessReport[])=>any;
 
 		onCompileSuccess?:(book:ReVIEW.Book)=>void;
-		onCompileFailed?:()=>void;
+		onCompileFailed?:(book?:ReVIEW.Book)=>void;
 	}
 
 	export interface IConfigBook {
@@ -137,7 +137,7 @@ module ReVIEW {
 				if (!book.hasError) {
 					this.config.listener.onCompileSuccess(book);
 				} else {
-					this.config.listener.onCompileFailed();
+					this.config.listener.onCompileFailed(book);
 				}
 
 				return book;
@@ -449,7 +449,7 @@ module ReVIEW {
 		onCompileSuccess(book:Book) {
 		}
 
-		onCompileFailed() {
+		onCompileFailed(book?:Book) {
 		}
 
 		resolvePath(path:string):string {
