@@ -3,21 +3,21 @@
   "offset": 0,
   "line": 1,
   "column": 1,
-  "endPos": 112,
+  "endPos": 156,
   "childNodes": [
     {
       "ruleName": "Chapters",
       "offset": 0,
       "line": 1,
       "column": 1,
-      "endPos": 112,
+      "endPos": 156,
       "childNodes": [
         {
           "ruleName": "Chapter",
           "offset": 0,
           "line": 1,
           "column": 1,
-          "endPos": 112,
+          "endPos": 156,
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
@@ -157,7 +157,7 @@
               "offset": 79,
               "line": 7,
               "column": 1,
-              "endPos": 112,
+              "endPos": 113,
               "childNodes": [
                 {
                   "ruleName": "InlineElement",
@@ -181,6 +181,42 @@
                           "column": 8,
                           "endPos": 110,
                           "text": "|text,html|textとhtmlで出る。"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 113,
+              "line": 9,
+              "column": 1,
+              "endPos": 156,
+              "childNodes": [
+                {
+                  "ruleName": "InlineElement",
+                  "offset": 113,
+                  "line": 9,
+                  "column": 1,
+                  "endPos": 155,
+                  "symbol": "raw",
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "offset": 120,
+                      "line": 9,
+                      "column": 8,
+                      "endPos": 154,
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "offset": 120,
+                          "line": 9,
+                          "column": 8,
+                          "endPos": 154,
+                          "text": "|html|<strong>HTMLタグ書いてみる</strong>"
                         }
                       ]
                     }

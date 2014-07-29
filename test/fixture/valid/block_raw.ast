@@ -3,21 +3,21 @@
   "offset": 0,
   "line": 1,
   "column": 1,
-  "endPos": 107,
+  "endPos": 150,
   "childNodes": [
     {
       "ruleName": "Chapters",
       "offset": 0,
       "line": 1,
       "column": 1,
-      "endPos": 107,
+      "endPos": 150,
       "childNodes": [
         {
           "ruleName": "Chapter",
           "offset": 0,
           "line": 1,
           "column": 1,
-          "endPos": 107,
+          "endPos": 150,
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
@@ -106,7 +106,7 @@
               "offset": 75,
               "line": 7,
               "column": 1,
-              "endPos": 107,
+              "endPos": 108,
               "symbol": "raw",
               "args": [
                 {
@@ -116,6 +116,25 @@
                   "column": 6,
                   "endPos": 106,
                   "arg": "|text,html|textとhtmlで出る。"
+                }
+              ],
+              "childNodes": []
+            },
+            {
+              "ruleName": "BlockElement",
+              "offset": 108,
+              "line": 9,
+              "column": 1,
+              "endPos": 150,
+              "symbol": "raw",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 113,
+                  "line": 9,
+                  "column": 6,
+                  "endPos": 149,
+                  "arg": "|html|<strong>HTMLタグ書いてみる</strong>"
                 }
               ],
               "childNodes": []
