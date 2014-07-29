@@ -21,24 +21,24 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 
 	var exec = require("child_process").exec;
 
-	function convertByRubyReVIEW(fileName:string, target:string, callback?:(result:string, error:any)=>void):void {
-		var result:string;
-		var error:any;
-		exec(
-				"review-compile  --level=1 --target=" + target + " " + fileName + ".re",
-			{
-				cwd: "test/fixture/valid",
-				env: process.env
-			},
-			(err:Error, stdout:NodeBuffer, stderr:NodeBuffer)=> {
-				assert(!err);
-				result = stdout.toString();
-				error = err;
-				if (callback) {
-					callback(result, error);
+	function convertByRubyReVIEW(fileName:string, target:string):Promise<string> {
+		return new Promise<string>((resolve, reject)=> {
+			exec(
+					"review-compile  --level=1 --target=" + target + " " + fileName + ".re",
+				{
+					cwd: "test/fixture/valid",
+					env: process.env
+				},
+				(err:Error, stdout:NodeBuffer, stderr:NodeBuffer)=> {
+					if (err) {
+						reject(err);
+						return;
+					} else {
+						resolve(stdout.toString());
+					}
 				}
-			}
-		);
+			);
+		});
 	}
 
 	// PhantomJS 環境下専用のテスト
@@ -91,14 +91,16 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 
 								if (!fs.existsSync(targetFileName)) {
 									// Ruby版の出力ファイルがない場合、出力処理を行う
-									convertByRubyReVIEW(baseName, typeInfo.target, (data, error) => {
-										assert(!error);
-										fs.writeFileSync(targetFileName, data);
+									return convertByRubyReVIEW(baseName, typeInfo.target)
+										.then(data=> {
+											fs.writeFileSync(targetFileName, data);
 
-										assertResult();
-									});
+											assertResult();
+											return true;
+										});
 								} else {
 									assertResult();
+									return Promise.resolve(true);
 								}
 							});
 					});
