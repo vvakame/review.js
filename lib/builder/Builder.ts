@@ -26,6 +26,7 @@ module ReVIEW.Build {
 		name:string;
 		extention:string;
 		init(book:Book):void;
+		escape(data:any):string;
 		chapterPre(process:BuilderProcess, node:ChapterSyntaxTree):any;
 		chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any;
 		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree):any;
@@ -138,6 +139,10 @@ module ReVIEW.Build {
 					chapter.process.doAfterProcess();
 				});
 			});
+		}
+
+		escape(data:any):string {
+			throw new Error("please override this method");
 		}
 
 		processPost(process:BuilderProcess, chapter:Chapter):void {
@@ -285,10 +290,10 @@ module ReVIEW.Build {
 				var target = matches[1].split(",").some(name => this.name.toLowerCase() === name + "builder");
 				if (target) {
 					// "|hoge,fuga| piyo" の場合 matches[1] === "hoge,fuga"
-					process.out(content.substring(matches[0].length));
+					process.outRaw(content.substring(matches[0].length));
 				}
 			} else {
-				process.out(content);
+				process.outRaw(content);
 			}
 			return false;
 		}
@@ -300,10 +305,10 @@ module ReVIEW.Build {
 				var target = matches[1].split(",").some(name => this.name.toLowerCase() === name + "builder");
 				if (target) {
 					// "|hoge,fuga| piyo" の場合 matches[1] === "hoge,fuga"
-					process.out(content.substring(matches[0].length));
+					process.outRaw(content.substring(matches[0].length));
 				}
 			} else {
-				process.out(content);
+				process.outRaw(content);
 			}
 			return false;
 		}

@@ -25,8 +25,21 @@ module ReVIEW.Build {
 	export class HtmlBuilder extends DefaultBuilder {
 		extention = "html";
 
+		escapeMap:{[char:string]:string;} = {
+			"&": "&amp;",
+			"<": "&lt;",
+			">": "&gt;",
+			'"': '&quot;',
+			"'": '&#39;',
+			"/": '&#x2F;'
+		};
+
 		constructor(private standalone = true) {
 			super();
+		}
+
+		escape(data:any):string {
+			return String(data).replace(/[&<>"'\/]/g, c=> this.escapeMap[c]);
 		}
 
 		processPost(process:BuilderProcess, chapter:Chapter):void {
@@ -50,22 +63,22 @@ module ReVIEW.Build {
 						}
 					}
 				});
-				pre += "  <title>" + name + "</title>\n";
+				pre += "  <title>" + this.escape(name) + "</title>\n";
 				pre += "</head>\n";
 				pre += "<body>\n";
 				process.pushOut(pre);
 
-				process.out("</body>\n");
-				process.out("</html>\n");
+				process.outRaw("</body>\n");
+				process.outRaw("</html>\n");
 			}
 		}
 
 		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
-			process.out("<h").out(node.level);
+			process.outRaw("<h").out(node.level);
 			if (node.label) {
-				process.out(" id=\"").out(node.label.arg).out("\"");
+				process.outRaw(" id=\"").out(node.label.arg).outRaw("\"");
 			}
-			process.out(">");
+			process.outRaw(">");
 			var constructLabel = (node:SyntaxTree) => {
 				var numbers:{[no:number]:number;} = {};
 				var maxLevel = 0;
@@ -91,7 +104,7 @@ module ReVIEW.Build {
 				}
 				return result.join("-");
 			};
-			process.out("<a id=\"h").out(constructLabel(node)).out("\"></a>");
+			process.outRaw("<a id=\"h").out(constructLabel(node)).outRaw("\"></a>");
 
 			if (node.level === 1) {
 				var text = i18n.t("builder.chapter", node.parentNode.no);
@@ -102,20 +115,20 @@ module ReVIEW.Build {
 		}
 
 		headlinePost(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
-			process.out("</h").out(node.level).out(">\n");
+			process.outRaw("</h").out(node.level).outRaw(">\n");
 		}
 
 		columnPre(process:BuilderProcess, node:ColumnSyntaxTree) {
-			process.out("<div class=\"column\">\n\n");
+			process.outRaw("<div class=\"column\">\n\n");
 		}
 
 		columnPost(process:BuilderProcess, node:ColumnSyntaxTree) {
-			process.out("</div>\n");
+			process.outRaw("</div>\n");
 		}
 
 		columnHeadlinePre(process:BuilderProcess, node:ColumnHeadlineSyntaxTree) {
-			process.out("<h").out(node.level).out(">");
-			process.out("<a id=\"column-").out(node.parentNode.no).out("\"></a>");
+			process.outRaw("<h").out(node.level).outRaw(">");
+			process.outRaw("<a id=\"column-").out(node.parentNode.no).outRaw("\"></a>");
 
 			return (v:ITreeVisitor)=> {
 				ReVIEW.visit(node.caption, v);
@@ -123,83 +136,82 @@ module ReVIEW.Build {
 		}
 
 		columnHeadlinePost(process:BuilderProcess, node:ColumnHeadlineSyntaxTree) {
-			process.out("</h").out(node.level).out(">\n");
+			process.outRaw("</h").out(node.level).outRaw(">\n");
 		}
 
 		paragraphPre(process:BuilderProcess, name:string, node:NodeSyntaxTree) {
 			if (node.prev && node.prev.isBlockElement() && node.prev.toBlockElement().symbol === "noindent") {
-				process.out("<p class=\"noindent\">");
+				process.outRaw("<p class=\"noindent\">");
 			} else {
-				process.out("<p>");
+				process.outRaw("<p>");
 			}
 		}
 
 		paragraphPost(process:BuilderProcess, name:string, node:NodeSyntaxTree) {
-			process.out("</p>\n");
+			process.outRaw("</p>\n");
 		}
 
 		ulistPre(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
 			this.ulistParentHelper(process, node, ()=> {
-				process.out("<ul>\n<li>");
+				process.outRaw("<ul>\n<li>");
 			});
 			// TODO <p> で囲まれないようにする
 			if (node.prev instanceof UlistElementSyntaxTree === false) {
-				process.out("<ul>\n");
+				process.outRaw("<ul>\n");
 			}
-			process.out("<li>");
+			process.outRaw("<li>");
 		}
 
 		ulistPost(process:BuilderProcess, name:string, node:UlistElementSyntaxTree) {
-			process.out("</li>\n");
+			process.outRaw("</li>\n");
 			if (node.next instanceof UlistElementSyntaxTree === false) {
-				process.out("</ul>\n");
+				process.outRaw("</ul>\n");
 			}
 			this.ulistParentHelper(process, node, ()=> {
-				process.out("</li>\n</ul>\n");
+				process.outRaw("</li>\n</ul>\n");
 			});
 		}
 
 		olistPre(process:BuilderProcess, name:string, node:OlistElementSyntaxTree) {
 			if (node.prev instanceof OlistElementSyntaxTree === false) {
-				process.out("<ol>\n");
+				process.outRaw("<ol>\n");
 			}
-			process.out("<li>");
+			process.outRaw("<li>");
 		}
 
 		olistPost(process:BuilderProcess, name:string, node:OlistElementSyntaxTree) {
-			process.out("</li>\n");
+			process.outRaw("</li>\n");
 			if (node.next instanceof OlistElementSyntaxTree === false) {
-				process.out("</ol>\n");
+				process.outRaw("</ol>\n");
 			}
 		}
 
 		dlistPre(process:BuilderProcess, name:string, node:DlistElementSyntaxTree) {
 			if (node.prev instanceof DlistElementSyntaxTree === false) {
-				process.out("<dl>\n");
+				process.outRaw("<dl>\n");
 			}
 			return (v:ITreeVisitor)=> {
-				process.out("<dt>");
+				process.outRaw("<dt>");
 				ReVIEW.visit(node.text, v);
-				process.out("</dt>\n");
-				process.out("<dd>");
+				process.outRaw("</dt>\n");
+				process.outRaw("<dd>");
 				ReVIEW.visit(node.content, v);
-				process.out("</dd>\n");
+				process.outRaw("</dd>\n");
 			};
 		}
 
 		dlistPost(process:BuilderProcess, name:string, node:DlistElementSyntaxTree) {
 			if (node.next instanceof DlistElementSyntaxTree === false) {
-				process.out("</dl>\n");
+				process.outRaw("</dl>\n");
 			}
 		}
 
 		block_list_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			//TODO エスケープ処理
-			process.out("<div class=\"caption-code\">\n");
+			process.outRaw("<div class=\"caption-code\">\n");
 			var chapter = findChapter(node, 1);
 			var text = i18n.t("builder.list", chapter.fqn, node.no);
-			process.out("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).out("</p>\n");
-			process.out("<pre class=\"list\">");
+			process.outRaw("<p class=\"caption\">").out(text).outRaw(": ").out(node.args[1].arg).outRaw("</p>\n");
+			process.outRaw("<pre class=\"list\">");
 			return (v:ITreeVisitor)=> {
 				// name, args はパスしたい
 				node.childNodes.forEach((node)=> {
@@ -209,16 +221,15 @@ module ReVIEW.Build {
 		}
 
 		block_list_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("\n</pre>\n").out("</div>\n");
+			process.outRaw("\n</pre>\n").outRaw("</div>\n");
 		}
 
 		block_listnum_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			//TODO エスケープ処理
-			process.out("<div class=\"code\">\n");
+			process.outRaw("<div class=\"code\">\n");
 			var chapter = findChapter(node, 1);
 			var text = i18n.t("builder.list", chapter.fqn, node.no);
-			process.out("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).out("</p>\n");
-			process.out("<pre class=\"list\">");
+			process.outRaw("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).outRaw("</p>\n");
+			process.outRaw("<pre class=\"list\">");
 			var lineCount = 1;
 			return (v:ITreeVisitor)=> {
 				// name, args はパスしたい
@@ -246,7 +257,7 @@ module ReVIEW.Build {
 		}
 
 		block_listnum_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("\n</pre>\n").out("</div>\n");
+			process.outRaw("\n</pre>\n").outRaw("</div>\n");
 		}
 
 		inline_list(process:BuilderProcess, node:InlineElementSyntaxTree) {
@@ -258,12 +269,11 @@ module ReVIEW.Build {
 		}
 
 		block_emlist_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			//TODO エスケープ処理
-			process.out("<div class=\"emlist-code\">\n");
+			process.outRaw("<div class=\"emlist-code\">\n");
 			if (node.args[0]) {
-				process.out("<p class=\"caption\">").out(node.args[0].arg).out("</p>\n");
+				process.outRaw("<p class=\"caption\">").out(node.args[0].arg).outRaw("</p>\n");
 			}
-			process.out("<pre class=\"emlist\">");
+			process.outRaw("<pre class=\"emlist\">");
 			return (v:ITreeVisitor)=> {
 				// name, args はパスしたい
 				node.childNodes.forEach((node)=> {
@@ -273,13 +283,12 @@ module ReVIEW.Build {
 		}
 
 		block_emlist_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("\n</pre>\n").out("</div>\n");
+			process.outRaw("\n</pre>\n").outRaw("</div>\n");
 		}
 
 		block_emlistnum_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			//TODO エスケープ処理
-			process.out("<div class=\"emlistnum-code\">\n");
-			process.out("<pre class=\"emlist\">");
+			process.outRaw("<div class=\"emlistnum-code\">\n");
+			process.outRaw("<pre class=\"emlist\">");
 			var lineCount = 1;
 			return (v:ITreeVisitor)=> {
 				// name, args はパスしたい
@@ -307,7 +316,7 @@ module ReVIEW.Build {
 		}
 
 		block_emlistnum_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("\n</pre>\n").out("</div>\n");
+			process.outRaw("\n</pre>\n").outRaw("</div>\n");
 		}
 
 		inline_hd_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
@@ -327,23 +336,23 @@ module ReVIEW.Build {
 		}
 
 		inline_br(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<br />");
+			process.outRaw("<br />");
 		}
 
 		inline_b_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<b>");
+			process.outRaw("<b>");
 		}
 
 		inline_b_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("</b>");
+			process.outRaw("</b>");
 		}
 
 		inline_code_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<tt class=\"inline-code\">");
+			process.outRaw("<tt class=\"inline-code\">");
 		}
 
 		inline_code_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("</tt>");
+			process.outRaw("</tt>");
 		}
 
 		inline_href(process:BuilderProcess, node:InlineElementSyntaxTree) {
@@ -353,53 +362,52 @@ module ReVIEW.Build {
 				text = href.slice(href.indexOf(",") + 1).trimLeft();
 				href = href.slice(0, href.indexOf(","));
 			}
-			process.out("<a href=\"" + href + "\" class=\"link\">").out(text).out("</a>");
+			process.outRaw("<a href=\"").out(href).outRaw("\" class=\"link\">").out(text).outRaw("</a>");
 			return false;
 		}
 
 		block_label(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("<a id=\"").out(node.args[0].arg).out("\"></a>\n");
+			process.outRaw("<a id=\"").out(node.args[0].arg).outRaw("\"></a>\n");
 			return false;
 		}
 
 		inline_tt_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<tt>"); // TODO RubyReviewではContentに改行が含まれている奴の挙動がサポートされていない。
+			process.outRaw("<tt>"); // TODO RubyReviewではContentに改行が含まれている奴の挙動がサポートされていない。
 		}
 
 		inline_tt_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("</tt>");
+			process.outRaw("</tt>");
 		}
 
 		inline_ruby_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<ruby>");
+			process.outRaw("<ruby>");
 			return (v:ReVIEW.ITreeVisitor) => {
 				// name, args はパス
 				node.childNodes.forEach(node=> {
 					var contentString = nodeContentToString(process, node);
 					var keywordData = contentString.split(",");
-					// TODO ユーザの入力内容のチェックが必要
-					process.out("<rb>").out(keywordData[0]).out("</rb>");
-					process.out("<rp>（</rp><rt>");
+					process.outRaw("<rb>").out(keywordData[0]).outRaw("</rb>");
+					process.outRaw("<rp>（</rp><rt>");
 					process.out(keywordData[1]);
-					process.out("</rt><rp>）</rp>");
+					process.outRaw("</rt><rp>）</rp>");
 				});
 			};
 		}
 
 		inline_ruby_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("</ruby>");
+			process.outRaw("</ruby>");
 		}
 
 		inline_u_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<u>");
+			process.outRaw("<u>");
 		}
 
 		inline_u_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("</u>");
+			process.outRaw("</u>");
 		}
 
 		inline_kw_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<b class=\"kw\">");
+			process.outRaw("<b class=\"kw\">");
 			return (v:ReVIEW.ITreeVisitor) => {
 				// name, args はパス
 				node.childNodes.forEach(node=> {
@@ -414,22 +422,22 @@ module ReVIEW.Build {
 		inline_kw_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			var contentString = nodeContentToString(process, node);
 			var keywordData = contentString.split(",");
-			process.out("</b>").out("<!-- IDX:").out(keywordData[0]).out(" -->");
+			process.outRaw("</b>").outRaw("<!-- IDX:").out(keywordData[0]).outRaw(" -->");
 		}
 
 		inline_em_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<em>");
+			process.outRaw("<em>");
 		}
 
 		inline_em_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("</em>");
+			process.outRaw("</em>");
 		}
 
 		block_image(process:BuilderProcess, node:BlockElementSyntaxTree) {
 			// TODO ファイル名探索ロジックをもっと頑張る(jpgとかsvgとか)
 			var chapterFileName = process.base.chapter.name;
 			var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
-			var imagePath = "images/" + chapterName + "-" + node.args[0].arg + ".png";
+			var imagePath = "images/" + this.escape(chapterName) + "-" + this.escape(node.args[0].arg) + ".png";
 			var caption = node.args[1].arg;
 			var scale:number = 1;
 			if (node.args[2]) {
@@ -440,12 +448,13 @@ module ReVIEW.Build {
 					scale = parseFloat(result[1]);
 				}
 			}
-			process.out("<div class=\"image\">\n");
-			process.out("<img src=\"" + imagePath + "\" alt=\"" + caption + "\" width=\"" + (scale * 100) + "%\" />\n");
-			process.out("<p class=\"caption\">\n");
+			process.outRaw("<div class=\"image\">\n");
+			// imagePathは変数作成時点でユーザ入力部分をescapeしている
+			process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
+			process.outRaw("<p class=\"caption\">\n");
 			process.out("図").out(process.base.chapter.no).out(".").out(node.no).out(": ").out(caption);
-			process.out("\n</p>\n");
-			process.out("</div>\n");
+			process.outRaw("\n</p>\n");
+			process.outRaw("</div>\n");
 			return false;
 		}
 
@@ -453,7 +462,7 @@ module ReVIEW.Build {
 			// TODO ファイル名探索ロジックをもっと頑張る(jpgとかsvgとか)
 			var chapterFileName = process.base.chapter.name;
 			var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
-			var imagePath = "images/" + chapterName + "-" + node.args[0].arg + ".png";
+			var imagePath = "images/" + this.escape(chapterName) + "-" + this.escape(node.args[0].arg) + ".png";
 			var caption:string = "";
 			if (node.args[1]) {
 				caption = node.args[1].arg;
@@ -467,18 +476,19 @@ module ReVIEW.Build {
 					scale = parseFloat(result[1]);
 				}
 			}
-			process.out("<div class=\"image\">\n");
+			process.outRaw("<div class=\"image\">\n");
+			// imagePathは変数作成時点でユーザ入力部分をescapeしている
 			if (scale !== 1) {
-				process.out("<img src=\"" + imagePath + "\" alt=\"" + caption + "\" width=\"" + (scale * 100) + "%\" />\n");
+				process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
 			} else {
-				process.out("<img src=\"" + imagePath + "\" alt=\"" + caption + "\" />\n");
+				process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" />\n");
 			}
 			if (node.args[1]) {
-				process.out("<p class=\"caption\">\n");
+				process.outRaw("<p class=\"caption\">\n");
 				process.out("図: ").out(caption);
-				process.out("\n</p>\n");
+				process.outRaw("\n</p>\n");
 			}
-			process.out("</div>\n");
+			process.outRaw("</div>\n");
 			return false;
 		}
 
@@ -493,47 +503,47 @@ module ReVIEW.Build {
 			var chapterFileName = process.base.chapter.name;
 			var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
 			var imageName = nodeContentToString(process, node);
-			var imagePath = "images/" + chapterName + "-" + imageName + ".png";
-			process.out("<img src=\"").out(imagePath).out("\" alt=\"[").out(imageName).out("]\" />");
+			var imagePath = "images/" + this.escape(chapterName) + "-" + this.escape(imageName) + ".png";
+			process.outRaw("<img src=\"" + imagePath + "\" alt=\"[").out(imageName).outRaw("]\" />");
 			return false;
 		}
 
 		block_footnote(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("<div class=\"footnote\"><p class=\"footnote\">[<a id=\"fn-");
-			process.out(node.args[0].arg).out("\">*").out(node.no).out("</a>] ");
+			process.outRaw("<div class=\"footnote\"><p class=\"footnote\">[<a id=\"fn-");
+			process.out(node.args[0].arg).outRaw("\">*").out(node.no).outRaw("</a>] ");
 			process.out(node.args[1].arg);
-			process.out("</p></div>\n");
+			process.outRaw("</p></div>\n");
 			return false;
 		}
 
 		inline_fn(process:BuilderProcess, node:InlineElementSyntaxTree) {
 			var footnoteNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-			process.out("<a href=\"#fn-").out(footnoteNode.args[0].arg).out("\">*").out(footnoteNode.no).out("</a>");
+			process.outRaw("<a href=\"#fn-").out(footnoteNode.args[0].arg).outRaw("\">*").out(footnoteNode.no).outRaw("</a>");
 			return false;
 		}
 
 		block_lead_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("<div class=\"lead\">\n");
+			process.outRaw("<div class=\"lead\">\n");
 		}
 
 		block_lead_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("</div>\n");
+			process.outRaw("</div>\n");
 		}
 
 		inline_tti_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<tt><i>");
+			process.outRaw("<tt><i>");
 		}
 
 		inline_tti_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("</i></tt>");
+			process.outRaw("</i></tt>");
 		}
 
 		inline_ttb_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<tt><b>");
+			process.outRaw("<tt><b>");
 		}
 
 		inline_ttb_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("</b></tt>");
+			process.outRaw("</b></tt>");
 		}
 
 		block_noindent(process:BuilderProcess, node:BlockElementSyntaxTree) {
@@ -542,10 +552,9 @@ module ReVIEW.Build {
 		}
 
 		block_source_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			//TODO エスケープ処理
-			process.out("<div class=\"source-code\">\n");
-			process.out("<p class=\"caption\">").out(node.args[0].arg).out("</p>\n");
-			process.out("<pre class=\"source\">");
+			process.outRaw("<div class=\"source-code\">\n");
+			process.outRaw("<p class=\"caption\">").out(node.args[0].arg).outRaw("</p>\n");
+			process.outRaw("<pre class=\"source\">");
 			return (v:ITreeVisitor)=> {
 				// name, args はパスしたい
 				node.childNodes.forEach((node)=> {
@@ -555,13 +564,12 @@ module ReVIEW.Build {
 		}
 
 		block_source_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("\n</pre>\n").out("</div>\n");
+			process.outRaw("\n</pre>\n").outRaw("</div>\n");
 		}
 
 		block_cmd_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			//TODO エスケープ処理
-			process.out("<div class=\"cmd-code\">\n");
-			process.out("<pre class=\"cmd\">");
+			process.outRaw("<div class=\"cmd-code\">\n");
+			process.outRaw("<pre class=\"cmd\">");
 			return (v:ITreeVisitor)=> {
 				// name, args はパスしたい
 				node.childNodes.forEach((node)=> {
@@ -571,11 +579,11 @@ module ReVIEW.Build {
 		}
 
 		block_cmd_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("\n</pre>\n").out("</div>\n");
+			process.outRaw("\n</pre>\n").outRaw("</div>\n");
 		}
 
 		block_quote_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("<blockquote><p>");
+			process.outRaw("<blockquote><p>");
 			return (v:ITreeVisitor)=> {
 				// name, args はパスしたい
 				node.childNodes.forEach((node)=> {
@@ -585,57 +593,56 @@ module ReVIEW.Build {
 		}
 
 		block_quote_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("</p></blockquote>\n");
+			process.outRaw("</p></blockquote>\n");
 		}
 
 		inline_ami_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<span class=\"ami\">");
+			process.outRaw("<span class=\"ami\">");
 		}
 
 		inline_ami_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("</span>");
+			process.outRaw("</span>");
 		}
 
 		inline_bou_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<span class=\"bou\">");
+			process.outRaw("<span class=\"bou\">");
 		}
 
 		inline_bou_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("</span>");
+			process.outRaw("</span>");
 		}
 
 		inline_i_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<i>");
+			process.outRaw("<i>");
 		}
 
 		inline_i_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("</i>");
+			process.outRaw("</i>");
 		}
 
 		inline_strong_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<strong>");
+			process.outRaw("<strong>");
 		}
 
 		inline_strong_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("</strong>");
+			process.outRaw("</strong>");
 		}
 
 		inline_uchar_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("&#x");
+			process.outRaw("&#x");
 		}
 
 		inline_uchar_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out(";");
+			process.outRaw(";");
 		}
 
 		block_table_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
 			// TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
-			//TODO エスケープ処理
-			process.out("<div>\n");
+			process.outRaw("<div>\n");
 			var chapter = findChapter(node, 1);
 			var text = i18n.t("builder.table", chapter.fqn, node.no);
-			process.out("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).out("</p>\n");
-			process.out("<pre>");
+			process.outRaw("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).outRaw("</p>\n");
+			process.outRaw("<pre>");
 			return (v:ITreeVisitor)=> {
 				// name, args はパスしたい
 				node.childNodes.forEach((node)=> {
@@ -646,7 +653,7 @@ module ReVIEW.Build {
 
 		block_table_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
 			// TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
-			process.out("\n</pre>\n").out("</div>\n");
+			process.outRaw("\n</pre>\n").outRaw("</div>\n");
 		}
 
 		inline_table(process:BuilderProcess, node:InlineElementSyntaxTree) {
@@ -664,7 +671,7 @@ module ReVIEW.Build {
 		}
 
 		block_comment_pre(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out("<!-- ");
+			process.outRaw("<!-- ");
 
 			return (v:ITreeVisitor)=> {
 				// name, args はパスしたい
@@ -675,15 +682,15 @@ module ReVIEW.Build {
 		}
 
 		block_comment_post(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			process.out(" -->\n");
+			process.outRaw(" -->\n");
 		}
 
 		inline_comment_pre(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out("<!-- ");
+			process.outRaw("<!-- ");
 		}
 
 		inline_comment_post(process:BuilderProcess, node:InlineElementSyntaxTree) {
-			process.out(" -->");
+			process.outRaw(" -->");
 		}
 	}
 }

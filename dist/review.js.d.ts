@@ -428,6 +428,7 @@ declare module ReVIEW.Build {
         name: string;
         extention: string;
         init(book: Book): void;
+        escape(data: any): string;
         chapterPre(process: BuilderProcess, node: Parse.ChapterSyntaxTree): any;
         chapterPost(process: BuilderProcess, node: Parse.ChapterSyntaxTree): any;
         headlinePre(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): any;
@@ -451,6 +452,7 @@ declare module ReVIEW.Build {
         public extention: string;
         public name : string;
         public init(book: Book): void;
+        public escape(data: any): string;
         public processPost(process: BuilderProcess, chapter: Chapter): void;
         public chapterPre(process: BuilderProcess, node: Parse.ChapterSyntaxTree): any;
         public chapterPost(process: BuilderProcess, node: Parse.ChapterSyntaxTree): any;
@@ -548,6 +550,7 @@ declare module ReVIEW {
         public error : (message: string, ...nodes: Parse.SyntaxTree[]) => void;
         public result: string;
         public out(data: any): BuilderProcess;
+        public outRaw(data: any): BuilderProcess;
         public pushOut(data: string): BuilderProcess;
         public input : string;
         public symbols : ISymbol[];
@@ -694,6 +697,7 @@ declare module ReVIEW {
 declare module ReVIEW.Build {
     class TextBuilder extends DefaultBuilder {
         public extention: string;
+        public escape(data: any): string;
         public headlinePre(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): void;
         public headlinePost(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): void;
         public columnHeadlinePre(process: BuilderProcess, node: Parse.ColumnHeadlineSyntaxTree): (v: ITreeVisitor) => void;
@@ -776,7 +780,11 @@ declare module ReVIEW.Build {
     class HtmlBuilder extends DefaultBuilder {
         private standalone;
         public extention: string;
+        public escapeMap: {
+            [char: string]: string;
+        };
         constructor(standalone?: boolean);
+        public escape(data: any): string;
         public processPost(process: BuilderProcess, chapter: Chapter): void;
         public headlinePre(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): void;
         public headlinePost(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): void;

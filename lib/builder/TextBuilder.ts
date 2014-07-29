@@ -24,6 +24,10 @@ module ReVIEW.Build {
 	export class TextBuilder extends DefaultBuilder {
 		extention = "txt";
 
+		escape(data:any):string {
+			return data;
+		}
+
 		headlinePre(process:BuilderProcess, name:string, node:HeadlineSyntaxTree) {
 			// TODO no の採番がレベル別になっていない
 			// TODO 2.3.2 みたいな階層を返せるメソッドが何かほしい

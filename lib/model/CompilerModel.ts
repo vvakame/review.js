@@ -206,10 +206,17 @@ module ReVIEW {
 
 		out(data:any):BuilderProcess {
 			// 最近のブラウザだと単純結合がアホみたいに早いらしいので
+			this.result += this.builder.escape(data);
+			return this;
+		}
+
+		outRaw(data:any):BuilderProcess {
+			// 最近のブラウザだと単純結合がアホみたいに早いらしいので
 			this.result += data;
 			return this;
 		}
 
+		// TODO pushOut いみふ感高いのでやめよう 削除だ！
 		pushOut(data:string):BuilderProcess {
 			this.result = data + this.result;
 			return this;
