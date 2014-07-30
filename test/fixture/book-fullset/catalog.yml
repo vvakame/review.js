@@ -1,0 +1,12 @@
+PREDEF:
+  - pre.re
+
+CHAPS:
+  - fullsetA.re
+  - fullsetB.re
+  - parent.re:
+    - child.re
+  - fullsetC.re
+
+POSTDEF:
+  - post.re
