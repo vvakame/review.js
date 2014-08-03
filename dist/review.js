@@ -4819,12 +4819,12 @@ var ReVIEW;
             }
             config.builders = config.builders || target ? [target2builder(target)] : [new ReVIEW.Build.TextBuilder()];
             config.book = config.book || {
-                chapters: [
-                    fileName
+                contents: [
+                    { file: fileName }
                 ]
             };
-            config.book.chapters = config.book.chapters || [
-                fileName
+            config.book.contents = config.book.contents || [
+                { file: fileName }
             ];
 
             var results = {};
@@ -7674,6 +7674,81 @@ var ReVIEW;
 
     
 
+    var BookStructure = (function () {
+        function BookStructure(preface, contents, afterword) {
+            this.preface = preface;
+            this.contents = contents;
+            this.afterword = afterword;
+            this.preface = this.preface || [];
+            this.contents = this.contents || [];
+            this.afterword = this.afterword || [];
+        }
+        BookStructure.createBook = function (config) {
+            if (!config) {
+                return new BookStructure(null, null, null);
+            }
+            var preface = (config.preface || config.PREDEF || []).map(function (v) {
+                return ContentStructure.createChapter(v);
+            });
+            var contents = (config.contents || config.CHAPS || []).map(function (v) {
+                if (!v) {
+                    return null;
+                }
+                if (typeof v === "string") {
+                    return ContentStructure.createChapter(v);
+                } else if (v.chapter) {
+                    return ContentStructure.createChapter(v.chapter);
+                } else if (v.part) {
+                    return ContentStructure.createPart(v.part);
+                } else if (typeof v.file === "string" && v.chapters) {
+                    return ContentStructure.createPart(v);
+                } else if (typeof v.file === "string") {
+                    return ContentStructure.createChapter(v);
+                } else {
+                    return null;
+                }
+            });
+            var afterword = (config.afterword || config.POSTDEF || []).map(function (v) {
+                return ContentStructure.createChapter(v);
+            });
+            return new BookStructure(preface, contents, afterword);
+        };
+        return BookStructure;
+    })();
+    ReVIEW.BookStructure = BookStructure;
+
+    var ContentStructure = (function () {
+        function ContentStructure(part, chapter) {
+            this.part = part;
+            this.chapter = chapter;
+        }
+        ContentStructure.createChapter = function (value) {
+            if (typeof value === "string") {
+                return new ContentStructure(null, { file: value });
+            } else if (value && typeof value.file === "string") {
+                return new ContentStructure(null, value);
+            } else {
+                return null;
+            }
+        };
+
+        ContentStructure.createPart = function (part) {
+            if (part) {
+                var p = {
+                    file: part.file,
+                    chapters: (part.chapters || []).map(function (c) {
+                        return typeof c === "string" ? { file: c } : c;
+                    })
+                };
+                return new ContentStructure(p, null);
+            } else {
+                return null;
+            }
+        };
+        return ContentStructure;
+    })();
+    ReVIEW.ContentStructure = ContentStructure;
+
     var ConfigWrapper = (function () {
         function ConfigWrapper(original) {
             this.original = original;
@@ -7748,6 +7823,14 @@ var ReVIEW;
         Object.defineProperty(ConfigWrapper.prototype, "book", {
             get: function () {
                 return this.original.book;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(ConfigWrapper.prototype, "_book", {
+            get: function () {
+                return BookStructure.createBook(this.original.book);
             },
             enumerable: true,
             configurable: true
@@ -8101,9 +8184,9 @@ var ReVIEW;
             return promise;
         };
 
-        Controller.prototype.processChapter = function (book, part, index, chapterPath) {
+        Controller.prototype.processChapter = function (book, part, index, configChapter) {
             var _this = this;
-            var resolvedPath = this.config.resolvePath(chapterPath);
+            var resolvedPath = this.config.resolvePath(configChapter.file);
 
             var promise = new Promise(function (resolve, reject) {
                 try  {
@@ -8111,7 +8194,7 @@ var ReVIEW;
                         var chapter;
                         try  {
                             var parseResult = ReVIEW.Parse.parse(data);
-                            chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, parseResult.ast);
+                            chapter = new ReVIEW.Chapter(part, index + 1, configChapter.file, data, parseResult.ast);
                             resolve(chapter);
                         } catch (e) {
                             if (!(e instanceof PEG.SyntaxError)) {
@@ -8125,12 +8208,12 @@ var ReVIEW;
                                 offset: se.offset,
                                 endPos: -1
                             });
-                            chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, null);
+                            chapter = new ReVIEW.Chapter(part, index + 1, configChapter.file, data, null);
                             chapter.process.error(se.message, errorNode);
                             resolve(chapter);
                         }
                     }).catch(function (err) {
-                        var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, null, null);
+                        var chapter = new ReVIEW.Chapter(part, index + 1, chapter.file, null, null);
                         chapter.process.error(t("compile.file_not_exists", resolvedPath));
                         resolve(chapter);
                     });

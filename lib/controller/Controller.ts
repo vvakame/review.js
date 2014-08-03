@@ -108,7 +108,7 @@ module ReVIEW {
 			var book = new Book(this.config);
 			var promise = Promise
 				.all(Object.keys(this.config.book).map((key, index) => {
-					var chapters:string[] = (<any>this.config.book)[key];
+					var chapters:IConfigChapter[] = (<any>this.config.book)[key];
 					return this.processPart(book, index, key, chapters);
 				}))
 				.then(parts=> {
@@ -152,7 +152,7 @@ module ReVIEW {
 			return promise;
 		}
 
-		private processPart(book:Book, index:number, name:string, chapters:string[] = []):Promise<Part> {
+		private processPart(book:Book, index:number, name:string, chapters:IConfigChapter[] = []):Promise<Part> {
 			var part = new Part(book, index + 1, name);
 			var promise = Promise
 				.all(chapters.map((chapter, index) => {
@@ -165,8 +165,8 @@ module ReVIEW {
 			return promise;
 		}
 
-		private processChapter(book:Book, part:Part, index:number, chapterPath:string):Promise<Chapter> {
-			var resolvedPath = this.config.resolvePath(chapterPath);
+		private processChapter(book:Book, part:Part, index:number, configChapter:IConfigChapter):Promise<Chapter> {
+			var resolvedPath = this.config.resolvePath(configChapter.file);
 
 			var promise = new Promise<Chapter>((resolve, reject)=> {
 				try {
@@ -175,7 +175,7 @@ module ReVIEW {
 							var chapter:Chapter;
 							try {
 								var parseResult = ReVIEW.Parse.parse(data);
-								chapter = new Chapter(part, index + 1, chapterPath, data, parseResult.ast);
+								chapter = new Chapter(part, index + 1, configChapter.file, data, parseResult.ast);
 								resolve(chapter);
 							} catch (e) {
 								if (!(e instanceof PEG.SyntaxError)) {
@@ -189,13 +189,13 @@ module ReVIEW {
 									offset: se.offset,
 									endPos: -1 // TODO SyntaxError が置き換えられたらなんとかできるかも…
 								});
-								chapter = new Chapter(part, index + 1, chapterPath, data, null);
+								chapter = new Chapter(part, index + 1, configChapter.file, data, null);
 								chapter.process.error(se.message, errorNode);
 								resolve(chapter);
 							}
 						})
 						.catch(err=> {
-							var chapter = new Chapter(part, index + 1, chapterPath, null, null);
+							var chapter = new Chapter(part, index + 1, chapter.file, null, null);
 							chapter.process.error(t("compile.file_not_exists", resolvedPath));
 							resolve(chapter);
 						});
