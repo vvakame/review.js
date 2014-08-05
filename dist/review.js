@@ -7675,19 +7675,21 @@ var ReVIEW;
     
 
     var BookStructure = (function () {
-        function BookStructure(preface, contents, afterword) {
-            this.preface = preface;
+        function BookStructure(predef, contents, appendix, postdef) {
+            this.predef = predef;
             this.contents = contents;
-            this.afterword = afterword;
-            this.preface = this.preface || [];
+            this.appendix = appendix;
+            this.postdef = postdef;
+            this.predef = this.predef || [];
             this.contents = this.contents || [];
-            this.afterword = this.afterword || [];
+            this.appendix = this.appendix || [];
+            this.postdef = this.postdef || [];
         }
         BookStructure.createBook = function (config) {
             if (!config) {
-                return new BookStructure(null, null, null);
+                return new BookStructure(null, null, null, null);
             }
-            var preface = (config.preface || config.PREDEF || []).map(function (v) {
+            var predef = (config.predef || config.PREDEF || []).map(function (v) {
                 return ContentStructure.createChapter(v);
             });
             var contents = (config.contents || config.CHAPS || []).map(function (v) {
@@ -7708,10 +7710,13 @@ var ReVIEW;
                     return null;
                 }
             });
-            var afterword = (config.afterword || config.POSTDEF || []).map(function (v) {
+            var appendix = (config.appendix || config.APPENDIX || []).map(function (v) {
                 return ContentStructure.createChapter(v);
             });
-            return new BookStructure(preface, contents, afterword);
+            var postdef = (config.postdef || config.POSTDEF || []).map(function (v) {
+                return ContentStructure.createChapter(v);
+            });
+            return new BookStructure(predef, contents, appendix, postdef);
         };
         return BookStructure;
     })();

@@ -636,9 +636,10 @@ declare module ReVIEW {
         onCompileFailed?: (book?: Book) => void;
     }
     interface IConfigBook {
-        preface?: IConfigChapter[];
+        predef?: IConfigChapter[];
         contents: IConfigPartOrChapter[];
-        afterword?: IConfigChapter[];
+        appendix?: IConfigChapter[];
+        postdef?: IConfigChapter[];
     }
     interface IConfigPartOrChapter {
         part?: IConfigPart;
@@ -653,10 +654,11 @@ declare module ReVIEW {
         file: string;
     }
     class BookStructure {
-        public preface: ContentStructure[];
+        public predef: ContentStructure[];
         public contents: ContentStructure[];
-        public afterword: ContentStructure[];
-        constructor(preface: ContentStructure[], contents: ContentStructure[], afterword: ContentStructure[]);
+        public appendix: ContentStructure[];
+        public postdef: ContentStructure[];
+        constructor(predef: ContentStructure[], contents: ContentStructure[], appendix: ContentStructure[], postdef: ContentStructure[]);
         static createBook(config: IConfigBook): BookStructure;
     }
     class ContentStructure {

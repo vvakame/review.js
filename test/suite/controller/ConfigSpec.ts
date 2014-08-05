@@ -7,12 +7,12 @@ describe("ReVIEWのConfig.tsの", ()=> {
 	"use strict";
 
 	function verifyBookData(book:ReVIEW.BookStructure) {
-		assert(book.preface.length === 1);
+		assert(book.predef.length === 1);
 		assert(book.contents.length === 4);
-		assert(book.afterword.length === 1);
+		assert(book.postdef.length === 1);
 
-		assert(!book.preface[0].part);
-		assert(book.preface[0].chapter.file === "pre.re");
+		assert(!book.predef[0].part);
+		assert(book.predef[0].chapter.file === "pre.re");
 
 		assert(!book.contents[0].part);
 		assert(book.contents[0].chapter.file === "fullsetA.re");
@@ -28,13 +28,16 @@ describe("ReVIEWのConfig.tsの", ()=> {
 		assert(!book.contents[3].part);
 		assert(book.contents[3].chapter.file === "fullsetC.re");
 
-		assert(!book.afterword[0].part);
-		assert(book.afterword[0].chapter.file === "post.re");
+		assert(!book.appendix[0].part);
+		assert(book.appendix[0].chapter.file === "appendix.re");
+
+		assert(!book.postdef[0].part);
+		assert(book.postdef[0].chapter.file === "post.re");
 	}
 
 	it("IConfigBookに設定ができる IConfigPartOrChapterでchapterプロパティを使う", ()=> {
 		var book:ReVIEW.IConfigBook = {
-			preface: [
+			predef: [
 				{file: "pre.re"}
 			],
 			contents: [
@@ -50,7 +53,10 @@ describe("ReVIEWのConfig.tsの", ()=> {
 				},
 				{chapter: {file: "fullsetC.re"}}
 			],
-			afterword: [
+			appendix: [
+				{file: "appendix.re"}
+			],
+			postdef: [
 				{file: "post.re"}
 			]
 		};
@@ -59,7 +65,7 @@ describe("ReVIEWのConfig.tsの", ()=> {
 
 	it("IConfigBookに設定ができる IConfigPartOrChapterでnameプロパティを使う", ()=> {
 		var book:ReVIEW.IConfigBook = {
-			preface: [
+			predef: [
 				{file: "pre.re"}
 			],
 			contents: [
@@ -75,7 +81,10 @@ describe("ReVIEWのConfig.tsの", ()=> {
 				},
 				{file: "fullsetC.re"}
 			],
-			afterword: [
+			appendix: [
+				{file: "appendix.re"}
+			],
+			postdef: [
 				{file: "post.re"}
 			]
 		};
@@ -84,7 +93,7 @@ describe("ReVIEWのConfig.tsの", ()=> {
 
 	it("IConfigBookに設定ができる JS(型なし)用短縮形式", ()=> {
 		var book:any = {
-			preface: [
+			predef: [
 				"pre.re"
 			],
 			contents: [
@@ -98,7 +107,10 @@ describe("ReVIEWのConfig.tsの", ()=> {
 				},
 				"fullsetC.re"
 			],
-			afterword: [
+			appendix: [
+				"appendix.re"
+			],
+			postdef: [
 				"post.re"
 			]
 		};
@@ -119,6 +131,7 @@ describe("ReVIEWのConfig.tsの", ()=> {
 				},
 				'fullsetC.re'
 			],
+			APPENDIX: [ 'appendix.re' ],
 			POSTDEF: [ 'post.re' ]
 		};
 		verifyBookData(ReVIEW.BookStructure.createBook(book));

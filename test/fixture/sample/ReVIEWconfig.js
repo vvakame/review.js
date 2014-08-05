@@ -41,13 +41,15 @@ var setup = function (ReVIEW) {
 		},
 
 		book: {
-			preface: [
+			predef: [
 			],
-			chapters: [
+			contents: [
 				"ch01.re",
 				"ch02.re"
 			],
-			afterword: [
+			appendix: [
+			],
+			postdef: [
 			]
 		}
 	});

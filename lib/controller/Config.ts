@@ -40,9 +40,10 @@ module ReVIEW {
 	}
 
 	export interface IConfigBook {
-		preface?:IConfigChapter[];
+		predef?:IConfigChapter[];
 		contents:IConfigPartOrChapter[];
-		afterword?:IConfigChapter[];
+		appendix?:IConfigChapter[];
+		postdef?:IConfigChapter[];
 	}
 
 	export interface IConfigPartOrChapter {
@@ -64,17 +65,18 @@ module ReVIEW {
 
 	export class BookStructure {
 		// TODO コンストラクタ隠したい
-		constructor(public preface:ContentStructure[], public contents:ContentStructure[], public afterword:ContentStructure[]) {
-			this.preface = this.preface || [];
+		constructor(public predef:ContentStructure[], public contents:ContentStructure[], public appendix:ContentStructure[], public postdef:ContentStructure[]) {
+			this.predef = this.predef || [];
 			this.contents = this.contents || [];
-			this.afterword = this.afterword || [];
+			this.appendix = this.appendix || [];
+			this.postdef = this.postdef || [];
 		}
 
 		static createBook(config:IConfigBook) {
 			if (!config) {
-				return new BookStructure(null, null, null);
+				return new BookStructure(null, null, null, null);
 			}
-			var preface = (config.preface || (<any>config).PREDEF || []).map((v:any /* IConfigChapter */) => ContentStructure.createChapter(v));
+			var predef = (config.predef || (<any>config).PREDEF || []).map((v:any /* IConfigChapter */) => ContentStructure.createChapter(v));
 			var contents = (config.contents || (<any>config).CHAPS || []).map((v:any) => {
 				// value は string(YAML由来) か IConfigPartOrChapter
 				if (!v) {
@@ -98,8 +100,9 @@ module ReVIEW {
 					return null;
 				}
 			});
-			var afterword = (config.afterword || (<any>config).POSTDEF || []).map((v:any /* IConfigChapter */) => ContentStructure.createChapter(v));
-			return new BookStructure(preface, contents, afterword);
+			var appendix = (config.appendix || (<any>config).APPENDIX || []).map((v:any /* IConfigChapter */) => ContentStructure.createChapter(v));
+			var postdef = (config.postdef || (<any>config).POSTDEF || []).map((v:any /* IConfigChapter */) => ContentStructure.createChapter(v));
+			return new BookStructure(predef, contents, appendix, postdef);
 		}
 	}
 
