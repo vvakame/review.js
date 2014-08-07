@@ -90,24 +90,12 @@ module.exports = function (grunt) {
 				]
 			}
 		},
-		watch: {
-			"typescript-main": {
-				files: ['<%= opt.client.tsMain %>/**/*.ts'],
-				tasks: ['typescript:main']
-			},
-			"typescript-test": {
-				files: [ '<%= opt.client.tsTest %>/**/*.ts'],
-				tasks: ['typescript']
-			}
-		},
 		bower: {
 			install: {
 				options: {
-					targetDir: 'bower-task',
-					layout: 'byType', // exportsOverride の左辺に従って分類
 					install: true,
+					copy: false,
 					verbose: true, // ログの詳細を出すかどうか
-					cleanTargetDir: true,
 					cleanBowerDir: false
 				}
 			}
@@ -124,42 +112,6 @@ module.exports = function (grunt) {
 					// optional: specify config file
 					config: './tsd.json'
 				}
-			}
-		},
-		copy: {
-			bower: {
-				files: [
-					{
-						expand: true,
-						flatten: true,
-						cwd: 'bower-task/',
-						src: ['main-js/**/*.js'],
-						dest: '<%= opt.client.tsTest %>/libs/'
-					},
-					{
-						expand: true,
-						flatten: true,
-						cwd: 'bower-task/',
-						src: ['test-js/**/*.js', 'test-css/**/*.css'],
-						dest: '<%= opt.client.tsTest %>/libs/'
-					}
-				]
-			},
-			tsd: {
-				files: [
-					{
-						expand: true,
-						cwd: 'd.ts/DefinitelyTyped/',
-						src: ['*/*.d.ts'],
-						dest: '<%= opt.client.tsMain %>/libs/DefinitelyTyped/'
-					},
-					{
-						expand: true,
-						cwd: 'd.ts/DefinitelyTyped/',
-						src: ['*/*.d.ts'],
-						dest: '<%= opt.client.tsTest %>/libs/DefinitelyTyped/'
-					}
-				]
 			}
 		},
 		concat: {
@@ -262,7 +214,6 @@ module.exports = function (grunt) {
 			bower: {
 				src: [
 					// bower installed
-					"bower-task/",
 					"bower_componenets",
 					'<%= opt.client.jsMainOut %>/libs',
 					'<%= opt.client.jsTestOut %>/libs/*.js',
@@ -321,7 +272,7 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'setup',
 		"プロジェクトの初期セットアップを行う。",
-		['clean', 'bower', 'tsd', 'copy']);
+		['clean', 'bower', 'tsd']);
 
 	grunt.registerTask(
 		'compile-prepare',
@@ -368,5 +319,5 @@ module.exports = function (grunt) {
 		"必要なコンパイルを行いブラウザ上でテストを実行する。",
 		['test-preprocess', 'open:test-browser']);
 
-	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+	require('load-grunt-tasks')(grunt);
 };
