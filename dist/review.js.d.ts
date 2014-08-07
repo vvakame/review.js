@@ -625,7 +625,7 @@ declare module ReVIEW {
         listener?: IConfigListener;
         analyzer?: Build.IAnalyzer;
         validators?: Build.IValidator[];
-        builders: Build.IBuilder[];
+        builders?: Build.IBuilder[];
         book: IConfigBook;
     }
     interface IConfigListener {
@@ -636,9 +636,38 @@ declare module ReVIEW {
         onCompileFailed?: (book?: Book) => void;
     }
     interface IConfigBook {
-        preface?: string[];
-        chapters: string[];
-        afterword?: string[];
+        predef?: IConfigChapter[];
+        contents: IConfigPartOrChapter[];
+        appendix?: IConfigChapter[];
+        postdef?: IConfigChapter[];
+    }
+    interface IConfigPartOrChapter {
+        part?: IConfigPart;
+        chapter?: IConfigChapter;
+        file?: string;
+    }
+    interface IConfigPart {
+        file: string;
+        chapters: IConfigChapter[];
+    }
+    interface IConfigChapter {
+        file: string;
+    }
+    class BookStructure {
+        public predef: ContentStructure[];
+        public contents: ContentStructure[];
+        public appendix: ContentStructure[];
+        public postdef: ContentStructure[];
+        constructor(predef: ContentStructure[], contents: ContentStructure[], appendix: ContentStructure[], postdef: ContentStructure[]);
+        static createBook(config: IConfigBook): BookStructure;
+    }
+    class ContentStructure {
+        public part: IConfigPart;
+        public chapter: IConfigChapter;
+        constructor(part: IConfigPart, chapter: IConfigChapter);
+        static createChapter(file: string): ContentStructure;
+        static createChapter(chapter: IConfigChapter): ContentStructure;
+        static createPart(part: IConfigPart): ContentStructure;
     }
     class ConfigWrapper implements IConfig {
         public original: IConfig;
@@ -651,6 +680,7 @@ declare module ReVIEW {
         public builders : Build.IBuilder[];
         public listener : IConfigListener;
         public book : IConfigBook;
+        public _book : BookStructure;
         public resolvePath(path: string): string;
     }
     class NodeJSConfig extends ConfigWrapper implements IConfig {
@@ -691,7 +721,7 @@ declare module ReVIEW {
         public process(): Promise<Book>;
         private processBook();
         private processPart(book, index, name, chapters?);
-        private processChapter(book, part, index, chapterPath);
+        private processChapter(book, part, index, configChapter);
     }
 }
 declare module ReVIEW.Build {

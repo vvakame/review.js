@@ -12,18 +12,18 @@ module Test {
 	 * @param tmpConfig
 	 * @returns {{success: (function(): {book: ReVIEW.Book, results: *}), failure: (function(): {})}}
 	 */
-	export function compile(tmpConfig?:any /* ReVIEW.IConfig */) {
-		var config:ReVIEW.IConfig = tmpConfig || <any>{};
+	export function compile(config?:ReVIEW.IConfig) {
+		config = config || <any>{};
 		config.analyzer = config.analyzer || new ReVIEW.Build.DefaultAnalyzer();
 		config.validators = config.validators || [new ReVIEW.Build.DefaultValidator()];
 		config.builders = config.builders || [new ReVIEW.Build.TextBuilder()];
 		config.book = config.book || {
-			chapters: [
-				"sample.re"
+			contents: [
+				{file: "sample.re"}
 			]
 		};
-		config.book.chapters = config.book.chapters || [
-			"sample.re"
+		config.book.contents = config.book.contents || [
+			{file: "sample.re"}
 		];
 
 		var results:any = {};

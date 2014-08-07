@@ -42,8 +42,8 @@ describe("未解決のエラー", ()=> {
 					builders: [builder],
 
 					book: {
-						chapters: [
-							"ch01.re"
+						contents: [
+							{file: "ch01.re"}
 						]
 					}
 				});

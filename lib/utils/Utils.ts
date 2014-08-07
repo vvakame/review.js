@@ -235,12 +235,12 @@ module ReVIEW {
 			}
 			config.builders = config.builders || target ? [target2builder(target)] : [new ReVIEW.Build.TextBuilder()];
 			config.book = config.book || {
-				chapters: [
-					fileName
+				contents: [
+					{file: fileName}
 				]
 			};
-			config.book.chapters = config.book.chapters || [
-				fileName
+			config.book.contents = config.book.contents || [
+				{file: fileName}
 			];
 
 			var results:any = {};

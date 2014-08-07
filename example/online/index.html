@@ -163,12 +163,14 @@
 				builders: [new ReVIEW.Build.TextBuilder(), new ReVIEW.Build.HtmlBuilder(false)],
 
 				book: {
-					preface: [
+					predef: [
 					],
-					chapters: [
-						"ch01.re"
+					contents: [
+						{file: "ch01.re"}
 					],
-					afterword: [
+					appendix: [
+					],
+					postdef: [
 					]
 				}
 			});

@@ -34,20 +34,16 @@ describe("ReVIEW.Controllerの", ()=> {
 				builders: [new ReVIEW.Build.TextBuilder()],
 
 				book: {
-					preface: new Array<string>(),
-					chapters: [
-						"ch01.re",
-						"ch02.re"
-					],
-					afterword: new Array<string>()
+					contents: [
+						{file: "ch01.re"},
+						{file: "ch02.re"}
+					]
 				}
 			});
 		}).then(book=> {
-			assert(book.parts.length === 3);
-			assert(book.parts[0].chapters.length === 0);
-			assert(book.parts[2].chapters.length === 0);
+			assert(book.parts.length === 1);
 
-			var part = book.parts[1];
+			var part = book.parts[0];
 			assert(part.chapters.length === 2);
 			part.chapters.forEach((chapter)=> {
 				assert(!!chapter.root);
