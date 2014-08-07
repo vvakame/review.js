@@ -129,7 +129,7 @@ module ReVIEW {
 			if (part) {
 				var p:IConfigPart = {
 					file: part.file,
-					chapters: (part.chapters || []).map(c => typeof c === "string" ? {file: c} : c)
+					chapters: (part.chapters || []).map((c: any) => typeof c === "string" ? {file: c} : c)
 				};
 				return new ContentStructure(p, null);
 			} else {

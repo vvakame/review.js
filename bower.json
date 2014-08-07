@@ -23,25 +23,7 @@
 	},
 	"devDependencies": {
 		"es5-shim": "4.0.1",
-		"mocha": "1.21.3",
+		"mocha": "1.21.4",
 		"power-assert": "0.7.2"
-	},
-	"exportsOverride": {
-		"i18next": {
-			"main-js": "i18next.js"
-		},
-		"ypromise": {
-			"main-js": "promise.js"
-		},
-		"es5-shim": {
-			"test-js": "es5-shim.js"
-		},
-		"mocha": {
-			"test-js": "*.js",
-			"test-css": "*.css"
-		},
-		"power-assert": {
-			"test-js": "build/*.js"
-		}
 	}
 }
