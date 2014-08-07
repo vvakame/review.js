@@ -5,6 +5,7 @@
 !.idea/copyright/*.xml
 !.idea/fileColors.xml
 !.idea/runConfigurations/*.xml
+!.idea/watcherTasks.xml
 
 !.idea/scopes/*.xml
 .idea/scopes/scope_settings.xml
