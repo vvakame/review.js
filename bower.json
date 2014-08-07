@@ -23,7 +23,7 @@
 	},
 	"devDependencies": {
 		"es5-shim": "4.0.1",
-		"mocha": "1.21.3",
+		"mocha": "1.21.4",
 		"power-assert": "0.7.2"
 	}
 }
