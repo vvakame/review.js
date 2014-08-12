@@ -192,7 +192,7 @@ module ReVIEW {
 			return this.original.book;
 		}
 
-		get _book():BookStructure {
+		get bookStructure():BookStructure {
 			return BookStructure.createBook(this.original.book);
 		}
 

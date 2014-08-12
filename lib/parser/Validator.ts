@@ -62,38 +62,37 @@ module ReVIEW.Build {
 		}
 
 		checkBook(book:Book) {
-			book.parts.forEach(part=> this.checkPart(part));
+			book.predef.forEach(chunk=> this.checkChunk(chunk));
+			book.contents.forEach(chunk=> this.checkChunk(chunk));
+			book.appendix.forEach(chunk=> this.checkChunk(chunk));
+			book.postdef.forEach(chunk=> this.checkChunk(chunk));
 		}
 
-		checkPart(part:Part) {
-			part.chapters.forEach(chapter=>this.checkChapter(chapter));
-		}
-
-		checkChapter(chapter:Chapter) {
+		checkChunk(chunk:ContentChunk) {
 			// Analyzer 内で生成した構文規則に基づき処理
-			ReVIEW.visit(chapter.root, {
+			ReVIEW.visit(chunk.tree.ast, {
 				visitDefaultPre: (node:SyntaxTree)=> {
 				},
 				visitHeadlinePre: (node:HeadlineSyntaxTree) => {
 					var results = this.acceptableSyntaxes.find(node);
 					if (results.length !== 1) {
-						chapter.process.error(t("compile.syntax_definietion_error"), node);
+						chunk.process.error(t("compile.syntax_definietion_error"), node);
 						return;
 					}
-					return results[0].process(chapter.process, node);
+					return results[0].process(chunk.process, node);
 				},
 				visitColumnPre: (node:ColumnSyntaxTree) => {
 					var results = this.acceptableSyntaxes.find(node);
 					if (results.length !== 1) {
-						chapter.process.error(t("compile.syntax_definietion_error"), node);
+						chunk.process.error(t("compile.syntax_definietion_error"), node);
 						return;
 					}
-					return results[0].process(chapter.process, node);
+					return results[0].process(chunk.process, node);
 				},
 				visitBlockElementPre: (node:BlockElementSyntaxTree) => {
 					var results = this.acceptableSyntaxes.find(node);
 					if (results.length !== 1) {
-						chapter.process.error(t("compile.block_not_supported", node.symbol), node);
+						chunk.process.error(t("compile.block_not_supported", node.symbol), node);
 						return;
 					}
 					var expects = results[0].argsLength;
@@ -101,36 +100,36 @@ module ReVIEW.Build {
 					if (expects.indexOf(arg.length) === -1) {
 						var expected = expects.map((n)=>Number(n).toString()).join(" or ");
 						var message = t("compile.args_length_mismatch", expected, arg.length);
-						chapter.process.error(message, node);
+						chunk.process.error(message, node);
 						return;
 					}
 
-					return results[0].process(chapter.process, node);
+					return results[0].process(chunk.process, node);
 				},
 				visitInlineElementPre: (node:InlineElementSyntaxTree) => {
 					var results = this.acceptableSyntaxes.find(node);
 					if (results.length !== 1) {
-						chapter.process.error(t("compile.inline_not_supported", node.symbol), node);
+						chunk.process.error(t("compile.inline_not_supported", node.symbol), node);
 						return;
 					}
-					return results[0].process(chapter.process, node);
+					return results[0].process(chunk.process, node);
 				}
 			});
 
 			// 最初は必ず Level 1
-			ReVIEW.visit(chapter.root, {
+			ReVIEW.visit(chunk.tree.ast, {
 				visitDefaultPre: (node:SyntaxTree) => {
 				},
 				visitChapterPre: (node:ChapterSyntaxTree) => {
 					if (node.level === 1) {
 						if (!findChapter(node)) {
 							// ここに来るのは実装のバグのはず
-							chapter.process.error(t("compile.chapter_not_toplevel"), node);
+							chunk.process.error(t("compile.chapter_not_toplevel"), node);
 						}
 					} else {
 						var parent = findChapter(node.parentNode);
 						if (!parent) {
-							chapter.process.error(t("compile.chapter_topleve_eq1"), node);
+							chunk.process.error(t("compile.chapter_topleve_eq1"), node);
 						}
 					}
 				}
@@ -140,34 +139,26 @@ module ReVIEW.Build {
 		resolveSymbolAndReference(book:Book) {
 			// symbols の解決
 			// Arrayにflatten がなくて悲しい reduce だと長い…
-			var symbols:ISymbol[] = flatten(book.parts.map(part=>part.chapters.map(chapter=>chapter.process.symbols)));
+			var symbols:ISymbol[] = book.allChunks.reduce<ISymbol[]>((p, c) => p.concat(c.process.symbols), []);
 			symbols.forEach(symbol=> {
 				// referenceToのpartやchapterの解決
 				var referenceTo = symbol.referenceTo;
 				if (!referenceTo) {
 					return;
 				}
-				if (!referenceTo.part) {
-					book.parts.forEach(part=> {
-						if (referenceTo.partName === part.name) {
-							referenceTo.part = part;
+				if (!referenceTo.part && referenceTo.partName) {
+					book.allChunks.forEach(chunk=> {
+						if (referenceTo.partName === chunk.name) {
+							referenceTo.part = chunk;
 						}
 					});
 				}
-				if (!referenceTo.part) {
-					symbol.chapter.process.error(t("compile.part_is_missing", symbol.part.name), symbol.node);
-					return;
-				}
-				if (!referenceTo.chapter) {
-					referenceTo.part.chapters.forEach(chap=> {
-						if (referenceTo.chapterName === chap.name) {
-							referenceTo.chapter = chap;
+				if (!referenceTo.chapter && referenceTo.chapterName) {
+					referenceTo.part.nodes.forEach(chunk=> {
+						if (referenceTo.chapterName === chunk.name) {
+							referenceTo.chapter = chunk;
 						}
 					});
-				}
-				if (!referenceTo.chapter) {
-					symbol.chapter.process.error(t("compile.chapter_is_missing", symbol.chapter.name), symbol.node);
-					return;
 				}
 			});
 			// referenceTo.node の解決

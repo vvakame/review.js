@@ -55,7 +55,7 @@ describe("ReVIEW構文の", ()=> {
 							.then(s=> {
 								assert(s.result !== null);
 
-								var ast = JSON.stringify(s.book.parts[0].chapters[0].root, null, 2);
+								var ast = JSON.stringify(s.book.allChunks[0].tree.ast, null, 2);
 								if (!fs.existsSync(astFilePath)) {
 									// ASTファイルが無い場合、現時点で生成されるASTを出力する
 									fs.writeFileSync(astFilePath, ast);

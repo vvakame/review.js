@@ -452,8 +452,9 @@ declare module ReVIEW.Build {
         public extention: string;
         public name : string;
         public init(book: Book): void;
+        public processAst(chunk: ContentChunk): void;
         public escape(data: any): string;
-        public processPost(process: BuilderProcess, chapter: Chapter): void;
+        public processPost(process: BuilderProcess, chunk: ContentChunk): void;
         public chapterPre(process: BuilderProcess, node: Parse.ChapterSyntaxTree): any;
         public chapterPost(process: BuilderProcess, node: Parse.ChapterSyntaxTree): any;
         public headlinePre(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): any;
@@ -483,17 +484,17 @@ declare module ReVIEW.Build {
 }
 declare module ReVIEW {
     interface IReferenceTo {
-        part?: Part;
+        part?: ContentChunk;
         partName: string;
-        chapter?: Chapter;
+        chapter?: ContentChunk;
         chapterName: string;
         targetSymbol: string;
         label: string;
         referenceNode?: Parse.SyntaxTree;
     }
     interface ISymbol {
-        part?: Part;
-        chapter?: Chapter;
+        part?: ContentChunk;
+        chapter?: ContentChunk;
         symbolName: string;
         labelName?: string;
         referenceTo?: IReferenceTo;
@@ -506,11 +507,11 @@ declare module ReVIEW {
     }
     class ProcessReport {
         public level: ReportLevel;
-        public part: Part;
-        public chapter: Chapter;
+        public part: ContentChunk;
+        public chapter: ContentChunk;
         public message: string;
         public nodes: Parse.SyntaxTree[];
-        constructor(level: ReportLevel, part: Part, chapter: Chapter, message: string, nodes?: Parse.SyntaxTree[]);
+        constructor(level: ReportLevel, part: ContentChunk, chapter: ContentChunk, message: string, nodes?: Parse.SyntaxTree[]);
     }
     class BookProcess {
         public reports: ProcessReport[];
@@ -519,8 +520,8 @@ declare module ReVIEW {
         public error(message: string): void;
     }
     class Process {
-        public part: Part;
-        public chapter: Chapter;
+        public part: ContentChunk;
+        public chapter: ContentChunk;
         public input: string;
         public symbols: ISymbol[];
         public indexCounter: {
@@ -528,7 +529,7 @@ declare module ReVIEW {
         };
         public afterProcess: Function[];
         private _reports;
-        constructor(part: Part, chapter: Chapter, input: string);
+        constructor(part: ContentChunk, chapter: ContentChunk, input: string);
         public info(message: string, ...nodes: Parse.SyntaxTree[]): void;
         public warn(message: string, ...nodes: Parse.SyntaxTree[]): void;
         public error(message: string, ...nodes: Parse.SyntaxTree[]): void;
@@ -556,30 +557,35 @@ declare module ReVIEW {
         public symbols : ISymbol[];
     }
     class Book {
-        public config: IConfig;
+        public config: ConfigWrapper;
         public process: BookProcess;
-        public parts: Part[];
-        constructor(config: IConfig);
+        public acceptableSyntaxes: Build.AcceptableSyntaxes;
+        public predef: ContentChunk[];
+        public contents: ContentChunk[];
+        public appendix: ContentChunk[];
+        public postdef: ContentChunk[];
+        constructor(config: ConfigWrapper);
+        public allChunks : ContentChunk[];
         public reports : ProcessReport[];
         public hasError : boolean;
         public hasWarning : boolean;
     }
-    class Part {
-        public parent: Book;
+    class ContentChunk {
+        public book: Book;
+        public parent: ContentChunk;
+        public nodes: ContentChunk[];
         public no: number;
         public name: string;
-        public chapters: Chapter[];
-        constructor(parent: Book, no: number, name: string);
-    }
-    class Chapter {
-        public parent: Part;
-        public no: number;
-        public name: string;
-        public input: string;
-        public root: Parse.SyntaxTree;
+        public _input: string;
+        public tree: {
+            ast: Parse.SyntaxTree;
+            cst: Parse.IConcreatSyntaxTree;
+        };
         public process: Process;
         public builderProcesses: BuilderProcess[];
-        constructor(parent: Part, no: number, name: string, input: string, root: Parse.SyntaxTree);
+        constructor(book: Book, parent: ContentChunk, name: string);
+        constructor(book: Book, name: string);
+        public input : string;
         public createBuilderProcess(builder: Build.IBuilder): BuilderProcess;
         public findResultByBuilder(builderName: string): string;
         public findResultByBuilder(builder: Build.IBuilder): string;
@@ -591,12 +597,10 @@ declare module ReVIEW.Build {
     }
     class SyntaxPreprocessor implements IPreprocessor {
         public acceptableSyntaxes: AcceptableSyntaxes;
-        public start(book: Book, acceptableSyntaxes: AcceptableSyntaxes): void;
-        public preprocessBook(book: Book): void;
-        public preprocessPart(part: Part): void;
-        public preprocessChapter(chapter: Chapter): void;
-        public preprocessColumnSyntax(chapter: Chapter, column: Parse.ColumnSyntaxTree): void;
-        public preprocessBlockSyntax(chapter: Chapter, node: Parse.BlockElementSyntaxTree): void;
+        public start(book: Book): void;
+        public preprocessChunk(chunk: ContentChunk): void;
+        public preprocessColumnSyntax(chunk: ContentChunk, column: Parse.ColumnSyntaxTree): void;
+        public preprocessBlockSyntax(chunk: ContentChunk, node: Parse.BlockElementSyntaxTree): void;
     }
 }
 declare module ReVIEW.Build {
@@ -609,8 +613,7 @@ declare module ReVIEW.Build {
         public start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: IBuilder[]): void;
         public checkBuilder(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders?: IBuilder[]): void;
         public checkBook(book: Book): void;
-        public checkPart(part: Part): void;
-        public checkChapter(chapter: Chapter): void;
+        public checkChunk(chunk: ContentChunk): void;
         public resolveSymbolAndReference(book: Book): void;
     }
 }
@@ -680,7 +683,7 @@ declare module ReVIEW {
         public builders : Build.IBuilder[];
         public listener : IConfigListener;
         public book : IConfigBook;
-        public _book : BookStructure;
+        public bookStructure : BookStructure;
         public resolvePath(path: string): string;
     }
     class NodeJSConfig extends ConfigWrapper implements IConfig {
@@ -719,9 +722,14 @@ declare module ReVIEW {
         constructor(options?: IOptions);
         public initConfig(data: IConfig): void;
         public process(): Promise<Book>;
-        private processBook();
-        private processPart(book, index, name, chapters?);
-        private processChapter(book, part, index, configChapter);
+        public acceptableSyntaxes(book: Book): Promise<Book>;
+        public toContentChunk(book: Book): Book;
+        public readReVIEWFiles(book: Book): Promise<Book>;
+        public parseContent(book: Book): Book;
+        public preprocessContent(book: Book): Book;
+        public processContent(book: Book): Book;
+        public writeContent(book: Book): Promise<Book>;
+        public compileFinished(book: Book): Book;
     }
 }
 declare module ReVIEW.Build {
@@ -815,7 +823,7 @@ declare module ReVIEW.Build {
         };
         constructor(standalone?: boolean);
         public escape(data: any): string;
-        public processPost(process: BuilderProcess, chapter: Chapter): void;
+        public processPost(process: BuilderProcess, chunk: ContentChunk): void;
         public headlinePre(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): void;
         public headlinePost(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): void;
         public columnPre(process: BuilderProcess, node: Parse.ColumnSyntaxTree): void;

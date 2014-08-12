@@ -26,16 +26,14 @@ describe("ReVIEW.Buildの", ()=> {
 			}
 		}).then(success=> {
 			var book = success.book;
-			assert(book.parts.length === 1);
 
-			var part = book.parts[0];
-			assert(part.chapters.length === 2);
-			part.chapters.forEach((chapter)=> {
-				assert(!!chapter.root);
+			assert(book.contents.length === 2);
+			book.contents.forEach(chunk=> {
+				assert(!!chunk.tree.ast);
 			});
 
-			assert(part.chapters[0].process.symbols.length === 1);
-			assert(part.chapters[1].process.symbols.length === 3);
+			assert(book.contents[0].process.symbols.length === 1);
+			assert(book.contents[1].process.symbols.length === 3);
 		});
 	});
 
@@ -44,7 +42,7 @@ describe("ReVIEW.Buildの", ()=> {
 			return Test.compileSingle("={ch01} chapter01\n@<hd>{ch01}\n@<hd>{missing}")
 				.then(failure=> {
 					var book = failure.book;
-					var missingSymbols = book.parts[0].chapters[0].process.missingSymbols;
+					var missingSymbols = book.contents[0].process.missingSymbols;
 					assert(missingSymbols.length === 1);
 					assert(missingSymbols[0].referenceTo.label === "missing");
 				});
@@ -85,7 +83,7 @@ describe("ReVIEW.Buildの", ()=> {
 				.then(success=> {
 					var book = success.book;
 					var expected = "■H1■第1章　hoge\n\n■H2■fuga\n\n■H3■moge\n\n■H2■piyo\n\n■H3■foo\n\n■H1■第2章　bar\n\n";
-					assert(book.parts[0].chapters[0].findResultByBuilder(builder) === expected);
+					assert(book.contents[0].findResultByBuilder(builder) === expected);
 				});
 		});
 	});

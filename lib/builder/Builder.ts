@@ -61,91 +61,91 @@ module ReVIEW.Build {
 		init(book:Book) {
 			this.book = book;
 
-			book.parts.forEach(part => {
-				part.chapters.forEach(chapter => {
-					var process = chapter.createBuilderProcess(this);
-					ReVIEW.visit(chapter.root, {
-						visitDefaultPre: (node:SyntaxTree)=> {
-						},
-						visitChapterPre: (node:ChapterSyntaxTree)=> {
-							return this.chapterPre(process, node);
-						},
-						visitChapterPost: (node:ChapterSyntaxTree)=> {
-							return this.chapterPost(process, node);
-						},
-						visitHeadlinePre: (node:HeadlineSyntaxTree)=> {
-							return this.headlinePre(process, "hd", node);
-						},
-						visitHeadlinePost: (node:HeadlineSyntaxTree)=> {
-							return this.headlinePost(process, "hd", node);
-						},
-						visitColumnPre: (node:ColumnSyntaxTree)=> {
-							return this.columnPre(process, node);
-						},
-						visitColumnPost: (node:ColumnSyntaxTree)=> {
-							return this.columnPost(process, node);
-						},
-						visitColumnHeadlinePre: (node:ColumnHeadlineSyntaxTree)=> {
-							return this.columnHeadlinePre(process, node);
-						},
-						visitColumnHeadlinePost: (node:ColumnHeadlineSyntaxTree)=> {
-							return this.columnHeadlinePost(process, node);
-						},
-						visitParagraphPre: (node:NodeSyntaxTree) => {
-							return this.paragraphPre(process, "p", node);
-						},
-						visitParagraphPost: (node:NodeSyntaxTree) => {
-							return this.paragraphPost(process, "p", node);
-						},
-						visitUlistPre: (node:UlistElementSyntaxTree)=> {
-							return this.ulistPre(process, "ul", node);
-						},
-						visitUlistPost: (node:UlistElementSyntaxTree)=> {
-							return this.ulistPost(process, "ul", node);
-						},
-						visitOlistPre: (node:OlistElementSyntaxTree)=> {
-							return this.olistPre(process, "ol", node);
-						},
-						visitOlistPost: (node:OlistElementSyntaxTree)=> {
-							return this.olistPost(process, "ol", node);
-						},
-						visitDlistPre: (node:DlistElementSyntaxTree)=> {
-							return this.dlistPre(process, "dl", node);
-						},
-						visitDlistPost: (node:DlistElementSyntaxTree)=> {
-							return this.dlistPost(process, "dl", node);
-						},
-						visitBlockElementPre: (node:BlockElementSyntaxTree)=> {
-							return this.blockPre(process, node.symbol, node);
-						},
-						visitBlockElementPost: (node:BlockElementSyntaxTree)=> {
-							return this.blockPost(process, node.symbol, node);
-						},
-						visitInlineElementPre: (node:InlineElementSyntaxTree)=> {
-							return this.inlinePre(process, node.symbol, node);
-						},
-						visitInlineElementPost: (node:InlineElementSyntaxTree)=> {
-							return this.inlinePost(process, node.symbol, node);
-						},
-						visitTextPre: (node:TextNodeSyntaxTree) => {
-							this.text(process, node);
-						}
-					});
-					this.processPost(process, chapter);
-				});
+			book.predef.forEach(chunk => this.processAst(chunk));
+			book.contents.forEach(chunk => this.processAst(chunk));
+			book.appendix.forEach(chunk => this.processAst(chunk));
+			book.postdef.forEach(chunk => this.processAst(chunk));
+		}
+
+		processAst(chunk:ContentChunk) {
+			var process = chunk.createBuilderProcess(this);
+			ReVIEW.visit(chunk.tree.ast, {
+				visitDefaultPre: (node:SyntaxTree)=> {
+				},
+				visitChapterPre: (node:ChapterSyntaxTree)=> {
+					return this.chapterPre(process, node);
+				},
+				visitChapterPost: (node:ChapterSyntaxTree)=> {
+					return this.chapterPost(process, node);
+				},
+				visitHeadlinePre: (node:HeadlineSyntaxTree)=> {
+					return this.headlinePre(process, "hd", node);
+				},
+				visitHeadlinePost: (node:HeadlineSyntaxTree)=> {
+					return this.headlinePost(process, "hd", node);
+				},
+				visitColumnPre: (node:ColumnSyntaxTree)=> {
+					return this.columnPre(process, node);
+				},
+				visitColumnPost: (node:ColumnSyntaxTree)=> {
+					return this.columnPost(process, node);
+				},
+				visitColumnHeadlinePre: (node:ColumnHeadlineSyntaxTree)=> {
+					return this.columnHeadlinePre(process, node);
+				},
+				visitColumnHeadlinePost: (node:ColumnHeadlineSyntaxTree)=> {
+					return this.columnHeadlinePost(process, node);
+				},
+				visitParagraphPre: (node:NodeSyntaxTree) => {
+					return this.paragraphPre(process, "p", node);
+				},
+				visitParagraphPost: (node:NodeSyntaxTree) => {
+					return this.paragraphPost(process, "p", node);
+				},
+				visitUlistPre: (node:UlistElementSyntaxTree)=> {
+					return this.ulistPre(process, "ul", node);
+				},
+				visitUlistPost: (node:UlistElementSyntaxTree)=> {
+					return this.ulistPost(process, "ul", node);
+				},
+				visitOlistPre: (node:OlistElementSyntaxTree)=> {
+					return this.olistPre(process, "ol", node);
+				},
+				visitOlistPost: (node:OlistElementSyntaxTree)=> {
+					return this.olistPost(process, "ol", node);
+				},
+				visitDlistPre: (node:DlistElementSyntaxTree)=> {
+					return this.dlistPre(process, "dl", node);
+				},
+				visitDlistPost: (node:DlistElementSyntaxTree)=> {
+					return this.dlistPost(process, "dl", node);
+				},
+				visitBlockElementPre: (node:BlockElementSyntaxTree)=> {
+					return this.blockPre(process, node.symbol, node);
+				},
+				visitBlockElementPost: (node:BlockElementSyntaxTree)=> {
+					return this.blockPost(process, node.symbol, node);
+				},
+				visitInlineElementPre: (node:InlineElementSyntaxTree)=> {
+					return this.inlinePre(process, node.symbol, node);
+				},
+				visitInlineElementPost: (node:InlineElementSyntaxTree)=> {
+					return this.inlinePost(process, node.symbol, node);
+				},
+				visitTextPre: (node:TextNodeSyntaxTree) => {
+					this.text(process, node);
+				}
 			});
-			book.parts.forEach(part => {
-				part.chapters.forEach(chapter => {
-					chapter.process.doAfterProcess();
-				});
-			});
+			this.processPost(process, chunk);
+
+			chunk.nodes.forEach(chunk => this.processAst(chunk));
 		}
 
 		escape(data:any):string {
 			throw new Error("please override this method");
 		}
 
-		processPost(process:BuilderProcess, chapter:Chapter):void {
+		processPost(process:BuilderProcess, chunk:ContentChunk):void {
 		}
 
 		chapterPre(process:BuilderProcess, node:ChapterSyntaxTree):any {

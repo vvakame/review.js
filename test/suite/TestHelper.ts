@@ -86,7 +86,7 @@ module Test {
 		var resultString:string;
 		var originalCompileSuccess = config.listener.onCompileSuccess;
 		config.listener.onCompileSuccess = (book) => {
-			resultString = book.parts[0].chapters[0].builderProcesses[0].result;
+			resultString = book.allChunks[0].builderProcesses[0].result;
 			originalCompileSuccess(book);
 		};
 
