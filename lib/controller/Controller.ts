@@ -14,7 +14,7 @@ module ReVIEW {
 
 	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
 
-	import ConfigWrapper = ReVIEW.ConfigWrapper;
+	import Config = ReVIEW.Config;
 	import NodeJSConfig = ReVIEW.NodeJSConfig;
 	import WebBrowserConfig = ReVIEW.WebBrowserConfig;
 
@@ -23,7 +23,7 @@ module ReVIEW {
 	 * 処理の起点。
 	 */
 	export class Controller {
-		private config:ConfigWrapper;
+		private config:Config;
 
 		constructor(public options:ReVIEW.IOptions = {}) {
 		}
@@ -33,7 +33,7 @@ module ReVIEW {
 		 * 通常、 ReVIEW.start 経由で呼び出される。
 		 * @param data
 		 */
-		initConfig(data:ReVIEW.IConfig):void {
+		initConfig(data:ReVIEW.IConfigRaw):void {
 			if (ReVIEW.isNodeJS()) {
 				this.config = new NodeJSConfig(this.options, data);
 			} else {
@@ -84,10 +84,10 @@ module ReVIEW {
 				return chunk;
 			};
 
-			book.predef = this.config.bookStructure.predef.map(c => convert(c));
-			book.contents = this.config.bookStructure.contents.map(c => convert(c));
-			book.appendix = this.config.bookStructure.appendix.map(c => convert(c));
-			book.postdef = this.config.bookStructure.postdef.map(c => convert(c));
+			book.predef = this.config.book.predef.map(c => convert(c));
+			book.contents = this.config.book.contents.map(c => convert(c));
+			book.appendix = this.config.book.appendix.map(c => convert(c));
+			book.postdef = this.config.book.postdef.map(c => convert(c));
 
 			return book;
 		}

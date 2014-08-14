@@ -4,6 +4,8 @@
 ///<reference path='utils/Polyfill.ts' />
 ///<reference path='utils/Utils.ts' />
 ///<reference path='i18n/i18n.ts' />
+///<reference path='controller/ConfigRaw.ts' />
+///<reference path='controller/Config.ts' />
 ///<reference path='controller/Controller.ts' />
 ///<reference path='model/CompilerModel.ts' />
 ///<reference path='parser/Walker.ts' />

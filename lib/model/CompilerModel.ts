@@ -243,7 +243,7 @@ module ReVIEW {
 		appendix:ContentChunk[] = [];
 		postdef:ContentChunk[] = [];
 
-		constructor(public config:ConfigWrapper) {
+		constructor(public config:Config) {
 		}
 
 		get allChunks():ContentChunk[] {

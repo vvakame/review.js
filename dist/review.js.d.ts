@@ -482,6 +482,93 @@ declare module ReVIEW.Build {
         public inline_raw(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): any;
     }
 }
+declare module ReVIEW.Build {
+    interface IPreprocessor {
+        start(book: Book, acceptableSyntaxes: AcceptableSyntaxes): void;
+    }
+    class SyntaxPreprocessor implements IPreprocessor {
+        public acceptableSyntaxes: AcceptableSyntaxes;
+        public start(book: Book): void;
+        public preprocessChunk(chunk: ContentChunk): void;
+        public preprocessColumnSyntax(chunk: ContentChunk, column: Parse.ColumnSyntaxTree): void;
+        public preprocessBlockSyntax(chunk: ContentChunk, node: Parse.BlockElementSyntaxTree): void;
+    }
+}
+declare module ReVIEW.Build {
+    interface IValidator {
+        start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: IBuilder[]): void;
+    }
+    class DefaultValidator implements IValidator {
+        public acceptableSyntaxes: AcceptableSyntaxes;
+        public builders: IBuilder[];
+        public start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: IBuilder[]): void;
+        public checkBuilder(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders?: IBuilder[]): void;
+        public checkBook(book: Book): void;
+        public checkChunk(chunk: ContentChunk): void;
+        public resolveSymbolAndReference(book: Book): void;
+    }
+}
+declare module ReVIEW {
+    class Config {
+        public original: IConfigRaw;
+        public _builders: Build.IBuilder[];
+        public _bookStructure: BookStructure;
+        constructor(original: IConfigRaw);
+        public read : (path: string) => Promise<string>;
+        public write : (path: string, data: string) => Promise<void>;
+        public analyzer : Build.IAnalyzer;
+        public validators : Build.IValidator[];
+        public builders : Build.IBuilder[];
+        public listener : IConfigListener;
+        public book : BookStructure;
+        public resolvePath(path: string): string;
+    }
+    class NodeJSConfig extends Config {
+        public options: IOptions;
+        public original: IConfigRaw;
+        public _listener: IConfigListener;
+        constructor(options: IOptions, original: IConfigRaw);
+        public read : (path: string) => Promise<string>;
+        public write : (path: string, data: string) => Promise<void>;
+        public listener : IConfigListener;
+        public onReports(reports: ProcessReport[]): void;
+        public onCompileSuccess(book: Book): void;
+        public onCompileFailed(): void;
+        public resolvePath(path: string): string;
+    }
+    class WebBrowserConfig extends Config {
+        public options: IOptions;
+        public original: IConfigRaw;
+        public _listener: IConfigListener;
+        constructor(options: IOptions, original: IConfigRaw);
+        public read : (path: string) => Promise<string>;
+        public write : (path: string, data: string) => Promise<void>;
+        public listener : IConfigListener;
+        public onReports(reports: ProcessReport[]): void;
+        public onCompileSuccess(book: Book): void;
+        public onCompileFailed(book?: Book): void;
+        public resolvePath(path: string): string;
+        private startWith(str, target);
+        private endWith(str, target);
+    }
+}
+declare module ReVIEW {
+    class Controller {
+        public options: IOptions;
+        private config;
+        constructor(options?: IOptions);
+        public initConfig(data: IConfigRaw): void;
+        public process(): Promise<Book>;
+        public acceptableSyntaxes(book: Book): Promise<Book>;
+        public toContentChunk(book: Book): Book;
+        public readReVIEWFiles(book: Book): Promise<Book>;
+        public parseContent(book: Book): Book;
+        public preprocessContent(book: Book): Book;
+        public processContent(book: Book): Book;
+        public writeContent(book: Book): Promise<Book>;
+        public compileFinished(book: Book): Book;
+    }
+}
 declare module ReVIEW {
     interface IReferenceTo {
         part?: ContentChunk;
@@ -557,14 +644,14 @@ declare module ReVIEW {
         public symbols : ISymbol[];
     }
     class Book {
-        public config: ConfigWrapper;
+        public config: Config;
         public process: BookProcess;
         public acceptableSyntaxes: Build.AcceptableSyntaxes;
         public predef: ContentChunk[];
         public contents: ContentChunk[];
         public appendix: ContentChunk[];
         public postdef: ContentChunk[];
-        constructor(config: ConfigWrapper);
+        constructor(config: Config);
         public allChunks : ContentChunk[];
         public reports : ProcessReport[];
         public hasError : boolean;
@@ -591,38 +678,12 @@ declare module ReVIEW {
         public findResultByBuilder(builder: Build.IBuilder): string;
     }
 }
-declare module ReVIEW.Build {
-    interface IPreprocessor {
-        start(book: Book, acceptableSyntaxes: AcceptableSyntaxes): void;
-    }
-    class SyntaxPreprocessor implements IPreprocessor {
-        public acceptableSyntaxes: AcceptableSyntaxes;
-        public start(book: Book): void;
-        public preprocessChunk(chunk: ContentChunk): void;
-        public preprocessColumnSyntax(chunk: ContentChunk, column: Parse.ColumnSyntaxTree): void;
-        public preprocessBlockSyntax(chunk: ContentChunk, node: Parse.BlockElementSyntaxTree): void;
-    }
-}
-declare module ReVIEW.Build {
-    interface IValidator {
-        start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: IBuilder[]): void;
-    }
-    class DefaultValidator implements IValidator {
-        public acceptableSyntaxes: AcceptableSyntaxes;
-        public builders: IBuilder[];
-        public start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: IBuilder[]): void;
-        public checkBuilder(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders?: IBuilder[]): void;
-        public checkBook(book: Book): void;
-        public checkChunk(chunk: ContentChunk): void;
-        public resolveSymbolAndReference(book: Book): void;
-    }
-}
 declare module ReVIEW {
     interface IOptions {
         reviewfile?: string;
         base?: string;
     }
-    interface IConfig {
+    interface IConfigRaw {
         read?: (path: string) => Promise<string>;
         write?: (path: string, data: string) => Promise<void>;
         listener?: IConfigListener;
@@ -671,65 +732,6 @@ declare module ReVIEW {
         static createChapter(file: string): ContentStructure;
         static createChapter(chapter: IConfigChapter): ContentStructure;
         static createPart(part: IConfigPart): ContentStructure;
-    }
-    class ConfigWrapper implements IConfig {
-        public original: IConfig;
-        public _builders: Build.IBuilder[];
-        constructor(original: IConfig);
-        public read : (path: string) => Promise<string>;
-        public write : (path: string, data: string) => Promise<void>;
-        public analyzer : Build.IAnalyzer;
-        public validators : Build.IValidator[];
-        public builders : Build.IBuilder[];
-        public listener : IConfigListener;
-        public book : IConfigBook;
-        public bookStructure : BookStructure;
-        public resolvePath(path: string): string;
-    }
-    class NodeJSConfig extends ConfigWrapper implements IConfig {
-        public options: IOptions;
-        public original: IConfig;
-        public _listener: IConfigListener;
-        constructor(options: IOptions, original: IConfig);
-        public read : (path: string) => Promise<string>;
-        public write : (path: string, data: string) => Promise<void>;
-        public listener : IConfigListener;
-        public onReports(reports: ProcessReport[]): void;
-        public onCompileSuccess(book: Book): void;
-        public onCompileFailed(): void;
-        public resolvePath(path: string): string;
-    }
-    class WebBrowserConfig extends ConfigWrapper implements IConfig {
-        public options: IOptions;
-        public original: IConfig;
-        public _listener: IConfigListener;
-        constructor(options: IOptions, original: IConfig);
-        public read : (path: string) => Promise<string>;
-        public write : (path: string, data: string) => Promise<void>;
-        public listener : IConfigListener;
-        public onReports(reports: ProcessReport[]): void;
-        public onCompileSuccess(book: Book): void;
-        public onCompileFailed(book?: Book): void;
-        public resolvePath(path: string): string;
-        private startWith(str, target);
-        private endWith(str, target);
-    }
-}
-declare module ReVIEW {
-    class Controller {
-        public options: IOptions;
-        private config;
-        constructor(options?: IOptions);
-        public initConfig(data: IConfig): void;
-        public process(): Promise<Book>;
-        public acceptableSyntaxes(book: Book): Promise<Book>;
-        public toContentChunk(book: Book): Book;
-        public readReVIEWFiles(book: Book): Promise<Book>;
-        public parseContent(book: Book): Book;
-        public preprocessContent(book: Book): Book;
-        public processContent(book: Book): Book;
-        public writeContent(book: Book): Promise<Book>;
-        public compileFinished(book: Book): Book;
     }
 }
 declare module ReVIEW.Build {
