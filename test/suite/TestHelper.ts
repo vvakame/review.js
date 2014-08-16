@@ -12,7 +12,7 @@ module Test {
 	 * @param tmpConfig
 	 * @returns {{success: (function(): {book: ReVIEW.Book, results: *}), failure: (function(): {})}}
 	 */
-	export function compile(config?:ReVIEW.IConfig) {
+	export function compile(config?:ReVIEW.IConfigRaw) {
 		config = config || <any>{};
 		config.analyzer = config.analyzer || new ReVIEW.Build.DefaultAnalyzer();
 		config.validators = config.validators || [new ReVIEW.Build.DefaultValidator()];
@@ -77,7 +77,7 @@ module Test {
 	}
 
 	export function compileSingle(input:string, tmpConfig?:any /* ReVIEW.IConfig */) {
-		var config:ReVIEW.IConfig = tmpConfig || <any>{};
+		var config:ReVIEW.IConfigRaw = tmpConfig || <any>{};
 		config.read = config.read || (()=>Promise.resolve(input));
 		config.listener = config.listener || {
 			onCompileSuccess: (book)=> {
@@ -86,7 +86,7 @@ module Test {
 		var resultString:string;
 		var originalCompileSuccess = config.listener.onCompileSuccess;
 		config.listener.onCompileSuccess = (book) => {
-			resultString = book.parts[0].chapters[0].builderProcesses[0].result;
+			resultString = book.allChunks[0].builderProcesses[0].result;
 			originalCompileSuccess(book);
 		};
 

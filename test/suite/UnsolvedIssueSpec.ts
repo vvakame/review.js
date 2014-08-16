@@ -53,7 +53,7 @@ describe("未解決のエラー", ()=> {
 				//死なないパターンのexpected
 				//var expected = "■H1■第1章　title\n\n◆→開始:リスト←◆\nリスト1.1　きゃぷしょん\nalert('hello');\n◆→終了:リスト←◆\n\n";
 
-				assert(book.parts[0].chapters[0].findResultByBuilder(builder) === expected);
+				assert(book.contents[0].findResultByBuilder(builder) === expected);
 			});
 		});
 	});

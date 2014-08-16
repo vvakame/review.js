@@ -224,7 +224,7 @@ module ReVIEW {
 	 */
 	export module Exec {
 		export function singleCompile(input:string, fileName?:string, target?:string, tmpConfig?:any /* ReVIEW.IConfig */) {
-			var config:ReVIEW.IConfig = tmpConfig || <any>{};
+			var config:ReVIEW.IConfigRaw = tmpConfig || <any>{};
 			config.read = config.read || (()=> Promise.resolve(input));
 
 			config.analyzer = config.analyzer || new ReVIEW.Build.DefaultAnalyzer();

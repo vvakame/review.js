@@ -33,41 +33,38 @@ module ReVIEW.Build {
 	export class SyntaxPreprocessor implements IPreprocessor {
 		acceptableSyntaxes:AcceptableSyntaxes;
 
-		start(book:Book, acceptableSyntaxes:AcceptableSyntaxes) {
-			this.acceptableSyntaxes = acceptableSyntaxes;
+		start(book:Book) {
+			this.acceptableSyntaxes = book.acceptableSyntaxes;
 
-			this.preprocessBook(book);
+			book.predef.forEach(chunk=> this.preprocessChunk(chunk));
+			book.contents.forEach(chunk=> this.preprocessChunk(chunk));
+			book.appendix.forEach(chunk=> this.preprocessChunk(chunk));
+			book.postdef.forEach(chunk=> this.preprocessChunk(chunk));
 		}
 
-		preprocessBook(book:Book) {
-			book.parts.forEach(part=> this.preprocessPart(part));
-		}
-
-		preprocessPart(part:Part) {
-			part.chapters.forEach(chapter=>this.preprocessChapter(chapter));
-		}
-
-		preprocessChapter(chapter:Chapter) {
-			ReVIEW.visit(chapter.root, {
+		preprocessChunk(chunk:ContentChunk) {
+			ReVIEW.visit(chunk.tree.ast, {
 				visitDefaultPre: (node:SyntaxTree)=> {
 				},
 				visitColumnPre: (node:ColumnSyntaxTree)=> {
-					this.preprocessColumnSyntax(chapter, node);
+					this.preprocessColumnSyntax(chunk, node);
 				},
 				visitBlockElementPre: (node:BlockElementSyntaxTree) => {
-					this.preprocessBlockSyntax(chapter, node);
+					this.preprocessBlockSyntax(chunk, node);
 				}
 			});
+
+			chunk.nodes.forEach(chunk=>this.preprocessChunk(chunk));
 		}
 
 		/**
 		 * コラム記法を組み替える。
 		 * コラムの中ではHeadlineが使えるが、コラム自体の見出しレベルより深いレベルのHeadlineしか許可されない。
 		 * そのため、コラム自体より浅いレベルの見出しレベルを見つけたらコラム内から脱出させる。
-		 * @param chapter
+		 * @param chunk
 		 * @param column
 		 */
-		preprocessColumnSyntax(chapter:Chapter, column:ColumnSyntaxTree) {
+		preprocessColumnSyntax(chunk:ContentChunk, column:ColumnSyntaxTree) {
 			function reconstruct(parent:NodeSyntaxTree, target:ChapterSyntaxTree, to = column.parentNode.toChapter()) {
 				if (target.level <= to.level) {
 					reconstruct(parent.parentNode.toNode(), target, to.parentNode.toChapter());
@@ -96,13 +93,13 @@ module ReVIEW.Build {
 			// Parser.ts からのコピペなので共通ロジックとしてリファクタリングする
 
 			// parentNode を設定
-			ReVIEW.visit(chapter.root, {
+			ReVIEW.visit(chunk.tree.ast, {
 				visitDefaultPre: (ast:SyntaxTree, parent:SyntaxTree)=> {
 					ast.parentNode = parent;
 				}
 			});
 			// prev, next を設定
-			ReVIEW.visit(chapter.root, {
+			ReVIEW.visit(chunk.tree.ast, {
 				visitDefaultPre: (ast:SyntaxTree, parent:SyntaxTree)=> {
 				},
 				visitChapterPre: (ast:ChapterSyntaxTree) => {
@@ -127,7 +124,7 @@ module ReVIEW.Build {
 		 * @param chapter
 		 * @param node
 		 */
-		preprocessBlockSyntax(chapter:Chapter, node:BlockElementSyntaxTree) {
+		preprocessBlockSyntax(chunk:ContentChunk, node:BlockElementSyntaxTree) {
 			if (node.childNodes.length === 0) {
 				return;
 			}
@@ -171,7 +168,7 @@ module ReVIEW.Build {
 								line: info.line,
 								column: info.column,
 								endPos: node.offset - 1,
-								text: chapter.process.input.substring(info.offset, node.offset - 1)
+								text: chunk.process.input.substring(info.offset, node.offset - 1)
 							});
 							resultNodes.push(textNode);
 							resultNodes.push(node);
@@ -188,7 +185,7 @@ module ReVIEW.Build {
 							line: info.line,
 							column: info.column,
 							endPos: lastNode.endPos,
-							text: chapter.process.input.substring(info.offset, lastNode.endPos)
+							text: chunk.process.input.substring(info.offset, lastNode.endPos)
 						});
 						resultNodes.push(textNode);
 					})();
@@ -207,7 +204,7 @@ module ReVIEW.Build {
 						line: first.line,
 						column: first.column,
 						endPos: last.endPos,
-						text: nodeContentToString(chapter.process, node)
+						text: nodeContentToString(chunk.process, node)
 					});
 					node.childNodes = [textNode];
 				})();

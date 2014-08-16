@@ -12,14 +12,9 @@
 module ReVIEW {
 	"use strict";
 
-	import t = ReVIEW.i18n.t;
-
 	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
-	import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
 
-	import flatten = ReVIEW.flatten;
-
-	import ConfigWrapper = ReVIEW.ConfigWrapper;
+	import Config = ReVIEW.Config;
 	import NodeJSConfig = ReVIEW.NodeJSConfig;
 	import WebBrowserConfig = ReVIEW.WebBrowserConfig;
 
@@ -28,7 +23,7 @@ module ReVIEW {
 	 * 処理の起点。
 	 */
 	export class Controller {
-		private config:ConfigWrapper;
+		private config:Config;
 
 		constructor(public options:ReVIEW.IOptions = {}) {
 		}
@@ -38,7 +33,7 @@ module ReVIEW {
 		 * 通常、 ReVIEW.start 経由で呼び出される。
 		 * @param data
 		 */
-		initConfig(data:ReVIEW.IConfig):void {
+		initConfig(data:ReVIEW.IConfigRaw):void {
 			if (ReVIEW.isNodeJS()) {
 				this.config = new NodeJSConfig(this.options, data);
 			} else {
@@ -46,164 +41,201 @@ module ReVIEW {
 			}
 		}
 
-		/**
-		 * 処理開始
-		 * @returns {Book}
-		 */
 		process():Promise<Book> {
-			var acceptableSyntaxes = this.config.analyzer.getAcceptableSyntaxes();
+			return Promise.resolve(new Book(this.config))
+				.then(book=> this.acceptableSyntaxes(book))
+				.then(book=> this.toContentChunk(book))
+				.then(book=> this.readReVIEWFiles(book))
+				.then(book=> this.parseContent(book))
+				.then(book=>this.preprocessContent(book))
+				.then(book=> this.processContent(book))
+				.then(book=>this.writeContent(book))
+				.then(book=>this.compileFinished(book));
+		}
 
-			if (this.config.listener.onAcceptables(acceptableSyntaxes) === false) {
+		acceptableSyntaxes(book:Book):Promise<Book> {
+			book.acceptableSyntaxes = book.config.analyzer.getAcceptableSyntaxes();
+
+			if (book.config.listener.onAcceptables(book.acceptableSyntaxes) === false) {
 				// false が帰ってきたら処理を中断する (undefined でも継続)
-				this.config.listener.onCompileFailed();
+				book.config.listener.onCompileFailed();
 				return Promise.reject(null);
 			}
 
-			return this.processBook().then(book=> {
-				var preprocessor = new ReVIEW.Build.SyntaxPreprocessor();
-				preprocessor.start(book, acceptableSyntaxes);
+			return Promise.resolve(book);
+		}
 
-				this.config.validators.forEach(validator=> {
-					validator.start(book, acceptableSyntaxes, this.config.builders);
-				});
-				if (book.reports.some(report=>report.level === ReVIEW.ReportLevel.Error)) {
-					// エラーがあったら処理中断
-					return Promise.resolve(book);
-				}
-
-				var symbols:ReVIEW.ISymbol[] = flatten(book.parts.map(part=>part.chapters.map(chapter=>chapter.process.symbols)));
-				if (this.config.listener.onSymbols(symbols) === false) {
-					// false が帰ってきたら処理を中断する (undefined でも継続)
-					return Promise.resolve(book);
-				}
-
-				this.config.builders.forEach(builder=> builder.init(book));
-
-				// 結果を書き出す
-				var writePromises:Promise<void>[] = [];
-				book.parts.forEach(part=> {
-					part.chapters.forEach(chapter=> {
-						chapter.builderProcesses.forEach(process=> {
-							var baseName = chapter.name.substr(0, chapter.name.lastIndexOf(".re"));
-							var fileName = baseName + "." + process.builder.extention;
-							var result = process.result;
-							writePromises.push(this.config.write(fileName, result));
-						});
+		toContentChunk(book:Book):Book {
+			var convert = (c:ContentStructure, parent?:ContentChunk):ContentChunk => {
+				var chunk:ContentChunk;
+				if (c.part) {
+					chunk = new ContentChunk(book, c.part.file);
+					c.part.chapters.forEach(c=> {
+						convert(ContentStructure.createChapter(c), chunk);
 					});
-				});
-				return Promise.all(writePromises).then<Book>(()=> book);
-			}).then(book=> {
-				this.config.listener.onReports(book.reports);
-				if (!book.hasError) {
-					this.config.listener.onCompileSuccess(book);
+				} else if (c.chapter) {
+					chunk = new ContentChunk(book, parent, c.chapter.file);
 				} else {
-					this.config.listener.onCompileFailed(book);
+					return null;
 				}
+				if (parent) {
+					parent.nodes.push(chunk);
+				}
+				return chunk;
+			};
 
-				return book;
-			});
+			book.predef = this.config.book.predef.map(c => convert(c));
+			book.contents = this.config.book.contents.map(c => convert(c));
+			book.appendix = this.config.book.appendix.map(c => convert(c));
+			book.postdef = this.config.book.postdef.map(c => convert(c));
+
+			return book;
 		}
 
-		private processBook():Promise<Book> {
-			var book = new Book(this.config);
-			var promise = Promise
-				.all(Object.keys(this.config.book).map((key, index) => {
-					var chapters:IConfigChapter[] = (<any>this.config.book)[key];
-					return this.processPart(book, index, key, chapters);
-				}))
-				.then(parts=> {
-					book.parts = parts;
+		readReVIEWFiles(book:Book):Promise<Book> {
+			var promises:Promise<any>[] = [];
 
-					// Chapterに採番を行う
-					book.parts.forEach(part=> {
-						var chapters:ChapterSyntaxTree[] = [];
-						part.chapters.forEach(chapter=> {
-							ReVIEW.visit(chapter.root, {
-								visitDefaultPre: (node)=> {
-								},
-								visitChapterPre: (node:ChapterSyntaxTree) => {
-									chapters.push(node);
-								}
-							});
-						});
-						var counter:{[index:number]:number;} = {};
-						var max = 0;
-						var currentLevel = 0;
-						chapters.forEach((chapter)=> {
-							var level = chapter.headline.level;
-							max = Math.max(max, level);
-							var i:number;
-							if (currentLevel > level) {
-								for (i = level + 1; i <= max; i++) {
-									counter[i] = 0;
-								}
-							} else if (currentLevel < level) {
-								for (i = level; i <= max; i++) {
-									counter[i] = 0;
-								}
-							}
-							currentLevel = level;
-							counter[level] = (counter[level] || 0) + 1;
-							chapter.no = counter[level];
-						});
-					});
-					return book;
-				});
-			return promise;
+			var read = (chunk:ContentChunk) => {
+				var resolvedPath = book.config.resolvePath(chunk.name);
+				promises.push(book.config.read(resolvedPath).then(input => chunk.input = input));
+				chunk.nodes.forEach(chunk => read(chunk));
+			};
+
+			book.predef.forEach(chunk=>read(chunk));
+			book.contents.forEach(chunk=>read(chunk));
+			book.appendix.forEach(chunk=>read(chunk));
+			book.postdef.forEach(chunk=>read(chunk));
+
+			return Promise.all(promises).then(()=> book);
 		}
 
-		private processPart(book:Book, index:number, name:string, chapters:IConfigChapter[] = []):Promise<Part> {
-			var part = new Part(book, index + 1, name);
-			var promise = Promise
-				.all(chapters.map((chapter, index) => {
-					return this.processChapter(book, part, index, chapter);
-				}))
-				.then(chapters=> {
-					part.chapters = chapters;
-					return part;
-				});
-			return promise;
-		}
-
-		private processChapter(book:Book, part:Part, index:number, configChapter:IConfigChapter):Promise<Chapter> {
-			var resolvedPath = this.config.resolvePath(configChapter.file);
-
-			var promise = new Promise<Chapter>((resolve, reject)=> {
+		parseContent(book:Book):Book {
+			var parse = (chunk:ContentChunk) => {
 				try {
-					this.config.read(resolvedPath)
-						.then(data=> {
-							var chapter:Chapter;
-							try {
-								var parseResult = ReVIEW.Parse.parse(data);
-								chapter = new Chapter(part, index + 1, configChapter.file, data, parseResult.ast);
-								resolve(chapter);
-							} catch (e) {
-								if (!(e instanceof PEG.SyntaxError)) {
-									throw e;
-								}
-								var se:PEG.SyntaxError = e;
-								var errorNode = new SyntaxTree({
-									syntax: se.name,
-									line: se.line,
-									column: se.column,
-									offset: se.offset,
-									endPos: -1 // TODO SyntaxError が置き換えられたらなんとかできるかも…
-								});
-								chapter = new Chapter(part, index + 1, configChapter.file, data, null);
-								chapter.process.error(se.message, errorNode);
-								resolve(chapter);
-							}
-						})
-						.catch(err=> {
-							var chapter = new Chapter(part, index + 1, chapter.file, null, null);
-							chapter.process.error(t("compile.file_not_exists", resolvedPath));
-							resolve(chapter);
-						});
+					chunk.tree = ReVIEW.Parse.parse(chunk.input);
 				} catch (e) {
-					reject(e);
+					if (!(e instanceof PEG.SyntaxError)) {
+						throw e;
+					}
+					var se:PEG.SyntaxError = e;
+					var errorNode = new SyntaxTree({
+						syntax: se.name,
+						line: se.line,
+						column: se.column,
+						offset: se.offset,
+						endPos: -1 // TODO SyntaxError が置き換えられたらなんとかできるかも…
+					});
+					chunk.tree = {ast: errorNode, cst: null};
+					// TODO エラー表示が必要 process.error 的なやつ
 				}
+				chunk.nodes.forEach(chunk => parse(chunk));
+			};
+
+			book.predef.forEach(chunk => parse(chunk));
+			book.contents.forEach(chunk => parse(chunk));
+			book.appendix.forEach(chunk => parse(chunk));
+			book.predef.forEach(chunk => parse(chunk));
+
+			return book;
+		}
+
+		preprocessContent(book:Book):Book {
+			// Chapterに採番を行う
+			var numberingChapter = (chunk:ContentChunk, counter:{[index:number]:number;}) => {
+				// TODO partにも分け隔てなく採番してるけど間違ってるっしょ
+				var chapters:ReVIEW.Parse.ChapterSyntaxTree[] = [];
+				ReVIEW.visit(chunk.tree.ast, {
+					visitDefaultPre: (node)=> {
+					},
+					visitChapterPre: (node:ReVIEW.Parse.ChapterSyntaxTree) => {
+						chapters.push(node);
+					}
+				});
+				var max = 0;
+				var currentLevel = 0;
+				chapters.forEach((chapter)=> {
+					var level = chapter.headline.level;
+					max = Math.max(max, level);
+					var i:number;
+					if (currentLevel > level) {
+						for (i = level + 1; i <= max; i++) {
+							counter[i] = 0;
+						}
+					} else if (currentLevel < level) {
+						for (i = level; i <= max; i++) {
+							counter[i] = 0;
+						}
+					}
+					currentLevel = level;
+					counter[level] = (counter[level] || 0) + 1;
+					chapter.no = counter[level];
+				});
+				chunk.no = counter[1];
+				chunk.nodes.forEach(chunk=> numberingChapter(chunk, counter));
+			};
+			var numberingChapters = (chunks:ContentChunk[], counter:{[index:number]:number;} = {}) => {
+				chunks.forEach(chunk => numberingChapter(chunk, counter));
+			};
+
+			numberingChapters(book.predef);
+			numberingChapters(book.contents);
+			numberingChapters(book.appendix);
+			numberingChapters(book.postdef);
+
+			var preprocessor = new ReVIEW.Build.SyntaxPreprocessor();
+			preprocessor.start(book);
+			return book;
+		}
+
+		processContent(book:Book):Book {
+			book.config.validators.forEach(validator=> {
+				validator.start(book, book.acceptableSyntaxes, this.config.builders);
 			});
-			return promise;
+			if (book.reports.some(report=>report.level === ReVIEW.ReportLevel.Error)) {
+				// エラーがあったら処理中断
+				return book;
+			}
+
+			var symbols = book.allChunks.reduce<ReVIEW.ISymbol[]>((p, c)=>p.concat(c.process.symbols), []);
+			if (this.config.listener.onSymbols(symbols) === false) {
+				// false が帰ってきたら処理を中断する (undefined でも継続)
+				return book;
+			}
+
+			this.config.builders.forEach(builder=> builder.init(book));
+
+			return book;
+		}
+
+		writeContent(book:Book):Promise<Book> {
+			var promises:Promise<any>[] = [];
+
+			var write = (chunk:ContentChunk) => {
+				chunk.builderProcesses.forEach(process=> {
+					var baseName = chunk.name.substr(0, chunk.name.lastIndexOf(".re"));
+					var fileName = baseName + "." + process.builder.extention;
+					promises.push(this.config.write(fileName, process.result));
+				});
+				chunk.nodes.forEach(chunk => write(chunk));
+			};
+
+			book.predef.forEach(chunk => write(chunk));
+			book.contents.forEach(chunk => write(chunk));
+			book.appendix.forEach(chunk => write(chunk));
+			book.postdef.forEach(chunk => write(chunk));
+
+			return Promise.all(promises).then(()=> book);
+		}
+
+		compileFinished(book:Book):Book {
+			book.config.listener.onReports(book.reports);
+			if (!book.hasError) {
+				book.config.listener.onCompileSuccess(book);
+			} else {
+				book.config.listener.onCompileFailed(book);
+			}
+
+			return book;
 		}
 	}
 }

@@ -41,16 +41,13 @@ describe("ReVIEW.Controllerの", ()=> {
 				}
 			});
 		}).then(book=> {
-			assert(book.parts.length === 1);
-
-			var part = book.parts[0];
-			assert(part.chapters.length === 2);
-			part.chapters.forEach((chapter)=> {
-				assert(!!chapter.root);
+			assert(book.contents.length === 2);
+			book.contents.forEach(chunk=> {
+				assert(!!chunk.tree.ast);
 			});
 
-			assert(part.chapters[0].process.symbols.length === 1);
-			assert(part.chapters[1].process.symbols.length === 3);
+			assert(book.contents[0].process.symbols.length === 1);
+			assert(book.contents[1].process.symbols.length === 3);
 		});
 	});
 });

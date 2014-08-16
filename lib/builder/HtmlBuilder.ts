@@ -42,7 +42,7 @@ module ReVIEW.Build {
 			return String(data).replace(/[&<>"'\/]/g, c=> this.escapeMap[c]);
 		}
 
-		processPost(process:BuilderProcess, chapter:Chapter):void {
+		processPost(process:BuilderProcess, chunk:ContentChunk):void {
 			if (this.standalone) {
 
 				var pre = "";
@@ -54,7 +54,7 @@ module ReVIEW.Build {
 				pre += "  <meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n";
 				pre += "  <meta name=\"generator\" content=\"Re:VIEW\" />\n";
 				var name:string = null;
-				ReVIEW.visit(chapter.root, {
+				ReVIEW.visit(chunk.tree.ast, {
 					visitDefaultPre: ()=> {
 					},
 					visitChapterPre: (node:ChapterSyntaxTree)=> {

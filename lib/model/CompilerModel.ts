@@ -14,9 +14,9 @@ module ReVIEW {
 	 * 参照先についての情報。
 	 */
 	export interface IReferenceTo {
-		part?:Part;
+		part?:ContentChunk;
 		partName:string;
-		chapter?:Chapter;
+		chapter?:ContentChunk;
 		chapterName:string;
 		targetSymbol:string;
 		label:string;
@@ -28,8 +28,8 @@ module ReVIEW {
 	 * シンボルについての情報。
 	 */
 	export interface ISymbol {
-		part?:Part;
-		chapter?:Chapter;
+		part?:ContentChunk;
+		chapter?:ContentChunk;
 		symbolName:string;
 		labelName?:string;
 		referenceTo?:IReferenceTo;
@@ -49,7 +49,7 @@ module ReVIEW {
 	 * 処理時に発生したレポート。
 	 */
 	export class ProcessReport {
-		constructor(public level:ReportLevel, public part:Part, public chapter:Chapter, public message:string, public nodes:Parse.SyntaxTree[] = []) {
+		constructor(public level:ReportLevel, public part:ContentChunk, public chapter:ContentChunk, public message:string, public nodes:Parse.SyntaxTree[] = []) {
 		}
 	}
 
@@ -82,7 +82,7 @@ module ReVIEW {
 		afterProcess:Function[] = [];
 		private _reports:ProcessReport[] = [];
 
-		constructor(public part:Part, public chapter:Chapter, public input:string) {
+		constructor(public part:ContentChunk, public chapter:ContentChunk, public input:string) {
 		}
 
 		info(message:string, ...nodes:Parse.SyntaxTree[]) {
@@ -154,7 +154,7 @@ module ReVIEW {
 			} else if (splitted.length === 2) {
 				return {
 					part: this.part,
-					partName: this.part.name,
+					partName: (this.part || <any>{}).name,
 					chapterName: splitted[0],
 					targetSymbol: targetSymbol,
 					label: splitted[1]
@@ -162,9 +162,9 @@ module ReVIEW {
 			} else if (splitted.length === 1) {
 				return {
 					part: this.part,
-					partName: this.part.name,
+					partName: (this.part || <any>{}).name,
 					chapter: this.chapter,
-					chapterName: this.chapter.name,
+					chapterName: (this.chapter || <any>{}).name,
 					targetSymbol: targetSymbol,
 					label: splitted[0]
 				};
@@ -236,16 +236,43 @@ module ReVIEW {
 	 */
 	export class Book {
 		process:BookProcess = new BookProcess();
-		parts:Part[] = [];
+		acceptableSyntaxes:ReVIEW.Build.AcceptableSyntaxes;
 
-		constructor(public config:IConfig) {
+		predef:ContentChunk[] = [];
+		contents:ContentChunk[] = [];
+		appendix:ContentChunk[] = [];
+		postdef:ContentChunk[] = [];
+
+		constructor(public config:Config) {
+		}
+
+		get allChunks():ContentChunk[] {
+			var tmpArray:ContentChunk[] = [];
+			var add = (chunk:ContentChunk) => {
+				tmpArray.push(chunk);
+				chunk.nodes.forEach(chunk => add(chunk));
+			};
+
+			this.predef.forEach(chunk => add(chunk));
+			this.contents.forEach(chunk => add(chunk));
+			this.appendix.forEach(chunk => add(chunk));
+			this.postdef.forEach(chunk => add(chunk));
+
+			return tmpArray;
 		}
 
 		get reports():ProcessReport[] {
-			var tmpArray:any[] = [];
-			tmpArray.push(this.process.reports);
-			tmpArray.push(this.parts.map(part=>part.chapters.map((chapter:Chapter)=>chapter.process.reports)));
-			return flatten(tmpArray);
+			var results:ProcessReport[] = [];
+			results = results.concat(this.process.reports);
+			var gatherReports = (chunk:ContentChunk) => {
+				results = results.concat(chunk.process.reports);
+				chunk.nodes.forEach(chunk => gatherReports(chunk));
+			};
+			this.predef.forEach(chunk => gatherReports(chunk));
+			this.contents.forEach(chunk => gatherReports(chunk));
+			this.appendix.forEach(chunk => gatherReports(chunk));
+			this.postdef.forEach(chunk => gatherReports(chunk));
+			return results;
 		}
 
 		get hasError():boolean {
@@ -257,28 +284,45 @@ module ReVIEW {
 		}
 	}
 
-	/**
-	 * パートを表す。
-	 * パートは 前書き、本文、後書き など。
-	 * Ruby版でいうと PREDEF, CHAPS, POSTDEF。
-	 * 章番号はパート毎に採番される。(Ruby版では PREDEF は採番されない)
-	 */
-	export class Part {
-		chapters:Chapter[];
+	export class ContentChunk {
+		parent:ContentChunk;
+		nodes:ContentChunk[] = [];
 
-		constructor(public parent:Book, public no:number, public name:string) {
-		}
-	}
+		no:number;
+		name:string;
+		_input:string; // TODO get, set やめる
+		tree:{ast:ReVIEW.Parse.SyntaxTree;cst:ReVIEW.Parse.IConcreatSyntaxTree;};
 
-	/**
-	 * チャプターを表す。
-	 */
-	export class Chapter {
 		process:Process;
 		builderProcesses:BuilderProcess[] = [];
 
-		constructor(public parent:Part, public no:number, public name:string, public input:string, public root:ReVIEW.Parse.SyntaxTree) {
-			this.process = new Process(this.parent, this, input);
+		constructor(book:Book, parent:ContentChunk, name:string);
+
+		constructor(book:Book, name:string);
+
+		constructor(public book:Book, parent:any, name?:any) {
+			if (parent instanceof ContentChunk) {
+				this.parent = parent;
+				this.name = name;
+			} else if (typeof name === "string") {
+				this.name = name;
+			} else {
+				this.name = parent;
+			}
+
+			var part:ContentChunk = parent ? parent : null;
+			var chapter:ContentChunk = this; // TODO thisがpartでchapterが無しの場合もあるよ…！！
+			this.process = new Process(part, chapter, null);
+		}
+
+		get input() {
+			return this._input;
+		}
+
+		set input(value:string) {
+			// TODO やめる
+			this._input = value;
+			this.process.input = value;
 		}
 
 		createBuilderProcess(builder:ReVIEW.Build.IBuilder):BuilderProcess {
