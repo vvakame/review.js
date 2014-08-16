@@ -140,27 +140,19 @@ module ReVIEW {
 				var block = ast.toBlockElement();
 				var pool = poolGenerator();
 				var ret = v.visitBlockElementPre(block, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					block.args.forEach((next)=> {
-						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
-					});
-					block.childNodes.forEach((next)=> {
-						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
-					});
-				} else if (ret && typeof ret.then === "function") {
-					pool.add(()=> ret.then((ret:any) => {
-						if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-							block.args.forEach((next)=> {
-								pool.add(()=> _visitSub(poolGenerator, ast, next, v));
-							});
-							block.childNodes.forEach((next)=> {
-								pool.add(()=> _visitSub(poolGenerator, ast, next, v));
-							});
-						}
-					}));
-				} else if (typeof ret === "function") {
-					pool.add(()=> ret(v));
-				}
+				pool.handle(ret, {
+					next: ()=> {
+						block.args.forEach((next)=> {
+							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+						});
+						block.childNodes.forEach((next)=> {
+							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+						});
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
 				pool.add(()=> v.visitBlockElementPost(block, parent));
 				return pool.consume();
 			})();
@@ -169,18 +161,16 @@ module ReVIEW {
 				var inline = ast.toInlineElement();
 				var pool = poolGenerator();
 				var ret = v.visitInlineElementPre(inline, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					inline.childNodes.forEach((next)=> {
-						pool.add(()=>_visitSub(poolGenerator, ast, next, v));
-					});
-				} else if (ret && typeof ret.then === "function") {
-					pool.add(()=> ret);
-					inline.childNodes.forEach((next)=> {
-						pool.add(()=>_visitSub(poolGenerator, ast, next, v));
-					});
-				} else if (typeof ret === "function") {
-					pool.add(()=> ret(v));
-				}
+				pool.handle(ret, {
+					next: ()=> {
+						inline.childNodes.forEach((next)=> {
+							pool.add(()=>_visitSub(poolGenerator, ast, next, v));
+						});
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
 				pool.add(()=> v.visitInlineElementPost(inline, parent));
 				return pool.consume();
 			})();
@@ -189,11 +179,13 @@ module ReVIEW {
 				var arg = ast.toArgument();
 				var pool = poolGenerator();
 				var ret = v.visitArgumentPre(arg, parent);
-				if (ret && typeof ret.then === "function") {
-					pool.add(()=> ret);
-				} else if (typeof ret === "function") {
-					pool.add(()=> ret(v));
-				}
+				pool.handle(ret, {
+					next: ()=> {
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
 				pool.add(()=> v.visitArgumentPost(arg, parent));
 				return pool.consume();
 			})();
@@ -202,30 +194,22 @@ module ReVIEW {
 				var chap = ast.toChapter();
 				var pool = poolGenerator();
 				var ret = v.visitChapterPre(chap, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					pool.add(()=> _visitSub(poolGenerator, ast, chap.headline, v));
-					if (chap.text) {
-						chap.text.forEach((next)=> {
+				pool.handle(ret, {
+					next: ()=> {
+						pool.add(()=> _visitSub(poolGenerator, ast, chap.headline, v));
+						if (chap.text) {
+							chap.text.forEach((next)=> {
+								pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+							});
+						}
+						chap.childNodes.forEach((next)=> {
 							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 						});
+					},
+					func: ()=> {
+						ret(v);
 					}
-					chap.childNodes.forEach((next)=> {
-						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
-					});
-				} else if (ret && typeof ret.then === "function") {
-					pool.add(()=> ret);
-					pool.add(()=> _visitSub(poolGenerator, ast, chap.headline, v));
-					if (chap.text) {
-						chap.text.forEach((next)=> {
-							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
-						});
-					}
-					chap.childNodes.forEach((next)=> {
-						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
-					});
-				} else if (typeof ret === "function") {
-					pool.add(()=> ret(v));
-				}
+				});
 				pool.add(()=> v.visitChapterPost(chap, parent));
 				return pool.consume();
 			})();
@@ -234,16 +218,15 @@ module ReVIEW {
 				var head = ast.toHeadline();
 				var pool = poolGenerator();
 				var ret = v.visitHeadlinePre(head, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					pool.add(()=>_visitSub(poolGenerator, ast, head.label, v));
-					pool.add(()=>_visitSub(poolGenerator, ast, head.caption, v));
-				} else if (ret && typeof ret.then === "function") {
-					pool.add(()=> ret);
-					pool.add(()=>_visitSub(poolGenerator, ast, head.label, v));
-					pool.add(()=>_visitSub(poolGenerator, ast, head.caption, v));
-				} else if (typeof ret === "function") {
-					pool.add(()=> ret(v));
-				}
+				pool.handle(ret, {
+					next: ()=> {
+						pool.add(()=>_visitSub(poolGenerator, ast, head.label, v));
+						pool.add(()=>_visitSub(poolGenerator, ast, head.caption, v));
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
 				pool.add(()=> v.visitHeadlinePost(head, parent));
 				return pool.consume();
 			})();
@@ -252,24 +235,19 @@ module ReVIEW {
 				var column = ast.toColumn();
 				var pool = poolGenerator();
 				var ret = v.visitColumnPre(column, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					pool.add(()=> _visitSub(poolGenerator, ast, column.headline, v));
-					if (column.text) {
-						column.text.forEach((next)=> {
-							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
-						});
+				pool.handle(ret, {
+					next: ()=> {
+						pool.add(()=> _visitSub(poolGenerator, ast, column.headline, v));
+						if (column.text) {
+							column.text.forEach((next)=> {
+								pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+							});
+						}
+					},
+					func: ()=> {
+						ret(v);
 					}
-				} else if (ret && typeof ret.then === "function") {
-					pool.add(()=> ret);
-					pool.add(()=> _visitSub(poolGenerator, ast, column.headline, v));
-					if (column.text) {
-						column.text.forEach((next)=> {
-							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
-						});
-					}
-				} else if (typeof ret === "function") {
-					pool.add(()=> ret(v));
-				}
+				});
 				pool.add(()=> v.visitColumnPost(column, parent));
 				return pool.consume();
 			})();
@@ -278,14 +256,14 @@ module ReVIEW {
 				var columnHead = ast.toColumnHeadline();
 				var pool = poolGenerator();
 				var ret = v.visitColumnHeadlinePre(columnHead, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					pool.add(()=>_visitSub(poolGenerator, ast, columnHead.caption, v));
-				} else if (ret && typeof ret.then === "function") {
-					pool.add(()=> ret);
-					pool.add(()=>_visitSub(poolGenerator, ast, columnHead.caption, v));
-				} else if (typeof ret === "function") {
-					pool.add(()=> ret(v));
-				}
+				pool.handle(ret, {
+					next: ()=> {
+						pool.add(()=>_visitSub(poolGenerator, ast, columnHead.caption, v));
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
 				pool.add(()=> v.visitColumnHeadlinePost(columnHead, parent));
 				return pool.consume();
 			})();
@@ -294,20 +272,17 @@ module ReVIEW {
 				var ul = ast.toUlist();
 				var pool = poolGenerator();
 				var ret = v.visitUlistPre(ul, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					pool.add(()=> _visitSub(poolGenerator, ast, ul.text, v));
-					ul.childNodes.forEach((next)=> {
-						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
-					});
-				} else if (ret && typeof ret.then === "function") {
-					pool.add(()=> ret);
-					pool.add(()=> _visitSub(poolGenerator, ast, ul.text, v));
-					ul.childNodes.forEach((next)=> {
-						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
-					});
-				} else if (typeof ret === "function") {
-					pool.add(()=> ret(v));
-				}
+				pool.handle(ret, {
+					next: ()=> {
+						pool.add(()=> _visitSub(poolGenerator, ast, ul.text, v));
+						ul.childNodes.forEach((next)=> {
+							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+						});
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
 				pool.add(()=> v.visitUlistPost(ul, parent));
 				return pool.consume();
 			})();
@@ -316,14 +291,14 @@ module ReVIEW {
 				var ol = ast.toOlist();
 				var pool = poolGenerator();
 				var ret = v.visitOlistPre(ol, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					pool.add(()=>_visitSub(poolGenerator, ast, ol.text, v));
-				} else if (ret && typeof ret.then === "function") {
-					pool.add(()=> ret);
-					pool.add(()=>_visitSub(poolGenerator, ast, ol.text, v));
-				} else if (typeof ret === "function") {
-					pool.add(()=> ret(v));
-				}
+				pool.handle(ret, {
+					next: ()=> {
+						pool.add(()=>_visitSub(poolGenerator, ast, ol.text, v));
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
 				pool.add(()=> v.visitOlistPost(ol, parent));
 				return pool.consume();
 			})();
@@ -332,16 +307,15 @@ module ReVIEW {
 				var dl = ast.toDlist();
 				var pool = poolGenerator();
 				var ret = v.visitDlistPre(dl, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					pool.add(()=> _visitSub(poolGenerator, ast, dl.text, v));
-					pool.add(()=> _visitSub(poolGenerator, ast, dl.content, v));
-				} else if (ret && typeof ret.then === "function") {
-					pool.add(()=> ret);
-					pool.add(()=> _visitSub(poolGenerator, ast, dl.text, v));
-					pool.add(()=> _visitSub(poolGenerator, ast, dl.content, v));
-				} else if (typeof ret === "function") {
-					pool.add(()=> ret(v));
-				}
+				pool.handle(ret, {
+					next: ()=> {
+						pool.add(()=> _visitSub(poolGenerator, ast, dl.text, v));
+						pool.add(()=> _visitSub(poolGenerator, ast, dl.content, v));
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
 				pool.add(()=> v.visitDlistPost(dl, parent));
 				return pool.consume();
 			})();
@@ -350,18 +324,16 @@ module ReVIEW {
 				var node = ast.toNode();
 				var pool = poolGenerator();
 				var ret = v.visitParagraphPre(node, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					node.childNodes.forEach((next)=> {
-						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
-					});
-				} else if (ret && typeof ret.then === "function") {
-					pool.add(()=> ret);
-					node.childNodes.forEach((next)=> {
-						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
-					});
-				} else if (typeof ret === "function") {
-					pool.add(()=> ret(v));
-				}
+				pool.handle(ret, {
+					next: ()=> {
+						node.childNodes.forEach((next)=> {
+							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+						});
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
 				pool.add(()=> v.visitParagraphPost(node, parent));
 				return pool.consume();
 			})();
@@ -370,18 +342,16 @@ module ReVIEW {
 				var node = ast.toNode();
 				var pool = poolGenerator();
 				var ret = v.visitNodePre(node, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					node.childNodes.forEach((next)=> {
-						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
-					});
-				} else if (ret && typeof ret.then === "function") {
-					pool.add(()=> ret);
-					node.childNodes.forEach((next)=> {
-						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
-					});
-				} else if (typeof ret === "function") {
-					pool.add(()=> ret(v));
-				}
+				pool.handle(ret, {
+					next: ()=> {
+						node.childNodes.forEach((next)=> {
+							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+						});
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
 				pool.add(()=> v.visitNodePost(node, parent));
 				return pool.consume();
 			})();
@@ -390,23 +360,27 @@ module ReVIEW {
 				var text = ast.toTextNode();
 				var pool = poolGenerator();
 				var ret = v.visitTextPre(text, parent);
-				if (ret && typeof ret.then === "function") {
-					pool.add(()=> ret);
-				} else if (typeof ret === "function") {
-					pool.add(()=> ret(v));
-				}
+				pool.handle(ret, {
+					next: ()=> {
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
 				pool.add(()=> v.visitTextPost(text, parent));
 				return pool.consume();
 			})();
 		} else if (ast) {
 			return (()=> {
-				var ret = v.visitDefaultPre(parent, ast);
 				var pool = poolGenerator();
-				if (ret && typeof ret.then === "function") {
-					pool.add(()=> ret);
-				} else if (typeof ret === "function") {
-					pool.add(()=> ret(v));
-				}
+				var ret = v.visitDefaultPre(parent, ast);
+				pool.handle(ret, {
+					next: ()=> {
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
 				pool.add(()=> v.visitDefaultPost(parent, ast));
 				return pool.consume();
 			})();
@@ -463,7 +437,7 @@ module ReVIEW {
 	 */
 	interface ITaskPool<T> {
 		add(value:()=>T):void;
-
+		handle(value:any, statements:{next: ()=>void;func:()=>void;}):void;
 		consume():any; // T | Promise<T[]>
 	}
 
@@ -475,6 +449,14 @@ module ReVIEW {
 
 		add(value:()=>T):void {
 			this.tasks.push(value);
+		}
+
+		handle(value:any, statements:{next: ()=>void;func:()=>void;}):void {
+			if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
+				statements.next();
+			} else if (typeof value === "function") {
+				statements.func();
+			}
 		}
 
 		consume():T[] {
@@ -498,6 +480,16 @@ module ReVIEW {
 
 		add(value:()=>any) {
 			this.tasks.push(()=> Promise.resolve(value()));
+		}
+
+		handle(value:any, statements:{next: ()=>void;func:()=>void;}):void {
+			if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
+				statements.next();
+			} else if (value && typeof value.then === "function") {
+				this.tasks.push(()=> Promise.resolve(value));
+			} else if (typeof value === "function") {
+				statements.func();
+			}
 		}
 
 		consume():Promise<T[]> {

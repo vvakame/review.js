@@ -5117,39 +5117,23 @@ var ReVIEW;
                 var block = ast.toBlockElement();
                 var pool = poolGenerator();
                 var ret = v.visitBlockElementPre(block, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    block.args.forEach(function (next) {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, next, v);
+                pool.handle(ret, {
+                    next: function () {
+                        block.args.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
                         });
-                    });
-                    block.childNodes.forEach(function (next) {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, next, v);
+                        block.childNodes.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
                         });
-                    });
-                } else if (ret && typeof ret.then === "function") {
-                    pool.add(function () {
-                        return ret.then(function (ret) {
-                            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                                block.args.forEach(function (next) {
-                                    pool.add(function () {
-                                        return _visitSub(poolGenerator, ast, next, v);
-                                    });
-                                });
-                                block.childNodes.forEach(function (next) {
-                                    pool.add(function () {
-                                        return _visitSub(poolGenerator, ast, next, v);
-                                    });
-                                });
-                            }
-                        });
-                    });
-                } else if (typeof ret === "function") {
-                    pool.add(function () {
-                        return ret(v);
-                    });
-                }
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
                 pool.add(function () {
                     return v.visitBlockElementPost(block, parent);
                 });
@@ -5160,26 +5144,18 @@ var ReVIEW;
                 var inline = ast.toInlineElement();
                 var pool = poolGenerator();
                 var ret = v.visitInlineElementPre(inline, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    inline.childNodes.forEach(function (next) {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, next, v);
+                pool.handle(ret, {
+                    next: function () {
+                        inline.childNodes.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
                         });
-                    });
-                } else if (ret && typeof ret.then === "function") {
-                    pool.add(function () {
-                        return ret;
-                    });
-                    inline.childNodes.forEach(function (next) {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, next, v);
-                        });
-                    });
-                } else if (typeof ret === "function") {
-                    pool.add(function () {
-                        return ret(v);
-                    });
-                }
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
                 pool.add(function () {
                     return v.visitInlineElementPost(inline, parent);
                 });
@@ -5190,15 +5166,13 @@ var ReVIEW;
                 var arg = ast.toArgument();
                 var pool = poolGenerator();
                 var ret = v.visitArgumentPre(arg, parent);
-                if (ret && typeof ret.then === "function") {
-                    pool.add(function () {
-                        return ret;
-                    });
-                } else if (typeof ret === "function") {
-                    pool.add(function () {
-                        return ret(v);
-                    });
-                }
+                pool.handle(ret, {
+                    next: function () {
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
                 pool.add(function () {
                     return v.visitArgumentPost(arg, parent);
                 });
@@ -5209,46 +5183,28 @@ var ReVIEW;
                 var chap = ast.toChapter();
                 var pool = poolGenerator();
                 var ret = v.visitChapterPre(chap, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, chap.headline, v);
-                    });
-                    if (chap.text) {
-                        chap.text.forEach(function (next) {
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, chap.headline, v);
+                        });
+                        if (chap.text) {
+                            chap.text.forEach(function (next) {
+                                pool.add(function () {
+                                    return _visitSub(poolGenerator, ast, next, v);
+                                });
+                            });
+                        }
+                        chap.childNodes.forEach(function (next) {
                             pool.add(function () {
                                 return _visitSub(poolGenerator, ast, next, v);
                             });
                         });
+                    },
+                    func: function () {
+                        ret(v);
                     }
-                    chap.childNodes.forEach(function (next) {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, next, v);
-                        });
-                    });
-                } else if (ret && typeof ret.then === "function") {
-                    pool.add(function () {
-                        return ret;
-                    });
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, chap.headline, v);
-                    });
-                    if (chap.text) {
-                        chap.text.forEach(function (next) {
-                            pool.add(function () {
-                                return _visitSub(poolGenerator, ast, next, v);
-                            });
-                        });
-                    }
-                    chap.childNodes.forEach(function (next) {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, next, v);
-                        });
-                    });
-                } else if (typeof ret === "function") {
-                    pool.add(function () {
-                        return ret(v);
-                    });
-                }
+                });
                 pool.add(function () {
                     return v.visitChapterPost(chap, parent);
                 });
@@ -5259,28 +5215,19 @@ var ReVIEW;
                 var head = ast.toHeadline();
                 var pool = poolGenerator();
                 var ret = v.visitHeadlinePre(head, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, head.label, v);
-                    });
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, head.caption, v);
-                    });
-                } else if (ret && typeof ret.then === "function") {
-                    pool.add(function () {
-                        return ret;
-                    });
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, head.label, v);
-                    });
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, head.caption, v);
-                    });
-                } else if (typeof ret === "function") {
-                    pool.add(function () {
-                        return ret(v);
-                    });
-                }
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, head.label, v);
+                        });
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, head.caption, v);
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
                 pool.add(function () {
                     return v.visitHeadlinePost(head, parent);
                 });
@@ -5291,36 +5238,23 @@ var ReVIEW;
                 var column = ast.toColumn();
                 var pool = poolGenerator();
                 var ret = v.visitColumnPre(column, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, column.headline, v);
-                    });
-                    if (column.text) {
-                        column.text.forEach(function (next) {
-                            pool.add(function () {
-                                return _visitSub(poolGenerator, ast, next, v);
-                            });
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, column.headline, v);
                         });
-                    }
-                } else if (ret && typeof ret.then === "function") {
-                    pool.add(function () {
-                        return ret;
-                    });
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, column.headline, v);
-                    });
-                    if (column.text) {
-                        column.text.forEach(function (next) {
-                            pool.add(function () {
-                                return _visitSub(poolGenerator, ast, next, v);
+                        if (column.text) {
+                            column.text.forEach(function (next) {
+                                pool.add(function () {
+                                    return _visitSub(poolGenerator, ast, next, v);
+                                });
                             });
-                        });
+                        }
+                    },
+                    func: function () {
+                        ret(v);
                     }
-                } else if (typeof ret === "function") {
-                    pool.add(function () {
-                        return ret(v);
-                    });
-                }
+                });
                 pool.add(function () {
                     return v.visitColumnPost(column, parent);
                 });
@@ -5331,22 +5265,16 @@ var ReVIEW;
                 var columnHead = ast.toColumnHeadline();
                 var pool = poolGenerator();
                 var ret = v.visitColumnHeadlinePre(columnHead, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, columnHead.caption, v);
-                    });
-                } else if (ret && typeof ret.then === "function") {
-                    pool.add(function () {
-                        return ret;
-                    });
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, columnHead.caption, v);
-                    });
-                } else if (typeof ret === "function") {
-                    pool.add(function () {
-                        return ret(v);
-                    });
-                }
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, columnHead.caption, v);
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
                 pool.add(function () {
                     return v.visitColumnHeadlinePost(columnHead, parent);
                 });
@@ -5357,32 +5285,21 @@ var ReVIEW;
                 var ul = ast.toUlist();
                 var pool = poolGenerator();
                 var ret = v.visitUlistPre(ul, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, ul.text, v);
-                    });
-                    ul.childNodes.forEach(function (next) {
+                pool.handle(ret, {
+                    next: function () {
                         pool.add(function () {
-                            return _visitSub(poolGenerator, ast, next, v);
+                            return _visitSub(poolGenerator, ast, ul.text, v);
                         });
-                    });
-                } else if (ret && typeof ret.then === "function") {
-                    pool.add(function () {
-                        return ret;
-                    });
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, ul.text, v);
-                    });
-                    ul.childNodes.forEach(function (next) {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, next, v);
+                        ul.childNodes.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
                         });
-                    });
-                } else if (typeof ret === "function") {
-                    pool.add(function () {
-                        return ret(v);
-                    });
-                }
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
                 pool.add(function () {
                     return v.visitUlistPost(ul, parent);
                 });
@@ -5393,22 +5310,16 @@ var ReVIEW;
                 var ol = ast.toOlist();
                 var pool = poolGenerator();
                 var ret = v.visitOlistPre(ol, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, ol.text, v);
-                    });
-                } else if (ret && typeof ret.then === "function") {
-                    pool.add(function () {
-                        return ret;
-                    });
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, ol.text, v);
-                    });
-                } else if (typeof ret === "function") {
-                    pool.add(function () {
-                        return ret(v);
-                    });
-                }
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, ol.text, v);
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
                 pool.add(function () {
                     return v.visitOlistPost(ol, parent);
                 });
@@ -5419,28 +5330,19 @@ var ReVIEW;
                 var dl = ast.toDlist();
                 var pool = poolGenerator();
                 var ret = v.visitDlistPre(dl, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, dl.text, v);
-                    });
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, dl.content, v);
-                    });
-                } else if (ret && typeof ret.then === "function") {
-                    pool.add(function () {
-                        return ret;
-                    });
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, dl.text, v);
-                    });
-                    pool.add(function () {
-                        return _visitSub(poolGenerator, ast, dl.content, v);
-                    });
-                } else if (typeof ret === "function") {
-                    pool.add(function () {
-                        return ret(v);
-                    });
-                }
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, dl.text, v);
+                        });
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, dl.content, v);
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
                 pool.add(function () {
                     return v.visitDlistPost(dl, parent);
                 });
@@ -5451,26 +5353,18 @@ var ReVIEW;
                 var node = ast.toNode();
                 var pool = poolGenerator();
                 var ret = v.visitParagraphPre(node, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    node.childNodes.forEach(function (next) {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, next, v);
+                pool.handle(ret, {
+                    next: function () {
+                        node.childNodes.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
                         });
-                    });
-                } else if (ret && typeof ret.then === "function") {
-                    pool.add(function () {
-                        return ret;
-                    });
-                    node.childNodes.forEach(function (next) {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, next, v);
-                        });
-                    });
-                } else if (typeof ret === "function") {
-                    pool.add(function () {
-                        return ret(v);
-                    });
-                }
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
                 pool.add(function () {
                     return v.visitParagraphPost(node, parent);
                 });
@@ -5481,26 +5375,18 @@ var ReVIEW;
                 var node = ast.toNode();
                 var pool = poolGenerator();
                 var ret = v.visitNodePre(node, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    node.childNodes.forEach(function (next) {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, next, v);
+                pool.handle(ret, {
+                    next: function () {
+                        node.childNodes.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
                         });
-                    });
-                } else if (ret && typeof ret.then === "function") {
-                    pool.add(function () {
-                        return ret;
-                    });
-                    node.childNodes.forEach(function (next) {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, next, v);
-                        });
-                    });
-                } else if (typeof ret === "function") {
-                    pool.add(function () {
-                        return ret(v);
-                    });
-                }
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
                 pool.add(function () {
                     return v.visitNodePost(node, parent);
                 });
@@ -5511,15 +5397,13 @@ var ReVIEW;
                 var text = ast.toTextNode();
                 var pool = poolGenerator();
                 var ret = v.visitTextPre(text, parent);
-                if (ret && typeof ret.then === "function") {
-                    pool.add(function () {
-                        return ret;
-                    });
-                } else if (typeof ret === "function") {
-                    pool.add(function () {
-                        return ret(v);
-                    });
-                }
+                pool.handle(ret, {
+                    next: function () {
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
                 pool.add(function () {
                     return v.visitTextPost(text, parent);
                 });
@@ -5527,17 +5411,15 @@ var ReVIEW;
             })();
         } else if (ast) {
             return (function () {
-                var ret = v.visitDefaultPre(parent, ast);
                 var pool = poolGenerator();
-                if (ret && typeof ret.then === "function") {
-                    pool.add(function () {
-                        return ret;
-                    });
-                } else if (typeof ret === "function") {
-                    pool.add(function () {
-                        return ret(v);
-                    });
-                }
+                var ret = v.visitDefaultPre(parent, ast);
+                pool.handle(ret, {
+                    next: function () {
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
                 pool.add(function () {
                     return v.visitDefaultPost(parent, ast);
                 });
@@ -5563,6 +5445,14 @@ var ReVIEW;
             this.tasks.push(value);
         };
 
+        SyncTaskPool.prototype.handle = function (value, statements) {
+            if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
+                statements.next();
+            } else if (typeof value === "function") {
+                statements.func();
+            }
+        };
+
         SyncTaskPool.prototype.consume = function () {
             return this.tasks.map(function (task) {
                 return task();
@@ -5579,6 +5469,18 @@ var ReVIEW;
             this.tasks.push(function () {
                 return Promise.resolve(value());
             });
+        };
+
+        AsyncTaskPool.prototype.handle = function (value, statements) {
+            if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
+                statements.next();
+            } else if (value && typeof value.then === "function") {
+                this.tasks.push(function () {
+                    return Promise.resolve(value);
+                });
+            } else if (typeof value === "function") {
+                statements.func();
+            }
         };
 
         AsyncTaskPool.prototype.consume = function () {
