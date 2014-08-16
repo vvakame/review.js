@@ -3,7 +3,7 @@
 ◆→開始:図←◆
 図1.1　サンプル
 
-◆→./images/sample-vvakame.png←◆
+◆→images/inline_img-vvakame.png←◆
 ◆→終了:図←◆
 図1.1
 

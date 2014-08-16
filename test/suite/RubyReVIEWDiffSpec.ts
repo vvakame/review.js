@@ -80,13 +80,23 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 					var targetFileName = path + baseName + "." + typeInfo.ext;
 					it("ファイル:" + targetFileName, ()=> {
 						var text = fs.readFileSync(path + file, "utf8");
-						return Test.compileSingle(text, {builders: [typeInfo.builder()]})
+						return Test.compile({
+							basePath: __dirname + "/fixture/valid",
+							read: path => Promise.resolve(text),
+							builders: [typeInfo.builder()],
+							book: {
+								contents: [
+									file
+								]
+							}
+						})
 							.then(s=> {
-								assert(s.result !== null);
+								var result:string = s.results[baseName + "." + typeInfo.ext];
+								assert(result !== null);
 
 								var assertResult = () => {
 									var expected = fs.readFileSync(targetFileName, "utf8");
-									assert(s.result === expected);
+									assert(result === expected);
 								};
 
 								if (!fs.existsSync(targetFileName)) {

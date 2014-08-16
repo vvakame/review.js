@@ -88,8 +88,10 @@ module ReVIEW {
 		get exists():(path:string)=>Promise<{path: string; result: boolean;}> {
 			return path => {
 				var fs = require("fs");
+				var _path = require("path");
+				var basePath = this.original.basePath || __dirname;
 				var promise = new Promise<{path: string; result: boolean;}>((resolve, reject)=> {
-					fs.exists(path, (result:boolean)=> {
+					fs.exists(_path.resolve(basePath, path), (result:boolean)=> {
 						resolve({path: path, result: result});
 					});
 				});

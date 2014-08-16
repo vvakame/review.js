@@ -114,6 +114,7 @@ declare module ReVIEW {
     }
     function walk(ast: Parse.SyntaxTree, actor: (ast: Parse.SyntaxTree) => Parse.SyntaxTree): void;
     function visit(ast: Parse.SyntaxTree, v: ITreeVisitor): void;
+    function visitAsync(ast: Parse.SyntaxTree, v: ITreeVisitor): Promise<void>;
     interface ITreeVisitor {
         visitDefaultPre(node: Parse.SyntaxTree, parent: Parse.SyntaxTree): any;
         visitDefaultPost? (node: Parse.SyntaxTree, parent: Parse.SyntaxTree): void;
@@ -427,7 +428,7 @@ declare module ReVIEW.Build {
     interface IBuilder {
         name: string;
         extention: string;
-        init(book: Book): void;
+        init(book: Book): Promise<void>;
         escape(data: any): string;
         chapterPre(process: BuilderProcess, node: Parse.ChapterSyntaxTree): any;
         chapterPost(process: BuilderProcess, node: Parse.ChapterSyntaxTree): any;
@@ -451,8 +452,8 @@ declare module ReVIEW.Build {
         public book: Book;
         public extention: string;
         public name : string;
-        public init(book: Book): void;
-        public processAst(chunk: ContentChunk): void;
+        public init(book: Book): Promise<void>;
+        public processAst(chunk: ContentChunk): Promise<void>;
         public escape(data: any): string;
         public processPost(process: BuilderProcess, chunk: ContentChunk): void;
         public chapterPre(process: BuilderProcess, node: Parse.ChapterSyntaxTree): any;
@@ -584,7 +585,7 @@ declare module ReVIEW {
         public readReVIEWFiles(book: Book): Promise<Book>;
         public parseContent(book: Book): Book;
         public preprocessContent(book: Book): Book;
-        public processContent(book: Book): Book;
+        public processContent(book: Book): Promise<Book>;
         public writeContent(book: Book): Promise<Book>;
         public compileFinished(book: Book): Book;
     }
@@ -705,6 +706,7 @@ declare module ReVIEW {
         base?: string;
     }
     interface IConfigRaw {
+        basePath?: string;
         read?: (path: string) => Promise<string>;
         write?: (path: string, data: string) => Promise<void>;
         listener?: IConfigListener;
@@ -799,7 +801,7 @@ declare module ReVIEW.Build {
         public inline_tt_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
         public inline_em_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
         public inline_em_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public block_image(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
+        public block_image(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): Promise<boolean>;
         public block_indepimage(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
         public inline_img(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
         public inline_icon(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
@@ -889,7 +891,7 @@ declare module ReVIEW.Build {
         public inline_kw_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
         public inline_em_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
         public inline_em_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public block_image(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
+        public block_image(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): Promise<boolean>;
         public block_indepimage(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
         public inline_img(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
         public inline_icon(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;

@@ -187,24 +187,22 @@ module ReVIEW {
 			return book;
 		}
 
-		processContent(book:Book):Book {
+		processContent(book:Book):Promise<Book> {
 			book.config.validators.forEach(validator=> {
 				validator.start(book, book.acceptableSyntaxes, this.config.builders);
 			});
 			if (book.reports.some(report=>report.level === ReVIEW.ReportLevel.Error)) {
 				// エラーがあったら処理中断
-				return book;
+				return Promise.resolve(book);
 			}
 
 			var symbols = book.allChunks.reduce<ReVIEW.ISymbol[]>((p, c)=>p.concat(c.process.symbols), []);
 			if (this.config.listener.onSymbols(symbols) === false) {
 				// false が帰ってきたら処理を中断する (undefined でも継続)
-				return book;
+				return Promise.resolve(book);
 			}
 
-			this.config.builders.forEach(builder=> builder.init(book));
-
-			return book;
+			return Promise.all(this.config.builders.map(builder=> builder.init(book))).then(()=> book);
 		}
 
 		writeContent(book:Book):Promise<Book> {

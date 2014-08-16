@@ -14,6 +14,7 @@ module Test {
 	 */
 	export function compile(config?:ReVIEW.IConfigRaw) {
 		config = config || <any>{};
+		config.basePath = config.basePath || __dirname; // __dirname は main-spec.js の位置になる
 		config.analyzer = config.analyzer || new ReVIEW.Build.DefaultAnalyzer();
 		config.validators = config.validators || [new ReVIEW.Build.DefaultValidator()];
 		config.builders = config.builders || [new ReVIEW.Build.TextBuilder()];
@@ -76,7 +77,8 @@ module Test {
 			});
 	}
 
-	export function compileSingle(input:string, tmpConfig?:any /* ReVIEW.IConfig */) {
+	// TODO basePathの解決がうまくないのでそのうち消す
+	export function compileSingle(input:string, tmpConfig?:any /* ReVIEW.IConfigRaw */) {
 		var config:ReVIEW.IConfigRaw = tmpConfig || <any>{};
 		config.read = config.read || (()=>Promise.resolve(input));
 		config.listener = config.listener || {
