@@ -334,6 +334,10 @@ module ReVIEW.Build {
 					process.out("◆→").out(imagePath).out("←◆\n");
 					process.out("◆→終了:図←◆\n");
 					return false;
+				})
+				.catch(id=> {
+					process.error(t("builder.image_not_found", id), node);
+					return false;
 				});
 		}
 

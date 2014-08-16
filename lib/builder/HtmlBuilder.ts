@@ -5,7 +5,7 @@
 module ReVIEW.Build {
 	"use strict";
 
-	import i18n = ReVIEW.i18n;
+	import t = ReVIEW.i18n.t;
 
 	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
 	import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
@@ -453,6 +453,10 @@ module ReVIEW.Build {
 					process.out("図").out(process.base.chapter.no).out(".").out(node.no).out(": ").out(caption);
 					process.outRaw("\n</p>\n");
 					process.outRaw("</div>\n");
+					return false;
+				})
+				.catch(id=> {
+					process.error(t("builder.image_not_found", id), node);
 					return false;
 				});
 		}

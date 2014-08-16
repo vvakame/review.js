@@ -94,6 +94,7 @@ declare module ReVIEW {
             "deprecated_inline_symbol": string;
         };
         "builder": {
+            "image_not_found": string;
             "chapter": string;
             "list": string;
             "table": string;

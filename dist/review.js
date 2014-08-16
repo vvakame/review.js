@@ -4940,6 +4940,7 @@ var ReVIEW;
             "deprecated_inline_symbol": "%s というインライン構文は非推奨です。"
         },
         "builder": {
+            "image_not_found": "ID: %s にマッチする画像が見つかりませんでした",
             "chapter": "第%d章",
             "list": "リスト%s.%s",
             "table": "表%s.%s"
@@ -9047,6 +9048,9 @@ var ReVIEW;
                     process.out("◆→").out(imagePath).out("←◆\n");
                     process.out("◆→終了:図←◆\n");
                     return false;
+                }).catch(function (id) {
+                    process.error(t("builder.image_not_found", id), node);
+                    return false;
                 });
             };
 
@@ -9261,7 +9265,7 @@ var ReVIEW;
     (function (Build) {
         "use strict";
 
-        var i18n = ReVIEW.i18n;
+        var t = ReVIEW.i18n.t;
 
         var UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
         var OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
@@ -9357,7 +9361,7 @@ var ReVIEW;
                 process.outRaw("<a id=\"h").out(constructLabel(node)).outRaw("\"></a>");
 
                 if (node.level === 1) {
-                    var text = i18n.t("builder.chapter", node.parentNode.no);
+                    var text = ReVIEW.i18n.t("builder.chapter", node.parentNode.no);
                     process.out(text).out("　");
                 } else if (node.level === 2) {
                 }
@@ -9458,7 +9462,7 @@ var ReVIEW;
             HtmlBuilder.prototype.block_list_pre = function (process, node) {
                 process.outRaw("<div class=\"caption-code\">\n");
                 var chapter = findChapter(node, 1);
-                var text = i18n.t("builder.list", chapter.fqn, node.no);
+                var text = ReVIEW.i18n.t("builder.list", chapter.fqn, node.no);
                 process.outRaw("<p class=\"caption\">").out(text).outRaw(": ").out(node.args[1].arg).outRaw("</p>\n");
                 process.outRaw("<pre class=\"list\">");
                 return function (v) {
@@ -9475,7 +9479,7 @@ var ReVIEW;
             HtmlBuilder.prototype.block_listnum_pre = function (process, node) {
                 process.outRaw("<div class=\"code\">\n");
                 var chapter = findChapter(node, 1);
-                var text = i18n.t("builder.list", chapter.fqn, node.no);
+                var text = ReVIEW.i18n.t("builder.list", chapter.fqn, node.no);
                 process.outRaw("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).outRaw("</p>\n");
                 process.outRaw("<pre class=\"list\">");
                 var lineCount = 1;
@@ -9509,7 +9513,7 @@ var ReVIEW;
             HtmlBuilder.prototype.inline_list = function (process, node) {
                 var chapter = findChapter(node, 1);
                 var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-                var text = i18n.t("builder.list", chapter.fqn, listNode.no);
+                var text = ReVIEW.i18n.t("builder.list", chapter.fqn, listNode.no);
                 process.out(text);
                 return false;
             };
@@ -9693,6 +9697,9 @@ var ReVIEW;
                     process.outRaw("\n</p>\n");
                     process.outRaw("</div>\n");
                     return false;
+                }).catch(function (id) {
+                    process.error(t("builder.image_not_found", id), node);
+                    return false;
                 });
             };
 
@@ -9870,7 +9877,7 @@ var ReVIEW;
             HtmlBuilder.prototype.block_table_pre = function (process, node) {
                 process.outRaw("<div>\n");
                 var chapter = findChapter(node, 1);
-                var text = i18n.t("builder.table", chapter.fqn, node.no);
+                var text = ReVIEW.i18n.t("builder.table", chapter.fqn, node.no);
                 process.outRaw("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).outRaw("</p>\n");
                 process.outRaw("<pre>");
                 return function (v) {
@@ -9887,7 +9894,7 @@ var ReVIEW;
             HtmlBuilder.prototype.inline_table = function (process, node) {
                 var chapter = findChapter(node, 1);
                 var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-                var text = i18n.t("builder.table", chapter.fqn, listNode.no);
+                var text = ReVIEW.i18n.t("builder.table", chapter.fqn, listNode.no);
                 process.out(text);
                 return false;
             };
