@@ -38,274 +38,28 @@ module ReVIEW {
 	}
 
 	/**
-	 * 指定された構文木の全てのノード・リーフを探索する。
+	 * 指定された構文木の全てのノード・リーフを同期的に探索する。
 	 * 親子であれば親のほうが先に探索され、兄弟であれば兄のほうが先に探索される。
 	 * つまり、葉に着目すると文章に登場する順番に探索される。
 	 * @param ast
 	 * @param v
 	 */
-	export function visit(ast:SyntaxTree, v:ITreeVisitor) {
-		var newV:ITreeVisitor = {
-			visitDefaultPre: v.visitDefaultPre,
-			visitDefaultPost: v.visitDefaultPost || (()=> {
-			}),
-			visitBlockElementPre: v.visitBlockElementPre || v.visitNodePre || v.visitDefaultPre,
-			visitBlockElementPost: v.visitBlockElementPost || v.visitNodePost || v.visitDefaultPost || (()=> {
-			}),
-			visitInlineElementPre: v.visitInlineElementPre || v.visitNodePre || v.visitDefaultPre,
-			visitInlineElementPost: v.visitInlineElementPost || v.visitNodePost || v.visitDefaultPost || (()=> {
-			}),
-			visitNodePre: v.visitNodePre || v.visitDefaultPre,
-			visitNodePost: v.visitNodePost || v.visitDefaultPost || (()=> {
-			}),
-			visitArgumentPre: v.visitArgumentPre || v.visitDefaultPre,
-			visitArgumentPost: v.visitArgumentPost || v.visitDefaultPost || (()=> {
-			}),
-			visitChapterPre: v.visitChapterPre || v.visitNodePre || v.visitDefaultPre,
-			visitChapterPost: v.visitChapterPost || v.visitNodePost || v.visitDefaultPost || (()=> {
-			}),
-			visitParagraphPre: v.visitParagraphPre || v.visitNodePre || v.visitDefaultPre,
-			visitParagraphPost: v.visitParagraphPost || v.visitNodePost || (()=> {
-			}),
-			visitHeadlinePre: v.visitHeadlinePre || v.visitDefaultPre,
-			visitHeadlinePost: v.visitHeadlinePost || v.visitDefaultPost || (()=> {
-			}),
-			visitUlistPre: v.visitUlistPre || v.visitNodePre || v.visitDefaultPre,
-			visitUlistPost: v.visitUlistPost || v.visitNodePost || v.visitDefaultPost || (()=> {
-			}),
-			visitOlistPre: v.visitOlistPre || v.visitDefaultPre,
-			visitOlistPost: v.visitOlistPost || v.visitDefaultPost || (()=> {
-			}),
-			visitDlistPre: v.visitDlistPre || v.visitDefaultPre,
-			visitDlistPost: v.visitDlistPost || v.visitDefaultPost || (()=> {
-			}),
-			visitColumnPre: v.visitColumnPre || v.visitNodePre || v.visitDefaultPre,
-			visitColumnPost: v.visitColumnPost || v.visitNodePost || v.visitDefaultPost || (()=> {
-			}),
-			visitColumnHeadlinePre: v.visitColumnHeadlinePre || v.visitDefaultPre,
-			visitColumnHeadlinePost: v.visitColumnHeadlinePost || v.visitDefaultPost || (()=> {
-			}),
-			visitTextPre: v.visitTextPre || v.visitDefaultPre,
-			visitTextPost: v.visitTextPost || v.visitDefaultPost || (()=> {
-			})
-		};
-		newV.visitDefaultPre = newV.visitDefaultPre.bind(v);
-		newV.visitDefaultPost = newV.visitDefaultPost.bind(v);
-		newV.visitBlockElementPre = newV.visitBlockElementPre.bind(v);
-		newV.visitBlockElementPost = newV.visitBlockElementPost.bind(v);
-		newV.visitInlineElementPre = newV.visitInlineElementPre.bind(v);
-		newV.visitInlineElementPost = newV.visitInlineElementPost.bind(v);
-		newV.visitNodePre = newV.visitNodePre.bind(v);
-		newV.visitNodePost = newV.visitNodePost.bind(v);
-		newV.visitArgumentPre = newV.visitArgumentPre.bind(v);
-		newV.visitArgumentPost = newV.visitArgumentPost.bind(v);
-		newV.visitChapterPre = newV.visitChapterPre.bind(v);
-		newV.visitChapterPost = newV.visitChapterPost.bind(v);
-		newV.visitHeadlinePre = newV.visitHeadlinePre.bind(v);
-		newV.visitHeadlinePost = newV.visitHeadlinePost.bind(v);
-		newV.visitUlistPre = newV.visitUlistPre.bind(v);
-		newV.visitUlistPost = newV.visitUlistPost.bind(v);
-		newV.visitOlistPre = newV.visitOlistPre.bind(v);
-		newV.visitOlistPost = newV.visitOlistPost.bind(v);
-		newV.visitDlistPre = newV.visitDlistPre.bind(v);
-		newV.visitDlistPost = newV.visitDlistPost.bind(v);
-		newV.visitColumnPre = newV.visitColumnPre.bind(v);
-		newV.visitColumnPost = newV.visitColumnPost.bind(v);
-		newV.visitColumnHeadlinePre = newV.visitColumnHeadlinePre.bind(v);
-		newV.visitColumnHeadlinePost = newV.visitColumnHeadlinePost.bind(v);
-		newV.visitTextPre = newV.visitTextPre.bind(v);
-		newV.visitTextPost = newV.visitTextPost.bind(v);
-		visitSub(null, ast, newV);
-	}
-
-	function visitSub(parent:SyntaxTree, ast:SyntaxTree, v:ITreeVisitor) {
-		if (ast instanceof ReVIEW.Parse.BlockElementSyntaxTree) {
-			(()=> {
-				var block = ast.toBlockElement();
-				var ret = v.visitBlockElementPre(block, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					block.args.forEach((next)=> {
-						visitSub(ast, next, v);
-					});
-					block.childNodes.forEach((next)=> {
-						visitSub(ast, next, v);
-					});
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitBlockElementPost(block, parent);
-			})();
-		} else if (ast instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
-			(()=> {
-				var inline = ast.toInlineElement();
-				var ret = v.visitInlineElementPre(inline, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					inline.childNodes.forEach((next)=> {
-						visitSub(ast, next, v);
-					});
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitInlineElementPost(inline, parent);
-			})();
-		} else if (ast instanceof ReVIEW.Parse.ArgumentSyntaxTree) {
-			(()=> {
-				var arg = ast.toArgument();
-				var ret = v.visitArgumentPre(arg, parent);
-				if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitArgumentPost(arg, parent);
-			})();
-		} else if (ast instanceof ReVIEW.Parse.ChapterSyntaxTree) {
-			(()=> {
-				var chap = ast.toChapter();
-				var ret = v.visitChapterPre(chap, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					visitSub(ast, chap.headline, v);
-					if (chap.text) {
-						chap.text.forEach((next)=> {
-							visitSub(ast, next, v);
-						});
-					}
-					chap.childNodes.forEach((next)=> {
-						visitSub(ast, next, v);
-					});
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitChapterPost(chap, parent);
-			})();
-		} else if (ast instanceof ReVIEW.Parse.HeadlineSyntaxTree) {
-			(()=> {
-				var head = ast.toHeadline();
-				var ret = v.visitHeadlinePre(head, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					visitSub(ast, head.label, v);
-					visitSub(ast, head.caption, v);
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitHeadlinePost(head, parent);
-			})();
-		} else if (ast instanceof ReVIEW.Parse.ColumnSyntaxTree) {
-			(()=> {
-				var column = ast.toColumn();
-				var ret = v.visitColumnPre(column, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					visitSub(ast, column.headline, v);
-					if (column.text) {
-						column.text.forEach((next)=> {
-							visitSub(ast, next, v);
-						});
-					}
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitColumnPost(column, parent);
-			})();
-		} else if (ast instanceof ReVIEW.Parse.ColumnHeadlineSyntaxTree) {
-			(()=> {
-				var columnHead = ast.toColumnHeadline();
-				var ret = v.visitColumnHeadlinePre(columnHead, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					visitSub(ast, columnHead.caption, v);
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitColumnHeadlinePost(columnHead, parent);
-			})();
-		} else if (ast instanceof ReVIEW.Parse.UlistElementSyntaxTree) {
-			(()=> {
-				var ul = ast.toUlist();
-				var ret = v.visitUlistPre(ul, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					visitSub(ast, ul.text, v);
-					ul.childNodes.forEach((next)=> {
-						visitSub(ast, next, v);
-					});
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitUlistPost(ul, parent);
-			})();
-		} else if (ast instanceof ReVIEW.Parse.OlistElementSyntaxTree) {
-			(()=> {
-				var ol = ast.toOlist();
-				var ret = v.visitOlistPre(ol, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					visitSub(ast, ol.text, v);
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitOlistPost(ol, parent);
-			})();
-		} else if (ast instanceof ReVIEW.Parse.DlistElementSyntaxTree) {
-			(()=> {
-				var dl = ast.toDlist();
-				var ret = v.visitDlistPre(dl, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					visitSub(ast, dl.text, v);
-					visitSub(ast, dl.content, v);
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitDlistPost(dl, parent);
-			})();
-		} else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && (ast.ruleName === ReVIEW.Parse.RuleName.Paragraph || ast.ruleName === ReVIEW.Parse.RuleName.BlockElementParagraph)) {
-			(()=> {
-				var node = ast.toNode();
-				var ret = v.visitParagraphPre(node, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					node.childNodes.forEach((next)=> {
-						visitSub(ast, next, v);
-					});
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitParagraphPost(node, parent);
-			})();
-		} else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree) {
-			(()=> {
-				var node = ast.toNode();
-				var ret = v.visitNodePre(node, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					node.childNodes.forEach((next)=> {
-						visitSub(ast, next, v);
-					});
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitNodePost(node, parent);
-			})();
-		} else if (ast instanceof ReVIEW.Parse.TextNodeSyntaxTree) {
-			(()=> {
-				var text = ast.toTextNode();
-				var ret = v.visitTextPre(text, parent);
-				if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitTextPost(text, parent);
-			})();
-		} else if (ast) {
-			(()=> {
-				var ret = v.visitDefaultPre(parent, ast);
-				if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitDefaultPost(parent, ast);
-			})();
-		}
+	export function visit(ast:SyntaxTree, v:ITreeVisitor):void {
+		_visit(()=> new SyncTaskPool<void>(), ast, v);
 	}
 
 	/**
-	 * 指定された構文木の全てのノード・リーフを探索する。
+	 * 指定された構文木の全てのノード・リーフを非同期に探索する。
 	 * 親子であれば親のほうが先に探索され、兄弟であれば兄のほうが先に探索される。
 	 * つまり、葉に着目すると文章に登場する順番に探索される。
 	 * @param ast
 	 * @param v
 	 */
 	export function visitAsync(ast:SyntaxTree, v:ITreeVisitor):Promise<void> {
+		return Promise.resolve(_visit(()=> new AsyncTaskPool<void>(), ast, v));
+	}
+
+	function _visit(poolGenerator:()=>ITaskPool<void>, ast:SyntaxTree, v:ITreeVisitor):any {
 		var newV:ITreeVisitor = {
 			visitDefaultPre: v.visitDefaultPre,
 			visitDefaultPost: v.visitDefaultPost || (()=> {
@@ -376,287 +130,291 @@ module ReVIEW {
 		newV.visitColumnHeadlinePost = newV.visitColumnHeadlinePost.bind(v);
 		newV.visitTextPre = newV.visitTextPre.bind(v);
 		newV.visitTextPost = newV.visitTextPost.bind(v);
-		return visitAsyncSub(null, ast, newV);
+
+		return _visitSub(poolGenerator, null, ast, newV);
 	}
 
-	function visitAsyncSub(parent:SyntaxTree, ast:SyntaxTree, v:ITreeVisitor):Promise<void> {
+	function _visitSub(poolGenerator:()=>ITaskPool<void>, parent:SyntaxTree, ast:SyntaxTree, v:ITreeVisitor):any {
 		if (ast instanceof ReVIEW.Parse.BlockElementSyntaxTree) {
 			return (()=> {
 				var block = ast.toBlockElement();
-				var serializer = new PromiseSerializer<void>();
+				var pool = poolGenerator();
 				var ret = v.visitBlockElementPre(block, parent);
 				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
 					block.args.forEach((next)=> {
-						serializer.add(()=> visitAsyncSub(ast, next, v));
+						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 					});
 					block.childNodes.forEach((next)=> {
-						serializer.add(()=> visitAsyncSub(ast, next, v));
+						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 					});
 				} else if (ret && typeof ret.then === "function") {
-					serializer.add(()=> ret.then((ret:any) => {
+					pool.add(()=> ret.then((ret:any) => {
 						if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
 							block.args.forEach((next)=> {
-								serializer.add(()=> visitAsyncSub(ast, next, v));
+								pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 							});
 							block.childNodes.forEach((next)=> {
-								serializer.add(()=> visitAsyncSub(ast, next, v));
+								pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 							});
 						}
 					}));
 				} else if (typeof ret === "function") {
-					serializer.add(()=> Promise.resolve(ret(v)));
+					pool.add(()=> ret(v));
 				}
-				serializer.add(()=> Promise.resolve(v.visitBlockElementPost(block, parent)));
-				return serializer.consume().then(()=> <void>null);
+				pool.add(()=> v.visitBlockElementPost(block, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
 			return (()=> {
 				var inline = ast.toInlineElement();
-				var serializer = new PromiseSerializer<void>();
+				var pool = poolGenerator();
 				var ret = v.visitInlineElementPre(inline, parent);
 				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
 					inline.childNodes.forEach((next)=> {
-						serializer.add(()=>visitAsyncSub(ast, next, v));
+						pool.add(()=>_visitSub(poolGenerator, ast, next, v));
 					});
 				} else if (ret && typeof ret.then === "function") {
-					serializer.add(()=> ret);
+					pool.add(()=> ret);
 					inline.childNodes.forEach((next)=> {
-						serializer.add(()=>visitAsyncSub(ast, next, v));
+						pool.add(()=>_visitSub(poolGenerator, ast, next, v));
 					});
 				} else if (typeof ret === "function") {
-					serializer.add(()=> Promise.resolve(ret(v)));
+					pool.add(()=> ret(v));
 				}
-				serializer.add(()=> Promise.resolve(v.visitInlineElementPost(inline, parent)));
-				return serializer.consume().then(()=> <void>null);
+				pool.add(()=> v.visitInlineElementPost(inline, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.ArgumentSyntaxTree) {
 			return (()=> {
 				var arg = ast.toArgument();
-				var serializer = new PromiseSerializer<void>();
+				var pool = poolGenerator();
 				var ret = v.visitArgumentPre(arg, parent);
 				if (ret && typeof ret.then === "function") {
-					serializer.add(()=> ret);
+					pool.add(()=> ret);
 				} else if (typeof ret === "function") {
-					serializer.add(()=> Promise.resolve(ret(v)));
+					pool.add(()=> ret(v));
 				}
-				serializer.add(()=> Promise.resolve(v.visitArgumentPost(arg, parent)));
-				return serializer.consume().then(()=> <void>null);
+				pool.add(()=> v.visitArgumentPost(arg, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.ChapterSyntaxTree) {
 			return (()=> {
 				var chap = ast.toChapter();
-				var serializer = new PromiseSerializer<void>();
+				var pool = poolGenerator();
 				var ret = v.visitChapterPre(chap, parent);
 				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					serializer.add(()=> visitAsyncSub(ast, chap.headline, v));
+					pool.add(()=> _visitSub(poolGenerator, ast, chap.headline, v));
 					if (chap.text) {
 						chap.text.forEach((next)=> {
-							serializer.add(()=> visitAsyncSub(ast, next, v));
+							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 						});
 					}
 					chap.childNodes.forEach((next)=> {
-						serializer.add(()=> visitAsyncSub(ast, next, v));
+						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 					});
 				} else if (ret && typeof ret.then === "function") {
-					serializer.add(()=> ret);
-					serializer.add(()=> visitAsyncSub(ast, chap.headline, v));
+					pool.add(()=> ret);
+					pool.add(()=> _visitSub(poolGenerator, ast, chap.headline, v));
 					if (chap.text) {
 						chap.text.forEach((next)=> {
-							serializer.add(()=> visitAsyncSub(ast, next, v));
+							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 						});
 					}
 					chap.childNodes.forEach((next)=> {
-						serializer.add(()=> visitAsyncSub(ast, next, v));
+						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 					});
 				} else if (typeof ret === "function") {
-					serializer.add(()=> Promise.resolve(ret(v)));
+					pool.add(()=> ret(v));
 				}
-				serializer.add(()=> Promise.resolve(v.visitChapterPost(chap, parent)));
-				return serializer.consume().then(()=> <void>null);
+				pool.add(()=> v.visitChapterPost(chap, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.HeadlineSyntaxTree) {
 			return (()=> {
 				var head = ast.toHeadline();
-				var serializer = new PromiseSerializer<void>();
+				var pool = poolGenerator();
 				var ret = v.visitHeadlinePre(head, parent);
 				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					serializer.add(()=>visitAsyncSub(ast, head.label, v));
-					serializer.add(()=>visitAsyncSub(ast, head.caption, v));
+					pool.add(()=>_visitSub(poolGenerator, ast, head.label, v));
+					pool.add(()=>_visitSub(poolGenerator, ast, head.caption, v));
 				} else if (ret && typeof ret.then === "function") {
-					serializer.add(()=> ret);
-					serializer.add(()=>visitAsyncSub(ast, head.label, v));
-					serializer.add(()=>visitAsyncSub(ast, head.caption, v));
+					pool.add(()=> ret);
+					pool.add(()=>_visitSub(poolGenerator, ast, head.label, v));
+					pool.add(()=>_visitSub(poolGenerator, ast, head.caption, v));
 				} else if (typeof ret === "function") {
-					serializer.add(()=> Promise.resolve(ret(v)));
+					pool.add(()=> ret(v));
 				}
-				serializer.add(()=> Promise.resolve(v.visitHeadlinePost(head, parent)));
-				return serializer.consume().then(()=> <void>null);
+				pool.add(()=> v.visitHeadlinePost(head, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.ColumnSyntaxTree) {
 			return (()=> {
 				var column = ast.toColumn();
-				var serializer = new PromiseSerializer<void>();
+				var pool = poolGenerator();
 				var ret = v.visitColumnPre(column, parent);
 				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					serializer.add(()=> visitAsyncSub(ast, column.headline, v));
+					pool.add(()=> _visitSub(poolGenerator, ast, column.headline, v));
 					if (column.text) {
 						column.text.forEach((next)=> {
-							serializer.add(()=> visitAsyncSub(ast, next, v));
+							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 						});
 					}
 				} else if (ret && typeof ret.then === "function") {
-					serializer.add(()=> ret);
-					serializer.add(()=> visitAsyncSub(ast, column.headline, v));
+					pool.add(()=> ret);
+					pool.add(()=> _visitSub(poolGenerator, ast, column.headline, v));
 					if (column.text) {
 						column.text.forEach((next)=> {
-							serializer.add(()=> visitAsyncSub(ast, next, v));
+							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 						});
 					}
 				} else if (typeof ret === "function") {
-					serializer.add(()=> Promise.resolve(ret(v)));
+					pool.add(()=> ret(v));
 				}
-				serializer.add(()=> Promise.resolve(v.visitColumnPost(column, parent)));
-				return serializer.consume().then(()=> <void>null);
+				pool.add(()=> v.visitColumnPost(column, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.ColumnHeadlineSyntaxTree) {
 			return (()=> {
 				var columnHead = ast.toColumnHeadline();
-				var serializer = new PromiseSerializer<void>();
+				var pool = poolGenerator();
 				var ret = v.visitColumnHeadlinePre(columnHead, parent);
 				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					serializer.add(()=>visitAsyncSub(ast, columnHead.caption, v));
+					pool.add(()=>_visitSub(poolGenerator, ast, columnHead.caption, v));
 				} else if (ret && typeof ret.then === "function") {
-					serializer.add(()=> ret);
-					serializer.add(()=>visitAsyncSub(ast, columnHead.caption, v));
+					pool.add(()=> ret);
+					pool.add(()=>_visitSub(poolGenerator, ast, columnHead.caption, v));
 				} else if (typeof ret === "function") {
-					serializer.add(()=> Promise.resolve(ret(v)));
+					pool.add(()=> ret(v));
 				}
-				serializer.add(()=> Promise.resolve(v.visitColumnHeadlinePost(columnHead, parent)));
-				return serializer.consume().then(()=> <void>null);
+				pool.add(()=> v.visitColumnHeadlinePost(columnHead, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.UlistElementSyntaxTree) {
 			return (()=> {
 				var ul = ast.toUlist();
-				var serializer = new PromiseSerializer<void>();
+				var pool = poolGenerator();
 				var ret = v.visitUlistPre(ul, parent);
 				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					serializer.add(()=> visitAsyncSub(ast, ul.text, v));
+					pool.add(()=> _visitSub(poolGenerator, ast, ul.text, v));
 					ul.childNodes.forEach((next)=> {
-						serializer.add(()=> visitAsyncSub(ast, next, v));
+						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 					});
 				} else if (ret && typeof ret.then === "function") {
-					serializer.add(()=> ret);
-					serializer.add(()=> visitAsyncSub(ast, ul.text, v));
+					pool.add(()=> ret);
+					pool.add(()=> _visitSub(poolGenerator, ast, ul.text, v));
 					ul.childNodes.forEach((next)=> {
-						serializer.add(()=> visitAsyncSub(ast, next, v));
+						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 					});
 				} else if (typeof ret === "function") {
-					serializer.add(()=> Promise.resolve(ret(v)));
+					pool.add(()=> ret(v));
 				}
-				serializer.add(()=> Promise.resolve(v.visitUlistPost(ul, parent)));
-				return serializer.consume().then(()=> <void>null);
+				pool.add(()=> v.visitUlistPost(ul, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.OlistElementSyntaxTree) {
 			return (()=> {
 				var ol = ast.toOlist();
-				var serializer = new PromiseSerializer<void>();
+				var pool = poolGenerator();
 				var ret = v.visitOlistPre(ol, parent);
 				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					serializer.add(()=>visitAsyncSub(ast, ol.text, v));
+					pool.add(()=>_visitSub(poolGenerator, ast, ol.text, v));
 				} else if (ret && typeof ret.then === "function") {
-					serializer.add(()=> ret);
-					serializer.add(()=>visitAsyncSub(ast, ol.text, v));
+					pool.add(()=> ret);
+					pool.add(()=>_visitSub(poolGenerator, ast, ol.text, v));
 				} else if (typeof ret === "function") {
-					serializer.add(()=> Promise.resolve(ret(v)));
+					pool.add(()=> ret(v));
 				}
-				serializer.add(()=> Promise.resolve(v.visitOlistPost(ol, parent)));
-				return serializer.consume().then(()=> <void>null);
+				pool.add(()=> v.visitOlistPost(ol, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.DlistElementSyntaxTree) {
 			return (()=> {
 				var dl = ast.toDlist();
-				var serializer = new PromiseSerializer<void>();
+				var pool = poolGenerator();
 				var ret = v.visitDlistPre(dl, parent);
 				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					serializer.add(()=> visitAsyncSub(ast, dl.text, v));
-					serializer.add(()=> visitAsyncSub(ast, dl.content, v));
+					pool.add(()=> _visitSub(poolGenerator, ast, dl.text, v));
+					pool.add(()=> _visitSub(poolGenerator, ast, dl.content, v));
 				} else if (ret && typeof ret.then === "function") {
-					serializer.add(()=> ret);
-					serializer.add(()=> visitAsyncSub(ast, dl.text, v));
-					serializer.add(()=> visitAsyncSub(ast, dl.content, v));
+					pool.add(()=> ret);
+					pool.add(()=> _visitSub(poolGenerator, ast, dl.text, v));
+					pool.add(()=> _visitSub(poolGenerator, ast, dl.content, v));
 				} else if (typeof ret === "function") {
-					ret(v);
+					pool.add(()=> ret(v));
 				}
-				serializer.add(()=> Promise.resolve(v.visitDlistPost(dl, parent)));
-				return serializer.consume().then(()=> <void>null);
+				pool.add(()=> v.visitDlistPost(dl, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && (ast.ruleName === ReVIEW.Parse.RuleName.Paragraph || ast.ruleName === ReVIEW.Parse.RuleName.BlockElementParagraph)) {
 			return (()=> {
 				var node = ast.toNode();
-				var serializer = new PromiseSerializer<void>();
+				var pool = poolGenerator();
 				var ret = v.visitParagraphPre(node, parent);
 				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
 					node.childNodes.forEach((next)=> {
-						serializer.add(()=> visitAsyncSub(ast, next, v));
+						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 					});
 				} else if (ret && typeof ret.then === "function") {
-					serializer.add(()=> ret);
+					pool.add(()=> ret);
 					node.childNodes.forEach((next)=> {
-						serializer.add(()=> visitAsyncSub(ast, next, v));
+						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 					});
 				} else if (typeof ret === "function") {
-					serializer.add(()=> Promise.resolve(ret(v)));
+					pool.add(()=> ret(v));
 				}
-				serializer.add(()=> Promise.resolve(v.visitParagraphPost(node, parent)));
-				return serializer.consume().then(()=> <void>null);
+				pool.add(()=> v.visitParagraphPost(node, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree) {
 			return (()=> {
 				var node = ast.toNode();
-				var serializer = new PromiseSerializer<void>();
+				var pool = poolGenerator();
 				var ret = v.visitNodePre(node, parent);
 				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
 					node.childNodes.forEach((next)=> {
-						serializer.add(()=> visitAsyncSub(ast, next, v));
+						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 					});
 				} else if (ret && typeof ret.then === "function") {
-					serializer.add(()=> ret);
+					pool.add(()=> ret);
 					node.childNodes.forEach((next)=> {
-						serializer.add(()=> visitAsyncSub(ast, next, v));
+						pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 					});
 				} else if (typeof ret === "function") {
-					serializer.add(()=> Promise.resolve(ret(v)));
+					pool.add(()=> ret(v));
 				}
-				serializer.add(()=> Promise.resolve(v.visitNodePost(node, parent)));
-				return serializer.consume().then(()=> <void>null);
+				pool.add(()=> v.visitNodePost(node, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.TextNodeSyntaxTree) {
 			return (()=> {
 				var text = ast.toTextNode();
-				var serializer = new PromiseSerializer<void>();
+				var pool = poolGenerator();
 				var ret = v.visitTextPre(text, parent);
 				if (ret && typeof ret.then === "function") {
-					serializer.add(()=> ret);
+					pool.add(()=> ret);
 				} else if (typeof ret === "function") {
-					serializer.add(()=> Promise.resolve(ret(v)));
+					pool.add(()=> ret(v));
 				}
-				serializer.add(()=> Promise.resolve(v.visitTextPost(text, parent)));
-				return serializer.consume().then(()=> <void>null);
+				pool.add(()=> v.visitTextPost(text, parent));
+				return pool.consume();
 			})();
 		} else if (ast) {
 			return (()=> {
 				var ret = v.visitDefaultPre(parent, ast);
-				var serializer = new PromiseSerializer<void>();
+				var pool = poolGenerator();
 				if (ret && typeof ret.then === "function") {
-					serializer.add(()=> ret);
+					pool.add(()=> ret);
 				} else if (typeof ret === "function") {
-					serializer.add(()=> Promise.resolve(ret(v)));
+					pool.add(()=> ret(v));
 				}
-				serializer.add(()=> Promise.resolve(v.visitDefaultPost(parent, ast)));
-				return serializer.consume().then(()=> <void>null);
+				pool.add(()=> v.visitDefaultPost(parent, ast));
+				return pool.consume();
 			})();
 		} else {
-			return Promise.resolve(<void>null);
+			return (()=> {
+				var pool = poolGenerator();
+				return pool.consume();
+			})();
 		}
 	}
 
@@ -700,24 +458,53 @@ module ReVIEW {
 	}
 
 	/**
+	 * 同期化処理と非同期化処理の記述を一本化するためのヘルパインタフェース。
+	 * 構造が汚いのでexportしないこと。
+	 */
+	interface ITaskPool<T> {
+		add(value:()=>T):void;
+
+		consume():any; // T | Promise<T[]>
+	}
+
+	/**
+	 * 同期化処理をそのまま同期処理として扱うためのヘルパクラス。
+	 */
+	class SyncTaskPool<T> implements ITaskPool<T> {
+		tasks:{(): T;}[] = [];
+
+		add(value:()=>T):void {
+			this.tasks.push(value);
+		}
+
+		consume():T[] {
+			return this.tasks.map(task => task());
+		}
+	}
+
+	/**
 	 * 同期化処理を非同期化するためのヘルパクラス。
 	 * array.forEach(value => process(value)); を以下のように書き換えて使う。
-	 * var serializer = new PromiseSerializer();
-	 * array.forEach(value => serializer.add(()=> process(value));
-	 * serializer.consume().then(()=> ...);
+	 * var pool = new AsyncTaskPool<any>();
+	 * array.forEach(value => pool.add(()=> process(value));
+	 * pool.consume().then(()=> ...);
 	 */
-	class PromiseSerializer<T> {
-		reservedPromised:{():Promise<T>;}[] = [];
+	class AsyncTaskPool<T> implements ITaskPool<T> {
+		tasks:{():Promise<T>;}[] = [];
 
-		add(future:{():Promise<T>;}) {
-			this.reservedPromised.push(future);
+		add(value:()=>T):void;
+
+		add(task:()=>Promise<T>):void;
+
+		add(value:()=>any) {
+			this.tasks.push(()=> Promise.resolve(value()));
 		}
 
 		consume():Promise<T[]> {
 			var promise = new Promise<T[]>((resolve, reject)=> {
 				var result:T[] = [];
 				var next = ()=> {
-					var func = this.reservedPromised.shift();
+					var func = this.tasks.shift();
 					if (!func) {
 						resolve(result);
 						return;

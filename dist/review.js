@@ -5023,261 +5023,20 @@ var ReVIEW;
     ReVIEW.walk = walk;
 
     function visit(ast, v) {
-        var newV = {
-            visitDefaultPre: v.visitDefaultPre,
-            visitDefaultPost: v.visitDefaultPost || (function () {
-            }),
-            visitBlockElementPre: v.visitBlockElementPre || v.visitNodePre || v.visitDefaultPre,
-            visitBlockElementPost: v.visitBlockElementPost || v.visitNodePost || v.visitDefaultPost || (function () {
-            }),
-            visitInlineElementPre: v.visitInlineElementPre || v.visitNodePre || v.visitDefaultPre,
-            visitInlineElementPost: v.visitInlineElementPost || v.visitNodePost || v.visitDefaultPost || (function () {
-            }),
-            visitNodePre: v.visitNodePre || v.visitDefaultPre,
-            visitNodePost: v.visitNodePost || v.visitDefaultPost || (function () {
-            }),
-            visitArgumentPre: v.visitArgumentPre || v.visitDefaultPre,
-            visitArgumentPost: v.visitArgumentPost || v.visitDefaultPost || (function () {
-            }),
-            visitChapterPre: v.visitChapterPre || v.visitNodePre || v.visitDefaultPre,
-            visitChapterPost: v.visitChapterPost || v.visitNodePost || v.visitDefaultPost || (function () {
-            }),
-            visitParagraphPre: v.visitParagraphPre || v.visitNodePre || v.visitDefaultPre,
-            visitParagraphPost: v.visitParagraphPost || v.visitNodePost || (function () {
-            }),
-            visitHeadlinePre: v.visitHeadlinePre || v.visitDefaultPre,
-            visitHeadlinePost: v.visitHeadlinePost || v.visitDefaultPost || (function () {
-            }),
-            visitUlistPre: v.visitUlistPre || v.visitNodePre || v.visitDefaultPre,
-            visitUlistPost: v.visitUlistPost || v.visitNodePost || v.visitDefaultPost || (function () {
-            }),
-            visitOlistPre: v.visitOlistPre || v.visitDefaultPre,
-            visitOlistPost: v.visitOlistPost || v.visitDefaultPost || (function () {
-            }),
-            visitDlistPre: v.visitDlistPre || v.visitDefaultPre,
-            visitDlistPost: v.visitDlistPost || v.visitDefaultPost || (function () {
-            }),
-            visitColumnPre: v.visitColumnPre || v.visitNodePre || v.visitDefaultPre,
-            visitColumnPost: v.visitColumnPost || v.visitNodePost || v.visitDefaultPost || (function () {
-            }),
-            visitColumnHeadlinePre: v.visitColumnHeadlinePre || v.visitDefaultPre,
-            visitColumnHeadlinePost: v.visitColumnHeadlinePost || v.visitDefaultPost || (function () {
-            }),
-            visitTextPre: v.visitTextPre || v.visitDefaultPre,
-            visitTextPost: v.visitTextPost || v.visitDefaultPost || (function () {
-            })
-        };
-        newV.visitDefaultPre = newV.visitDefaultPre.bind(v);
-        newV.visitDefaultPost = newV.visitDefaultPost.bind(v);
-        newV.visitBlockElementPre = newV.visitBlockElementPre.bind(v);
-        newV.visitBlockElementPost = newV.visitBlockElementPost.bind(v);
-        newV.visitInlineElementPre = newV.visitInlineElementPre.bind(v);
-        newV.visitInlineElementPost = newV.visitInlineElementPost.bind(v);
-        newV.visitNodePre = newV.visitNodePre.bind(v);
-        newV.visitNodePost = newV.visitNodePost.bind(v);
-        newV.visitArgumentPre = newV.visitArgumentPre.bind(v);
-        newV.visitArgumentPost = newV.visitArgumentPost.bind(v);
-        newV.visitChapterPre = newV.visitChapterPre.bind(v);
-        newV.visitChapterPost = newV.visitChapterPost.bind(v);
-        newV.visitHeadlinePre = newV.visitHeadlinePre.bind(v);
-        newV.visitHeadlinePost = newV.visitHeadlinePost.bind(v);
-        newV.visitUlistPre = newV.visitUlistPre.bind(v);
-        newV.visitUlistPost = newV.visitUlistPost.bind(v);
-        newV.visitOlistPre = newV.visitOlistPre.bind(v);
-        newV.visitOlistPost = newV.visitOlistPost.bind(v);
-        newV.visitDlistPre = newV.visitDlistPre.bind(v);
-        newV.visitDlistPost = newV.visitDlistPost.bind(v);
-        newV.visitColumnPre = newV.visitColumnPre.bind(v);
-        newV.visitColumnPost = newV.visitColumnPost.bind(v);
-        newV.visitColumnHeadlinePre = newV.visitColumnHeadlinePre.bind(v);
-        newV.visitColumnHeadlinePost = newV.visitColumnHeadlinePost.bind(v);
-        newV.visitTextPre = newV.visitTextPre.bind(v);
-        newV.visitTextPost = newV.visitTextPost.bind(v);
-        visitSub(null, ast, newV);
+        _visit(function () {
+            return new SyncTaskPool();
+        }, ast, v);
     }
     ReVIEW.visit = visit;
 
-    function visitSub(parent, ast, v) {
-        if (ast instanceof ReVIEW.Parse.BlockElementSyntaxTree) {
-            (function () {
-                var block = ast.toBlockElement();
-                var ret = v.visitBlockElementPre(block, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    block.args.forEach(function (next) {
-                        visitSub(ast, next, v);
-                    });
-                    block.childNodes.forEach(function (next) {
-                        visitSub(ast, next, v);
-                    });
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitBlockElementPost(block, parent);
-            })();
-        } else if (ast instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
-            (function () {
-                var inline = ast.toInlineElement();
-                var ret = v.visitInlineElementPre(inline, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    inline.childNodes.forEach(function (next) {
-                        visitSub(ast, next, v);
-                    });
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitInlineElementPost(inline, parent);
-            })();
-        } else if (ast instanceof ReVIEW.Parse.ArgumentSyntaxTree) {
-            (function () {
-                var arg = ast.toArgument();
-                var ret = v.visitArgumentPre(arg, parent);
-                if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitArgumentPost(arg, parent);
-            })();
-        } else if (ast instanceof ReVIEW.Parse.ChapterSyntaxTree) {
-            (function () {
-                var chap = ast.toChapter();
-                var ret = v.visitChapterPre(chap, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    visitSub(ast, chap.headline, v);
-                    if (chap.text) {
-                        chap.text.forEach(function (next) {
-                            visitSub(ast, next, v);
-                        });
-                    }
-                    chap.childNodes.forEach(function (next) {
-                        visitSub(ast, next, v);
-                    });
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitChapterPost(chap, parent);
-            })();
-        } else if (ast instanceof ReVIEW.Parse.HeadlineSyntaxTree) {
-            (function () {
-                var head = ast.toHeadline();
-                var ret = v.visitHeadlinePre(head, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    visitSub(ast, head.label, v);
-                    visitSub(ast, head.caption, v);
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitHeadlinePost(head, parent);
-            })();
-        } else if (ast instanceof ReVIEW.Parse.ColumnSyntaxTree) {
-            (function () {
-                var column = ast.toColumn();
-                var ret = v.visitColumnPre(column, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    visitSub(ast, column.headline, v);
-                    if (column.text) {
-                        column.text.forEach(function (next) {
-                            visitSub(ast, next, v);
-                        });
-                    }
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitColumnPost(column, parent);
-            })();
-        } else if (ast instanceof ReVIEW.Parse.ColumnHeadlineSyntaxTree) {
-            (function () {
-                var columnHead = ast.toColumnHeadline();
-                var ret = v.visitColumnHeadlinePre(columnHead, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    visitSub(ast, columnHead.caption, v);
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitColumnHeadlinePost(columnHead, parent);
-            })();
-        } else if (ast instanceof ReVIEW.Parse.UlistElementSyntaxTree) {
-            (function () {
-                var ul = ast.toUlist();
-                var ret = v.visitUlistPre(ul, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    visitSub(ast, ul.text, v);
-                    ul.childNodes.forEach(function (next) {
-                        visitSub(ast, next, v);
-                    });
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitUlistPost(ul, parent);
-            })();
-        } else if (ast instanceof ReVIEW.Parse.OlistElementSyntaxTree) {
-            (function () {
-                var ol = ast.toOlist();
-                var ret = v.visitOlistPre(ol, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    visitSub(ast, ol.text, v);
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitOlistPost(ol, parent);
-            })();
-        } else if (ast instanceof ReVIEW.Parse.DlistElementSyntaxTree) {
-            (function () {
-                var dl = ast.toDlist();
-                var ret = v.visitDlistPre(dl, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    visitSub(ast, dl.text, v);
-                    visitSub(ast, dl.content, v);
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitDlistPost(dl, parent);
-            })();
-        } else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && (ast.ruleName === 7 /* Paragraph */ || ast.ruleName === 17 /* BlockElementParagraph */)) {
-            (function () {
-                var node = ast.toNode();
-                var ret = v.visitParagraphPre(node, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    node.childNodes.forEach(function (next) {
-                        visitSub(ast, next, v);
-                    });
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitParagraphPost(node, parent);
-            })();
-        } else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree) {
-            (function () {
-                var node = ast.toNode();
-                var ret = v.visitNodePre(node, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    node.childNodes.forEach(function (next) {
-                        visitSub(ast, next, v);
-                    });
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitNodePost(node, parent);
-            })();
-        } else if (ast instanceof ReVIEW.Parse.TextNodeSyntaxTree) {
-            (function () {
-                var text = ast.toTextNode();
-                var ret = v.visitTextPre(text, parent);
-                if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitTextPost(text, parent);
-            })();
-        } else if (ast) {
-            (function () {
-                var ret = v.visitDefaultPre(parent, ast);
-                if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitDefaultPost(parent, ast);
-            })();
-        }
-    }
-
     function visitAsync(ast, v) {
+        return Promise.resolve(_visit(function () {
+            return new AsyncTaskPool();
+        }, ast, v));
+    }
+    ReVIEW.visitAsync = visitAsync;
+
+    function _visit(poolGenerator, ast, v) {
         var newV = {
             visitDefaultPre: v.visitDefaultPre,
             visitDefaultPost: v.visitDefaultPost || (function () {
@@ -5348,489 +5107,486 @@ var ReVIEW;
         newV.visitColumnHeadlinePost = newV.visitColumnHeadlinePost.bind(v);
         newV.visitTextPre = newV.visitTextPre.bind(v);
         newV.visitTextPost = newV.visitTextPost.bind(v);
-        return visitAsyncSub(null, ast, newV);
-    }
-    ReVIEW.visitAsync = visitAsync;
 
-    function visitAsyncSub(parent, ast, v) {
+        return _visitSub(poolGenerator, null, ast, newV);
+    }
+
+    function _visitSub(poolGenerator, parent, ast, v) {
         if (ast instanceof ReVIEW.Parse.BlockElementSyntaxTree) {
             return (function () {
                 var block = ast.toBlockElement();
-                var serializer = new PromiseSerializer();
+                var pool = poolGenerator();
                 var ret = v.visitBlockElementPre(block, parent);
                 if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
                     block.args.forEach(function (next) {
-                        serializer.add(function () {
-                            return visitAsyncSub(ast, next, v);
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, next, v);
                         });
                     });
                     block.childNodes.forEach(function (next) {
-                        serializer.add(function () {
-                            return visitAsyncSub(ast, next, v);
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, next, v);
                         });
                     });
                 } else if (ret && typeof ret.then === "function") {
-                    serializer.add(function () {
+                    pool.add(function () {
                         return ret.then(function (ret) {
                             if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
                                 block.args.forEach(function (next) {
-                                    serializer.add(function () {
-                                        return visitAsyncSub(ast, next, v);
+                                    pool.add(function () {
+                                        return _visitSub(poolGenerator, ast, next, v);
                                     });
                                 });
                                 block.childNodes.forEach(function (next) {
-                                    serializer.add(function () {
-                                        return visitAsyncSub(ast, next, v);
+                                    pool.add(function () {
+                                        return _visitSub(poolGenerator, ast, next, v);
                                     });
                                 });
                             }
                         });
                     });
                 } else if (typeof ret === "function") {
-                    serializer.add(function () {
-                        return Promise.resolve(ret(v));
+                    pool.add(function () {
+                        return ret(v);
                     });
                 }
-                serializer.add(function () {
-                    return Promise.resolve(v.visitBlockElementPost(block, parent));
+                pool.add(function () {
+                    return v.visitBlockElementPost(block, parent);
                 });
-                return serializer.consume().then(function () {
-                    return null;
-                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
             return (function () {
                 var inline = ast.toInlineElement();
-                var serializer = new PromiseSerializer();
+                var pool = poolGenerator();
                 var ret = v.visitInlineElementPre(inline, parent);
                 if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
                     inline.childNodes.forEach(function (next) {
-                        serializer.add(function () {
-                            return visitAsyncSub(ast, next, v);
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, next, v);
                         });
                     });
                 } else if (ret && typeof ret.then === "function") {
-                    serializer.add(function () {
+                    pool.add(function () {
                         return ret;
                     });
                     inline.childNodes.forEach(function (next) {
-                        serializer.add(function () {
-                            return visitAsyncSub(ast, next, v);
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, next, v);
                         });
                     });
                 } else if (typeof ret === "function") {
-                    serializer.add(function () {
-                        return Promise.resolve(ret(v));
+                    pool.add(function () {
+                        return ret(v);
                     });
                 }
-                serializer.add(function () {
-                    return Promise.resolve(v.visitInlineElementPost(inline, parent));
+                pool.add(function () {
+                    return v.visitInlineElementPost(inline, parent);
                 });
-                return serializer.consume().then(function () {
-                    return null;
-                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.ArgumentSyntaxTree) {
             return (function () {
                 var arg = ast.toArgument();
-                var serializer = new PromiseSerializer();
+                var pool = poolGenerator();
                 var ret = v.visitArgumentPre(arg, parent);
                 if (ret && typeof ret.then === "function") {
-                    serializer.add(function () {
+                    pool.add(function () {
                         return ret;
                     });
                 } else if (typeof ret === "function") {
-                    serializer.add(function () {
-                        return Promise.resolve(ret(v));
+                    pool.add(function () {
+                        return ret(v);
                     });
                 }
-                serializer.add(function () {
-                    return Promise.resolve(v.visitArgumentPost(arg, parent));
+                pool.add(function () {
+                    return v.visitArgumentPost(arg, parent);
                 });
-                return serializer.consume().then(function () {
-                    return null;
-                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.ChapterSyntaxTree) {
             return (function () {
                 var chap = ast.toChapter();
-                var serializer = new PromiseSerializer();
+                var pool = poolGenerator();
                 var ret = v.visitChapterPre(chap, parent);
                 if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, chap.headline, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, chap.headline, v);
                     });
                     if (chap.text) {
                         chap.text.forEach(function (next) {
-                            serializer.add(function () {
-                                return visitAsyncSub(ast, next, v);
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
                             });
                         });
                     }
                     chap.childNodes.forEach(function (next) {
-                        serializer.add(function () {
-                            return visitAsyncSub(ast, next, v);
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, next, v);
                         });
                     });
                 } else if (ret && typeof ret.then === "function") {
-                    serializer.add(function () {
+                    pool.add(function () {
                         return ret;
                     });
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, chap.headline, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, chap.headline, v);
                     });
                     if (chap.text) {
                         chap.text.forEach(function (next) {
-                            serializer.add(function () {
-                                return visitAsyncSub(ast, next, v);
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
                             });
                         });
                     }
                     chap.childNodes.forEach(function (next) {
-                        serializer.add(function () {
-                            return visitAsyncSub(ast, next, v);
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, next, v);
                         });
                     });
                 } else if (typeof ret === "function") {
-                    serializer.add(function () {
-                        return Promise.resolve(ret(v));
+                    pool.add(function () {
+                        return ret(v);
                     });
                 }
-                serializer.add(function () {
-                    return Promise.resolve(v.visitChapterPost(chap, parent));
+                pool.add(function () {
+                    return v.visitChapterPost(chap, parent);
                 });
-                return serializer.consume().then(function () {
-                    return null;
-                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.HeadlineSyntaxTree) {
             return (function () {
                 var head = ast.toHeadline();
-                var serializer = new PromiseSerializer();
+                var pool = poolGenerator();
                 var ret = v.visitHeadlinePre(head, parent);
                 if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, head.label, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, head.label, v);
                     });
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, head.caption, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, head.caption, v);
                     });
                 } else if (ret && typeof ret.then === "function") {
-                    serializer.add(function () {
+                    pool.add(function () {
                         return ret;
                     });
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, head.label, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, head.label, v);
                     });
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, head.caption, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, head.caption, v);
                     });
                 } else if (typeof ret === "function") {
-                    serializer.add(function () {
-                        return Promise.resolve(ret(v));
+                    pool.add(function () {
+                        return ret(v);
                     });
                 }
-                serializer.add(function () {
-                    return Promise.resolve(v.visitHeadlinePost(head, parent));
+                pool.add(function () {
+                    return v.visitHeadlinePost(head, parent);
                 });
-                return serializer.consume().then(function () {
-                    return null;
-                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.ColumnSyntaxTree) {
             return (function () {
                 var column = ast.toColumn();
-                var serializer = new PromiseSerializer();
+                var pool = poolGenerator();
                 var ret = v.visitColumnPre(column, parent);
                 if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, column.headline, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, column.headline, v);
                     });
                     if (column.text) {
                         column.text.forEach(function (next) {
-                            serializer.add(function () {
-                                return visitAsyncSub(ast, next, v);
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
                             });
                         });
                     }
                 } else if (ret && typeof ret.then === "function") {
-                    serializer.add(function () {
+                    pool.add(function () {
                         return ret;
                     });
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, column.headline, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, column.headline, v);
                     });
                     if (column.text) {
                         column.text.forEach(function (next) {
-                            serializer.add(function () {
-                                return visitAsyncSub(ast, next, v);
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
                             });
                         });
                     }
                 } else if (typeof ret === "function") {
-                    serializer.add(function () {
-                        return Promise.resolve(ret(v));
+                    pool.add(function () {
+                        return ret(v);
                     });
                 }
-                serializer.add(function () {
-                    return Promise.resolve(v.visitColumnPost(column, parent));
+                pool.add(function () {
+                    return v.visitColumnPost(column, parent);
                 });
-                return serializer.consume().then(function () {
-                    return null;
-                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.ColumnHeadlineSyntaxTree) {
             return (function () {
                 var columnHead = ast.toColumnHeadline();
-                var serializer = new PromiseSerializer();
+                var pool = poolGenerator();
                 var ret = v.visitColumnHeadlinePre(columnHead, parent);
                 if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, columnHead.caption, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, columnHead.caption, v);
                     });
                 } else if (ret && typeof ret.then === "function") {
-                    serializer.add(function () {
+                    pool.add(function () {
                         return ret;
                     });
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, columnHead.caption, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, columnHead.caption, v);
                     });
                 } else if (typeof ret === "function") {
-                    serializer.add(function () {
-                        return Promise.resolve(ret(v));
+                    pool.add(function () {
+                        return ret(v);
                     });
                 }
-                serializer.add(function () {
-                    return Promise.resolve(v.visitColumnHeadlinePost(columnHead, parent));
+                pool.add(function () {
+                    return v.visitColumnHeadlinePost(columnHead, parent);
                 });
-                return serializer.consume().then(function () {
-                    return null;
-                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.UlistElementSyntaxTree) {
             return (function () {
                 var ul = ast.toUlist();
-                var serializer = new PromiseSerializer();
+                var pool = poolGenerator();
                 var ret = v.visitUlistPre(ul, parent);
                 if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, ul.text, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, ul.text, v);
                     });
                     ul.childNodes.forEach(function (next) {
-                        serializer.add(function () {
-                            return visitAsyncSub(ast, next, v);
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, next, v);
                         });
                     });
                 } else if (ret && typeof ret.then === "function") {
-                    serializer.add(function () {
+                    pool.add(function () {
                         return ret;
                     });
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, ul.text, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, ul.text, v);
                     });
                     ul.childNodes.forEach(function (next) {
-                        serializer.add(function () {
-                            return visitAsyncSub(ast, next, v);
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, next, v);
                         });
                     });
                 } else if (typeof ret === "function") {
-                    serializer.add(function () {
-                        return Promise.resolve(ret(v));
+                    pool.add(function () {
+                        return ret(v);
                     });
                 }
-                serializer.add(function () {
-                    return Promise.resolve(v.visitUlistPost(ul, parent));
+                pool.add(function () {
+                    return v.visitUlistPost(ul, parent);
                 });
-                return serializer.consume().then(function () {
-                    return null;
-                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.OlistElementSyntaxTree) {
             return (function () {
                 var ol = ast.toOlist();
-                var serializer = new PromiseSerializer();
+                var pool = poolGenerator();
                 var ret = v.visitOlistPre(ol, parent);
                 if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, ol.text, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, ol.text, v);
                     });
                 } else if (ret && typeof ret.then === "function") {
-                    serializer.add(function () {
+                    pool.add(function () {
                         return ret;
                     });
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, ol.text, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, ol.text, v);
                     });
                 } else if (typeof ret === "function") {
-                    serializer.add(function () {
-                        return Promise.resolve(ret(v));
+                    pool.add(function () {
+                        return ret(v);
                     });
                 }
-                serializer.add(function () {
-                    return Promise.resolve(v.visitOlistPost(ol, parent));
+                pool.add(function () {
+                    return v.visitOlistPost(ol, parent);
                 });
-                return serializer.consume().then(function () {
-                    return null;
-                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.DlistElementSyntaxTree) {
             return (function () {
                 var dl = ast.toDlist();
-                var serializer = new PromiseSerializer();
+                var pool = poolGenerator();
                 var ret = v.visitDlistPre(dl, parent);
                 if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, dl.text, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, dl.text, v);
                     });
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, dl.content, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, dl.content, v);
                     });
                 } else if (ret && typeof ret.then === "function") {
-                    serializer.add(function () {
+                    pool.add(function () {
                         return ret;
                     });
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, dl.text, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, dl.text, v);
                     });
-                    serializer.add(function () {
-                        return visitAsyncSub(ast, dl.content, v);
+                    pool.add(function () {
+                        return _visitSub(poolGenerator, ast, dl.content, v);
                     });
                 } else if (typeof ret === "function") {
-                    ret(v);
+                    pool.add(function () {
+                        return ret(v);
+                    });
                 }
-                serializer.add(function () {
-                    return Promise.resolve(v.visitDlistPost(dl, parent));
+                pool.add(function () {
+                    return v.visitDlistPost(dl, parent);
                 });
-                return serializer.consume().then(function () {
-                    return null;
-                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && (ast.ruleName === 7 /* Paragraph */ || ast.ruleName === 17 /* BlockElementParagraph */)) {
             return (function () {
                 var node = ast.toNode();
-                var serializer = new PromiseSerializer();
+                var pool = poolGenerator();
                 var ret = v.visitParagraphPre(node, parent);
                 if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
                     node.childNodes.forEach(function (next) {
-                        serializer.add(function () {
-                            return visitAsyncSub(ast, next, v);
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, next, v);
                         });
                     });
                 } else if (ret && typeof ret.then === "function") {
-                    serializer.add(function () {
+                    pool.add(function () {
                         return ret;
                     });
                     node.childNodes.forEach(function (next) {
-                        serializer.add(function () {
-                            return visitAsyncSub(ast, next, v);
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, next, v);
                         });
                     });
                 } else if (typeof ret === "function") {
-                    serializer.add(function () {
-                        return Promise.resolve(ret(v));
+                    pool.add(function () {
+                        return ret(v);
                     });
                 }
-                serializer.add(function () {
-                    return Promise.resolve(v.visitParagraphPost(node, parent));
+                pool.add(function () {
+                    return v.visitParagraphPost(node, parent);
                 });
-                return serializer.consume().then(function () {
-                    return null;
-                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree) {
             return (function () {
                 var node = ast.toNode();
-                var serializer = new PromiseSerializer();
+                var pool = poolGenerator();
                 var ret = v.visitNodePre(node, parent);
                 if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
                     node.childNodes.forEach(function (next) {
-                        serializer.add(function () {
-                            return visitAsyncSub(ast, next, v);
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, next, v);
                         });
                     });
                 } else if (ret && typeof ret.then === "function") {
-                    serializer.add(function () {
+                    pool.add(function () {
                         return ret;
                     });
                     node.childNodes.forEach(function (next) {
-                        serializer.add(function () {
-                            return visitAsyncSub(ast, next, v);
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, next, v);
                         });
                     });
                 } else if (typeof ret === "function") {
-                    serializer.add(function () {
-                        return Promise.resolve(ret(v));
+                    pool.add(function () {
+                        return ret(v);
                     });
                 }
-                serializer.add(function () {
-                    return Promise.resolve(v.visitNodePost(node, parent));
+                pool.add(function () {
+                    return v.visitNodePost(node, parent);
                 });
-                return serializer.consume().then(function () {
-                    return null;
-                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.TextNodeSyntaxTree) {
             return (function () {
                 var text = ast.toTextNode();
-                var serializer = new PromiseSerializer();
+                var pool = poolGenerator();
                 var ret = v.visitTextPre(text, parent);
                 if (ret && typeof ret.then === "function") {
-                    serializer.add(function () {
+                    pool.add(function () {
                         return ret;
                     });
                 } else if (typeof ret === "function") {
-                    serializer.add(function () {
-                        return Promise.resolve(ret(v));
+                    pool.add(function () {
+                        return ret(v);
                     });
                 }
-                serializer.add(function () {
-                    return Promise.resolve(v.visitTextPost(text, parent));
+                pool.add(function () {
+                    return v.visitTextPost(text, parent);
                 });
-                return serializer.consume().then(function () {
-                    return null;
-                });
+                return pool.consume();
             })();
         } else if (ast) {
             return (function () {
                 var ret = v.visitDefaultPre(parent, ast);
-                var serializer = new PromiseSerializer();
+                var pool = poolGenerator();
                 if (ret && typeof ret.then === "function") {
-                    serializer.add(function () {
+                    pool.add(function () {
                         return ret;
                     });
                 } else if (typeof ret === "function") {
-                    serializer.add(function () {
-                        return Promise.resolve(ret(v));
+                    pool.add(function () {
+                        return ret(v);
                     });
                 }
-                serializer.add(function () {
-                    return Promise.resolve(v.visitDefaultPost(parent, ast));
+                pool.add(function () {
+                    return v.visitDefaultPost(parent, ast);
                 });
-                return serializer.consume().then(function () {
-                    return null;
-                });
+                return pool.consume();
             })();
         } else {
-            return Promise.resolve(null);
+            return (function () {
+                var pool = poolGenerator();
+                return pool.consume();
+            })();
         }
     }
 
     
 
-    var PromiseSerializer = (function () {
-        function PromiseSerializer() {
-            this.reservedPromised = [];
+    
+
+    var SyncTaskPool = (function () {
+        function SyncTaskPool() {
+            this.tasks = [];
         }
-        PromiseSerializer.prototype.add = function (future) {
-            this.reservedPromised.push(future);
+        SyncTaskPool.prototype.add = function (value) {
+            this.tasks.push(value);
         };
 
-        PromiseSerializer.prototype.consume = function () {
+        SyncTaskPool.prototype.consume = function () {
+            return this.tasks.map(function (task) {
+                return task();
+            });
+        };
+        return SyncTaskPool;
+    })();
+
+    var AsyncTaskPool = (function () {
+        function AsyncTaskPool() {
+            this.tasks = [];
+        }
+        AsyncTaskPool.prototype.add = function (value) {
+            this.tasks.push(function () {
+                return Promise.resolve(value());
+            });
+        };
+
+        AsyncTaskPool.prototype.consume = function () {
             var _this = this;
             var promise = new Promise(function (resolve, reject) {
                 var result = [];
                 var next = function () {
-                    var func = _this.reservedPromised.shift();
+                    var func = _this.tasks.shift();
                     if (!func) {
                         resolve(result);
                         return;
@@ -5844,7 +5600,7 @@ var ReVIEW;
             });
             return promise;
         };
-        return PromiseSerializer;
+        return AsyncTaskPool;
     })();
 })(ReVIEW || (ReVIEW = {}));
 var __extends = this.__extends || function (d, b) {
