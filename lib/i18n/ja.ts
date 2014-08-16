@@ -69,6 +69,7 @@ module ReVIEW {
 			"deprecated_inline_symbol": "%s というインライン構文は非推奨です。"
 		},
 		"builder": {
+			"image_not_found": "ID: %s にマッチする画像が見つかりませんでした",
 			"chapter": "第%d章",
 			"list": "リスト%s.%s",
 			"table": "表%s.%s"

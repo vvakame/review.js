@@ -38,13 +38,28 @@ module ReVIEW {
 	}
 
 	/**
-	 * 指定された構文木の全てのノード・リーフを探索する。
+	 * 指定された構文木の全てのノード・リーフを同期的に探索する。
 	 * 親子であれば親のほうが先に探索され、兄弟であれば兄のほうが先に探索される。
 	 * つまり、葉に着目すると文章に登場する順番に探索される。
 	 * @param ast
 	 * @param v
 	 */
-	export function visit(ast:SyntaxTree, v:ITreeVisitor) {
+	export function visit(ast:SyntaxTree, v:ITreeVisitor):void {
+		_visit(()=> new SyncTaskPool<void>(), ast, v);
+	}
+
+	/**
+	 * 指定された構文木の全てのノード・リーフを非同期に探索する。
+	 * 親子であれば親のほうが先に探索され、兄弟であれば兄のほうが先に探索される。
+	 * つまり、葉に着目すると文章に登場する順番に探索される。
+	 * @param ast
+	 * @param v
+	 */
+	export function visitAsync(ast:SyntaxTree, v:ITreeVisitor):Promise<void> {
+		return Promise.resolve(_visit(()=> new AsyncTaskPool<void>(), ast, v));
+	}
+
+	function _visit(poolGenerator:()=>ITaskPool<void>, ast:SyntaxTree, v:ITreeVisitor):any {
 		var newV:ITreeVisitor = {
 			visitDefaultPre: v.visitDefaultPre,
 			visitDefaultPost: v.visitDefaultPost || (()=> {
@@ -115,185 +130,264 @@ module ReVIEW {
 		newV.visitColumnHeadlinePost = newV.visitColumnHeadlinePost.bind(v);
 		newV.visitTextPre = newV.visitTextPre.bind(v);
 		newV.visitTextPost = newV.visitTextPost.bind(v);
-		visitSub(null, ast, newV);
+
+		return _visitSub(poolGenerator, null, ast, newV);
 	}
 
-	function visitSub(parent:SyntaxTree, ast:SyntaxTree, v:ITreeVisitor) {
+	function _visitSub(poolGenerator:()=>ITaskPool<void>, parent:SyntaxTree, ast:SyntaxTree, v:ITreeVisitor):any {
 		if (ast instanceof ReVIEW.Parse.BlockElementSyntaxTree) {
-			(()=> {
+			return (()=> {
 				var block = ast.toBlockElement();
+				var pool = poolGenerator();
 				var ret = v.visitBlockElementPre(block, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					block.args.forEach((next)=> {
-						visitSub(ast, next, v);
-					});
-					block.childNodes.forEach((next)=> {
-						visitSub(ast, next, v);
-					});
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitBlockElementPost(block, parent);
+				pool.handle(ret, {
+					next: ()=> {
+						block.args.forEach((next)=> {
+							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+						});
+						block.childNodes.forEach((next)=> {
+							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+						});
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
+				pool.add(()=> v.visitBlockElementPost(block, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
-			(()=> {
+			return (()=> {
 				var inline = ast.toInlineElement();
+				var pool = poolGenerator();
 				var ret = v.visitInlineElementPre(inline, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					inline.childNodes.forEach((next)=> {
-						visitSub(ast, next, v);
-					});
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitInlineElementPost(inline, parent);
+				pool.handle(ret, {
+					next: ()=> {
+						inline.childNodes.forEach((next)=> {
+							pool.add(()=>_visitSub(poolGenerator, ast, next, v));
+						});
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
+				pool.add(()=> v.visitInlineElementPost(inline, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.ArgumentSyntaxTree) {
-			(()=> {
+			return (()=> {
 				var arg = ast.toArgument();
+				var pool = poolGenerator();
 				var ret = v.visitArgumentPre(arg, parent);
-				if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitArgumentPost(arg, parent);
+				pool.handle(ret, {
+					next: ()=> {
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
+				pool.add(()=> v.visitArgumentPost(arg, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.ChapterSyntaxTree) {
-			(()=> {
+			return (()=> {
 				var chap = ast.toChapter();
+				var pool = poolGenerator();
 				var ret = v.visitChapterPre(chap, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					visitSub(ast, chap.headline, v);
-					if (chap.text) {
-						chap.text.forEach((next)=> {
-							visitSub(ast, next, v);
+				pool.handle(ret, {
+					next: ()=> {
+						pool.add(()=> _visitSub(poolGenerator, ast, chap.headline, v));
+						if (chap.text) {
+							chap.text.forEach((next)=> {
+								pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+							});
+						}
+						chap.childNodes.forEach((next)=> {
+							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
 						});
+					},
+					func: ()=> {
+						ret(v);
 					}
-					chap.childNodes.forEach((next)=> {
-						visitSub(ast, next, v);
-					});
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitChapterPost(chap, parent);
+				});
+				pool.add(()=> v.visitChapterPost(chap, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.HeadlineSyntaxTree) {
-			(()=> {
+			return (()=> {
 				var head = ast.toHeadline();
+				var pool = poolGenerator();
 				var ret = v.visitHeadlinePre(head, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					visitSub(ast, head.label, v);
-					visitSub(ast, head.caption, v);
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitHeadlinePost(head, parent);
+				pool.handle(ret, {
+					next: ()=> {
+						pool.add(()=>_visitSub(poolGenerator, ast, head.label, v));
+						pool.add(()=>_visitSub(poolGenerator, ast, head.caption, v));
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
+				pool.add(()=> v.visitHeadlinePost(head, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.ColumnSyntaxTree) {
-			(()=> {
+			return (()=> {
 				var column = ast.toColumn();
+				var pool = poolGenerator();
 				var ret = v.visitColumnPre(column, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					visitSub(ast, column.headline, v);
-					if (column.text) {
-						column.text.forEach((next)=> {
-							visitSub(ast, next, v);
-						});
+				pool.handle(ret, {
+					next: ()=> {
+						pool.add(()=> _visitSub(poolGenerator, ast, column.headline, v));
+						if (column.text) {
+							column.text.forEach((next)=> {
+								pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+							});
+						}
+					},
+					func: ()=> {
+						ret(v);
 					}
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitColumnPost(column, parent);
+				});
+				pool.add(()=> v.visitColumnPost(column, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.ColumnHeadlineSyntaxTree) {
-			(()=> {
+			return (()=> {
 				var columnHead = ast.toColumnHeadline();
+				var pool = poolGenerator();
 				var ret = v.visitColumnHeadlinePre(columnHead, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					visitSub(ast, columnHead.caption, v);
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitColumnHeadlinePost(columnHead, parent);
+				pool.handle(ret, {
+					next: ()=> {
+						pool.add(()=>_visitSub(poolGenerator, ast, columnHead.caption, v));
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
+				pool.add(()=> v.visitColumnHeadlinePost(columnHead, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.UlistElementSyntaxTree) {
-			(()=> {
+			return (()=> {
 				var ul = ast.toUlist();
+				var pool = poolGenerator();
 				var ret = v.visitUlistPre(ul, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					visitSub(ast, ul.text, v);
-					ul.childNodes.forEach((next)=> {
-						visitSub(ast, next, v);
-					});
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitUlistPost(ul, parent);
+				pool.handle(ret, {
+					next: ()=> {
+						pool.add(()=> _visitSub(poolGenerator, ast, ul.text, v));
+						ul.childNodes.forEach((next)=> {
+							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+						});
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
+				pool.add(()=> v.visitUlistPost(ul, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.OlistElementSyntaxTree) {
-			(()=> {
+			return (()=> {
 				var ol = ast.toOlist();
+				var pool = poolGenerator();
 				var ret = v.visitOlistPre(ol, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					visitSub(ast, ol.text, v);
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitOlistPost(ol, parent);
+				pool.handle(ret, {
+					next: ()=> {
+						pool.add(()=>_visitSub(poolGenerator, ast, ol.text, v));
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
+				pool.add(()=> v.visitOlistPost(ol, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.DlistElementSyntaxTree) {
-			(()=> {
+			return (()=> {
 				var dl = ast.toDlist();
+				var pool = poolGenerator();
 				var ret = v.visitDlistPre(dl, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					visitSub(ast, dl.text, v);
-					visitSub(ast, dl.content, v);
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitDlistPost(dl, parent);
+				pool.handle(ret, {
+					next: ()=> {
+						pool.add(()=> _visitSub(poolGenerator, ast, dl.text, v));
+						pool.add(()=> _visitSub(poolGenerator, ast, dl.content, v));
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
+				pool.add(()=> v.visitDlistPost(dl, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && (ast.ruleName === ReVIEW.Parse.RuleName.Paragraph || ast.ruleName === ReVIEW.Parse.RuleName.BlockElementParagraph)) {
-			(()=> {
+			return (()=> {
 				var node = ast.toNode();
+				var pool = poolGenerator();
 				var ret = v.visitParagraphPre(node, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					node.childNodes.forEach((next)=> {
-						visitSub(ast, next, v);
-					});
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitParagraphPost(node, parent);
+				pool.handle(ret, {
+					next: ()=> {
+						node.childNodes.forEach((next)=> {
+							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+						});
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
+				pool.add(()=> v.visitParagraphPost(node, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree) {
-			(()=> {
+			return (()=> {
 				var node = ast.toNode();
+				var pool = poolGenerator();
 				var ret = v.visitNodePre(node, parent);
-				if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-					node.childNodes.forEach((next)=> {
-						visitSub(ast, next, v);
-					});
-				} else if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitNodePost(node, parent);
+				pool.handle(ret, {
+					next: ()=> {
+						node.childNodes.forEach((next)=> {
+							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+						});
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
+				pool.add(()=> v.visitNodePost(node, parent));
+				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.TextNodeSyntaxTree) {
-			(()=> {
+			return (()=> {
 				var text = ast.toTextNode();
+				var pool = poolGenerator();
 				var ret = v.visitTextPre(text, parent);
-				if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitTextPost(text, parent);
+				pool.handle(ret, {
+					next: ()=> {
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
+				pool.add(()=> v.visitTextPost(text, parent));
+				return pool.consume();
 			})();
 		} else if (ast) {
-			(()=> {
+			return (()=> {
+				var pool = poolGenerator();
 				var ret = v.visitDefaultPre(parent, ast);
-				if (typeof ret === "function") {
-					ret(v);
-				}
-				v.visitDefaultPost(parent, ast);
+				pool.handle(ret, {
+					next: ()=> {
+					},
+					func: ()=> {
+						ret(v);
+					}
+				});
+				pool.add(()=> v.visitDefaultPost(parent, ast));
+				return pool.consume();
+			})();
+		} else {
+			return (()=> {
+				var pool = poolGenerator();
+				return pool.consume();
 			})();
 		}
 	}
@@ -335,5 +429,86 @@ module ReVIEW {
 		visitColumnHeadlinePost?(node:ColumnHeadlineSyntaxTree, parent:SyntaxTree):void;
 		visitTextPre?(node:TextNodeSyntaxTree, parent:SyntaxTree):any;
 		visitTextPost?(node:TextNodeSyntaxTree, parent:SyntaxTree):void;
+	}
+
+	/**
+	 * 同期化処理と非同期化処理の記述を一本化するためのヘルパインタフェース。
+	 * 構造が汚いのでexportしないこと。
+	 */
+	interface ITaskPool<T> {
+		add(value:()=>T):void;
+		handle(value:any, statements:{next: ()=>void;func:()=>void;}):void;
+		consume():any; // T | Promise<T[]>
+	}
+
+	/**
+	 * 同期化処理をそのまま同期処理として扱うためのヘルパクラス。
+	 */
+	class SyncTaskPool<T> implements ITaskPool<T> {
+		tasks:{(): T;}[] = [];
+
+		add(value:()=>T):void {
+			this.tasks.push(value);
+		}
+
+		handle(value:any, statements:{next: ()=>void;func:()=>void;}):void {
+			if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
+				statements.next();
+			} else if (typeof value === "function") {
+				statements.func();
+			}
+		}
+
+		consume():T[] {
+			return this.tasks.map(task => task());
+		}
+	}
+
+	/**
+	 * 同期化処理を非同期化するためのヘルパクラス。
+	 * array.forEach(value => process(value)); を以下のように書き換えて使う。
+	 * var pool = new AsyncTaskPool<any>();
+	 * array.forEach(value => pool.add(()=> process(value));
+	 * pool.consume().then(()=> ...);
+	 */
+	class AsyncTaskPool<T> implements ITaskPool<T> {
+		tasks:{():Promise<T>;}[] = [];
+
+		add(value:()=>T):void;
+
+		add(task:()=>Promise<T>):void;
+
+		add(value:()=>any) {
+			this.tasks.push(()=> Promise.resolve(value()));
+		}
+
+		handle(value:any, statements:{next: ()=>void;func:()=>void;}):void {
+			if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
+				statements.next();
+			} else if (value && typeof value.then === "function") {
+				this.tasks.push(()=> Promise.resolve(value));
+			} else if (typeof value === "function") {
+				statements.func();
+			}
+		}
+
+		consume():Promise<T[]> {
+			var promise = new Promise<T[]>((resolve, reject)=> {
+				var result:T[] = [];
+				var next = ()=> {
+					var func = this.tasks.shift();
+					if (!func) {
+						resolve(result);
+						return;
+					}
+					func().then(value => {
+						result.push(value);
+						next();
+					});
+				};
+				next();
+			});
+			return promise;
+		}
 	}
 }

@@ -25,7 +25,7 @@ module ReVIEW.Build {
 	export interface IBuilder {
 		name:string;
 		extention:string;
-		init(book:Book):void;
+		init(book:Book):Promise<void>;
 		escape(data:any):string;
 		chapterPre(process:BuilderProcess, node:ChapterSyntaxTree):any;
 		chapterPost(process:BuilderProcess, node:ChapterSyntaxTree):any;
@@ -58,18 +58,15 @@ module ReVIEW.Build {
 			return (<any>this).constructor.name;
 		}
 
-		init(book:Book) {
+		init(book:Book):Promise<void> {
 			this.book = book;
 
-			book.predef.forEach(chunk => this.processAst(chunk));
-			book.contents.forEach(chunk => this.processAst(chunk));
-			book.appendix.forEach(chunk => this.processAst(chunk));
-			book.postdef.forEach(chunk => this.processAst(chunk));
+			return Promise.all(book.allChunks.map(chunk => this.processAst(chunk))).then(()=><void>null);
 		}
 
-		processAst(chunk:ContentChunk) {
+		processAst(chunk:ContentChunk):Promise<void> {
 			var process = chunk.createBuilderProcess(this);
-			ReVIEW.visit(chunk.tree.ast, {
+			return ReVIEW.visitAsync(chunk.tree.ast, {
 				visitDefaultPre: (node:SyntaxTree)=> {
 				},
 				visitChapterPre: (node:ChapterSyntaxTree)=> {
@@ -135,10 +132,11 @@ module ReVIEW.Build {
 				visitTextPre: (node:TextNodeSyntaxTree) => {
 					this.text(process, node);
 				}
-			});
-			this.processPost(process, chunk);
-
-			chunk.nodes.forEach(chunk => this.processAst(chunk));
+			})
+				.then(()=> {
+					this.processPost(process, chunk);
+					return Promise.all(chunk.nodes.map(chunk => this.processAst(chunk))).then(()=> <void>null);
+				});
 		}
 
 		escape(data:any):string {

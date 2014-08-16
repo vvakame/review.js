@@ -44,16 +44,23 @@ describe("ReVIEW構文の", ()=> {
 			files
 				.filter((file:string) => file.indexOf(".re") !== -1)
 				.forEach((file:string)=> {
-					var astFilePath = path + file.substr(0, file.length - 3) + ".ast";
+					var baseName = file.substr(0, file.length - 3);
+					var astFilePath = path + baseName + ".ast";
 					it("ファイル:" + file, ()=> {
-						return Test.compileSingle(
-							fs.readFileSync(path + file, "utf8"),
-							{
-								builders: [new ReVIEW.Build.TextBuilder()]
+						var text = fs.readFileSync(path + file, "utf8");
+						return Test.compile({
+							basePath: __dirname + "/fixture/valid",
+							read: path => Promise.resolve(text),
+							builders: [new ReVIEW.Build.TextBuilder()],
+							book: {
+								contents: [
+									file
+								]
 							}
-						)
+						})
 							.then(s=> {
-								assert(s.result !== null);
+								var result:string = s.results[baseName + ".txt"];
+								assert(result !== null);
 
 								var ast = JSON.stringify(s.book.allChunks[0].tree.ast, null, 2);
 								if (!fs.existsSync(astFilePath)) {

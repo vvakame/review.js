@@ -4940,6 +4940,7 @@ var ReVIEW;
             "deprecated_inline_symbol": "%s というインライン構文は非推奨です。"
         },
         "builder": {
+            "image_not_found": "ID: %s にマッチする画像が見つかりませんでした",
             "chapter": "第%d章",
             "list": "リスト%s.%s",
             "table": "表%s.%s"
@@ -5023,6 +5024,20 @@ var ReVIEW;
     ReVIEW.walk = walk;
 
     function visit(ast, v) {
+        _visit(function () {
+            return new SyncTaskPool();
+        }, ast, v);
+    }
+    ReVIEW.visit = visit;
+
+    function visitAsync(ast, v) {
+        return Promise.resolve(_visit(function () {
+            return new AsyncTaskPool();
+        }, ast, v));
+    }
+    ReVIEW.visitAsync = visitAsync;
+
+    function _visit(poolGenerator, ast, v) {
         var newV = {
             visitDefaultPre: v.visitDefaultPre,
             visitDefaultPost: v.visitDefaultPost || (function () {
@@ -5093,191 +5108,403 @@ var ReVIEW;
         newV.visitColumnHeadlinePost = newV.visitColumnHeadlinePost.bind(v);
         newV.visitTextPre = newV.visitTextPre.bind(v);
         newV.visitTextPost = newV.visitTextPost.bind(v);
-        visitSub(null, ast, newV);
-    }
-    ReVIEW.visit = visit;
 
-    function visitSub(parent, ast, v) {
+        return _visitSub(poolGenerator, null, ast, newV);
+    }
+
+    function _visitSub(poolGenerator, parent, ast, v) {
         if (ast instanceof ReVIEW.Parse.BlockElementSyntaxTree) {
-            (function () {
+            return (function () {
                 var block = ast.toBlockElement();
+                var pool = poolGenerator();
                 var ret = v.visitBlockElementPre(block, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    block.args.forEach(function (next) {
-                        visitSub(ast, next, v);
-                    });
-                    block.childNodes.forEach(function (next) {
-                        visitSub(ast, next, v);
-                    });
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitBlockElementPost(block, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        block.args.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
+                        });
+                        block.childNodes.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitBlockElementPost(block, parent);
+                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
-            (function () {
+            return (function () {
                 var inline = ast.toInlineElement();
+                var pool = poolGenerator();
                 var ret = v.visitInlineElementPre(inline, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    inline.childNodes.forEach(function (next) {
-                        visitSub(ast, next, v);
-                    });
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitInlineElementPost(inline, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        inline.childNodes.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitInlineElementPost(inline, parent);
+                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.ArgumentSyntaxTree) {
-            (function () {
+            return (function () {
                 var arg = ast.toArgument();
+                var pool = poolGenerator();
                 var ret = v.visitArgumentPre(arg, parent);
-                if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitArgumentPost(arg, parent);
+                pool.handle(ret, {
+                    next: function () {
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitArgumentPost(arg, parent);
+                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.ChapterSyntaxTree) {
-            (function () {
+            return (function () {
                 var chap = ast.toChapter();
+                var pool = poolGenerator();
                 var ret = v.visitChapterPre(chap, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    visitSub(ast, chap.headline, v);
-                    if (chap.text) {
-                        chap.text.forEach(function (next) {
-                            visitSub(ast, next, v);
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, chap.headline, v);
                         });
+                        if (chap.text) {
+                            chap.text.forEach(function (next) {
+                                pool.add(function () {
+                                    return _visitSub(poolGenerator, ast, next, v);
+                                });
+                            });
+                        }
+                        chap.childNodes.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
+                        });
+                    },
+                    func: function () {
+                        ret(v);
                     }
-                    chap.childNodes.forEach(function (next) {
-                        visitSub(ast, next, v);
-                    });
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitChapterPost(chap, parent);
+                });
+                pool.add(function () {
+                    return v.visitChapterPost(chap, parent);
+                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.HeadlineSyntaxTree) {
-            (function () {
+            return (function () {
                 var head = ast.toHeadline();
+                var pool = poolGenerator();
                 var ret = v.visitHeadlinePre(head, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    visitSub(ast, head.label, v);
-                    visitSub(ast, head.caption, v);
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitHeadlinePost(head, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, head.label, v);
+                        });
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, head.caption, v);
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitHeadlinePost(head, parent);
+                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.ColumnSyntaxTree) {
-            (function () {
+            return (function () {
                 var column = ast.toColumn();
+                var pool = poolGenerator();
                 var ret = v.visitColumnPre(column, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    visitSub(ast, column.headline, v);
-                    if (column.text) {
-                        column.text.forEach(function (next) {
-                            visitSub(ast, next, v);
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, column.headline, v);
                         });
+                        if (column.text) {
+                            column.text.forEach(function (next) {
+                                pool.add(function () {
+                                    return _visitSub(poolGenerator, ast, next, v);
+                                });
+                            });
+                        }
+                    },
+                    func: function () {
+                        ret(v);
                     }
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitColumnPost(column, parent);
+                });
+                pool.add(function () {
+                    return v.visitColumnPost(column, parent);
+                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.ColumnHeadlineSyntaxTree) {
-            (function () {
+            return (function () {
                 var columnHead = ast.toColumnHeadline();
+                var pool = poolGenerator();
                 var ret = v.visitColumnHeadlinePre(columnHead, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    visitSub(ast, columnHead.caption, v);
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitColumnHeadlinePost(columnHead, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, columnHead.caption, v);
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitColumnHeadlinePost(columnHead, parent);
+                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.UlistElementSyntaxTree) {
-            (function () {
+            return (function () {
                 var ul = ast.toUlist();
+                var pool = poolGenerator();
                 var ret = v.visitUlistPre(ul, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    visitSub(ast, ul.text, v);
-                    ul.childNodes.forEach(function (next) {
-                        visitSub(ast, next, v);
-                    });
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitUlistPost(ul, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, ul.text, v);
+                        });
+                        ul.childNodes.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitUlistPost(ul, parent);
+                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.OlistElementSyntaxTree) {
-            (function () {
+            return (function () {
                 var ol = ast.toOlist();
+                var pool = poolGenerator();
                 var ret = v.visitOlistPre(ol, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    visitSub(ast, ol.text, v);
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitOlistPost(ol, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, ol.text, v);
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitOlistPost(ol, parent);
+                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.DlistElementSyntaxTree) {
-            (function () {
+            return (function () {
                 var dl = ast.toDlist();
+                var pool = poolGenerator();
                 var ret = v.visitDlistPre(dl, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    visitSub(ast, dl.text, v);
-                    visitSub(ast, dl.content, v);
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitDlistPost(dl, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, dl.text, v);
+                        });
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, dl.content, v);
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitDlistPost(dl, parent);
+                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && (ast.ruleName === 7 /* Paragraph */ || ast.ruleName === 17 /* BlockElementParagraph */)) {
-            (function () {
+            return (function () {
                 var node = ast.toNode();
+                var pool = poolGenerator();
                 var ret = v.visitParagraphPre(node, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    node.childNodes.forEach(function (next) {
-                        visitSub(ast, next, v);
-                    });
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitParagraphPost(node, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        node.childNodes.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitParagraphPost(node, parent);
+                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree) {
-            (function () {
+            return (function () {
                 var node = ast.toNode();
+                var pool = poolGenerator();
                 var ret = v.visitNodePre(node, parent);
-                if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                    node.childNodes.forEach(function (next) {
-                        visitSub(ast, next, v);
-                    });
-                } else if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitNodePost(node, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        node.childNodes.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitNodePost(node, parent);
+                });
+                return pool.consume();
             })();
         } else if (ast instanceof ReVIEW.Parse.TextNodeSyntaxTree) {
-            (function () {
+            return (function () {
                 var text = ast.toTextNode();
+                var pool = poolGenerator();
                 var ret = v.visitTextPre(text, parent);
-                if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitTextPost(text, parent);
+                pool.handle(ret, {
+                    next: function () {
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitTextPost(text, parent);
+                });
+                return pool.consume();
             })();
         } else if (ast) {
-            (function () {
+            return (function () {
+                var pool = poolGenerator();
                 var ret = v.visitDefaultPre(parent, ast);
-                if (typeof ret === "function") {
-                    ret(v);
-                }
-                v.visitDefaultPost(parent, ast);
+                pool.handle(ret, {
+                    next: function () {
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitDefaultPost(parent, ast);
+                });
+                return pool.consume();
+            })();
+        } else {
+            return (function () {
+                var pool = poolGenerator();
+                return pool.consume();
             })();
         }
     }
 
     
+
+    
+
+    var SyncTaskPool = (function () {
+        function SyncTaskPool() {
+            this.tasks = [];
+        }
+        SyncTaskPool.prototype.add = function (value) {
+            this.tasks.push(value);
+        };
+
+        SyncTaskPool.prototype.handle = function (value, statements) {
+            if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
+                statements.next();
+            } else if (typeof value === "function") {
+                statements.func();
+            }
+        };
+
+        SyncTaskPool.prototype.consume = function () {
+            return this.tasks.map(function (task) {
+                return task();
+            });
+        };
+        return SyncTaskPool;
+    })();
+
+    var AsyncTaskPool = (function () {
+        function AsyncTaskPool() {
+            this.tasks = [];
+        }
+        AsyncTaskPool.prototype.add = function (value) {
+            this.tasks.push(function () {
+                return Promise.resolve(value());
+            });
+        };
+
+        AsyncTaskPool.prototype.handle = function (value, statements) {
+            if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
+                statements.next();
+            } else if (value && typeof value.then === "function") {
+                this.tasks.push(function () {
+                    return Promise.resolve(value);
+                });
+            } else if (typeof value === "function") {
+                statements.func();
+            }
+        };
+
+        AsyncTaskPool.prototype.consume = function () {
+            var _this = this;
+            var promise = new Promise(function (resolve, reject) {
+                var result = [];
+                var next = function () {
+                    var func = _this.tasks.shift();
+                    if (!func) {
+                        resolve(result);
+                        return;
+                    }
+                    func().then(function (value) {
+                        result.push(value);
+                        next();
+                    });
+                };
+                next();
+            });
+            return promise;
+        };
+        return AsyncTaskPool;
+    })();
 })(ReVIEW || (ReVIEW = {}));
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -6694,24 +6921,17 @@ var ReVIEW;
                 var _this = this;
                 this.book = book;
 
-                book.predef.forEach(function (chunk) {
+                return Promise.all(book.allChunks.map(function (chunk) {
                     return _this.processAst(chunk);
-                });
-                book.contents.forEach(function (chunk) {
-                    return _this.processAst(chunk);
-                });
-                book.appendix.forEach(function (chunk) {
-                    return _this.processAst(chunk);
-                });
-                book.postdef.forEach(function (chunk) {
-                    return _this.processAst(chunk);
+                })).then(function () {
+                    return null;
                 });
             };
 
             DefaultBuilder.prototype.processAst = function (chunk) {
                 var _this = this;
                 var process = chunk.createBuilderProcess(this);
-                ReVIEW.visit(chunk.tree.ast, {
+                return ReVIEW.visitAsync(chunk.tree.ast, {
                     visitDefaultPre: function (node) {
                     },
                     visitChapterPre: function (node) {
@@ -6777,11 +6997,13 @@ var ReVIEW;
                     visitTextPre: function (node) {
                         _this.text(process, node);
                     }
-                });
-                this.processPost(process, chunk);
-
-                chunk.nodes.forEach(function (chunk) {
-                    return _this.processAst(chunk);
+                }).then(function () {
+                    _this.processPost(process, chunk);
+                    return Promise.all(chunk.nodes.map(function (chunk) {
+                        return _this.processAst(chunk);
+                    })).then(function () {
+                        return null;
+                    });
                 });
             };
 
@@ -7362,6 +7584,14 @@ var ReVIEW;
             configurable: true
         });
 
+        Object.defineProperty(Config.prototype, "exists", {
+            get: function () {
+                throw new Error("please implements this method");
+            },
+            enumerable: true,
+            configurable: true
+        });
+
         Object.defineProperty(Config.prototype, "analyzer", {
             get: function () {
                 return this.original.analyzer || new ReVIEW.Build.DefaultAnalyzer();
@@ -7449,6 +7679,25 @@ var ReVIEW;
         Object.defineProperty(NodeJSConfig.prototype, "write", {
             get: function () {
                 return this.original.write || ReVIEW.IO.write;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(NodeJSConfig.prototype, "exists", {
+            get: function () {
+                var _this = this;
+                return function (path) {
+                    var fs = require("fs");
+                    var _path = require("path");
+                    var basePath = _this.original.basePath || __dirname;
+                    var promise = new Promise(function (resolve, reject) {
+                        fs.exists(_path.resolve(basePath, path), function (result) {
+                            resolve({ path: path, result: result });
+                        });
+                    });
+                    return promise;
+                };
             },
             enumerable: true,
             configurable: true
@@ -7550,6 +7799,62 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
+
+        Object.defineProperty(WebBrowserConfig.prototype, "exists", {
+            get: function () {
+                var _this = this;
+                return function (path) {
+                    if (window.location.protocol === "file:") {
+                        return _this._existsFileScheme(path);
+                    } else {
+                        return _this._existsHttpScheme(path);
+                    }
+                };
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        WebBrowserConfig.prototype._existsFileScheme = function (path) {
+            var promise = new Promise(function (resolve, reject) {
+                var canvas = document.createElement('canvas');
+                canvas.width = 200;
+                canvas.height = 14;
+                var ctx = canvas.getContext("2d");
+                ctx.fillText("file://では画像の存在チェックができません", 2, 10);
+                var dataUrl = canvas.toDataURL();
+                resolve({ path: dataUrl, result: true });
+            });
+            return promise;
+        };
+
+        WebBrowserConfig.prototype._existsHttpScheme = function (path) {
+            var promise = new Promise(function (resolve, reject) {
+                try  {
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200 || xhr.status === 304) {
+                                resolve({ path: path, result: true });
+                            } else {
+                                resolve({ path: path, result: false });
+                            }
+                        }
+                    };
+                    xhr.open("GET", path);
+
+                    xhr.setRequestHeader("If-Modified-Since", new Date().toUTCString());
+                    xhr.send();
+                } catch (e) {
+                    if (e instanceof DOMException) {
+                        var de = e;
+                        console.log(de.message);
+                    }
+                    resolve({ path: path, result: false });
+                }
+            });
+            return promise;
+        };
 
         Object.defineProperty(WebBrowserConfig.prototype, "listener", {
             get: function () {
@@ -7844,21 +8149,21 @@ var ReVIEW;
             if (book.reports.some(function (report) {
                 return report.level === 2 /* Error */;
             })) {
-                return book;
+                return Promise.resolve(book);
             }
 
             var symbols = book.allChunks.reduce(function (p, c) {
                 return p.concat(c.process.symbols);
             }, []);
             if (this.config.listener.onSymbols(symbols) === false) {
-                return book;
+                return Promise.resolve(book);
             }
 
-            this.config.builders.forEach(function (builder) {
+            return Promise.all(this.config.builders.map(function (builder) {
                 return builder.init(book);
+            })).then(function () {
+                return book;
             });
-
-            return book;
         };
 
         Controller.prototype.writeContent = function (book) {
@@ -8149,6 +8454,48 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
+
+        BuilderProcess.prototype.findImageFile = function (id) {
+            var _this = this;
+            var config = (this.base.part || this.base.chapter).book.config;
+
+            var fileNameList = [];
+            (function () {
+                var imageDirList = ["images/"];
+                var builderList = [_this.builder.extention + "/", ""];
+                var chapSeparatorList = ["/", "-"];
+                var extList = ["png", "jpg", "jpeg"];
+                var chunkName = (_this.base.chapter || _this.base.part).name;
+                chunkName = chunkName.substring(0, chunkName.lastIndexOf("."));
+                imageDirList.forEach(function (imageDir) {
+                    builderList.forEach(function (builder) {
+                        chapSeparatorList.forEach(function (chapSeparator) {
+                            extList.forEach(function (ext) {
+                                fileNameList.push(imageDir + builder + chunkName + chapSeparator + id + "." + ext);
+                            });
+                        });
+                    });
+                });
+            })();
+            var promise = new Promise(function (resolve, reject) {
+                var checkFileExists = function () {
+                    if (fileNameList.length === 0) {
+                        reject(id);
+                        return;
+                    }
+                    var fileName = fileNameList.shift();
+                    config.exists(fileName).then(function (result) {
+                        if (result.result) {
+                            resolve(result.path);
+                            return;
+                        }
+                        checkFileExists();
+                    });
+                };
+                checkFileExists();
+            });
+            return promise;
+        };
         return BuilderProcess;
     })();
     ReVIEW.BuilderProcess = BuilderProcess;
@@ -8693,16 +9040,18 @@ var ReVIEW;
             };
 
             TextBuilder.prototype.block_image = function (process, node) {
-                var chapterFileName = process.base.chapter.name;
-                var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
-                var imagePath = "./images/" + chapterName + "-" + node.args[0].arg + ".png";
-                var caption = node.args[1].arg;
-                process.out("◆→開始:図←◆\n");
-                process.out("図").out(process.base.chapter.no).out(".").out(node.no).out("　").out(caption).out("\n");
-                process.out("\n");
-                process.out("◆→").out(imagePath).out("←◆\n");
-                process.out("◆→終了:図←◆\n");
-                return false;
+                return process.findImageFile(node.args[0].arg).then(function (imagePath) {
+                    var caption = node.args[1].arg;
+                    process.out("◆→開始:図←◆\n");
+                    process.out("図").out(process.base.chapter.no).out(".").out(node.no).out("　").out(caption).out("\n");
+                    process.out("\n");
+                    process.out("◆→").out(imagePath).out("←◆\n");
+                    process.out("◆→終了:図←◆\n");
+                    return false;
+                }).catch(function (id) {
+                    process.error(t("builder.image_not_found", id), node);
+                    return false;
+                });
             };
 
             TextBuilder.prototype.block_indepimage = function (process, node) {
@@ -8916,7 +9265,7 @@ var ReVIEW;
     (function (Build) {
         "use strict";
 
-        var i18n = ReVIEW.i18n;
+        var t = ReVIEW.i18n.t;
 
         var UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
         var OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
@@ -9012,7 +9361,7 @@ var ReVIEW;
                 process.outRaw("<a id=\"h").out(constructLabel(node)).outRaw("\"></a>");
 
                 if (node.level === 1) {
-                    var text = i18n.t("builder.chapter", node.parentNode.no);
+                    var text = ReVIEW.i18n.t("builder.chapter", node.parentNode.no);
                     process.out(text).out("　");
                 } else if (node.level === 2) {
                 }
@@ -9113,7 +9462,7 @@ var ReVIEW;
             HtmlBuilder.prototype.block_list_pre = function (process, node) {
                 process.outRaw("<div class=\"caption-code\">\n");
                 var chapter = findChapter(node, 1);
-                var text = i18n.t("builder.list", chapter.fqn, node.no);
+                var text = ReVIEW.i18n.t("builder.list", chapter.fqn, node.no);
                 process.outRaw("<p class=\"caption\">").out(text).outRaw(": ").out(node.args[1].arg).outRaw("</p>\n");
                 process.outRaw("<pre class=\"list\">");
                 return function (v) {
@@ -9130,7 +9479,7 @@ var ReVIEW;
             HtmlBuilder.prototype.block_listnum_pre = function (process, node) {
                 process.outRaw("<div class=\"code\">\n");
                 var chapter = findChapter(node, 1);
-                var text = i18n.t("builder.list", chapter.fqn, node.no);
+                var text = ReVIEW.i18n.t("builder.list", chapter.fqn, node.no);
                 process.outRaw("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).outRaw("</p>\n");
                 process.outRaw("<pre class=\"list\">");
                 var lineCount = 1;
@@ -9164,7 +9513,7 @@ var ReVIEW;
             HtmlBuilder.prototype.inline_list = function (process, node) {
                 var chapter = findChapter(node, 1);
                 var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-                var text = i18n.t("builder.list", chapter.fqn, listNode.no);
+                var text = ReVIEW.i18n.t("builder.list", chapter.fqn, listNode.no);
                 process.out(text);
                 return false;
             };
@@ -9330,26 +9679,28 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.block_image = function (process, node) {
-                var chapterFileName = process.base.chapter.name;
-                var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
-                var imagePath = "images/" + this.escape(chapterName) + "-" + this.escape(node.args[0].arg) + ".png";
-                var caption = node.args[1].arg;
-                var scale = 1;
-                if (node.args[2]) {
-                    var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
-                    var result = regexp.exec(node.args[2].arg);
-                    if (result) {
-                        scale = parseFloat(result[1]);
+                return process.findImageFile(node.args[0].arg).then(function (imagePath) {
+                    var caption = node.args[1].arg;
+                    var scale = 1;
+                    if (node.args[2]) {
+                        var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
+                        var result = regexp.exec(node.args[2].arg);
+                        if (result) {
+                            scale = parseFloat(result[1]);
+                        }
                     }
-                }
-                process.outRaw("<div class=\"image\">\n");
+                    process.outRaw("<div class=\"image\">\n");
 
-                process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
-                process.outRaw("<p class=\"caption\">\n");
-                process.out("図").out(process.base.chapter.no).out(".").out(node.no).out(": ").out(caption);
-                process.outRaw("\n</p>\n");
-                process.outRaw("</div>\n");
-                return false;
+                    process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
+                    process.outRaw("<p class=\"caption\">\n");
+                    process.out("図").out(process.base.chapter.no).out(".").out(node.no).out(": ").out(caption);
+                    process.outRaw("\n</p>\n");
+                    process.outRaw("</div>\n");
+                    return false;
+                }).catch(function (id) {
+                    process.error(t("builder.image_not_found", id), node);
+                    return false;
+                });
             };
 
             HtmlBuilder.prototype.block_indepimage = function (process, node) {
@@ -9526,7 +9877,7 @@ var ReVIEW;
             HtmlBuilder.prototype.block_table_pre = function (process, node) {
                 process.outRaw("<div>\n");
                 var chapter = findChapter(node, 1);
-                var text = i18n.t("builder.table", chapter.fqn, node.no);
+                var text = ReVIEW.i18n.t("builder.table", chapter.fqn, node.no);
                 process.outRaw("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).outRaw("</p>\n");
                 process.outRaw("<pre>");
                 return function (v) {
@@ -9543,7 +9894,7 @@ var ReVIEW;
             HtmlBuilder.prototype.inline_table = function (process, node) {
                 var chapter = findChapter(node, 1);
                 var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-                var text = i18n.t("builder.table", chapter.fqn, listNode.no);
+                var text = ReVIEW.i18n.t("builder.table", chapter.fqn, listNode.no);
                 process.out(text);
                 return false;
             };

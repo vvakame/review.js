@@ -5,7 +5,7 @@
 module ReVIEW.Build {
 	"use strict";
 
-	import i18n = ReVIEW.i18n;
+	import t = ReVIEW.i18n.t;
 
 	import SyntaxTree = ReVIEW.Parse.SyntaxTree;
 	import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
@@ -434,28 +434,31 @@ module ReVIEW.Build {
 		}
 
 		block_image(process:BuilderProcess, node:BlockElementSyntaxTree) {
-			// TODO ファイル名探索ロジックをもっと頑張る(jpgとかsvgとか)
-			var chapterFileName = process.base.chapter.name;
-			var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
-			var imagePath = "images/" + this.escape(chapterName) + "-" + this.escape(node.args[0].arg) + ".png";
-			var caption = node.args[1].arg;
-			var scale:number = 1;
-			if (node.args[2]) {
-				// var arg3 = node.args[2].arg;
-				var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
-				var result = regexp.exec(node.args[2].arg);
-				if (result) {
-					scale = parseFloat(result[1]);
-				}
-			}
-			process.outRaw("<div class=\"image\">\n");
-			// imagePathは変数作成時点でユーザ入力部分をescapeしている
-			process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
-			process.outRaw("<p class=\"caption\">\n");
-			process.out("図").out(process.base.chapter.no).out(".").out(node.no).out(": ").out(caption);
-			process.outRaw("\n</p>\n");
-			process.outRaw("</div>\n");
-			return false;
+			return process.findImageFile(node.args[0].arg)
+				.then(imagePath=> {
+					var caption = node.args[1].arg;
+					var scale:number = 1;
+					if (node.args[2]) {
+						// var arg3 = node.args[2].arg;
+						var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
+						var result = regexp.exec(node.args[2].arg);
+						if (result) {
+							scale = parseFloat(result[1]);
+						}
+					}
+					process.outRaw("<div class=\"image\">\n");
+					// imagePathは変数作成時点でユーザ入力部分をescapeしている
+					process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
+					process.outRaw("<p class=\"caption\">\n");
+					process.out("図").out(process.base.chapter.no).out(".").out(node.no).out(": ").out(caption);
+					process.outRaw("\n</p>\n");
+					process.outRaw("</div>\n");
+					return false;
+				})
+				.catch(id=> {
+					process.error(t("builder.image_not_found", id), node);
+					return false;
+				});
 		}
 
 		block_indepimage(process:BuilderProcess, node:BlockElementSyntaxTree) {

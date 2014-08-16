@@ -18,6 +18,8 @@ module ReVIEW {
 	export interface IConfigRaw {
 		// TODO めんどくさくてまだ書いてない要素がたくさんある
 
+		basePath? :string;
+
 		read?:(path:string)=>Promise<string>;
 		write?:(path:string, data:string)=>Promise<void>;
 
@@ -135,7 +137,7 @@ module ReVIEW {
 			if (part) {
 				var p:IConfigPart = {
 					file: part.file,
-					chapters: (part.chapters || []).map((c: any) => typeof c === "string" ? {file: c} : c)
+					chapters: (part.chapters || []).map((c:any) => typeof c === "string" ? {file: c} : c)
 				};
 				return new ContentStructure(p, null);
 			} else {
