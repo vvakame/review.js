@@ -516,6 +516,10 @@ declare module ReVIEW {
         constructor(original: IConfigRaw);
         public read : (path: string) => Promise<string>;
         public write : (path: string, data: string) => Promise<void>;
+        public exists : (path: string) => Promise<{
+            path: string;
+            result: boolean;
+        }>;
         public analyzer : Build.IAnalyzer;
         public validators : Build.IValidator[];
         public builders : Build.IBuilder[];
@@ -530,6 +534,10 @@ declare module ReVIEW {
         constructor(options: IOptions, original: IConfigRaw);
         public read : (path: string) => Promise<string>;
         public write : (path: string, data: string) => Promise<void>;
+        public exists : (path: string) => Promise<{
+            path: string;
+            result: boolean;
+        }>;
         public listener : IConfigListener;
         public onReports(reports: ProcessReport[]): void;
         public onCompileSuccess(book: Book): void;
@@ -543,6 +551,18 @@ declare module ReVIEW {
         constructor(options: IOptions, original: IConfigRaw);
         public read : (path: string) => Promise<string>;
         public write : (path: string, data: string) => Promise<void>;
+        public exists : (path: string) => Promise<{
+            path: string;
+            result: boolean;
+        }>;
+        public _existsFileScheme(path: string): Promise<{
+            path: string;
+            result: boolean;
+        }>;
+        public _existsHttpScheme(path: string): Promise<{
+            path: string;
+            result: boolean;
+        }>;
         public listener : IConfigListener;
         public onReports(reports: ProcessReport[]): void;
         public onCompileSuccess(book: Book): void;
@@ -642,6 +662,7 @@ declare module ReVIEW {
         public pushOut(data: string): BuilderProcess;
         public input : string;
         public symbols : ISymbol[];
+        public findImageFile(id: string): Promise<string>;
     }
     class Book {
         public config: Config;

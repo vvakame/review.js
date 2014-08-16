@@ -435,6 +435,10 @@ module ReVIEW.Build {
 
 		block_image(process:BuilderProcess, node:BlockElementSyntaxTree) {
 			// TODO ファイル名探索ロジックをもっと頑張る(jpgとかsvgとか)
+			process.findImageFile(node.args[0].arg)
+				.then(data=> {
+					console.log(data);
+				});
 			var chapterFileName = process.base.chapter.name;
 			var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
 			var imagePath = "images/" + this.escape(chapterName) + "-" + this.escape(node.args[0].arg) + ".png";

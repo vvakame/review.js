@@ -7362,6 +7362,14 @@ var ReVIEW;
             configurable: true
         });
 
+        Object.defineProperty(Config.prototype, "exists", {
+            get: function () {
+                throw new Error("please implements this method");
+            },
+            enumerable: true,
+            configurable: true
+        });
+
         Object.defineProperty(Config.prototype, "analyzer", {
             get: function () {
                 return this.original.analyzer || new ReVIEW.Build.DefaultAnalyzer();
@@ -7449,6 +7457,22 @@ var ReVIEW;
         Object.defineProperty(NodeJSConfig.prototype, "write", {
             get: function () {
                 return this.original.write || ReVIEW.IO.write;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(NodeJSConfig.prototype, "exists", {
+            get: function () {
+                return function (path) {
+                    var fs = require("fs");
+                    var promise = new Promise(function (resolve, reject) {
+                        fs.exists(path, function (result) {
+                            resolve({ path: path, result: result });
+                        });
+                    });
+                    return promise;
+                };
             },
             enumerable: true,
             configurable: true
@@ -7550,6 +7574,62 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
+
+        Object.defineProperty(WebBrowserConfig.prototype, "exists", {
+            get: function () {
+                var _this = this;
+                return function (path) {
+                    if (window.location.protocol === "file:") {
+                        return _this._existsFileScheme(path);
+                    } else {
+                        return _this._existsHttpScheme(path);
+                    }
+                };
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        WebBrowserConfig.prototype._existsFileScheme = function (path) {
+            var promise = new Promise(function (resolve, reject) {
+                var canvas = document.createElement('canvas');
+                canvas.width = 200;
+                canvas.height = 14;
+                var ctx = canvas.getContext("2d");
+                ctx.fillText("file://では画像の存在チェックができません", 2, 10);
+                var dataUrl = canvas.toDataURL();
+                resolve({ path: dataUrl, result: true });
+            });
+            return promise;
+        };
+
+        WebBrowserConfig.prototype._existsHttpScheme = function (path) {
+            var promise = new Promise(function (resolve, reject) {
+                try  {
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200 || xhr.status === 304) {
+                                resolve({ path: path, result: true });
+                            } else {
+                                resolve({ path: path, result: false });
+                            }
+                        }
+                    };
+                    xhr.open("GET", path);
+
+                    xhr.setRequestHeader("If-Modified-Since", new Date().toUTCString());
+                    xhr.send();
+                } catch (e) {
+                    if (e instanceof DOMException) {
+                        var de = e;
+                        console.log(de.message);
+                    }
+                    resolve({ path: path, result: false });
+                }
+            });
+            return promise;
+        };
 
         Object.defineProperty(WebBrowserConfig.prototype, "listener", {
             get: function () {
@@ -8149,6 +8229,48 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
+
+        BuilderProcess.prototype.findImageFile = function (id) {
+            var _this = this;
+            var config = (this.base.part || this.base.chapter).book.config;
+
+            var fileNameList = [];
+            (function () {
+                var imageDirList = ["images/"];
+                var builderList = [_this.builder.extention + "/", ""];
+                var chapSeparatorList = ["/", "-"];
+                var extList = ["png", "jpg", "jpeg"];
+                var chunkName = (_this.base.chapter || _this.base.part).name;
+                chunkName = chunkName.substring(0, chunkName.lastIndexOf("."));
+                imageDirList.forEach(function (imageDir) {
+                    builderList.forEach(function (builder) {
+                        chapSeparatorList.forEach(function (chapSeparator) {
+                            extList.forEach(function (ext) {
+                                fileNameList.push(imageDir + builder + chunkName + chapSeparator + id + "." + ext);
+                            });
+                        });
+                    });
+                });
+            })();
+            var promise = new Promise(function (resolve, reject) {
+                var checkFileExists = function () {
+                    if (fileNameList.length === 0) {
+                        reject(id);
+                        return;
+                    }
+                    var fileName = fileNameList.shift();
+                    config.exists(fileName).then(function (result) {
+                        if (result.result) {
+                            resolve(result.path);
+                            return;
+                        }
+                        checkFileExists();
+                    });
+                };
+                checkFileExists();
+            });
+            return promise;
+        };
         return BuilderProcess;
     })();
     ReVIEW.BuilderProcess = BuilderProcess;
@@ -9330,6 +9452,9 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.block_image = function (process, node) {
+                process.findImageFile(node.args[0].arg).then(function (data) {
+                    console.log(data);
+                });
                 var chapterFileName = process.base.chapter.name;
                 var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
                 var imagePath = "images/" + this.escape(chapterName) + "-" + this.escape(node.args[0].arg) + ".png";

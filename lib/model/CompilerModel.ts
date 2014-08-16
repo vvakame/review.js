@@ -77,8 +77,7 @@ module ReVIEW {
 	 */
 	export class Process {
 		symbols:ISymbol[] = [];
-		indexCounter:{ [kind:string]:number;
-		} = {};
+		indexCounter:{ [kind:string]:number;} = {};
 		afterProcess:Function[] = [];
 		private _reports:ProcessReport[] = [];
 
@@ -228,6 +227,57 @@ module ReVIEW {
 
 		get symbols():ISymbol[] {
 			return this.base.symbols;
+		}
+
+		/**
+		 * 指定されたidの画像を探す。
+		 * 解決ルールは https://github.com/kmuto/review/wiki/ImagePath の通り。
+		 * Config側で絶対パス化やリソースの差し替えを行う可能性があるため、このメソッドの返り値は無加工で使うこと。
+		 * @param id
+		 * @returns {Promise<string>}
+		 */
+		findImageFile(id:string):Promise<string> {
+			// NOTE: https://github.com/kmuto/review/wiki/ImagePath
+			// 4軸マトリクス 画像dir, ビルダ有無, chapId位置, 拡張子
+
+			var config = (this.base.part || this.base.chapter).book.config;
+
+			var fileNameList:string[] = [];
+			(()=> {
+				var imageDirList = ["images/"];
+				var builderList = [this.builder.extention + "/", ""];
+				var chapSeparatorList = ["/", "-"];
+				var extList = ["png", "jpg", "jpeg"];
+				var chunkName = (this.base.chapter || this.base.part).name; // TODO もっと頭良い感じに
+				chunkName = chunkName.substring(0, chunkName.lastIndexOf("."));
+				imageDirList.forEach(imageDir => {
+					builderList.forEach(builder=> {
+						chapSeparatorList.forEach(chapSeparator=> {
+							extList.forEach(ext => {
+								fileNameList.push(imageDir + builder + chunkName + chapSeparator + id + "." + ext);
+							});
+						});
+					});
+				});
+			})();
+			var promise = new Promise<string>((resolve, reject) => {
+				var checkFileExists = () => {
+					if (fileNameList.length === 0) {
+						reject(id);
+						return;
+					}
+					var fileName = fileNameList.shift();
+					config.exists(fileName).then(result=> {
+						if (result.result) {
+							resolve(result.path);
+							return;
+						}
+						checkFileExists();
+					});
+				};
+				checkFileExists();
+			});
+			return promise;
 		}
 	}
 

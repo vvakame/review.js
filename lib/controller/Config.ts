@@ -18,6 +18,10 @@ module ReVIEW {
 			throw new Error("please implements this method");
 		}
 
+		get exists():(path:string)=>Promise<{path: string; result: boolean;}> {
+			throw new Error("please implements this method");
+		}
+
 		get analyzer():Build.IAnalyzer {
 			return this.original.analyzer || new Build.DefaultAnalyzer();
 		}
@@ -79,6 +83,18 @@ module ReVIEW {
 
 		get write():(path:string, data:string)=>Promise<void> {
 			return this.original.write || ReVIEW.IO.write;
+		}
+
+		get exists():(path:string)=>Promise<{path: string; result: boolean;}> {
+			return path => {
+				var fs = require("fs");
+				var promise = new Promise<{path: string; result: boolean;}>((resolve, reject)=> {
+					fs.exists(path, (result:boolean)=> {
+						resolve({path: path, result: result});
+					});
+				});
+				return promise;
+			};
 		}
 
 		get listener():IConfigListener {
@@ -163,6 +179,57 @@ module ReVIEW {
 			return this.original.write || (():Promise<void>=> {
 				throw new Error("please implement config.write method");
 			});
+		}
+
+		get exists():(path:string)=>Promise<{path: string; result: boolean;}> {
+			return path => {
+				if (window.location.protocol === "file:") {
+					return this._existsFileScheme(path);
+				} else {
+					return this._existsHttpScheme(path);
+				}
+			};
+		}
+
+		_existsFileScheme(path:string):Promise<{path: string; result: boolean;}> {
+			var promise = new Promise<{path: string; result: boolean;}>((resolve, reject)=> {
+				var canvas = document.createElement('canvas');
+				canvas.width = 200;
+				canvas.height = 14;
+				var ctx = canvas.getContext("2d");
+				ctx.fillText("file://では画像の存在チェックができません", 2, 10);
+				var dataUrl = canvas.toDataURL();
+				resolve({path: dataUrl, result: true});
+			});
+			return promise;
+		}
+
+		_existsHttpScheme(path:string):Promise<{path: string; result: boolean;}> {
+			var promise = new Promise<{path: string; result: boolean;}>((resolve, reject)=> {
+				try {
+					var xhr = new XMLHttpRequest();
+					xhr.onreadystatechange = function () {
+						if (xhr.readyState === 4) {
+							if (xhr.status === 200 || xhr.status === 304) {
+								resolve({path: path, result: true});
+							} else {
+								resolve({path: path, result: false});
+							}
+						}
+					};
+					xhr.open("GET", path);
+					// If-Modified-Since をDate.now()で送って304返して貰ったほうが効率が良いのでは という発想
+					xhr.setRequestHeader("If-Modified-Since", new Date().toUTCString());
+					xhr.send();
+				} catch (e) {
+					if (e instanceof DOMException) {
+						var de:DOMException = <DOMException> e;
+						console.log(de.message);
+					}
+					resolve({path: path, result: false});
+				}
+			});
+			return promise;
 		}
 
 		get listener():IConfigListener {
