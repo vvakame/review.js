@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>BuilderProcess | review.js</title>
+    <title>ContentChunk | review.js</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -39,11 +39,11 @@
     </li>
 
     <li>
-        <a href="review.builderprocess.html">BuilderProcess</a>
+        <a href="review.contentchunk.html">ContentChunk</a>
     </li>
 
             </ul>
-            <h1>Class BuilderProcess</h1>
+            <h1>Class ContentChunk</h1>
         </div>
     </div>
 </header>
@@ -69,7 +69,7 @@
             <h3>Constructor methods</h3>
             <ul class="tsd-member-index">
                 
-                    <li class="tsd-kind-constructor-method tsd-parent-kind-class"><a href="review.builderprocess.html#constructor" class="tsd-kind-icon">constructor</a></li>
+                    <li class="tsd-kind-constructor-method tsd-parent-kind-class"><a href="review.contentchunk.html#constructor" class="tsd-kind-icon">constructor</a></li>
                 
             </ul>
         </section>
@@ -78,28 +78,32 @@
             <h3>Properties</h3>
             <ul class="tsd-member-index">
                 
-                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.builderprocess.html#base" class="tsd-kind-icon">base</a></li>
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.contentchunk.html#_input" class="tsd-kind-icon">_input</a></li>
                 
-                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.builderprocess.html#builder" class="tsd-kind-icon">builder</a></li>
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.contentchunk.html#book" class="tsd-kind-icon">book</a></li>
                 
-                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.builderprocess.html#result" class="tsd-kind-icon">result</a></li>
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.contentchunk.html#builderprocesses" class="tsd-kind-icon">builderProcesses</a></li>
+                
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.contentchunk.html#name" class="tsd-kind-icon">name</a></li>
+                
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.contentchunk.html#no" class="tsd-kind-icon">no</a></li>
+                
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.contentchunk.html#nodes" class="tsd-kind-icon">nodes</a></li>
+                
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.contentchunk.html#parent" class="tsd-kind-icon">parent</a></li>
+                
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.contentchunk.html#process" class="tsd-kind-icon">process</a></li>
+                
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.contentchunk.html#tree" class="tsd-kind-icon">tree</a></li>
                 
             </ul>
         </section>
     
         <section class="tsd-member-index-group ">
-            <h3>Get accessors</h3>
+            <h3>Set accessors</h3>
             <ul class="tsd-member-index">
                 
-                    <li class="tsd-kind-get-accessor tsd-parent-kind-class"><a href="review.builderprocess.html#error" class="tsd-kind-icon">error</a></li>
-                
-                    <li class="tsd-kind-get-accessor tsd-parent-kind-class"><a href="review.builderprocess.html#info" class="tsd-kind-icon">info</a></li>
-                
-                    <li class="tsd-kind-get-accessor tsd-parent-kind-class"><a href="review.builderprocess.html#input" class="tsd-kind-icon">input</a></li>
-                
-                    <li class="tsd-kind-get-accessor tsd-parent-kind-class"><a href="review.builderprocess.html#symbols" class="tsd-kind-icon">symbols</a></li>
-                
-                    <li class="tsd-kind-get-accessor tsd-parent-kind-class"><a href="review.builderprocess.html#warn" class="tsd-kind-icon">warn</a></li>
+                    <li class="tsd-kind-set-accessor tsd-parent-kind-class"><a href="review.contentchunk.html#input" class="tsd-kind-icon">input</a></li>
                 
             </ul>
         </section>
@@ -108,13 +112,9 @@
             <h3>Methods</h3>
             <ul class="tsd-member-index">
                 
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.builderprocess.html#findimagefile" class="tsd-kind-icon">findImageFile</a></li>
+                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.contentchunk.html#createbuilderprocess" class="tsd-kind-icon">createBuilderProcess</a></li>
                 
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.builderprocess.html#out" class="tsd-kind-icon">out</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.builderprocess.html#outraw" class="tsd-kind-icon">outRaw</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.builderprocess.html#pushout" class="tsd-kind-icon">pushOut</a></li>
+                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.contentchunk.html#findresultbybuilder" class="tsd-kind-icon">findResultByBuilder</a></li>
                 
             </ul>
         </section>
@@ -130,7 +130,7 @@
     <a name="constructor"></a>
     
         
-            <h3 class="tsd-kind-icon">constructor<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.ibuilder.html" class="tsd-signature-type">IBuilder</a>, base<span class="tsd-signature-symbols">: </span><a href="review.process.html" class="tsd-signature-type">Process</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a></h3>
+            <h3 class="tsd-kind-icon">constructor<span class="tsd-signature-symbols">(</span>book<span class="tsd-signature-symbols">: </span><a href="review.book.html" class="tsd-signature-type">Book</a>, parent<span class="tsd-signature-symbols">: </span><a href="review.contentchunk.html" class="tsd-signature-type">ContentChunk</a>, name<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.contentchunk.html" class="tsd-signature-type">ContentChunk</a></h3>
 
 <aside class="tsd-sources">
     
@@ -138,7 +138,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:188</li>
+                <li>Defined in lib/model/CompilerModel.ts:348</li>
             
         </ul>
     
@@ -154,7 +154,7 @@
     <ul>
         
             <li>
-                <h5>builder: <a href="../interfaces/review.build.ibuilder.html" class="tsd-signature-type">IBuilder</a></h5>
+                <h5>book: <a href="review.book.html" class="tsd-signature-type">Book</a></h5>
                 
 
 
@@ -163,7 +163,16 @@
             </li>
         
             <li>
-                <h5>base: <a href="review.process.html" class="tsd-signature-type">Process</a></h5>
+                <h5>parent: <a href="review.contentchunk.html" class="tsd-signature-type">ContentChunk</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>name: <span class="tsd-signature-type">string</span></h5>
                 
 
 
@@ -178,7 +187,62 @@
     <h4>Returns</h4>
     <p>
     
-        <a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a>
+        <a href="review.contentchunk.html" class="tsd-signature-type">ContentChunk</a>
+    
+</p>
+    
+
+
+        
+            <h3 class="tsd-kind-icon">constructor<span class="tsd-signature-symbols">(</span>book<span class="tsd-signature-symbols">: </span><a href="review.book.html" class="tsd-signature-type">Book</a>, name<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.contentchunk.html" class="tsd-signature-type">ContentChunk</a></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in lib/model/CompilerModel.ts:350</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>book: <a href="review.book.html" class="tsd-signature-type">Book</a></h5>
+                
+
+
+
+
+            </li>
+        
+            <li>
+                <h5>name: <span class="tsd-signature-type">string</span></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <a href="review.contentchunk.html" class="tsd-signature-type">ContentChunk</a>
     
 </p>
     
@@ -200,9 +264,9 @@
     
         
             <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
-    <a name="base"></a>
+    <a name="_input"></a>
     
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> base<span class="tsd-signature-symbols">:</span> <a href="review.process.html" class="tsd-signature-type">Process</a></h3>
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> _input<span class="tsd-signature-symbols">:</span> <span class="tsd-signature-type">string</span></h3>
 
 <aside class="tsd-sources">
     
@@ -210,7 +274,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:188</li>
+                <li>Defined in lib/model/CompilerModel.ts:342</li>
             
         </ul>
     
@@ -228,9 +292,9 @@
     
         
             <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
-    <a name="builder"></a>
+    <a name="book"></a>
     
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> builder<span class="tsd-signature-symbols">:</span> <a href="../interfaces/review.build.ibuilder.html" class="tsd-signature-type">IBuilder</a></h3>
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> book<span class="tsd-signature-symbols">:</span> <a href="review.book.html" class="tsd-signature-type">Book</a></h3>
 
 <aside class="tsd-sources">
     
@@ -238,7 +302,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:188</li>
+                <li>Defined in lib/model/CompilerModel.ts:352</li>
             
         </ul>
     
@@ -256,9 +320,9 @@
     
         
             <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
-    <a name="result"></a>
+    <a name="builderprocesses"></a>
     
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> result<span class="tsd-signature-symbols">:</span> <span class="tsd-signature-type">string</span></h3>
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> builderProcesses<span class="tsd-signature-symbols">:</span> <a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a><span class="tsd-signature-symbols">[]</span></h3>
 
 <aside class="tsd-sources">
     
@@ -266,7 +330,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:203</li>
+                <li>Defined in lib/model/CompilerModel.ts:346</li>
             
         </ul>
     
@@ -278,6 +342,232 @@
 
     
 
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
+    <a name="name"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> name<span class="tsd-signature-symbols">:</span> <span class="tsd-signature-type">string</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in lib/model/CompilerModel.ts:341</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
+    <a name="no"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> no<span class="tsd-signature-symbols">:</span> <span class="tsd-signature-type">number</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in lib/model/CompilerModel.ts:340</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
+    <a name="nodes"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> nodes<span class="tsd-signature-symbols">:</span> <a href="review.contentchunk.html" class="tsd-signature-type">ContentChunk</a><span class="tsd-signature-symbols">[]</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in lib/model/CompilerModel.ts:338</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
+    <a name="parent"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> parent<span class="tsd-signature-symbols">:</span> <a href="review.contentchunk.html" class="tsd-signature-type">ContentChunk</a></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in lib/model/CompilerModel.ts:337</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
+    <a name="process"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> process<span class="tsd-signature-symbols">:</span> <a href="review.process.html" class="tsd-signature-type">Process</a></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in lib/model/CompilerModel.ts:345</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
+    <a name="tree"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> tree<span class="tsd-signature-symbols">:</span> <span class="tsd-signature-type">{ ast: ReVIEW.Parse.SyntaxTree; cst: ReVIEW.Parse.IConcreatSyntaxTree; }</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in lib/model/CompilerModel.ts:343</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+        
+            
+                <section class="tsd-member tsd-kind-property tsd-parent-kind-property">
+    <a name="tree.ast"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> tree.ast<span class="tsd-signature-symbols">:</span> <a href="review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in lib/model/CompilerModel.ts:343</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+            
+        
+            
+                <section class="tsd-member tsd-kind-property tsd-parent-kind-property">
+    <a name="tree.cst"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> tree.cst<span class="tsd-signature-symbols">:</span> <a href="../interfaces/review.parse.iconcreatsyntaxtree.html" class="tsd-signature-type">IConcreatSyntaxTree</a></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in lib/model/CompilerModel.ts:343</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+            
+        
     
 </section>
         
@@ -287,96 +577,10 @@
 
     
         <section class="tsd-member-group ">
-    <h2>Get accessors</h2>
+    <h2>Set accessors</h2>
     
         
-            <section class="tsd-member tsd-kind-get-accessor tsd-parent-kind-class">
-    <a name="error"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> error<span class="tsd-signature-symbols">(</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">(message: string, ...nodes: ReVIEW.Parse.SyntaxTree[]) =&gt; void</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/model/CompilerModel.ts:199</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-
-
-    <h4>Returns</h4>
-    <p>
-    
-        <span class="tsd-signature-type">(message: string, ...nodes: ReVIEW.Parse.SyntaxTree[]) =&gt; void</span>
-    
-</p>
-    
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-get-accessor tsd-parent-kind-class">
-    <a name="info"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> info<span class="tsd-signature-symbols">(</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">(message: string, ...nodes: ReVIEW.Parse.SyntaxTree[]) =&gt; void</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/model/CompilerModel.ts:191</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-
-
-    <h4>Returns</h4>
-    <p>
-    
-        <span class="tsd-signature-type">(message: string, ...nodes: ReVIEW.Parse.SyntaxTree[]) =&gt; void</span>
-    
-</p>
-    
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-get-accessor tsd-parent-kind-class">
+            <section class="tsd-member tsd-kind-set-accessor tsd-parent-kind-class">
     <a name="input"></a>
     
         
@@ -388,7 +592,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:223</li>
+                <li>Defined in lib/model/CompilerModel.ts:367</li>
             
         </ul>
     
@@ -412,18 +616,7 @@
 
 
         
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-get-accessor tsd-parent-kind-class">
-    <a name="symbols"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> symbols<span class="tsd-signature-symbols">(</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="../interfaces/review.isymbol.html" class="tsd-signature-type">ISymbol</a><span class="tsd-signature-symbols">[]</span></h3>
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> input<span class="tsd-signature-symbols">(</span>value<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbols">)</span></h3>
 
 <aside class="tsd-sources">
     
@@ -431,7 +624,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:227</li>
+                <li>Defined in lib/model/CompilerModel.ts:371</li>
             
         </ul>
     
@@ -443,58 +636,21 @@
 
 
 
-
-
-    <h4>Returns</h4>
-    <p>
-    
-        <a href="../interfaces/review.isymbol.html" class="tsd-signature-type">ISymbol</a><span class="tsd-signature-symbols">[]</span>
-    
-</p>
-    
-
-
+    <h4>Parameters</h4>
+    <ul>
         
-    
+            <li>
+                <h5>value: <span class="tsd-signature-type">string</span></h5>
+                
 
-    
-</section>
+
+
+
+            </li>
         
-    
-        
-            <section class="tsd-member tsd-kind-get-accessor tsd-parent-kind-class">
-    <a name="warn"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> warn<span class="tsd-signature-symbols">(</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">(message: string, ...nodes: ReVIEW.Parse.SyntaxTree[]) =&gt; void</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/model/CompilerModel.ts:195</li>
-            
-        </ul>
-    
-</aside>
+    </ul>
 
 
-
-
-
-
-
-
-
-    <h4>Returns</h4>
-    <p>
-    
-        <span class="tsd-signature-type">(message: string, ...nodes: ReVIEW.Parse.SyntaxTree[]) =&gt; void</span>
-    
-</p>
-    
 
 
         
@@ -513,10 +669,10 @@
     
         
             <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="findimagefile"></a>
+    <a name="createbuilderprocess"></a>
     
         
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> findImageFile<span class="tsd-signature-symbols">(</span>id<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">Promise&lt;string&gt;</span></h3>
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> createBuilderProcess<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.ibuilder.html" class="tsd-signature-type">IBuilder</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a></h3>
 
 <aside class="tsd-sources">
     
@@ -524,71 +680,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:238</li>
-            
-        </ul>
-    
-</aside>
-
-    <p>指定されたidの画像を探す。
-解決ルールは <a href="https://github.com/kmuto/review/wiki/ImagePath">https://github.com/kmuto/review/wiki/ImagePath</a> の通り。
-Config側で絶対パス化やリソースの差し替えを行う可能性があるため、このメソッドの返り値は無加工で使うこと。</p>
-
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>id: <span class="tsd-signature-type">string</span></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-    <h4>Returns</h4>
-    <p>
-    
-        <span class="tsd-signature-type">Promise&lt;string&gt;</span>
-    
-</p>
-    
-        
-    
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="out"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> out<span class="tsd-signature-symbols">(</span>data<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/model/CompilerModel.ts:205</li>
+                <li>Defined in lib/model/CompilerModel.ts:377</li>
             
         </ul>
     
@@ -604,7 +696,7 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
     <ul>
         
             <li>
-                <h5>data: <span class="tsd-signature-type">any</span></h5>
+                <h5>builder: <a href="../interfaces/review.build.ibuilder.html" class="tsd-signature-type">IBuilder</a></h5>
                 
 
 
@@ -634,10 +726,10 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
     
         
             <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="outraw"></a>
+    <a name="findresultbybuilder"></a>
     
         
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> outRaw<span class="tsd-signature-symbols">(</span>data<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a></h3>
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> findResultByBuilder<span class="tsd-signature-symbols">(</span>builderName<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span></h3>
 
 <aside class="tsd-sources">
     
@@ -645,7 +737,7 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:211</li>
+                <li>Defined in lib/model/CompilerModel.ts:383</li>
             
         </ul>
     
@@ -661,7 +753,7 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
     <ul>
         
             <li>
-                <h5>data: <span class="tsd-signature-type">any</span></h5>
+                <h5>builderName: <span class="tsd-signature-type">string</span></h5>
                 
 
 
@@ -676,25 +768,14 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
     <h4>Returns</h4>
     <p>
     
-        <a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a>
+        <span class="tsd-signature-type">string</span>
     
 </p>
     
 
 
         
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="pushout"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> pushOut<span class="tsd-signature-symbols">(</span>data<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a></h3>
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> findResultByBuilder<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.ibuilder.html" class="tsd-signature-type">IBuilder</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span></h3>
 
 <aside class="tsd-sources">
     
@@ -702,7 +783,7 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:218</li>
+                <li>Defined in lib/model/CompilerModel.ts:385</li>
             
         </ul>
     
@@ -718,7 +799,7 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
     <ul>
         
             <li>
-                <h5>data: <span class="tsd-signature-type">string</span></h5>
+                <h5>builder: <a href="../interfaces/review.build.ibuilder.html" class="tsd-signature-type">IBuilder</a></h5>
                 
 
 
@@ -733,7 +814,7 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
     <h4>Returns</h4>
     <p>
     
-        <a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a>
+        <span class="tsd-signature-type">string</span>
     
 </p>
     
@@ -1020,106 +1101,9 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
             
         
             
-                <li class="current tsd-kind-class tsd-parent-kind-container">
+                <li class=" tsd-kind-class tsd-parent-kind-container">
                     <a href="review.builderprocess.html" class="tsd-kind-icon">BuilderProcess</a>
                     
-
-    <ul>
-        
-            
-                <li class=" tsd-kind-constructor-method tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#constructor" class="tsd-kind-icon">constructor</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-property tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#base" class="tsd-kind-icon">base</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-property tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#builder" class="tsd-kind-icon">builder</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-property tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#result" class="tsd-kind-icon">result</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-get-accessor tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#error" class="tsd-kind-icon">error</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-get-accessor tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#info" class="tsd-kind-icon">info</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-get-accessor tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#input" class="tsd-kind-icon">input</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-get-accessor tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#symbols" class="tsd-kind-icon">symbols</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-get-accessor tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#warn" class="tsd-kind-icon">warn</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#findimagefile" class="tsd-kind-icon">findImageFile</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#out" class="tsd-kind-icon">out</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#outraw" class="tsd-kind-icon">outRaw</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#pushout" class="tsd-kind-icon">pushOut</a>
-                    
-                </li>
-            
-        
-    </ul>
-
-
                 </li>
             
         
@@ -1131,9 +1115,106 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
             
         
             
-                <li class=" tsd-kind-class tsd-parent-kind-container">
+                <li class="current tsd-kind-class tsd-parent-kind-container">
                     <a href="review.contentchunk.html" class="tsd-kind-icon">ContentChunk</a>
                     
+
+    <ul>
+        
+            
+                <li class=" tsd-kind-constructor-method tsd-parent-kind-class">
+                    <a href="review.contentchunk.html#constructor" class="tsd-kind-icon">constructor</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.contentchunk.html#_input" class="tsd-kind-icon">_input</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.contentchunk.html#book" class="tsd-kind-icon">book</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.contentchunk.html#builderprocesses" class="tsd-kind-icon">builderProcesses</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.contentchunk.html#name" class="tsd-kind-icon">name</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.contentchunk.html#no" class="tsd-kind-icon">no</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.contentchunk.html#nodes" class="tsd-kind-icon">nodes</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.contentchunk.html#parent" class="tsd-kind-icon">parent</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.contentchunk.html#process" class="tsd-kind-icon">process</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.contentchunk.html#tree" class="tsd-kind-icon">tree</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-set-accessor tsd-parent-kind-class">
+                    <a href="review.contentchunk.html#input" class="tsd-kind-icon">input</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-class">
+                    <a href="review.contentchunk.html#createbuilderprocess" class="tsd-kind-icon">createBuilderProcess</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-class">
+                    <a href="review.contentchunk.html#findresultbybuilder" class="tsd-kind-icon">findResultByBuilder</a>
+                    
+                </li>
+            
+        
+    </ul>
+
+
                 </li>
             
         

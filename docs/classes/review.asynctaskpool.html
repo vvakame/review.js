@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>ISymbol | review.js</title>
+    <title>AsyncTaskPool | review.js</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -39,11 +39,11 @@
     </li>
 
     <li>
-        <a href="review.isymbol.html">ISymbol</a>
+        <a href="review.asynctaskpool.html">AsyncTaskPool</a>
     </li>
 
             </ul>
-            <h1>Interface ISymbol</h1>
+            <h1>Class AsyncTaskPool</h1>
         </div>
     </div>
 </header>
@@ -53,7 +53,11 @@
         <div class="col-8">
             
     
-    <p>シンボルについての情報。</p>
+    <p>同期化処理を非同期化するためのヘルパクラス。
+array.forEach(value =&gt; process(value)); を以下のように書き換えて使う。
+var pool = new AsyncTaskPool<any>();
+array.forEach(value =&gt; pool.add(()=&gt; process(value));
+pool.consume().then(()=&gt; ...);</p>
 
 
 
@@ -68,21 +72,24 @@
     <section class="tsd-member-index">
     <h2>Index</h2>
     
-        <section class="tsd-member-index-group ">
+        <section class="tsd-member-index-group tsd-is-not-exported">
             <h3>Properties</h3>
             <ul class="tsd-member-index">
                 
-                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.isymbol.html#chapter" class="tsd-kind-icon">chapter</a></li>
+                    <li class="tsd-kind-property tsd-parent-kind-class tsd-is-not-exported"><a href="review.asynctaskpool.html#tasks" class="tsd-kind-icon">tasks</a></li>
                 
-                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.isymbol.html#labelname" class="tsd-kind-icon">labelName</a></li>
+            </ul>
+        </section>
+    
+        <section class="tsd-member-index-group tsd-is-not-exported">
+            <h3>Methods</h3>
+            <ul class="tsd-member-index">
                 
-                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.isymbol.html#node" class="tsd-kind-icon">node</a></li>
+                    <li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="review.asynctaskpool.html#add" class="tsd-kind-icon">add</a></li>
                 
-                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.isymbol.html#part" class="tsd-kind-icon">part</a></li>
+                    <li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="review.asynctaskpool.html#consume" class="tsd-kind-icon">consume</a></li>
                 
-                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.isymbol.html#referenceto" class="tsd-kind-icon">referenceTo</a></li>
-                
-                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.isymbol.html#symbolname" class="tsd-kind-icon">symbolName</a></li>
+                    <li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="review.asynctaskpool.html#handle" class="tsd-kind-icon">handle</a></li>
                 
             </ul>
         </section>
@@ -90,14 +97,14 @@
 </section>
     
     
-        <section class="tsd-member-group ">
+        <section class="tsd-member-group tsd-is-not-exported">
     <h2>Properties</h2>
     
         
-            <section class="tsd-member tsd-kind-property tsd-parent-kind-interface">
-    <a name="chapter"></a>
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
+    <a name="tasks"></a>
     
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> chapter<span class="tsd-signature-symbols">?:</span> <a href="../classes/review.contentchunk.html" class="tsd-signature-type">ContentChunk</a></h3>
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> tasks<span class="tsd-signature-symbols">:</span> <span class="tsd-signature-type">Array&lt;() =&gt; Promise&lt;T&gt;&gt;</span></h3>
 
 <aside class="tsd-sources">
     
@@ -105,7 +112,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:31</li>
+                <li>Defined in lib/parser/Walker.ts:474</li>
             
         </ul>
     
@@ -121,11 +128,19 @@
 </section>
         
     
-        
-            <section class="tsd-member tsd-kind-property tsd-parent-kind-interface">
-    <a name="labelname"></a>
+</section>
     
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> labelName<span class="tsd-signature-symbols">?:</span> <span class="tsd-signature-type">string</span></h3>
+
+    
+        <section class="tsd-member-group tsd-is-not-exported">
+    <h2>Methods</h2>
+    
+        
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+    <a name="add"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> add<span class="tsd-signature-symbols">(</span>value<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">() =&gt; T</span><span class="tsd-signature-symbols">)</span></h3>
 
 <aside class="tsd-sources">
     
@@ -133,7 +148,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:33</li>
+                <li>Defined in lib/parser/Walker.ts:476</li>
             
         </ul>
     
@@ -143,6 +158,64 @@
 
 
 
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>value: <span class="tsd-signature-type">() =&gt; T</span></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> add<span class="tsd-signature-symbols">(</span>task<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">() =&gt; Promise&lt;T&gt;</span><span class="tsd-signature-symbols">)</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in lib/parser/Walker.ts:478</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+    <h4>Parameters</h4>
+    <ul>
+        
+            <li>
+                <h5>task: <span class="tsd-signature-type">() =&gt; Promise&lt;T&gt;</span></h5>
+                
+
+
+
+
+            </li>
+        
+    </ul>
+
+
+
+
+        
     
 
     
@@ -150,10 +223,11 @@
         
     
         
-            <section class="tsd-member tsd-kind-property tsd-parent-kind-interface">
-    <a name="node"></a>
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+    <a name="consume"></a>
     
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> node<span class="tsd-signature-symbols">:</span> <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h3>
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> consume<span class="tsd-signature-symbols">(</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">Promise&lt;T[]&gt;</span></h3>
 
 <aside class="tsd-sources">
     
@@ -161,7 +235,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:35</li>
+                <li>Defined in lib/parser/Walker.ts:494</li>
             
         </ul>
     
@@ -171,6 +245,20 @@
 
 
 
+
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <span class="tsd-signature-type">Promise&lt;T[]&gt;</span>
+    
+</p>
+    
+
+
+        
     
 
     
@@ -178,10 +266,11 @@
         
     
         
-            <section class="tsd-member tsd-kind-property tsd-parent-kind-interface">
-    <a name="part"></a>
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+    <a name="handle"></a>
     
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> part<span class="tsd-signature-symbols">?:</span> <a href="../classes/review.contentchunk.html" class="tsd-signature-type">ContentChunk</a></h3>
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> handle<span class="tsd-signature-symbols">(</span>value<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span>, statements<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">{ next: () =&gt; void; func: () =&gt; void; }</span><span class="tsd-signature-symbols">)</span></h3>
 
 <aside class="tsd-sources">
     
@@ -189,7 +278,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:30</li>
+                <li>Defined in lib/parser/Walker.ts:484</li>
             
         </ul>
     
@@ -199,62 +288,35 @@
 
 
 
-    
 
-    
-</section>
+
+    <h4>Parameters</h4>
+    <ul>
         
-    
+            <li>
+                <h5>value: <span class="tsd-signature-type">any</span></h5>
+                
+
+
+
+
+            </li>
         
-            <section class="tsd-member tsd-kind-property tsd-parent-kind-interface">
-    <a name="referenceto"></a>
-    
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> referenceTo<span class="tsd-signature-symbols">?:</span> <a href="review.ireferenceto.html" class="tsd-signature-type">IReferenceTo</a></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/model/CompilerModel.ts:34</li>
-            
-        </ul>
-    
-</aside>
+            <li>
+                <h5>statements: <span class="tsd-signature-type">{ next: () =&gt; void; func: () =&gt; void; }</span></h5>
+                
 
 
 
 
-
-    
-
-    
-</section>
+            </li>
         
-    
+    </ul>
+
+
+
+
         
-            <section class="tsd-member tsd-kind-property tsd-parent-kind-interface">
-    <a name="symbolname"></a>
-    
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> symbolName<span class="tsd-signature-symbols">:</span> <span class="tsd-signature-type">string</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/model/CompilerModel.ts:32</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
     
 
     
@@ -431,105 +493,112 @@
         
             
                 <li class=" tsd-kind-interface tsd-parent-kind-container">
-                    <a href="review.iconfigbook.html" class="tsd-kind-icon">IConfigBook</a>
+                    <a href="../interfaces/review.iconfigbook.html" class="tsd-kind-icon">IConfigBook</a>
                     
                 </li>
             
         
             
                 <li class=" tsd-kind-interface tsd-parent-kind-container">
-                    <a href="review.iconfigchapter.html" class="tsd-kind-icon">IConfigChapter</a>
+                    <a href="../interfaces/review.iconfigchapter.html" class="tsd-kind-icon">IConfigChapter</a>
                     
                 </li>
             
         
             
                 <li class=" tsd-kind-interface tsd-parent-kind-container">
-                    <a href="review.iconfiglistener.html" class="tsd-kind-icon">IConfigListener</a>
+                    <a href="../interfaces/review.iconfiglistener.html" class="tsd-kind-icon">IConfigListener</a>
                     
                 </li>
             
         
             
                 <li class=" tsd-kind-interface tsd-parent-kind-container">
-                    <a href="review.iconfigpart.html" class="tsd-kind-icon">IConfigPart</a>
+                    <a href="../interfaces/review.iconfigpart.html" class="tsd-kind-icon">IConfigPart</a>
                     
                 </li>
             
         
             
                 <li class=" tsd-kind-interface tsd-parent-kind-container">
-                    <a href="review.iconfigpartorchapter.html" class="tsd-kind-icon">IConfigPartOrChapter</a>
+                    <a href="../interfaces/review.iconfigpartorchapter.html" class="tsd-kind-icon">IConfigPartOrChapter</a>
                     
                 </li>
             
         
             
                 <li class=" tsd-kind-interface tsd-parent-kind-container">
-                    <a href="review.iconfigraw.html" class="tsd-kind-icon">IConfigRaw</a>
+                    <a href="../interfaces/review.iconfigraw.html" class="tsd-kind-icon">IConfigRaw</a>
                     
                 </li>
             
         
             
                 <li class=" tsd-kind-interface tsd-parent-kind-container">
-                    <a href="review.ioptions.html" class="tsd-kind-icon">IOptions</a>
+                    <a href="../interfaces/review.ioptions.html" class="tsd-kind-icon">IOptions</a>
                     
                 </li>
             
         
             
                 <li class=" tsd-kind-interface tsd-parent-kind-container">
-                    <a href="review.ireferenceto.html" class="tsd-kind-icon">IReferenceTo</a>
+                    <a href="../interfaces/review.ireferenceto.html" class="tsd-kind-icon">IReferenceTo</a>
                     
                 </li>
             
         
             
-                <li class="current tsd-kind-interface tsd-parent-kind-container">
-                    <a href="review.isymbol.html" class="tsd-kind-icon">ISymbol</a>
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="../interfaces/review.isymbol.html" class="tsd-kind-icon">ISymbol</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container tsd-is-not-exported">
+                    <a href="../interfaces/review.itaskpool.html" class="tsd-kind-icon">ITaskPool</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="../interfaces/review.itreevisitor.html" class="tsd-kind-icon">ITreeVisitor</a>
+                    
+                </li>
+            
+        
+            
+                <li class="current tsd-kind-class tsd-parent-kind-container tsd-is-not-exported">
+                    <a href="review.asynctaskpool.html" class="tsd-kind-icon">AsyncTaskPool</a>
                     
 
     <ul>
         
             
-                <li class=" tsd-kind-property tsd-parent-kind-interface">
-                    <a href="review.isymbol.html#chapter" class="tsd-kind-icon">chapter</a>
+                <li class=" tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
+                    <a href="review.asynctaskpool.html#tasks" class="tsd-kind-icon">tasks</a>
                     
                 </li>
             
         
             
-                <li class=" tsd-kind-property tsd-parent-kind-interface">
-                    <a href="review.isymbol.html#labelname" class="tsd-kind-icon">labelName</a>
+                <li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+                    <a href="review.asynctaskpool.html#add" class="tsd-kind-icon">add</a>
                     
                 </li>
             
         
             
-                <li class=" tsd-kind-property tsd-parent-kind-interface">
-                    <a href="review.isymbol.html#node" class="tsd-kind-icon">node</a>
+                <li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+                    <a href="review.asynctaskpool.html#consume" class="tsd-kind-icon">consume</a>
                     
                 </li>
             
         
             
-                <li class=" tsd-kind-property tsd-parent-kind-interface">
-                    <a href="review.isymbol.html#part" class="tsd-kind-icon">part</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-property tsd-parent-kind-interface">
-                    <a href="review.isymbol.html#referenceto" class="tsd-kind-icon">referenceTo</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-property tsd-parent-kind-interface">
-                    <a href="review.isymbol.html#symbolname" class="tsd-kind-icon">symbolName</a>
+                <li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+                    <a href="review.asynctaskpool.html#handle" class="tsd-kind-icon">handle</a>
                     
                 </li>
             
@@ -541,113 +610,92 @@
             
         
             
-                <li class=" tsd-kind-interface tsd-parent-kind-container tsd-is-not-exported">
-                    <a href="review.itaskpool.html" class="tsd-kind-icon">ITaskPool</a>
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.book.html" class="tsd-kind-icon">Book</a>
                     
                 </li>
             
         
             
-                <li class=" tsd-kind-interface tsd-parent-kind-container">
-                    <a href="review.itreevisitor.html" class="tsd-kind-icon">ITreeVisitor</a>
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.bookprocess.html" class="tsd-kind-icon">BookProcess</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.bookstructure.html" class="tsd-kind-icon">BookStructure</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.builderprocess.html" class="tsd-kind-icon">BuilderProcess</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.config.html" class="tsd-kind-icon">Config</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.contentchunk.html" class="tsd-kind-icon">ContentChunk</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.contentstructure.html" class="tsd-kind-icon">ContentStructure</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.controller.html" class="tsd-kind-icon">Controller</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.nodejsconfig.html" class="tsd-kind-icon">NodeJSConfig</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.process.html" class="tsd-kind-icon">Process</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.processreport.html" class="tsd-kind-icon">ProcessReport</a>
                     
                 </li>
             
         
             
                 <li class=" tsd-kind-class tsd-parent-kind-container tsd-is-not-exported">
-                    <a href="../classes/review.asynctaskpool.html" class="tsd-kind-icon">AsyncTaskPool</a>
+                    <a href="review.synctaskpool.html" class="tsd-kind-icon">SyncTaskPool</a>
                     
                 </li>
             
         
             
                 <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="../classes/review.book.html" class="tsd-kind-icon">Book</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="../classes/review.bookprocess.html" class="tsd-kind-icon">BookProcess</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="../classes/review.bookstructure.html" class="tsd-kind-icon">BookStructure</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="../classes/review.builderprocess.html" class="tsd-kind-icon">BuilderProcess</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="../classes/review.config.html" class="tsd-kind-icon">Config</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="../classes/review.contentchunk.html" class="tsd-kind-icon">ContentChunk</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="../classes/review.contentstructure.html" class="tsd-kind-icon">ContentStructure</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="../classes/review.controller.html" class="tsd-kind-icon">Controller</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="../classes/review.nodejsconfig.html" class="tsd-kind-icon">NodeJSConfig</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="../classes/review.process.html" class="tsd-kind-icon">Process</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="../classes/review.processreport.html" class="tsd-kind-icon">ProcessReport</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container tsd-is-not-exported">
-                    <a href="../classes/review.synctaskpool.html" class="tsd-kind-icon">SyncTaskPool</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="../classes/review.webbrowserconfig.html" class="tsd-kind-icon">WebBrowserConfig</a>
+                    <a href="review.webbrowserconfig.html" class="tsd-kind-icon">WebBrowserConfig</a>
                     
                 </li>
             

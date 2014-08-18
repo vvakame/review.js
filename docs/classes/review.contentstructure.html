@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>BuilderProcess | review.js</title>
+    <title>ContentStructure | review.js</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -39,11 +39,11 @@
     </li>
 
     <li>
-        <a href="review.builderprocess.html">BuilderProcess</a>
+        <a href="review.contentstructure.html">ContentStructure</a>
     </li>
 
             </ul>
-            <h1>Class BuilderProcess</h1>
+            <h1>Class ContentStructure</h1>
         </div>
     </div>
 </header>
@@ -53,6 +53,9 @@
         <div class="col-8">
             
     
+    <p>生の設定ファイルでの本の構成情報を画一的なフォーマットに変換し保持するためのクラス。</p>
+
+
 
 
 
@@ -69,7 +72,7 @@
             <h3>Constructor methods</h3>
             <ul class="tsd-member-index">
                 
-                    <li class="tsd-kind-constructor-method tsd-parent-kind-class"><a href="review.builderprocess.html#constructor" class="tsd-kind-icon">constructor</a></li>
+                    <li class="tsd-kind-constructor-method tsd-parent-kind-class"><a href="review.contentstructure.html#constructor" class="tsd-kind-icon">constructor</a></li>
                 
             </ul>
         </section>
@@ -78,28 +81,9 @@
             <h3>Properties</h3>
             <ul class="tsd-member-index">
                 
-                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.builderprocess.html#base" class="tsd-kind-icon">base</a></li>
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.contentstructure.html#chapter" class="tsd-kind-icon">chapter</a></li>
                 
-                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.builderprocess.html#builder" class="tsd-kind-icon">builder</a></li>
-                
-                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.builderprocess.html#result" class="tsd-kind-icon">result</a></li>
-                
-            </ul>
-        </section>
-    
-        <section class="tsd-member-index-group ">
-            <h3>Get accessors</h3>
-            <ul class="tsd-member-index">
-                
-                    <li class="tsd-kind-get-accessor tsd-parent-kind-class"><a href="review.builderprocess.html#error" class="tsd-kind-icon">error</a></li>
-                
-                    <li class="tsd-kind-get-accessor tsd-parent-kind-class"><a href="review.builderprocess.html#info" class="tsd-kind-icon">info</a></li>
-                
-                    <li class="tsd-kind-get-accessor tsd-parent-kind-class"><a href="review.builderprocess.html#input" class="tsd-kind-icon">input</a></li>
-                
-                    <li class="tsd-kind-get-accessor tsd-parent-kind-class"><a href="review.builderprocess.html#symbols" class="tsd-kind-icon">symbols</a></li>
-                
-                    <li class="tsd-kind-get-accessor tsd-parent-kind-class"><a href="review.builderprocess.html#warn" class="tsd-kind-icon">warn</a></li>
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.contentstructure.html#part" class="tsd-kind-icon">part</a></li>
                 
             </ul>
         </section>
@@ -108,13 +92,9 @@
             <h3>Methods</h3>
             <ul class="tsd-member-index">
                 
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.builderprocess.html#findimagefile" class="tsd-kind-icon">findImageFile</a></li>
+                    <li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="review.contentstructure.html#createchapter" class="tsd-kind-icon">createChapter</a></li>
                 
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.builderprocess.html#out" class="tsd-kind-icon">out</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.builderprocess.html#outraw" class="tsd-kind-icon">outRaw</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.builderprocess.html#pushout" class="tsd-kind-icon">pushOut</a></li>
+                    <li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="review.contentstructure.html#createpart" class="tsd-kind-icon">createPart</a></li>
                 
             </ul>
         </section>
@@ -130,7 +110,7 @@
     <a name="constructor"></a>
     
         
-            <h3 class="tsd-kind-icon">constructor<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.ibuilder.html" class="tsd-signature-type">IBuilder</a>, base<span class="tsd-signature-symbols">: </span><a href="review.process.html" class="tsd-signature-type">Process</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a></h3>
+            <h3 class="tsd-kind-icon">constructor<span class="tsd-signature-symbols">(</span>part<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.iconfigpart.html" class="tsd-signature-type">IConfigPart</a>, chapter<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.iconfigchapter.html" class="tsd-signature-type">IConfigChapter</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.contentstructure.html" class="tsd-signature-type">ContentStructure</a></h3>
 
 <aside class="tsd-sources">
     
@@ -138,7 +118,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:188</li>
+                <li>Defined in lib/controller/ConfigRaw.ts:118</li>
             
         </ul>
     
@@ -154,7 +134,7 @@
     <ul>
         
             <li>
-                <h5>builder: <a href="../interfaces/review.build.ibuilder.html" class="tsd-signature-type">IBuilder</a></h5>
+                <h5>part: <a href="../interfaces/review.iconfigpart.html" class="tsd-signature-type">IConfigPart</a></h5>
                 
 
 
@@ -163,7 +143,7 @@
             </li>
         
             <li>
-                <h5>base: <a href="review.process.html" class="tsd-signature-type">Process</a></h5>
+                <h5>chapter: <a href="../interfaces/review.iconfigchapter.html" class="tsd-signature-type">IConfigChapter</a></h5>
                 
 
 
@@ -178,7 +158,7 @@
     <h4>Returns</h4>
     <p>
     
-        <a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a>
+        <a href="review.contentstructure.html" class="tsd-signature-type">ContentStructure</a>
     
 </p>
     
@@ -200,9 +180,9 @@
     
         
             <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
-    <a name="base"></a>
+    <a name="chapter"></a>
     
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> base<span class="tsd-signature-symbols">:</span> <a href="review.process.html" class="tsd-signature-type">Process</a></h3>
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> chapter<span class="tsd-signature-symbols">:</span> <a href="../interfaces/review.iconfigchapter.html" class="tsd-signature-type">IConfigChapter</a></h3>
 
 <aside class="tsd-sources">
     
@@ -210,7 +190,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:188</li>
+                <li>Defined in lib/controller/ConfigRaw.ts:118</li>
             
         </ul>
     
@@ -228,9 +208,9 @@
     
         
             <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
-    <a name="builder"></a>
+    <a name="part"></a>
     
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> builder<span class="tsd-signature-symbols">:</span> <a href="../interfaces/review.build.ibuilder.html" class="tsd-signature-type">IBuilder</a></h3>
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> part<span class="tsd-signature-symbols">:</span> <a href="../interfaces/review.iconfigpart.html" class="tsd-signature-type">IConfigPart</a></h3>
 
 <aside class="tsd-sources">
     
@@ -238,7 +218,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:188</li>
+                <li>Defined in lib/controller/ConfigRaw.ts:118</li>
             
         </ul>
     
@@ -248,256 +228,6 @@
 
 
 
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
-    <a name="result"></a>
-    
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> result<span class="tsd-signature-symbols">:</span> <span class="tsd-signature-type">string</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/model/CompilerModel.ts:203</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-    
-
-    
-</section>
-        
-    
-</section>
-    
-
-    
-        <section class="tsd-member-group ">
-    <h2>Get accessors</h2>
-    
-        
-            <section class="tsd-member tsd-kind-get-accessor tsd-parent-kind-class">
-    <a name="error"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> error<span class="tsd-signature-symbols">(</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">(message: string, ...nodes: ReVIEW.Parse.SyntaxTree[]) =&gt; void</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/model/CompilerModel.ts:199</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-
-
-    <h4>Returns</h4>
-    <p>
-    
-        <span class="tsd-signature-type">(message: string, ...nodes: ReVIEW.Parse.SyntaxTree[]) =&gt; void</span>
-    
-</p>
-    
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-get-accessor tsd-parent-kind-class">
-    <a name="info"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> info<span class="tsd-signature-symbols">(</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">(message: string, ...nodes: ReVIEW.Parse.SyntaxTree[]) =&gt; void</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/model/CompilerModel.ts:191</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-
-
-    <h4>Returns</h4>
-    <p>
-    
-        <span class="tsd-signature-type">(message: string, ...nodes: ReVIEW.Parse.SyntaxTree[]) =&gt; void</span>
-    
-</p>
-    
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-get-accessor tsd-parent-kind-class">
-    <a name="input"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> input<span class="tsd-signature-symbols">(</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/model/CompilerModel.ts:223</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-
-
-    <h4>Returns</h4>
-    <p>
-    
-        <span class="tsd-signature-type">string</span>
-    
-</p>
-    
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-get-accessor tsd-parent-kind-class">
-    <a name="symbols"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> symbols<span class="tsd-signature-symbols">(</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="../interfaces/review.isymbol.html" class="tsd-signature-type">ISymbol</a><span class="tsd-signature-symbols">[]</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/model/CompilerModel.ts:227</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-
-
-    <h4>Returns</h4>
-    <p>
-    
-        <a href="../interfaces/review.isymbol.html" class="tsd-signature-type">ISymbol</a><span class="tsd-signature-symbols">[]</span>
-    
-</p>
-    
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-get-accessor tsd-parent-kind-class">
-    <a name="warn"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> warn<span class="tsd-signature-symbols">(</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">(message: string, ...nodes: ReVIEW.Parse.SyntaxTree[]) =&gt; void</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/model/CompilerModel.ts:195</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-
-
-    <h4>Returns</h4>
-    <p>
-    
-        <span class="tsd-signature-type">(message: string, ...nodes: ReVIEW.Parse.SyntaxTree[]) =&gt; void</span>
-    
-</p>
-    
-
-
-        
     
 
     
@@ -512,11 +242,11 @@
     <h2>Methods</h2>
     
         
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="findimagefile"></a>
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+    <a name="createchapter"></a>
     
         
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> findImageFile<span class="tsd-signature-symbols">(</span>id<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">Promise&lt;string&gt;</span></h3>
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> <span class="tsd-flag ts-flagstatic">static</span> createChapter<span class="tsd-signature-symbols">(</span>file<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.contentstructure.html" class="tsd-signature-type">ContentStructure</a></h3>
 
 <aside class="tsd-sources">
     
@@ -524,16 +254,11 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:238</li>
+                <li>Defined in lib/controller/ConfigRaw.ts:121</li>
             
         </ul>
     
 </aside>
-
-    <p>指定されたidの画像を探す。
-解決ルールは <a href="https://github.com/kmuto/review/wiki/ImagePath">https://github.com/kmuto/review/wiki/ImagePath</a> の通り。
-Config側で絶対パス化やリソースの差し替えを行う可能性があるため、このメソッドの返り値は無加工で使うこと。</p>
-
 
 
 
@@ -545,7 +270,7 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
     <ul>
         
             <li>
-                <h5>id: <span class="tsd-signature-type">string</span></h5>
+                <h5>file: <span class="tsd-signature-type">string</span></h5>
                 
 
 
@@ -560,27 +285,14 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
     <h4>Returns</h4>
     <p>
     
-        <span class="tsd-signature-type">Promise&lt;string&gt;</span>
+        <a href="review.contentstructure.html" class="tsd-signature-type">ContentStructure</a>
     
 </p>
     
-        
-    
 
 
         
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="out"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> out<span class="tsd-signature-symbols">(</span>data<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a></h3>
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> <span class="tsd-flag ts-flagstatic">static</span> createChapter<span class="tsd-signature-symbols">(</span>chapter<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.iconfigchapter.html" class="tsd-signature-type">IConfigChapter</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.contentstructure.html" class="tsd-signature-type">ContentStructure</a></h3>
 
 <aside class="tsd-sources">
     
@@ -588,7 +300,7 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:205</li>
+                <li>Defined in lib/controller/ConfigRaw.ts:123</li>
             
         </ul>
     
@@ -604,7 +316,7 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
     <ul>
         
             <li>
-                <h5>data: <span class="tsd-signature-type">any</span></h5>
+                <h5>chapter: <a href="../interfaces/review.iconfigchapter.html" class="tsd-signature-type">IConfigChapter</a></h5>
                 
 
 
@@ -619,7 +331,7 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
     <h4>Returns</h4>
     <p>
     
-        <a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a>
+        <a href="review.contentstructure.html" class="tsd-signature-type">ContentStructure</a>
     
 </p>
     
@@ -633,11 +345,11 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
         
     
         
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="outraw"></a>
+            <section class="tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+    <a name="createpart"></a>
     
         
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> outRaw<span class="tsd-signature-symbols">(</span>data<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a></h3>
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> <span class="tsd-flag ts-flagstatic">static</span> createPart<span class="tsd-signature-symbols">(</span>part<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.iconfigpart.html" class="tsd-signature-type">IConfigPart</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.contentstructure.html" class="tsd-signature-type">ContentStructure</a></h3>
 
 <aside class="tsd-sources">
     
@@ -645,7 +357,7 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:211</li>
+                <li>Defined in lib/controller/ConfigRaw.ts:135</li>
             
         </ul>
     
@@ -661,7 +373,7 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
     <ul>
         
             <li>
-                <h5>data: <span class="tsd-signature-type">any</span></h5>
+                <h5>part: <a href="../interfaces/review.iconfigpart.html" class="tsd-signature-type">IConfigPart</a></h5>
                 
 
 
@@ -676,64 +388,7 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
     <h4>Returns</h4>
     <p>
     
-        <a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a>
-    
-</p>
-    
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="pushout"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> pushOut<span class="tsd-signature-symbols">(</span>data<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/model/CompilerModel.ts:218</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>data: <span class="tsd-signature-type">string</span></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-    <h4>Returns</h4>
-    <p>
-    
-        <a href="review.builderprocess.html" class="tsd-signature-type">BuilderProcess</a>
+        <a href="review.contentstructure.html" class="tsd-signature-type">ContentStructure</a>
     
 </p>
     
@@ -1020,106 +675,9 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
             
         
             
-                <li class="current tsd-kind-class tsd-parent-kind-container">
+                <li class=" tsd-kind-class tsd-parent-kind-container">
                     <a href="review.builderprocess.html" class="tsd-kind-icon">BuilderProcess</a>
                     
-
-    <ul>
-        
-            
-                <li class=" tsd-kind-constructor-method tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#constructor" class="tsd-kind-icon">constructor</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-property tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#base" class="tsd-kind-icon">base</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-property tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#builder" class="tsd-kind-icon">builder</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-property tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#result" class="tsd-kind-icon">result</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-get-accessor tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#error" class="tsd-kind-icon">error</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-get-accessor tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#info" class="tsd-kind-icon">info</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-get-accessor tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#input" class="tsd-kind-icon">input</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-get-accessor tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#symbols" class="tsd-kind-icon">symbols</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-get-accessor tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#warn" class="tsd-kind-icon">warn</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#findimagefile" class="tsd-kind-icon">findImageFile</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#out" class="tsd-kind-icon">out</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#outraw" class="tsd-kind-icon">outRaw</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.builderprocess.html#pushout" class="tsd-kind-icon">pushOut</a>
-                    
-                </li>
-            
-        
-    </ul>
-
-
                 </li>
             
         
@@ -1138,9 +696,50 @@ Config側で絶対パス化やリソースの差し替えを行う可能性が�
             
         
             
-                <li class=" tsd-kind-class tsd-parent-kind-container">
+                <li class="current tsd-kind-class tsd-parent-kind-container">
                     <a href="review.contentstructure.html" class="tsd-kind-icon">ContentStructure</a>
                     
+
+    <ul>
+        
+            
+                <li class=" tsd-kind-constructor-method tsd-parent-kind-class">
+                    <a href="review.contentstructure.html#constructor" class="tsd-kind-icon">constructor</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.contentstructure.html#chapter" class="tsd-kind-icon">chapter</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.contentstructure.html#part" class="tsd-kind-icon">part</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+                    <a href="review.contentstructure.html#createchapter" class="tsd-kind-icon">createChapter</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+                    <a href="review.contentstructure.html#createpart" class="tsd-kind-icon">createPart</a>
+                    
+                </li>
+            
+        
+    </ul>
+
+
                 </li>
             
         

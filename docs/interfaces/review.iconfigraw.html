@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>ISymbol | review.js</title>
+    <title>IConfigRaw | review.js</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -39,11 +39,11 @@
     </li>
 
     <li>
-        <a href="review.isymbol.html">ISymbol</a>
+        <a href="review.iconfigraw.html">IConfigRaw</a>
     </li>
 
             </ul>
-            <h1>Interface ISymbol</h1>
+            <h1>Interface IConfigRaw</h1>
         </div>
     </div>
 </header>
@@ -53,7 +53,8 @@
         <div class="col-8">
             
     
-    <p>シンボルについての情報。</p>
+    <p>コンパイル実行時の設定。
+本についての情報や処理実行時のプログラムの差し替え。</p>
 
 
 
@@ -72,17 +73,21 @@
             <h3>Properties</h3>
             <ul class="tsd-member-index">
                 
-                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.isymbol.html#chapter" class="tsd-kind-icon">chapter</a></li>
+                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.iconfigraw.html#analyzer" class="tsd-kind-icon">analyzer</a></li>
                 
-                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.isymbol.html#labelname" class="tsd-kind-icon">labelName</a></li>
+                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.iconfigraw.html#basepath" class="tsd-kind-icon">basePath</a></li>
                 
-                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.isymbol.html#node" class="tsd-kind-icon">node</a></li>
+                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.iconfigraw.html#book" class="tsd-kind-icon">book</a></li>
                 
-                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.isymbol.html#part" class="tsd-kind-icon">part</a></li>
+                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.iconfigraw.html#builders" class="tsd-kind-icon">builders</a></li>
                 
-                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.isymbol.html#referenceto" class="tsd-kind-icon">referenceTo</a></li>
+                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.iconfigraw.html#listener" class="tsd-kind-icon">listener</a></li>
                 
-                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.isymbol.html#symbolname" class="tsd-kind-icon">symbolName</a></li>
+                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.iconfigraw.html#read" class="tsd-kind-icon">read</a></li>
+                
+                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.iconfigraw.html#validators" class="tsd-kind-icon">validators</a></li>
+                
+                    <li class="tsd-kind-property tsd-parent-kind-interface"><a href="review.iconfigraw.html#write" class="tsd-kind-icon">write</a></li>
                 
             </ul>
         </section>
@@ -95,9 +100,9 @@
     
         
             <section class="tsd-member tsd-kind-property tsd-parent-kind-interface">
-    <a name="chapter"></a>
+    <a name="analyzer"></a>
     
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> chapter<span class="tsd-signature-symbols">?:</span> <a href="../classes/review.contentchunk.html" class="tsd-signature-type">ContentChunk</a></h3>
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> analyzer<span class="tsd-signature-symbols">?:</span> <a href="review.build.ianalyzer.html" class="tsd-signature-type">IAnalyzer</a></h3>
 
 <aside class="tsd-sources">
     
@@ -105,7 +110,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:31</li>
+                <li>Defined in lib/controller/ConfigRaw.ts:27</li>
             
         </ul>
     
@@ -123,9 +128,9 @@
     
         
             <section class="tsd-member tsd-kind-property tsd-parent-kind-interface">
-    <a name="labelname"></a>
+    <a name="basepath"></a>
     
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> labelName<span class="tsd-signature-symbols">?:</span> <span class="tsd-signature-type">string</span></h3>
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> basePath<span class="tsd-signature-symbols">?:</span> <span class="tsd-signature-type">string</span></h3>
 
 <aside class="tsd-sources">
     
@@ -133,7 +138,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:33</li>
+                <li>Defined in lib/controller/ConfigRaw.ts:20</li>
             
         </ul>
     
@@ -151,9 +156,9 @@
     
         
             <section class="tsd-member tsd-kind-property tsd-parent-kind-interface">
-    <a name="node"></a>
+    <a name="book"></a>
     
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> node<span class="tsd-signature-symbols">:</span> <a href="../classes/review.parse.syntaxtree.html" class="tsd-signature-type">SyntaxTree</a></h3>
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> book<span class="tsd-signature-symbols">:</span> <a href="review.iconfigbook.html" class="tsd-signature-type">IConfigBook</a></h3>
 
 <aside class="tsd-sources">
     
@@ -161,7 +166,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:35</li>
+                <li>Defined in lib/controller/ConfigRaw.ts:31</li>
             
         </ul>
     
@@ -179,9 +184,9 @@
     
         
             <section class="tsd-member tsd-kind-property tsd-parent-kind-interface">
-    <a name="part"></a>
+    <a name="builders"></a>
     
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> part<span class="tsd-signature-symbols">?:</span> <a href="../classes/review.contentchunk.html" class="tsd-signature-type">ContentChunk</a></h3>
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> builders<span class="tsd-signature-symbols">?:</span> <a href="review.build.ibuilder.html" class="tsd-signature-type">IBuilder</a><span class="tsd-signature-symbols">[]</span></h3>
 
 <aside class="tsd-sources">
     
@@ -189,7 +194,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:30</li>
+                <li>Defined in lib/controller/ConfigRaw.ts:29</li>
             
         </ul>
     
@@ -207,9 +212,9 @@
     
         
             <section class="tsd-member tsd-kind-property tsd-parent-kind-interface">
-    <a name="referenceto"></a>
+    <a name="listener"></a>
     
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> referenceTo<span class="tsd-signature-symbols">?:</span> <a href="review.ireferenceto.html" class="tsd-signature-type">IReferenceTo</a></h3>
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> listener<span class="tsd-signature-symbols">?:</span> <a href="review.iconfiglistener.html" class="tsd-signature-type">IConfigListener</a></h3>
 
 <aside class="tsd-sources">
     
@@ -217,7 +222,7 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:34</li>
+                <li>Defined in lib/controller/ConfigRaw.ts:25</li>
             
         </ul>
     
@@ -235,9 +240,9 @@
     
         
             <section class="tsd-member tsd-kind-property tsd-parent-kind-interface">
-    <a name="symbolname"></a>
+    <a name="read"></a>
     
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> symbolName<span class="tsd-signature-symbols">:</span> <span class="tsd-signature-type">string</span></h3>
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> read<span class="tsd-signature-symbols">?:</span> <span class="tsd-signature-type">(path: string) =&gt; Promise&lt;string&gt;</span></h3>
 
 <aside class="tsd-sources">
     
@@ -245,7 +250,63 @@
     
         <ul>
             
-                <li>Defined in lib/model/CompilerModel.ts:32</li>
+                <li>Defined in lib/controller/ConfigRaw.ts:22</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-interface">
+    <a name="validators"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> validators<span class="tsd-signature-symbols">?:</span> <a href="review.build.ivalidator.html" class="tsd-signature-type">IValidator</a><span class="tsd-signature-symbols">[]</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in lib/controller/ConfigRaw.ts:28</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-interface">
+    <a name="write"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagoptional">optional</span> <span class="tsd-flag ts-flagpublic">public</span> write<span class="tsd-signature-symbols">?:</span> <span class="tsd-signature-type">(path: string, data: string) =&gt; Promise&lt;void&gt;</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in lib/controller/ConfigRaw.ts:23</li>
             
         </ul>
     
@@ -465,9 +526,71 @@
             
         
             
-                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                <li class="current tsd-kind-interface tsd-parent-kind-container">
                     <a href="review.iconfigraw.html" class="tsd-kind-icon">IConfigRaw</a>
                     
+
+    <ul>
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-interface">
+                    <a href="review.iconfigraw.html#analyzer" class="tsd-kind-icon">analyzer</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-interface">
+                    <a href="review.iconfigraw.html#basepath" class="tsd-kind-icon">basePath</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-interface">
+                    <a href="review.iconfigraw.html#book" class="tsd-kind-icon">book</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-interface">
+                    <a href="review.iconfigraw.html#builders" class="tsd-kind-icon">builders</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-interface">
+                    <a href="review.iconfigraw.html#listener" class="tsd-kind-icon">listener</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-interface">
+                    <a href="review.iconfigraw.html#read" class="tsd-kind-icon">read</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-interface">
+                    <a href="review.iconfigraw.html#validators" class="tsd-kind-icon">validators</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-interface">
+                    <a href="review.iconfigraw.html#write" class="tsd-kind-icon">write</a>
+                    
+                </li>
+            
+        
+    </ul>
+
+
                 </li>
             
         
@@ -486,57 +609,9 @@
             
         
             
-                <li class="current tsd-kind-interface tsd-parent-kind-container">
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
                     <a href="review.isymbol.html" class="tsd-kind-icon">ISymbol</a>
                     
-
-    <ul>
-        
-            
-                <li class=" tsd-kind-property tsd-parent-kind-interface">
-                    <a href="review.isymbol.html#chapter" class="tsd-kind-icon">chapter</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-property tsd-parent-kind-interface">
-                    <a href="review.isymbol.html#labelname" class="tsd-kind-icon">labelName</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-property tsd-parent-kind-interface">
-                    <a href="review.isymbol.html#node" class="tsd-kind-icon">node</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-property tsd-parent-kind-interface">
-                    <a href="review.isymbol.html#part" class="tsd-kind-icon">part</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-property tsd-parent-kind-interface">
-                    <a href="review.isymbol.html#referenceto" class="tsd-kind-icon">referenceTo</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-property tsd-parent-kind-interface">
-                    <a href="review.isymbol.html#symbolname" class="tsd-kind-icon">symbolName</a>
-                    
-                </li>
-            
-        
-    </ul>
-
-
                 </li>
             
         

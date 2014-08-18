@@ -81,9 +81,17 @@
             <h3>Properties</h3>
             <ul class="tsd-member-index">
                 
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.book.html#acceptablesyntaxes" class="tsd-kind-icon">acceptableSyntaxes</a></li>
+                
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.book.html#appendix" class="tsd-kind-icon">appendix</a></li>
+                
                     <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.book.html#config" class="tsd-kind-icon">config</a></li>
                 
-                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.book.html#parts" class="tsd-kind-icon">parts</a></li>
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.book.html#contents" class="tsd-kind-icon">contents</a></li>
+                
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.book.html#postdef" class="tsd-kind-icon">postdef</a></li>
+                
+                    <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.book.html#predef" class="tsd-kind-icon">predef</a></li>
                 
                     <li class="tsd-kind-property tsd-parent-kind-class"><a href="review.book.html#process" class="tsd-kind-icon">process</a></li>
                 
@@ -93,6 +101,8 @@
         <section class="tsd-member-index-group ">
             <h3>Get accessors</h3>
             <ul class="tsd-member-index">
+                
+                    <li class="tsd-kind-get-accessor tsd-parent-kind-class"><a href="review.book.html#allchunks" class="tsd-kind-icon">allChunks</a></li>
                 
                     <li class="tsd-kind-get-accessor tsd-parent-kind-class"><a href="review.book.html#haserror" class="tsd-kind-icon">hasError</a></li>
                 
@@ -114,7 +124,7 @@
     <a name="constructor"></a>
     
         
-            <h3 class="tsd-kind-icon">constructor<span class="tsd-signature-symbols">(</span>config<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.iconfig.html" class="tsd-signature-type">IConfig</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.book.html" class="tsd-signature-type">Book</a></h3>
+            <h3 class="tsd-kind-icon">constructor<span class="tsd-signature-symbols">(</span>config<span class="tsd-signature-symbols">: </span><a href="review.config.html" class="tsd-signature-type">Config</a><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.book.html" class="tsd-signature-type">Book</a></h3>
 
 <aside class="tsd-sources">
     
@@ -122,7 +132,7 @@
     
         <ul>
             
-                <li>Defined in model/CompilerModel.ts:240</li>
+                <li>Defined in lib/model/CompilerModel.ts:295</li>
             
         </ul>
     
@@ -138,7 +148,7 @@
     <ul>
         
             <li>
-                <h5>config: <a href="../interfaces/review.iconfig.html" class="tsd-signature-type">IConfig</a></h5>
+                <h5>config: <a href="review.config.html" class="tsd-signature-type">Config</a></h5>
                 
 
 
@@ -175,9 +185,9 @@
     
         
             <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
-    <a name="config"></a>
+    <a name="acceptablesyntaxes"></a>
     
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> config<span class="tsd-signature-symbols">:</span> <a href="../interfaces/review.iconfig.html" class="tsd-signature-type">IConfig</a></h3>
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> acceptableSyntaxes<span class="tsd-signature-symbols">:</span> <a href="review.build.acceptablesyntaxes.html" class="tsd-signature-type">AcceptableSyntaxes</a></h3>
 
 <aside class="tsd-sources">
     
@@ -185,7 +195,7 @@
     
         <ul>
             
-                <li>Defined in model/CompilerModel.ts:240</li>
+                <li>Defined in lib/model/CompilerModel.ts:288</li>
             
         </ul>
     
@@ -203,9 +213,9 @@
     
         
             <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
-    <a name="parts"></a>
+    <a name="appendix"></a>
     
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> parts<span class="tsd-signature-symbols">:</span> <a href="review.part.html" class="tsd-signature-type">Part</a><span class="tsd-signature-symbols">[]</span></h3>
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> appendix<span class="tsd-signature-symbols">:</span> <a href="review.contentchunk.html" class="tsd-signature-type">ContentChunk</a><span class="tsd-signature-symbols">[]</span></h3>
 
 <aside class="tsd-sources">
     
@@ -213,7 +223,119 @@
     
         <ul>
             
-                <li>Defined in model/CompilerModel.ts:238</li>
+                <li>Defined in lib/model/CompilerModel.ts:292</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
+    <a name="config"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> config<span class="tsd-signature-symbols">:</span> <a href="review.config.html" class="tsd-signature-type">Config</a></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in lib/model/CompilerModel.ts:295</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
+    <a name="contents"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> contents<span class="tsd-signature-symbols">:</span> <a href="review.contentchunk.html" class="tsd-signature-type">ContentChunk</a><span class="tsd-signature-symbols">[]</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in lib/model/CompilerModel.ts:291</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
+    <a name="postdef"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> postdef<span class="tsd-signature-symbols">:</span> <a href="review.contentchunk.html" class="tsd-signature-type">ContentChunk</a><span class="tsd-signature-symbols">[]</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in lib/model/CompilerModel.ts:293</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-property tsd-parent-kind-class">
+    <a name="predef"></a>
+    
+        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> predef<span class="tsd-signature-symbols">:</span> <a href="review.contentchunk.html" class="tsd-signature-type">ContentChunk</a><span class="tsd-signature-symbols">[]</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in lib/model/CompilerModel.ts:290</li>
             
         </ul>
     
@@ -241,7 +363,7 @@
     
         <ul>
             
-                <li>Defined in model/CompilerModel.ts:237</li>
+                <li>Defined in lib/model/CompilerModel.ts:287</li>
             
         </ul>
     
@@ -266,6 +388,49 @@
     
         
             <section class="tsd-member tsd-kind-get-accessor tsd-parent-kind-class">
+    <a name="allchunks"></a>
+    
+        
+            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> allChunks<span class="tsd-signature-symbols">(</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.contentchunk.html" class="tsd-signature-type">ContentChunk</a><span class="tsd-signature-symbols">[]</span></h3>
+
+<aside class="tsd-sources">
+    
+    
+    
+        <ul>
+            
+                <li>Defined in lib/model/CompilerModel.ts:298</li>
+            
+        </ul>
+    
+</aside>
+
+
+
+
+
+
+
+
+
+    <h4>Returns</h4>
+    <p>
+    
+        <a href="review.contentchunk.html" class="tsd-signature-type">ContentChunk</a><span class="tsd-signature-symbols">[]</span>
+    
+</p>
+    
+
+
+        
+    
+
+    
+</section>
+        
+    
+        
+            <section class="tsd-member tsd-kind-get-accessor tsd-parent-kind-class">
     <a name="haserror"></a>
     
         
@@ -277,7 +442,7 @@
     
         <ul>
             
-                <li>Defined in model/CompilerModel.ts:250</li>
+                <li>Defined in lib/model/CompilerModel.ts:327</li>
             
         </ul>
     
@@ -320,7 +485,7 @@
     
         <ul>
             
-                <li>Defined in model/CompilerModel.ts:254</li>
+                <li>Defined in lib/model/CompilerModel.ts:331</li>
             
         </ul>
     
@@ -363,7 +528,7 @@
     
         <ul>
             
-                <li>Defined in model/CompilerModel.ts:243</li>
+                <li>Defined in lib/model/CompilerModel.ts:313</li>
             
         </ul>
     
@@ -412,6 +577,24 @@
     
         
             <ul>
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
                 
                     
                 
@@ -545,13 +728,6 @@
         
             
                 <li class=" tsd-kind-interface tsd-parent-kind-container">
-                    <a href="../interfaces/review.iconfig.html" class="tsd-kind-icon">IConfig</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-interface tsd-parent-kind-container">
                     <a href="../interfaces/review.iconfigbook.html" class="tsd-kind-icon">IConfigBook</a>
                     
                 </li>
@@ -559,7 +735,35 @@
         
             
                 <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="../interfaces/review.iconfigchapter.html" class="tsd-kind-icon">IConfigChapter</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
                     <a href="../interfaces/review.iconfiglistener.html" class="tsd-kind-icon">IConfigListener</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="../interfaces/review.iconfigpart.html" class="tsd-kind-icon">IConfigPart</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="../interfaces/review.iconfigpartorchapter.html" class="tsd-kind-icon">IConfigPartOrChapter</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-interface tsd-parent-kind-container">
+                    <a href="../interfaces/review.iconfigraw.html" class="tsd-kind-icon">IConfigRaw</a>
                     
                 </li>
             
@@ -586,8 +790,22 @@
             
         
             
+                <li class=" tsd-kind-interface tsd-parent-kind-container tsd-is-not-exported">
+                    <a href="../interfaces/review.itaskpool.html" class="tsd-kind-icon">ITaskPool</a>
+                    
+                </li>
+            
+        
+            
                 <li class=" tsd-kind-interface tsd-parent-kind-container">
                     <a href="../interfaces/review.itreevisitor.html" class="tsd-kind-icon">ITreeVisitor</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container tsd-is-not-exported">
+                    <a href="review.asynctaskpool.html" class="tsd-kind-icon">AsyncTaskPool</a>
                     
                 </li>
             
@@ -608,6 +826,20 @@
         
             
                 <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.book.html#acceptablesyntaxes" class="tsd-kind-icon">acceptableSyntaxes</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.book.html#appendix" class="tsd-kind-icon">appendix</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
                     <a href="review.book.html#config" class="tsd-kind-icon">config</a>
                     
                 </li>
@@ -615,7 +847,21 @@
         
             
                 <li class=" tsd-kind-property tsd-parent-kind-class">
-                    <a href="review.book.html#parts" class="tsd-kind-icon">parts</a>
+                    <a href="review.book.html#contents" class="tsd-kind-icon">contents</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.book.html#postdef" class="tsd-kind-icon">postdef</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-property tsd-parent-kind-class">
+                    <a href="review.book.html#predef" class="tsd-kind-icon">predef</a>
                     
                 </li>
             
@@ -623,6 +869,13 @@
             
                 <li class=" tsd-kind-property tsd-parent-kind-class">
                     <a href="review.book.html#process" class="tsd-kind-icon">process</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-get-accessor tsd-parent-kind-class">
+                    <a href="review.book.html#allchunks" class="tsd-kind-icon">allChunks</a>
                     
                 </li>
             
@@ -663,6 +916,13 @@
         
             
                 <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.bookstructure.html" class="tsd-kind-icon">BookStructure</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
                     <a href="review.builderprocess.html" class="tsd-kind-icon">BuilderProcess</a>
                     
                 </li>
@@ -670,14 +930,21 @@
         
             
                 <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="review.chapter.html" class="tsd-kind-icon">Chapter</a>
+                    <a href="review.config.html" class="tsd-kind-icon">Config</a>
                     
                 </li>
             
         
             
                 <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="review.configwrapper.html" class="tsd-kind-icon">ConfigWrapper</a>
+                    <a href="review.contentchunk.html" class="tsd-kind-icon">ContentChunk</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-class tsd-parent-kind-container">
+                    <a href="review.contentstructure.html" class="tsd-kind-icon">ContentStructure</a>
                     
                 </li>
             
@@ -698,13 +965,6 @@
         
             
                 <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="review.part.html" class="tsd-kind-icon">Part</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
                     <a href="review.process.html" class="tsd-kind-icon">Process</a>
                     
                 </li>
@@ -718,8 +978,29 @@
             
         
             
+                <li class=" tsd-kind-class tsd-parent-kind-container tsd-is-not-exported">
+                    <a href="review.synctaskpool.html" class="tsd-kind-icon">SyncTaskPool</a>
+                    
+                </li>
+            
+        
+            
                 <li class=" tsd-kind-class tsd-parent-kind-container">
                     <a href="review.webbrowserconfig.html" class="tsd-kind-icon">WebBrowserConfig</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container tsd-is-not-exported">
+                    <a href="../modules/review.html#_visit" class="tsd-kind-icon">_visit</a>
+                    
+                </li>
+            
+        
+            
+                <li class=" tsd-kind-function tsd-parent-kind-container tsd-is-not-exported">
+                    <a href="../modules/review.html#_visitsub" class="tsd-kind-icon">_visitSub</a>
                     
                 </li>
             
@@ -809,8 +1090,8 @@
             
         
             
-                <li class=" tsd-kind-function tsd-parent-kind-container tsd-is-not-exported">
-                    <a href="../modules/review.html#visitsub" class="tsd-kind-icon">visitSub</a>
+                <li class=" tsd-kind-function tsd-parent-kind-container">
+                    <a href="../modules/review.html#visitasync" class="tsd-kind-icon">visitAsync</a>
                     
                 </li>
             
