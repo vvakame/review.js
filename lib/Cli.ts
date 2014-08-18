@@ -23,12 +23,11 @@ import program = require("commander");
 (<any>program)
 	.version(packageJson.version, "-v, --version")
 	.option("--reviewfile <file>", "where is ReVIEWconfig.js?")
-	.option("--base <path>", "alternative base path")
-;
+	.option("--base <path>", "alternative base path");
 
 // <hoge> は required, [hoge] は optional
 program
-	.command("compile <document>")
+	.command("compile [document]")
 	.description("compile ReVIEW document")
 	.option("--ast", "output JSON format abstract syntax tree")
 	.option("-t, --target <target>", "output format of document")
@@ -36,15 +35,28 @@ program
 		var ast = !!options.ast;
 		var target:string = options.target || "html";
 
-		var targetPath = process.cwd() + "/" + document;
-		if (!fs.existsSync(targetPath)) {
-			console.error(targetPath + " not exists");
-			process.exit(1);
-		}
-
-		var input = fs.readFileSync(targetPath, "utf8");
-
-		r.Exec.singleCompile(input, document, target, null)
+		new Promise<{fileName:string; input:string;}>((resolve, reject)=> {
+			var input = "";
+			if (document) {
+				var targetPath = process.cwd() + "/" + document;
+				if (!fs.existsSync(targetPath)) {
+					console.error(targetPath + " not exists");
+					reject(null);
+				}
+				input = fs.readFileSync(targetPath, "utf8");
+				resolve({fileName: document, input: input});
+			} else {
+				process.stdin.resume();
+				process.stdin.setEncoding("utf8");
+				process.stdin.on("data", (chunk:string) => {
+					input += chunk;
+				});
+				process.stdin.on("end", () => {
+					resolve({fileName: "content.re", input: input});
+				});
+			}
+		})
+			.then(value=> r.Exec.singleCompile(value.input, value.fileName, target, null))
 			.then(result=> {
 				if (!result.book.hasError && !ast) {
 					result.book.allChunks[0].builderProcesses.forEach(process=> {
@@ -75,6 +87,15 @@ program
 					});
 					process.exit(1);
 				}
+			}, err=> {
+				console.error("unexpected error", err);
+				if (err.stack) {
+					console.error(err.stack);
+				}
+				return Promise.reject(null);
+			})
+			.catch(()=> {
+				process.exit(1);
 			});
 	});
 
@@ -91,8 +112,14 @@ program
 		r.start(setup, {
 			reviewfile: reviewfile,
 			base: (<any>program).base
-		});
-	})
-;
+		})
+			.then(book=> {
+				process.exit(0);
+			})
+			.catch(err=> {
+				console.error("unexpected error", err);
+				process.exit(1);
+			});
+	});
 
 program.parse(process.argv);

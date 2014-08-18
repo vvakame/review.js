@@ -7971,6 +7971,8 @@ var ReVIEW;
                 return _this.writeContent(book);
             }).then(function (book) {
                 return _this.compileFinished(book);
+            }).catch(function (err) {
+                return _this.handleError(err);
             });
         };
 
@@ -8208,6 +8210,14 @@ var ReVIEW;
             }
 
             return book;
+        };
+
+        Controller.prototype.handleError = function (err) {
+            console.error("unexpected error", err);
+            if (err && err.stack) {
+                console.error(err.stack);
+            }
+            return Promise.reject(err);
         };
         return Controller;
     })();

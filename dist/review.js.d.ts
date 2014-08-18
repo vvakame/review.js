@@ -589,6 +589,7 @@ declare module ReVIEW {
         public processContent(book: Book): Promise<Book>;
         public writeContent(book: Book): Promise<Book>;
         public compileFinished(book: Book): Book;
+        public handleError(err: any): Promise<Book>;
     }
 }
 declare module ReVIEW {
