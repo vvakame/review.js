@@ -9,3 +9,5 @@
 ///<reference path='builder/BuilderSpec.ts' />
 ///<reference path='RubyReVIEWDiffSpec.ts' />
 ///<reference path='UnsolvedIssueSpec.ts' />
+
+///<reference path='CliSpec.ts' />

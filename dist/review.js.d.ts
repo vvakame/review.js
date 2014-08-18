@@ -578,6 +578,7 @@ declare module ReVIEW {
     class Controller {
         public options: IOptions;
         private config;
+        public builders: typeof Build;
         constructor(options?: IOptions);
         public initConfig(data: IConfigRaw): void;
         public process(): Promise<Book>;

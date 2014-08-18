@@ -25,6 +25,8 @@ module ReVIEW {
 	export class Controller {
 		private config:Config;
 
+		builders = ReVIEW.Build;
+
 		constructor(public options:ReVIEW.IOptions = {}) {
 		}
 

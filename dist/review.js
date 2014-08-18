@@ -7944,6 +7944,7 @@ var ReVIEW;
         function Controller(options) {
             if (typeof options === "undefined") { options = {}; }
             this.options = options;
+            this.builders = ReVIEW.Build;
         }
         Controller.prototype.initConfig = function (data) {
             if (ReVIEW.isNodeJS()) {
