@@ -50,7 +50,8 @@ module ReVIEW {
 				.then(book=>this.preprocessContent(book))
 				.then(book=> this.processContent(book))
 				.then(book=>this.writeContent(book))
-				.then(book=>this.compileFinished(book));
+				.then(book=>this.compileFinished(book))
+				.catch(err => this.handleError(err));
 		}
 
 		acceptableSyntaxes(book:Book):Promise<Book> {
@@ -234,6 +235,15 @@ module ReVIEW {
 			}
 
 			return book;
+		}
+
+		handleError(err:any):Promise<Book> {
+			// TODO 指定された .re が存在しない場合ここにくる…
+			console.error("unexpected error", err);
+			if (err && err.stack) {
+				console.error(err.stack);
+			}
+			return Promise.reject(err);
 		}
 	}
 }
