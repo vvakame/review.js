@@ -58,6 +58,24 @@ describe("コマンドラインツールの動作", ()=> {
 					assert(fs.existsSync(baseDir + "ch02.html"));
 				});
 		});
+
+		it("reviewjs build でRuby用設定ファイルを元にファイル群のコンパイルができること", ()=> {
+			var baseDir = "test/fixture/ruby-book/";
+			var fs = require("fs");
+			if (fs.existsSync(baseDir + "ch01.html")) {
+				fs.unlinkSync(baseDir + "ch01.html");
+			}
+			if (fs.existsSync(baseDir + "ch02.html")) {
+				fs.unlinkSync(baseDir + "ch02.html");
+			}
+			assert(!fs.existsSync(baseDir + "ch01.html"));
+			assert(!fs.existsSync(baseDir + "ch02.html"));
+			return exec("../../../bin/reviewjs build", {cwd: baseDir})
+				.then(()=> {
+					assert(fs.existsSync(baseDir + "ch01.html"));
+					assert(fs.existsSync(baseDir + "ch02.html"));
+				});
+		});
 	});
 
 	describe("reviewjs compile の動作", ()=> {

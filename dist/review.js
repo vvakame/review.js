@@ -8695,6 +8695,13 @@ var ReVIEW;
                     return ContentStructure.createPart(v);
                 } else if (typeof v.file === "string") {
                     return ContentStructure.createChapter(v);
+                } else if (typeof v === "object") {
+                    return ContentStructure.createPart({
+                        file: Object.keys(v)[0],
+                        chapters: v[Object.keys(v)[0]].map(function (c) {
+                            return ({ file: c });
+                        })
+                    });
                 } else {
                     return null;
                 }

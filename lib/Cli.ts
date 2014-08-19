@@ -1,10 +1,12 @@
 /// <reference path="../typings/node/node.d.ts" />
 /// <reference path="../typings/update-notifier/update-notifier.d.ts" />
 /// <reference path="../typings/commander/commander.d.ts" />
+/// <reference path="../typings/js-yaml/js-yaml.d.ts" />
 
 /// <reference path="./main.d.ts" />
 
 import fs = require("fs");
+import jsyaml = require("js-yaml");
 import updateNotifier = require("update-notifier");
 var pkg = require("../package.json");
 
@@ -104,22 +106,56 @@ program
 	.description("build book")
 	.action((args:any, options:any)=> {
 		var reviewfile = (<any>program).reviewfile || "./ReVIEWconfig.js";
-		if (!fs.existsSync(process.cwd() + "/" + reviewfile)) {
-			console.error(reviewfile + " not exists");
+
+		function byReVIEWConfig() {
+			var setup = require(process.cwd() + "/" + reviewfile);
+			r.start(setup, {
+				reviewfile: reviewfile,
+				base: (<any>program).base
+			})
+				.then(book=> {
+					process.exit(0);
+				})
+				.catch(err=> {
+					console.error("unexpected error", err);
+					process.exit(1);
+				});
+		}
+
+		function byConfigYaml() {
+			// var configYaml = jsyaml.safeLoad(fs.readFileSync(process.cwd() + "/" + "config.yml", "utf8"));
+			var catalogYaml = jsyaml.safeLoad(fs.readFileSync(process.cwd() + "/" + "catalog.yml", "utf8"));
+
+			var configRaw:ReVIEW.IConfigRaw = {
+				builders: [new r.Build.HtmlBuilder()],
+				book: catalogYaml
+			};
+
+			r.start(review=> {
+				review.initConfig(configRaw);
+			}, {
+				reviewfile: reviewfile,
+				base: (<any>program).base
+			})
+				.then(book=> {
+					process.exit(0);
+				})
+				.catch(err=> {
+					console.error("unexpected error", err);
+					process.exit(1);
+				});
+		}
+
+		if (fs.existsSync(process.cwd() + "/" + reviewfile)) {
+			byReVIEWConfig();
+			return;
+		} else if (fs.existsSync(process.cwd() + "/" + "config.yml")) {
+			byConfigYaml();
+			return;
+		} else {
+			console.log("can not found ReVIEWconfig.js or config.yml");
 			process.exit(1);
 		}
-		var setup = require(process.cwd() + "/" + reviewfile);
-		r.start(setup, {
-			reviewfile: reviewfile,
-			base: (<any>program).base
-		})
-			.then(book=> {
-				process.exit(0);
-			})
-			.catch(err=> {
-				console.error("unexpected error", err);
-				process.exit(1);
-			});
 	});
 
 program.parse(process.argv);
