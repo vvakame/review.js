@@ -8,12 +8,10 @@ describe("ReVIEWのConfig.tsの", ()=> {
 
 	function verifyBookData(book:ReVIEW.BookStructure) {
 		assert(book.predef.length === 1);
-		assert(book.contents.length === 4);
-		assert(book.postdef.length === 1);
-
 		assert(!book.predef[0].part);
 		assert(book.predef[0].chapter.file === "pre.re");
 
+		assert(book.contents.length === 4);
 		assert(!book.contents[0].part);
 		assert(book.contents[0].chapter.file === "fullsetA.re");
 
@@ -28,9 +26,11 @@ describe("ReVIEWのConfig.tsの", ()=> {
 		assert(!book.contents[3].part);
 		assert(book.contents[3].chapter.file === "fullsetC.re");
 
+		assert(book.appendix.length === 1);
 		assert(!book.appendix[0].part);
 		assert(book.appendix[0].chapter.file === "appendix.re");
 
+		assert(book.postdef.length === 1);
 		assert(!book.postdef[0].part);
 		assert(book.postdef[0].chapter.file === "post.re");
 	}
@@ -117,7 +117,7 @@ describe("ReVIEWのConfig.tsの", ()=> {
 		verifyBookData(ReVIEW.BookStructure.createBook(book));
 	});
 
-	it.skip("IConfigBookに設定ができる YAML形式より", ()=> {
+	it("IConfigBookに設定ができる YAML形式より", ()=> {
 		// TODO
 		var book:any = {
 			PREDEF: [ 'pre.re' ],
