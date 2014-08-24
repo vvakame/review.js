@@ -102,9 +102,13 @@ program
 	});
 
 program
-	.command("build")
+	.command("build [target]")
 	.description("build book")
-	.action((args:any, options:any)=> {
+	.action((target:string, options:any)=> {
+		if (!target) {
+			console.log("set target to html");
+		}
+		target = target || "html";
 		var reviewfile = (<any>program).reviewfile || "./ReVIEWconfig.js";
 
 		function byReVIEWConfig() {
@@ -114,6 +118,7 @@ program
 				base: (<any>program).base
 			})
 				.then(book=> {
+					console.log("completed!");
 					process.exit(0);
 				})
 				.catch(err=> {
@@ -127,7 +132,7 @@ program
 			var catalogYaml = jsyaml.safeLoad(fs.readFileSync(process.cwd() + "/" + "catalog.yml", "utf8"));
 
 			var configRaw:ReVIEW.IConfigRaw = {
-				builders: [new r.Build.HtmlBuilder()],
+				builders: [r.target2builder(target)],
 				book: catalogYaml
 			};
 
@@ -138,6 +143,7 @@ program
 				base: (<any>program).base
 			})
 				.then(book=> {
+					console.log("completed!");
 					process.exit(0);
 				})
 				.catch(err=> {
