@@ -4819,12 +4819,12 @@ var ReVIEW;
             }
             config.builders = config.builders || target ? [target2builder(target)] : [new ReVIEW.Build.TextBuilder()];
             config.book = config.book || {
-                chapters: [
-                    fileName
+                contents: [
+                    { file: fileName }
                 ]
             };
-            config.book.chapters = config.book.chapters || [
-                fileName
+            config.book.contents = config.book.contents || [
+                { file: fileName }
             ];
 
             var results = {};
@@ -4853,9 +4853,9 @@ var ReVIEW;
                 originalCompileSuccess(book);
             };
             var originalCompileFailed = config.listener.onCompileFailed;
-            config.listener.onCompileFailed = function () {
+            config.listener.onCompileFailed = function (book) {
                 success = false;
-                originalCompileFailed();
+                originalCompileFailed(book);
             };
 
             return ReVIEW.start(function (review) {
@@ -4940,6 +4940,7 @@ var ReVIEW;
             "deprecated_inline_symbol": "%s というインライン構文は非推奨です。"
         },
         "builder": {
+            "image_not_found": "ID: %s にマッチする画像が見つかりませんでした",
             "chapter": "第%d章",
             "list": "リスト%s.%s",
             "table": "表%s.%s"
@@ -5023,6 +5024,20 @@ var ReVIEW;
     ReVIEW.walk = walk;
 
     function visit(ast, v) {
+        _visit(function () {
+            return new SyncTaskPool();
+        }, ast, v);
+    }
+    ReVIEW.visit = visit;
+
+    function visitAsync(ast, v) {
+        return Promise.resolve(_visit(function () {
+            return new AsyncTaskPool();
+        }, ast, v));
+    }
+    ReVIEW.visitAsync = visitAsync;
+
+    function _visit(poolGenerator, ast, v) {
         var newV = {
             visitDefaultPre: v.visitDefaultPre,
             visitDefaultPost: v.visitDefaultPost || (function () {
@@ -5093,163 +5108,403 @@ var ReVIEW;
         newV.visitColumnHeadlinePost = newV.visitColumnHeadlinePost.bind(v);
         newV.visitTextPre = newV.visitTextPre.bind(v);
         newV.visitTextPost = newV.visitTextPost.bind(v);
-        visitSub(null, ast, newV);
-    }
-    ReVIEW.visit = visit;
 
-    function visitSub(parent, ast, v) {
+        return _visitSub(poolGenerator, null, ast, newV);
+    }
+
+    function _visitSub(poolGenerator, parent, ast, v) {
         if (ast instanceof ReVIEW.Parse.BlockElementSyntaxTree) {
-            var block = ast.toBlockElement();
-            var ret = v.visitBlockElementPre(block, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                block.args.forEach(function (next) {
-                    visitSub(ast, next, v);
+            return (function () {
+                var block = ast.toBlockElement();
+                var pool = poolGenerator();
+                var ret = v.visitBlockElementPre(block, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        block.args.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
+                        });
+                        block.childNodes.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
                 });
-                block.childNodes.forEach(function (next) {
-                    visitSub(ast, next, v);
+                pool.add(function () {
+                    return v.visitBlockElementPost(block, parent);
                 });
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitBlockElementPost(block, parent);
+                return pool.consume();
+            })();
         } else if (ast instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
-            var inline = ast.toInlineElement();
-            var ret = v.visitInlineElementPre(inline, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                inline.childNodes.forEach(function (next) {
-                    visitSub(ast, next, v);
+            return (function () {
+                var inline = ast.toInlineElement();
+                var pool = poolGenerator();
+                var ret = v.visitInlineElementPre(inline, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        inline.childNodes.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
                 });
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitInlineElementPost(inline, parent);
+                pool.add(function () {
+                    return v.visitInlineElementPost(inline, parent);
+                });
+                return pool.consume();
+            })();
         } else if (ast instanceof ReVIEW.Parse.ArgumentSyntaxTree) {
-            var arg = ast.toArgument();
-            var ret = v.visitArgumentPre(arg, parent);
-            if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitArgumentPost(arg, parent);
+            return (function () {
+                var arg = ast.toArgument();
+                var pool = poolGenerator();
+                var ret = v.visitArgumentPre(arg, parent);
+                pool.handle(ret, {
+                    next: function () {
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitArgumentPost(arg, parent);
+                });
+                return pool.consume();
+            })();
         } else if (ast instanceof ReVIEW.Parse.ChapterSyntaxTree) {
-            var chap = ast.toChapter();
-            var ret = v.visitChapterPre(chap, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                visitSub(ast, chap.headline, v);
-                if (chap.text) {
-                    chap.text.forEach(function (next) {
-                        visitSub(ast, next, v);
-                    });
-                }
-                chap.childNodes.forEach(function (next) {
-                    visitSub(ast, next, v);
+            return (function () {
+                var chap = ast.toChapter();
+                var pool = poolGenerator();
+                var ret = v.visitChapterPre(chap, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, chap.headline, v);
+                        });
+                        if (chap.text) {
+                            chap.text.forEach(function (next) {
+                                pool.add(function () {
+                                    return _visitSub(poolGenerator, ast, next, v);
+                                });
+                            });
+                        }
+                        chap.childNodes.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
                 });
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitChapterPost(chap, parent);
+                pool.add(function () {
+                    return v.visitChapterPost(chap, parent);
+                });
+                return pool.consume();
+            })();
         } else if (ast instanceof ReVIEW.Parse.HeadlineSyntaxTree) {
-            var head = ast.toHeadline();
-            var ret = v.visitHeadlinePre(head, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                visitSub(ast, head.label, v);
-                visitSub(ast, head.caption, v);
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitHeadlinePost(head, parent);
+            return (function () {
+                var head = ast.toHeadline();
+                var pool = poolGenerator();
+                var ret = v.visitHeadlinePre(head, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, head.label, v);
+                        });
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, head.caption, v);
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitHeadlinePost(head, parent);
+                });
+                return pool.consume();
+            })();
         } else if (ast instanceof ReVIEW.Parse.ColumnSyntaxTree) {
-            var column = ast.toColumn();
-            var ret = v.visitColumnPre(column, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                visitSub(ast, column.headline, v);
-                if (column.text) {
-                    column.text.forEach(function (next) {
-                        visitSub(ast, next, v);
-                    });
-                }
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitColumnPost(column, parent);
+            return (function () {
+                var column = ast.toColumn();
+                var pool = poolGenerator();
+                var ret = v.visitColumnPre(column, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, column.headline, v);
+                        });
+                        if (column.text) {
+                            column.text.forEach(function (next) {
+                                pool.add(function () {
+                                    return _visitSub(poolGenerator, ast, next, v);
+                                });
+                            });
+                        }
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitColumnPost(column, parent);
+                });
+                return pool.consume();
+            })();
         } else if (ast instanceof ReVIEW.Parse.ColumnHeadlineSyntaxTree) {
-            var columnHead = ast.toColumnHeadline();
-            var ret = v.visitColumnHeadlinePre(columnHead, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                visitSub(ast, columnHead.caption, v);
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitColumnHeadlinePost(columnHead, parent);
+            return (function () {
+                var columnHead = ast.toColumnHeadline();
+                var pool = poolGenerator();
+                var ret = v.visitColumnHeadlinePre(columnHead, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, columnHead.caption, v);
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitColumnHeadlinePost(columnHead, parent);
+                });
+                return pool.consume();
+            })();
         } else if (ast instanceof ReVIEW.Parse.UlistElementSyntaxTree) {
-            var ul = ast.toUlist();
-            var ret = v.visitUlistPre(ul, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                visitSub(ast, ul.text, v);
-                ul.childNodes.forEach(function (next) {
-                    visitSub(ast, next, v);
+            return (function () {
+                var ul = ast.toUlist();
+                var pool = poolGenerator();
+                var ret = v.visitUlistPre(ul, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, ul.text, v);
+                        });
+                        ul.childNodes.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
                 });
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitUlistPost(ul, parent);
+                pool.add(function () {
+                    return v.visitUlistPost(ul, parent);
+                });
+                return pool.consume();
+            })();
         } else if (ast instanceof ReVIEW.Parse.OlistElementSyntaxTree) {
-            var ol = ast.toOlist();
-            var ret = v.visitOlistPre(ol, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                visitSub(ast, ol.text, v);
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitOlistPost(ol, parent);
+            return (function () {
+                var ol = ast.toOlist();
+                var pool = poolGenerator();
+                var ret = v.visitOlistPre(ol, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, ol.text, v);
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitOlistPost(ol, parent);
+                });
+                return pool.consume();
+            })();
         } else if (ast instanceof ReVIEW.Parse.DlistElementSyntaxTree) {
-            var dl = ast.toDlist();
-            var ret = v.visitDlistPre(dl, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                visitSub(ast, dl.text, v);
-                visitSub(ast, dl.content, v);
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitDlistPost(dl, parent);
+            return (function () {
+                var dl = ast.toDlist();
+                var pool = poolGenerator();
+                var ret = v.visitDlistPre(dl, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, dl.text, v);
+                        });
+                        pool.add(function () {
+                            return _visitSub(poolGenerator, ast, dl.content, v);
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitDlistPost(dl, parent);
+                });
+                return pool.consume();
+            })();
         } else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && (ast.ruleName === 7 /* Paragraph */ || ast.ruleName === 17 /* BlockElementParagraph */)) {
-            var node = ast.toNode();
-            var ret = v.visitParagraphPre(node, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                node.childNodes.forEach(function (next) {
-                    visitSub(ast, next, v);
+            return (function () {
+                var node = ast.toNode();
+                var pool = poolGenerator();
+                var ret = v.visitParagraphPre(node, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        node.childNodes.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
                 });
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitParagraphPost(node, parent);
+                pool.add(function () {
+                    return v.visitParagraphPost(node, parent);
+                });
+                return pool.consume();
+            })();
         } else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree) {
-            var node = ast.toNode();
-            var ret = v.visitNodePre(node, parent);
-            if (typeof ret === "undefined" || (typeof ret === "boolean" && ret)) {
-                node.childNodes.forEach(function (next) {
-                    visitSub(ast, next, v);
+            return (function () {
+                var node = ast.toNode();
+                var pool = poolGenerator();
+                var ret = v.visitNodePre(node, parent);
+                pool.handle(ret, {
+                    next: function () {
+                        node.childNodes.forEach(function (next) {
+                            pool.add(function () {
+                                return _visitSub(poolGenerator, ast, next, v);
+                            });
+                        });
+                    },
+                    func: function () {
+                        ret(v);
+                    }
                 });
-            } else if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitNodePost(node, parent);
+                pool.add(function () {
+                    return v.visitNodePost(node, parent);
+                });
+                return pool.consume();
+            })();
         } else if (ast instanceof ReVIEW.Parse.TextNodeSyntaxTree) {
-            var text = ast.toTextNode();
-            var ret = v.visitTextPre(text, parent);
-            if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitTextPost(text, parent);
+            return (function () {
+                var text = ast.toTextNode();
+                var pool = poolGenerator();
+                var ret = v.visitTextPre(text, parent);
+                pool.handle(ret, {
+                    next: function () {
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitTextPost(text, parent);
+                });
+                return pool.consume();
+            })();
         } else if (ast) {
-            var ret = v.visitDefaultPre(parent, ast);
-            if (typeof ret === "function") {
-                ret(v);
-            }
-            v.visitDefaultPost(parent, ast);
+            return (function () {
+                var pool = poolGenerator();
+                var ret = v.visitDefaultPre(parent, ast);
+                pool.handle(ret, {
+                    next: function () {
+                    },
+                    func: function () {
+                        ret(v);
+                    }
+                });
+                pool.add(function () {
+                    return v.visitDefaultPost(parent, ast);
+                });
+                return pool.consume();
+            })();
+        } else {
+            return (function () {
+                var pool = poolGenerator();
+                return pool.consume();
+            })();
         }
     }
 
     
+
+    
+
+    var SyncTaskPool = (function () {
+        function SyncTaskPool() {
+            this.tasks = [];
+        }
+        SyncTaskPool.prototype.add = function (value) {
+            this.tasks.push(value);
+        };
+
+        SyncTaskPool.prototype.handle = function (value, statements) {
+            if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
+                statements.next();
+            } else if (typeof value === "function") {
+                statements.func();
+            }
+        };
+
+        SyncTaskPool.prototype.consume = function () {
+            return this.tasks.map(function (task) {
+                return task();
+            });
+        };
+        return SyncTaskPool;
+    })();
+
+    var AsyncTaskPool = (function () {
+        function AsyncTaskPool() {
+            this.tasks = [];
+        }
+        AsyncTaskPool.prototype.add = function (value) {
+            this.tasks.push(function () {
+                return Promise.resolve(value());
+            });
+        };
+
+        AsyncTaskPool.prototype.handle = function (value, statements) {
+            if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
+                statements.next();
+            } else if (value && typeof value.then === "function") {
+                this.tasks.push(function () {
+                    return Promise.resolve(value);
+                });
+            } else if (typeof value === "function") {
+                statements.func();
+            }
+        };
+
+        AsyncTaskPool.prototype.consume = function () {
+            var _this = this;
+            var promise = new Promise(function (resolve, reject) {
+                var result = [];
+                var next = function () {
+                    var func = _this.tasks.shift();
+                    if (!func) {
+                        resolve(result);
+                        return;
+                    }
+                    func().then(function (value) {
+                        result.push(value);
+                        next();
+                    });
+                };
+                next();
+            });
+            return promise;
+        };
+        return AsyncTaskPool;
+    })();
 })(ReVIEW || (ReVIEW = {}));
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -6666,87 +6921,97 @@ var ReVIEW;
                 var _this = this;
                 this.book = book;
 
-                book.parts.forEach(function (part) {
-                    part.chapters.forEach(function (chapter) {
-                        var process = chapter.createBuilderProcess(_this);
-                        ReVIEW.visit(chapter.root, {
-                            visitDefaultPre: function (node) {
-                            },
-                            visitChapterPre: function (node) {
-                                return _this.chapterPre(process, node);
-                            },
-                            visitChapterPost: function (node) {
-                                return _this.chapterPost(process, node);
-                            },
-                            visitHeadlinePre: function (node) {
-                                return _this.headlinePre(process, "hd", node);
-                            },
-                            visitHeadlinePost: function (node) {
-                                return _this.headlinePost(process, "hd", node);
-                            },
-                            visitColumnPre: function (node) {
-                                return _this.columnPre(process, node);
-                            },
-                            visitColumnPost: function (node) {
-                                return _this.columnPost(process, node);
-                            },
-                            visitColumnHeadlinePre: function (node) {
-                                return _this.columnHeadlinePre(process, node);
-                            },
-                            visitColumnHeadlinePost: function (node) {
-                                return _this.columnHeadlinePost(process, node);
-                            },
-                            visitParagraphPre: function (node) {
-                                return _this.paragraphPre(process, "p", node);
-                            },
-                            visitParagraphPost: function (node) {
-                                return _this.paragraphPost(process, "p", node);
-                            },
-                            visitUlistPre: function (node) {
-                                return _this.ulistPre(process, "ul", node);
-                            },
-                            visitUlistPost: function (node) {
-                                return _this.ulistPost(process, "ul", node);
-                            },
-                            visitOlistPre: function (node) {
-                                return _this.olistPre(process, "ol", node);
-                            },
-                            visitOlistPost: function (node) {
-                                return _this.olistPost(process, "ol", node);
-                            },
-                            visitDlistPre: function (node) {
-                                return _this.dlistPre(process, "dl", node);
-                            },
-                            visitDlistPost: function (node) {
-                                return _this.dlistPost(process, "dl", node);
-                            },
-                            visitBlockElementPre: function (node) {
-                                return _this.blockPre(process, node.symbol, node);
-                            },
-                            visitBlockElementPost: function (node) {
-                                return _this.blockPost(process, node.symbol, node);
-                            },
-                            visitInlineElementPre: function (node) {
-                                return _this.inlinePre(process, node.symbol, node);
-                            },
-                            visitInlineElementPost: function (node) {
-                                return _this.inlinePost(process, node.symbol, node);
-                            },
-                            visitTextPre: function (node) {
-                                _this.text(process, node);
-                            }
-                        });
-                        _this.processPost(process, chapter);
-                    });
+                return Promise.all(book.allChunks.map(function (chunk) {
+                    return _this.processAst(chunk);
+                })).then(function () {
+                    return null;
                 });
-                book.parts.forEach(function (part) {
-                    part.chapters.forEach(function (chapter) {
-                        chapter.process.doAfterProcess();
+            };
+
+            DefaultBuilder.prototype.processAst = function (chunk) {
+                var _this = this;
+                var process = chunk.createBuilderProcess(this);
+                return ReVIEW.visitAsync(chunk.tree.ast, {
+                    visitDefaultPre: function (node) {
+                    },
+                    visitChapterPre: function (node) {
+                        return _this.chapterPre(process, node);
+                    },
+                    visitChapterPost: function (node) {
+                        return _this.chapterPost(process, node);
+                    },
+                    visitHeadlinePre: function (node) {
+                        return _this.headlinePre(process, "hd", node);
+                    },
+                    visitHeadlinePost: function (node) {
+                        return _this.headlinePost(process, "hd", node);
+                    },
+                    visitColumnPre: function (node) {
+                        return _this.columnPre(process, node);
+                    },
+                    visitColumnPost: function (node) {
+                        return _this.columnPost(process, node);
+                    },
+                    visitColumnHeadlinePre: function (node) {
+                        return _this.columnHeadlinePre(process, node);
+                    },
+                    visitColumnHeadlinePost: function (node) {
+                        return _this.columnHeadlinePost(process, node);
+                    },
+                    visitParagraphPre: function (node) {
+                        return _this.paragraphPre(process, "p", node);
+                    },
+                    visitParagraphPost: function (node) {
+                        return _this.paragraphPost(process, "p", node);
+                    },
+                    visitUlistPre: function (node) {
+                        return _this.ulistPre(process, "ul", node);
+                    },
+                    visitUlistPost: function (node) {
+                        return _this.ulistPost(process, "ul", node);
+                    },
+                    visitOlistPre: function (node) {
+                        return _this.olistPre(process, "ol", node);
+                    },
+                    visitOlistPost: function (node) {
+                        return _this.olistPost(process, "ol", node);
+                    },
+                    visitDlistPre: function (node) {
+                        return _this.dlistPre(process, "dl", node);
+                    },
+                    visitDlistPost: function (node) {
+                        return _this.dlistPost(process, "dl", node);
+                    },
+                    visitBlockElementPre: function (node) {
+                        return _this.blockPre(process, node.symbol, node);
+                    },
+                    visitBlockElementPost: function (node) {
+                        return _this.blockPost(process, node.symbol, node);
+                    },
+                    visitInlineElementPre: function (node) {
+                        return _this.inlinePre(process, node.symbol, node);
+                    },
+                    visitInlineElementPost: function (node) {
+                        return _this.inlinePost(process, node.symbol, node);
+                    },
+                    visitTextPre: function (node) {
+                        _this.text(process, node);
+                    }
+                }).then(function () {
+                    _this.processPost(process, chunk);
+                    return Promise.all(chunk.nodes.map(function (chunk) {
+                        return _this.processAst(chunk);
+                    })).then(function () {
+                        return null;
                     });
                 });
             };
 
-            DefaultBuilder.prototype.processPost = function (process, chapter) {
+            DefaultBuilder.prototype.escape = function (data) {
+                throw new Error("please override this method");
+            };
+
+            DefaultBuilder.prototype.processPost = function (process, chunk) {
             };
 
             DefaultBuilder.prototype.chapterPre = function (process, node) {
@@ -6894,10 +7159,10 @@ var ReVIEW;
                         return _this.name.toLowerCase() === name + "builder";
                     });
                     if (target) {
-                        process.out(content.substring(matches[0].length));
+                        process.outRaw(content.substring(matches[0].length));
                     }
                 } else {
-                    process.out(content);
+                    process.outRaw(content);
                 }
                 return false;
             };
@@ -6911,10 +7176,10 @@ var ReVIEW;
                         return _this.name.toLowerCase() === name + "builder";
                     });
                     if (target) {
-                        process.out(content.substring(matches[0].length));
+                        process.outRaw(content.substring(matches[0].length));
                     }
                 } else {
-                    process.out(content);
+                    process.outRaw(content);
                 }
                 return false;
             };
@@ -6923,6 +7188,1041 @@ var ReVIEW;
         Build.DefaultBuilder = DefaultBuilder;
     })(ReVIEW.Build || (ReVIEW.Build = {}));
     var Build = ReVIEW.Build;
+})(ReVIEW || (ReVIEW = {}));
+var ReVIEW;
+(function (ReVIEW) {
+    (function (Build) {
+        "use strict";
+
+        var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
+
+        var nodeContentToString = ReVIEW.nodeContentToString;
+
+        
+
+        var SyntaxPreprocessor = (function () {
+            function SyntaxPreprocessor() {
+            }
+            SyntaxPreprocessor.prototype.start = function (book) {
+                var _this = this;
+                this.acceptableSyntaxes = book.acceptableSyntaxes;
+
+                book.predef.forEach(function (chunk) {
+                    return _this.preprocessChunk(chunk);
+                });
+                book.contents.forEach(function (chunk) {
+                    return _this.preprocessChunk(chunk);
+                });
+                book.appendix.forEach(function (chunk) {
+                    return _this.preprocessChunk(chunk);
+                });
+                book.postdef.forEach(function (chunk) {
+                    return _this.preprocessChunk(chunk);
+                });
+            };
+
+            SyntaxPreprocessor.prototype.preprocessChunk = function (chunk) {
+                var _this = this;
+                ReVIEW.visit(chunk.tree.ast, {
+                    visitDefaultPre: function (node) {
+                    },
+                    visitColumnPre: function (node) {
+                        _this.preprocessColumnSyntax(chunk, node);
+                    },
+                    visitBlockElementPre: function (node) {
+                        _this.preprocessBlockSyntax(chunk, node);
+                    }
+                });
+
+                chunk.nodes.forEach(function (chunk) {
+                    return _this.preprocessChunk(chunk);
+                });
+            };
+
+            SyntaxPreprocessor.prototype.preprocessColumnSyntax = function (chunk, column) {
+                function reconstruct(parent, target, to) {
+                    if (typeof to === "undefined") { to = column.parentNode.toChapter(); }
+                    if (target.level <= to.level) {
+                        reconstruct(parent.parentNode.toNode(), target, to.parentNode.toChapter());
+                        return;
+                    }
+
+                    to.childNodes.splice(to.childNodes.indexOf(parent) + 1, 0, target);
+                    column.text.splice(column.text.indexOf(target), 1);
+                }
+
+                ReVIEW.visit(column, {
+                    visitDefaultPre: function (node) {
+                    },
+                    visitColumnPre: function (node) {
+                    },
+                    visitChapterPre: function (node) {
+                        if (column.level < node.headline.level) {
+                            return;
+                        }
+                        reconstruct(column, node);
+                    }
+                });
+
+                ReVIEW.visit(chunk.tree.ast, {
+                    visitDefaultPre: function (ast, parent) {
+                        ast.parentNode = parent;
+                    }
+                });
+
+                ReVIEW.visit(chunk.tree.ast, {
+                    visitDefaultPre: function (ast, parent) {
+                    },
+                    visitChapterPre: function (ast) {
+                        ast.text.forEach(function (node, i, nodes) {
+                            node.prev = nodes[i - 1];
+                            node.next = nodes[i + 1];
+                        });
+                    },
+                    visitNodePre: function (ast) {
+                        ast.childNodes.forEach(function (node, i, nodes) {
+                            node.prev = nodes[i - 1];
+                            node.next = nodes[i + 1];
+                        });
+                    }
+                });
+            };
+
+            SyntaxPreprocessor.prototype.preprocessBlockSyntax = function (chunk, node) {
+                if (node.childNodes.length === 0) {
+                    return;
+                }
+
+                var syntaxes = this.acceptableSyntaxes.find(node);
+                if (syntaxes.length !== 1) {
+                    return;
+                }
+
+                var syntax = syntaxes[0];
+                if (syntax.allowFullySyntax) {
+                    return;
+                } else if (syntax.allowInline) {
+                    var info;
+                    var resultNodes = [];
+                    var lastNode;
+                    node.childNodes.forEach(function (node) {
+                        ReVIEW.visit(node, {
+                            visitDefaultPre: function (node) {
+                                if (!info) {
+                                    info = {
+                                        offset: node.offset,
+                                        line: node.line,
+                                        column: node.column
+                                    };
+                                }
+                                lastNode = node;
+                            },
+                            visitInlineElementPre: function (node) {
+                                var textNode = new TextNodeSyntaxTree({
+                                    syntax: "BlockElementContentText",
+                                    offset: info.offset,
+                                    line: info.line,
+                                    column: info.column,
+                                    endPos: node.offset - 1,
+                                    text: chunk.process.input.substring(info.offset, node.offset - 1)
+                                });
+                                resultNodes.push(textNode);
+                                resultNodes.push(node);
+                                info = null;
+                                lastNode = node;
+                            }
+                        });
+                    });
+                    if (info) {
+                        (function () {
+                            var textNode = new TextNodeSyntaxTree({
+                                syntax: "BlockElementContentText",
+                                offset: info.offset,
+                                line: info.line,
+                                column: info.column,
+                                endPos: lastNode.endPos,
+                                text: chunk.process.input.substring(info.offset, lastNode.endPos)
+                            });
+                            resultNodes.push(textNode);
+                        })();
+                    }
+
+                    node.childNodes = resultNodes;
+                } else {
+                    (function () {
+                        var first = node.childNodes[0];
+                        var last = node.childNodes[node.childNodes.length - 1];
+                        var textNode = new TextNodeSyntaxTree({
+                            syntax: "BlockElementContentText",
+                            offset: first.offset,
+                            line: first.line,
+                            column: first.column,
+                            endPos: last.endPos,
+                            text: nodeContentToString(chunk.process, node)
+                        });
+                        node.childNodes = [textNode];
+                    })();
+                }
+            };
+            return SyntaxPreprocessor;
+        })();
+        Build.SyntaxPreprocessor = SyntaxPreprocessor;
+    })(ReVIEW.Build || (ReVIEW.Build = {}));
+    var Build = ReVIEW.Build;
+})(ReVIEW || (ReVIEW = {}));
+var ReVIEW;
+(function (ReVIEW) {
+    (function (Build) {
+        "use strict";
+
+        var t = ReVIEW.i18n.t;
+
+        
+
+        var DefaultValidator = (function () {
+            function DefaultValidator() {
+            }
+            DefaultValidator.prototype.start = function (book, acceptableSyntaxes, builders) {
+                this.acceptableSyntaxes = acceptableSyntaxes;
+                this.builders = builders;
+
+                this.checkBuilder(book, acceptableSyntaxes, builders);
+                this.checkBook(book);
+                this.resolveSymbolAndReference(book);
+            };
+
+            DefaultValidator.prototype.checkBuilder = function (book, acceptableSyntaxes, builders) {
+                if (typeof builders === "undefined") { builders = []; }
+                acceptableSyntaxes.acceptableSyntaxes.forEach(function (syntax) {
+                    var prefix;
+                    switch (syntax.type) {
+                        case 2 /* Other */:
+                            return;
+                        case 0 /* Block */:
+                            prefix = "block_";
+                            break;
+                        case 1 /* Inline */:
+                            prefix = "inline_";
+                            break;
+                    }
+                    var funcName1 = prefix + syntax.symbolName;
+                    var funcName2 = prefix + syntax.symbolName + "_pre";
+                    builders.forEach(function (builder) {
+                        var func = builder[funcName1] || builder[funcName2];
+                        if (!func) {
+                            book.process.error(Build.SyntaxType[syntax.type] + " " + syntax.symbolName + " is not supported in " + builder.name);
+                        }
+                    });
+                });
+            };
+
+            DefaultValidator.prototype.checkBook = function (book) {
+                var _this = this;
+                book.predef.forEach(function (chunk) {
+                    return _this.checkChunk(chunk);
+                });
+                book.contents.forEach(function (chunk) {
+                    return _this.checkChunk(chunk);
+                });
+                book.appendix.forEach(function (chunk) {
+                    return _this.checkChunk(chunk);
+                });
+                book.postdef.forEach(function (chunk) {
+                    return _this.checkChunk(chunk);
+                });
+            };
+
+            DefaultValidator.prototype.checkChunk = function (chunk) {
+                var _this = this;
+                ReVIEW.visit(chunk.tree.ast, {
+                    visitDefaultPre: function (node) {
+                    },
+                    visitHeadlinePre: function (node) {
+                        var results = _this.acceptableSyntaxes.find(node);
+                        if (results.length !== 1) {
+                            chunk.process.error(t("compile.syntax_definietion_error"), node);
+                            return;
+                        }
+                        return results[0].process(chunk.process, node);
+                    },
+                    visitColumnPre: function (node) {
+                        var results = _this.acceptableSyntaxes.find(node);
+                        if (results.length !== 1) {
+                            chunk.process.error(t("compile.syntax_definietion_error"), node);
+                            return;
+                        }
+                        return results[0].process(chunk.process, node);
+                    },
+                    visitBlockElementPre: function (node) {
+                        var results = _this.acceptableSyntaxes.find(node);
+                        if (results.length !== 1) {
+                            chunk.process.error(t("compile.block_not_supported", node.symbol), node);
+                            return;
+                        }
+                        var expects = results[0].argsLength;
+                        var arg = node.args || [];
+                        if (expects.indexOf(arg.length) === -1) {
+                            var expected = expects.map(function (n) {
+                                return Number(n).toString();
+                            }).join(" or ");
+                            var message = t("compile.args_length_mismatch", expected, arg.length);
+                            chunk.process.error(message, node);
+                            return;
+                        }
+
+                        return results[0].process(chunk.process, node);
+                    },
+                    visitInlineElementPre: function (node) {
+                        var results = _this.acceptableSyntaxes.find(node);
+                        if (results.length !== 1) {
+                            chunk.process.error(t("compile.inline_not_supported", node.symbol), node);
+                            return;
+                        }
+                        return results[0].process(chunk.process, node);
+                    }
+                });
+
+                ReVIEW.visit(chunk.tree.ast, {
+                    visitDefaultPre: function (node) {
+                    },
+                    visitChapterPre: function (node) {
+                        if (node.level === 1) {
+                            if (!ReVIEW.findChapter(node)) {
+                                chunk.process.error(t("compile.chapter_not_toplevel"), node);
+                            }
+                        } else {
+                            var parent = ReVIEW.findChapter(node.parentNode);
+                            if (!parent) {
+                                chunk.process.error(t("compile.chapter_topleve_eq1"), node);
+                            }
+                        }
+                    }
+                });
+            };
+
+            DefaultValidator.prototype.resolveSymbolAndReference = function (book) {
+                var symbols = book.allChunks.reduce(function (p, c) {
+                    return p.concat(c.process.symbols);
+                }, []);
+                symbols.forEach(function (symbol) {
+                    var referenceTo = symbol.referenceTo;
+                    if (!referenceTo) {
+                        return;
+                    }
+                    if (!referenceTo.part && referenceTo.partName) {
+                        book.allChunks.forEach(function (chunk) {
+                            if (referenceTo.partName === chunk.name) {
+                                referenceTo.part = chunk;
+                            }
+                        });
+                    }
+                    if (!referenceTo.chapter && referenceTo.chapterName) {
+                        referenceTo.part.nodes.forEach(function (chunk) {
+                            if (referenceTo.chapterName === chunk.name) {
+                                referenceTo.chapter = chunk;
+                            }
+                        });
+                    }
+                });
+
+                symbols.forEach(function (symbol) {
+                    if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
+                        var reference = symbol.referenceTo;
+                        symbols.forEach(function (symbol) {
+                            if (reference.part === symbol.part && reference.chapter === symbol.chapter && reference.targetSymbol === symbol.symbolName && reference.label === symbol.labelName) {
+                                reference.referenceNode = symbol.node;
+                            }
+                        });
+                        if (!reference.referenceNode) {
+                            symbol.chapter.process.error(t("compile.reference_is_missing", reference.targetSymbol, reference.label), symbol.node);
+                            return;
+                        }
+                    }
+                });
+
+                symbols.forEach(function (symbol1) {
+                    symbols.forEach(function (symbol2) {
+                        if (symbol1 === symbol2) {
+                            return;
+                        }
+                        if (symbol1.chapter === symbol2.chapter && symbol1.symbolName === symbol2.symbolName) {
+                            if (symbol1.labelName && symbol2.labelName && symbol1.labelName === symbol2.labelName) {
+                                symbol1.chapter.process.error(t("compile.duplicated_label"), symbol1.node, symbol2.node);
+                                return;
+                            }
+                        }
+                    });
+                });
+            };
+            return DefaultValidator;
+        })();
+        Build.DefaultValidator = DefaultValidator;
+    })(ReVIEW.Build || (ReVIEW.Build = {}));
+    var Build = ReVIEW.Build;
+})(ReVIEW || (ReVIEW = {}));
+var ReVIEW;
+(function (ReVIEW) {
+    "use strict";
+
+    var Config = (function () {
+        function Config(original) {
+            this.original = original;
+        }
+        Object.defineProperty(Config.prototype, "read", {
+            get: function () {
+                throw new Error("please implements this method");
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(Config.prototype, "write", {
+            get: function () {
+                throw new Error("please implements this method");
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(Config.prototype, "exists", {
+            get: function () {
+                throw new Error("please implements this method");
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(Config.prototype, "analyzer", {
+            get: function () {
+                return this.original.analyzer || new ReVIEW.Build.DefaultAnalyzer();
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(Config.prototype, "validators", {
+            get: function () {
+                var config = this.original;
+                if (!config.validators || config.validators.length === 0) {
+                    return [new ReVIEW.Build.DefaultValidator()];
+                } else if (!Array.isArray(config.validators)) {
+                    return [config.validators];
+                } else {
+                    return config.validators;
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(Config.prototype, "builders", {
+            get: function () {
+                if (this._builders) {
+                    return this._builders;
+                }
+
+                var config = this.original;
+                if (!config.builders || config.builders.length === 0) {
+                    this._builders = [new ReVIEW.Build.DefaultBuilder()];
+                } else if (!Array.isArray(config.builders)) {
+                    this._builders = [config.builders];
+                } else {
+                    this._builders = config.builders;
+                }
+                return this._builders;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(Config.prototype, "listener", {
+            get: function () {
+                throw new Error("please implements this method");
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(Config.prototype, "book", {
+            get: function () {
+                if (!this._bookStructure) {
+                    this._bookStructure = ReVIEW.BookStructure.createBook(this.original.book);
+                }
+                return this._bookStructure;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Config.prototype.resolvePath = function (path) {
+            throw new Error("please implements this method");
+        };
+        return Config;
+    })();
+    ReVIEW.Config = Config;
+
+    var NodeJSConfig = (function (_super) {
+        __extends(NodeJSConfig, _super);
+        function NodeJSConfig(options, original) {
+            _super.call(this, original);
+            this.options = options;
+            this.original = original;
+        }
+        Object.defineProperty(NodeJSConfig.prototype, "read", {
+            get: function () {
+                return this.original.read || ReVIEW.IO.read;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(NodeJSConfig.prototype, "write", {
+            get: function () {
+                return this.original.write || ReVIEW.IO.write;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(NodeJSConfig.prototype, "exists", {
+            get: function () {
+                var _this = this;
+                return function (path) {
+                    var fs = require("fs");
+                    var _path = require("path");
+                    var basePath = _this.original.basePath || __dirname;
+                    var promise = new Promise(function (resolve, reject) {
+                        fs.exists(_path.resolve(basePath, path), function (result) {
+                            resolve({ path: path, result: result });
+                        });
+                    });
+                    return promise;
+                };
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(NodeJSConfig.prototype, "listener", {
+            get: function () {
+                if (this._listener) {
+                    return this._listener;
+                }
+
+                var listener = this.original.listener || {};
+                listener.onAcceptables = listener.onAcceptables || (function () {
+                });
+                listener.onSymbols = listener.onSymbols || (function () {
+                });
+                listener.onReports = listener.onReports || this.onReports;
+                listener.onCompileSuccess = listener.onCompileSuccess || this.onCompileSuccess;
+                listener.onCompileFailed = listener.onCompileFailed || this.onCompileFailed;
+
+                this._listener = listener;
+                return this._listener;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        NodeJSConfig.prototype.onReports = function (reports) {
+            var colors = require("colors");
+            colors.setTheme({
+                info: "cyan",
+                warn: "yellow",
+                error: "red"
+            });
+
+            reports.forEach(function (report) {
+                var message = "";
+                if (report.chapter) {
+                    message += report.chapter.name + " ";
+                }
+                if (report.nodes) {
+                    report.nodes.forEach(function (node) {
+                        message += "[" + node.line + "," + node.column + "] ";
+                    });
+                }
+                message += report.message;
+                if (report.level === 2 /* Error */) {
+                    console.warn(message.error);
+                } else if (report.level === 1 /* Warning */) {
+                    console.error(message.warn);
+                } else if (report.level === 0 /* Info */) {
+                    console.info(message.info);
+                } else {
+                    throw new Error("unknown report level.");
+                }
+            });
+        };
+
+        NodeJSConfig.prototype.onCompileSuccess = function (book) {
+            process.exit(0);
+        };
+
+        NodeJSConfig.prototype.onCompileFailed = function () {
+            process.exit(1);
+        };
+
+        NodeJSConfig.prototype.resolvePath = function (path) {
+            var p = require("path");
+            var base = this.options.base || "./";
+            return p.join(base, path);
+        };
+        return NodeJSConfig;
+    })(Config);
+    ReVIEW.NodeJSConfig = NodeJSConfig;
+
+    var WebBrowserConfig = (function (_super) {
+        __extends(WebBrowserConfig, _super);
+        function WebBrowserConfig(options, original) {
+            _super.call(this, original);
+            this.options = options;
+            this.original = original;
+        }
+        Object.defineProperty(WebBrowserConfig.prototype, "read", {
+            get: function () {
+                return this.original.read || (function () {
+                    throw new Error("please implement config.read method");
+                });
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(WebBrowserConfig.prototype, "write", {
+            get: function () {
+                return this.original.write || (function () {
+                    throw new Error("please implement config.write method");
+                });
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(WebBrowserConfig.prototype, "exists", {
+            get: function () {
+                var _this = this;
+                return function (path) {
+                    if (window.location.protocol === "file:") {
+                        return _this._existsFileScheme(path);
+                    } else {
+                        return _this._existsHttpScheme(path);
+                    }
+                };
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        WebBrowserConfig.prototype._existsFileScheme = function (path) {
+            var promise = new Promise(function (resolve, reject) {
+                var canvas = document.createElement('canvas');
+                canvas.width = 200;
+                canvas.height = 14;
+                var ctx = canvas.getContext("2d");
+                ctx.fillText("file://では画像の存在チェックができません", 2, 10);
+                var dataUrl = canvas.toDataURL();
+                resolve({ path: dataUrl, result: true });
+            });
+            return promise;
+        };
+
+        WebBrowserConfig.prototype._existsHttpScheme = function (path) {
+            var promise = new Promise(function (resolve, reject) {
+                try  {
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200 || xhr.status === 304) {
+                                resolve({ path: path, result: true });
+                            } else {
+                                resolve({ path: path, result: false });
+                            }
+                        }
+                    };
+                    xhr.open("GET", path);
+
+                    xhr.setRequestHeader("If-Modified-Since", new Date().toUTCString());
+                    xhr.send();
+                } catch (e) {
+                    if (e instanceof DOMException) {
+                        var de = e;
+                        console.log(de.message);
+                    }
+                    resolve({ path: path, result: false });
+                }
+            });
+            return promise;
+        };
+
+        Object.defineProperty(WebBrowserConfig.prototype, "listener", {
+            get: function () {
+                if (this._listener) {
+                    return this._listener;
+                }
+
+                var listener = this.original.listener || {};
+                listener.onAcceptables = listener.onAcceptables || (function () {
+                });
+                listener.onSymbols = listener.onSymbols || (function () {
+                });
+                listener.onReports = listener.onReports || this.onReports;
+                listener.onCompileSuccess = listener.onCompileSuccess || this.onCompileSuccess;
+                listener.onCompileFailed = listener.onCompileFailed || this.onCompileFailed;
+
+                this._listener = listener;
+                return this._listener;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        WebBrowserConfig.prototype.onReports = function (reports) {
+            reports.forEach(function (report) {
+                var message = "";
+                if (report.chapter) {
+                    message += report.chapter.name + " ";
+                }
+                if (report.nodes) {
+                    report.nodes.forEach(function (node) {
+                        message += "[" + node.line + "," + node.column + "] ";
+                    });
+                }
+                message += report.message;
+                if (report.level === 2 /* Error */) {
+                    console.warn(message);
+                } else if (report.level === 1 /* Warning */) {
+                    console.error(message);
+                } else if (report.level === 0 /* Info */) {
+                    console.info(message);
+                } else {
+                    throw new Error("unknown report level.");
+                }
+            });
+        };
+
+        WebBrowserConfig.prototype.onCompileSuccess = function (book) {
+        };
+
+        WebBrowserConfig.prototype.onCompileFailed = function (book) {
+        };
+
+        WebBrowserConfig.prototype.resolvePath = function (path) {
+            if (!this.options.base) {
+                return path;
+            }
+
+            var base = this.options.base;
+            if (!this.endWith(base, "/") && !this.startWith(path, "/")) {
+                base += "/";
+            }
+            return base + path;
+        };
+
+        WebBrowserConfig.prototype.startWith = function (str, target) {
+            return str.indexOf(target) === 0;
+        };
+
+        WebBrowserConfig.prototype.endWith = function (str, target) {
+            return str.indexOf(target, str.length - target.length) !== -1;
+        };
+        return WebBrowserConfig;
+    })(Config);
+    ReVIEW.WebBrowserConfig = WebBrowserConfig;
+})(ReVIEW || (ReVIEW = {}));
+var ReVIEW;
+(function (ReVIEW) {
+    "use strict";
+
+    var SyntaxTree = ReVIEW.Parse.SyntaxTree;
+
+    var NodeJSConfig = ReVIEW.NodeJSConfig;
+    var WebBrowserConfig = ReVIEW.WebBrowserConfig;
+
+    var Controller = (function () {
+        function Controller(options) {
+            if (typeof options === "undefined") { options = {}; }
+            this.options = options;
+            this.builders = ReVIEW.Build;
+        }
+        Controller.prototype.initConfig = function (data) {
+            if (ReVIEW.isNodeJS()) {
+                this.config = new NodeJSConfig(this.options, data);
+            } else {
+                this.config = new WebBrowserConfig(this.options, data);
+            }
+        };
+
+        Controller.prototype.process = function () {
+            var _this = this;
+            return Promise.resolve(new ReVIEW.Book(this.config)).then(function (book) {
+                return _this.acceptableSyntaxes(book);
+            }).then(function (book) {
+                return _this.toContentChunk(book);
+            }).then(function (book) {
+                return _this.readReVIEWFiles(book);
+            }).then(function (book) {
+                return _this.parseContent(book);
+            }).then(function (book) {
+                return _this.preprocessContent(book);
+            }).then(function (book) {
+                return _this.processContent(book);
+            }).then(function (book) {
+                return _this.writeContent(book);
+            }).then(function (book) {
+                return _this.compileFinished(book);
+            }).catch(function (err) {
+                return _this.handleError(err);
+            });
+        };
+
+        Controller.prototype.acceptableSyntaxes = function (book) {
+            book.acceptableSyntaxes = book.config.analyzer.getAcceptableSyntaxes();
+
+            if (book.config.listener.onAcceptables(book.acceptableSyntaxes) === false) {
+                book.config.listener.onCompileFailed();
+                return Promise.reject(null);
+            }
+
+            return Promise.resolve(book);
+        };
+
+        Controller.prototype.toContentChunk = function (book) {
+            var convert = function (c, parent) {
+                var chunk;
+                if (c.part) {
+                    chunk = new ReVIEW.ContentChunk(book, c.part.file);
+                    c.part.chapters.forEach(function (c) {
+                        convert(ReVIEW.ContentStructure.createChapter(c), chunk);
+                    });
+                } else if (c.chapter) {
+                    chunk = new ReVIEW.ContentChunk(book, parent, c.chapter.file);
+                } else {
+                    return null;
+                }
+                if (parent) {
+                    parent.nodes.push(chunk);
+                }
+                return chunk;
+            };
+
+            book.predef = this.config.book.predef.map(function (c) {
+                return convert(c);
+            });
+            book.contents = this.config.book.contents.map(function (c) {
+                return convert(c);
+            });
+            book.appendix = this.config.book.appendix.map(function (c) {
+                return convert(c);
+            });
+            book.postdef = this.config.book.postdef.map(function (c) {
+                return convert(c);
+            });
+
+            return book;
+        };
+
+        Controller.prototype.readReVIEWFiles = function (book) {
+            var promises = [];
+
+            var read = function (chunk) {
+                var resolvedPath = book.config.resolvePath(chunk.name);
+                promises.push(book.config.read(resolvedPath).then(function (input) {
+                    return chunk.input = input;
+                }));
+                chunk.nodes.forEach(function (chunk) {
+                    return read(chunk);
+                });
+            };
+
+            book.predef.forEach(function (chunk) {
+                return read(chunk);
+            });
+            book.contents.forEach(function (chunk) {
+                return read(chunk);
+            });
+            book.appendix.forEach(function (chunk) {
+                return read(chunk);
+            });
+            book.postdef.forEach(function (chunk) {
+                return read(chunk);
+            });
+
+            return Promise.all(promises).then(function () {
+                return book;
+            });
+        };
+
+        Controller.prototype.parseContent = function (book) {
+            var parse = function (chunk) {
+                try  {
+                    chunk.tree = ReVIEW.Parse.parse(chunk.input);
+                } catch (e) {
+                    if (!(e instanceof PEG.SyntaxError)) {
+                        throw e;
+                    }
+                    var se = e;
+                    var errorNode = new SyntaxTree({
+                        syntax: se.name,
+                        line: se.line,
+                        column: se.column,
+                        offset: se.offset,
+                        endPos: -1
+                    });
+                    chunk.tree = { ast: errorNode, cst: null };
+                }
+                chunk.nodes.forEach(function (chunk) {
+                    return parse(chunk);
+                });
+            };
+
+            book.predef.forEach(function (chunk) {
+                return parse(chunk);
+            });
+            book.contents.forEach(function (chunk) {
+                return parse(chunk);
+            });
+            book.appendix.forEach(function (chunk) {
+                return parse(chunk);
+            });
+            book.predef.forEach(function (chunk) {
+                return parse(chunk);
+            });
+
+            return book;
+        };
+
+        Controller.prototype.preprocessContent = function (book) {
+            var numberingChapter = function (chunk, counter) {
+                var chapters = [];
+                ReVIEW.visit(chunk.tree.ast, {
+                    visitDefaultPre: function (node) {
+                    },
+                    visitChapterPre: function (node) {
+                        chapters.push(node);
+                    }
+                });
+                var max = 0;
+                var currentLevel = 0;
+                chapters.forEach(function (chapter) {
+                    var level = chapter.headline.level;
+                    max = Math.max(max, level);
+                    var i;
+                    if (currentLevel > level) {
+                        for (i = level + 1; i <= max; i++) {
+                            counter[i] = 0;
+                        }
+                    } else if (currentLevel < level) {
+                        for (i = level; i <= max; i++) {
+                            counter[i] = 0;
+                        }
+                    }
+                    currentLevel = level;
+                    counter[level] = (counter[level] || 0) + 1;
+                    chapter.no = counter[level];
+                });
+                chunk.no = counter[1];
+                chunk.nodes.forEach(function (chunk) {
+                    return numberingChapter(chunk, counter);
+                });
+            };
+            var numberingChapters = function (chunks, counter) {
+                if (typeof counter === "undefined") { counter = {}; }
+                chunks.forEach(function (chunk) {
+                    return numberingChapter(chunk, counter);
+                });
+            };
+
+            numberingChapters(book.predef);
+            numberingChapters(book.contents);
+            numberingChapters(book.appendix);
+            numberingChapters(book.postdef);
+
+            var preprocessor = new ReVIEW.Build.SyntaxPreprocessor();
+            preprocessor.start(book);
+            return book;
+        };
+
+        Controller.prototype.processContent = function (book) {
+            var _this = this;
+            book.config.validators.forEach(function (validator) {
+                validator.start(book, book.acceptableSyntaxes, _this.config.builders);
+            });
+            if (book.reports.some(function (report) {
+                return report.level === 2 /* Error */;
+            })) {
+                return Promise.resolve(book);
+            }
+
+            var symbols = book.allChunks.reduce(function (p, c) {
+                return p.concat(c.process.symbols);
+            }, []);
+            if (this.config.listener.onSymbols(symbols) === false) {
+                return Promise.resolve(book);
+            }
+
+            return Promise.all(this.config.builders.map(function (builder) {
+                return builder.init(book);
+            })).then(function () {
+                return book;
+            });
+        };
+
+        Controller.prototype.writeContent = function (book) {
+            var _this = this;
+            var promises = [];
+
+            var write = function (chunk) {
+                chunk.builderProcesses.forEach(function (process) {
+                    var baseName = chunk.name.substr(0, chunk.name.lastIndexOf(".re"));
+                    var fileName = baseName + "." + process.builder.extention;
+                    promises.push(_this.config.write(fileName, process.result));
+                });
+                chunk.nodes.forEach(function (chunk) {
+                    return write(chunk);
+                });
+            };
+
+            book.predef.forEach(function (chunk) {
+                return write(chunk);
+            });
+            book.contents.forEach(function (chunk) {
+                return write(chunk);
+            });
+            book.appendix.forEach(function (chunk) {
+                return write(chunk);
+            });
+            book.postdef.forEach(function (chunk) {
+                return write(chunk);
+            });
+
+            return Promise.all(promises).then(function () {
+                return book;
+            });
+        };
+
+        Controller.prototype.compileFinished = function (book) {
+            book.config.listener.onReports(book.reports);
+            if (!book.hasError) {
+                book.config.listener.onCompileSuccess(book);
+            } else {
+                book.config.listener.onCompileFailed(book);
+            }
+
+            return book;
+        };
+
+        Controller.prototype.handleError = function (err) {
+            console.error("unexpected error", err);
+            if (err && err.stack) {
+                console.error(err.stack);
+            }
+            return Promise.reject(err);
+        };
+        return Controller;
+    })();
+    ReVIEW.Controller = Controller;
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
@@ -7070,7 +8370,7 @@ var ReVIEW;
             } else if (splitted.length === 2) {
                 return {
                     part: this.part,
-                    partName: this.part.name,
+                    partName: (this.part || {}).name,
                     chapterName: splitted[0],
                     targetSymbol: targetSymbol,
                     label: splitted[1]
@@ -7078,9 +8378,9 @@ var ReVIEW;
             } else if (splitted.length === 1) {
                 return {
                     part: this.part,
-                    partName: this.part.name,
+                    partName: (this.part || {}).name,
                     chapter: this.chapter,
-                    chapterName: this.chapter.name,
+                    chapterName: (this.chapter || {}).name,
                     targetSymbol: targetSymbol,
                     label: splitted[0]
                 };
@@ -7136,6 +8436,11 @@ var ReVIEW;
         });
 
         BuilderProcess.prototype.out = function (data) {
+            this.result += this.builder.escape(data);
+            return this;
+        };
+
+        BuilderProcess.prototype.outRaw = function (data) {
             this.result += data;
             return this;
         };
@@ -7160,6 +8465,48 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
+
+        BuilderProcess.prototype.findImageFile = function (id) {
+            var _this = this;
+            var config = (this.base.part || this.base.chapter).book.config;
+
+            var fileNameList = [];
+            (function () {
+                var imageDirList = ["images/"];
+                var builderList = [_this.builder.extention + "/", ""];
+                var chapSeparatorList = ["/", "-"];
+                var extList = ["png", "jpg", "jpeg"];
+                var chunkName = (_this.base.chapter || _this.base.part).name;
+                chunkName = chunkName.substring(0, chunkName.lastIndexOf("."));
+                imageDirList.forEach(function (imageDir) {
+                    builderList.forEach(function (builder) {
+                        chapSeparatorList.forEach(function (chapSeparator) {
+                            extList.forEach(function (ext) {
+                                fileNameList.push(imageDir + builder + chunkName + chapSeparator + id + "." + ext);
+                            });
+                        });
+                    });
+                });
+            })();
+            var promise = new Promise(function (resolve, reject) {
+                var checkFileExists = function () {
+                    if (fileNameList.length === 0) {
+                        reject(id);
+                        return;
+                    }
+                    var fileName = fileNameList.shift();
+                    config.exists(fileName).then(function (result) {
+                        if (result.result) {
+                            resolve(result.path);
+                            return;
+                        }
+                        checkFileExists();
+                    });
+                };
+                checkFileExists();
+            });
+            return promise;
+        };
         return BuilderProcess;
     })();
     ReVIEW.BuilderProcess = BuilderProcess;
@@ -7168,18 +8515,63 @@ var ReVIEW;
         function Book(config) {
             this.config = config;
             this.process = new BookProcess();
-            this.parts = [];
+            this.predef = [];
+            this.contents = [];
+            this.appendix = [];
+            this.postdef = [];
         }
-        Object.defineProperty(Book.prototype, "reports", {
+        Object.defineProperty(Book.prototype, "allChunks", {
             get: function () {
                 var tmpArray = [];
-                tmpArray.push(this.process.reports);
-                tmpArray.push(this.parts.map(function (part) {
-                    return part.chapters.map(function (chapter) {
-                        return chapter.process.reports;
+                var add = function (chunk) {
+                    tmpArray.push(chunk);
+                    chunk.nodes.forEach(function (chunk) {
+                        return add(chunk);
                     });
-                }));
-                return ReVIEW.flatten(tmpArray);
+                };
+
+                this.predef.forEach(function (chunk) {
+                    return add(chunk);
+                });
+                this.contents.forEach(function (chunk) {
+                    return add(chunk);
+                });
+                this.appendix.forEach(function (chunk) {
+                    return add(chunk);
+                });
+                this.postdef.forEach(function (chunk) {
+                    return add(chunk);
+                });
+
+                return tmpArray;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(Book.prototype, "reports", {
+            get: function () {
+                var results = [];
+                results = results.concat(this.process.reports);
+                var gatherReports = function (chunk) {
+                    results = results.concat(chunk.process.reports);
+                    chunk.nodes.forEach(function (chunk) {
+                        return gatherReports(chunk);
+                    });
+                };
+                this.predef.forEach(function (chunk) {
+                    return gatherReports(chunk);
+                });
+                this.contents.forEach(function (chunk) {
+                    return gatherReports(chunk);
+                });
+                this.appendix.forEach(function (chunk) {
+                    return gatherReports(chunk);
+                });
+                this.postdef.forEach(function (chunk) {
+                    return gatherReports(chunk);
+                });
+                return results;
             },
             enumerable: true,
             configurable: true
@@ -7208,33 +8600,44 @@ var ReVIEW;
     })();
     ReVIEW.Book = Book;
 
-    var Part = (function () {
-        function Part(parent, no, name) {
-            this.parent = parent;
-            this.no = no;
-            this.name = name;
-        }
-        return Part;
-    })();
-    ReVIEW.Part = Part;
-
-    var Chapter = (function () {
-        function Chapter(parent, no, name, input, root) {
-            this.parent = parent;
-            this.no = no;
-            this.name = name;
-            this.input = input;
-            this.root = root;
+    var ContentChunk = (function () {
+        function ContentChunk(book, parent, name) {
+            this.book = book;
+            this.nodes = [];
             this.builderProcesses = [];
-            this.process = new Process(this.parent, this, input);
+            if (parent instanceof ContentChunk) {
+                this.parent = parent;
+                this.name = name;
+            } else if (typeof name === "string") {
+                this.name = name;
+            } else {
+                this.name = parent;
+            }
+
+            var part = parent ? parent : null;
+            var chapter = this;
+            this.process = new Process(part, chapter, null);
         }
-        Chapter.prototype.createBuilderProcess = function (builder) {
+        Object.defineProperty(ContentChunk.prototype, "input", {
+            get: function () {
+                return this._input;
+            },
+            set: function (value) {
+                this._input = value;
+                this.process.input = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+
+        ContentChunk.prototype.createBuilderProcess = function (builder) {
             var builderProcess = new BuilderProcess(builder, this.process);
             this.builderProcesses.push(builderProcess);
             return builderProcess;
         };
 
-        Chapter.prototype.findResultByBuilder = function (builder) {
+        ContentChunk.prototype.findResultByBuilder = function (builder) {
             var founds;
             if (typeof builder === "string") {
                 founds = this.builderProcesses.filter(function (process) {
@@ -7248,848 +8651,104 @@ var ReVIEW;
 
             return founds[0].result;
         };
-        return Chapter;
+        return ContentChunk;
     })();
-    ReVIEW.Chapter = Chapter;
-})(ReVIEW || (ReVIEW = {}));
-var ReVIEW;
-(function (ReVIEW) {
-    (function (Build) {
-        "use strict";
-
-        var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
-
-        var nodeContentToString = ReVIEW.nodeContentToString;
-
-        
-
-        var SyntaxPreprocessor = (function () {
-            function SyntaxPreprocessor() {
-            }
-            SyntaxPreprocessor.prototype.start = function (book, acceptableSyntaxes) {
-                this.acceptableSyntaxes = acceptableSyntaxes;
-
-                this.preprocessBook(book);
-            };
-
-            SyntaxPreprocessor.prototype.preprocessBook = function (book) {
-                var _this = this;
-                book.parts.forEach(function (part) {
-                    return _this.preprocessPart(part);
-                });
-            };
-
-            SyntaxPreprocessor.prototype.preprocessPart = function (part) {
-                var _this = this;
-                part.chapters.forEach(function (chapter) {
-                    return _this.preprocessChapter(chapter);
-                });
-            };
-
-            SyntaxPreprocessor.prototype.preprocessChapter = function (chapter) {
-                var _this = this;
-                ReVIEW.visit(chapter.root, {
-                    visitDefaultPre: function (node) {
-                    },
-                    visitColumnPre: function (node) {
-                        _this.preprocessColumnSyntax(chapter, node);
-                    },
-                    visitBlockElementPre: function (node) {
-                        _this.preprocessBlockSyntax(chapter, node);
-                    }
-                });
-            };
-
-            SyntaxPreprocessor.prototype.preprocessColumnSyntax = function (chapter, column) {
-                function reconstruct(parent, target, to) {
-                    if (typeof to === "undefined") { to = column.parentNode.toChapter(); }
-                    if (target.level <= to.level) {
-                        reconstruct(parent.parentNode.toNode(), target, to.parentNode.toChapter());
-                        return;
-                    }
-
-                    to.childNodes.splice(to.childNodes.indexOf(parent) + 1, 0, target);
-                    column.text.splice(column.text.indexOf(target), 1);
-                }
-
-                ReVIEW.visit(column, {
-                    visitDefaultPre: function (node) {
-                    },
-                    visitColumnPre: function (node) {
-                    },
-                    visitChapterPre: function (node) {
-                        if (column.level < node.headline.level) {
-                            return;
-                        }
-                        reconstruct(column, node);
-                    }
-                });
-
-                ReVIEW.visit(chapter.root, {
-                    visitDefaultPre: function (ast, parent) {
-                        ast.parentNode = parent;
-                    }
-                });
-
-                ReVIEW.visit(chapter.root, {
-                    visitDefaultPre: function (ast, parent) {
-                    },
-                    visitChapterPre: function (ast) {
-                        ast.text.forEach(function (node, i, nodes) {
-                            node.prev = nodes[i - 1];
-                            node.next = nodes[i + 1];
-                        });
-                    },
-                    visitNodePre: function (ast) {
-                        ast.childNodes.forEach(function (node, i, nodes) {
-                            node.prev = nodes[i - 1];
-                            node.next = nodes[i + 1];
-                        });
-                    }
-                });
-            };
-
-            SyntaxPreprocessor.prototype.preprocessBlockSyntax = function (chapter, node) {
-                if (node.childNodes.length === 0) {
-                    return;
-                }
-
-                var syntaxes = this.acceptableSyntaxes.find(node);
-                if (syntaxes.length !== 1) {
-                    return;
-                }
-
-                var syntax = syntaxes[0];
-                if (syntax.allowFullySyntax) {
-                    return;
-                } else if (syntax.allowInline) {
-                    var info;
-                    var resultNodes = [];
-                    var lastNode;
-                    node.childNodes.forEach(function (node) {
-                        ReVIEW.visit(node, {
-                            visitDefaultPre: function (node) {
-                                if (!info) {
-                                    info = {
-                                        offset: node.offset,
-                                        line: node.line,
-                                        column: node.column
-                                    };
-                                }
-                                lastNode = node;
-                            },
-                            visitInlineElementPre: function (node) {
-                                var textNode = new TextNodeSyntaxTree({
-                                    syntax: "BlockElementContentText",
-                                    offset: info.offset,
-                                    line: info.line,
-                                    column: info.column,
-                                    endPos: node.offset - 1,
-                                    text: chapter.process.input.substring(info.offset, node.offset - 1)
-                                });
-                                resultNodes.push(textNode);
-                                resultNodes.push(node);
-                                info = null;
-                                lastNode = node;
-                            }
-                        });
-                    });
-                    if (info) {
-                        var textNode = new TextNodeSyntaxTree({
-                            syntax: "BlockElementContentText",
-                            offset: info.offset,
-                            line: info.line,
-                            column: info.column,
-                            endPos: lastNode.endPos,
-                            text: chapter.process.input.substring(info.offset, lastNode.endPos)
-                        });
-                        resultNodes.push(textNode);
-                    }
-
-                    node.childNodes = resultNodes;
-                } else {
-                    var first = node.childNodes[0];
-                    var last = node.childNodes[node.childNodes.length - 1];
-                    var textNode = new TextNodeSyntaxTree({
-                        syntax: "BlockElementContentText",
-                        offset: first.offset,
-                        line: first.line,
-                        column: first.column,
-                        endPos: last.endPos,
-                        text: nodeContentToString(chapter.process, node)
-                    });
-                    node.childNodes = [textNode];
-                }
-            };
-            return SyntaxPreprocessor;
-        })();
-        Build.SyntaxPreprocessor = SyntaxPreprocessor;
-    })(ReVIEW.Build || (ReVIEW.Build = {}));
-    var Build = ReVIEW.Build;
-})(ReVIEW || (ReVIEW = {}));
-var ReVIEW;
-(function (ReVIEW) {
-    (function (Build) {
-        "use strict";
-
-        var t = ReVIEW.i18n.t;
-
-        
-
-        var DefaultValidator = (function () {
-            function DefaultValidator() {
-            }
-            DefaultValidator.prototype.start = function (book, acceptableSyntaxes, builders) {
-                this.acceptableSyntaxes = acceptableSyntaxes;
-                this.builders = builders;
-
-                this.checkBuilder(book, acceptableSyntaxes, builders);
-                this.checkBook(book);
-                this.resolveSymbolAndReference(book);
-            };
-
-            DefaultValidator.prototype.checkBuilder = function (book, acceptableSyntaxes, builders) {
-                if (typeof builders === "undefined") { builders = []; }
-                acceptableSyntaxes.acceptableSyntaxes.forEach(function (syntax) {
-                    var prefix;
-                    switch (syntax.type) {
-                        case 2 /* Other */:
-                            return;
-                        case 0 /* Block */:
-                            prefix = "block_";
-                            break;
-                        case 1 /* Inline */:
-                            prefix = "inline_";
-                            break;
-                    }
-                    var funcName1 = prefix + syntax.symbolName;
-                    var funcName2 = prefix + syntax.symbolName + "_pre";
-                    builders.forEach(function (builder) {
-                        var func = builder[funcName1] || builder[funcName2];
-                        if (!func) {
-                            book.process.error(Build.SyntaxType[syntax.type] + " " + syntax.symbolName + " is not supported in " + builder.name);
-                        }
-                    });
-                });
-            };
-
-            DefaultValidator.prototype.checkBook = function (book) {
-                var _this = this;
-                book.parts.forEach(function (part) {
-                    return _this.checkPart(part);
-                });
-            };
-
-            DefaultValidator.prototype.checkPart = function (part) {
-                var _this = this;
-                part.chapters.forEach(function (chapter) {
-                    return _this.checkChapter(chapter);
-                });
-            };
-
-            DefaultValidator.prototype.checkChapter = function (chapter) {
-                var _this = this;
-                ReVIEW.visit(chapter.root, {
-                    visitDefaultPre: function (node) {
-                    },
-                    visitHeadlinePre: function (node) {
-                        var results = _this.acceptableSyntaxes.find(node);
-                        if (results.length !== 1) {
-                            chapter.process.error(t("compile.syntax_definietion_error"), node);
-                            return;
-                        }
-                        return results[0].process(chapter.process, node);
-                    },
-                    visitColumnPre: function (node) {
-                        var results = _this.acceptableSyntaxes.find(node);
-                        if (results.length !== 1) {
-                            chapter.process.error(t("compile.syntax_definietion_error"), node);
-                            return;
-                        }
-                        return results[0].process(chapter.process, node);
-                    },
-                    visitBlockElementPre: function (node) {
-                        var results = _this.acceptableSyntaxes.find(node);
-                        if (results.length !== 1) {
-                            chapter.process.error(t("compile.block_not_supported", node.symbol), node);
-                            return;
-                        }
-                        var expects = results[0].argsLength;
-                        var arg = node.args || [];
-                        if (expects.indexOf(arg.length) === -1) {
-                            var expected = expects.map(function (n) {
-                                return Number(n).toString();
-                            }).join(" or ");
-                            var message = t("compile.args_length_mismatch", expected, arg.length);
-                            chapter.process.error(message, node);
-                            return;
-                        }
-
-                        return results[0].process(chapter.process, node);
-                    },
-                    visitInlineElementPre: function (node) {
-                        var results = _this.acceptableSyntaxes.find(node);
-                        if (results.length !== 1) {
-                            chapter.process.error(t("compile.inline_not_supported", node.symbol), node);
-                            return;
-                        }
-                        return results[0].process(chapter.process, node);
-                    }
-                });
-
-                ReVIEW.visit(chapter.root, {
-                    visitDefaultPre: function (node) {
-                    },
-                    visitChapterPre: function (node) {
-                        if (node.level === 1) {
-                            if (!ReVIEW.findChapter(node)) {
-                                chapter.process.error(t("compile.chapter_not_toplevel"), node);
-                            }
-                        } else {
-                            var parent = ReVIEW.findChapter(node.parentNode);
-                            if (!parent) {
-                                chapter.process.error(t("compile.chapter_topleve_eq1"), node);
-                            }
-                        }
-                    }
-                });
-            };
-
-            DefaultValidator.prototype.resolveSymbolAndReference = function (book) {
-                var symbols = ReVIEW.flatten(book.parts.map(function (part) {
-                    return part.chapters.map(function (chapter) {
-                        return chapter.process.symbols;
-                    });
-                }));
-                symbols.forEach(function (symbol) {
-                    var referenceTo = symbol.referenceTo;
-                    if (!referenceTo) {
-                        return;
-                    }
-                    if (!referenceTo.part) {
-                        book.parts.forEach(function (part) {
-                            if (referenceTo.partName === part.name) {
-                                referenceTo.part = part;
-                            }
-                        });
-                    }
-                    if (!referenceTo.part) {
-                        symbol.chapter.process.error(t("compile.part_is_missing", symbol.part.name), symbol.node);
-                        return;
-                    }
-                    if (!referenceTo.chapter) {
-                        referenceTo.part.chapters.forEach(function (chap) {
-                            if (referenceTo.chapterName === chap.name) {
-                                referenceTo.chapter = chap;
-                            }
-                        });
-                    }
-                    if (!referenceTo.chapter) {
-                        symbol.chapter.process.error(t("compile.chapter_is_missing", symbol.chapter.name), symbol.node);
-                        return;
-                    }
-                });
-
-                symbols.forEach(function (symbol) {
-                    if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
-                        var reference = symbol.referenceTo;
-                        symbols.forEach(function (symbol) {
-                            if (reference.part === symbol.part && reference.chapter === symbol.chapter && reference.targetSymbol === symbol.symbolName && reference.label === symbol.labelName) {
-                                reference.referenceNode = symbol.node;
-                            }
-                        });
-                        if (!reference.referenceNode) {
-                            symbol.chapter.process.error(t("compile.reference_is_missing", reference.targetSymbol, reference.label), symbol.node);
-                            return;
-                        }
-                    }
-                });
-
-                symbols.forEach(function (symbol1) {
-                    symbols.forEach(function (symbol2) {
-                        if (symbol1 === symbol2) {
-                            return;
-                        }
-                        if (symbol1.chapter === symbol2.chapter && symbol1.symbolName === symbol2.symbolName) {
-                            if (symbol1.labelName && symbol2.labelName && symbol1.labelName === symbol2.labelName) {
-                                symbol1.chapter.process.error(t("compile.duplicated_label"), symbol1.node, symbol2.node);
-                                return;
-                            }
-                        }
-                    });
-                });
-            };
-            return DefaultValidator;
-        })();
-        Build.DefaultValidator = DefaultValidator;
-    })(ReVIEW.Build || (ReVIEW.Build = {}));
-    var Build = ReVIEW.Build;
+    ReVIEW.ContentChunk = ContentChunk;
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
     "use strict";
 
-    var t = ReVIEW.i18n.t;
-
-    var SyntaxTree = ReVIEW.Parse.SyntaxTree;
-
-    var flatten = ReVIEW.flatten;
-
     
 
     
 
-    var Controller = (function () {
-        function Controller(options) {
-            if (typeof options === "undefined") { options = {}; }
-            this.options = options;
+    var BookStructure = (function () {
+        function BookStructure(predef, contents, appendix, postdef) {
+            this.predef = predef;
+            this.contents = contents;
+            this.appendix = appendix;
+            this.postdef = postdef;
+            this.predef = this.predef || [];
+            this.contents = this.contents || [];
+            this.appendix = this.appendix || [];
+            this.postdef = this.postdef || [];
         }
-        Controller.prototype.initConfig = function (data) {
-            if (ReVIEW.isNodeJS()) {
-                this.config = new NodeJSConfig(this.options, data);
+        BookStructure.createBook = function (config) {
+            if (!config) {
+                return new BookStructure(null, null, null, null);
+            }
+            var predef = (config.predef || config.PREDEF || []).map(function (v) {
+                return ContentStructure.createChapter(v);
+            });
+            var contents = (config.contents || config.CHAPS || []).map(function (v) {
+                if (!v) {
+                    return null;
+                }
+                if (typeof v === "string") {
+                    return ContentStructure.createChapter(v);
+                } else if (v.chapter) {
+                    return ContentStructure.createChapter(v.chapter);
+                } else if (v.part) {
+                    return ContentStructure.createPart(v.part);
+                } else if (typeof v.file === "string" && v.chapters) {
+                    return ContentStructure.createPart(v);
+                } else if (typeof v.file === "string") {
+                    return ContentStructure.createChapter(v);
+                } else if (typeof v === "object") {
+                    return ContentStructure.createPart({
+                        file: Object.keys(v)[0],
+                        chapters: v[Object.keys(v)[0]].map(function (c) {
+                            return ({ file: c });
+                        })
+                    });
+                } else {
+                    return null;
+                }
+            });
+            var appendix = (config.appendix || config.APPENDIX || []).map(function (v) {
+                return ContentStructure.createChapter(v);
+            });
+            var postdef = (config.postdef || config.POSTDEF || []).map(function (v) {
+                return ContentStructure.createChapter(v);
+            });
+            return new BookStructure(predef, contents, appendix, postdef);
+        };
+        return BookStructure;
+    })();
+    ReVIEW.BookStructure = BookStructure;
+
+    var ContentStructure = (function () {
+        function ContentStructure(part, chapter) {
+            this.part = part;
+            this.chapter = chapter;
+        }
+        ContentStructure.createChapter = function (value) {
+            if (typeof value === "string") {
+                return new ContentStructure(null, { file: value });
+            } else if (value && typeof value.file === "string") {
+                return new ContentStructure(null, value);
             } else {
-                this.config = new WebBrowserConfig(this.options, data);
+                return null;
             }
         };
 
-        Controller.prototype.process = function () {
-            var _this = this;
-            var acceptableSyntaxes = this.config.analyzer.getAcceptableSyntaxes();
-
-            if (this.config.listener.onAcceptables(acceptableSyntaxes) === false) {
-                this.config.listener.onCompileFailed();
-                return Promise.reject(null);
+        ContentStructure.createPart = function (part) {
+            if (part) {
+                var p = {
+                    file: part.file,
+                    chapters: (part.chapters || []).map(function (c) {
+                        return typeof c === "string" ? { file: c } : c;
+                    })
+                };
+                return new ContentStructure(p, null);
+            } else {
+                return null;
             }
-
-            return this.processBook().then(function (book) {
-                var preprocessor = new ReVIEW.Build.SyntaxPreprocessor();
-                preprocessor.start(book, acceptableSyntaxes);
-
-                _this.config.validators.forEach(function (validator) {
-                    validator.start(book, acceptableSyntaxes, _this.config.builders);
-                });
-                if (book.reports.some(function (report) {
-                    return report.level === 2 /* Error */;
-                })) {
-                    return Promise.resolve(book);
-                }
-
-                var symbols = flatten(book.parts.map(function (part) {
-                    return part.chapters.map(function (chapter) {
-                        return chapter.process.symbols;
-                    });
-                }));
-                if (_this.config.listener.onSymbols(symbols) === false) {
-                    return Promise.resolve(book);
-                }
-
-                _this.config.builders.forEach(function (builder) {
-                    return builder.init(book);
-                });
-
-                var writePromises = [];
-                book.parts.forEach(function (part) {
-                    part.chapters.forEach(function (chapter) {
-                        chapter.builderProcesses.forEach(function (process) {
-                            var baseName = chapter.name.substr(0, chapter.name.lastIndexOf(".re"));
-                            var fileName = baseName + "." + process.builder.extention;
-                            var result = process.result;
-                            writePromises.push(_this.config.write(fileName, result));
-                        });
-                    });
-                });
-                return Promise.all(writePromises).then(function () {
-                    return book;
-                });
-            }).then(function (book) {
-                _this.config.listener.onReports(book.reports);
-                if (!book.hasError) {
-                    _this.config.listener.onCompileSuccess(book);
-                } else {
-                    _this.config.listener.onCompileFailed();
-                }
-
-                return book;
-            });
         };
-
-        Controller.prototype.processBook = function () {
-            var _this = this;
-            var book = new ReVIEW.Book(this.config);
-            var promise = Promise.all(Object.keys(this.config.book).map(function (key, index) {
-                var chapters = _this.config.book[key];
-                return _this.processPart(book, index, key, chapters);
-            })).then(function (parts) {
-                book.parts = parts;
-
-                book.parts.forEach(function (part) {
-                    var chapters = [];
-                    part.chapters.forEach(function (chapter) {
-                        ReVIEW.visit(chapter.root, {
-                            visitDefaultPre: function (node) {
-                            },
-                            visitChapterPre: function (node) {
-                                chapters.push(node);
-                            }
-                        });
-                    });
-                    var counter = {};
-                    var max = 0;
-                    var currentLevel = 0;
-                    chapters.forEach(function (chapter) {
-                        var level = chapter.headline.level;
-                        max = Math.max(max, level);
-                        if (currentLevel > level) {
-                            for (var i = level + 1; i <= max; i++) {
-                                counter[i] = 0;
-                            }
-                        } else if (currentLevel < level) {
-                            for (var i = level; i <= max; i++) {
-                                counter[i] = 0;
-                            }
-                        }
-                        currentLevel = level;
-                        counter[level] = (counter[level] || 0) + 1;
-                        chapter.no = counter[level];
-                    });
-                });
-                return book;
-            });
-            return promise;
-        };
-
-        Controller.prototype.processPart = function (book, index, name, chapters) {
-            var _this = this;
-            if (typeof chapters === "undefined") { chapters = []; }
-            var part = new ReVIEW.Part(book, index + 1, name);
-            var promise = Promise.all(chapters.map(function (chapter, index) {
-                return _this.processChapter(book, part, index, chapter);
-            })).then(function (chapters) {
-                part.chapters = chapters;
-                return part;
-            });
-            return promise;
-        };
-
-        Controller.prototype.processChapter = function (book, part, index, chapterPath) {
-            var _this = this;
-            var resolvedPath = this.config.resolvePath(chapterPath);
-
-            var promise = new Promise(function (resolve, reject) {
-                try  {
-                    _this.config.read(resolvedPath).then(function (data) {
-                        try  {
-                            var parseResult = ReVIEW.Parse.parse(data);
-                            var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, parseResult.ast);
-                            resolve(chapter);
-                        } catch (e) {
-                            if (!(e instanceof PEG.SyntaxError)) {
-                                throw e;
-                            }
-                            var se = e;
-                            var errorNode = new SyntaxTree({
-                                syntax: se.name,
-                                line: se.line,
-                                column: se.column,
-                                offset: se.offset,
-                                endPos: -1
-                            });
-                            var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, data, null);
-                            chapter.process.error(se.message, errorNode);
-                            resolve(chapter);
-                        }
-                    }).catch(function (err) {
-                        var chapter = new ReVIEW.Chapter(part, index + 1, chapterPath, null, null);
-                        chapter.process.error(t("compile.file_not_exists", resolvedPath));
-                        resolve(chapter);
-                    });
-                } catch (e) {
-                    reject(e);
-                }
-            });
-            return promise;
-        };
-        return Controller;
+        return ContentStructure;
     })();
-    ReVIEW.Controller = Controller;
-
-    var ConfigWrapper = (function () {
-        function ConfigWrapper(original) {
-            this.original = original;
-        }
-        Object.defineProperty(ConfigWrapper.prototype, "read", {
-            get: function () {
-                throw new Error("please implements this method");
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        Object.defineProperty(ConfigWrapper.prototype, "write", {
-            get: function () {
-                throw new Error("please implements this method");
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        Object.defineProperty(ConfigWrapper.prototype, "analyzer", {
-            get: function () {
-                return this.original.analyzer || new ReVIEW.Build.DefaultAnalyzer();
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        Object.defineProperty(ConfigWrapper.prototype, "validators", {
-            get: function () {
-                var config = this.original;
-                if (!config.validators || config.validators.length === 0) {
-                    return [new ReVIEW.Build.DefaultValidator()];
-                } else if (!Array.isArray(config.validators)) {
-                    return [config.validators];
-                } else {
-                    return config.validators;
-                }
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        Object.defineProperty(ConfigWrapper.prototype, "builders", {
-            get: function () {
-                if (this._builders) {
-                    return this._builders;
-                }
-
-                var config = this.original;
-                if (!config.builders || config.builders.length === 0) {
-                    this._builders = [new ReVIEW.Build.DefaultBuilder()];
-                } else if (!Array.isArray(config.builders)) {
-                    this._builders = [config.builders];
-                } else {
-                    this._builders = config.builders;
-                }
-                return this._builders;
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        Object.defineProperty(ConfigWrapper.prototype, "listener", {
-            get: function () {
-                throw new Error("please implements this method");
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        Object.defineProperty(ConfigWrapper.prototype, "book", {
-            get: function () {
-                return this.original.book;
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        ConfigWrapper.prototype.resolvePath = function (path) {
-            throw new Error("please implements this method");
-        };
-        return ConfigWrapper;
-    })();
-
-    var NodeJSConfig = (function (_super) {
-        __extends(NodeJSConfig, _super);
-        function NodeJSConfig(options, original) {
-            _super.call(this, original);
-            this.options = options;
-            this.original = original;
-        }
-        Object.defineProperty(NodeJSConfig.prototype, "read", {
-            get: function () {
-                return this.original.read || ReVIEW.IO.read;
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        Object.defineProperty(NodeJSConfig.prototype, "write", {
-            get: function () {
-                return this.original.write || ReVIEW.IO.write;
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        Object.defineProperty(NodeJSConfig.prototype, "listener", {
-            get: function () {
-                if (this._listener) {
-                    return this._listener;
-                }
-
-                var listener = this.original.listener || {};
-                listener.onAcceptables = listener.onAcceptables || (function () {
-                });
-                listener.onSymbols = listener.onSymbols || (function () {
-                });
-                listener.onReports = listener.onReports || this.onReports;
-                listener.onCompileSuccess = listener.onCompileSuccess || this.onCompileSuccess;
-                listener.onCompileFailed = listener.onCompileFailed || this.onCompileFailed;
-
-                this._listener = listener;
-                return this._listener;
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        NodeJSConfig.prototype.onReports = function (reports) {
-            var colors = require("colors");
-            colors.setTheme({
-                info: "cyan",
-                warn: "yellow",
-                error: "red"
-            });
-
-            reports.forEach(function (report) {
-                var message = "";
-                if (report.chapter) {
-                    message += report.chapter.name + " ";
-                }
-                if (report.nodes) {
-                    report.nodes.forEach(function (node) {
-                        message += "[" + node.line + "," + node.column + "] ";
-                    });
-                }
-                message += report.message;
-                if (report.level === 2 /* Error */) {
-                    console.warn(message.error);
-                } else if (report.level === 1 /* Warning */) {
-                    console.error(message.warn);
-                } else if (report.level === 0 /* Info */) {
-                    console.info(message.info);
-                } else {
-                    throw new Error("unknown report level.");
-                }
-            });
-        };
-
-        NodeJSConfig.prototype.onCompileSuccess = function (book) {
-            process.exit(0);
-        };
-
-        NodeJSConfig.prototype.onCompileFailed = function () {
-            process.exit(1);
-        };
-
-        NodeJSConfig.prototype.resolvePath = function (path) {
-            var p = require("path");
-            var base = this.options.base || "./";
-            return p.join(base, path);
-        };
-        return NodeJSConfig;
-    })(ConfigWrapper);
-
-    var WebBrowserConfig = (function (_super) {
-        __extends(WebBrowserConfig, _super);
-        function WebBrowserConfig(options, original) {
-            _super.call(this, original);
-            this.options = options;
-            this.original = original;
-        }
-        Object.defineProperty(WebBrowserConfig.prototype, "read", {
-            get: function () {
-                return this.original.read || (function () {
-                    throw new Error("please implement config.read method");
-                });
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        Object.defineProperty(WebBrowserConfig.prototype, "write", {
-            get: function () {
-                return this.original.write || (function () {
-                    throw new Error("please implement config.write method");
-                });
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        Object.defineProperty(WebBrowserConfig.prototype, "listener", {
-            get: function () {
-                if (this._listener) {
-                    return this._listener;
-                }
-
-                var listener = this.original.listener || {};
-                listener.onAcceptables = listener.onAcceptables || (function () {
-                });
-                listener.onSymbols = listener.onSymbols || (function () {
-                });
-                listener.onReports = listener.onReports || this.onReports;
-                listener.onCompileSuccess = listener.onCompileSuccess || this.onCompileSuccess;
-                listener.onCompileFailed = listener.onCompileFailed || this.onCompileFailed;
-
-                this._listener = listener;
-                return this._listener;
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        WebBrowserConfig.prototype.onReports = function (reports) {
-            reports.forEach(function (report) {
-                var message = "";
-                if (report.chapter) {
-                    message += report.chapter.name + " ";
-                }
-                if (report.nodes) {
-                    report.nodes.forEach(function (node) {
-                        message += "[" + node.line + "," + node.column + "] ";
-                    });
-                }
-                message += report.message;
-                if (report.level === 2 /* Error */) {
-                    console.warn(message);
-                } else if (report.level === 1 /* Warning */) {
-                    console.error(message);
-                } else if (report.level === 0 /* Info */) {
-                    console.info(message);
-                } else {
-                    throw new Error("unknown report level.");
-                }
-            });
-        };
-
-        WebBrowserConfig.prototype.onCompileSuccess = function (book) {
-        };
-
-        WebBrowserConfig.prototype.onCompileFailed = function () {
-        };
-
-        WebBrowserConfig.prototype.resolvePath = function (path) {
-            if (!this.options.base) {
-                return path;
-            }
-
-            var base = this.options.base;
-            if (!this.endWith(base, "/") && !this.startWith(path, "/")) {
-                base += "/";
-            }
-            return base + path;
-        };
-
-        WebBrowserConfig.prototype.startWith = function (str, target) {
-            return str.indexOf(target) === 0;
-        };
-
-        WebBrowserConfig.prototype.endWith = function (str, target) {
-            return str.indexOf(target, str.length - target.length) !== -1;
-        };
-        return WebBrowserConfig;
-    })(ConfigWrapper);
+    ReVIEW.ContentStructure = ContentStructure;
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
@@ -8109,6 +8768,10 @@ var ReVIEW;
                 _super.apply(this, arguments);
                 this.extention = "txt";
             }
+            TextBuilder.prototype.escape = function (data) {
+                return data;
+            };
+
             TextBuilder.prototype.headlinePre = function (process, name, node) {
                 process.out("■H").out(node.level).out("■");
                 if (node.level === 1) {
@@ -8395,16 +9058,18 @@ var ReVIEW;
             };
 
             TextBuilder.prototype.block_image = function (process, node) {
-                var chapterFileName = process.base.chapter.name;
-                var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
-                var imagePath = "./images/" + chapterName + "-" + node.args[0].arg + ".png";
-                var caption = node.args[1].arg;
-                process.out("◆→開始:図←◆\n");
-                process.out("図").out(process.base.chapter.no).out(".").out(node.no).out("　").out(caption).out("\n");
-                process.out("\n");
-                process.out("◆→").out(imagePath).out("←◆\n");
-                process.out("◆→終了:図←◆\n");
-                return false;
+                return process.findImageFile(node.args[0].arg).then(function (imagePath) {
+                    var caption = node.args[1].arg;
+                    process.out("◆→開始:図←◆\n");
+                    process.out("図").out(process.base.chapter.no).out(".").out(node.no).out("　").out(caption).out("\n");
+                    process.out("\n");
+                    process.out("◆→").out(imagePath).out("←◆\n");
+                    process.out("◆→終了:図←◆\n");
+                    return false;
+                }).catch(function (id) {
+                    process.error(t("builder.image_not_found", id), node);
+                    return false;
+                });
             };
 
             TextBuilder.prototype.block_indepimage = function (process, node) {
@@ -8547,10 +9212,12 @@ var ReVIEW;
                 var hexString = nodeContentToString(process, node);
                 var code = parseInt(hexString, 16);
                 var result = "";
+
                 while (code !== 0) {
                     result = String.fromCharCode(code & 0xFFFF) + result;
                     code >>>= 16;
                 }
+
                 process.out(result);
                 return false;
             };
@@ -8616,7 +9283,7 @@ var ReVIEW;
     (function (Build) {
         "use strict";
 
-        var i18n = ReVIEW.i18n;
+        var t = ReVIEW.i18n.t;
 
         var UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
         var OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
@@ -8632,8 +9299,23 @@ var ReVIEW;
                 _super.call(this);
                 this.standalone = standalone;
                 this.extention = "html";
+                this.escapeMap = {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    '"': '&quot;',
+                    "'": '&#39;',
+                    "/": '&#x2F;'
+                };
             }
-            HtmlBuilder.prototype.processPost = function (process, chapter) {
+            HtmlBuilder.prototype.escape = function (data) {
+                var _this = this;
+                return String(data).replace(/[&<>"'\/]/g, function (c) {
+                    return _this.escapeMap[c];
+                });
+            };
+
+            HtmlBuilder.prototype.processPost = function (process, chunk) {
                 if (this.standalone) {
                     var pre = "";
                     pre += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
@@ -8644,7 +9326,7 @@ var ReVIEW;
                     pre += "  <meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n";
                     pre += "  <meta name=\"generator\" content=\"Re:VIEW\" />\n";
                     var name = null;
-                    ReVIEW.visit(chapter.root, {
+                    ReVIEW.visit(chunk.tree.ast, {
                         visitDefaultPre: function () {
                         },
                         visitChapterPre: function (node) {
@@ -8653,22 +9335,22 @@ var ReVIEW;
                             }
                         }
                     });
-                    pre += "  <title>" + name + "</title>\n";
+                    pre += "  <title>" + this.escape(name) + "</title>\n";
                     pre += "</head>\n";
                     pre += "<body>\n";
                     process.pushOut(pre);
 
-                    process.out("</body>\n");
-                    process.out("</html>\n");
+                    process.outRaw("</body>\n");
+                    process.outRaw("</html>\n");
                 }
             };
 
             HtmlBuilder.prototype.headlinePre = function (process, name, node) {
-                process.out("<h").out(node.level);
+                process.outRaw("<h").out(node.level);
                 if (node.label) {
-                    process.out(" id=\"").out(node.label.arg).out("\"");
+                    process.outRaw(" id=\"").out(node.label.arg).outRaw("\"");
                 }
-                process.out(">");
+                process.outRaw(">");
                 var constructLabel = function (node) {
                     var numbers = {};
                     var maxLevel = 0;
@@ -8694,30 +9376,30 @@ var ReVIEW;
                     }
                     return result.join("-");
                 };
-                process.out("<a id=\"h").out(constructLabel(node)).out("\"></a>");
+                process.outRaw("<a id=\"h").out(constructLabel(node)).outRaw("\"></a>");
 
                 if (node.level === 1) {
-                    var text = i18n.t("builder.chapter", node.parentNode.no);
+                    var text = ReVIEW.i18n.t("builder.chapter", node.parentNode.no);
                     process.out(text).out("　");
                 } else if (node.level === 2) {
                 }
             };
 
             HtmlBuilder.prototype.headlinePost = function (process, name, node) {
-                process.out("</h").out(node.level).out(">\n");
+                process.outRaw("</h").out(node.level).outRaw(">\n");
             };
 
             HtmlBuilder.prototype.columnPre = function (process, node) {
-                process.out("<div class=\"column\">\n\n");
+                process.outRaw("<div class=\"column\">\n\n");
             };
 
             HtmlBuilder.prototype.columnPost = function (process, node) {
-                process.out("</div>\n");
+                process.outRaw("</div>\n");
             };
 
             HtmlBuilder.prototype.columnHeadlinePre = function (process, node) {
-                process.out("<h").out(node.level).out(">");
-                process.out("<a id=\"column-").out(node.parentNode.no).out("\"></a>");
+                process.outRaw("<h").out(node.level).outRaw(">");
+                process.outRaw("<a id=\"column-").out(node.parentNode.no).outRaw("\"></a>");
 
                 return function (v) {
                     ReVIEW.visit(node.caption, v);
@@ -8725,82 +9407,82 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.columnHeadlinePost = function (process, node) {
-                process.out("</h").out(node.level).out(">\n");
+                process.outRaw("</h").out(node.level).outRaw(">\n");
             };
 
             HtmlBuilder.prototype.paragraphPre = function (process, name, node) {
                 if (node.prev && node.prev.isBlockElement() && node.prev.toBlockElement().symbol === "noindent") {
-                    process.out("<p class=\"noindent\">");
+                    process.outRaw("<p class=\"noindent\">");
                 } else {
-                    process.out("<p>");
+                    process.outRaw("<p>");
                 }
             };
 
             HtmlBuilder.prototype.paragraphPost = function (process, name, node) {
-                process.out("</p>\n");
+                process.outRaw("</p>\n");
             };
 
             HtmlBuilder.prototype.ulistPre = function (process, name, node) {
                 this.ulistParentHelper(process, node, function () {
-                    process.out("<ul>\n<li>");
+                    process.outRaw("<ul>\n<li>");
                 });
 
                 if (node.prev instanceof UlistElementSyntaxTree === false) {
-                    process.out("<ul>\n");
+                    process.outRaw("<ul>\n");
                 }
-                process.out("<li>");
+                process.outRaw("<li>");
             };
 
             HtmlBuilder.prototype.ulistPost = function (process, name, node) {
-                process.out("</li>\n");
+                process.outRaw("</li>\n");
                 if (node.next instanceof UlistElementSyntaxTree === false) {
-                    process.out("</ul>\n");
+                    process.outRaw("</ul>\n");
                 }
                 this.ulistParentHelper(process, node, function () {
-                    process.out("</li>\n</ul>\n");
+                    process.outRaw("</li>\n</ul>\n");
                 });
             };
 
             HtmlBuilder.prototype.olistPre = function (process, name, node) {
                 if (node.prev instanceof OlistElementSyntaxTree === false) {
-                    process.out("<ol>\n");
+                    process.outRaw("<ol>\n");
                 }
-                process.out("<li>");
+                process.outRaw("<li>");
             };
 
             HtmlBuilder.prototype.olistPost = function (process, name, node) {
-                process.out("</li>\n");
+                process.outRaw("</li>\n");
                 if (node.next instanceof OlistElementSyntaxTree === false) {
-                    process.out("</ol>\n");
+                    process.outRaw("</ol>\n");
                 }
             };
 
             HtmlBuilder.prototype.dlistPre = function (process, name, node) {
                 if (node.prev instanceof DlistElementSyntaxTree === false) {
-                    process.out("<dl>\n");
+                    process.outRaw("<dl>\n");
                 }
                 return function (v) {
-                    process.out("<dt>");
+                    process.outRaw("<dt>");
                     ReVIEW.visit(node.text, v);
-                    process.out("</dt>\n");
-                    process.out("<dd>");
+                    process.outRaw("</dt>\n");
+                    process.outRaw("<dd>");
                     ReVIEW.visit(node.content, v);
-                    process.out("</dd>\n");
+                    process.outRaw("</dd>\n");
                 };
             };
 
             HtmlBuilder.prototype.dlistPost = function (process, name, node) {
                 if (node.next instanceof DlistElementSyntaxTree === false) {
-                    process.out("</dl>\n");
+                    process.outRaw("</dl>\n");
                 }
             };
 
             HtmlBuilder.prototype.block_list_pre = function (process, node) {
-                process.out("<div class=\"caption-code\">\n");
+                process.outRaw("<div class=\"caption-code\">\n");
                 var chapter = findChapter(node, 1);
-                var text = i18n.t("builder.list", chapter.fqn, node.no);
-                process.out("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).out("</p>\n");
-                process.out("<pre class=\"list\">");
+                var text = ReVIEW.i18n.t("builder.list", chapter.fqn, node.no);
+                process.outRaw("<p class=\"caption\">").out(text).outRaw(": ").out(node.args[1].arg).outRaw("</p>\n");
+                process.outRaw("<pre class=\"list\">");
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         ReVIEW.visit(node, v);
@@ -8809,15 +9491,15 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.block_list_post = function (process, node) {
-                process.out("\n</pre>\n").out("</div>\n");
+                process.outRaw("\n</pre>\n").outRaw("</div>\n");
             };
 
             HtmlBuilder.prototype.block_listnum_pre = function (process, node) {
-                process.out("<div class=\"code\">\n");
+                process.outRaw("<div class=\"code\">\n");
                 var chapter = findChapter(node, 1);
-                var text = i18n.t("builder.list", chapter.fqn, node.no);
-                process.out("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).out("</p>\n");
-                process.out("<pre class=\"list\">");
+                var text = ReVIEW.i18n.t("builder.list", chapter.fqn, node.no);
+                process.outRaw("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).outRaw("</p>\n");
+                process.outRaw("<pre class=\"list\">");
                 var lineCount = 1;
                 return function (v) {
                     node.childNodes.forEach(function (node, index, childNodes) {
@@ -8843,23 +9525,23 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.block_listnum_post = function (process, node) {
-                process.out("\n</pre>\n").out("</div>\n");
+                process.outRaw("\n</pre>\n").outRaw("</div>\n");
             };
 
             HtmlBuilder.prototype.inline_list = function (process, node) {
                 var chapter = findChapter(node, 1);
                 var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-                var text = i18n.t("builder.list", chapter.fqn, listNode.no);
+                var text = ReVIEW.i18n.t("builder.list", chapter.fqn, listNode.no);
                 process.out(text);
                 return false;
             };
 
             HtmlBuilder.prototype.block_emlist_pre = function (process, node) {
-                process.out("<div class=\"emlist-code\">\n");
+                process.outRaw("<div class=\"emlist-code\">\n");
                 if (node.args[0]) {
-                    process.out("<p class=\"caption\">").out(node.args[0].arg).out("</p>\n");
+                    process.outRaw("<p class=\"caption\">").out(node.args[0].arg).outRaw("</p>\n");
                 }
-                process.out("<pre class=\"emlist\">");
+                process.outRaw("<pre class=\"emlist\">");
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         ReVIEW.visit(node, v);
@@ -8868,12 +9550,12 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.block_emlist_post = function (process, node) {
-                process.out("\n</pre>\n").out("</div>\n");
+                process.outRaw("\n</pre>\n").outRaw("</div>\n");
             };
 
             HtmlBuilder.prototype.block_emlistnum_pre = function (process, node) {
-                process.out("<div class=\"emlistnum-code\">\n");
-                process.out("<pre class=\"emlist\">");
+                process.outRaw("<div class=\"emlistnum-code\">\n");
+                process.outRaw("<pre class=\"emlist\">");
                 var lineCount = 1;
                 return function (v) {
                     node.childNodes.forEach(function (node, index, childNodes) {
@@ -8899,7 +9581,7 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.block_emlistnum_post = function (process, node) {
-                process.out("\n</pre>\n").out("</div>\n");
+                process.outRaw("\n</pre>\n").outRaw("</div>\n");
             };
 
             HtmlBuilder.prototype.inline_hd_pre = function (process, node) {
@@ -8919,23 +9601,23 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.inline_br = function (process, node) {
-                process.out("<br />");
+                process.outRaw("<br />");
             };
 
             HtmlBuilder.prototype.inline_b_pre = function (process, node) {
-                process.out("<b>");
+                process.outRaw("<b>");
             };
 
             HtmlBuilder.prototype.inline_b_post = function (process, node) {
-                process.out("</b>");
+                process.outRaw("</b>");
             };
 
             HtmlBuilder.prototype.inline_code_pre = function (process, node) {
-                process.out("<tt class=\"inline-code\">");
+                process.outRaw("<tt class=\"inline-code\">");
             };
 
             HtmlBuilder.prototype.inline_code_post = function (process, node) {
-                process.out("</tt>");
+                process.outRaw("</tt>");
             };
 
             HtmlBuilder.prototype.inline_href = function (process, node) {
@@ -8945,52 +9627,51 @@ var ReVIEW;
                     text = href.slice(href.indexOf(",") + 1).trimLeft();
                     href = href.slice(0, href.indexOf(","));
                 }
-                process.out("<a href=\"" + href + "\" class=\"link\">").out(text).out("</a>");
+                process.outRaw("<a href=\"").out(href).outRaw("\" class=\"link\">").out(text).outRaw("</a>");
                 return false;
             };
 
             HtmlBuilder.prototype.block_label = function (process, node) {
-                process.out("<a id=\"").out(node.args[0].arg).out("\"></a>\n");
+                process.outRaw("<a id=\"").out(node.args[0].arg).outRaw("\"></a>\n");
                 return false;
             };
 
             HtmlBuilder.prototype.inline_tt_pre = function (process, node) {
-                process.out("<tt>");
+                process.outRaw("<tt>");
             };
 
             HtmlBuilder.prototype.inline_tt_post = function (process, node) {
-                process.out("</tt>");
+                process.outRaw("</tt>");
             };
 
             HtmlBuilder.prototype.inline_ruby_pre = function (process, node) {
-                process.out("<ruby>");
+                process.outRaw("<ruby>");
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         var contentString = nodeContentToString(process, node);
                         var keywordData = contentString.split(",");
-
-                        process.out("<rb>").out(keywordData[0]).out("</rb>");
-                        process.out("<rp>（</rp><rt>");
+                        process.outRaw("<rb>").out(keywordData[0]).outRaw("</rb>");
+                        process.outRaw("<rp>（</rp><rt>");
                         process.out(keywordData[1]);
-                        process.out("</rt><rp>）</rp>");
+                        process.outRaw("</rt><rp>）</rp>");
                     });
                 };
             };
 
             HtmlBuilder.prototype.inline_ruby_post = function (process, node) {
-                process.out("</ruby>");
+                process.outRaw("</ruby>");
             };
 
             HtmlBuilder.prototype.inline_u_pre = function (process, node) {
-                process.out("<u>");
+                process.outRaw("<u>");
             };
 
             HtmlBuilder.prototype.inline_u_post = function (process, node) {
-                process.out("</u>");
+                process.outRaw("</u>");
             };
 
             HtmlBuilder.prototype.inline_kw_pre = function (process, node) {
-                process.out("<b class=\"kw\">");
+                process.outRaw("<b class=\"kw\">");
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         var contentString = nodeContentToString(process, node);
@@ -9004,69 +9685,71 @@ var ReVIEW;
             HtmlBuilder.prototype.inline_kw_post = function (process, node) {
                 var contentString = nodeContentToString(process, node);
                 var keywordData = contentString.split(",");
-                process.out("</b>").out("<!-- IDX:").out(keywordData[0]).out(" -->");
+                process.outRaw("</b>").outRaw("<!-- IDX:").out(keywordData[0]).outRaw(" -->");
             };
 
             HtmlBuilder.prototype.inline_em_pre = function (process, node) {
-                process.out("<em>");
+                process.outRaw("<em>");
             };
 
             HtmlBuilder.prototype.inline_em_post = function (process, node) {
-                process.out("</em>");
+                process.outRaw("</em>");
             };
 
             HtmlBuilder.prototype.block_image = function (process, node) {
-                var chapterFileName = process.base.chapter.name;
-                var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
-                var imagePath = "images/" + chapterName + "-" + node.args[0].arg + ".png";
-                var caption = node.args[1].arg;
-                var scale = 1;
-                if (node.args[2]) {
-                    var arg3 = node.args[2].arg;
-                    var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
-                    var result = regexp.exec(node.args[2].arg);
-                    if (result) {
-                        scale = parseFloat(result[1]);
+                return process.findImageFile(node.args[0].arg).then(function (imagePath) {
+                    var caption = node.args[1].arg;
+                    var scale = 1;
+                    if (node.args[2]) {
+                        var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
+                        var result = regexp.exec(node.args[2].arg);
+                        if (result) {
+                            scale = parseFloat(result[1]);
+                        }
                     }
-                }
-                process.out("<div class=\"image\">\n");
-                process.out("<img src=\"" + imagePath + "\" alt=\"" + caption + "\" width=\"" + (scale * 100) + "%\" />\n");
-                process.out("<p class=\"caption\">\n");
-                process.out("図").out(process.base.chapter.no).out(".").out(node.no).out(": ").out(caption);
-                process.out("\n</p>\n");
-                process.out("</div>\n");
-                return false;
+                    process.outRaw("<div class=\"image\">\n");
+
+                    process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
+                    process.outRaw("<p class=\"caption\">\n");
+                    process.out("図").out(process.base.chapter.no).out(".").out(node.no).out(": ").out(caption);
+                    process.outRaw("\n</p>\n");
+                    process.outRaw("</div>\n");
+                    return false;
+                }).catch(function (id) {
+                    process.error(t("builder.image_not_found", id), node);
+                    return false;
+                });
             };
 
             HtmlBuilder.prototype.block_indepimage = function (process, node) {
                 var chapterFileName = process.base.chapter.name;
                 var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
-                var imagePath = "images/" + chapterName + "-" + node.args[0].arg + ".png";
+                var imagePath = "images/" + this.escape(chapterName) + "-" + this.escape(node.args[0].arg) + ".png";
                 var caption = "";
                 if (node.args[1]) {
                     caption = node.args[1].arg;
                 }
                 var scale = 1;
                 if (node.args[2]) {
-                    var arg3 = node.args[2].arg;
                     var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
                     var result = regexp.exec(node.args[2].arg);
                     if (result) {
                         scale = parseFloat(result[1]);
                     }
                 }
-                process.out("<div class=\"image\">\n");
+                process.outRaw("<div class=\"image\">\n");
+
                 if (scale !== 1) {
-                    process.out("<img src=\"" + imagePath + "\" alt=\"" + caption + "\" width=\"" + (scale * 100) + "%\" />\n");
+                    process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
                 } else {
-                    process.out("<img src=\"" + imagePath + "\" alt=\"" + caption + "\" />\n");
+                    process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" />\n");
                 }
                 if (node.args[1]) {
-                    process.out("<p class=\"caption\">\n");
+                    process.outRaw("<p class=\"caption\">\n");
                     process.out("図: ").out(caption);
-                    process.out("\n</p>\n");
+                    process.outRaw("\n</p>\n");
                 }
-                process.out("</div>\n");
+                process.outRaw("</div>\n");
                 return false;
             };
 
@@ -9080,47 +9763,47 @@ var ReVIEW;
                 var chapterFileName = process.base.chapter.name;
                 var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
                 var imageName = nodeContentToString(process, node);
-                var imagePath = "images/" + chapterName + "-" + imageName + ".png";
-                process.out("<img src=\"").out(imagePath).out("\" alt=\"[").out(imageName).out("]\" />");
+                var imagePath = "images/" + this.escape(chapterName) + "-" + this.escape(imageName) + ".png";
+                process.outRaw("<img src=\"" + imagePath + "\" alt=\"[").out(imageName).outRaw("]\" />");
                 return false;
             };
 
             HtmlBuilder.prototype.block_footnote = function (process, node) {
-                process.out("<div class=\"footnote\"><p class=\"footnote\">[<a id=\"fn-");
-                process.out(node.args[0].arg).out("\">*").out(node.no).out("</a>] ");
+                process.outRaw("<div class=\"footnote\"><p class=\"footnote\">[<a id=\"fn-");
+                process.out(node.args[0].arg).outRaw("\">*").out(node.no).outRaw("</a>] ");
                 process.out(node.args[1].arg);
-                process.out("</p></div>\n");
+                process.outRaw("</p></div>\n");
                 return false;
             };
 
             HtmlBuilder.prototype.inline_fn = function (process, node) {
                 var footnoteNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-                process.out("<a href=\"#fn-").out(footnoteNode.args[0].arg).out("\">*").out(footnoteNode.no).out("</a>");
+                process.outRaw("<a href=\"#fn-").out(footnoteNode.args[0].arg).outRaw("\">*").out(footnoteNode.no).outRaw("</a>");
                 return false;
             };
 
             HtmlBuilder.prototype.block_lead_pre = function (process, node) {
-                process.out("<div class=\"lead\">\n");
+                process.outRaw("<div class=\"lead\">\n");
             };
 
             HtmlBuilder.prototype.block_lead_post = function (process, node) {
-                process.out("</div>\n");
+                process.outRaw("</div>\n");
             };
 
             HtmlBuilder.prototype.inline_tti_pre = function (process, node) {
-                process.out("<tt><i>");
+                process.outRaw("<tt><i>");
             };
 
             HtmlBuilder.prototype.inline_tti_post = function (process, node) {
-                process.out("</i></tt>");
+                process.outRaw("</i></tt>");
             };
 
             HtmlBuilder.prototype.inline_ttb_pre = function (process, node) {
-                process.out("<tt><b>");
+                process.outRaw("<tt><b>");
             };
 
             HtmlBuilder.prototype.inline_ttb_post = function (process, node) {
-                process.out("</b></tt>");
+                process.outRaw("</b></tt>");
             };
 
             HtmlBuilder.prototype.block_noindent = function (process, node) {
@@ -9128,9 +9811,9 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.block_source_pre = function (process, node) {
-                process.out("<div class=\"source-code\">\n");
-                process.out("<p class=\"caption\">").out(node.args[0].arg).out("</p>\n");
-                process.out("<pre class=\"source\">");
+                process.outRaw("<div class=\"source-code\">\n");
+                process.outRaw("<p class=\"caption\">").out(node.args[0].arg).outRaw("</p>\n");
+                process.outRaw("<pre class=\"source\">");
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         ReVIEW.visit(node, v);
@@ -9139,12 +9822,12 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.block_source_post = function (process, node) {
-                process.out("\n</pre>\n").out("</div>\n");
+                process.outRaw("\n</pre>\n").outRaw("</div>\n");
             };
 
             HtmlBuilder.prototype.block_cmd_pre = function (process, node) {
-                process.out("<div class=\"cmd-code\">\n");
-                process.out("<pre class=\"cmd\">");
+                process.outRaw("<div class=\"cmd-code\">\n");
+                process.outRaw("<pre class=\"cmd\">");
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         ReVIEW.visit(node, v);
@@ -9153,11 +9836,11 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.block_cmd_post = function (process, node) {
-                process.out("\n</pre>\n").out("</div>\n");
+                process.outRaw("\n</pre>\n").outRaw("</div>\n");
             };
 
             HtmlBuilder.prototype.block_quote_pre = function (process, node) {
-                process.out("<blockquote><p>");
+                process.outRaw("<blockquote><p>");
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         ReVIEW.visit(node, v);
@@ -9166,55 +9849,55 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.block_quote_post = function (process, node) {
-                process.out("</p></blockquote>\n");
+                process.outRaw("</p></blockquote>\n");
             };
 
             HtmlBuilder.prototype.inline_ami_pre = function (process, node) {
-                process.out("<span class=\"ami\">");
+                process.outRaw("<span class=\"ami\">");
             };
 
             HtmlBuilder.prototype.inline_ami_post = function (process, node) {
-                process.out("</span>");
+                process.outRaw("</span>");
             };
 
             HtmlBuilder.prototype.inline_bou_pre = function (process, node) {
-                process.out("<span class=\"bou\">");
+                process.outRaw("<span class=\"bou\">");
             };
 
             HtmlBuilder.prototype.inline_bou_post = function (process, node) {
-                process.out("</span>");
+                process.outRaw("</span>");
             };
 
             HtmlBuilder.prototype.inline_i_pre = function (process, node) {
-                process.out("<i>");
+                process.outRaw("<i>");
             };
 
             HtmlBuilder.prototype.inline_i_post = function (process, node) {
-                process.out("</i>");
+                process.outRaw("</i>");
             };
 
             HtmlBuilder.prototype.inline_strong_pre = function (process, node) {
-                process.out("<strong>");
+                process.outRaw("<strong>");
             };
 
             HtmlBuilder.prototype.inline_strong_post = function (process, node) {
-                process.out("</strong>");
+                process.outRaw("</strong>");
             };
 
             HtmlBuilder.prototype.inline_uchar_pre = function (process, node) {
-                process.out("&#x");
+                process.outRaw("&#x");
             };
 
             HtmlBuilder.prototype.inline_uchar_post = function (process, node) {
-                process.out(";");
+                process.outRaw(";");
             };
 
             HtmlBuilder.prototype.block_table_pre = function (process, node) {
-                process.out("<div>\n");
+                process.outRaw("<div>\n");
                 var chapter = findChapter(node, 1);
-                var text = i18n.t("builder.table", chapter.fqn, node.no);
-                process.out("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).out("</p>\n");
-                process.out("<pre>");
+                var text = ReVIEW.i18n.t("builder.table", chapter.fqn, node.no);
+                process.outRaw("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).outRaw("</p>\n");
+                process.outRaw("<pre>");
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         ReVIEW.visit(node, v);
@@ -9223,13 +9906,13 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.block_table_post = function (process, node) {
-                process.out("\n</pre>\n").out("</div>\n");
+                process.outRaw("\n</pre>\n").outRaw("</div>\n");
             };
 
             HtmlBuilder.prototype.inline_table = function (process, node) {
                 var chapter = findChapter(node, 1);
                 var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-                var text = i18n.t("builder.table", chapter.fqn, listNode.no);
+                var text = ReVIEW.i18n.t("builder.table", chapter.fqn, listNode.no);
                 process.out(text);
                 return false;
             };
@@ -9239,7 +9922,7 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.block_comment_pre = function (process, node) {
-                process.out("<!-- ");
+                process.outRaw("<!-- ");
 
                 return function (v) {
                     node.childNodes.forEach(function (node) {
@@ -9249,15 +9932,15 @@ var ReVIEW;
             };
 
             HtmlBuilder.prototype.block_comment_post = function (process, node) {
-                process.out(" -->\n");
+                process.outRaw(" -->\n");
             };
 
             HtmlBuilder.prototype.inline_comment_pre = function (process, node) {
-                process.out("<!-- ");
+                process.outRaw("<!-- ");
             };
 
             HtmlBuilder.prototype.inline_comment_post = function (process, node) {
-                process.out(" -->");
+                process.outRaw(" -->");
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);

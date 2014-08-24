@@ -1,3 +1,5 @@
+.idea/
+
 node_modules/
 
 bower_components/**/*.ts
@@ -15,6 +17,10 @@ bower_components/**/license
 bower_components/**/test/
 
 bower_components/jquery/src/
+bower_components/js-yaml/bin/
+bower_components/js-yaml/lib/
+bower_components/js-yaml/demo/
+bower_components/js-yaml/examples/
 bower_components/review.js/index.js
 bower_components/review.js/lib/
 bower_components/review.js/resources/
