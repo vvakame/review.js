@@ -12,8 +12,12 @@
 		"typings",
 		"bin",
 		"src",
+		"test",
 		"util",
 		"example",
+		"Grunfile.js",
+		"karma.conf.js",
+		"setup.sh",
 		"Gemfile*"
 	],
 
