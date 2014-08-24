@@ -155,7 +155,7 @@ module ReVIEW {
 					}
 				});
 				var max = 0;
-				var currentLevel = 0;
+				var currentLevel = 1;
 				chapters.forEach((chapter)=> {
 					var level = chapter.headline.level;
 					max = Math.max(max, level);
