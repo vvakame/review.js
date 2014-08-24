@@ -144,7 +144,7 @@
                     },
 
                     onCompileSuccess: function (book) {
-                        book.parts[1].chapters[0].builderProcesses.forEach(function (process) {
+                        book.allChunks[0].builderProcesses.forEach(function (process) {
                             var $result;
                             switch (process.builder.name) {
                                 case "TextBuilder":
@@ -162,12 +162,8 @@
                 builders: [new ReVIEW.Build.TextBuilder(), new ReVIEW.Build.HtmlBuilder(false)],
 
                 book: {
-                    preface: [
-                    ],
-                    chapters: [
+                    contents: [
                         "ch01.re"
-                    ],
-                    afterword: [
                     ]
                 }
             });
