@@ -5,12 +5,10 @@ module.exports = function (review) {
 
 		builders: [new ReVIEW.Build.HtmlBuilder()],
 		book: {
-			preface: [],
-			chapters: [
+			contents: [
 				"ch01.re",
 				"ch02.re"
-			],
-			afterword: []
+			]
 		}
 	});
 };
