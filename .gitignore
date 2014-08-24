@@ -34,6 +34,7 @@ testEspowered/
 src/main/peg/*.js
 test-results.xml
 pages/
+wiki/
 
 bin/out/
 tscommand.tmp.txt
