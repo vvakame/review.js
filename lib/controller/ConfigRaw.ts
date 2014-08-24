@@ -101,6 +101,12 @@ module ReVIEW {
 				} else if (typeof v.file === "string") {
 					// IConfigPartOrChapter 由来
 					return ContentStructure.createChapter(v);
+				} else if (typeof v === "object") {
+					// YAML由来
+					return ContentStructure.createPart({
+						file: Object.keys(v)[0],
+						chapters: v[Object.keys(v)[0]].map((c:any)=>({file: c}))
+					});
 				} else {
 					return null;
 				}
