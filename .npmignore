@@ -31,6 +31,7 @@ bower.json
 tsd.json
 Gruntfile.js
 karma.conf.js
+Gemfile*
 
 test-results.xml
 npm-debug.log

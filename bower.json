@@ -13,7 +13,8 @@
 		"bin",
 		"src",
 		"util",
-		"example"
+		"example",
+		"Gemfile*"
 	],
 
 	"dependencies": {
