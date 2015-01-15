@@ -1,4 +1,4 @@
-/*
+/*!
 Copyright 2013 Yahoo! Inc. All rights reserved.
 Licensed under the BSD License.
 http://yuilibrary.com/license/
@@ -62,11 +62,13 @@ http://yuilibrary.com/license/
     **/
     function Promise(fn) {
         if (!(this instanceof Promise)) {
-            Promise._log('Promises should always be created with new Promise(). This will throw an error in the future', 'error');
-            return new Promise(fn);
+            throw new TypeError(this + 'is not a promise');
+        }
+        if (typeof fn !== 'function') {
+            throw new TypeError('Promise resolver ' + fn + ' is not a function');
         }
 
-        var resolver = new Promise.Resolver(this);
+        var resolver = new Resolver();
 
         /**
         A reference to the resolver object that handles this promise
@@ -183,18 +185,6 @@ http://yuilibrary.com/license/
         };
     };
 
-    /**
-    Logs a message. This method is designed to be overwritten with  YUI's `log`
-    function.
-
-    @method _log
-    @param {String} msg Message to log
-    @param {String} type Log level. One of 'error', 'warn', 'info'.
-    @static
-    @private
-    **/
-    Promise._log = function (msg, type) { /* istanbul ignore else */ if (typeof console !== 'undefined') { console[type](msg); } };
-
     /*
     Ensures that a certain value is a promise. If it is not a promise, it wraps it
     in one.
@@ -235,7 +225,7 @@ http://yuilibrary.com/license/
        /*jshint newcap: true */
 
        // Do not go through resolver.reject() because an immediately rejected promise
-       // always has no callbacks which would trigger an unnecessary warnihg
+       // always has no callbacks which would trigger an unnecessary warning
        promise._resolver._result = reason;
        promise._resolver._status = 'rejected';
 
@@ -338,9 +328,8 @@ http://yuilibrary.com/license/
 
     @class Promise.Resolver
     @constructor
-    @param {Promise} promise The promise instance this resolver will be handling
     **/
-    function Resolver(promise) {
+    function Resolver() {
         /**
         List of success callbacks
 
@@ -358,15 +347,6 @@ http://yuilibrary.com/license/
         @private
         **/
         this._errbacks = [];
-
-        /**
-        The promise for this Resolver.
-
-        @property promise
-        @type Promise
-        @deprecated
-        **/
-        this.promise = promise;
 
         /**
         The status of the operation. This property may take only one of the following
@@ -431,7 +411,7 @@ http://yuilibrary.com/license/
         and `notify()` are disabled.
 
         @method reject
-        @param {Any} value Value to pass along to the "reject" subscribers
+        @param {Any} reason Value to pass along to the "reject" subscribers
         **/
         reject: function (reason) {
             var status = this._status;
@@ -439,7 +419,6 @@ http://yuilibrary.com/license/
             if (status === 'pending' || status === 'accepted') {
                 this._result = reason;
                 this._status = 'rejected';
-                if (!this._errbacks.length) {Promise._log('Promise rejected but no error handlers were registered to it', 'info');}
             }
 
             if (this._status === 'rejected') {
