@@ -1,3273 +1,1453 @@
 ﻿<!doctype html>
-<html class="no-js">
+<html class="default no-js">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>DefaultAnalyzer | review.js</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="stylesheet" href="../assets/css/main.css">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>DefaultAnalyzer | review.js</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script src="../assets/js/modernizr.js"></script>
 </head>
 <body>
-
 <header>
-    <div class="tsd-page-toolbar">
-        <div class="container">
-            <div id="tsd-filter">
-                <input type="checkbox" id="tsd-filter-inherited" checked />
-                <label for="tsd-filter-inherited">Inherited</label>
-
-                <input type="checkbox" id="tsd-filter-private" checked />
-                <label for="tsd-filter-private">Private</label>
-
-                <input type="checkbox" id="tsd-filter-only-exported" />
-                <label for="tsd-filter-only-exported">Only exported</label>
-            </div>
-
-            <a href="../index.html">review.js</a>
-        </div>
-    </div>
-    <div class="tsd-page-title">
-        <div class="container">
-            <ul class="breadcrumb">
-                
-    
-    
-    
-    <li>
-        <a href="../modules/review.html">ReVIEW</a>
-    </li>
-
-    <li>
-        <a href="../modules/review.build.html">Build</a>
-    </li>
-
-    <li>
-        <a href="review.build.defaultanalyzer.html">DefaultAnalyzer</a>
-    </li>
-
-            </ul>
-            <h1>Class DefaultAnalyzer</h1>
-        </div>
-    </div>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">review.js</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-private" checked />
+							<label class="tsd-widget" for="tsd-filter-private">Private</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="../modules/review.html">ReVIEW</a>
+				</li>
+				<li>
+					<a href="../modules/review.build.html">Build</a>
+				</li>
+				<li>
+					<a href="review.build.defaultanalyzer.html">DefaultAnalyzer</a>
+				</li>
+			</ul>
+			<h1>Class DefaultAnalyzer</h1>
+		</div>
+	</div>
 </header>
-
 <div class="container container-main">
-    <div class="row">
-        <div class="col-8">
-            
-    
-
-
-
-
-
-
-
-
-
-    <section class="tsd-member-index">
-    <h2>Index</h2>
-    
-        <section class="tsd-member-index-group tsd-is-private">
-            <h3>Properties</h3>
-            <ul class="tsd-member-index">
-                
-                    <li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="review.build.defaultanalyzer.html#_acceptablesyntaxes" class="tsd-kind-icon">_acceptableSyntaxes</a></li>
-                
-            </ul>
-        </section>
-    
-        <section class="tsd-member-index-group ">
-            <h3>Methods</h3>
-            <ul class="tsd-member-index">
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#blockdecorationsyntax" class="tsd-kind-icon">blockDecorationSyntax</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_cmd" class="tsd-kind-icon">block_cmd</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_comment" class="tsd-kind-icon">block_comment</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_emlist" class="tsd-kind-icon">block_emlist</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_emlistnum" class="tsd-kind-icon">block_emlistnum</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_footnote" class="tsd-kind-icon">block_footnote</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_image" class="tsd-kind-icon">block_image</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_indepimage" class="tsd-kind-icon">block_indepimage</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_label" class="tsd-kind-icon">block_label</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_lead" class="tsd-kind-icon">block_lead</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_list" class="tsd-kind-icon">block_list</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_listnum" class="tsd-kind-icon">block_listnum</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_noindent" class="tsd-kind-icon">block_noindent</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_quote" class="tsd-kind-icon">block_quote</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_raw" class="tsd-kind-icon">block_raw</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_source" class="tsd-kind-icon">block_source</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_table" class="tsd-kind-icon">block_table</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_tsize" class="tsd-kind-icon">block_tsize</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#column" class="tsd-kind-icon">column</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#constructacceptablesyntaxes" class="tsd-kind-icon">constructAcceptableSyntaxes</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#dlist" class="tsd-kind-icon">dlist</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#getacceptablesyntaxes" class="tsd-kind-icon">getAcceptableSyntaxes</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#headline" class="tsd-kind-icon">headline</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inlinedecorationsyntax" class="tsd-kind-icon">inlineDecorationSyntax</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_ami" class="tsd-kind-icon">inline_ami</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_b" class="tsd-kind-icon">inline_b</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_bou" class="tsd-kind-icon">inline_bou</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_br" class="tsd-kind-icon">inline_br</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_code" class="tsd-kind-icon">inline_code</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_comment" class="tsd-kind-icon">inline_comment</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_em" class="tsd-kind-icon">inline_em</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_fn" class="tsd-kind-icon">inline_fn</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_hd" class="tsd-kind-icon">inline_hd</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_href" class="tsd-kind-icon">inline_href</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_i" class="tsd-kind-icon">inline_i</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_icon" class="tsd-kind-icon">inline_icon</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_img" class="tsd-kind-icon">inline_img</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_kw" class="tsd-kind-icon">inline_kw</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_list" class="tsd-kind-icon">inline_list</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_raw" class="tsd-kind-icon">inline_raw</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_ruby" class="tsd-kind-icon">inline_ruby</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_strong" class="tsd-kind-icon">inline_strong</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_table" class="tsd-kind-icon">inline_table</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_tt" class="tsd-kind-icon">inline_tt</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_ttb" class="tsd-kind-icon">inline_ttb</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_tti" class="tsd-kind-icon">inline_tti</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_u" class="tsd-kind-icon">inline_u</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_uchar" class="tsd-kind-icon">inline_uchar</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#olist" class="tsd-kind-icon">olist</a></li>
-                
-                    <li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#ulist" class="tsd-kind-icon">ulist</a></li>
-                
-            </ul>
-        </section>
-    
-</section>
-    
-    
-        <section class="tsd-member-group tsd-is-private">
-    <h2>Properties</h2>
-    
-        
-            <section class="tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-    <a name="_acceptablesyntaxes"></a>
-    
-        <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagprivate">private</span> _acceptableSyntaxes<span class="tsd-signature-symbols">:</span> <a href="review.build.acceptablesyntax.html" class="tsd-signature-type">AcceptableSyntax</a><span class="tsd-signature-symbols">[]</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:204</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-    
-
-    
-</section>
-        
-    
-</section>
-    
-
-    
-        <section class="tsd-member-group ">
-    <h2>Methods</h2>
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="blockdecorationsyntax"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> blockDecorationSyntax<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a>, symbol<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span>, argsLength<span class="tsd-signature-symbols">?: </span><span class="tsd-signature-type">Array&lt;number&gt;</span><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:495</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-            <li>
-                <h5>symbol: <span class="tsd-signature-type">string</span></h5>
-                
-
-
-
-
-            </li>
-        
-            <li>
-                <h5>argsLength?: <span class="tsd-signature-type">Array&lt;number&gt;</span> <span class="tsd-flag ts-flagoptional">optional</span></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="block_cmd"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_cmd<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:522</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="block_comment"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_comment<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:693</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="block_emlist"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_emlist<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:366</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="block_emlistnum"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_emlistnum<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:380</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="block_footnote"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_footnote<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:465</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="block_image"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_image<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:408</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="block_indepimage"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_indepimage<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:424</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="block_label"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_label<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:567</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="block_lead"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_lead<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:509</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="block_list"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_list<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:320</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="block_listnum"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_listnum<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:336</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="block_noindent"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_noindent<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:514</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="block_quote"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_quote<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:526</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="block_raw"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_raw<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:666</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="block_source"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_source<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:518</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="block_table"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_table<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:623</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="block_tsize"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> block_tsize<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:653</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="column"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> column<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:267</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="constructacceptablesyntaxes"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> constructAcceptableSyntaxes<span class="tsd-signature-symbols">(</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.build.acceptablesyntax.html" class="tsd-signature-type">AcceptableSyntax</a><span class="tsd-signature-symbols">[]</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:213</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-
-
-    <h4>Returns</h4>
-    <p>
-    
-        <a href="review.build.acceptablesyntax.html" class="tsd-signature-type">AcceptableSyntax</a><span class="tsd-signature-symbols">[]</span>
-    
-</p>
-    
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="dlist"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> dlist<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:307</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="getacceptablesyntaxes"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> getAcceptableSyntaxes<span class="tsd-signature-symbols">(</span><span class="tsd-signature-symbols">)</span><span class="tsd-signature-symbols">: </span><a href="review.build.acceptablesyntaxes.html" class="tsd-signature-type">AcceptableSyntaxes</a></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:206</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-
-
-    <h4>Returns</h4>
-    <p>
-    
-        <a href="review.build.acceptablesyntaxes.html" class="tsd-signature-type">AcceptableSyntaxes</a>
-    
-</p>
-    
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="headline"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> headline<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:246</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inlinedecorationsyntax"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inlineDecorationSyntax<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a>, symbol<span class="tsd-signature-symbols">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:530</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-            <li>
-                <h5>symbol: <span class="tsd-signature-type">string</span></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_ami"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_ami<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:603</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_b"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_b<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:551</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_bou"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_bou<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:607</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_br"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_br<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:543</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_code"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_code<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:555</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_comment"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_comment<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:707</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_em"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_em<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:591</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_fn"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_fn<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:481</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_hd"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_hd<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:394</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_href"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_href<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:563</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_i"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_i<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:611</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_icon"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_icon<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:452</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_img"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_img<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:438</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_kw"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_kw<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:587</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_list"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_list<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:352</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_raw"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_raw<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:680</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_ruby"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_ruby<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:547</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_strong"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_strong<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:615</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_table"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_table<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:639</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_tt"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_tt<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:559</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_ttb"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_ttb<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:599</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_tti"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_tti<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:595</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_u"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_u<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:583</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="inline_uchar"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> inline_uchar<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:619</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="olist"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> olist<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:294</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-        
-            <section class="tsd-member tsd-kind-method tsd-parent-kind-class">
-    <a name="ulist"></a>
-    
-        
-            <h3 class="tsd-kind-icon"><span class="tsd-flag ts-flagpublic">public</span> ulist<span class="tsd-signature-symbols">(</span>builder<span class="tsd-signature-symbols">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbols">)</span></h3>
-
-<aside class="tsd-sources">
-    
-    
-    
-        <ul>
-            
-                <li>Defined in lib/parser/Analyzer.ts:281</li>
-            
-        </ul>
-    
-</aside>
-
-
-
-
-
-
-
-    <h4>Parameters</h4>
-    <ul>
-        
-            <li>
-                <h5>builder: <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
-                
-
-
-
-
-            </li>
-        
-    </ul>
-
-
-
-
-        
-    
-
-    
-</section>
-        
-    
-</section>
-    
-
-
-        </div>
-        <div class="offset-1 col-3">
-            <nav class="tsd-navigation primary">
-                <ul>
-                    
-                        <li class=" ">
-    <a href="../globals.html"><em>Globals</em></a>
-    
-</li>
-                    
-                        <li class=" tsd-kind-container">
-    <a href="../modules/review.html">ReVIEW</a>
-    
-</li>
-                    
-                        <li class=" tsd-kind-container tsd-parent-kind-container">
-    <a href="../modules/review.io.html">ReVIEW.IO</a>
-    
-</li>
-                    
-                        <li class=" tsd-kind-container tsd-parent-kind-container">
-    <a href="../modules/review.exec.html">ReVIEW.Exec</a>
-    
-</li>
-                    
-                        <li class=" tsd-kind-container tsd-parent-kind-container">
-    <a href="../modules/review.i18n.html">ReVIEW.i18n</a>
-    
-</li>
-                    
-                        <li class=" tsd-kind-container tsd-parent-kind-container">
-    <a href="../modules/review.parse.html">ReVIEW.Parse</a>
-    
-</li>
-                    
-                        <li class="current tsd-kind-container tsd-parent-kind-container">
-    <a href="../modules/review.build.html">ReVIEW.Build</a>
-    
-        
-            <ul>
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-            </ul>
-        
-    
-</li>
-                    
-                </ul>
-            </nav>
-
-            <nav class="tsd-navigation secondary">
-                
-                    
-
-    <ul>
-        
-            
-                <li class=" tsd-kind-enum tsd-parent-kind-container">
-                    <a href="../enums/review.build.syntaxtype.html" class="tsd-kind-icon">SyntaxType</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-interface tsd-parent-kind-container">
-                    <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-kind-icon">IAcceptableSyntaxBuilder</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-interface tsd-parent-kind-container">
-                    <a href="../interfaces/review.build.ianalyzeprocessor.html" class="tsd-kind-icon">IAnalyzeProcessor</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-interface tsd-parent-kind-container">
-                    <a href="../interfaces/review.build.ianalyzer.html" class="tsd-kind-icon">IAnalyzer</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-interface tsd-parent-kind-container">
-                    <a href="../interfaces/review.build.ibuilder.html" class="tsd-kind-icon">IBuilder</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-interface tsd-parent-kind-container">
-                    <a href="../interfaces/review.build.ipreprocessor.html" class="tsd-kind-icon">IPreprocessor</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-interface tsd-parent-kind-container">
-                    <a href="../interfaces/review.build.ivalidator.html" class="tsd-kind-icon">IValidator</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="review.build.acceptablesyntax.html" class="tsd-kind-icon">AcceptableSyntax</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="review.build.acceptablesyntaxes.html" class="tsd-kind-icon">AcceptableSyntaxes</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container tsd-is-not-exported">
-                    <a href="review.build.analyzeprocess.html" class="tsd-kind-icon">AnalyzeProcess</a>
-                    
-                </li>
-            
-        
-            
-                <li class="current tsd-kind-class tsd-parent-kind-container">
-                    <a href="review.build.defaultanalyzer.html" class="tsd-kind-icon">DefaultAnalyzer</a>
-                    
-
-    <ul>
-        
-            
-                <li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-                    <a href="review.build.defaultanalyzer.html#_acceptablesyntaxes" class="tsd-kind-icon">_acceptableSyntaxes</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#blockdecorationsyntax" class="tsd-kind-icon">blockDecorationSyntax</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#block_cmd" class="tsd-kind-icon">block_cmd</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#block_comment" class="tsd-kind-icon">block_comment</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#block_emlist" class="tsd-kind-icon">block_emlist</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#block_emlistnum" class="tsd-kind-icon">block_emlistnum</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#block_footnote" class="tsd-kind-icon">block_footnote</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#block_image" class="tsd-kind-icon">block_image</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#block_indepimage" class="tsd-kind-icon">block_indepimage</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#block_label" class="tsd-kind-icon">block_label</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#block_lead" class="tsd-kind-icon">block_lead</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#block_list" class="tsd-kind-icon">block_list</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#block_listnum" class="tsd-kind-icon">block_listnum</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#block_noindent" class="tsd-kind-icon">block_noindent</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#block_quote" class="tsd-kind-icon">block_quote</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#block_raw" class="tsd-kind-icon">block_raw</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#block_source" class="tsd-kind-icon">block_source</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#block_table" class="tsd-kind-icon">block_table</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#block_tsize" class="tsd-kind-icon">block_tsize</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#column" class="tsd-kind-icon">column</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#constructacceptablesyntaxes" class="tsd-kind-icon">constructAcceptableSyntaxes</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#dlist" class="tsd-kind-icon">dlist</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#getacceptablesyntaxes" class="tsd-kind-icon">getAcceptableSyntaxes</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#headline" class="tsd-kind-icon">headline</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inlinedecorationsyntax" class="tsd-kind-icon">inlineDecorationSyntax</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_ami" class="tsd-kind-icon">inline_ami</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_b" class="tsd-kind-icon">inline_b</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_bou" class="tsd-kind-icon">inline_bou</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_br" class="tsd-kind-icon">inline_br</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_code" class="tsd-kind-icon">inline_code</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_comment" class="tsd-kind-icon">inline_comment</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_em" class="tsd-kind-icon">inline_em</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_fn" class="tsd-kind-icon">inline_fn</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_hd" class="tsd-kind-icon">inline_hd</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_href" class="tsd-kind-icon">inline_href</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_i" class="tsd-kind-icon">inline_i</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_icon" class="tsd-kind-icon">inline_icon</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_img" class="tsd-kind-icon">inline_img</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_kw" class="tsd-kind-icon">inline_kw</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_list" class="tsd-kind-icon">inline_list</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_raw" class="tsd-kind-icon">inline_raw</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_ruby" class="tsd-kind-icon">inline_ruby</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_strong" class="tsd-kind-icon">inline_strong</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_table" class="tsd-kind-icon">inline_table</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_tt" class="tsd-kind-icon">inline_tt</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_ttb" class="tsd-kind-icon">inline_ttb</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_tti" class="tsd-kind-icon">inline_tti</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_u" class="tsd-kind-icon">inline_u</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#inline_uchar" class="tsd-kind-icon">inline_uchar</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#olist" class="tsd-kind-icon">olist</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-method tsd-parent-kind-class">
-                    <a href="review.build.defaultanalyzer.html#ulist" class="tsd-kind-icon">ulist</a>
-                    
-                </li>
-            
-        
-    </ul>
-
-
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="review.build.defaultbuilder.html" class="tsd-kind-icon">DefaultBuilder</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="review.build.defaultvalidator.html" class="tsd-kind-icon">DefaultValidator</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="review.build.htmlbuilder.html" class="tsd-kind-icon">HtmlBuilder</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="review.build.syntaxpreprocessor.html" class="tsd-kind-icon">SyntaxPreprocessor</a>
-                    
-                </li>
-            
-        
-            
-                <li class=" tsd-kind-class tsd-parent-kind-container">
-                    <a href="review.build.textbuilder.html" class="tsd-kind-icon">TextBuilder</a>
-                    
-                </li>
-            
-        
-    </ul>
-
-
-                
-            </nav>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section tsd-is-private">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="review.build.defaultanalyzer.html#_acceptablesyntaxes" class="tsd-kind-icon">_acceptable<wbr>Syntaxes</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#blockdecorationsyntax" class="tsd-kind-icon">block<wbr>Decoration<wbr>Syntax</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_cmd" class="tsd-kind-icon">block_<wbr>cmd</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_comment" class="tsd-kind-icon">block_<wbr>comment</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_emlist" class="tsd-kind-icon">block_<wbr>emlist</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_emlistnum" class="tsd-kind-icon">block_<wbr>emlistnum</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_footnote" class="tsd-kind-icon">block_<wbr>footnote</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_image" class="tsd-kind-icon">block_<wbr>image</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_indepimage" class="tsd-kind-icon">block_<wbr>indepimage</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_label" class="tsd-kind-icon">block_<wbr>label</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_lead" class="tsd-kind-icon">block_<wbr>lead</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_list" class="tsd-kind-icon">block_<wbr>list</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_listnum" class="tsd-kind-icon">block_<wbr>listnum</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_noindent" class="tsd-kind-icon">block_<wbr>noindent</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_quote" class="tsd-kind-icon">block_<wbr>quote</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_raw" class="tsd-kind-icon">block_<wbr>raw</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_source" class="tsd-kind-icon">block_<wbr>source</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_table" class="tsd-kind-icon">block_<wbr>table</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#block_tsize" class="tsd-kind-icon">block_<wbr>tsize</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#column" class="tsd-kind-icon">column</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#constructacceptablesyntaxes" class="tsd-kind-icon">construct<wbr>Acceptable<wbr>Syntaxes</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#dlist" class="tsd-kind-icon">dlist</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#getacceptablesyntaxes" class="tsd-kind-icon">get<wbr>Acceptable<wbr>Syntaxes</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#headline" class="tsd-kind-icon">headline</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inlinedecorationsyntax" class="tsd-kind-icon">inline<wbr>Decoration<wbr>Syntax</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_ami" class="tsd-kind-icon">inline_<wbr>ami</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_b" class="tsd-kind-icon">inline_<wbr>b</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_bou" class="tsd-kind-icon">inline_<wbr>bou</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_br" class="tsd-kind-icon">inline_<wbr>br</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_code" class="tsd-kind-icon">inline_<wbr>code</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_comment" class="tsd-kind-icon">inline_<wbr>comment</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_em" class="tsd-kind-icon">inline_<wbr>em</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_fn" class="tsd-kind-icon">inline_<wbr>fn</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_hd" class="tsd-kind-icon">inline_<wbr>hd</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_href" class="tsd-kind-icon">inline_<wbr>href</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_i" class="tsd-kind-icon">inline_<wbr>i</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_icon" class="tsd-kind-icon">inline_<wbr>icon</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_img" class="tsd-kind-icon">inline_<wbr>img</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_kw" class="tsd-kind-icon">inline_<wbr>kw</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_list" class="tsd-kind-icon">inline_<wbr>list</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_raw" class="tsd-kind-icon">inline_<wbr>raw</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_ruby" class="tsd-kind-icon">inline_<wbr>ruby</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_strong" class="tsd-kind-icon">inline_<wbr>strong</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_table" class="tsd-kind-icon">inline_<wbr>table</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_tt" class="tsd-kind-icon">inline_<wbr>tt</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_ttb" class="tsd-kind-icon">inline_<wbr>ttb</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_tti" class="tsd-kind-icon">inline_<wbr>tti</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_u" class="tsd-kind-icon">inline_<wbr>u</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#inline_uchar" class="tsd-kind-icon">inline_<wbr>uchar</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#olist" class="tsd-kind-icon">olist</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="review.build.defaultanalyzer.html#ulist" class="tsd-kind-icon">ulist</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+				</section>            <section class="tsd-panel-group tsd-member-group tsd-is-private">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_acceptablesyntaxes" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagprivate">private</span> _acceptable<wbr>Syntaxes</h3>
+					<div class="tsd-signature tsd-kind-icon">_acceptable<wbr>Syntaxes<span class="tsd-signature-symbol">:</span>         <a href="review.build.acceptablesyntax.html" class="tsd-signature-type">AcceptableSyntax</a><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L205">parser/Analyzer.ts:205</a></li>
+						</ul>
+					</aside>
+				</section></section>        <section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="blockdecorationsyntax" class="tsd-anchor"></a>
+					<h3>block<wbr>Decoration<wbr>Syntax</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block<wbr>Decoration<wbr>Syntax<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a>, symbol<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, argsLength<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Array&lt;number&gt;</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L496">parser/Analyzer.ts:496</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+								<li>
+									<h5>symbol:         <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>argsLength?:         <span class="tsd-signature-type">Array&lt;number&gt;</span> <span class="tsd-flag ts-flagoptional">optional</span></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="block_cmd" class="tsd-anchor"></a>
+					<h3>block_<wbr>cmd</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block_<wbr>cmd<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L523">parser/Analyzer.ts:523</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="block_comment" class="tsd-anchor"></a>
+					<h3>block_<wbr>comment</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block_<wbr>comment<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L694">parser/Analyzer.ts:694</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="block_emlist" class="tsd-anchor"></a>
+					<h3>block_<wbr>emlist</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block_<wbr>emlist<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L367">parser/Analyzer.ts:367</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="block_emlistnum" class="tsd-anchor"></a>
+					<h3>block_<wbr>emlistnum</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block_<wbr>emlistnum<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L381">parser/Analyzer.ts:381</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="block_footnote" class="tsd-anchor"></a>
+					<h3>block_<wbr>footnote</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block_<wbr>footnote<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L466">parser/Analyzer.ts:466</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="block_image" class="tsd-anchor"></a>
+					<h3>block_<wbr>image</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block_<wbr>image<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L409">parser/Analyzer.ts:409</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="block_indepimage" class="tsd-anchor"></a>
+					<h3>block_<wbr>indepimage</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block_<wbr>indepimage<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L425">parser/Analyzer.ts:425</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="block_label" class="tsd-anchor"></a>
+					<h3>block_<wbr>label</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block_<wbr>label<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L568">parser/Analyzer.ts:568</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="block_lead" class="tsd-anchor"></a>
+					<h3>block_<wbr>lead</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block_<wbr>lead<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L510">parser/Analyzer.ts:510</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="block_list" class="tsd-anchor"></a>
+					<h3>block_<wbr>list</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block_<wbr>list<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L321">parser/Analyzer.ts:321</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="block_listnum" class="tsd-anchor"></a>
+					<h3>block_<wbr>listnum</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block_<wbr>listnum<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L337">parser/Analyzer.ts:337</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="block_noindent" class="tsd-anchor"></a>
+					<h3>block_<wbr>noindent</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block_<wbr>noindent<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L515">parser/Analyzer.ts:515</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="block_quote" class="tsd-anchor"></a>
+					<h3>block_<wbr>quote</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block_<wbr>quote<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L527">parser/Analyzer.ts:527</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="block_raw" class="tsd-anchor"></a>
+					<h3>block_<wbr>raw</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block_<wbr>raw<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L667">parser/Analyzer.ts:667</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="block_source" class="tsd-anchor"></a>
+					<h3>block_<wbr>source</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block_<wbr>source<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L519">parser/Analyzer.ts:519</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="block_table" class="tsd-anchor"></a>
+					<h3>block_<wbr>table</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block_<wbr>table<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L624">parser/Analyzer.ts:624</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="block_tsize" class="tsd-anchor"></a>
+					<h3>block_<wbr>tsize</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">block_<wbr>tsize<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L654">parser/Analyzer.ts:654</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="column" class="tsd-anchor"></a>
+					<h3>column</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">column<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L268">parser/Analyzer.ts:268</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="constructacceptablesyntaxes" class="tsd-anchor"></a>
+					<h3>construct<wbr>Acceptable<wbr>Syntaxes</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">construct<wbr>Acceptable<wbr>Syntaxes<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="review.build.acceptablesyntax.html" class="tsd-signature-type">AcceptableSyntax</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L214">parser/Analyzer.ts:214</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns         <a href="review.build.acceptablesyntax.html" class="tsd-signature-type">AcceptableSyntax</a><span class="tsd-signature-symbol">[]</span>
+							</h4>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="dlist" class="tsd-anchor"></a>
+					<h3>dlist</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">dlist<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L308">parser/Analyzer.ts:308</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getacceptablesyntaxes" class="tsd-anchor"></a>
+					<h3>get<wbr>Acceptable<wbr>Syntaxes</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Acceptable<wbr>Syntaxes<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="review.build.acceptablesyntaxes.html" class="tsd-signature-type">AcceptableSyntaxes</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L207">parser/Analyzer.ts:207</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns         <a href="review.build.acceptablesyntaxes.html" class="tsd-signature-type">AcceptableSyntaxes</a>
+							</h4>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="headline" class="tsd-anchor"></a>
+					<h3>headline</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">headline<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L247">parser/Analyzer.ts:247</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inlinedecorationsyntax" class="tsd-anchor"></a>
+					<h3>inline<wbr>Decoration<wbr>Syntax</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline<wbr>Decoration<wbr>Syntax<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a>, symbol<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L531">parser/Analyzer.ts:531</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+								<li>
+									<h5>symbol:         <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_ami" class="tsd-anchor"></a>
+					<h3>inline_<wbr>ami</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>ami<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L604">parser/Analyzer.ts:604</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_b" class="tsd-anchor"></a>
+					<h3>inline_<wbr>b</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>b<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L552">parser/Analyzer.ts:552</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_bou" class="tsd-anchor"></a>
+					<h3>inline_<wbr>bou</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>bou<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L608">parser/Analyzer.ts:608</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_br" class="tsd-anchor"></a>
+					<h3>inline_<wbr>br</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>br<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L544">parser/Analyzer.ts:544</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_code" class="tsd-anchor"></a>
+					<h3>inline_<wbr>code</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>code<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L556">parser/Analyzer.ts:556</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_comment" class="tsd-anchor"></a>
+					<h3>inline_<wbr>comment</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>comment<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L708">parser/Analyzer.ts:708</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_em" class="tsd-anchor"></a>
+					<h3>inline_<wbr>em</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>em<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L592">parser/Analyzer.ts:592</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_fn" class="tsd-anchor"></a>
+					<h3>inline_<wbr>fn</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>fn<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L482">parser/Analyzer.ts:482</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_hd" class="tsd-anchor"></a>
+					<h3>inline_<wbr>hd</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>hd<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L395">parser/Analyzer.ts:395</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_href" class="tsd-anchor"></a>
+					<h3>inline_<wbr>href</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>href<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L564">parser/Analyzer.ts:564</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_i" class="tsd-anchor"></a>
+					<h3>inline_<wbr>i</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>i<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L612">parser/Analyzer.ts:612</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_icon" class="tsd-anchor"></a>
+					<h3>inline_<wbr>icon</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>icon<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L453">parser/Analyzer.ts:453</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_img" class="tsd-anchor"></a>
+					<h3>inline_<wbr>img</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>img<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L439">parser/Analyzer.ts:439</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_kw" class="tsd-anchor"></a>
+					<h3>inline_<wbr>kw</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>kw<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L588">parser/Analyzer.ts:588</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_list" class="tsd-anchor"></a>
+					<h3>inline_<wbr>list</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>list<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L353">parser/Analyzer.ts:353</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_raw" class="tsd-anchor"></a>
+					<h3>inline_<wbr>raw</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>raw<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L681">parser/Analyzer.ts:681</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_ruby" class="tsd-anchor"></a>
+					<h3>inline_<wbr>ruby</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>ruby<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L548">parser/Analyzer.ts:548</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_strong" class="tsd-anchor"></a>
+					<h3>inline_<wbr>strong</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>strong<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L616">parser/Analyzer.ts:616</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_table" class="tsd-anchor"></a>
+					<h3>inline_<wbr>table</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>table<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L640">parser/Analyzer.ts:640</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_tt" class="tsd-anchor"></a>
+					<h3>inline_<wbr>tt</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>tt<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L560">parser/Analyzer.ts:560</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_ttb" class="tsd-anchor"></a>
+					<h3>inline_<wbr>ttb</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>ttb<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L600">parser/Analyzer.ts:600</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_tti" class="tsd-anchor"></a>
+					<h3>inline_<wbr>tti</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>tti<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L596">parser/Analyzer.ts:596</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_u" class="tsd-anchor"></a>
+					<h3>inline_<wbr>u</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>u<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L584">parser/Analyzer.ts:584</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="inline_uchar" class="tsd-anchor"></a>
+					<h3>inline_<wbr>uchar</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">inline_<wbr>uchar<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L620">parser/Analyzer.ts:620</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="olist" class="tsd-anchor"></a>
+					<h3>olist</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">olist<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L295">parser/Analyzer.ts:295</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</section>            <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="ulist" class="tsd-anchor"></a>
+					<h3>ulist</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">ulist<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description"><aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/Analyzer.ts#L282">parser/Analyzer.ts:282</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder:         <a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-signature-type">IAcceptableSyntaxBuilder</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+			</section></section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="../globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-container">
+						<a href="../modules/review.html">ReVIEW</a>
+					</li>
+					<li class="current tsd-kind-container tsd-parent-kind-container">
+						<a href="../modules/review.build.html">ReVIEW.<wbr>Build</a>
+					</li>
+					<li class=" tsd-kind-container tsd-parent-kind-container">
+						<a href="../modules/review.exec.html">ReVIEW.<wbr>Exec</a>
+					</li>
+					<li class=" tsd-kind-container tsd-parent-kind-container">
+						<a href="../modules/review.io.html">ReVIEW.IO</a>
+					</li>
+					<li class=" tsd-kind-container tsd-parent-kind-container">
+						<a href="../modules/review.parse.html">ReVIEW.<wbr>Parse</a>
+					</li>
+					<li class=" tsd-kind-container tsd-parent-kind-container">
+						<a href="../modules/review.i18n.html">ReVIEW.i18n</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-container">
+						<a href="../enums/review.build.syntaxtype.html" class="tsd-kind-icon">Syntax<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-container">
+						<a href="../interfaces/review.build.iacceptablesyntaxbuilder.html" class="tsd-kind-icon">IAcceptable<wbr>Syntax<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-container">
+						<a href="../interfaces/review.build.ianalyzeprocessor.html" class="tsd-kind-icon">IAnalyze<wbr>Processor</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-container">
+						<a href="../interfaces/review.build.ianalyzer.html" class="tsd-kind-icon">IAnalyzer</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-container">
+						<a href="../interfaces/review.build.ibuilder.html" class="tsd-kind-icon">IBuilder</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-container">
+						<a href="../interfaces/review.build.ipreprocessor.html" class="tsd-kind-icon">IPreprocessor</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-container">
+						<a href="../interfaces/review.build.ivalidator.html" class="tsd-kind-icon">IValidator</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-container">
+						<a href="review.build.acceptablesyntax.html" class="tsd-kind-icon">Acceptable<wbr>Syntax</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-container">
+						<a href="review.build.acceptablesyntaxes.html" class="tsd-kind-icon">Acceptable<wbr>Syntaxes</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-container tsd-is-not-exported">
+						<a href="review.build.analyzeprocess.html" class="tsd-kind-icon">Analyze<wbr>Process</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-container">
+						<a href="review.build.defaultanalyzer.html" class="tsd-kind-icon">Default<wbr>Analyzer</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="review.build.defaultanalyzer.html#_acceptablesyntaxes" class="tsd-kind-icon">_acceptable<wbr>Syntaxes</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#blockdecorationsyntax" class="tsd-kind-icon">block<wbr>Decoration<wbr>Syntax</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#block_cmd" class="tsd-kind-icon">block_<wbr>cmd</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#block_comment" class="tsd-kind-icon">block_<wbr>comment</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#block_emlist" class="tsd-kind-icon">block_<wbr>emlist</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#block_emlistnum" class="tsd-kind-icon">block_<wbr>emlistnum</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#block_footnote" class="tsd-kind-icon">block_<wbr>footnote</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#block_image" class="tsd-kind-icon">block_<wbr>image</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#block_indepimage" class="tsd-kind-icon">block_<wbr>indepimage</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#block_label" class="tsd-kind-icon">block_<wbr>label</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#block_lead" class="tsd-kind-icon">block_<wbr>lead</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#block_list" class="tsd-kind-icon">block_<wbr>list</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#block_listnum" class="tsd-kind-icon">block_<wbr>listnum</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#block_noindent" class="tsd-kind-icon">block_<wbr>noindent</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#block_quote" class="tsd-kind-icon">block_<wbr>quote</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#block_raw" class="tsd-kind-icon">block_<wbr>raw</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#block_source" class="tsd-kind-icon">block_<wbr>source</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#block_table" class="tsd-kind-icon">block_<wbr>table</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#block_tsize" class="tsd-kind-icon">block_<wbr>tsize</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#column" class="tsd-kind-icon">column</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#constructacceptablesyntaxes" class="tsd-kind-icon">construct<wbr>Acceptable<wbr>Syntaxes</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#dlist" class="tsd-kind-icon">dlist</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#getacceptablesyntaxes" class="tsd-kind-icon">get<wbr>Acceptable<wbr>Syntaxes</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#headline" class="tsd-kind-icon">headline</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inlinedecorationsyntax" class="tsd-kind-icon">inline<wbr>Decoration<wbr>Syntax</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_ami" class="tsd-kind-icon">inline_<wbr>ami</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_b" class="tsd-kind-icon">inline_<wbr>b</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_bou" class="tsd-kind-icon">inline_<wbr>bou</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_br" class="tsd-kind-icon">inline_<wbr>br</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_code" class="tsd-kind-icon">inline_<wbr>code</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_comment" class="tsd-kind-icon">inline_<wbr>comment</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_em" class="tsd-kind-icon">inline_<wbr>em</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_fn" class="tsd-kind-icon">inline_<wbr>fn</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_hd" class="tsd-kind-icon">inline_<wbr>hd</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_href" class="tsd-kind-icon">inline_<wbr>href</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_i" class="tsd-kind-icon">inline_<wbr>i</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_icon" class="tsd-kind-icon">inline_<wbr>icon</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_img" class="tsd-kind-icon">inline_<wbr>img</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_kw" class="tsd-kind-icon">inline_<wbr>kw</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_list" class="tsd-kind-icon">inline_<wbr>list</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_raw" class="tsd-kind-icon">inline_<wbr>raw</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_ruby" class="tsd-kind-icon">inline_<wbr>ruby</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_strong" class="tsd-kind-icon">inline_<wbr>strong</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_table" class="tsd-kind-icon">inline_<wbr>table</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_tt" class="tsd-kind-icon">inline_<wbr>tt</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_ttb" class="tsd-kind-icon">inline_<wbr>ttb</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_tti" class="tsd-kind-icon">inline_<wbr>tti</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_u" class="tsd-kind-icon">inline_<wbr>u</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#inline_uchar" class="tsd-kind-icon">inline_<wbr>uchar</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#olist" class="tsd-kind-icon">olist</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="review.build.defaultanalyzer.html#ulist" class="tsd-kind-icon">ulist</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-class tsd-parent-kind-container">
+						<a href="review.build.defaultbuilder.html" class="tsd-kind-icon">Default<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-container">
+						<a href="review.build.defaultvalidator.html" class="tsd-kind-icon">Default<wbr>Validator</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-container">
+						<a href="review.build.htmlbuilder.html" class="tsd-kind-icon">Html<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-container">
+						<a href="review.build.syntaxpreprocessor.html" class="tsd-kind-icon">Syntax<wbr>Preprocessor</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-container">
+						<a href="review.build.textbuilder.html" class="tsd-kind-icon">Text<wbr>Builder</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
 </div>
-
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-container"><span class="tsd-kind-icon">Container, dynamic module</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-construct-signature"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-call-signature"><span class="tsd-kind-icon">Function, call signature, accessor</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-construct-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Member, accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-construct-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Member, accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li>&nbsp;</li>
+				<li class="tsd-kind-construct-signature tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited member</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li>&nbsp;</li>
+				<li class="tsd-kind-construct-signature tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private member</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li>&nbsp;</li>
+				<li>&nbsp;</li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static member</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.io" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
 <script src="../assets/js/main.js"></script>
-
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>
