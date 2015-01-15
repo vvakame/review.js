@@ -1,7 +1,8 @@
 /// <reference path="../typings/node/node.d.ts" />
 /// <reference path="../typings/update-notifier/update-notifier.d.ts" />
-/// <reference path="../typings/commander/commander.d.ts" />
 /// <reference path="../typings/js-yaml/js-yaml.d.ts" />
+
+/// <reference path="../node_modules/commandpost/commandpost.d.ts" />
 
 /// <reference path="./main.d.ts" />
 
@@ -21,32 +22,53 @@ if (notifier.update) {
 var packageJson = JSON.parse(fs.readFileSync(__dirname + "/../package.json", "utf8"));
 
 var r:typeof ReVIEW = require("./api");
-import program = require("commander");
-(<any>program)
+
+import commandpost = require("commandpost");
+
+interface IRootOpts {
+	reviewfile:string[];
+	base:string[];
+}
+
+var root = commandpost
+	.create<IRootOpts, {}>("reviewjs")
 	.version(packageJson.version, "-v, --version")
 	.option("--reviewfile <file>", "where is ReVIEWconfig.js?")
-	.option("--base <path>", "alternative base path");
+	.option("--base <path>", "alternative base path")
+	.action(()=> {
+		process.stdout.write(root.helpText() + '\n');
+		process.exit(0);
+	});
 
-// <hoge> は required, [hoge] は optional
-program
-	.command("compile [document]")
+interface ICompileOpts {
+	ast:boolean;
+	target:string[];
+}
+
+interface ICompileArgs {
+	document: string;
+}
+
+root
+	.subCommand<ICompileOpts, ICompileArgs>("compile [document]")
 	.description("compile ReVIEW document")
 	.option("--ast", "output JSON format abstract syntax tree")
 	.option("-t, --target <target>", "output format of document")
-	.action((document:string, options:any)=> {
-		var ast = !!options.ast;
-		var target:string = options.target || "html";
+	.action((opts, args)=> {
+		// .action((document:string, options:any)=> {
+		var ast = !!opts.ast;
+		var target:string = opts.target[0] || "html";
 
 		new Promise<{fileName:string; input:string;}>((resolve, reject)=> {
 			var input = "";
-			if (document) {
-				var targetPath = process.cwd() + "/" + document;
+			if (args.document) {
+				var targetPath = process.cwd() + "/" + args.document;
 				if (!fs.existsSync(targetPath)) {
 					console.error(targetPath + " not exists");
 					reject(null);
 				}
 				input = fs.readFileSync(targetPath, "utf8");
-				resolve({fileName: document, input: input});
+				resolve({fileName: args.document, input: input});
 			} else {
 				process.stdin.resume();
 				process.stdin.setEncoding("utf8");
@@ -101,21 +123,26 @@ program
 			});
 	});
 
-program
-	.command("build [target]")
+interface IBuildArgs {
+	target: string;
+}
+
+root
+	.subCommand<{}, IBuildArgs>("build [target]")
 	.description("build book")
-	.action((target:string, options:any)=> {
-		if (!target) {
+	.action((opts, args)=> {
+		// .action((target:string, options:any)=> {
+		if (!args.target) {
 			console.log("set target to html");
 		}
-		target = target || "html";
-		var reviewfile = (<any>program).reviewfile || "./ReVIEWconfig.js";
+		var target = args.target || "html";
+		var reviewfile = root.parsedOpts.reviewfile[0] || "./ReVIEWconfig.js";
 
 		function byReVIEWConfig() {
 			var setup = require(process.cwd() + "/" + reviewfile);
 			r.start(setup, {
 				reviewfile: reviewfile,
-				base: (<any>program).base
+				base: root.parsedOpts.base[0]
 			})
 				.then(book=> {
 					console.log("completed!");
@@ -140,7 +167,7 @@ program
 				review.initConfig(configRaw);
 			}, {
 				reviewfile: reviewfile,
-				base: (<any>program).base
+				base: root.parsedOpts.base[0]
 			})
 				.then(book=> {
 					console.log("completed!");
@@ -164,4 +191,4 @@ program
 		}
 	});
 
-program.parse(process.argv);
+commandpost.exec(root, process.argv);

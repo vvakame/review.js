@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "update-notifier": "0.3.0",
-    "commander": "2.6.0",
+    "commandpost": "0.0.3",
     "i18next": "1.7.9",
     "colors": "1.0.3",
     "ypromise": "0.2.3",

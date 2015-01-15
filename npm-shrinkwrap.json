@@ -1,16 +1,23 @@
 {
   "name": "review.js",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "dependencies": {
     "colors": {
       "version": "1.0.3",
       "from": "colors@1.0.3",
       "resolved": "https://registry.npmjs.org/colors/-/colors-1.0.3.tgz"
     },
-    "commander": {
-      "version": "2.6.0",
-      "from": "commander@2.6.0",
-      "resolved": "https://registry.npmjs.org/commander/-/commander-2.6.0.tgz"
+    "commandpost": {
+      "version": "0.0.3",
+      "from": "commandpost@0.0.3",
+      "resolved": "https://registry.npmjs.org/commandpost/-/commandpost-0.0.3.tgz",
+      "dependencies": {
+        "es6-promise": {
+          "version": "2.0.1",
+          "from": "es6-promise@2.0.1",
+          "resolved": "https://registry.npmjs.org/es6-promise/-/es6-promise-2.0.1.tgz"
+        }
+      }
     },
     "espower-loader": {
       "version": "0.10.0",
@@ -233,7 +240,7 @@
         },
         "eventemitter2": {
           "version": "0.4.14",
-          "from": "eventemitter2@~0.4.13",
+          "from": "eventemitter2@~0.4.9",
           "resolved": "https://registry.npmjs.org/eventemitter2/-/eventemitter2-0.4.14.tgz"
         },
         "findup-sync": {
@@ -1038,7 +1045,7 @@
                 },
                 "mute-stream": {
                   "version": "0.0.4",
-                  "from": "mute-stream@0.0.4",
+                  "from": "mute-stream@~0.0.4",
                   "resolved": "https://registry.npmjs.org/mute-stream/-/mute-stream-0.0.4.tgz"
                 },
                 "readline2": {
@@ -1257,7 +1264,7 @@
                     },
                     "mute-stream": {
                       "version": "0.0.4",
-                      "from": "mute-stream@0.0.4",
+                      "from": "mute-stream@~0.0.4",
                       "resolved": "https://registry.npmjs.org/mute-stream/-/mute-stream-0.0.4.tgz"
                     },
                     "readline2": {
@@ -1468,7 +1475,7 @@
               "dependencies": {
                 "bl": {
                   "version": "0.9.3",
-                  "from": "bl@^0.9.0",
+                  "from": "bl@~0.9.0",
                   "resolved": "https://registry.npmjs.org/bl/-/bl-0.9.3.tgz",
                   "dependencies": {
                     "readable-stream": {
@@ -1768,7 +1775,7 @@
                     },
                     "readable-stream": {
                       "version": "1.0.33",
-                      "from": "readable-stream@^1.0.27-1",
+                      "from": "readable-stream@~1.0.26",
                       "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-1.0.33.tgz",
                       "dependencies": {
                         "core-util-is": {
@@ -1788,7 +1795,7 @@
                         },
                         "inherits": {
                           "version": "2.0.1",
-                          "from": "inherits@~2.0.1",
+                          "from": "inherits@2",
                           "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
                         }
                       }
@@ -1814,7 +1821,7 @@
               "dependencies": {
                 "configstore": {
                   "version": "0.3.2",
-                  "from": "configstore@^0.3.1",
+                  "from": "configstore@^0.3.0",
                   "resolved": "https://registry.npmjs.org/configstore/-/configstore-0.3.2.tgz",
                   "dependencies": {
                     "object-assign": {
@@ -1885,7 +1892,7 @@
                                 },
                                 "inherits": {
                                   "version": "2.0.1",
-                                  "from": "inherits@~2.0.0",
+                                  "from": "inherits@~2.0.1",
                                   "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
                                 },
                                 "ini": {
@@ -2004,7 +2011,7 @@
       "dependencies": {
         "chalk": {
           "version": "0.5.1",
-          "from": "chalk@~0.5.0",
+          "from": "chalk@^0.5.1",
           "resolved": "https://registry.npmjs.org/chalk/-/chalk-0.5.1.tgz",
           "dependencies": {
             "ansi-styles": {
@@ -2069,7 +2076,7 @@
       "dependencies": {
         "chalk": {
           "version": "0.5.1",
-          "from": "chalk@~0.5.0",
+          "from": "chalk@^0.5.1",
           "resolved": "https://registry.npmjs.org/chalk/-/chalk-0.5.1.tgz",
           "dependencies": {
             "ansi-styles": {
@@ -2115,7 +2122,7 @@
         },
         "lodash": {
           "version": "2.4.1",
-          "from": "lodash@~2.4.1",
+          "from": "lodash@^2.4.1",
           "resolved": "https://registry.npmjs.org/lodash/-/lodash-2.4.1.tgz"
         },
         "maxmin": {
@@ -2140,7 +2147,7 @@
                   "dependencies": {
                     "inherits": {
                       "version": "2.0.1",
-                      "from": "inherits@2",
+                      "from": "inherits@~2.0.1",
                       "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
                     },
                     "typedarray": {
@@ -5960,7 +5967,7 @@
                   "dependencies": {
                     "mime-db": {
                       "version": "1.5.0",
-                      "from": "mime-db@1.x",
+                      "from": "mime-db@~1.5.0",
                       "resolved": "https://registry.npmjs.org/mime-db/-/mime-db-1.5.0.tgz"
                     }
                   }
@@ -6320,7 +6327,7 @@
             },
             "rimraf": {
               "version": "2.2.8",
-              "from": "rimraf@~2.2.8",
+              "from": "rimraf@~2.2.5",
               "resolved": "https://registry.npmjs.org/rimraf/-/rimraf-2.2.8.tgz"
             },
             "which": {
@@ -6568,7 +6575,7 @@
       "dependencies": {
         "lodash": {
           "version": "2.4.1",
-          "from": "lodash@~2.4.1",
+          "from": "lodash@^2.4.1",
           "resolved": "https://registry.npmjs.org/lodash/-/lodash-2.4.1.tgz"
         },
         "coffee-script": {
@@ -6694,7 +6701,7 @@
       "dependencies": {
         "chalk": {
           "version": "0.5.1",
-          "from": "chalk@~0.5.0",
+          "from": "chalk@^0.5.1",
           "resolved": "https://registry.npmjs.org/chalk/-/chalk-0.5.1.tgz",
           "dependencies": {
             "ansi-styles": {
@@ -6714,7 +6721,7 @@
               "dependencies": {
                 "ansi-regex": {
                   "version": "0.2.1",
-                  "from": "ansi-regex@^0.2.0",
+                  "from": "ansi-regex@^0.2.1",
                   "resolved": "https://registry.npmjs.org/ansi-regex/-/ansi-regex-0.2.1.tgz"
                 }
               }
@@ -6726,7 +6733,7 @@
               "dependencies": {
                 "ansi-regex": {
                   "version": "0.2.1",
-                  "from": "ansi-regex@^0.2.0",
+                  "from": "ansi-regex@^0.2.1",
                   "resolved": "https://registry.npmjs.org/ansi-regex/-/ansi-regex-0.2.1.tgz"
                 }
               }
@@ -6750,7 +6757,7 @@
         },
         "hooker": {
           "version": "0.2.3",
-          "from": "hooker@^0.2.3",
+          "from": "hooker@~0.2.3",
           "resolved": "https://registry.npmjs.org/hooker/-/hooker-0.2.3.tgz"
         },
         "pretty-ms": {
@@ -6784,7 +6791,7 @@
       "dependencies": {
         "chalk": {
           "version": "0.5.1",
-          "from": "chalk@~0.5.0",
+          "from": "chalk@^0.5.1",
           "resolved": "https://registry.npmjs.org/chalk/-/chalk-0.5.1.tgz",
           "dependencies": {
             "ansi-styles": {
@@ -6804,7 +6811,7 @@
               "dependencies": {
                 "ansi-regex": {
                   "version": "0.2.1",
-                  "from": "ansi-regex@^0.2.0",
+                  "from": "ansi-regex@^0.2.1",
                   "resolved": "https://registry.npmjs.org/ansi-regex/-/ansi-regex-0.2.1.tgz"
                 }
               }
@@ -6816,7 +6823,7 @@
               "dependencies": {
                 "ansi-regex": {
                   "version": "0.2.1",
-                  "from": "ansi-regex@^0.2.0",
+                  "from": "ansi-regex@^0.2.1",
                   "resolved": "https://registry.npmjs.org/ansi-regex/-/ansi-regex-0.2.1.tgz"
                 }
               }
@@ -6916,7 +6923,7 @@
                       "dependencies": {
                         "minimist": {
                           "version": "0.0.10",
-                          "from": "minimist@~0.0.7",
+                          "from": "minimist@~0.0.1",
                           "resolved": "https://registry.npmjs.org/minimist/-/minimist-0.0.10.tgz"
                         },
                         "deep-extend": {

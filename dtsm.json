@@ -17,9 +17,6 @@
     "update-notifier/update-notifier.d.ts": {
       "ref": "2cc4331067a81e2ae6bc4590e7b33bf286c8f28f"
     },
-    "commander/commander.d.ts": {
-      "ref": "2cc4331067a81e2ae6bc4590e7b33bf286c8f28f"
-    },
     "es6-promise/es6-promise.d.ts": {
       "ref": "2cc4331067a81e2ae6bc4590e7b33bf286c8f28f"
     },
