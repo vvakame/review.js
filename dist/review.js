@@ -4624,57 +4624,41 @@ var PEG = (function() {
 var ReVIEW;
 (function (ReVIEW) {
     "use strict";
-
     function isNodeJS() {
         return !isAMD() && typeof exports === "object";
     }
     ReVIEW.isNodeJS = isNodeJS;
-
     function isAMD() {
         return typeof define === "function" && define.amd;
     }
     ReVIEW.isAMD = isAMD;
-
     function flatten(data) {
-        if (data.some(function (d) {
-            return Array.isArray(d);
-        })) {
-            return flatten(data.reduce(function (p, c) {
-                return p.concat(c);
-            }, []));
-        } else {
+        if (data.some(function (d) { return Array.isArray(d); })) {
+            return flatten(data.reduce(function (p, c) { return p.concat(c); }, []));
+        }
+        else {
             return data;
         }
     }
     ReVIEW.flatten = flatten;
-
-    
-
     function nodeToString(process, node) {
         return process.input.substring(node.offset, node.endPos);
     }
     ReVIEW.nodeToString = nodeToString;
-
-    
-
     function nodeContentToString(process, node) {
         var minPos = Number.MAX_VALUE;
         var maxPos = -1;
-
         var childVisitor = {
             visitDefaultPre: function (node) {
                 minPos = Math.min(minPos, node.offset);
                 maxPos = Math.max(maxPos, node.endPos);
             }
         };
-
         ReVIEW.visit(node, {
             visitDefaultPre: function (node) {
             },
             visitNodePre: function (node) {
-                node.childNodes.forEach(function (child) {
-                    return ReVIEW.visit(child, childVisitor);
-                });
+                node.childNodes.forEach(function (child) { return ReVIEW.visit(child, childVisitor); });
                 return false;
             },
             visitHeadlinePre: function (node) {
@@ -4701,12 +4685,12 @@ var ReVIEW;
         });
         if (maxPos < 0) {
             return "";
-        } else {
+        }
+        else {
             return process.input.substring(minPos, maxPos);
         }
     }
     ReVIEW.nodeContentToString = nodeContentToString;
-
     function findUp(node, predicate) {
         var result = null;
         ReVIEW.walk(node, function (node) {
@@ -4719,7 +4703,6 @@ var ReVIEW;
         return result;
     }
     ReVIEW.findUp = findUp;
-
     function findChapter(node, level) {
         var chapter = null;
         ReVIEW.walk(node, function (node) {
@@ -4734,7 +4717,6 @@ var ReVIEW;
         return chapter;
     }
     ReVIEW.findChapter = findChapter;
-
     function findChapterOrColumn(node, level) {
         var chapter = null;
         var column = null;
@@ -4744,7 +4726,8 @@ var ReVIEW;
                 if (typeof level === "undefined" || chapter.level === level) {
                     return null;
                 }
-            } else if (node instanceof ReVIEW.Parse.ColumnSyntaxTree) {
+            }
+            else if (node instanceof ReVIEW.Parse.ColumnSyntaxTree) {
                 column = node.toColumn();
                 if (typeof level === "undefined" || column.level === level) {
                     return null;
@@ -4755,7 +4738,6 @@ var ReVIEW;
         return chapter || column;
     }
     ReVIEW.findChapterOrColumn = findChapterOrColumn;
-
     function target2builder(target) {
         var builderName = target.charAt(0).toUpperCase() + target.substring(1) + "Builder";
         for (var name in ReVIEW.Build) {
@@ -4767,7 +4749,7 @@ var ReVIEW;
         return null;
     }
     ReVIEW.target2builder = target2builder;
-
+    var IO;
     (function (IO) {
         function read(path) {
             var fs = require("fs");
@@ -4775,42 +4757,38 @@ var ReVIEW;
                 fs.readFile(path, { encoding: "utf8" }, function (err, data) {
                     if (err) {
                         reject(err);
-                    } else {
+                    }
+                    else {
                         resolve(data);
                     }
                 });
             });
         }
         IO.read = read;
-
         function write(path, content) {
             var fs = require("fs");
             return new Promise(function (resolve, reject) {
                 fs.writeFile(path, content, function (err) {
                     if (err) {
                         reject(err);
-                    } else {
+                    }
+                    else {
                         resolve(null);
                     }
                 });
             });
         }
         IO.write = write;
-    })(ReVIEW.IO || (ReVIEW.IO = {}));
-    var IO = ReVIEW.IO;
-
+    })(IO = ReVIEW.IO || (ReVIEW.IO = {}));
     function stringRepeat(times, src) {
         return new Array(times + 1).join(src);
     }
     ReVIEW.stringRepeat = stringRepeat;
-
+    var Exec;
     (function (Exec) {
         function singleCompile(input, fileName, target, tmpConfig) {
             var config = tmpConfig || {};
-            config.read = config.read || (function () {
-                return Promise.resolve(input);
-            });
-
+            config.read = config.read || (function () { return Promise.resolve(input); });
             config.analyzer = config.analyzer || new ReVIEW.Build.DefaultAnalyzer();
             config.validators = config.validators || [new ReVIEW.Build.DefaultValidator()];
             if (target && target2builder(target) == null) {
@@ -4826,12 +4804,8 @@ var ReVIEW;
             config.book.contents = config.book.contents || [
                 { file: fileName }
             ];
-
             var results = {};
-            config.write = config.write || (function (path, content) {
-                return results[path] = content;
-            });
-
+            config.write = config.write || (function (path, content) { return results[path] = content; });
             config.listener = config.listener || {
                 onReports: function () {
                 },
@@ -4857,7 +4831,6 @@ var ReVIEW;
                 success = false;
                 originalCompileFailed(book);
             };
-
             return ReVIEW.start(function (review) {
                 review.initConfig(config);
             }).then(function (book) {
@@ -4868,13 +4841,11 @@ var ReVIEW;
             });
         }
         Exec.singleCompile = singleCompile;
-    })(ReVIEW.Exec || (ReVIEW.Exec = {}));
-    var Exec = ReVIEW.Exec;
+    })(Exec = ReVIEW.Exec || (ReVIEW.Exec = {}));
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
     "use strict";
-
     ReVIEW.ja = {
         "sample": "こんちゃーす！",
         "description": {
@@ -4950,18 +4921,17 @@ var ReVIEW;
 var ReVIEW;
 (function (ReVIEW) {
     "use strict";
-
     ReVIEW.en = {
         "sample": "Hello!"
     };
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
+    var i18n;
     (function (i18n) {
         "use strict";
-
         function setup(lang) {
-            if (typeof lang === "undefined") { lang = "ja"; }
+            if (lang === void 0) { lang = "ja"; }
             if (typeof i18next.backend !== "undefined") {
                 i18next.backend({
                     fetchOne: function (lng, ns, func) {
@@ -4969,7 +4939,8 @@ var ReVIEW;
                     }
                 });
                 i18next.init({ lng: lang });
-            } else {
+            }
+            else {
                 i18next.init({
                     lng: lang,
                     customLoad: function (lng, ns, options, loadComplete) {
@@ -4979,42 +4950,35 @@ var ReVIEW;
             }
         }
         i18n.setup = setup;
-
         function t(str) {
             var args = [];
-            for (var _i = 0; _i < (arguments.length - 1); _i++) {
-                args[_i] = arguments[_i + 1];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                args[_i - 1] = arguments[_i];
             }
             return i18next.t(str, { postProcess: "sprintf", sprintf: args });
         }
         i18n.t = t;
-
         var i18next;
-
         if (ReVIEW.isNodeJS()) {
             i18next = require("i18next");
-        } else {
+        }
+        else {
             i18next = window.i18n;
         }
-
         var data = {
             "ja": ReVIEW.ja,
             "en": ReVIEW.en
         };
-
         setup();
-    })(ReVIEW.i18n || (ReVIEW.i18n = {}));
-    var i18n = ReVIEW.i18n;
+    })(i18n = ReVIEW.i18n || (ReVIEW.i18n = {}));
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
     "use strict";
-
+    var Parse;
     (function (Parse) {
         void 0;
-    })(ReVIEW.Parse || (ReVIEW.Parse = {}));
-    var Parse = ReVIEW.Parse;
-
+    })(Parse = ReVIEW.Parse || (ReVIEW.Parse = {}));
     function walk(ast, actor) {
         var next = actor(ast);
         if (next) {
@@ -5022,21 +4986,14 @@ var ReVIEW;
         }
     }
     ReVIEW.walk = walk;
-
     function visit(ast, v) {
-        _visit(function () {
-            return new SyncTaskPool();
-        }, ast, v);
+        _visit(function () { return new SyncTaskPool(); }, ast, v);
     }
     ReVIEW.visit = visit;
-
     function visitAsync(ast, v) {
-        return Promise.resolve(_visit(function () {
-            return new AsyncTaskPool();
-        }, ast, v));
+        return Promise.resolve(_visit(function () { return new AsyncTaskPool(); }, ast, v));
     }
     ReVIEW.visitAsync = visitAsync;
-
     function _visit(poolGenerator, ast, v) {
         var newV = {
             visitDefaultPre: v.visitDefaultPre,
@@ -5108,10 +5065,8 @@ var ReVIEW;
         newV.visitColumnHeadlinePost = newV.visitColumnHeadlinePost.bind(v);
         newV.visitTextPre = newV.visitTextPre.bind(v);
         newV.visitTextPost = newV.visitTextPost.bind(v);
-
         return _visitSub(poolGenerator, null, ast, newV);
     }
-
     function _visitSub(poolGenerator, parent, ast, v) {
         if (ast instanceof ReVIEW.Parse.BlockElementSyntaxTree) {
             return (function () {
@@ -5121,26 +5076,21 @@ var ReVIEW;
                 pool.handle(ret, {
                     next: function () {
                         block.args.forEach(function (next) {
-                            pool.add(function () {
-                                return _visitSub(poolGenerator, ast, next, v);
-                            });
+                            pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                         });
                         block.childNodes.forEach(function (next) {
-                            pool.add(function () {
-                                return _visitSub(poolGenerator, ast, next, v);
-                            });
+                            pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                         });
                     },
                     func: function () {
                         ret(v);
                     }
                 });
-                pool.add(function () {
-                    return v.visitBlockElementPost(block, parent);
-                });
+                pool.add(function () { return v.visitBlockElementPost(block, parent); });
                 return pool.consume();
             })();
-        } else if (ast instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
+        }
+        else if (ast instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
             return (function () {
                 var inline = ast.toInlineElement();
                 var pool = poolGenerator();
@@ -5148,21 +5098,18 @@ var ReVIEW;
                 pool.handle(ret, {
                     next: function () {
                         inline.childNodes.forEach(function (next) {
-                            pool.add(function () {
-                                return _visitSub(poolGenerator, ast, next, v);
-                            });
+                            pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                         });
                     },
                     func: function () {
                         ret(v);
                     }
                 });
-                pool.add(function () {
-                    return v.visitInlineElementPost(inline, parent);
-                });
+                pool.add(function () { return v.visitInlineElementPost(inline, parent); });
                 return pool.consume();
             })();
-        } else if (ast instanceof ReVIEW.Parse.ArgumentSyntaxTree) {
+        }
+        else if (ast instanceof ReVIEW.Parse.ArgumentSyntaxTree) {
             return (function () {
                 var arg = ast.toArgument();
                 var pool = poolGenerator();
@@ -5174,81 +5121,64 @@ var ReVIEW;
                         ret(v);
                     }
                 });
-                pool.add(function () {
-                    return v.visitArgumentPost(arg, parent);
-                });
+                pool.add(function () { return v.visitArgumentPost(arg, parent); });
                 return pool.consume();
             })();
-        } else if (ast instanceof ReVIEW.Parse.ChapterSyntaxTree) {
+        }
+        else if (ast instanceof ReVIEW.Parse.ChapterSyntaxTree) {
             return (function () {
                 var chap = ast.toChapter();
                 var pool = poolGenerator();
                 var ret = v.visitChapterPre(chap, parent);
                 pool.handle(ret, {
                     next: function () {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, chap.headline, v);
-                        });
+                        pool.add(function () { return _visitSub(poolGenerator, ast, chap.headline, v); });
                         if (chap.text) {
                             chap.text.forEach(function (next) {
-                                pool.add(function () {
-                                    return _visitSub(poolGenerator, ast, next, v);
-                                });
+                                pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                             });
                         }
                         chap.childNodes.forEach(function (next) {
-                            pool.add(function () {
-                                return _visitSub(poolGenerator, ast, next, v);
-                            });
+                            pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                         });
                     },
                     func: function () {
                         ret(v);
                     }
                 });
-                pool.add(function () {
-                    return v.visitChapterPost(chap, parent);
-                });
+                pool.add(function () { return v.visitChapterPost(chap, parent); });
                 return pool.consume();
             })();
-        } else if (ast instanceof ReVIEW.Parse.HeadlineSyntaxTree) {
+        }
+        else if (ast instanceof ReVIEW.Parse.HeadlineSyntaxTree) {
             return (function () {
                 var head = ast.toHeadline();
                 var pool = poolGenerator();
                 var ret = v.visitHeadlinePre(head, parent);
                 pool.handle(ret, {
                     next: function () {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, head.label, v);
-                        });
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, head.caption, v);
-                        });
+                        pool.add(function () { return _visitSub(poolGenerator, ast, head.label, v); });
+                        pool.add(function () { return _visitSub(poolGenerator, ast, head.caption, v); });
                     },
                     func: function () {
                         ret(v);
                     }
                 });
-                pool.add(function () {
-                    return v.visitHeadlinePost(head, parent);
-                });
+                pool.add(function () { return v.visitHeadlinePost(head, parent); });
                 return pool.consume();
             })();
-        } else if (ast instanceof ReVIEW.Parse.ColumnSyntaxTree) {
+        }
+        else if (ast instanceof ReVIEW.Parse.ColumnSyntaxTree) {
             return (function () {
                 var column = ast.toColumn();
                 var pool = poolGenerator();
                 var ret = v.visitColumnPre(column, parent);
                 pool.handle(ret, {
                     next: function () {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, column.headline, v);
-                        });
+                        pool.add(function () { return _visitSub(poolGenerator, ast, column.headline, v); });
                         if (column.text) {
                             column.text.forEach(function (next) {
-                                pool.add(function () {
-                                    return _visitSub(poolGenerator, ast, next, v);
-                                });
+                                pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                             });
                         }
                     },
@@ -5256,100 +5186,83 @@ var ReVIEW;
                         ret(v);
                     }
                 });
-                pool.add(function () {
-                    return v.visitColumnPost(column, parent);
-                });
+                pool.add(function () { return v.visitColumnPost(column, parent); });
                 return pool.consume();
             })();
-        } else if (ast instanceof ReVIEW.Parse.ColumnHeadlineSyntaxTree) {
+        }
+        else if (ast instanceof ReVIEW.Parse.ColumnHeadlineSyntaxTree) {
             return (function () {
                 var columnHead = ast.toColumnHeadline();
                 var pool = poolGenerator();
                 var ret = v.visitColumnHeadlinePre(columnHead, parent);
                 pool.handle(ret, {
                     next: function () {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, columnHead.caption, v);
-                        });
+                        pool.add(function () { return _visitSub(poolGenerator, ast, columnHead.caption, v); });
                     },
                     func: function () {
                         ret(v);
                     }
                 });
-                pool.add(function () {
-                    return v.visitColumnHeadlinePost(columnHead, parent);
-                });
+                pool.add(function () { return v.visitColumnHeadlinePost(columnHead, parent); });
                 return pool.consume();
             })();
-        } else if (ast instanceof ReVIEW.Parse.UlistElementSyntaxTree) {
+        }
+        else if (ast instanceof ReVIEW.Parse.UlistElementSyntaxTree) {
             return (function () {
                 var ul = ast.toUlist();
                 var pool = poolGenerator();
                 var ret = v.visitUlistPre(ul, parent);
                 pool.handle(ret, {
                     next: function () {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, ul.text, v);
-                        });
+                        pool.add(function () { return _visitSub(poolGenerator, ast, ul.text, v); });
                         ul.childNodes.forEach(function (next) {
-                            pool.add(function () {
-                                return _visitSub(poolGenerator, ast, next, v);
-                            });
+                            pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                         });
                     },
                     func: function () {
                         ret(v);
                     }
                 });
-                pool.add(function () {
-                    return v.visitUlistPost(ul, parent);
-                });
+                pool.add(function () { return v.visitUlistPost(ul, parent); });
                 return pool.consume();
             })();
-        } else if (ast instanceof ReVIEW.Parse.OlistElementSyntaxTree) {
+        }
+        else if (ast instanceof ReVIEW.Parse.OlistElementSyntaxTree) {
             return (function () {
                 var ol = ast.toOlist();
                 var pool = poolGenerator();
                 var ret = v.visitOlistPre(ol, parent);
                 pool.handle(ret, {
                     next: function () {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, ol.text, v);
-                        });
+                        pool.add(function () { return _visitSub(poolGenerator, ast, ol.text, v); });
                     },
                     func: function () {
                         ret(v);
                     }
                 });
-                pool.add(function () {
-                    return v.visitOlistPost(ol, parent);
-                });
+                pool.add(function () { return v.visitOlistPost(ol, parent); });
                 return pool.consume();
             })();
-        } else if (ast instanceof ReVIEW.Parse.DlistElementSyntaxTree) {
+        }
+        else if (ast instanceof ReVIEW.Parse.DlistElementSyntaxTree) {
             return (function () {
                 var dl = ast.toDlist();
                 var pool = poolGenerator();
                 var ret = v.visitDlistPre(dl, parent);
                 pool.handle(ret, {
                     next: function () {
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, dl.text, v);
-                        });
-                        pool.add(function () {
-                            return _visitSub(poolGenerator, ast, dl.content, v);
-                        });
+                        pool.add(function () { return _visitSub(poolGenerator, ast, dl.text, v); });
+                        pool.add(function () { return _visitSub(poolGenerator, ast, dl.content, v); });
                     },
                     func: function () {
                         ret(v);
                     }
                 });
-                pool.add(function () {
-                    return v.visitDlistPost(dl, parent);
-                });
+                pool.add(function () { return v.visitDlistPost(dl, parent); });
                 return pool.consume();
             })();
-        } else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && (ast.ruleName === 7 /* Paragraph */ || ast.ruleName === 17 /* BlockElementParagraph */)) {
+        }
+        else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && (ast.ruleName === 7 /* Paragraph */ || ast.ruleName === 17 /* BlockElementParagraph */)) {
             return (function () {
                 var node = ast.toNode();
                 var pool = poolGenerator();
@@ -5357,21 +5270,18 @@ var ReVIEW;
                 pool.handle(ret, {
                     next: function () {
                         node.childNodes.forEach(function (next) {
-                            pool.add(function () {
-                                return _visitSub(poolGenerator, ast, next, v);
-                            });
+                            pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                         });
                     },
                     func: function () {
                         ret(v);
                     }
                 });
-                pool.add(function () {
-                    return v.visitParagraphPost(node, parent);
-                });
+                pool.add(function () { return v.visitParagraphPost(node, parent); });
                 return pool.consume();
             })();
-        } else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree) {
+        }
+        else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree) {
             return (function () {
                 var node = ast.toNode();
                 var pool = poolGenerator();
@@ -5379,21 +5289,18 @@ var ReVIEW;
                 pool.handle(ret, {
                     next: function () {
                         node.childNodes.forEach(function (next) {
-                            pool.add(function () {
-                                return _visitSub(poolGenerator, ast, next, v);
-                            });
+                            pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                         });
                     },
                     func: function () {
                         ret(v);
                     }
                 });
-                pool.add(function () {
-                    return v.visitNodePost(node, parent);
-                });
+                pool.add(function () { return v.visitNodePost(node, parent); });
                 return pool.consume();
             })();
-        } else if (ast instanceof ReVIEW.Parse.TextNodeSyntaxTree) {
+        }
+        else if (ast instanceof ReVIEW.Parse.TextNodeSyntaxTree) {
             return (function () {
                 var text = ast.toTextNode();
                 var pool = poolGenerator();
@@ -5405,12 +5312,11 @@ var ReVIEW;
                         ret(v);
                     }
                 });
-                pool.add(function () {
-                    return v.visitTextPost(text, parent);
-                });
+                pool.add(function () { return v.visitTextPost(text, parent); });
                 return pool.consume();
             })();
-        } else if (ast) {
+        }
+        else if (ast) {
             return (function () {
                 var pool = poolGenerator();
                 var ret = v.visitDefaultPre(parent, ast);
@@ -5421,23 +5327,17 @@ var ReVIEW;
                         ret(v);
                     }
                 });
-                pool.add(function () {
-                    return v.visitDefaultPost(parent, ast);
-                });
+                pool.add(function () { return v.visitDefaultPost(parent, ast); });
                 return pool.consume();
             })();
-        } else {
+        }
+        else {
             return (function () {
                 var pool = poolGenerator();
                 return pool.consume();
             })();
         }
     }
-
-    
-
-    
-
     var SyncTaskPool = (function () {
         function SyncTaskPool() {
             this.tasks = [];
@@ -5445,45 +5345,37 @@ var ReVIEW;
         SyncTaskPool.prototype.add = function (value) {
             this.tasks.push(value);
         };
-
         SyncTaskPool.prototype.handle = function (value, statements) {
             if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
                 statements.next();
-            } else if (typeof value === "function") {
+            }
+            else if (typeof value === "function") {
                 statements.func();
             }
         };
-
         SyncTaskPool.prototype.consume = function () {
-            return this.tasks.map(function (task) {
-                return task();
-            });
+            return this.tasks.map(function (task) { return task(); });
         };
         return SyncTaskPool;
     })();
-
     var AsyncTaskPool = (function () {
         function AsyncTaskPool() {
             this.tasks = [];
         }
         AsyncTaskPool.prototype.add = function (value) {
-            this.tasks.push(function () {
-                return Promise.resolve(value());
-            });
+            this.tasks.push(function () { return Promise.resolve(value()); });
         };
-
         AsyncTaskPool.prototype.handle = function (value, statements) {
             if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
                 statements.next();
-            } else if (value && typeof value.then === "function") {
-                this.tasks.push(function () {
-                    return Promise.resolve(value);
-                });
-            } else if (typeof value === "function") {
+            }
+            else if (value && typeof value.then === "function") {
+                this.tasks.push(function () { return Promise.resolve(value); });
+            }
+            else if (typeof value === "function") {
                 statements.func();
             }
         };
-
         AsyncTaskPool.prototype.consume = function () {
             var _this = this;
             var promise = new Promise(function (resolve, reject) {
@@ -5514,13 +5406,12 @@ var __extends = this.__extends || function (d, b) {
 };
 var ReVIEW;
 (function (ReVIEW) {
+    var Parse;
     (function (Parse) {
         "use strict";
-
         function parse(input) {
             var rawResult = PEG.parse(input);
             var root = transform(rawResult).toNode();
-
             ReVIEW.visit(root, {
                 visitDefaultPre: function (ast) {
                 },
@@ -5529,13 +5420,9 @@ var ReVIEW;
                     ast.childNodes = subs.childNodes;
                 }
             });
-
             if (root.childNodes.length !== 0) {
-                reconstruct(root.childNodes[0].toNode(), function (chapter) {
-                    return chapter.headline.level;
-                });
+                reconstruct(root.childNodes[0].toNode(), function (chapter) { return chapter.headline.level; });
             }
-
             var ulistSet = [];
             ReVIEW.visit(root, {
                 visitDefaultPre: function (ast) {
@@ -5545,17 +5432,13 @@ var ReVIEW;
                 }
             });
             ulistSet.forEach(function (ulist) {
-                reconstruct(ulist, function (ulistElement) {
-                    return ulistElement.level;
-                });
+                reconstruct(ulist, function (ulistElement) { return ulistElement.level; });
             });
-
             ReVIEW.visit(root, {
                 visitDefaultPre: function (ast, parent) {
                     ast.parentNode = parent;
                 }
             });
-
             ReVIEW.visit(root, {
                 visitDefaultPre: function (ast, parent) {
                 },
@@ -5578,7 +5461,6 @@ var ReVIEW;
             };
         }
         Parse.parse = parse;
-
         function transform(rawResult) {
             if (!rawResult) {
                 return null;
@@ -5615,7 +5497,6 @@ var ReVIEW;
                 case 27 /* ContentInlineText */:
                 case 40 /* SinglelineComment */:
                     return new TextNodeSyntaxTree(rawResult);
-
                 case 2 /* Chapters */:
                 case 5 /* Contents */:
                 case 8 /* ParagraphSubs */:
@@ -5628,14 +5509,12 @@ var ReVIEW;
                 case 30 /* Olist */:
                 case 32 /* Dlist */:
                     return new NodeSyntaxTree(rawResult);
-
                 case 1 /* Start */:
                 case 7 /* Paragraph */:
                 case 17 /* BlockElementParagraph */:
                 case 19 /* BlockElementParagraphSub */:
                 case 34 /* DlistElementContent */:
                     return new NodeSyntaxTree(rawResult);
-
                 case 6 /* Content */:
                 case 9 /* ParagraphSub */:
                 case 16 /* BlockElementContent */:
@@ -5649,24 +5528,24 @@ var ReVIEW;
             }
         }
         Parse.transform = transform;
-
         function reconstruct(node, pickLevel) {
             var originalChildNodes = node.childNodes;
-
             var nodeSets = [];
             var currentSet = {
                 parent: null,
                 children: []
             };
-
             originalChildNodes.forEach(function (child) {
                 if (child.ruleName === 40 /* SinglelineComment */) {
                     currentSet.children.push(child);
-                } else if (!currentSet.parent) {
+                }
+                else if (!currentSet.parent) {
                     currentSet.parent = child;
-                } else if (pickLevel(currentSet.parent) < pickLevel(child)) {
+                }
+                else if (pickLevel(currentSet.parent) < pickLevel(child)) {
                     currentSet.children.push(child);
-                } else {
+                }
+                else {
                     nodeSets.push(currentSet);
                     currentSet = {
                         parent: child,
@@ -5687,7 +5566,6 @@ var ReVIEW;
                 reconstruct(parent, pickLevel);
             });
         }
-
         var ParseError = (function () {
             function ParseError(syntax, message) {
                 this.syntax = syntax;
@@ -5700,12 +5578,8 @@ var ReVIEW;
             return ParseError;
         })();
         Parse.ParseError = ParseError;
-
-        
-
         (function (RuleName) {
             RuleName[RuleName["SyntaxError"] = 0] = "SyntaxError";
-
             RuleName[RuleName["Start"] = 1] = "Start";
             RuleName[RuleName["Chapters"] = 2] = "Chapters";
             RuleName[RuleName["Chapter"] = 3] = "Chapter";
@@ -5748,7 +5622,6 @@ var ReVIEW;
             RuleName[RuleName["SinglelineComment"] = 40] = "SinglelineComment";
         })(Parse.RuleName || (Parse.RuleName = {}));
         var RuleName = Parse.RuleName;
-
         var SyntaxTree = (function () {
             function SyntaxTree(data) {
                 this.ruleName = RuleName[data.syntax];
@@ -5767,26 +5640,27 @@ var ReVIEW;
                 for (var k in this) {
                     if (k === "ruleName") {
                         result[k] = RuleName[this.ruleName];
-                    } else if (k === "prev" || k === "next" || k === "parentNode") {
-                    } else if (k === "childNodes") {
+                    }
+                    else if (k === "prev" || k === "next" || k === "parentNode") {
+                    }
+                    else if (k === "childNodes") {
                         lowPriorities.push((function (k) {
                             return function () {
                                 result[k] = _this[k];
                             };
                         })(k));
-                    } else if (k === "fqn") {
-                    } else if (typeof this[k] !== "function") {
+                    }
+                    else if (k === "fqn") {
+                    }
+                    else if (typeof this[k] !== "function") {
                         result[k] = this[k];
                     }
                 }
-                lowPriorities.forEach(function (fn) {
-                    return fn();
-                });
+                lowPriorities.forEach(function (fn) { return fn(); });
                 return result;
             };
-
             SyntaxTree.prototype.toString = function (indentLevel) {
-                if (typeof indentLevel === "undefined") { indentLevel = 0; }
+                if (indentLevel === void 0) { indentLevel = 0; }
                 var result = this.makeIndent(indentLevel) + "SyntaxTree:[\n";
                 result += this.makeIndent(indentLevel + 1) + "offset = " + this.offset + ",\n";
                 result += this.makeIndent(indentLevel + 1) + "line=" + this.line + ",\n";
@@ -5794,10 +5668,8 @@ var ReVIEW;
                 result += this.makeIndent(indentLevel + 1) + "name=" + RuleName[this.ruleName] + ",\n";
                 this.toStringHook(indentLevel, result);
                 result += this.makeIndent(indentLevel) + "]";
-
                 return result;
             };
-
             SyntaxTree.prototype.makeIndent = function (indentLevel) {
                 var indent = "";
                 for (var i = 0; i < indentLevel; i++) {
@@ -5805,145 +5677,120 @@ var ReVIEW;
                 }
                 return indent;
             };
-
             SyntaxTree.prototype.toStringHook = function (indentLevel, result) {
             };
-
             SyntaxTree.prototype.checkNumber = function (value) {
                 if (typeof value !== "number") {
                     throw new Error("number required. actual:" + (typeof value) + ":" + value);
-                } else {
+                }
+                else {
                     return value;
                 }
             };
-
             SyntaxTree.prototype.checkString = function (value) {
                 if (typeof value !== "string") {
                     throw new Error("string required. actual:" + (typeof value) + ":" + value);
-                } else {
+                }
+                else {
                     return value;
                 }
             };
-
             SyntaxTree.prototype.checkObject = function (value) {
                 if (typeof value !== "object") {
                     throw new Error("object required. actual:" + (typeof value) + ":" + value);
-                } else {
+                }
+                else {
                     return value;
                 }
             };
-
             SyntaxTree.prototype.checkArray = function (value) {
                 if (!Array.isArray(value)) {
                     throw new Error("array required. actual:" + (typeof value) + ":" + value);
-                } else {
+                }
+                else {
                     return value;
                 }
             };
-
             SyntaxTree.prototype.checkSyntaxType = function (clazz) {
                 return this instanceof clazz;
             };
-
             SyntaxTree.prototype.isNode = function () {
                 return this.checkSyntaxType(NodeSyntaxTree);
             };
-
             SyntaxTree.prototype.isBlockElement = function () {
                 return this.checkSyntaxType(BlockElementSyntaxTree);
             };
-
             SyntaxTree.prototype.isInlineElement = function () {
                 return this.checkSyntaxType(InlineElementSyntaxTree);
             };
-
             SyntaxTree.prototype.isArgument = function () {
                 return this.checkSyntaxType(ArgumentSyntaxTree);
             };
-
             SyntaxTree.prototype.isChapter = function () {
                 return this.checkSyntaxType(ChapterSyntaxTree);
             };
-
             SyntaxTree.prototype.isHeadline = function () {
                 return this.checkSyntaxType(HeadlineSyntaxTree);
             };
-
             SyntaxTree.prototype.isUlist = function () {
                 return this.checkSyntaxType(UlistElementSyntaxTree);
             };
-
             SyntaxTree.prototype.isOlist = function () {
                 return this.checkSyntaxType(OlistElementSyntaxTree);
             };
-
             SyntaxTree.prototype.isDlist = function () {
                 return this.checkSyntaxType(DlistElementSyntaxTree);
             };
-
             SyntaxTree.prototype.isTextNode = function () {
                 return this.checkSyntaxType(TextNodeSyntaxTree);
             };
-
             SyntaxTree.prototype.toOtherNode = function (clazz) {
                 if (this instanceof clazz) {
                     return this;
-                } else {
+                }
+                else {
                     throw new Error("this node is not " + clazz.name + ", actual " + this.constructor.name);
                 }
             };
-
             SyntaxTree.prototype.toNode = function () {
                 return this.toOtherNode(NodeSyntaxTree);
             };
-
             SyntaxTree.prototype.toBlockElement = function () {
                 return this.toOtherNode(BlockElementSyntaxTree);
             };
-
             SyntaxTree.prototype.toInlineElement = function () {
                 return this.toOtherNode(InlineElementSyntaxTree);
             };
-
             SyntaxTree.prototype.toArgument = function () {
                 return this.toOtherNode(ArgumentSyntaxTree);
             };
-
             SyntaxTree.prototype.toChapter = function () {
                 return this.toOtherNode(ChapterSyntaxTree);
             };
-
             SyntaxTree.prototype.toColumn = function () {
                 return this.toOtherNode(ColumnSyntaxTree);
             };
-
             SyntaxTree.prototype.toHeadline = function () {
                 return this.toOtherNode(HeadlineSyntaxTree);
             };
-
             SyntaxTree.prototype.toColumnHeadline = function () {
                 return this.toOtherNode(ColumnHeadlineSyntaxTree);
             };
-
             SyntaxTree.prototype.toUlist = function () {
                 return this.toOtherNode(UlistElementSyntaxTree);
             };
-
             SyntaxTree.prototype.toOlist = function () {
                 return this.toOtherNode(OlistElementSyntaxTree);
             };
-
             SyntaxTree.prototype.toDlist = function () {
                 return this.toOtherNode(DlistElementSyntaxTree);
             };
-
             SyntaxTree.prototype.toTextNode = function () {
                 return this.toOtherNode(TextNodeSyntaxTree);
             };
             return SyntaxTree;
         })();
         Parse.SyntaxTree = SyntaxTree;
-
         var NodeSyntaxTree = (function (_super) {
             __extends(NodeSyntaxTree, _super);
             function NodeSyntaxTree(data) {
@@ -5960,7 +5807,8 @@ var ReVIEW;
                             _this.childNodes.push(tree);
                         }
                     });
-                } else if (content !== "" && content) {
+                }
+                else if (content !== "" && content) {
                     (function (rawResult) {
                         var tree = transform(rawResult);
                         if (tree) {
@@ -5969,7 +5817,6 @@ var ReVIEW;
                     })(content);
                 }
             };
-
             NodeSyntaxTree.prototype.toStringHook = function (indentLevel, result) {
                 if (this.childNodes.length !== 0) {
                     result += this.makeIndent(indentLevel + 1) + "childNodes[" + this.childNodes.length + "]=[\n";
@@ -5983,12 +5830,10 @@ var ReVIEW;
             return NodeSyntaxTree;
         })(SyntaxTree);
         Parse.NodeSyntaxTree = NodeSyntaxTree;
-
         var ChapterSyntaxTree = (function (_super) {
             __extends(ChapterSyntaxTree, _super);
             function ChapterSyntaxTree(data) {
                 _super.call(this, data);
-
                 this.headline = transform(this.checkObject(data.headline)).toHeadline();
                 if (typeof data.text === "string" || data.text === null) {
                     this.text = [];
@@ -5997,7 +5842,6 @@ var ReVIEW;
                 this.text = this.checkArray(data.text.content).map(function (data) {
                     return transform(data);
                 });
-
                 delete this.childNodes;
                 this.childNodes = [];
             }
@@ -6008,7 +5852,6 @@ var ReVIEW;
                 enumerable: true,
                 configurable: true
             });
-
             Object.defineProperty(ChapterSyntaxTree.prototype, "fqn", {
                 get: function () {
                     var chapters = [];
@@ -6029,12 +5872,10 @@ var ReVIEW;
             return ChapterSyntaxTree;
         })(NodeSyntaxTree);
         Parse.ChapterSyntaxTree = ChapterSyntaxTree;
-
         var HeadlineSyntaxTree = (function (_super) {
             __extends(HeadlineSyntaxTree, _super);
             function HeadlineSyntaxTree(data) {
                 _super.call(this, data);
-
                 this.level = this.checkNumber(data.level);
                 if (data.label) {
                     this.label = transform(this.checkObject(data.label)).toArgument();
@@ -6044,7 +5885,6 @@ var ReVIEW;
             return HeadlineSyntaxTree;
         })(SyntaxTree);
         Parse.HeadlineSyntaxTree = HeadlineSyntaxTree;
-
         var BlockElementSyntaxTree = (function (_super) {
             __extends(BlockElementSyntaxTree, _super);
             function BlockElementSyntaxTree(data) {
@@ -6057,7 +5897,6 @@ var ReVIEW;
             return BlockElementSyntaxTree;
         })(NodeSyntaxTree);
         Parse.BlockElementSyntaxTree = BlockElementSyntaxTree;
-
         var InlineElementSyntaxTree = (function (_super) {
             __extends(InlineElementSyntaxTree, _super);
             function InlineElementSyntaxTree(data) {
@@ -6067,12 +5906,10 @@ var ReVIEW;
             return InlineElementSyntaxTree;
         })(NodeSyntaxTree);
         Parse.InlineElementSyntaxTree = InlineElementSyntaxTree;
-
         var ColumnSyntaxTree = (function (_super) {
             __extends(ColumnSyntaxTree, _super);
             function ColumnSyntaxTree(data) {
                 _super.call(this, data);
-
                 this.headline = transform(this.checkObject(data.headline)).toColumnHeadline();
                 if (typeof data.text === "string" || data.text === null) {
                     this.text = [];
@@ -6081,7 +5918,6 @@ var ReVIEW;
                 this.text = this.checkArray(data.text.content).map(function (data) {
                     return transform(data);
                 });
-
                 delete this.childNodes;
                 this.childNodes = [];
             }
@@ -6092,7 +5928,6 @@ var ReVIEW;
                 enumerable: true,
                 configurable: true
             });
-
             Object.defineProperty(ColumnSyntaxTree.prototype, "fqn", {
                 get: function () {
                     var chapters = [];
@@ -6113,19 +5948,16 @@ var ReVIEW;
             return ColumnSyntaxTree;
         })(NodeSyntaxTree);
         Parse.ColumnSyntaxTree = ColumnSyntaxTree;
-
         var ColumnHeadlineSyntaxTree = (function (_super) {
             __extends(ColumnHeadlineSyntaxTree, _super);
             function ColumnHeadlineSyntaxTree(data) {
                 _super.call(this, data);
-
                 this.level = this.checkNumber(data.level);
                 this.caption = transform(this.checkObject(data.caption)).toNode();
             }
             return ColumnHeadlineSyntaxTree;
         })(SyntaxTree);
         Parse.ColumnHeadlineSyntaxTree = ColumnHeadlineSyntaxTree;
-
         var ArgumentSyntaxTree = (function (_super) {
             __extends(ArgumentSyntaxTree, _super);
             function ArgumentSyntaxTree(data) {
@@ -6135,21 +5967,18 @@ var ReVIEW;
             return ArgumentSyntaxTree;
         })(SyntaxTree);
         Parse.ArgumentSyntaxTree = ArgumentSyntaxTree;
-
         var UlistElementSyntaxTree = (function (_super) {
             __extends(UlistElementSyntaxTree, _super);
             function UlistElementSyntaxTree(data) {
                 _super.call(this, data);
                 this.level = this.checkNumber(data.level);
                 this.text = transform(this.checkObject(data.text));
-
                 delete this.childNodes;
                 this.childNodes = [];
             }
             return UlistElementSyntaxTree;
         })(NodeSyntaxTree);
         Parse.UlistElementSyntaxTree = UlistElementSyntaxTree;
-
         var OlistElementSyntaxTree = (function (_super) {
             __extends(OlistElementSyntaxTree, _super);
             function OlistElementSyntaxTree(data) {
@@ -6160,7 +5989,6 @@ var ReVIEW;
             return OlistElementSyntaxTree;
         })(SyntaxTree);
         Parse.OlistElementSyntaxTree = OlistElementSyntaxTree;
-
         var DlistElementSyntaxTree = (function (_super) {
             __extends(DlistElementSyntaxTree, _super);
             function DlistElementSyntaxTree(data) {
@@ -6171,7 +5999,6 @@ var ReVIEW;
             return DlistElementSyntaxTree;
         })(SyntaxTree);
         Parse.DlistElementSyntaxTree = DlistElementSyntaxTree;
-
         var TextNodeSyntaxTree = (function (_super) {
             __extends(TextNodeSyntaxTree, _super);
             function TextNodeSyntaxTree(data) {
@@ -6181,25 +6008,20 @@ var ReVIEW;
             return TextNodeSyntaxTree;
         })(SyntaxTree);
         Parse.TextNodeSyntaxTree = TextNodeSyntaxTree;
-    })(ReVIEW.Parse || (ReVIEW.Parse = {}));
-    var Parse = ReVIEW.Parse;
+    })(Parse = ReVIEW.Parse || (ReVIEW.Parse = {}));
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
+    var Build;
     (function (Build) {
         "use strict";
-
         var t = ReVIEW.i18n.t;
-
         (function (SyntaxType) {
             SyntaxType[SyntaxType["Block"] = 0] = "Block";
             SyntaxType[SyntaxType["Inline"] = 1] = "Inline";
             SyntaxType[SyntaxType["Other"] = 2] = "Other";
         })(Build.SyntaxType || (Build.SyntaxType = {}));
         var SyntaxType = Build.SyntaxType;
-
-        
-
         var AcceptableSyntaxes = (function () {
             function AcceptableSyntaxes(acceptableSyntaxes) {
                 this.acceptableSyntaxes = acceptableSyntaxes;
@@ -6208,52 +6030,38 @@ var ReVIEW;
                 var results;
                 if (node instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
                     var inline = node.toInlineElement();
-                    results = this.inlines.filter(function (s) {
-                        return s.symbolName === inline.symbol;
-                    });
-                } else if (node instanceof ReVIEW.Parse.BlockElementSyntaxTree) {
+                    results = this.inlines.filter(function (s) { return s.symbolName === inline.symbol; });
+                }
+                else if (node instanceof ReVIEW.Parse.BlockElementSyntaxTree) {
                     var block = node.toBlockElement();
-                    results = this.blocks.filter(function (s) {
-                        return s.symbolName === block.symbol;
-                    });
-                } else {
-                    results = this.others.filter(function (s) {
-                        return node instanceof s.clazz;
-                    });
+                    results = this.blocks.filter(function (s) { return s.symbolName === block.symbol; });
+                }
+                else {
+                    results = this.others.filter(function (s) { return node instanceof s.clazz; });
                 }
                 return results;
             };
-
             Object.defineProperty(AcceptableSyntaxes.prototype, "inlines", {
                 get: function () {
-                    return this.acceptableSyntaxes.filter(function (s) {
-                        return s.type === 1 /* Inline */;
-                    });
+                    return this.acceptableSyntaxes.filter(function (s) { return s.type === 1 /* Inline */; });
                 },
                 enumerable: true,
                 configurable: true
             });
-
             Object.defineProperty(AcceptableSyntaxes.prototype, "blocks", {
                 get: function () {
-                    return this.acceptableSyntaxes.filter(function (s) {
-                        return s.type === 0 /* Block */;
-                    });
+                    return this.acceptableSyntaxes.filter(function (s) { return s.type === 0 /* Block */; });
                 },
                 enumerable: true,
                 configurable: true
             });
-
             Object.defineProperty(AcceptableSyntaxes.prototype, "others", {
                 get: function () {
-                    return this.acceptableSyntaxes.filter(function (s) {
-                        return s.type === 2 /* Other */;
-                    });
+                    return this.acceptableSyntaxes.filter(function (s) { return s.type === 2 /* Other */; });
                 },
                 enumerable: true,
                 configurable: true
             });
-
             AcceptableSyntaxes.prototype.toJSON = function () {
                 return {
                     "rev": "1",
@@ -6264,7 +6072,6 @@ var ReVIEW;
             return AcceptableSyntaxes;
         })();
         Build.AcceptableSyntaxes = AcceptableSyntaxes;
-
         var AcceptableSyntax = (function () {
             function AcceptableSyntax() {
                 this.argsLength = [];
@@ -6283,11 +6090,6 @@ var ReVIEW;
             return AcceptableSyntax;
         })();
         Build.AcceptableSyntax = AcceptableSyntax;
-
-        
-
-        
-
         var AnalyzeProcess = (function () {
             function AnalyzeProcess() {
                 this.acceptableSyntaxes = [];
@@ -6295,19 +6097,19 @@ var ReVIEW;
             AnalyzeProcess.prototype.prepare = function () {
                 this.current = new AcceptableSyntax();
             };
-
             AnalyzeProcess.prototype.build = function (methodName) {
                 if (methodName.indexOf("block_") === 0) {
                     this.current.type = this.current.type || 0 /* Block */;
                     this.current.symbolName = this.current.symbolName || methodName.substring("block_".length);
-                } else if (methodName.indexOf("inline_") === 0) {
+                }
+                else if (methodName.indexOf("inline_") === 0) {
                     this.current.type = this.current.type || 1 /* Inline */;
                     this.current.symbolName = this.current.symbolName || methodName.substring("inline_".length);
-                } else {
+                }
+                else {
                     this.current.type = this.current.type || 2 /* Other */;
                     this.current.symbolName = this.current.symbolName || methodName;
                 }
-
                 switch (this.current.type) {
                     case 0 /* Block */:
                         if (this.current.argsLength.length === 0) {
@@ -6328,48 +6130,38 @@ var ReVIEW;
                 if (!this.current.process) {
                     throw new Build.AnalyzerError("must call builder.processNode(func) in " + methodName);
                 }
-
                 this.acceptableSyntaxes.push(this.current);
             };
-
             AnalyzeProcess.prototype.setSyntaxType = function (type) {
                 this.current.type = type;
             };
-
             AnalyzeProcess.prototype.setClass = function (clazz) {
                 this.current.clazz = clazz;
             };
-
             AnalyzeProcess.prototype.setSymbol = function (symbolName) {
                 this.current.symbolName = symbolName;
             };
-
             AnalyzeProcess.prototype.setDescription = function (description) {
                 this.current.description = description;
             };
-
             AnalyzeProcess.prototype.checkArgsLength = function () {
                 var argsLength = [];
-                for (var _i = 0; _i < (arguments.length - 0); _i++) {
-                    argsLength[_i] = arguments[_i + 0];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    argsLength[_i - 0] = arguments[_i];
                 }
                 this.current.argsLength = argsLength;
             };
-
             AnalyzeProcess.prototype.setAllowInline = function (enable) {
                 this.current.allowInline = enable;
             };
-
             AnalyzeProcess.prototype.setAllowFullySyntax = function (enable) {
                 this.current.allowFullySyntax = enable;
             };
-
             AnalyzeProcess.prototype.processNode = function (func) {
                 this.current.process = func;
             };
             return AnalyzeProcess;
         })();
-
         var DefaultAnalyzer = (function () {
             function DefaultAnalyzer() {
             }
@@ -6379,10 +6171,8 @@ var ReVIEW;
                 }
                 return new AcceptableSyntaxes(this._acceptableSyntaxes);
             };
-
             DefaultAnalyzer.prototype.constructAcceptableSyntaxes = function () {
                 var process = new AnalyzeProcess();
-
                 for (var k in this) {
                     if (typeof this[k] !== "function") {
                         continue;
@@ -6390,17 +6180,23 @@ var ReVIEW;
                     var func = null;
                     if (k.indexOf("block_") === 0) {
                         func = this[k];
-                    } else if (k.indexOf("inline_") === 0) {
+                    }
+                    else if (k.indexOf("inline_") === 0) {
                         func = this[k];
-                    } else if (k === "headline") {
+                    }
+                    else if (k === "headline") {
                         func = this[k];
-                    } else if (k === "column") {
+                    }
+                    else if (k === "column") {
                         func = this[k];
-                    } else if (k === "ulist") {
+                    }
+                    else if (k === "ulist") {
                         func = this[k];
-                    } else if (k === "olist") {
+                    }
+                    else if (k === "olist") {
                         func = this[k];
-                    } else if (k === "dlist") {
+                    }
+                    else if (k === "dlist") {
                         func = this[k];
                     }
                     if (func) {
@@ -6409,10 +6205,8 @@ var ReVIEW;
                         process.build(k);
                     }
                 }
-
                 return process.acceptableSyntaxes;
             };
-
             DefaultAnalyzer.prototype.headline = function (builder) {
                 builder.setSyntaxType(2 /* Other */);
                 builder.setClass(ReVIEW.Parse.HeadlineSyntaxTree);
@@ -6422,7 +6216,8 @@ var ReVIEW;
                     var label = null;
                     if (node.label) {
                         label = node.label.arg;
-                    } else if (node.caption.childNodes.length === 1) {
+                    }
+                    else if (node.caption.childNodes.length === 1) {
                         var textNode = node.caption.childNodes[0].toTextNode();
                         label = textNode.text;
                     }
@@ -6433,7 +6228,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.column = function (builder) {
                 builder.setSyntaxType(2 /* Other */);
                 builder.setClass(ReVIEW.Parse.ColumnSyntaxTree);
@@ -6447,7 +6241,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.ulist = function (builder) {
                 builder.setSyntaxType(2 /* Other */);
                 builder.setClass(ReVIEW.Parse.UlistElementSyntaxTree);
@@ -6460,7 +6253,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.olist = function (builder) {
                 builder.setSyntaxType(2 /* Other */);
                 builder.setClass(ReVIEW.Parse.OlistElementSyntaxTree);
@@ -6473,7 +6265,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.dlist = function (builder) {
                 builder.setSyntaxType(2 /* Other */);
                 builder.setClass(ReVIEW.Parse.DlistElementSyntaxTree);
@@ -6486,7 +6277,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.block_list = function (builder) {
                 builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("list");
@@ -6502,7 +6292,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.block_listnum = function (builder) {
                 builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("listnum");
@@ -6518,7 +6307,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.inline_list = function (builder) {
                 builder.setSyntaxType(1 /* Inline */);
                 builder.setSymbol("list");
@@ -6532,7 +6320,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.block_emlist = function (builder) {
                 builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("emlist");
@@ -6546,7 +6333,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.block_emlistnum = function (builder) {
                 builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("emlistnum");
@@ -6560,7 +6346,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.inline_hd = function (builder) {
                 builder.setSyntaxType(1 /* Inline */);
                 builder.setSymbol("hd");
@@ -6574,7 +6359,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.block_image = function (builder) {
                 builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("image");
@@ -6590,7 +6374,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.block_indepimage = function (builder) {
                 builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("indepimage");
@@ -6604,7 +6387,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.inline_img = function (builder) {
                 builder.setSyntaxType(1 /* Inline */);
                 builder.setSymbol("img");
@@ -6618,7 +6400,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.inline_icon = function (builder) {
                 builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("icon");
@@ -6631,7 +6412,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.block_footnote = function (builder) {
                 builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("footnote");
@@ -6647,7 +6427,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.inline_fn = function (builder) {
                 builder.setSyntaxType(1 /* Inline */);
                 builder.setSymbol("fn");
@@ -6661,11 +6440,10 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.blockDecorationSyntax = function (builder, symbol) {
                 var argsLength = [];
-                for (var _i = 0; _i < (arguments.length - 2); _i++) {
-                    argsLength[_i] = arguments[_i + 2];
+                for (var _i = 2; _i < arguments.length; _i++) {
+                    argsLength[_i - 2] = arguments[_i];
                 }
                 builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol(symbol);
@@ -6679,28 +6457,22 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.block_lead = function (builder) {
                 this.blockDecorationSyntax(builder, "lead", 0);
                 builder.setAllowFullySyntax(true);
             };
-
             DefaultAnalyzer.prototype.block_noindent = function (builder) {
                 this.blockDecorationSyntax(builder, "noindent", 0);
             };
-
             DefaultAnalyzer.prototype.block_source = function (builder) {
                 this.blockDecorationSyntax(builder, "source", 1);
             };
-
             DefaultAnalyzer.prototype.block_cmd = function (builder) {
                 this.blockDecorationSyntax(builder, "cmd", 0);
             };
-
             DefaultAnalyzer.prototype.block_quote = function (builder) {
                 this.blockDecorationSyntax(builder, "quote", 0);
             };
-
             DefaultAnalyzer.prototype.inlineDecorationSyntax = function (builder, symbol) {
                 builder.setSyntaxType(1 /* Inline */);
                 builder.setSymbol(symbol);
@@ -6713,31 +6485,24 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.inline_br = function (builder) {
                 this.inlineDecorationSyntax(builder, "br");
             };
-
             DefaultAnalyzer.prototype.inline_ruby = function (builder) {
                 this.inlineDecorationSyntax(builder, "ruby");
             };
-
             DefaultAnalyzer.prototype.inline_b = function (builder) {
                 this.inlineDecorationSyntax(builder, "b");
             };
-
             DefaultAnalyzer.prototype.inline_code = function (builder) {
                 this.inlineDecorationSyntax(builder, "code");
             };
-
             DefaultAnalyzer.prototype.inline_tt = function (builder) {
                 this.inlineDecorationSyntax(builder, "tt");
             };
-
             DefaultAnalyzer.prototype.inline_href = function (builder) {
                 this.inlineDecorationSyntax(builder, "href");
             };
-
             DefaultAnalyzer.prototype.block_label = function (builder) {
                 builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("label");
@@ -6753,47 +6518,36 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.inline_u = function (builder) {
                 this.inlineDecorationSyntax(builder, "u");
             };
-
             DefaultAnalyzer.prototype.inline_kw = function (builder) {
                 this.inlineDecorationSyntax(builder, "kw");
             };
-
             DefaultAnalyzer.prototype.inline_em = function (builder) {
                 this.inlineDecorationSyntax(builder, "em");
             };
-
             DefaultAnalyzer.prototype.inline_tti = function (builder) {
                 this.inlineDecorationSyntax(builder, "tti");
             };
-
             DefaultAnalyzer.prototype.inline_ttb = function (builder) {
                 this.inlineDecorationSyntax(builder, "ttb");
             };
-
             DefaultAnalyzer.prototype.inline_ami = function (builder) {
                 this.inlineDecorationSyntax(builder, "ami");
             };
-
             DefaultAnalyzer.prototype.inline_bou = function (builder) {
                 this.inlineDecorationSyntax(builder, "bou");
             };
-
             DefaultAnalyzer.prototype.inline_i = function (builder) {
                 this.inlineDecorationSyntax(builder, "i");
             };
-
             DefaultAnalyzer.prototype.inline_strong = function (builder) {
                 this.inlineDecorationSyntax(builder, "strong");
             };
-
             DefaultAnalyzer.prototype.inline_uchar = function (builder) {
                 this.inlineDecorationSyntax(builder, "uchar");
             };
-
             DefaultAnalyzer.prototype.block_table = function (builder) {
                 builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("table");
@@ -6809,7 +6563,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.inline_table = function (builder) {
                 builder.setSyntaxType(1 /* Inline */);
                 builder.setSymbol("table");
@@ -6823,7 +6576,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.block_tsize = function (builder) {
                 builder.setSyntaxType(0 /* Block */);
                 builder.setDescription(t("description.block_tsize"));
@@ -6836,7 +6588,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.block_raw = function (builder) {
                 builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("raw");
@@ -6850,7 +6601,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.inline_raw = function (builder) {
                 builder.setSyntaxType(1 /* Inline */);
                 builder.setSymbol("raw");
@@ -6863,7 +6613,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.block_comment = function (builder) {
                 builder.setSyntaxType(0 /* Block */);
                 builder.setSymbol("comment");
@@ -6877,7 +6626,6 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultAnalyzer.prototype.inline_comment = function (builder) {
                 builder.setSyntaxType(1 /* Inline */);
                 builder.setSymbol("comment");
@@ -6893,18 +6641,14 @@ var ReVIEW;
             return DefaultAnalyzer;
         })();
         Build.DefaultAnalyzer = DefaultAnalyzer;
-    })(ReVIEW.Build || (ReVIEW.Build = {}));
-    var Build = ReVIEW.Build;
+    })(Build = ReVIEW.Build || (ReVIEW.Build = {}));
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
+    var Build;
     (function (Build) {
         "use strict";
-
         var UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
-
-        
-
         var DefaultBuilder = (function () {
             function DefaultBuilder() {
                 this.extention = "bug";
@@ -6916,18 +6660,11 @@ var ReVIEW;
                 enumerable: true,
                 configurable: true
             });
-
             DefaultBuilder.prototype.init = function (book) {
                 var _this = this;
                 this.book = book;
-
-                return Promise.all(book.allChunks.map(function (chunk) {
-                    return _this.processAst(chunk);
-                })).then(function () {
-                    return null;
-                });
+                return Promise.all(book.allChunks.map(function (chunk) { return _this.processAst(chunk); })).then(function () { return null; });
             };
-
             DefaultBuilder.prototype.processAst = function (chunk) {
                 var _this = this;
                 var process = chunk.createBuilderProcess(this);
@@ -6999,131 +6736,99 @@ var ReVIEW;
                     }
                 }).then(function () {
                     _this.processPost(process, chunk);
-                    return Promise.all(chunk.nodes.map(function (chunk) {
-                        return _this.processAst(chunk);
-                    })).then(function () {
-                        return null;
-                    });
+                    return Promise.all(chunk.nodes.map(function (chunk) { return _this.processAst(chunk); })).then(function () { return null; });
                 });
             };
-
             DefaultBuilder.prototype.escape = function (data) {
                 throw new Error("please override this method");
             };
-
             DefaultBuilder.prototype.processPost = function (process, chunk) {
             };
-
             DefaultBuilder.prototype.chapterPre = function (process, node) {
             };
-
             DefaultBuilder.prototype.chapterPost = function (process, node) {
             };
-
             DefaultBuilder.prototype.headlinePre = function (process, name, node) {
             };
-
             DefaultBuilder.prototype.headlinePost = function (process, name, node) {
             };
-
             DefaultBuilder.prototype.columnPre = function (process, node) {
             };
-
             DefaultBuilder.prototype.columnPost = function (process, node) {
             };
-
             DefaultBuilder.prototype.columnHeadlinePre = function (process, node) {
             };
-
             DefaultBuilder.prototype.columnHeadlinePost = function (process, node) {
             };
-
             DefaultBuilder.prototype.paragraphPre = function (process, name, node) {
             };
-
             DefaultBuilder.prototype.paragraphPost = function (process, name, node) {
             };
-
             DefaultBuilder.prototype.ulistPre = function (process, name, node) {
             };
-
             DefaultBuilder.prototype.ulistPost = function (process, name, node) {
             };
-
             DefaultBuilder.prototype.olistPre = function (process, name, node) {
             };
-
             DefaultBuilder.prototype.olistPost = function (process, name, node) {
             };
-
             DefaultBuilder.prototype.dlistPre = function (process, name, node) {
             };
-
             DefaultBuilder.prototype.dlistPost = function (process, name, node) {
             };
-
             DefaultBuilder.prototype.text = function (process, node) {
                 process.out(node.text);
             };
-
             DefaultBuilder.prototype.blockPre = function (process, name, node) {
                 var func;
                 func = this["block_" + name];
                 if (typeof func === "function") {
                     return func.call(this, process, node);
                 }
-
                 func = this["block_" + name + "_pre"];
                 if (typeof func !== "function") {
                     throw new Build.AnalyzerError("block_" + name + "_pre or block_" + name + " is not Function");
                 }
                 return func.call(this, process, node);
             };
-
             DefaultBuilder.prototype.blockPost = function (process, name, node) {
                 var func;
                 func = this["block_" + name];
                 if (typeof func === "function") {
                     return;
                 }
-
                 func = this["block_" + name + "_post"];
                 if (typeof func !== "function") {
                     throw new Build.AnalyzerError("block_" + name + "_post is not Function");
                 }
                 return func.call(this, process, node);
             };
-
             DefaultBuilder.prototype.inlinePre = function (process, name, node) {
                 var func;
                 func = this["inline_" + name];
                 if (typeof func === "function") {
                     return func.call(this, process, node);
                 }
-
                 func = this["inline_" + name + "_pre"];
                 if (typeof func !== "function") {
                     throw new Build.AnalyzerError("inline_" + name + "_pre or inline_" + name + " is not Function");
                 }
                 return func.call(this, process, node);
             };
-
             DefaultBuilder.prototype.inlinePost = function (process, name, node) {
                 var func;
                 func = this["inline_" + name];
                 if (typeof func === "function") {
                     return;
                 }
-
                 func = this["inline_" + name + "_post"];
                 if (typeof func !== "function") {
                     throw new Build.AnalyzerError("inline_" + name + "_post is not Function");
                 }
                 return func.call(this, process, node);
             };
-
             DefaultBuilder.prototype.ulistParentHelper = function (process, node, action, currentLevel) {
-                if (typeof currentLevel === "undefined") { currentLevel = node.level; }
+                if (currentLevel === void 0) { currentLevel = node.level; }
                 if (currentLevel !== 1) {
                     var result = ReVIEW.findUp(node.parentNode, function (n) {
                         if (n instanceof UlistElementSyntaxTree) {
@@ -7139,46 +6844,39 @@ var ReVIEW;
                     this.ulistParentHelper(process, node, action, currentLevel - 1);
                 }
             };
-
             DefaultBuilder.prototype.findReference = function (process, node) {
-                var founds = process.symbols.filter(function (symbol) {
-                    return symbol.node === node;
-                });
+                var founds = process.symbols.filter(function (symbol) { return symbol.node === node; });
                 if (founds.length !== 1) {
                     throw new Build.AnalyzerError("invalid status.");
                 }
                 return founds[0];
             };
-
             DefaultBuilder.prototype.block_raw = function (process, node) {
                 var _this = this;
                 var content = node.args[0].arg;
                 var matches = content.match(/\|(.+)\|/);
                 if (matches && matches[1]) {
-                    var target = matches[1].split(",").some(function (name) {
-                        return _this.name.toLowerCase() === name + "builder";
-                    });
+                    var target = matches[1].split(",").some(function (name) { return _this.name.toLowerCase() === name + "builder"; });
                     if (target) {
                         process.outRaw(content.substring(matches[0].length));
                     }
-                } else {
+                }
+                else {
                     process.outRaw(content);
                 }
                 return false;
             };
-
             DefaultBuilder.prototype.inline_raw = function (process, node) {
                 var _this = this;
                 var content = ReVIEW.nodeContentToString(process, node);
                 var matches = content.match(/\|(.+)\|/);
                 if (matches && matches[1]) {
-                    var target = matches[1].split(",").some(function (name) {
-                        return _this.name.toLowerCase() === name + "builder";
-                    });
+                    var target = matches[1].split(",").some(function (name) { return _this.name.toLowerCase() === name + "builder"; });
                     if (target) {
                         process.outRaw(content.substring(matches[0].length));
                     }
-                } else {
+                }
+                else {
                     process.outRaw(content);
                 }
                 return false;
@@ -7186,41 +6884,26 @@ var ReVIEW;
             return DefaultBuilder;
         })();
         Build.DefaultBuilder = DefaultBuilder;
-    })(ReVIEW.Build || (ReVIEW.Build = {}));
-    var Build = ReVIEW.Build;
+    })(Build = ReVIEW.Build || (ReVIEW.Build = {}));
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
+    var Build;
     (function (Build) {
         "use strict";
-
         var TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
-
         var nodeContentToString = ReVIEW.nodeContentToString;
-
-        
-
         var SyntaxPreprocessor = (function () {
             function SyntaxPreprocessor() {
             }
             SyntaxPreprocessor.prototype.start = function (book) {
                 var _this = this;
                 this.acceptableSyntaxes = book.acceptableSyntaxes;
-
-                book.predef.forEach(function (chunk) {
-                    return _this.preprocessChunk(chunk);
-                });
-                book.contents.forEach(function (chunk) {
-                    return _this.preprocessChunk(chunk);
-                });
-                book.appendix.forEach(function (chunk) {
-                    return _this.preprocessChunk(chunk);
-                });
-                book.postdef.forEach(function (chunk) {
-                    return _this.preprocessChunk(chunk);
-                });
+                book.predef.forEach(function (chunk) { return _this.preprocessChunk(chunk); });
+                book.contents.forEach(function (chunk) { return _this.preprocessChunk(chunk); });
+                book.appendix.forEach(function (chunk) { return _this.preprocessChunk(chunk); });
+                book.postdef.forEach(function (chunk) { return _this.preprocessChunk(chunk); });
             };
-
             SyntaxPreprocessor.prototype.preprocessChunk = function (chunk) {
                 var _this = this;
                 ReVIEW.visit(chunk.tree.ast, {
@@ -7233,24 +6916,18 @@ var ReVIEW;
                         _this.preprocessBlockSyntax(chunk, node);
                     }
                 });
-
-                chunk.nodes.forEach(function (chunk) {
-                    return _this.preprocessChunk(chunk);
-                });
+                chunk.nodes.forEach(function (chunk) { return _this.preprocessChunk(chunk); });
             };
-
             SyntaxPreprocessor.prototype.preprocessColumnSyntax = function (chunk, column) {
                 function reconstruct(parent, target, to) {
-                    if (typeof to === "undefined") { to = column.parentNode.toChapter(); }
+                    if (to === void 0) { to = column.parentNode.toChapter(); }
                     if (target.level <= to.level) {
                         reconstruct(parent.parentNode.toNode(), target, to.parentNode.toChapter());
                         return;
                     }
-
                     to.childNodes.splice(to.childNodes.indexOf(parent) + 1, 0, target);
                     column.text.splice(column.text.indexOf(target), 1);
                 }
-
                 ReVIEW.visit(column, {
                     visitDefaultPre: function (node) {
                     },
@@ -7263,13 +6940,11 @@ var ReVIEW;
                         reconstruct(column, node);
                     }
                 });
-
                 ReVIEW.visit(chunk.tree.ast, {
                     visitDefaultPre: function (ast, parent) {
                         ast.parentNode = parent;
                     }
                 });
-
                 ReVIEW.visit(chunk.tree.ast, {
                     visitDefaultPre: function (ast, parent) {
                     },
@@ -7287,21 +6962,19 @@ var ReVIEW;
                     }
                 });
             };
-
             SyntaxPreprocessor.prototype.preprocessBlockSyntax = function (chunk, node) {
                 if (node.childNodes.length === 0) {
                     return;
                 }
-
                 var syntaxes = this.acceptableSyntaxes.find(node);
                 if (syntaxes.length !== 1) {
                     return;
                 }
-
                 var syntax = syntaxes[0];
                 if (syntax.allowFullySyntax) {
                     return;
-                } else if (syntax.allowInline) {
+                }
+                else if (syntax.allowInline) {
                     var info;
                     var resultNodes = [];
                     var lastNode;
@@ -7346,9 +7019,9 @@ var ReVIEW;
                             resultNodes.push(textNode);
                         })();
                     }
-
                     node.childNodes = resultNodes;
-                } else {
+                }
+                else {
                     (function () {
                         var first = node.childNodes[0];
                         var last = node.childNodes[node.childNodes.length - 1];
@@ -7367,32 +7040,26 @@ var ReVIEW;
             return SyntaxPreprocessor;
         })();
         Build.SyntaxPreprocessor = SyntaxPreprocessor;
-    })(ReVIEW.Build || (ReVIEW.Build = {}));
-    var Build = ReVIEW.Build;
+    })(Build = ReVIEW.Build || (ReVIEW.Build = {}));
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
+    var Build;
     (function (Build) {
         "use strict";
-
         var t = ReVIEW.i18n.t;
-
-        
-
         var DefaultValidator = (function () {
             function DefaultValidator() {
             }
             DefaultValidator.prototype.start = function (book, acceptableSyntaxes, builders) {
                 this.acceptableSyntaxes = acceptableSyntaxes;
                 this.builders = builders;
-
                 this.checkBuilder(book, acceptableSyntaxes, builders);
                 this.checkBook(book);
                 this.resolveSymbolAndReference(book);
             };
-
             DefaultValidator.prototype.checkBuilder = function (book, acceptableSyntaxes, builders) {
-                if (typeof builders === "undefined") { builders = []; }
+                if (builders === void 0) { builders = []; }
                 acceptableSyntaxes.acceptableSyntaxes.forEach(function (syntax) {
                     var prefix;
                     switch (syntax.type) {
@@ -7415,23 +7082,13 @@ var ReVIEW;
                     });
                 });
             };
-
             DefaultValidator.prototype.checkBook = function (book) {
                 var _this = this;
-                book.predef.forEach(function (chunk) {
-                    return _this.checkChunk(chunk);
-                });
-                book.contents.forEach(function (chunk) {
-                    return _this.checkChunk(chunk);
-                });
-                book.appendix.forEach(function (chunk) {
-                    return _this.checkChunk(chunk);
-                });
-                book.postdef.forEach(function (chunk) {
-                    return _this.checkChunk(chunk);
-                });
+                book.predef.forEach(function (chunk) { return _this.checkChunk(chunk); });
+                book.contents.forEach(function (chunk) { return _this.checkChunk(chunk); });
+                book.appendix.forEach(function (chunk) { return _this.checkChunk(chunk); });
+                book.postdef.forEach(function (chunk) { return _this.checkChunk(chunk); });
             };
-
             DefaultValidator.prototype.checkChunk = function (chunk) {
                 var _this = this;
                 ReVIEW.visit(chunk.tree.ast, {
@@ -7462,14 +7119,11 @@ var ReVIEW;
                         var expects = results[0].argsLength;
                         var arg = node.args || [];
                         if (expects.indexOf(arg.length) === -1) {
-                            var expected = expects.map(function (n) {
-                                return Number(n).toString();
-                            }).join(" or ");
+                            var expected = expects.map(function (n) { return Number(n).toString(); }).join(" or ");
                             var message = t("compile.args_length_mismatch", expected, arg.length);
                             chunk.process.error(message, node);
                             return;
                         }
-
                         return results[0].process(chunk.process, node);
                     },
                     visitInlineElementPre: function (node) {
@@ -7481,7 +7135,6 @@ var ReVIEW;
                         return results[0].process(chunk.process, node);
                     }
                 });
-
                 ReVIEW.visit(chunk.tree.ast, {
                     visitDefaultPre: function (node) {
                     },
@@ -7490,7 +7143,8 @@ var ReVIEW;
                             if (!ReVIEW.findChapter(node)) {
                                 chunk.process.error(t("compile.chapter_not_toplevel"), node);
                             }
-                        } else {
+                        }
+                        else {
                             var parent = ReVIEW.findChapter(node.parentNode);
                             if (!parent) {
                                 chunk.process.error(t("compile.chapter_topleve_eq1"), node);
@@ -7499,11 +7153,8 @@ var ReVIEW;
                     }
                 });
             };
-
             DefaultValidator.prototype.resolveSymbolAndReference = function (book) {
-                var symbols = book.allChunks.reduce(function (p, c) {
-                    return p.concat(c.process.symbols);
-                }, []);
+                var symbols = book.allChunks.reduce(function (p, c) { return p.concat(c.process.symbols); }, []);
                 symbols.forEach(function (symbol) {
                     var referenceTo = symbol.referenceTo;
                     if (!referenceTo) {
@@ -7524,7 +7175,6 @@ var ReVIEW;
                         });
                     }
                 });
-
                 symbols.forEach(function (symbol) {
                     if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
                         var reference = symbol.referenceTo;
@@ -7539,7 +7189,6 @@ var ReVIEW;
                         }
                     }
                 });
-
                 symbols.forEach(function (symbol1) {
                     symbols.forEach(function (symbol2) {
                         if (symbol1 === symbol2) {
@@ -7557,13 +7206,11 @@ var ReVIEW;
             return DefaultValidator;
         })();
         Build.DefaultValidator = DefaultValidator;
-    })(ReVIEW.Build || (ReVIEW.Build = {}));
-    var Build = ReVIEW.Build;
+    })(Build = ReVIEW.Build || (ReVIEW.Build = {}));
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
     "use strict";
-
     var Config = (function () {
         function Config(original) {
             this.original = original;
@@ -7575,7 +7222,6 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(Config.prototype, "write", {
             get: function () {
                 throw new Error("please implements this method");
@@ -7583,7 +7229,6 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(Config.prototype, "exists", {
             get: function () {
                 throw new Error("please implements this method");
@@ -7591,7 +7236,6 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(Config.prototype, "analyzer", {
             get: function () {
                 return this.original.analyzer || new ReVIEW.Build.DefaultAnalyzer();
@@ -7599,34 +7243,35 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(Config.prototype, "validators", {
             get: function () {
                 var config = this.original;
                 if (!config.validators || config.validators.length === 0) {
                     return [new ReVIEW.Build.DefaultValidator()];
-                } else if (!Array.isArray(config.validators)) {
+                }
+                else if (!Array.isArray(config.validators)) {
                     return [config.validators];
-                } else {
+                }
+                else {
                     return config.validators;
                 }
             },
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(Config.prototype, "builders", {
             get: function () {
                 if (this._builders) {
                     return this._builders;
                 }
-
                 var config = this.original;
                 if (!config.builders || config.builders.length === 0) {
                     this._builders = [new ReVIEW.Build.DefaultBuilder()];
-                } else if (!Array.isArray(config.builders)) {
+                }
+                else if (!Array.isArray(config.builders)) {
                     this._builders = [config.builders];
-                } else {
+                }
+                else {
                     this._builders = config.builders;
                 }
                 return this._builders;
@@ -7634,7 +7279,6 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(Config.prototype, "listener", {
             get: function () {
                 throw new Error("please implements this method");
@@ -7642,7 +7286,6 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(Config.prototype, "book", {
             get: function () {
                 if (!this._bookStructure) {
@@ -7653,14 +7296,12 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         Config.prototype.resolvePath = function (path) {
             throw new Error("please implements this method");
         };
         return Config;
     })();
     ReVIEW.Config = Config;
-
     var NodeJSConfig = (function (_super) {
         __extends(NodeJSConfig, _super);
         function NodeJSConfig(options, original) {
@@ -7675,7 +7316,6 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(NodeJSConfig.prototype, "write", {
             get: function () {
                 return this.original.write || ReVIEW.IO.write;
@@ -7683,7 +7323,6 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(NodeJSConfig.prototype, "exists", {
             get: function () {
                 var _this = this;
@@ -7702,13 +7341,11 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(NodeJSConfig.prototype, "listener", {
             get: function () {
                 if (this._listener) {
                     return this._listener;
                 }
-
                 var listener = this.original.listener || {};
                 listener.onAcceptables = listener.onAcceptables || (function () {
                 });
@@ -7717,14 +7354,12 @@ var ReVIEW;
                 listener.onReports = listener.onReports || this.onReports;
                 listener.onCompileSuccess = listener.onCompileSuccess || this.onCompileSuccess;
                 listener.onCompileFailed = listener.onCompileFailed || this.onCompileFailed;
-
                 this._listener = listener;
                 return this._listener;
             },
             enumerable: true,
             configurable: true
         });
-
         NodeJSConfig.prototype.onReports = function (reports) {
             var colors = require("colors");
             colors.setTheme({
@@ -7732,7 +7367,6 @@ var ReVIEW;
                 warn: "yellow",
                 error: "red"
             });
-
             reports.forEach(function (report) {
                 var message = "";
                 if (report.chapter) {
@@ -7746,24 +7380,24 @@ var ReVIEW;
                 message += report.message;
                 if (report.level === 2 /* Error */) {
                     console.warn(message.error);
-                } else if (report.level === 1 /* Warning */) {
+                }
+                else if (report.level === 1 /* Warning */) {
                     console.error(message.warn);
-                } else if (report.level === 0 /* Info */) {
+                }
+                else if (report.level === 0 /* Info */) {
                     console.info(message.info);
-                } else {
+                }
+                else {
                     throw new Error("unknown report level.");
                 }
             });
         };
-
         NodeJSConfig.prototype.onCompileSuccess = function (book) {
             process.exit(0);
         };
-
         NodeJSConfig.prototype.onCompileFailed = function () {
             process.exit(1);
         };
-
         NodeJSConfig.prototype.resolvePath = function (path) {
             var p = require("path");
             var base = this.options.base || "./";
@@ -7772,7 +7406,6 @@ var ReVIEW;
         return NodeJSConfig;
     })(Config);
     ReVIEW.NodeJSConfig = NodeJSConfig;
-
     var WebBrowserConfig = (function (_super) {
         __extends(WebBrowserConfig, _super);
         function WebBrowserConfig(options, original) {
@@ -7789,7 +7422,6 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(WebBrowserConfig.prototype, "write", {
             get: function () {
                 return this.original.write || (function () {
@@ -7799,14 +7431,14 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(WebBrowserConfig.prototype, "exists", {
             get: function () {
                 var _this = this;
                 return function (path) {
                     if (window.location.protocol === "file:") {
                         return _this._existsFileScheme(path);
-                    } else {
+                    }
+                    else {
                         return _this._existsHttpScheme(path);
                     }
                 };
@@ -7814,7 +7446,6 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         WebBrowserConfig.prototype._existsFileScheme = function (path) {
             var promise = new Promise(function (resolve, reject) {
                 var canvas = document.createElement('canvas');
@@ -7827,25 +7458,25 @@ var ReVIEW;
             });
             return promise;
         };
-
         WebBrowserConfig.prototype._existsHttpScheme = function (path) {
             var promise = new Promise(function (resolve, reject) {
-                try  {
+                try {
                     var xhr = new XMLHttpRequest();
                     xhr.onreadystatechange = function () {
                         if (xhr.readyState === 4) {
                             if (xhr.status === 200 || xhr.status === 304) {
                                 resolve({ path: path, result: true });
-                            } else {
+                            }
+                            else {
                                 resolve({ path: path, result: false });
                             }
                         }
                     };
                     xhr.open("GET", path);
-
                     xhr.setRequestHeader("If-Modified-Since", new Date().toUTCString());
                     xhr.send();
-                } catch (e) {
+                }
+                catch (e) {
                     if (e instanceof DOMException) {
                         var de = e;
                         console.log(de.message);
@@ -7855,13 +7486,11 @@ var ReVIEW;
             });
             return promise;
         };
-
         Object.defineProperty(WebBrowserConfig.prototype, "listener", {
             get: function () {
                 if (this._listener) {
                     return this._listener;
                 }
-
                 var listener = this.original.listener || {};
                 listener.onAcceptables = listener.onAcceptables || (function () {
                 });
@@ -7870,14 +7499,12 @@ var ReVIEW;
                 listener.onReports = listener.onReports || this.onReports;
                 listener.onCompileSuccess = listener.onCompileSuccess || this.onCompileSuccess;
                 listener.onCompileFailed = listener.onCompileFailed || this.onCompileFailed;
-
                 this._listener = listener;
                 return this._listener;
             },
             enumerable: true,
             configurable: true
         });
-
         WebBrowserConfig.prototype.onReports = function (reports) {
             reports.forEach(function (report) {
                 var message = "";
@@ -7892,38 +7519,35 @@ var ReVIEW;
                 message += report.message;
                 if (report.level === 2 /* Error */) {
                     console.warn(message);
-                } else if (report.level === 1 /* Warning */) {
+                }
+                else if (report.level === 1 /* Warning */) {
                     console.error(message);
-                } else if (report.level === 0 /* Info */) {
+                }
+                else if (report.level === 0 /* Info */) {
                     console.info(message);
-                } else {
+                }
+                else {
                     throw new Error("unknown report level.");
                 }
             });
         };
-
         WebBrowserConfig.prototype.onCompileSuccess = function (book) {
         };
-
         WebBrowserConfig.prototype.onCompileFailed = function (book) {
         };
-
         WebBrowserConfig.prototype.resolvePath = function (path) {
             if (!this.options.base) {
                 return path;
             }
-
             var base = this.options.base;
             if (!this.endWith(base, "/") && !this.startWith(path, "/")) {
                 base += "/";
             }
             return base + path;
         };
-
         WebBrowserConfig.prototype.startWith = function (str, target) {
             return str.indexOf(target) === 0;
         };
-
         WebBrowserConfig.prototype.endWith = function (str, target) {
             return str.indexOf(target, str.length - target.length) !== -1;
         };
@@ -7934,60 +7558,35 @@ var ReVIEW;
 var ReVIEW;
 (function (ReVIEW) {
     "use strict";
-
     var SyntaxTree = ReVIEW.Parse.SyntaxTree;
-
     var NodeJSConfig = ReVIEW.NodeJSConfig;
     var WebBrowserConfig = ReVIEW.WebBrowserConfig;
-
     var Controller = (function () {
         function Controller(options) {
-            if (typeof options === "undefined") { options = {}; }
+            if (options === void 0) { options = {}; }
             this.options = options;
             this.builders = ReVIEW.Build;
         }
         Controller.prototype.initConfig = function (data) {
             if (ReVIEW.isNodeJS()) {
                 this.config = new NodeJSConfig(this.options, data);
-            } else {
+            }
+            else {
                 this.config = new WebBrowserConfig(this.options, data);
             }
         };
-
         Controller.prototype.process = function () {
             var _this = this;
-            return Promise.resolve(new ReVIEW.Book(this.config)).then(function (book) {
-                return _this.acceptableSyntaxes(book);
-            }).then(function (book) {
-                return _this.toContentChunk(book);
-            }).then(function (book) {
-                return _this.readReVIEWFiles(book);
-            }).then(function (book) {
-                return _this.parseContent(book);
-            }).then(function (book) {
-                return _this.preprocessContent(book);
-            }).then(function (book) {
-                return _this.processContent(book);
-            }).then(function (book) {
-                return _this.writeContent(book);
-            }).then(function (book) {
-                return _this.compileFinished(book);
-            }).catch(function (err) {
-                return _this.handleError(err);
-            });
+            return Promise.resolve(new ReVIEW.Book(this.config)).then(function (book) { return _this.acceptableSyntaxes(book); }).then(function (book) { return _this.toContentChunk(book); }).then(function (book) { return _this.readReVIEWFiles(book); }).then(function (book) { return _this.parseContent(book); }).then(function (book) { return _this.preprocessContent(book); }).then(function (book) { return _this.processContent(book); }).then(function (book) { return _this.writeContent(book); }).then(function (book) { return _this.compileFinished(book); }).catch(function (err) { return _this.handleError(err); });
         };
-
         Controller.prototype.acceptableSyntaxes = function (book) {
             book.acceptableSyntaxes = book.config.analyzer.getAcceptableSyntaxes();
-
             if (book.config.listener.onAcceptables(book.acceptableSyntaxes) === false) {
                 book.config.listener.onCompileFailed();
                 return Promise.reject(null);
             }
-
             return Promise.resolve(book);
         };
-
         Controller.prototype.toContentChunk = function (book) {
             var convert = function (c, parent) {
                 var chunk;
@@ -7996,9 +7595,11 @@ var ReVIEW;
                     c.part.chapters.forEach(function (c) {
                         convert(ReVIEW.ContentStructure.createChapter(c), chunk);
                     });
-                } else if (c.chapter) {
+                }
+                else if (c.chapter) {
                     chunk = new ReVIEW.ContentChunk(book, parent, c.chapter.file);
-                } else {
+                }
+                else {
                     return null;
                 }
                 if (parent) {
@@ -8006,59 +7607,31 @@ var ReVIEW;
                 }
                 return chunk;
             };
-
-            book.predef = this.config.book.predef.map(function (c) {
-                return convert(c);
-            });
-            book.contents = this.config.book.contents.map(function (c) {
-                return convert(c);
-            });
-            book.appendix = this.config.book.appendix.map(function (c) {
-                return convert(c);
-            });
-            book.postdef = this.config.book.postdef.map(function (c) {
-                return convert(c);
-            });
-
+            book.predef = this.config.book.predef.map(function (c) { return convert(c); });
+            book.contents = this.config.book.contents.map(function (c) { return convert(c); });
+            book.appendix = this.config.book.appendix.map(function (c) { return convert(c); });
+            book.postdef = this.config.book.postdef.map(function (c) { return convert(c); });
             return book;
         };
-
         Controller.prototype.readReVIEWFiles = function (book) {
             var promises = [];
-
             var read = function (chunk) {
                 var resolvedPath = book.config.resolvePath(chunk.name);
-                promises.push(book.config.read(resolvedPath).then(function (input) {
-                    return chunk.input = input;
-                }));
-                chunk.nodes.forEach(function (chunk) {
-                    return read(chunk);
-                });
+                promises.push(book.config.read(resolvedPath).then(function (input) { return chunk.input = input; }));
+                chunk.nodes.forEach(function (chunk) { return read(chunk); });
             };
-
-            book.predef.forEach(function (chunk) {
-                return read(chunk);
-            });
-            book.contents.forEach(function (chunk) {
-                return read(chunk);
-            });
-            book.appendix.forEach(function (chunk) {
-                return read(chunk);
-            });
-            book.postdef.forEach(function (chunk) {
-                return read(chunk);
-            });
-
-            return Promise.all(promises).then(function () {
-                return book;
-            });
+            book.predef.forEach(function (chunk) { return read(chunk); });
+            book.contents.forEach(function (chunk) { return read(chunk); });
+            book.appendix.forEach(function (chunk) { return read(chunk); });
+            book.postdef.forEach(function (chunk) { return read(chunk); });
+            return Promise.all(promises).then(function () { return book; });
         };
-
         Controller.prototype.parseContent = function (book) {
             var parse = function (chunk) {
-                try  {
+                try {
                     chunk.tree = ReVIEW.Parse.parse(chunk.input);
-                } catch (e) {
+                }
+                catch (e) {
                     if (!(e instanceof PEG.SyntaxError)) {
                         throw e;
                     }
@@ -8072,27 +7645,14 @@ var ReVIEW;
                     });
                     chunk.tree = { ast: errorNode, cst: null };
                 }
-                chunk.nodes.forEach(function (chunk) {
-                    return parse(chunk);
-                });
+                chunk.nodes.forEach(function (chunk) { return parse(chunk); });
             };
-
-            book.predef.forEach(function (chunk) {
-                return parse(chunk);
-            });
-            book.contents.forEach(function (chunk) {
-                return parse(chunk);
-            });
-            book.appendix.forEach(function (chunk) {
-                return parse(chunk);
-            });
-            book.predef.forEach(function (chunk) {
-                return parse(chunk);
-            });
-
+            book.predef.forEach(function (chunk) { return parse(chunk); });
+            book.contents.forEach(function (chunk) { return parse(chunk); });
+            book.appendix.forEach(function (chunk) { return parse(chunk); });
+            book.predef.forEach(function (chunk) { return parse(chunk); });
             return book;
         };
-
         Controller.prototype.preprocessContent = function (book) {
             var numberingChapter = function (chunk, counter) {
                 var chapters = [];
@@ -8113,7 +7673,8 @@ var ReVIEW;
                         for (i = level + 1; i <= max; i++) {
                             counter[i] = 0;
                         }
-                    } else if (currentLevel < level) {
+                    }
+                    else if (currentLevel < level) {
                         for (i = level; i <= max; i++) {
                             counter[i] = 0;
                         }
@@ -8123,96 +7684,61 @@ var ReVIEW;
                     chapter.no = counter[level];
                 });
                 chunk.no = counter[1];
-                chunk.nodes.forEach(function (chunk) {
-                    return numberingChapter(chunk, counter);
-                });
+                chunk.nodes.forEach(function (chunk) { return numberingChapter(chunk, counter); });
             };
             var numberingChapters = function (chunks, counter) {
-                if (typeof counter === "undefined") { counter = {}; }
-                chunks.forEach(function (chunk) {
-                    return numberingChapter(chunk, counter);
-                });
+                if (counter === void 0) { counter = {}; }
+                chunks.forEach(function (chunk) { return numberingChapter(chunk, counter); });
             };
-
             numberingChapters(book.predef);
             numberingChapters(book.contents);
             numberingChapters(book.appendix);
             numberingChapters(book.postdef);
-
             var preprocessor = new ReVIEW.Build.SyntaxPreprocessor();
             preprocessor.start(book);
             return book;
         };
-
         Controller.prototype.processContent = function (book) {
             var _this = this;
             book.config.validators.forEach(function (validator) {
                 validator.start(book, book.acceptableSyntaxes, _this.config.builders);
             });
-            if (book.reports.some(function (report) {
-                return report.level === 2 /* Error */;
-            })) {
+            if (book.reports.some(function (report) { return report.level === 2 /* Error */; })) {
                 return Promise.resolve(book);
             }
-
-            var symbols = book.allChunks.reduce(function (p, c) {
-                return p.concat(c.process.symbols);
-            }, []);
+            var symbols = book.allChunks.reduce(function (p, c) { return p.concat(c.process.symbols); }, []);
             if (this.config.listener.onSymbols(symbols) === false) {
                 return Promise.resolve(book);
             }
-
-            return Promise.all(this.config.builders.map(function (builder) {
-                return builder.init(book);
-            })).then(function () {
-                return book;
-            });
+            return Promise.all(this.config.builders.map(function (builder) { return builder.init(book); })).then(function () { return book; });
         };
-
         Controller.prototype.writeContent = function (book) {
             var _this = this;
             var promises = [];
-
             var write = function (chunk) {
                 chunk.builderProcesses.forEach(function (process) {
                     var baseName = chunk.name.substr(0, chunk.name.lastIndexOf(".re"));
                     var fileName = baseName + "." + process.builder.extention;
                     promises.push(_this.config.write(fileName, process.result));
                 });
-                chunk.nodes.forEach(function (chunk) {
-                    return write(chunk);
-                });
+                chunk.nodes.forEach(function (chunk) { return write(chunk); });
             };
-
-            book.predef.forEach(function (chunk) {
-                return write(chunk);
-            });
-            book.contents.forEach(function (chunk) {
-                return write(chunk);
-            });
-            book.appendix.forEach(function (chunk) {
-                return write(chunk);
-            });
-            book.postdef.forEach(function (chunk) {
-                return write(chunk);
-            });
-
-            return Promise.all(promises).then(function () {
-                return book;
-            });
+            book.predef.forEach(function (chunk) { return write(chunk); });
+            book.contents.forEach(function (chunk) { return write(chunk); });
+            book.appendix.forEach(function (chunk) { return write(chunk); });
+            book.postdef.forEach(function (chunk) { return write(chunk); });
+            return Promise.all(promises).then(function () { return book; });
         };
-
         Controller.prototype.compileFinished = function (book) {
             book.config.listener.onReports(book.reports);
             if (!book.hasError) {
                 book.config.listener.onCompileSuccess(book);
-            } else {
+            }
+            else {
                 book.config.listener.onCompileFailed(book);
             }
-
             return book;
         };
-
         Controller.prototype.handleError = function (err) {
             console.error("unexpected error", err);
             if (err && err.stack) {
@@ -8227,23 +7753,16 @@ var ReVIEW;
 var ReVIEW;
 (function (ReVIEW) {
     "use strict";
-
     var t = ReVIEW.i18n.t;
-
-    
-
-    
-
     (function (ReportLevel) {
         ReportLevel[ReportLevel["Info"] = 0] = "Info";
         ReportLevel[ReportLevel["Warning"] = 1] = "Warning";
         ReportLevel[ReportLevel["Error"] = 2] = "Error";
     })(ReVIEW.ReportLevel || (ReVIEW.ReportLevel = {}));
     var ReportLevel = ReVIEW.ReportLevel;
-
     var ProcessReport = (function () {
         function ProcessReport(level, part, chapter, message, nodes) {
-            if (typeof nodes === "undefined") { nodes = []; }
+            if (nodes === void 0) { nodes = []; }
             this.level = level;
             this.part = part;
             this.chapter = chapter;
@@ -8253,7 +7772,6 @@ var ReVIEW;
         return ProcessReport;
     })();
     ReVIEW.ProcessReport = ProcessReport;
-
     var BookProcess = (function () {
         function BookProcess() {
             this.reports = [];
@@ -8261,18 +7779,15 @@ var ReVIEW;
         BookProcess.prototype.info = function (message) {
             this.reports.push(new ProcessReport(0 /* Info */, null, null, message));
         };
-
         BookProcess.prototype.warn = function (message) {
             this.reports.push(new ProcessReport(1 /* Warning */, null, null, message));
         };
-
         BookProcess.prototype.error = function (message) {
             this.reports.push(new ProcessReport(2 /* Error */, null, null, message));
         };
         return BookProcess;
     })();
     ReVIEW.BookProcess = BookProcess;
-
     var Process = (function () {
         function Process(part, chapter, input) {
             this.part = part;
@@ -8285,49 +7800,49 @@ var ReVIEW;
         }
         Process.prototype.info = function (message) {
             var nodes = [];
-            for (var _i = 0; _i < (arguments.length - 1); _i++) {
-                nodes[_i] = arguments[_i + 1];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                nodes[_i - 1] = arguments[_i];
             }
             this._reports.push(new ProcessReport(0 /* Info */, this.part, this.chapter, message, nodes));
         };
-
         Process.prototype.warn = function (message) {
             var nodes = [];
-            for (var _i = 0; _i < (arguments.length - 1); _i++) {
-                nodes[_i] = arguments[_i + 1];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                nodes[_i - 1] = arguments[_i];
             }
             this._reports.push(new ProcessReport(1 /* Warning */, this.part, this.chapter, message, nodes));
         };
-
         Process.prototype.error = function (message) {
             var nodes = [];
-            for (var _i = 0; _i < (arguments.length - 1); _i++) {
-                nodes[_i] = arguments[_i + 1];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                nodes[_i - 1] = arguments[_i];
             }
             this._reports.push(new ProcessReport(2 /* Error */, this.part, this.chapter, message, nodes));
         };
-
         Process.prototype.nextIndex = function (kind) {
             var nextIndex = this.indexCounter[kind];
             if (typeof nextIndex === "undefined") {
                 nextIndex = 1;
-            } else {
+            }
+            else {
                 nextIndex++;
             }
             this.indexCounter[kind] = nextIndex;
             return nextIndex;
         };
-
         Object.defineProperty(Process.prototype, "reports", {
             get: function () {
                 return this._reports.sort(function (a, b) {
                     if (a.nodes.length === 0 && b.nodes.length === 0) {
                         return 0;
-                    } else if (a.nodes.length === 0) {
+                    }
+                    else if (a.nodes.length === 0) {
                         return -1;
-                    } else if (b.nodes.length === 0) {
+                    }
+                    else if (b.nodes.length === 0) {
                         return 1;
-                    } else {
+                    }
+                    else {
                         return a.nodes[0].offset - b.nodes[0].offset;
                     }
                 });
@@ -8335,13 +7850,11 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         Process.prototype.addSymbol = function (symbol) {
             symbol.part = this.part;
             symbol.chapter = this.chapter;
             this.symbols.push(symbol);
         };
-
         Object.defineProperty(Process.prototype, "missingSymbols", {
             get: function () {
                 var result = [];
@@ -8355,10 +7868,9 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         Process.prototype.constructReferenceTo = function (node, value, targetSymbol, separator) {
-            if (typeof targetSymbol === "undefined") { targetSymbol = node.symbol; }
-            if (typeof separator === "undefined") { separator = "|"; }
+            if (targetSymbol === void 0) { targetSymbol = node.symbol; }
+            if (separator === void 0) { separator = "|"; }
             var splitted = value.split(separator);
             if (splitted.length === 3) {
                 return {
@@ -8367,7 +7879,8 @@ var ReVIEW;
                     targetSymbol: targetSymbol,
                     label: splitted[2]
                 };
-            } else if (splitted.length === 2) {
+            }
+            else if (splitted.length === 2) {
                 return {
                     part: this.part,
                     partName: (this.part || {}).name,
@@ -8375,7 +7888,8 @@ var ReVIEW;
                     targetSymbol: targetSymbol,
                     label: splitted[1]
                 };
-            } else if (splitted.length === 1) {
+            }
+            else if (splitted.length === 1) {
                 return {
                     part: this.part,
                     partName: (this.part || {}).name,
@@ -8384,27 +7898,23 @@ var ReVIEW;
                     targetSymbol: targetSymbol,
                     label: splitted[0]
                 };
-            } else {
+            }
+            else {
                 var message = t("compile.args_length_mismatch", "1 or 2 or 3", splitted.length);
                 this.error(message, node);
                 return null;
             }
         };
-
         Process.prototype.addAfterProcess = function (func) {
             this.afterProcess.push(func);
         };
-
         Process.prototype.doAfterProcess = function () {
-            this.afterProcess.forEach(function (func) {
-                return func();
-            });
+            this.afterProcess.forEach(function (func) { return func(); });
             this.afterProcess = [];
         };
         return Process;
     })();
     ReVIEW.Process = Process;
-
     var BuilderProcess = (function () {
         function BuilderProcess(builder, base) {
             this.builder = builder;
@@ -8418,7 +7928,6 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(BuilderProcess.prototype, "warn", {
             get: function () {
                 return this.base.warn.bind(this.base);
@@ -8426,7 +7935,6 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(BuilderProcess.prototype, "error", {
             get: function () {
                 return this.base.error.bind(this.base);
@@ -8434,22 +7942,18 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         BuilderProcess.prototype.out = function (data) {
             this.result += this.builder.escape(data);
             return this;
         };
-
         BuilderProcess.prototype.outRaw = function (data) {
             this.result += data;
             return this;
         };
-
         BuilderProcess.prototype.pushOut = function (data) {
             this.result = data + this.result;
             return this;
         };
-
         Object.defineProperty(BuilderProcess.prototype, "input", {
             get: function () {
                 return this.base.input;
@@ -8457,7 +7961,6 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(BuilderProcess.prototype, "symbols", {
             get: function () {
                 return this.base.symbols;
@@ -8465,11 +7968,9 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
         BuilderProcess.prototype.findImageFile = function (id) {
             var _this = this;
             var config = (this.base.part || this.base.chapter).book.config;
-
             var fileNameList = [];
             (function () {
                 var imageDirList = ["images/"];
@@ -8510,7 +8011,6 @@ var ReVIEW;
         return BuilderProcess;
     })();
     ReVIEW.BuilderProcess = BuilderProcess;
-
     var Book = (function () {
         function Book(config) {
             this.config = config;
@@ -8525,73 +8025,44 @@ var ReVIEW;
                 var tmpArray = [];
                 var add = function (chunk) {
                     tmpArray.push(chunk);
-                    chunk.nodes.forEach(function (chunk) {
-                        return add(chunk);
-                    });
+                    chunk.nodes.forEach(function (chunk) { return add(chunk); });
                 };
-
-                this.predef.forEach(function (chunk) {
-                    return add(chunk);
-                });
-                this.contents.forEach(function (chunk) {
-                    return add(chunk);
-                });
-                this.appendix.forEach(function (chunk) {
-                    return add(chunk);
-                });
-                this.postdef.forEach(function (chunk) {
-                    return add(chunk);
-                });
-
+                this.predef.forEach(function (chunk) { return add(chunk); });
+                this.contents.forEach(function (chunk) { return add(chunk); });
+                this.appendix.forEach(function (chunk) { return add(chunk); });
+                this.postdef.forEach(function (chunk) { return add(chunk); });
                 return tmpArray;
             },
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(Book.prototype, "reports", {
             get: function () {
                 var results = [];
                 results = results.concat(this.process.reports);
                 var gatherReports = function (chunk) {
                     results = results.concat(chunk.process.reports);
-                    chunk.nodes.forEach(function (chunk) {
-                        return gatherReports(chunk);
-                    });
+                    chunk.nodes.forEach(function (chunk) { return gatherReports(chunk); });
                 };
-                this.predef.forEach(function (chunk) {
-                    return gatherReports(chunk);
-                });
-                this.contents.forEach(function (chunk) {
-                    return gatherReports(chunk);
-                });
-                this.appendix.forEach(function (chunk) {
-                    return gatherReports(chunk);
-                });
-                this.postdef.forEach(function (chunk) {
-                    return gatherReports(chunk);
-                });
+                this.predef.forEach(function (chunk) { return gatherReports(chunk); });
+                this.contents.forEach(function (chunk) { return gatherReports(chunk); });
+                this.appendix.forEach(function (chunk) { return gatherReports(chunk); });
+                this.postdef.forEach(function (chunk) { return gatherReports(chunk); });
                 return results;
             },
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(Book.prototype, "hasError", {
             get: function () {
-                return this.reports.some(function (report) {
-                    return report.level === 2 /* Error */;
-                });
+                return this.reports.some(function (report) { return report.level === 2 /* Error */; });
             },
             enumerable: true,
             configurable: true
         });
-
         Object.defineProperty(Book.prototype, "hasWarning", {
             get: function () {
-                return this.reports.some(function (report) {
-                    return report.level === 1 /* Warning */;
-                });
+                return this.reports.some(function (report) { return report.level === 1 /* Warning */; });
             },
             enumerable: true,
             configurable: true
@@ -8599,7 +8070,6 @@ var ReVIEW;
         return Book;
     })();
     ReVIEW.Book = Book;
-
     var ContentChunk = (function () {
         function ContentChunk(book, parent, name) {
             this.book = book;
@@ -8608,12 +8078,13 @@ var ReVIEW;
             if (parent instanceof ContentChunk) {
                 this.parent = parent;
                 this.name = name;
-            } else if (typeof name === "string") {
+            }
+            else if (typeof name === "string") {
                 this.name = name;
-            } else {
+            }
+            else {
                 this.name = parent;
             }
-
             var part = parent ? parent : null;
             var chapter = this;
             this.process = new Process(part, chapter, null);
@@ -8629,26 +8100,19 @@ var ReVIEW;
             enumerable: true,
             configurable: true
         });
-
-
         ContentChunk.prototype.createBuilderProcess = function (builder) {
             var builderProcess = new BuilderProcess(builder, this.process);
             this.builderProcesses.push(builderProcess);
             return builderProcess;
         };
-
         ContentChunk.prototype.findResultByBuilder = function (builder) {
             var founds;
             if (typeof builder === "string") {
-                founds = this.builderProcesses.filter(function (process) {
-                    return process.builder.name === builder;
-                });
-            } else {
-                founds = this.builderProcesses.filter(function (process) {
-                    return process.builder === builder;
-                });
+                founds = this.builderProcesses.filter(function (process) { return process.builder.name === builder; });
             }
-
+            else {
+                founds = this.builderProcesses.filter(function (process) { return process.builder === builder; });
+            }
             return founds[0].result;
         };
         return ContentChunk;
@@ -8658,11 +8122,6 @@ var ReVIEW;
 var ReVIEW;
 (function (ReVIEW) {
     "use strict";
-
-    
-
-    
-
     var BookStructure = (function () {
         function BookStructure(predef, contents, appendix, postdef) {
             this.predef = predef;
@@ -8678,46 +8137,43 @@ var ReVIEW;
             if (!config) {
                 return new BookStructure(null, null, null, null);
             }
-            var predef = (config.predef || config.PREDEF || []).map(function (v) {
-                return ContentStructure.createChapter(v);
-            });
+            var predef = (config.predef || config.PREDEF || []).map(function (v) { return ContentStructure.createChapter(v); });
             var contents = (config.contents || config.CHAPS || []).map(function (v) {
                 if (!v) {
                     return null;
                 }
                 if (typeof v === "string") {
                     return ContentStructure.createChapter(v);
-                } else if (v.chapter) {
+                }
+                else if (v.chapter) {
                     return ContentStructure.createChapter(v.chapter);
-                } else if (v.part) {
+                }
+                else if (v.part) {
                     return ContentStructure.createPart(v.part);
-                } else if (typeof v.file === "string" && v.chapters) {
+                }
+                else if (typeof v.file === "string" && v.chapters) {
                     return ContentStructure.createPart(v);
-                } else if (typeof v.file === "string") {
+                }
+                else if (typeof v.file === "string") {
                     return ContentStructure.createChapter(v);
-                } else if (typeof v === "object") {
+                }
+                else if (typeof v === "object") {
                     return ContentStructure.createPart({
                         file: Object.keys(v)[0],
-                        chapters: v[Object.keys(v)[0]].map(function (c) {
-                            return ({ file: c });
-                        })
+                        chapters: v[Object.keys(v)[0]].map(function (c) { return ({ file: c }); })
                     });
-                } else {
+                }
+                else {
                     return null;
                 }
             });
-            var appendix = (config.appendix || config.APPENDIX || []).map(function (v) {
-                return ContentStructure.createChapter(v);
-            });
-            var postdef = (config.postdef || config.POSTDEF || []).map(function (v) {
-                return ContentStructure.createChapter(v);
-            });
+            var appendix = (config.appendix || config.APPENDIX || []).map(function (v) { return ContentStructure.createChapter(v); });
+            var postdef = (config.postdef || config.POSTDEF || []).map(function (v) { return ContentStructure.createChapter(v); });
             return new BookStructure(predef, contents, appendix, postdef);
         };
         return BookStructure;
     })();
     ReVIEW.BookStructure = BookStructure;
-
     var ContentStructure = (function () {
         function ContentStructure(part, chapter) {
             this.part = part;
@@ -8726,23 +8182,23 @@ var ReVIEW;
         ContentStructure.createChapter = function (value) {
             if (typeof value === "string") {
                 return new ContentStructure(null, { file: value });
-            } else if (value && typeof value.file === "string") {
+            }
+            else if (value && typeof value.file === "string") {
                 return new ContentStructure(null, value);
-            } else {
+            }
+            else {
                 return null;
             }
         };
-
         ContentStructure.createPart = function (part) {
             if (part) {
                 var p = {
                     file: part.file,
-                    chapters: (part.chapters || []).map(function (c) {
-                        return typeof c === "string" ? { file: c } : c;
-                    })
+                    chapters: (part.chapters || []).map(function (c) { return typeof c === "string" ? { file: c } : c; })
                 };
                 return new ContentStructure(p, null);
-            } else {
+            }
+            else {
                 return null;
             }
         };
@@ -8752,16 +8208,13 @@ var ReVIEW;
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
+    var Build;
     (function (Build) {
         "use strict";
-
         var t = ReVIEW.i18n.t;
-
         var UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
-
         var nodeContentToString = ReVIEW.nodeContentToString;
         var findChapter = ReVIEW.findChapter;
-
         var TextBuilder = (function (_super) {
             __extends(TextBuilder, _super);
             function TextBuilder() {
@@ -8771,20 +8224,18 @@ var ReVIEW;
             TextBuilder.prototype.escape = function (data) {
                 return data;
             };
-
             TextBuilder.prototype.headlinePre = function (process, name, node) {
                 process.out("■H").out(node.level).out("■");
                 if (node.level === 1) {
                     var text = ReVIEW.i18n.t("builder.chapter", node.parentNode.no);
                     process.out(text).out("　");
-                } else if (node.level === 2) {
+                }
+                else if (node.level === 2) {
                 }
             };
-
             TextBuilder.prototype.headlinePost = function (process, name, node) {
                 process.out("\n\n");
             };
-
             TextBuilder.prototype.columnHeadlinePre = function (process, node) {
                 process.out("\n◆→開始:←◆\n");
                 process.out("■");
@@ -8792,43 +8243,36 @@ var ReVIEW;
                     ReVIEW.visit(node.caption, v);
                 };
             };
-
             TextBuilder.prototype.columnHeadlinePost = function (process, node) {
                 process.out("\n");
             };
-
             TextBuilder.prototype.columnPost = function (process, node) {
                 process.out("◆→終了:←◆\n\n");
             };
-
             TextBuilder.prototype.paragraphPost = function (process, name, node) {
                 process.out("\n");
             };
-
             TextBuilder.prototype.ulistPre = function (process, name, node) {
                 this.ulistParentHelper(process, node, function () {
                     process.out("\n\n●\t");
                 });
                 if (node.parentNode instanceof UlistElementSyntaxTree && node.prev instanceof UlistElementSyntaxTree === false) {
                     process.out("\n\n");
-                } else if (node.parentNode instanceof UlistElementSyntaxTree) {
+                }
+                else if (node.parentNode instanceof UlistElementSyntaxTree) {
                     process.out("");
                 }
                 process.out("●\t");
             };
-
             TextBuilder.prototype.ulistPost = function (process, name, node) {
                 process.out("\n");
             };
-
             TextBuilder.prototype.olistPre = function (process, name, node) {
                 process.out(node.no).out("\t");
             };
-
             TextBuilder.prototype.olistPost = function (process, name, node) {
                 process.out("\n");
             };
-
             TextBuilder.prototype.dlistPre = function (process, name, node) {
                 return function (v) {
                     process.out("★");
@@ -8839,11 +8283,9 @@ var ReVIEW;
                     process.out("\n");
                 };
             };
-
             TextBuilder.prototype.dlistPost = function (process, name, node) {
                 process.out("\n");
             };
-
             TextBuilder.prototype.block_list_pre = function (process, node) {
                 process.out("◆→開始:リスト←◆\n");
                 var chapter = findChapter(node, 1);
@@ -8855,11 +8297,9 @@ var ReVIEW;
                     });
                 };
             };
-
             TextBuilder.prototype.block_list_post = function (process, node) {
                 process.out("\n◆→終了:リスト←◆\n");
             };
-
             TextBuilder.prototype.block_listnum_pre = function (process, node) {
                 process.out("◆→開始:リスト←◆\n");
                 var chapter = findChapter(node, 1);
@@ -8880,17 +8320,16 @@ var ReVIEW;
                                 }
                                 process.out("\n");
                             });
-                        } else {
+                        }
+                        else {
                             ReVIEW.visit(node, v);
                         }
                     });
                 };
             };
-
             TextBuilder.prototype.block_listnum_post = function (process, node) {
                 process.out("◆→終了:リスト←◆\n");
             };
-
             TextBuilder.prototype.inline_list = function (process, node) {
                 var chapter = findChapter(node, 1);
                 var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
@@ -8898,7 +8337,6 @@ var ReVIEW;
                 process.out(text);
                 return false;
             };
-
             TextBuilder.prototype.block_emlist_pre = function (process, node) {
                 process.out("◆→開始:インラインリスト←◆\n");
                 if (node.args[0]) {
@@ -8910,11 +8348,9 @@ var ReVIEW;
                     });
                 };
             };
-
             TextBuilder.prototype.block_emlist_post = function (process, node) {
                 process.out("\n◆→終了:インラインリスト←◆\n");
             };
-
             TextBuilder.prototype.block_emlistnum_pre = function (process, node) {
                 process.out("◆→開始:インラインリスト←◆\n");
                 if (node.args[0]) {
@@ -8935,61 +8371,52 @@ var ReVIEW;
                                 }
                                 process.out("\n");
                             });
-                        } else {
+                        }
+                        else {
                             ReVIEW.visit(node, v);
                         }
                     });
                 };
             };
-
             TextBuilder.prototype.block_emlistnum_post = function (process, node) {
                 process.out("◆→終了:インラインリスト←◆\n");
             };
-
             TextBuilder.prototype.inline_hd_pre = function (process, node) {
                 process.out("「");
                 var chapter = findChapter(node);
                 if (chapter.level === 1) {
                     process.out(chapter.fqn).out("章 ");
-                } else {
+                }
+                else {
                     process.out(chapter.fqn).out(" ");
                 }
                 process.out(nodeContentToString(process, chapter.headline));
                 return false;
             };
-
             TextBuilder.prototype.inline_hd_post = function (process, node) {
                 process.out("」");
             };
-
             TextBuilder.prototype.inline_br = function (process, node) {
                 process.out("\n");
             };
-
             TextBuilder.prototype.inline_b_pre = function (process, node) {
                 process.out("★");
             };
-
             TextBuilder.prototype.inline_b_post = function (process, node) {
                 process.out("☆");
             };
-
             TextBuilder.prototype.inline_code_pre = function (process, node) {
                 process.out("△");
             };
-
             TextBuilder.prototype.inline_code_post = function (process, node) {
                 process.out("☆");
             };
-
             TextBuilder.prototype.inline_href_pre = function (process, node) {
                 process.out("△");
             };
-
             TextBuilder.prototype.inline_href_post = function (process, node) {
                 process.out("☆");
             };
-
             TextBuilder.prototype.inline_href = function (process, node) {
                 var href = null;
                 var text = nodeContentToString(process, node);
@@ -8999,16 +8426,15 @@ var ReVIEW;
                 }
                 if (href) {
                     process.out(text).out("（△").out(href).out("☆）");
-                } else {
+                }
+                else {
                     process.out("△").out(text).out("☆");
                 }
                 return false;
             };
-
             TextBuilder.prototype.block_label = function (process, node) {
                 return false;
             };
-
             TextBuilder.prototype.inline_ruby = function (process, node) {
                 var contentString = nodeContentToString(process, node);
                 var keywordData = contentString.split(",");
@@ -9020,15 +8446,12 @@ var ReVIEW;
                     });
                 };
             };
-
             TextBuilder.prototype.inline_u_pre = function (process, node) {
                 process.out("＠");
             };
-
             TextBuilder.prototype.inline_u_post = function (process, node) {
                 process.out("＠◆→＠〜＠部分に下線←◆");
             };
-
             TextBuilder.prototype.inline_kw = function (process, node) {
                 process.out("★");
                 return function (v) {
@@ -9039,24 +8462,19 @@ var ReVIEW;
                     });
                 };
             };
-
             TextBuilder.prototype.inline_tt_pre = function (process, node) {
                 process.out("△");
             };
-
             TextBuilder.prototype.inline_tt_post = function (process, node) {
                 process.out("☆");
             };
-
             TextBuilder.prototype.inline_em_pre = function (process, node) {
                 process.warn(t("compile.deprecated_inline_symbol", "em"), node);
                 process.out("@<em>{");
             };
-
             TextBuilder.prototype.inline_em_post = function (process, node) {
                 process.out("}");
             };
-
             TextBuilder.prototype.block_image = function (process, node) {
                 return process.findImageFile(node.args[0].arg).then(function (imagePath) {
                     var caption = node.args[1].arg;
@@ -9071,7 +8489,6 @@ var ReVIEW;
                     return false;
                 });
             };
-
             TextBuilder.prototype.block_indepimage = function (process, node) {
                 process.out("◆→画像 ").out(node.args[0].arg).out("←◆\n");
                 if (node.args[1]) {
@@ -9079,13 +8496,11 @@ var ReVIEW;
                 }
                 return false;
             };
-
             TextBuilder.prototype.inline_img = function (process, node) {
                 var imgNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
                 process.out("図").out(process.base.chapter.no).out(".").out(imgNode.no).out("\n");
                 return false;
             };
-
             TextBuilder.prototype.inline_icon = function (process, node) {
                 var chapterFileName = process.base.chapter.name;
                 var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
@@ -9094,134 +8509,104 @@ var ReVIEW;
                 process.out("◆→画像 ").out(imagePath).out("←◆");
                 return false;
             };
-
             TextBuilder.prototype.block_footnote = function (process, node) {
                 process.out("【注").out(node.no).out("】").out(node.args[1].arg).out("\n");
                 return false;
             };
-
             TextBuilder.prototype.inline_fn = function (process, node) {
                 var footnoteNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
                 process.out("【注").out(footnoteNode.no).out("】");
                 return false;
             };
-
             TextBuilder.prototype.block_lead_pre = function (process, node) {
                 process.out("◆→開始:リード←◆\n");
             };
-
             TextBuilder.prototype.block_lead_post = function (process, node) {
                 process.out("◆→終了:リード←◆\n");
             };
-
             TextBuilder.prototype.inline_tti_pre = function (process, node) {
                 process.out("▲");
             };
-
             TextBuilder.prototype.inline_tti_post = function (process, node) {
                 process.out("☆◆→等幅フォントイタ←◆");
             };
-
             TextBuilder.prototype.inline_ttb_pre = function (process, node) {
                 process.out("★");
             };
-
             TextBuilder.prototype.inline_ttb_post = function (process, node) {
                 process.out("☆◆→等幅フォント太字←◆");
             };
-
             TextBuilder.prototype.block_noindent = function (process, node) {
                 process.out("◆→DTP連絡:次の1行インデントなし←◆\n");
                 return false;
             };
-
             TextBuilder.prototype.block_source_pre = function (process, node) {
                 process.out("◆→開始:ソースコードリスト←◆\n");
                 process.out("■").out(node.args[0].arg).out("\n");
-
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         ReVIEW.visit(node, v);
                     });
                 };
             };
-
             TextBuilder.prototype.block_source_post = function (process, node) {
                 process.out("\n◆→終了:ソースコードリスト←◆\n");
             };
-
             TextBuilder.prototype.block_cmd_pre = function (process, node) {
                 process.out("◆→開始:コマンド←◆\n");
-
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         ReVIEW.visit(node, v);
                     });
                 };
             };
-
             TextBuilder.prototype.block_cmd_post = function (process, node) {
                 process.out("\n◆→終了:コマンド←◆\n");
             };
-
             TextBuilder.prototype.block_quote_pre = function (process, node) {
                 process.out("◆→開始:引用←◆\n");
-
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         ReVIEW.visit(node, v);
                     });
                 };
             };
-
             TextBuilder.prototype.block_quote_post = function (process, node) {
                 process.out("\n◆→終了:引用←◆\n");
             };
-
             TextBuilder.prototype.inline_ami_pre = function (process, node) {
             };
-
             TextBuilder.prototype.inline_ami_post = function (process, node) {
                 process.out("◆→DTP連絡:「").out(nodeContentToString(process, node)).out("」に網カケ←◆");
             };
-
             TextBuilder.prototype.inline_bou_pre = function (process, node) {
             };
-
             TextBuilder.prototype.inline_bou_post = function (process, node) {
                 process.out("◆→DTP連絡:「").out(nodeContentToString(process, node)).out("」に傍点←◆");
             };
-
             TextBuilder.prototype.inline_i_pre = function (process, node) {
                 process.out("▲");
             };
-
             TextBuilder.prototype.inline_i_post = function (process, node) {
                 process.out("☆");
             };
-
             TextBuilder.prototype.inline_strong_pre = function (process, node) {
                 process.out("★");
             };
-
             TextBuilder.prototype.inline_strong_post = function (process, node) {
                 process.out("☆");
             };
-
             TextBuilder.prototype.inline_uchar = function (process, node) {
                 var hexString = nodeContentToString(process, node);
                 var code = parseInt(hexString, 16);
                 var result = "";
-
                 while (code !== 0) {
                     result = String.fromCharCode(code & 0xFFFF) + result;
                     code >>>= 16;
                 }
-
                 process.out(result);
                 return false;
             };
-
             TextBuilder.prototype.block_table_pre = function (process, node) {
                 process.out("◆→開始:表←◆\n");
                 process.out("TODO 現在table記法は仮実装です\n");
@@ -9234,11 +8619,9 @@ var ReVIEW;
                     });
                 };
             };
-
             TextBuilder.prototype.block_table_post = function (process, node) {
                 process.out("\n◆→終了:表←◆\n");
             };
-
             TextBuilder.prototype.inline_table = function (process, node) {
                 var chapter = findChapter(node, 1);
                 var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
@@ -9246,56 +8629,46 @@ var ReVIEW;
                 process.out(text);
                 return false;
             };
-
             TextBuilder.prototype.block_tsize = function (process, node) {
                 return false;
             };
-
             TextBuilder.prototype.block_comment_pre = function (process, node) {
                 process.out("◆→DTP連絡:");
-
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         ReVIEW.visit(node, v);
                     });
                 };
             };
-
             TextBuilder.prototype.block_comment_post = function (process, node) {
                 process.out("←◆\n");
             };
-
             TextBuilder.prototype.inline_comment_pre = function (process, node) {
                 process.out("◆→DTP連絡:");
             };
-
             TextBuilder.prototype.inline_comment_post = function (process, node) {
                 process.out("←◆");
             };
             return TextBuilder;
         })(Build.DefaultBuilder);
         Build.TextBuilder = TextBuilder;
-    })(ReVIEW.Build || (ReVIEW.Build = {}));
-    var Build = ReVIEW.Build;
+    })(Build = ReVIEW.Build || (ReVIEW.Build = {}));
 })(ReVIEW || (ReVIEW = {}));
 var ReVIEW;
 (function (ReVIEW) {
+    var Build;
     (function (Build) {
         "use strict";
-
         var t = ReVIEW.i18n.t;
-
         var UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
         var OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
         var DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
-
         var nodeContentToString = ReVIEW.nodeContentToString;
         var findChapter = ReVIEW.findChapter;
-
         var HtmlBuilder = (function (_super) {
             __extends(HtmlBuilder, _super);
             function HtmlBuilder(standalone) {
-                if (typeof standalone === "undefined") { standalone = true; }
+                if (standalone === void 0) { standalone = true; }
                 _super.call(this);
                 this.standalone = standalone;
                 this.extention = "html";
@@ -9310,11 +8683,8 @@ var ReVIEW;
             }
             HtmlBuilder.prototype.escape = function (data) {
                 var _this = this;
-                return String(data).replace(/[&<>"'\/]/g, function (c) {
-                    return _this.escapeMap[c];
-                });
+                return String(data).replace(/[&<>"'\/]/g, function (c) { return _this.escapeMap[c]; });
             };
-
             HtmlBuilder.prototype.processPost = function (process, chunk) {
                 if (this.standalone) {
                     var pre = "";
@@ -9339,12 +8709,10 @@ var ReVIEW;
                     pre += "</head>\n";
                     pre += "<body>\n";
                     process.pushOut(pre);
-
                     process.outRaw("</body>\n");
                     process.outRaw("</html>\n");
                 }
             };
-
             HtmlBuilder.prototype.headlinePre = function (process, name, node) {
                 process.outRaw("<h").out(node.level);
                 if (node.label) {
@@ -9358,7 +8726,8 @@ var ReVIEW;
                         if (node instanceof ReVIEW.Parse.ChapterSyntaxTree) {
                             numbers[node.toChapter().level] = node.no;
                             maxLevel = Math.max(maxLevel, node.toChapter().level);
-                        } else if (node instanceof ReVIEW.Parse.ColumnSyntaxTree) {
+                        }
+                        else if (node instanceof ReVIEW.Parse.ColumnSyntaxTree) {
                             numbers[node.toColumn().level] = -1;
                             maxLevel = Math.max(maxLevel, node.toColumn().level);
                         }
@@ -9368,71 +8737,63 @@ var ReVIEW;
                     for (var i = 1; i <= maxLevel; i++) {
                         if (numbers[i] === -1) {
                             result.push(0);
-                        } else if (typeof numbers[i] === "undefined") {
+                        }
+                        else if (typeof numbers[i] === "undefined") {
                             result.push(1);
-                        } else {
+                        }
+                        else {
                             result.push(numbers[i] || 0);
                         }
                     }
                     return result.join("-");
                 };
                 process.outRaw("<a id=\"h").out(constructLabel(node)).outRaw("\"></a>");
-
                 if (node.level === 1) {
                     var text = ReVIEW.i18n.t("builder.chapter", node.parentNode.no);
                     process.out(text).out("　");
-                } else if (node.level === 2) {
+                }
+                else if (node.level === 2) {
                 }
             };
-
             HtmlBuilder.prototype.headlinePost = function (process, name, node) {
                 process.outRaw("</h").out(node.level).outRaw(">\n");
             };
-
             HtmlBuilder.prototype.columnPre = function (process, node) {
                 process.outRaw("<div class=\"column\">\n\n");
             };
-
             HtmlBuilder.prototype.columnPost = function (process, node) {
                 process.outRaw("</div>\n");
             };
-
             HtmlBuilder.prototype.columnHeadlinePre = function (process, node) {
                 process.outRaw("<h").out(node.level).outRaw(">");
                 process.outRaw("<a id=\"column-").out(node.parentNode.no).outRaw("\"></a>");
-
                 return function (v) {
                     ReVIEW.visit(node.caption, v);
                 };
             };
-
             HtmlBuilder.prototype.columnHeadlinePost = function (process, node) {
                 process.outRaw("</h").out(node.level).outRaw(">\n");
             };
-
             HtmlBuilder.prototype.paragraphPre = function (process, name, node) {
                 if (node.prev && node.prev.isBlockElement() && node.prev.toBlockElement().symbol === "noindent") {
                     process.outRaw("<p class=\"noindent\">");
-                } else {
+                }
+                else {
                     process.outRaw("<p>");
                 }
             };
-
             HtmlBuilder.prototype.paragraphPost = function (process, name, node) {
                 process.outRaw("</p>\n");
             };
-
             HtmlBuilder.prototype.ulistPre = function (process, name, node) {
                 this.ulistParentHelper(process, node, function () {
                     process.outRaw("<ul>\n<li>");
                 });
-
                 if (node.prev instanceof UlistElementSyntaxTree === false) {
                     process.outRaw("<ul>\n");
                 }
                 process.outRaw("<li>");
             };
-
             HtmlBuilder.prototype.ulistPost = function (process, name, node) {
                 process.outRaw("</li>\n");
                 if (node.next instanceof UlistElementSyntaxTree === false) {
@@ -9442,21 +8803,18 @@ var ReVIEW;
                     process.outRaw("</li>\n</ul>\n");
                 });
             };
-
             HtmlBuilder.prototype.olistPre = function (process, name, node) {
                 if (node.prev instanceof OlistElementSyntaxTree === false) {
                     process.outRaw("<ol>\n");
                 }
                 process.outRaw("<li>");
             };
-
             HtmlBuilder.prototype.olistPost = function (process, name, node) {
                 process.outRaw("</li>\n");
                 if (node.next instanceof OlistElementSyntaxTree === false) {
                     process.outRaw("</ol>\n");
                 }
             };
-
             HtmlBuilder.prototype.dlistPre = function (process, name, node) {
                 if (node.prev instanceof DlistElementSyntaxTree === false) {
                     process.outRaw("<dl>\n");
@@ -9470,13 +8828,11 @@ var ReVIEW;
                     process.outRaw("</dd>\n");
                 };
             };
-
             HtmlBuilder.prototype.dlistPost = function (process, name, node) {
                 if (node.next instanceof DlistElementSyntaxTree === false) {
                     process.outRaw("</dl>\n");
                 }
             };
-
             HtmlBuilder.prototype.block_list_pre = function (process, node) {
                 process.outRaw("<div class=\"caption-code\">\n");
                 var chapter = findChapter(node, 1);
@@ -9489,11 +8845,9 @@ var ReVIEW;
                     });
                 };
             };
-
             HtmlBuilder.prototype.block_list_post = function (process, node) {
                 process.outRaw("\n</pre>\n").outRaw("</div>\n");
             };
-
             HtmlBuilder.prototype.block_listnum_pre = function (process, node) {
                 process.outRaw("<div class=\"code\">\n");
                 var chapter = findChapter(node, 1);
@@ -9517,17 +8871,16 @@ var ReVIEW;
                                     process.out("\n");
                                 }
                             });
-                        } else {
+                        }
+                        else {
                             ReVIEW.visit(node, v);
                         }
                     });
                 };
             };
-
             HtmlBuilder.prototype.block_listnum_post = function (process, node) {
                 process.outRaw("\n</pre>\n").outRaw("</div>\n");
             };
-
             HtmlBuilder.prototype.inline_list = function (process, node) {
                 var chapter = findChapter(node, 1);
                 var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
@@ -9535,7 +8888,6 @@ var ReVIEW;
                 process.out(text);
                 return false;
             };
-
             HtmlBuilder.prototype.block_emlist_pre = function (process, node) {
                 process.outRaw("<div class=\"emlist-code\">\n");
                 if (node.args[0]) {
@@ -9548,11 +8900,9 @@ var ReVIEW;
                     });
                 };
             };
-
             HtmlBuilder.prototype.block_emlist_post = function (process, node) {
                 process.outRaw("\n</pre>\n").outRaw("</div>\n");
             };
-
             HtmlBuilder.prototype.block_emlistnum_pre = function (process, node) {
                 process.outRaw("<div class=\"emlistnum-code\">\n");
                 process.outRaw("<pre class=\"emlist\">");
@@ -9573,53 +8923,46 @@ var ReVIEW;
                                     process.out("\n");
                                 }
                             });
-                        } else {
+                        }
+                        else {
                             ReVIEW.visit(node, v);
                         }
                     });
                 };
             };
-
             HtmlBuilder.prototype.block_emlistnum_post = function (process, node) {
                 process.outRaw("\n</pre>\n").outRaw("</div>\n");
             };
-
             HtmlBuilder.prototype.inline_hd_pre = function (process, node) {
                 process.out("「");
                 var chapter = findChapter(node);
                 if (chapter.level === 1) {
                     process.out(chapter.fqn).out("章 ");
-                } else {
+                }
+                else {
                     process.out(chapter.fqn).out(" ");
                 }
                 process.out(nodeContentToString(process, chapter.headline));
                 return false;
             };
-
             HtmlBuilder.prototype.inline_hd_post = function (process, node) {
                 process.out("」");
             };
-
             HtmlBuilder.prototype.inline_br = function (process, node) {
                 process.outRaw("<br />");
             };
-
             HtmlBuilder.prototype.inline_b_pre = function (process, node) {
                 process.outRaw("<b>");
             };
-
             HtmlBuilder.prototype.inline_b_post = function (process, node) {
                 process.outRaw("</b>");
             };
-
             HtmlBuilder.prototype.inline_code_pre = function (process, node) {
                 process.outRaw("<tt class=\"inline-code\">");
             };
-
             HtmlBuilder.prototype.inline_code_post = function (process, node) {
                 process.outRaw("</tt>");
             };
-
             HtmlBuilder.prototype.inline_href = function (process, node) {
                 var href = nodeContentToString(process, node);
                 var text = href;
@@ -9630,20 +8973,16 @@ var ReVIEW;
                 process.outRaw("<a href=\"").out(href).outRaw("\" class=\"link\">").out(text).outRaw("</a>");
                 return false;
             };
-
             HtmlBuilder.prototype.block_label = function (process, node) {
                 process.outRaw("<a id=\"").out(node.args[0].arg).outRaw("\"></a>\n");
                 return false;
             };
-
             HtmlBuilder.prototype.inline_tt_pre = function (process, node) {
                 process.outRaw("<tt>");
             };
-
             HtmlBuilder.prototype.inline_tt_post = function (process, node) {
                 process.outRaw("</tt>");
             };
-
             HtmlBuilder.prototype.inline_ruby_pre = function (process, node) {
                 process.outRaw("<ruby>");
                 return function (v) {
@@ -9657,45 +8996,36 @@ var ReVIEW;
                     });
                 };
             };
-
             HtmlBuilder.prototype.inline_ruby_post = function (process, node) {
                 process.outRaw("</ruby>");
             };
-
             HtmlBuilder.prototype.inline_u_pre = function (process, node) {
                 process.outRaw("<u>");
             };
-
             HtmlBuilder.prototype.inline_u_post = function (process, node) {
                 process.outRaw("</u>");
             };
-
             HtmlBuilder.prototype.inline_kw_pre = function (process, node) {
                 process.outRaw("<b class=\"kw\">");
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         var contentString = nodeContentToString(process, node);
                         var keywordData = contentString.split(",");
-
                         process.out(keywordData[0] + " (" + keywordData[1].trimLeft() + ")");
                     });
                 };
             };
-
             HtmlBuilder.prototype.inline_kw_post = function (process, node) {
                 var contentString = nodeContentToString(process, node);
                 var keywordData = contentString.split(",");
                 process.outRaw("</b>").outRaw("<!-- IDX:").out(keywordData[0]).outRaw(" -->");
             };
-
             HtmlBuilder.prototype.inline_em_pre = function (process, node) {
                 process.outRaw("<em>");
             };
-
             HtmlBuilder.prototype.inline_em_post = function (process, node) {
                 process.outRaw("</em>");
             };
-
             HtmlBuilder.prototype.block_image = function (process, node) {
                 return process.findImageFile(node.args[0].arg).then(function (imagePath) {
                     var caption = node.args[1].arg;
@@ -9708,7 +9038,6 @@ var ReVIEW;
                         }
                     }
                     process.outRaw("<div class=\"image\">\n");
-
                     process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
                     process.outRaw("<p class=\"caption\">\n");
                     process.out("図").out(process.base.chapter.no).out(".").out(node.no).out(": ").out(caption);
@@ -9720,7 +9049,6 @@ var ReVIEW;
                     return false;
                 });
             };
-
             HtmlBuilder.prototype.block_indepimage = function (process, node) {
                 var chapterFileName = process.base.chapter.name;
                 var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
@@ -9738,10 +9066,10 @@ var ReVIEW;
                     }
                 }
                 process.outRaw("<div class=\"image\">\n");
-
                 if (scale !== 1) {
                     process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
-                } else {
+                }
+                else {
                     process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" />\n");
                 }
                 if (node.args[1]) {
@@ -9752,13 +9080,11 @@ var ReVIEW;
                 process.outRaw("</div>\n");
                 return false;
             };
-
             HtmlBuilder.prototype.inline_img = function (process, node) {
                 var imgNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
                 process.out("図").out(process.base.chapter.no).out(".").out(imgNode.no);
                 return false;
             };
-
             HtmlBuilder.prototype.inline_icon = function (process, node) {
                 var chapterFileName = process.base.chapter.name;
                 var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
@@ -9767,7 +9093,6 @@ var ReVIEW;
                 process.outRaw("<img src=\"" + imagePath + "\" alt=\"[").out(imageName).outRaw("]\" />");
                 return false;
             };
-
             HtmlBuilder.prototype.block_footnote = function (process, node) {
                 process.outRaw("<div class=\"footnote\"><p class=\"footnote\">[<a id=\"fn-");
                 process.out(node.args[0].arg).outRaw("\">*").out(node.no).outRaw("</a>] ");
@@ -9775,41 +9100,32 @@ var ReVIEW;
                 process.outRaw("</p></div>\n");
                 return false;
             };
-
             HtmlBuilder.prototype.inline_fn = function (process, node) {
                 var footnoteNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
                 process.outRaw("<a href=\"#fn-").out(footnoteNode.args[0].arg).outRaw("\">*").out(footnoteNode.no).outRaw("</a>");
                 return false;
             };
-
             HtmlBuilder.prototype.block_lead_pre = function (process, node) {
                 process.outRaw("<div class=\"lead\">\n");
             };
-
             HtmlBuilder.prototype.block_lead_post = function (process, node) {
                 process.outRaw("</div>\n");
             };
-
             HtmlBuilder.prototype.inline_tti_pre = function (process, node) {
                 process.outRaw("<tt><i>");
             };
-
             HtmlBuilder.prototype.inline_tti_post = function (process, node) {
                 process.outRaw("</i></tt>");
             };
-
             HtmlBuilder.prototype.inline_ttb_pre = function (process, node) {
                 process.outRaw("<tt><b>");
             };
-
             HtmlBuilder.prototype.inline_ttb_post = function (process, node) {
                 process.outRaw("</b></tt>");
             };
-
             HtmlBuilder.prototype.block_noindent = function (process, node) {
                 return false;
             };
-
             HtmlBuilder.prototype.block_source_pre = function (process, node) {
                 process.outRaw("<div class=\"source-code\">\n");
                 process.outRaw("<p class=\"caption\">").out(node.args[0].arg).outRaw("</p>\n");
@@ -9820,11 +9136,9 @@ var ReVIEW;
                     });
                 };
             };
-
             HtmlBuilder.prototype.block_source_post = function (process, node) {
                 process.outRaw("\n</pre>\n").outRaw("</div>\n");
             };
-
             HtmlBuilder.prototype.block_cmd_pre = function (process, node) {
                 process.outRaw("<div class=\"cmd-code\">\n");
                 process.outRaw("<pre class=\"cmd\">");
@@ -9834,11 +9148,9 @@ var ReVIEW;
                     });
                 };
             };
-
             HtmlBuilder.prototype.block_cmd_post = function (process, node) {
                 process.outRaw("\n</pre>\n").outRaw("</div>\n");
             };
-
             HtmlBuilder.prototype.block_quote_pre = function (process, node) {
                 process.outRaw("<blockquote><p>");
                 return function (v) {
@@ -9847,51 +9159,39 @@ var ReVIEW;
                     });
                 };
             };
-
             HtmlBuilder.prototype.block_quote_post = function (process, node) {
                 process.outRaw("</p></blockquote>\n");
             };
-
             HtmlBuilder.prototype.inline_ami_pre = function (process, node) {
                 process.outRaw("<span class=\"ami\">");
             };
-
             HtmlBuilder.prototype.inline_ami_post = function (process, node) {
                 process.outRaw("</span>");
             };
-
             HtmlBuilder.prototype.inline_bou_pre = function (process, node) {
                 process.outRaw("<span class=\"bou\">");
             };
-
             HtmlBuilder.prototype.inline_bou_post = function (process, node) {
                 process.outRaw("</span>");
             };
-
             HtmlBuilder.prototype.inline_i_pre = function (process, node) {
                 process.outRaw("<i>");
             };
-
             HtmlBuilder.prototype.inline_i_post = function (process, node) {
                 process.outRaw("</i>");
             };
-
             HtmlBuilder.prototype.inline_strong_pre = function (process, node) {
                 process.outRaw("<strong>");
             };
-
             HtmlBuilder.prototype.inline_strong_post = function (process, node) {
                 process.outRaw("</strong>");
             };
-
             HtmlBuilder.prototype.inline_uchar_pre = function (process, node) {
                 process.outRaw("&#x");
             };
-
             HtmlBuilder.prototype.inline_uchar_post = function (process, node) {
                 process.outRaw(";");
             };
-
             HtmlBuilder.prototype.block_table_pre = function (process, node) {
                 process.outRaw("<div>\n");
                 var chapter = findChapter(node, 1);
@@ -9904,11 +9204,9 @@ var ReVIEW;
                     });
                 };
             };
-
             HtmlBuilder.prototype.block_table_post = function (process, node) {
                 process.outRaw("\n</pre>\n").outRaw("</div>\n");
             };
-
             HtmlBuilder.prototype.inline_table = function (process, node) {
                 var chapter = findChapter(node, 1);
                 var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
@@ -9916,57 +9214,46 @@ var ReVIEW;
                 process.out(text);
                 return false;
             };
-
             HtmlBuilder.prototype.block_tsize = function (process, node) {
                 return false;
             };
-
             HtmlBuilder.prototype.block_comment_pre = function (process, node) {
                 process.outRaw("<!-- ");
-
                 return function (v) {
                     node.childNodes.forEach(function (node) {
                         ReVIEW.visit(node, v);
                     });
                 };
             };
-
             HtmlBuilder.prototype.block_comment_post = function (process, node) {
                 process.outRaw(" -->\n");
             };
-
             HtmlBuilder.prototype.inline_comment_pre = function (process, node) {
                 process.outRaw("<!-- ");
             };
-
             HtmlBuilder.prototype.inline_comment_post = function (process, node) {
                 process.outRaw(" -->");
             };
             return HtmlBuilder;
         })(Build.DefaultBuilder);
         Build.HtmlBuilder = HtmlBuilder;
-    })(ReVIEW.Build || (ReVIEW.Build = {}));
-    var Build = ReVIEW.Build;
+    })(Build = ReVIEW.Build || (ReVIEW.Build = {}));
 })(ReVIEW || (ReVIEW = {}));
-
-
 var ReVIEW;
 (function (ReVIEW) {
     "use strict";
-
     function start(setup, options) {
         var controller = new ReVIEW.Controller(options);
-
         setup(controller);
         return controller.process();
     }
     ReVIEW.start = start;
 })(ReVIEW || (ReVIEW = {}));
-
 if (ReVIEW.isAMD()) {
     define("review.js", [], function () {
         return ReVIEW;
     });
-} else if (ReVIEW.isNodeJS()) {
+}
+else if (ReVIEW.isNodeJS()) {
     module.exports = ReVIEW;
 }

@@ -69,8 +69,8 @@ describe("ReVIEW構文の", ()=> {
 								}
 								var expectedAST = fs.readFileSync(astFilePath, "utf8");
 								assert.deepEqual(JSON.parse(ast), JSON.parse(expectedAST));
-							}).
-							catch(e=> {
+							})
+							.catch(e=> {
 								updateIfSyntaxError(e);
 								throw e;
 							});

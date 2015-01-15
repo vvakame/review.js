@@ -113,38 +113,51 @@ declare module ReVIEW.i18n {
 declare module ReVIEW {
     module Parse {
     }
-    function walk(ast: Parse.SyntaxTree, actor: (ast: Parse.SyntaxTree) => Parse.SyntaxTree): void;
-    function visit(ast: Parse.SyntaxTree, v: ITreeVisitor): void;
-    function visitAsync(ast: Parse.SyntaxTree, v: ITreeVisitor): Promise<void>;
+    import SyntaxTree = ReVIEW.Parse.SyntaxTree;
+    import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+    import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
+    import ArgumentSyntaxTree = ReVIEW.Parse.ArgumentSyntaxTree;
+    import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+    import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+    import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
+    import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
+    import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
+    import ColumnSyntaxTree = ReVIEW.Parse.ColumnSyntaxTree;
+    import ColumnHeadlineSyntaxTree = ReVIEW.Parse.ColumnHeadlineSyntaxTree;
+    import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
+    import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
+    function walk(ast: SyntaxTree, actor: (ast: SyntaxTree) => SyntaxTree): void;
+    function visit(ast: SyntaxTree, v: ITreeVisitor): void;
+    function visitAsync(ast: SyntaxTree, v: ITreeVisitor): Promise<void>;
     interface ITreeVisitor {
-        visitDefaultPre(node: Parse.SyntaxTree, parent: Parse.SyntaxTree): any;
-        visitDefaultPost? (node: Parse.SyntaxTree, parent: Parse.SyntaxTree): void;
-        visitNodePre? (node: Parse.NodeSyntaxTree, parent: Parse.SyntaxTree): any;
-        visitNodePost? (node: Parse.NodeSyntaxTree, parent: Parse.SyntaxTree): void;
-        visitBlockElementPre? (node: Parse.BlockElementSyntaxTree, parent: Parse.SyntaxTree): any;
-        visitBlockElementPost? (node: Parse.BlockElementSyntaxTree, parent: Parse.SyntaxTree): void;
-        visitInlineElementPre? (node: Parse.InlineElementSyntaxTree, parent: Parse.SyntaxTree): any;
-        visitInlineElementPost? (node: Parse.InlineElementSyntaxTree, parent: Parse.SyntaxTree): void;
-        visitArgumentPre? (node: Parse.ArgumentSyntaxTree, parent: Parse.SyntaxTree): any;
-        visitArgumentPost? (node: Parse.ArgumentSyntaxTree, parent: Parse.SyntaxTree): void;
-        visitChapterPre? (node: Parse.ChapterSyntaxTree, parent: Parse.SyntaxTree): any;
-        visitChapterPost? (node: Parse.ChapterSyntaxTree, parent: Parse.SyntaxTree): void;
-        visitParagraphPre? (node: Parse.NodeSyntaxTree, parent: Parse.SyntaxTree): any;
-        visitParagraphPost? (node: Parse.NodeSyntaxTree, parent: Parse.SyntaxTree): void;
-        visitHeadlinePre? (node: Parse.HeadlineSyntaxTree, parent: Parse.SyntaxTree): any;
-        visitHeadlinePost? (node: Parse.HeadlineSyntaxTree, parent: Parse.SyntaxTree): void;
-        visitUlistPre? (node: Parse.UlistElementSyntaxTree, parent: Parse.SyntaxTree): any;
-        visitUlistPost? (node: Parse.UlistElementSyntaxTree, parent: Parse.SyntaxTree): void;
-        visitOlistPre? (node: Parse.OlistElementSyntaxTree, parent: Parse.SyntaxTree): any;
-        visitOlistPost? (node: Parse.OlistElementSyntaxTree, parent: Parse.SyntaxTree): void;
-        visitDlistPre? (node: Parse.DlistElementSyntaxTree, parent: Parse.SyntaxTree): any;
-        visitDlistPost? (node: Parse.DlistElementSyntaxTree, parent: Parse.SyntaxTree): void;
-        visitColumnPre? (node: Parse.ColumnSyntaxTree, parent: Parse.SyntaxTree): any;
-        visitColumnPost? (node: Parse.ColumnSyntaxTree, parent: Parse.SyntaxTree): void;
-        visitColumnHeadlinePre? (node: Parse.ColumnHeadlineSyntaxTree, parent: Parse.SyntaxTree): any;
-        visitColumnHeadlinePost? (node: Parse.ColumnHeadlineSyntaxTree, parent: Parse.SyntaxTree): void;
-        visitTextPre? (node: Parse.TextNodeSyntaxTree, parent: Parse.SyntaxTree): any;
-        visitTextPost? (node: Parse.TextNodeSyntaxTree, parent: Parse.SyntaxTree): void;
+        visitDefaultPre(node: SyntaxTree, parent: SyntaxTree): any;
+        visitDefaultPost?(node: SyntaxTree, parent: SyntaxTree): void;
+        visitNodePre?(node: NodeSyntaxTree, parent: SyntaxTree): any;
+        visitNodePost?(node: NodeSyntaxTree, parent: SyntaxTree): void;
+        visitBlockElementPre?(node: BlockElementSyntaxTree, parent: SyntaxTree): any;
+        visitBlockElementPost?(node: BlockElementSyntaxTree, parent: SyntaxTree): void;
+        visitInlineElementPre?(node: InlineElementSyntaxTree, parent: SyntaxTree): any;
+        visitInlineElementPost?(node: InlineElementSyntaxTree, parent: SyntaxTree): void;
+        visitArgumentPre?(node: ArgumentSyntaxTree, parent: SyntaxTree): any;
+        visitArgumentPost?(node: ArgumentSyntaxTree, parent: SyntaxTree): void;
+        visitChapterPre?(node: ChapterSyntaxTree, parent: SyntaxTree): any;
+        visitChapterPost?(node: ChapterSyntaxTree, parent: SyntaxTree): void;
+        visitParagraphPre?(node: NodeSyntaxTree, parent: SyntaxTree): any;
+        visitParagraphPost?(node: NodeSyntaxTree, parent: SyntaxTree): void;
+        visitHeadlinePre?(node: HeadlineSyntaxTree, parent: SyntaxTree): any;
+        visitHeadlinePost?(node: HeadlineSyntaxTree, parent: SyntaxTree): void;
+        visitUlistPre?(node: UlistElementSyntaxTree, parent: SyntaxTree): any;
+        visitUlistPost?(node: UlistElementSyntaxTree, parent: SyntaxTree): void;
+        visitOlistPre?(node: OlistElementSyntaxTree, parent: SyntaxTree): any;
+        visitOlistPost?(node: OlistElementSyntaxTree, parent: SyntaxTree): void;
+        visitDlistPre?(node: DlistElementSyntaxTree, parent: SyntaxTree): any;
+        visitDlistPost?(node: DlistElementSyntaxTree, parent: SyntaxTree): void;
+        visitColumnPre?(node: ColumnSyntaxTree, parent: SyntaxTree): any;
+        visitColumnPost?(node: ColumnSyntaxTree, parent: SyntaxTree): void;
+        visitColumnHeadlinePre?(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree): any;
+        visitColumnHeadlinePost?(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree): void;
+        visitTextPre?(node: TextNodeSyntaxTree, parent: SyntaxTree): any;
+        visitTextPost?(node: TextNodeSyntaxTree, parent: SyntaxTree): void;
     }
 }
 declare module ReVIEW.Parse {
@@ -154,9 +167,9 @@ declare module ReVIEW.Parse {
     };
     function transform(rawResult: IConcreatSyntaxTree): SyntaxTree;
     class ParseError implements Error {
-        public syntax: IConcreatSyntaxTree;
-        public message: string;
-        public name: string;
+        syntax: IConcreatSyntaxTree;
+        message: string;
+        name: string;
         constructor(syntax: IConcreatSyntaxTree, message: string);
     }
     interface IConcreatSyntaxTree {
@@ -222,141 +235,142 @@ declare module ReVIEW.Parse {
         SinglelineComment = 40,
     }
     class SyntaxTree {
-        public parentNode: SyntaxTree;
-        public offset: number;
-        public line: number;
-        public column: number;
-        public endPos: number;
-        public ruleName: RuleName;
-        public no: number;
-        public prev: SyntaxTree;
-        public next: SyntaxTree;
+        parentNode: SyntaxTree;
+        offset: number;
+        line: number;
+        column: number;
+        endPos: number;
+        ruleName: RuleName;
+        no: number;
+        prev: SyntaxTree;
+        next: SyntaxTree;
         constructor(data: IConcreatSyntaxTree);
-        public toJSON(): any;
-        public toString(indentLevel?: number): string;
-        public makeIndent(indentLevel: number): string;
-        public toStringHook(indentLevel: number, result: string): void;
-        public checkNumber(value: any): number;
-        public checkString(value: any): string;
-        public checkObject(value: any): any;
-        public checkArray(value: any): any[];
+        toJSON(): any;
+        toString(indentLevel?: number): string;
+        makeIndent(indentLevel: number): string;
+        toStringHook(indentLevel: number, result: string): void;
+        checkNumber(value: any): number;
+        checkString(value: any): string;
+        checkObject(value: any): any;
+        checkArray(value: any): any[];
         private checkSyntaxType(clazz);
-        public isNode(): boolean;
-        public isBlockElement(): boolean;
-        public isInlineElement(): boolean;
-        public isArgument(): boolean;
-        public isChapter(): boolean;
-        public isHeadline(): boolean;
-        public isUlist(): boolean;
-        public isOlist(): boolean;
-        public isDlist(): boolean;
-        public isTextNode(): boolean;
-        private toOtherNode<T extends SyntaxTree>(clazz);
-        public toNode(): NodeSyntaxTree;
-        public toBlockElement(): BlockElementSyntaxTree;
-        public toInlineElement(): InlineElementSyntaxTree;
-        public toArgument(): ArgumentSyntaxTree;
-        public toChapter(): ChapterSyntaxTree;
-        public toColumn(): ColumnSyntaxTree;
-        public toHeadline(): HeadlineSyntaxTree;
-        public toColumnHeadline(): ColumnHeadlineSyntaxTree;
-        public toUlist(): UlistElementSyntaxTree;
-        public toOlist(): OlistElementSyntaxTree;
-        public toDlist(): DlistElementSyntaxTree;
-        public toTextNode(): TextNodeSyntaxTree;
+        isNode(): boolean;
+        isBlockElement(): boolean;
+        isInlineElement(): boolean;
+        isArgument(): boolean;
+        isChapter(): boolean;
+        isHeadline(): boolean;
+        isUlist(): boolean;
+        isOlist(): boolean;
+        isDlist(): boolean;
+        isTextNode(): boolean;
+        private toOtherNode<T>(clazz);
+        toNode(): NodeSyntaxTree;
+        toBlockElement(): BlockElementSyntaxTree;
+        toInlineElement(): InlineElementSyntaxTree;
+        toArgument(): ArgumentSyntaxTree;
+        toChapter(): ChapterSyntaxTree;
+        toColumn(): ColumnSyntaxTree;
+        toHeadline(): HeadlineSyntaxTree;
+        toColumnHeadline(): ColumnHeadlineSyntaxTree;
+        toUlist(): UlistElementSyntaxTree;
+        toOlist(): OlistElementSyntaxTree;
+        toDlist(): DlistElementSyntaxTree;
+        toTextNode(): TextNodeSyntaxTree;
     }
     class NodeSyntaxTree extends SyntaxTree {
-        public childNodes: SyntaxTree[];
+        childNodes: SyntaxTree[];
         constructor(data: IConcreatSyntaxTree);
         private processChildNodes(content);
-        public toStringHook(indentLevel: number, result: string): void;
+        toStringHook(indentLevel: number, result: string): void;
     }
     class ChapterSyntaxTree extends NodeSyntaxTree {
-        public headline: HeadlineSyntaxTree;
-        public text: SyntaxTree[];
+        headline: HeadlineSyntaxTree;
+        text: SyntaxTree[];
         constructor(data: IConcreatSyntaxTree);
-        public level : number;
-        public fqn : string;
+        level: number;
+        fqn: string;
     }
     class HeadlineSyntaxTree extends SyntaxTree {
-        public level: number;
-        public label: ArgumentSyntaxTree;
-        public caption: NodeSyntaxTree;
+        level: number;
+        label: ArgumentSyntaxTree;
+        caption: NodeSyntaxTree;
         constructor(data: IConcreatSyntaxTree);
     }
     class BlockElementSyntaxTree extends NodeSyntaxTree {
-        public symbol: string;
-        public args: ArgumentSyntaxTree[];
+        symbol: string;
+        args: ArgumentSyntaxTree[];
         constructor(data: IConcreatSyntaxTree);
     }
     class InlineElementSyntaxTree extends NodeSyntaxTree {
-        public symbol: string;
+        symbol: string;
         constructor(data: IConcreatSyntaxTree);
     }
     class ColumnSyntaxTree extends NodeSyntaxTree {
-        public headline: ColumnHeadlineSyntaxTree;
-        public text: SyntaxTree[];
+        headline: ColumnHeadlineSyntaxTree;
+        text: SyntaxTree[];
         constructor(data: IConcreatSyntaxTree);
-        public level : number;
-        public fqn : string;
+        level: number;
+        fqn: string;
     }
     class ColumnHeadlineSyntaxTree extends SyntaxTree {
-        public level: number;
-        public caption: NodeSyntaxTree;
+        level: number;
+        caption: NodeSyntaxTree;
         constructor(data: IConcreatSyntaxTree);
     }
     class ArgumentSyntaxTree extends SyntaxTree {
-        public arg: string;
+        arg: string;
         constructor(data: IConcreatSyntaxTree);
     }
     class UlistElementSyntaxTree extends NodeSyntaxTree {
-        public level: number;
-        public text: SyntaxTree;
+        level: number;
+        text: SyntaxTree;
         constructor(data: IConcreatSyntaxTree);
     }
     class OlistElementSyntaxTree extends SyntaxTree {
-        public no: number;
-        public text: SyntaxTree;
+        no: number;
+        text: SyntaxTree;
         constructor(data: IConcreatSyntaxTree);
     }
     class DlistElementSyntaxTree extends SyntaxTree {
-        public text: SyntaxTree;
-        public content: SyntaxTree;
+        text: SyntaxTree;
+        content: SyntaxTree;
         constructor(data: IConcreatSyntaxTree);
     }
     class TextNodeSyntaxTree extends SyntaxTree {
-        public text: string;
+        text: string;
         constructor(data: IConcreatSyntaxTree);
     }
 }
 declare module ReVIEW.Build {
+    import SyntaxTree = ReVIEW.Parse.SyntaxTree;
     enum SyntaxType {
         Block = 0,
         Inline = 1,
         Other = 2,
     }
     interface IAnalyzeProcessor {
-        (process: Process, node: Parse.SyntaxTree): any;
+        (process: Process, node: SyntaxTree): any;
     }
     class AcceptableSyntaxes {
-        public acceptableSyntaxes: AcceptableSyntax[];
+        acceptableSyntaxes: AcceptableSyntax[];
         constructor(acceptableSyntaxes: AcceptableSyntax[]);
-        public find(node: Parse.SyntaxTree): AcceptableSyntax[];
-        public inlines : AcceptableSyntax[];
-        public blocks : AcceptableSyntax[];
-        public others : AcceptableSyntax[];
-        public toJSON(): any;
+        find(node: SyntaxTree): AcceptableSyntax[];
+        inlines: AcceptableSyntax[];
+        blocks: AcceptableSyntax[];
+        others: AcceptableSyntax[];
+        toJSON(): any;
     }
     class AcceptableSyntax {
-        public type: SyntaxType;
-        public clazz: any;
-        public symbolName: string;
-        public argsLength: number[];
-        public allowInline: boolean;
-        public allowFullySyntax: boolean;
-        public description: string;
-        public process: IAnalyzeProcessor;
-        public toJSON(): any;
+        type: SyntaxType;
+        clazz: any;
+        symbolName: string;
+        argsLength: number[];
+        allowInline: boolean;
+        allowFullySyntax: boolean;
+        description: string;
+        process: IAnalyzeProcessor;
+        toJSON(): any;
     }
     interface IAnalyzer {
         getAcceptableSyntaxes(): AcceptableSyntaxes;
@@ -373,127 +387,141 @@ declare module ReVIEW.Build {
     }
     class DefaultAnalyzer implements IAnalyzer {
         private _acceptableSyntaxes;
-        public getAcceptableSyntaxes(): AcceptableSyntaxes;
-        public constructAcceptableSyntaxes(): AcceptableSyntax[];
-        public headline(builder: IAcceptableSyntaxBuilder): void;
-        public column(builder: IAcceptableSyntaxBuilder): void;
-        public ulist(builder: IAcceptableSyntaxBuilder): void;
-        public olist(builder: IAcceptableSyntaxBuilder): void;
-        public dlist(builder: IAcceptableSyntaxBuilder): void;
-        public block_list(builder: IAcceptableSyntaxBuilder): void;
-        public block_listnum(builder: IAcceptableSyntaxBuilder): void;
-        public inline_list(builder: IAcceptableSyntaxBuilder): void;
-        public block_emlist(builder: IAcceptableSyntaxBuilder): void;
-        public block_emlistnum(builder: IAcceptableSyntaxBuilder): void;
-        public inline_hd(builder: IAcceptableSyntaxBuilder): void;
-        public block_image(builder: IAcceptableSyntaxBuilder): void;
-        public block_indepimage(builder: IAcceptableSyntaxBuilder): void;
-        public inline_img(builder: IAcceptableSyntaxBuilder): void;
-        public inline_icon(builder: IAcceptableSyntaxBuilder): void;
-        public block_footnote(builder: IAcceptableSyntaxBuilder): void;
-        public inline_fn(builder: IAcceptableSyntaxBuilder): void;
-        public blockDecorationSyntax(builder: IAcceptableSyntaxBuilder, symbol: string, ...argsLength: number[]): void;
-        public block_lead(builder: IAcceptableSyntaxBuilder): void;
-        public block_noindent(builder: IAcceptableSyntaxBuilder): void;
-        public block_source(builder: IAcceptableSyntaxBuilder): void;
-        public block_cmd(builder: IAcceptableSyntaxBuilder): void;
-        public block_quote(builder: IAcceptableSyntaxBuilder): void;
-        public inlineDecorationSyntax(builder: IAcceptableSyntaxBuilder, symbol: string): void;
-        public inline_br(builder: IAcceptableSyntaxBuilder): void;
-        public inline_ruby(builder: IAcceptableSyntaxBuilder): void;
-        public inline_b(builder: IAcceptableSyntaxBuilder): void;
-        public inline_code(builder: IAcceptableSyntaxBuilder): void;
-        public inline_tt(builder: IAcceptableSyntaxBuilder): void;
-        public inline_href(builder: IAcceptableSyntaxBuilder): void;
-        public block_label(builder: IAcceptableSyntaxBuilder): void;
-        public inline_u(builder: IAcceptableSyntaxBuilder): void;
-        public inline_kw(builder: IAcceptableSyntaxBuilder): void;
-        public inline_em(builder: IAcceptableSyntaxBuilder): void;
-        public inline_tti(builder: IAcceptableSyntaxBuilder): void;
-        public inline_ttb(builder: IAcceptableSyntaxBuilder): void;
-        public inline_ami(builder: IAcceptableSyntaxBuilder): void;
-        public inline_bou(builder: IAcceptableSyntaxBuilder): void;
-        public inline_i(builder: IAcceptableSyntaxBuilder): void;
-        public inline_strong(builder: IAcceptableSyntaxBuilder): void;
-        public inline_uchar(builder: IAcceptableSyntaxBuilder): void;
-        public block_table(builder: IAcceptableSyntaxBuilder): void;
-        public inline_table(builder: IAcceptableSyntaxBuilder): void;
-        public block_tsize(builder: IAcceptableSyntaxBuilder): void;
-        public block_raw(builder: IAcceptableSyntaxBuilder): void;
-        public inline_raw(builder: IAcceptableSyntaxBuilder): void;
-        public block_comment(builder: IAcceptableSyntaxBuilder): void;
-        public inline_comment(builder: IAcceptableSyntaxBuilder): void;
+        getAcceptableSyntaxes(): AcceptableSyntaxes;
+        constructAcceptableSyntaxes(): AcceptableSyntax[];
+        headline(builder: IAcceptableSyntaxBuilder): void;
+        column(builder: IAcceptableSyntaxBuilder): void;
+        ulist(builder: IAcceptableSyntaxBuilder): void;
+        olist(builder: IAcceptableSyntaxBuilder): void;
+        dlist(builder: IAcceptableSyntaxBuilder): void;
+        block_list(builder: IAcceptableSyntaxBuilder): void;
+        block_listnum(builder: IAcceptableSyntaxBuilder): void;
+        inline_list(builder: IAcceptableSyntaxBuilder): void;
+        block_emlist(builder: IAcceptableSyntaxBuilder): void;
+        block_emlistnum(builder: IAcceptableSyntaxBuilder): void;
+        inline_hd(builder: IAcceptableSyntaxBuilder): void;
+        block_image(builder: IAcceptableSyntaxBuilder): void;
+        block_indepimage(builder: IAcceptableSyntaxBuilder): void;
+        inline_img(builder: IAcceptableSyntaxBuilder): void;
+        inline_icon(builder: IAcceptableSyntaxBuilder): void;
+        block_footnote(builder: IAcceptableSyntaxBuilder): void;
+        inline_fn(builder: IAcceptableSyntaxBuilder): void;
+        blockDecorationSyntax(builder: IAcceptableSyntaxBuilder, symbol: string, ...argsLength: number[]): void;
+        block_lead(builder: IAcceptableSyntaxBuilder): void;
+        block_noindent(builder: IAcceptableSyntaxBuilder): void;
+        block_source(builder: IAcceptableSyntaxBuilder): void;
+        block_cmd(builder: IAcceptableSyntaxBuilder): void;
+        block_quote(builder: IAcceptableSyntaxBuilder): void;
+        inlineDecorationSyntax(builder: IAcceptableSyntaxBuilder, symbol: string): void;
+        inline_br(builder: IAcceptableSyntaxBuilder): void;
+        inline_ruby(builder: IAcceptableSyntaxBuilder): void;
+        inline_b(builder: IAcceptableSyntaxBuilder): void;
+        inline_code(builder: IAcceptableSyntaxBuilder): void;
+        inline_tt(builder: IAcceptableSyntaxBuilder): void;
+        inline_href(builder: IAcceptableSyntaxBuilder): void;
+        block_label(builder: IAcceptableSyntaxBuilder): void;
+        inline_u(builder: IAcceptableSyntaxBuilder): void;
+        inline_kw(builder: IAcceptableSyntaxBuilder): void;
+        inline_em(builder: IAcceptableSyntaxBuilder): void;
+        inline_tti(builder: IAcceptableSyntaxBuilder): void;
+        inline_ttb(builder: IAcceptableSyntaxBuilder): void;
+        inline_ami(builder: IAcceptableSyntaxBuilder): void;
+        inline_bou(builder: IAcceptableSyntaxBuilder): void;
+        inline_i(builder: IAcceptableSyntaxBuilder): void;
+        inline_strong(builder: IAcceptableSyntaxBuilder): void;
+        inline_uchar(builder: IAcceptableSyntaxBuilder): void;
+        block_table(builder: IAcceptableSyntaxBuilder): void;
+        inline_table(builder: IAcceptableSyntaxBuilder): void;
+        block_tsize(builder: IAcceptableSyntaxBuilder): void;
+        block_raw(builder: IAcceptableSyntaxBuilder): void;
+        inline_raw(builder: IAcceptableSyntaxBuilder): void;
+        block_comment(builder: IAcceptableSyntaxBuilder): void;
+        inline_comment(builder: IAcceptableSyntaxBuilder): void;
     }
 }
 declare module ReVIEW.Build {
+    import SyntaxTree = ReVIEW.Parse.SyntaxTree;
+    import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
+    import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+    import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
+    import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+    import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
+    import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
+    import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
+    import TextNodeSyntaxTree = ReVIEW.Parse.TextNodeSyntaxTree;
+    import ChapterSyntaxTree = ReVIEW.Parse.ChapterSyntaxTree;
+    import ColumnSyntaxTree = ReVIEW.Parse.ColumnSyntaxTree;
+    import ColumnHeadlineSyntaxTree = ReVIEW.Parse.ColumnHeadlineSyntaxTree;
     interface IBuilder {
         name: string;
         extention: string;
         init(book: Book): Promise<void>;
         escape(data: any): string;
-        chapterPre(process: BuilderProcess, node: Parse.ChapterSyntaxTree): any;
-        chapterPost(process: BuilderProcess, node: Parse.ChapterSyntaxTree): any;
-        headlinePre(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): any;
-        headlinePost(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): any;
-        columnPre(process: BuilderProcess, node: Parse.ColumnSyntaxTree): any;
-        columnPost(process: BuilderProcess, node: Parse.ColumnSyntaxTree): any;
-        columnHeadlinePre(process: BuilderProcess, node: Parse.ColumnHeadlineSyntaxTree): any;
-        columnHeadlinePost(process: BuilderProcess, node: Parse.ColumnHeadlineSyntaxTree): any;
-        ulistPre(process: BuilderProcess, name: string, node: Parse.UlistElementSyntaxTree): any;
-        ulistPost(process: BuilderProcess, name: string, node: Parse.UlistElementSyntaxTree): any;
-        olistPre(process: BuilderProcess, name: string, node: Parse.OlistElementSyntaxTree): any;
-        olistPost(process: BuilderProcess, name: string, node: Parse.OlistElementSyntaxTree): any;
-        blockPre(process: BuilderProcess, name: string, node: Parse.BlockElementSyntaxTree): any;
-        blockPost(process: BuilderProcess, name: string, node: Parse.BlockElementSyntaxTree): any;
-        inlinePre(process: BuilderProcess, name: string, node: Parse.InlineElementSyntaxTree): any;
-        inlinePost(process: BuilderProcess, name: string, node: Parse.InlineElementSyntaxTree): any;
-        text(process: BuilderProcess, node: Parse.TextNodeSyntaxTree): any;
+        chapterPre(process: BuilderProcess, node: ChapterSyntaxTree): any;
+        chapterPost(process: BuilderProcess, node: ChapterSyntaxTree): any;
+        headlinePre(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): any;
+        headlinePost(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): any;
+        columnPre(process: BuilderProcess, node: ColumnSyntaxTree): any;
+        columnPost(process: BuilderProcess, node: ColumnSyntaxTree): any;
+        columnHeadlinePre(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): any;
+        columnHeadlinePost(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): any;
+        ulistPre(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): any;
+        ulistPost(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): any;
+        olistPre(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): any;
+        olistPost(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): any;
+        blockPre(process: BuilderProcess, name: string, node: BlockElementSyntaxTree): any;
+        blockPost(process: BuilderProcess, name: string, node: BlockElementSyntaxTree): any;
+        inlinePre(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
+        inlinePost(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
+        text(process: BuilderProcess, node: TextNodeSyntaxTree): any;
     }
     class DefaultBuilder implements IBuilder {
-        public book: Book;
-        public extention: string;
-        public name : string;
-        public init(book: Book): Promise<void>;
-        public processAst(chunk: ContentChunk): Promise<void>;
-        public escape(data: any): string;
-        public processPost(process: BuilderProcess, chunk: ContentChunk): void;
-        public chapterPre(process: BuilderProcess, node: Parse.ChapterSyntaxTree): any;
-        public chapterPost(process: BuilderProcess, node: Parse.ChapterSyntaxTree): any;
-        public headlinePre(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): any;
-        public headlinePost(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): any;
-        public columnPre(process: BuilderProcess, node: Parse.ColumnSyntaxTree): any;
-        public columnPost(process: BuilderProcess, node: Parse.ColumnSyntaxTree): any;
-        public columnHeadlinePre(process: BuilderProcess, node: Parse.ColumnHeadlineSyntaxTree): any;
-        public columnHeadlinePost(process: BuilderProcess, node: Parse.ColumnHeadlineSyntaxTree): any;
-        public paragraphPre(process: BuilderProcess, name: string, node: Parse.NodeSyntaxTree): any;
-        public paragraphPost(process: BuilderProcess, name: string, node: Parse.NodeSyntaxTree): any;
-        public ulistPre(process: BuilderProcess, name: string, node: Parse.UlistElementSyntaxTree): any;
-        public ulistPost(process: BuilderProcess, name: string, node: Parse.UlistElementSyntaxTree): any;
-        public olistPre(process: BuilderProcess, name: string, node: Parse.OlistElementSyntaxTree): any;
-        public olistPost(process: BuilderProcess, name: string, node: Parse.OlistElementSyntaxTree): any;
-        public dlistPre(process: BuilderProcess, name: string, node: Parse.DlistElementSyntaxTree): any;
-        public dlistPost(process: BuilderProcess, name: string, node: Parse.DlistElementSyntaxTree): any;
-        public text(process: BuilderProcess, node: Parse.TextNodeSyntaxTree): any;
-        public blockPre(process: BuilderProcess, name: string, node: Parse.BlockElementSyntaxTree): any;
-        public blockPost(process: BuilderProcess, name: string, node: Parse.BlockElementSyntaxTree): any;
-        public inlinePre(process: BuilderProcess, name: string, node: Parse.InlineElementSyntaxTree): any;
-        public inlinePost(process: BuilderProcess, name: string, node: Parse.InlineElementSyntaxTree): any;
-        public ulistParentHelper(process: BuilderProcess, node: Parse.UlistElementSyntaxTree, action: () => void, currentLevel?: number): void;
-        public findReference(process: BuilderProcess, node: Parse.SyntaxTree): ISymbol;
-        public block_raw(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): any;
-        public inline_raw(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): any;
+        book: Book;
+        extention: string;
+        name: string;
+        init(book: Book): Promise<void>;
+        processAst(chunk: ContentChunk): Promise<void>;
+        escape(data: any): string;
+        processPost(process: BuilderProcess, chunk: ContentChunk): void;
+        chapterPre(process: BuilderProcess, node: ChapterSyntaxTree): any;
+        chapterPost(process: BuilderProcess, node: ChapterSyntaxTree): any;
+        headlinePre(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): any;
+        headlinePost(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): any;
+        columnPre(process: BuilderProcess, node: ColumnSyntaxTree): any;
+        columnPost(process: BuilderProcess, node: ColumnSyntaxTree): any;
+        columnHeadlinePre(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): any;
+        columnHeadlinePost(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): any;
+        paragraphPre(process: BuilderProcess, name: string, node: NodeSyntaxTree): any;
+        paragraphPost(process: BuilderProcess, name: string, node: NodeSyntaxTree): any;
+        ulistPre(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): any;
+        ulistPost(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): any;
+        olistPre(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): any;
+        olistPost(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): any;
+        dlistPre(process: BuilderProcess, name: string, node: DlistElementSyntaxTree): any;
+        dlistPost(process: BuilderProcess, name: string, node: DlistElementSyntaxTree): any;
+        text(process: BuilderProcess, node: TextNodeSyntaxTree): any;
+        blockPre(process: BuilderProcess, name: string, node: BlockElementSyntaxTree): any;
+        blockPost(process: BuilderProcess, name: string, node: BlockElementSyntaxTree): any;
+        inlinePre(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
+        inlinePost(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
+        ulistParentHelper(process: BuilderProcess, node: UlistElementSyntaxTree, action: () => void, currentLevel?: number): void;
+        findReference(process: BuilderProcess, node: SyntaxTree): ISymbol;
+        block_raw(process: BuilderProcess, node: BlockElementSyntaxTree): any;
+        inline_raw(process: BuilderProcess, node: InlineElementSyntaxTree): any;
     }
 }
 declare module ReVIEW.Build {
+    import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+    import ColumnSyntaxTree = ReVIEW.Parse.ColumnSyntaxTree;
     interface IPreprocessor {
         start(book: Book, acceptableSyntaxes: AcceptableSyntaxes): void;
     }
     class SyntaxPreprocessor implements IPreprocessor {
-        public acceptableSyntaxes: AcceptableSyntaxes;
-        public start(book: Book): void;
-        public preprocessChunk(chunk: ContentChunk): void;
-        public preprocessColumnSyntax(chunk: ContentChunk, column: Parse.ColumnSyntaxTree): void;
-        public preprocessBlockSyntax(chunk: ContentChunk, node: Parse.BlockElementSyntaxTree): void;
+        acceptableSyntaxes: AcceptableSyntaxes;
+        start(book: Book): void;
+        preprocessChunk(chunk: ContentChunk): void;
+        preprocessColumnSyntax(chunk: ContentChunk, column: ColumnSyntaxTree): void;
+        preprocessBlockSyntax(chunk: ContentChunk, node: BlockElementSyntaxTree): void;
     }
 }
 declare module ReVIEW.Build {
@@ -501,96 +529,96 @@ declare module ReVIEW.Build {
         start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: IBuilder[]): void;
     }
     class DefaultValidator implements IValidator {
-        public acceptableSyntaxes: AcceptableSyntaxes;
-        public builders: IBuilder[];
-        public start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: IBuilder[]): void;
-        public checkBuilder(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders?: IBuilder[]): void;
-        public checkBook(book: Book): void;
-        public checkChunk(chunk: ContentChunk): void;
-        public resolveSymbolAndReference(book: Book): void;
+        acceptableSyntaxes: AcceptableSyntaxes;
+        builders: IBuilder[];
+        start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: IBuilder[]): void;
+        checkBuilder(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders?: IBuilder[]): void;
+        checkBook(book: Book): void;
+        checkChunk(chunk: ContentChunk): void;
+        resolveSymbolAndReference(book: Book): void;
     }
 }
 declare module ReVIEW {
     class Config {
-        public original: IConfigRaw;
-        public _builders: Build.IBuilder[];
-        public _bookStructure: BookStructure;
+        original: IConfigRaw;
+        _builders: Build.IBuilder[];
+        _bookStructure: BookStructure;
         constructor(original: IConfigRaw);
-        public read : (path: string) => Promise<string>;
-        public write : (path: string, data: string) => Promise<void>;
-        public exists : (path: string) => Promise<{
+        read: (path: string) => Promise<string>;
+        write: (path: string, data: string) => Promise<void>;
+        exists: (path: string) => Promise<{
             path: string;
             result: boolean;
         }>;
-        public analyzer : Build.IAnalyzer;
-        public validators : Build.IValidator[];
-        public builders : Build.IBuilder[];
-        public listener : IConfigListener;
-        public book : BookStructure;
-        public resolvePath(path: string): string;
+        analyzer: Build.IAnalyzer;
+        validators: Build.IValidator[];
+        builders: Build.IBuilder[];
+        listener: IConfigListener;
+        book: BookStructure;
+        resolvePath(path: string): string;
     }
     class NodeJSConfig extends Config {
-        public options: IOptions;
-        public original: IConfigRaw;
-        public _listener: IConfigListener;
+        options: IOptions;
+        original: IConfigRaw;
+        _listener: IConfigListener;
         constructor(options: IOptions, original: IConfigRaw);
-        public read : (path: string) => Promise<string>;
-        public write : (path: string, data: string) => Promise<void>;
-        public exists : (path: string) => Promise<{
+        read: (path: string) => Promise<string>;
+        write: (path: string, data: string) => Promise<void>;
+        exists: (path: string) => Promise<{
             path: string;
             result: boolean;
         }>;
-        public listener : IConfigListener;
-        public onReports(reports: ProcessReport[]): void;
-        public onCompileSuccess(book: Book): void;
-        public onCompileFailed(): void;
-        public resolvePath(path: string): string;
+        listener: IConfigListener;
+        onReports(reports: ProcessReport[]): void;
+        onCompileSuccess(book: Book): void;
+        onCompileFailed(): void;
+        resolvePath(path: string): string;
     }
     class WebBrowserConfig extends Config {
-        public options: IOptions;
-        public original: IConfigRaw;
-        public _listener: IConfigListener;
+        options: IOptions;
+        original: IConfigRaw;
+        _listener: IConfigListener;
         constructor(options: IOptions, original: IConfigRaw);
-        public read : (path: string) => Promise<string>;
-        public write : (path: string, data: string) => Promise<void>;
-        public exists : (path: string) => Promise<{
+        read: (path: string) => Promise<string>;
+        write: (path: string, data: string) => Promise<void>;
+        exists: (path: string) => Promise<{
             path: string;
             result: boolean;
         }>;
-        public _existsFileScheme(path: string): Promise<{
+        _existsFileScheme(path: string): Promise<{
             path: string;
             result: boolean;
         }>;
-        public _existsHttpScheme(path: string): Promise<{
+        _existsHttpScheme(path: string): Promise<{
             path: string;
             result: boolean;
         }>;
-        public listener : IConfigListener;
-        public onReports(reports: ProcessReport[]): void;
-        public onCompileSuccess(book: Book): void;
-        public onCompileFailed(book?: Book): void;
-        public resolvePath(path: string): string;
+        listener: IConfigListener;
+        onReports(reports: ProcessReport[]): void;
+        onCompileSuccess(book: Book): void;
+        onCompileFailed(book?: Book): void;
+        resolvePath(path: string): string;
         private startWith(str, target);
         private endWith(str, target);
     }
 }
 declare module ReVIEW {
     class Controller {
-        public options: IOptions;
+        options: IOptions;
         private config;
-        public builders: typeof Build;
+        builders: typeof Build;
         constructor(options?: IOptions);
-        public initConfig(data: IConfigRaw): void;
-        public process(): Promise<Book>;
-        public acceptableSyntaxes(book: Book): Promise<Book>;
-        public toContentChunk(book: Book): Book;
-        public readReVIEWFiles(book: Book): Promise<Book>;
-        public parseContent(book: Book): Book;
-        public preprocessContent(book: Book): Book;
-        public processContent(book: Book): Promise<Book>;
-        public writeContent(book: Book): Promise<Book>;
-        public compileFinished(book: Book): Book;
-        public handleError(err: any): Promise<Book>;
+        initConfig(data: IConfigRaw): void;
+        process(): Promise<Book>;
+        acceptableSyntaxes(book: Book): Promise<Book>;
+        toContentChunk(book: Book): Book;
+        readReVIEWFiles(book: Book): Promise<Book>;
+        parseContent(book: Book): Book;
+        preprocessContent(book: Book): Book;
+        processContent(book: Book): Promise<Book>;
+        writeContent(book: Book): Promise<Book>;
+        compileFinished(book: Book): Book;
+        handleError(err: any): Promise<Book>;
     }
 }
 declare module ReVIEW {
@@ -617,90 +645,90 @@ declare module ReVIEW {
         Error = 2,
     }
     class ProcessReport {
-        public level: ReportLevel;
-        public part: ContentChunk;
-        public chapter: ContentChunk;
-        public message: string;
-        public nodes: Parse.SyntaxTree[];
+        level: ReportLevel;
+        part: ContentChunk;
+        chapter: ContentChunk;
+        message: string;
+        nodes: Parse.SyntaxTree[];
         constructor(level: ReportLevel, part: ContentChunk, chapter: ContentChunk, message: string, nodes?: Parse.SyntaxTree[]);
     }
     class BookProcess {
-        public reports: ProcessReport[];
-        public info(message: string): void;
-        public warn(message: string): void;
-        public error(message: string): void;
+        reports: ProcessReport[];
+        info(message: string): void;
+        warn(message: string): void;
+        error(message: string): void;
     }
     class Process {
-        public part: ContentChunk;
-        public chapter: ContentChunk;
-        public input: string;
-        public symbols: ISymbol[];
-        public indexCounter: {
-            [kind: string]: number;
+        part: ContentChunk;
+        chapter: ContentChunk;
+        input: string;
+        symbols: ISymbol[];
+        indexCounter: {
+            [x: string]: number;
         };
-        public afterProcess: Function[];
+        afterProcess: Function[];
         private _reports;
         constructor(part: ContentChunk, chapter: ContentChunk, input: string);
-        public info(message: string, ...nodes: Parse.SyntaxTree[]): void;
-        public warn(message: string, ...nodes: Parse.SyntaxTree[]): void;
-        public error(message: string, ...nodes: Parse.SyntaxTree[]): void;
-        public nextIndex(kind: string): number;
-        public reports : ProcessReport[];
-        public addSymbol(symbol: ISymbol): void;
-        public missingSymbols : ISymbol[];
-        public constructReferenceTo(node: Parse.InlineElementSyntaxTree, value: string, targetSymbol?: string, separator?: string): IReferenceTo;
-        public constructReferenceTo(node: Parse.BlockElementSyntaxTree, value: string, targetSymbol: string, separator?: string): IReferenceTo;
-        public addAfterProcess(func: Function): void;
-        public doAfterProcess(): void;
+        info(message: string, ...nodes: Parse.SyntaxTree[]): void;
+        warn(message: string, ...nodes: Parse.SyntaxTree[]): void;
+        error(message: string, ...nodes: Parse.SyntaxTree[]): void;
+        nextIndex(kind: string): number;
+        reports: ProcessReport[];
+        addSymbol(symbol: ISymbol): void;
+        missingSymbols: ISymbol[];
+        constructReferenceTo(node: Parse.InlineElementSyntaxTree, value: string, targetSymbol?: string, separator?: string): IReferenceTo;
+        constructReferenceTo(node: Parse.BlockElementSyntaxTree, value: string, targetSymbol: string, separator?: string): IReferenceTo;
+        addAfterProcess(func: Function): void;
+        doAfterProcess(): void;
     }
     class BuilderProcess {
-        public builder: Build.IBuilder;
-        public base: Process;
+        builder: Build.IBuilder;
+        base: Process;
         constructor(builder: Build.IBuilder, base: Process);
-        public info : (message: string, ...nodes: Parse.SyntaxTree[]) => void;
-        public warn : (message: string, ...nodes: Parse.SyntaxTree[]) => void;
-        public error : (message: string, ...nodes: Parse.SyntaxTree[]) => void;
-        public result: string;
-        public out(data: any): BuilderProcess;
-        public outRaw(data: any): BuilderProcess;
-        public pushOut(data: string): BuilderProcess;
-        public input : string;
-        public symbols : ISymbol[];
-        public findImageFile(id: string): Promise<string>;
+        info: (message: string, ...nodes: Parse.SyntaxTree[]) => void;
+        warn: (message: string, ...nodes: Parse.SyntaxTree[]) => void;
+        error: (message: string, ...nodes: Parse.SyntaxTree[]) => void;
+        result: string;
+        out(data: any): BuilderProcess;
+        outRaw(data: any): BuilderProcess;
+        pushOut(data: string): BuilderProcess;
+        input: string;
+        symbols: ISymbol[];
+        findImageFile(id: string): Promise<string>;
     }
     class Book {
-        public config: Config;
-        public process: BookProcess;
-        public acceptableSyntaxes: Build.AcceptableSyntaxes;
-        public predef: ContentChunk[];
-        public contents: ContentChunk[];
-        public appendix: ContentChunk[];
-        public postdef: ContentChunk[];
+        config: Config;
+        process: BookProcess;
+        acceptableSyntaxes: Build.AcceptableSyntaxes;
+        predef: ContentChunk[];
+        contents: ContentChunk[];
+        appendix: ContentChunk[];
+        postdef: ContentChunk[];
         constructor(config: Config);
-        public allChunks : ContentChunk[];
-        public reports : ProcessReport[];
-        public hasError : boolean;
-        public hasWarning : boolean;
+        allChunks: ContentChunk[];
+        reports: ProcessReport[];
+        hasError: boolean;
+        hasWarning: boolean;
     }
     class ContentChunk {
-        public book: Book;
-        public parent: ContentChunk;
-        public nodes: ContentChunk[];
-        public no: number;
-        public name: string;
-        public _input: string;
-        public tree: {
+        book: Book;
+        parent: ContentChunk;
+        nodes: ContentChunk[];
+        no: number;
+        name: string;
+        _input: string;
+        tree: {
             ast: Parse.SyntaxTree;
             cst: Parse.IConcreatSyntaxTree;
         };
-        public process: Process;
-        public builderProcesses: BuilderProcess[];
+        process: Process;
+        builderProcesses: BuilderProcess[];
         constructor(book: Book, parent: ContentChunk, name: string);
         constructor(book: Book, name: string);
-        public input : string;
-        public createBuilderProcess(builder: Build.IBuilder): BuilderProcess;
-        public findResultByBuilder(builderName: string): string;
-        public findResultByBuilder(builder: Build.IBuilder): string;
+        input: string;
+        createBuilderProcess(builder: Build.IBuilder): BuilderProcess;
+        findResultByBuilder(builderName: string): string;
+        findResultByBuilder(builder: Build.IBuilder): string;
     }
 }
 declare module ReVIEW {
@@ -744,16 +772,16 @@ declare module ReVIEW {
         file: string;
     }
     class BookStructure {
-        public predef: ContentStructure[];
-        public contents: ContentStructure[];
-        public appendix: ContentStructure[];
-        public postdef: ContentStructure[];
+        predef: ContentStructure[];
+        contents: ContentStructure[];
+        appendix: ContentStructure[];
+        postdef: ContentStructure[];
         constructor(predef: ContentStructure[], contents: ContentStructure[], appendix: ContentStructure[], postdef: ContentStructure[]);
         static createBook(config: IConfigBook): BookStructure;
     }
     class ContentStructure {
-        public part: IConfigPart;
-        public chapter: IConfigChapter;
+        part: IConfigPart;
+        chapter: IConfigChapter;
         constructor(part: IConfigPart, chapter: IConfigChapter);
         static createChapter(file: string): ContentStructure;
         static createChapter(chapter: IConfigChapter): ContentStructure;
@@ -761,176 +789,194 @@ declare module ReVIEW {
     }
 }
 declare module ReVIEW.Build {
+    import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
+    import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+    import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
+    import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+    import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
+    import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
+    import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
+    import ColumnSyntaxTree = ReVIEW.Parse.ColumnSyntaxTree;
+    import ColumnHeadlineSyntaxTree = ReVIEW.Parse.ColumnHeadlineSyntaxTree;
     class TextBuilder extends DefaultBuilder {
-        public extention: string;
-        public escape(data: any): string;
-        public headlinePre(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): void;
-        public headlinePost(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): void;
-        public columnHeadlinePre(process: BuilderProcess, node: Parse.ColumnHeadlineSyntaxTree): (v: ITreeVisitor) => void;
-        public columnHeadlinePost(process: BuilderProcess, node: Parse.ColumnHeadlineSyntaxTree): void;
-        public columnPost(process: BuilderProcess, node: Parse.ColumnSyntaxTree): void;
-        public paragraphPost(process: BuilderProcess, name: string, node: Parse.NodeSyntaxTree): void;
-        public ulistPre(process: BuilderProcess, name: string, node: Parse.UlistElementSyntaxTree): void;
-        public ulistPost(process: BuilderProcess, name: string, node: Parse.UlistElementSyntaxTree): void;
-        public olistPre(process: BuilderProcess, name: string, node: Parse.OlistElementSyntaxTree): void;
-        public olistPost(process: BuilderProcess, name: string, node: Parse.OlistElementSyntaxTree): void;
-        public dlistPre(process: BuilderProcess, name: string, node: Parse.DlistElementSyntaxTree): (v: ITreeVisitor) => void;
-        public dlistPost(process: BuilderProcess, name: string, node: Parse.DlistElementSyntaxTree): void;
-        public block_list_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_list_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public block_listnum_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_listnum_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public inline_list(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
-        public block_emlist_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_emlist_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public block_emlistnum_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_emlistnum_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public inline_hd_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
-        public inline_hd_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_br(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_b_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_b_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_code_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_code_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_href_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_href_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_href(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
-        public block_label(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
-        public inline_ruby(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): (v: ITreeVisitor) => void;
-        public inline_u_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_u_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_kw(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): (v: ITreeVisitor) => void;
-        public inline_tt_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_tt_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_em_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_em_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public block_image(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): Promise<boolean>;
-        public block_indepimage(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
-        public inline_img(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
-        public inline_icon(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
-        public block_footnote(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
-        public inline_fn(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
-        public block_lead_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public block_lead_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public inline_tti_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_tti_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_ttb_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_ttb_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public block_noindent(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
-        public block_source_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_source_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public block_cmd_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_cmd_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public block_quote_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_quote_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public inline_ami_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_ami_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_bou_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_bou_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_i_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_i_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_strong_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_strong_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_uchar(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
-        public block_table_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_table_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public inline_table(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
-        public block_tsize(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
-        public block_comment_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_comment_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public inline_comment_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_comment_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
+        extention: string;
+        escape(data: any): string;
+        headlinePre(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): void;
+        headlinePost(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): void;
+        columnHeadlinePre(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): (v: ITreeVisitor) => void;
+        columnHeadlinePost(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): void;
+        columnPost(process: BuilderProcess, node: ColumnSyntaxTree): void;
+        paragraphPost(process: BuilderProcess, name: string, node: NodeSyntaxTree): void;
+        ulistPre(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): void;
+        ulistPost(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): void;
+        olistPre(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): void;
+        olistPost(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): void;
+        dlistPre(process: BuilderProcess, name: string, node: DlistElementSyntaxTree): (v: ITreeVisitor) => void;
+        dlistPost(process: BuilderProcess, name: string, node: DlistElementSyntaxTree): void;
+        block_list_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_list_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        block_listnum_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_listnum_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        inline_list(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        block_emlist_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_emlist_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        block_emlistnum_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_emlistnum_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        inline_hd_pre(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        inline_hd_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_br(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_b_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_b_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_code_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_code_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_href_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_href_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_href(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        block_label(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
+        inline_ruby(process: BuilderProcess, node: InlineElementSyntaxTree): (v: ITreeVisitor) => void;
+        inline_u_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_u_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_kw(process: BuilderProcess, node: InlineElementSyntaxTree): (v: ITreeVisitor) => void;
+        inline_tt_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_tt_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_em_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_em_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        block_image(process: BuilderProcess, node: BlockElementSyntaxTree): Promise<boolean>;
+        block_indepimage(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
+        inline_img(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        inline_icon(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        block_footnote(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
+        inline_fn(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        block_lead_pre(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        block_lead_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        inline_tti_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_tti_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_ttb_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_ttb_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        block_noindent(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
+        block_source_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_source_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        block_cmd_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_cmd_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        block_quote_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_quote_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        inline_ami_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_ami_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_bou_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_bou_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_i_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_i_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_strong_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_strong_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_uchar(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        block_table_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_table_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        inline_table(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        block_tsize(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
+        block_comment_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_comment_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        inline_comment_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_comment_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
     }
 }
 declare module ReVIEW.Build {
+    import NodeSyntaxTree = ReVIEW.Parse.NodeSyntaxTree;
+    import BlockElementSyntaxTree = ReVIEW.Parse.BlockElementSyntaxTree;
+    import InlineElementSyntaxTree = ReVIEW.Parse.InlineElementSyntaxTree;
+    import HeadlineSyntaxTree = ReVIEW.Parse.HeadlineSyntaxTree;
+    import UlistElementSyntaxTree = ReVIEW.Parse.UlistElementSyntaxTree;
+    import OlistElementSyntaxTree = ReVIEW.Parse.OlistElementSyntaxTree;
+    import DlistElementSyntaxTree = ReVIEW.Parse.DlistElementSyntaxTree;
+    import ColumnSyntaxTree = ReVIEW.Parse.ColumnSyntaxTree;
+    import ColumnHeadlineSyntaxTree = ReVIEW.Parse.ColumnHeadlineSyntaxTree;
     class HtmlBuilder extends DefaultBuilder {
         private standalone;
-        public extention: string;
-        public escapeMap: {
-            [char: string]: string;
+        extention: string;
+        escapeMap: {
+            [x: string]: string;
         };
         constructor(standalone?: boolean);
-        public escape(data: any): string;
-        public processPost(process: BuilderProcess, chunk: ContentChunk): void;
-        public headlinePre(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): void;
-        public headlinePost(process: BuilderProcess, name: string, node: Parse.HeadlineSyntaxTree): void;
-        public columnPre(process: BuilderProcess, node: Parse.ColumnSyntaxTree): void;
-        public columnPost(process: BuilderProcess, node: Parse.ColumnSyntaxTree): void;
-        public columnHeadlinePre(process: BuilderProcess, node: Parse.ColumnHeadlineSyntaxTree): (v: ITreeVisitor) => void;
-        public columnHeadlinePost(process: BuilderProcess, node: Parse.ColumnHeadlineSyntaxTree): void;
-        public paragraphPre(process: BuilderProcess, name: string, node: Parse.NodeSyntaxTree): void;
-        public paragraphPost(process: BuilderProcess, name: string, node: Parse.NodeSyntaxTree): void;
-        public ulistPre(process: BuilderProcess, name: string, node: Parse.UlistElementSyntaxTree): void;
-        public ulistPost(process: BuilderProcess, name: string, node: Parse.UlistElementSyntaxTree): void;
-        public olistPre(process: BuilderProcess, name: string, node: Parse.OlistElementSyntaxTree): void;
-        public olistPost(process: BuilderProcess, name: string, node: Parse.OlistElementSyntaxTree): void;
-        public dlistPre(process: BuilderProcess, name: string, node: Parse.DlistElementSyntaxTree): (v: ITreeVisitor) => void;
-        public dlistPost(process: BuilderProcess, name: string, node: Parse.DlistElementSyntaxTree): void;
-        public block_list_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_list_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public block_listnum_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_listnum_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public inline_list(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
-        public block_emlist_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_emlist_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public block_emlistnum_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_emlistnum_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public inline_hd_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
-        public inline_hd_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_br(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_b_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_b_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_code_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_code_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_href(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
-        public block_label(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
-        public inline_tt_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_tt_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_ruby_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): (v: ITreeVisitor) => void;
-        public inline_ruby_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_u_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_u_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_kw_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): (v: ITreeVisitor) => void;
-        public inline_kw_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_em_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_em_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public block_image(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): Promise<boolean>;
-        public block_indepimage(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
-        public inline_img(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
-        public inline_icon(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
-        public block_footnote(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
-        public inline_fn(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
-        public block_lead_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public block_lead_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public inline_tti_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_tti_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_ttb_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_ttb_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public block_noindent(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
-        public block_source_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_source_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public block_cmd_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_cmd_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public block_quote_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_quote_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public inline_ami_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_ami_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_bou_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_bou_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_i_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_i_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_strong_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_strong_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_uchar_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_uchar_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public block_table_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_table_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public inline_table(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): boolean;
-        public block_tsize(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): boolean;
-        public block_comment_pre(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): (v: ITreeVisitor) => void;
-        public block_comment_post(process: BuilderProcess, node: Parse.BlockElementSyntaxTree): void;
-        public inline_comment_pre(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
-        public inline_comment_post(process: BuilderProcess, node: Parse.InlineElementSyntaxTree): void;
+        escape(data: any): string;
+        processPost(process: BuilderProcess, chunk: ContentChunk): void;
+        headlinePre(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): void;
+        headlinePost(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): void;
+        columnPre(process: BuilderProcess, node: ColumnSyntaxTree): void;
+        columnPost(process: BuilderProcess, node: ColumnSyntaxTree): void;
+        columnHeadlinePre(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): (v: ITreeVisitor) => void;
+        columnHeadlinePost(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): void;
+        paragraphPre(process: BuilderProcess, name: string, node: NodeSyntaxTree): void;
+        paragraphPost(process: BuilderProcess, name: string, node: NodeSyntaxTree): void;
+        ulistPre(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): void;
+        ulistPost(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): void;
+        olistPre(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): void;
+        olistPost(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): void;
+        dlistPre(process: BuilderProcess, name: string, node: DlistElementSyntaxTree): (v: ITreeVisitor) => void;
+        dlistPost(process: BuilderProcess, name: string, node: DlistElementSyntaxTree): void;
+        block_list_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_list_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        block_listnum_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_listnum_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        inline_list(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        block_emlist_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_emlist_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        block_emlistnum_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_emlistnum_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        inline_hd_pre(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        inline_hd_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_br(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_b_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_b_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_code_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_code_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_href(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        block_label(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
+        inline_tt_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_tt_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_ruby_pre(process: BuilderProcess, node: InlineElementSyntaxTree): (v: ITreeVisitor) => void;
+        inline_ruby_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_u_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_u_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_kw_pre(process: BuilderProcess, node: InlineElementSyntaxTree): (v: ITreeVisitor) => void;
+        inline_kw_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_em_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_em_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        block_image(process: BuilderProcess, node: BlockElementSyntaxTree): Promise<boolean>;
+        block_indepimage(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
+        inline_img(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        inline_icon(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        block_footnote(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
+        inline_fn(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        block_lead_pre(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        block_lead_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        inline_tti_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_tti_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_ttb_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_ttb_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        block_noindent(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
+        block_source_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_source_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        block_cmd_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_cmd_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        block_quote_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_quote_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        inline_ami_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_ami_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_bou_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_bou_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_i_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_i_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_strong_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_strong_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_uchar_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_uchar_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        block_table_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_table_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        inline_table(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        block_tsize(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
+        block_comment_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_comment_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
+        inline_comment_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_comment_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
     }
 }
 
