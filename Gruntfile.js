@@ -234,18 +234,6 @@ module.exports = function (grunt) {
 				]
 			}
 		},
-		karma: {
-			unit: {
-				options: {
-					configFile: 'karma.conf.js',
-					autoWatch: false,
-					browsers: ['PhantomJS', 'Firefox'],
-					reporters: ['progress', 'junit'],
-					singleRun: true,
-					keepalive: true
-				}
-			}
-		},
 		open: {
 			"test-browser": {
 				path: '<%= opt.client.jsTestOut %>/index.html'
@@ -300,11 +288,6 @@ module.exports = function (grunt) {
 		'test-node',
 		"必要なコンパイルを行いnode.js上でテストを実行する。",
 		['test-preprocess', 'mochaTest']);
-
-	grunt.registerTask(
-		'test-karma',
-		"必要なコンパイルを行いkarma上でテストを実行する。",
-		['test-preprocess', 'karma']);
 
 	grunt.registerTask(
 		'test-browser',
