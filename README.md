@@ -58,7 +58,7 @@ WebStormで開発している場合、Cmd+Oとかでクラス一覧が参照で�
 
 今貰えると嬉しい手助けはいくつかあります。
 
-* src/test/resource/valid へのファイルの追加
+* test/fixture/valid へのファイルの追加
 * DefaultAnalyzerが対応する構文の追加
 * 各種Builderの実装 (LaTeXとか)
 * 説明文の改善
@@ -69,11 +69,11 @@ WebStormで開発している場合、Cmd+Oとかでクラス一覧が参照で�
 # 構文追加のための最初の一歩
 
  1. 構文のノード構築部分を追加する
-src/main/typescript/parser/Analyzer.ts の DefaultAnalyzer に構文用のメソッドを追加します。
+lib/parser/Analyzer.ts の DefaultAnalyzer に構文用のメソッドを追加します。
 Analyzer.tsの末尾にある TODO 以下のものの実装をすすめます。
 Analyzer.tsの中でinlineが先頭になっているものが簡単に実装できる。実装はまわりのメソッドを参考に。
  2. 出力部分を追加する
-src/main/typescript/builder/ のなかに出力用ファイルがあります。
+lib/builder/ のなかに出力用ファイルがあります。
 HtmlBuilder.ts,TextBuilder.ts のファイルにも1と同様に同名のメソッドを追加します。
 メソッド名＿pre,メソッド名＿postの関数を用意した場合にはメソッドの実行前、実行後にそれぞれ処理が実行されます。
 まずはテキストのデータを表示してみましょう。
@@ -91,7 +91,7 @@ TODO:図を入れる
 
  3. 構文の説明を入れる。
 最後に構文の説明を追加します。
-rc/main/typescript/i18n/ja.ts の中に説明の文章を追加します。
+lib/i18n/ja.ts の中に説明の文章を追加します。
 オブジェクト記法の中の"description"の中に追加したメソッド名と同じものを追加します。
 そうすることで構文の説明が追加されます。
 

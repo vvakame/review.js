@@ -198,7 +198,7 @@ module ReVIEW {
 				var canvas = document.createElement('canvas');
 				canvas.width = 200;
 				canvas.height = 14;
-				var ctx = canvas.getContext("2d");
+				var ctx = <CanvasRenderingContext2D>canvas.getContext("2d");
 				ctx.fillText("file://では画像の存在チェックができません", 2, 10);
 				var dataUrl = canvas.toDataURL();
 				resolve({path: dataUrl, result: true});

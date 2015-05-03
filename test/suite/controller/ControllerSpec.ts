@@ -51,7 +51,7 @@ describe("ReVIEW.Controllerの", ()=> {
 		});
 	});
 
-	it("章番号の連番が正しく振られること", ()=>{
+	it("章番号の連番が正しく振られること", ()=> {
 		var files:any = {
 			"ch01.re": "={ch01} 章1",
 			"ch02.re": "={ch02} 章2"
