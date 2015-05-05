@@ -8,14 +8,14 @@ declare module ReVIEW {
     function isNodeJS(): boolean;
     function isAMD(): boolean;
     function flatten(data: any[]): any[];
-    function nodeToString(process: Process, node: Parse.SyntaxTree): string;
-    function nodeToString(process: BuilderProcess, node: Parse.SyntaxTree): string;
-    function nodeContentToString(process: Process, node: Parse.SyntaxTree): string;
-    function nodeContentToString(process: BuilderProcess, node: Parse.SyntaxTree): string;
-    function findUp(node: Parse.SyntaxTree, predicate: (node: Parse.SyntaxTree) => boolean): Parse.SyntaxTree;
-    function findChapter(node: Parse.SyntaxTree, level?: number): Parse.ChapterSyntaxTree;
-    function findChapterOrColumn(node: Parse.SyntaxTree, level?: number): Parse.NodeSyntaxTree;
-    function target2builder(target: string): Build.IBuilder;
+    function nodeToString(process: Process, node: ReVIEW.Parse.SyntaxTree): string;
+    function nodeToString(process: BuilderProcess, node: ReVIEW.Parse.SyntaxTree): string;
+    function nodeContentToString(process: Process, node: ReVIEW.Parse.SyntaxTree): string;
+    function nodeContentToString(process: BuilderProcess, node: ReVIEW.Parse.SyntaxTree): string;
+    function findUp(node: ReVIEW.Parse.SyntaxTree, predicate: (node: ReVIEW.Parse.SyntaxTree) => boolean): ReVIEW.Parse.SyntaxTree;
+    function findChapter(node: ReVIEW.Parse.SyntaxTree, level?: number): ReVIEW.Parse.ChapterSyntaxTree;
+    function findChapterOrColumn(node: ReVIEW.Parse.SyntaxTree, level?: number): ReVIEW.Parse.NodeSyntaxTree;
+    function target2builder(target: string): ReVIEW.Build.IBuilder;
     module IO {
         function read(path: string): Promise<string>;
         function write(path: string, content: string): Promise<void>;
@@ -558,10 +558,10 @@ declare module ReVIEW {
         resolvePath(path: string): string;
     }
     class NodeJSConfig extends Config {
-        options: IOptions;
+        options: ReVIEW.IOptions;
         original: IConfigRaw;
         _listener: IConfigListener;
-        constructor(options: IOptions, original: IConfigRaw);
+        constructor(options: ReVIEW.IOptions, original: IConfigRaw);
         read: (path: string) => Promise<string>;
         write: (path: string, data: string) => Promise<void>;
         exists: (path: string) => Promise<{
@@ -569,16 +569,16 @@ declare module ReVIEW {
             result: boolean;
         }>;
         listener: IConfigListener;
-        onReports(reports: ProcessReport[]): void;
+        onReports(reports: ReVIEW.ProcessReport[]): void;
         onCompileSuccess(book: Book): void;
         onCompileFailed(): void;
         resolvePath(path: string): string;
     }
     class WebBrowserConfig extends Config {
-        options: IOptions;
+        options: ReVIEW.IOptions;
         original: IConfigRaw;
         _listener: IConfigListener;
-        constructor(options: IOptions, original: IConfigRaw);
+        constructor(options: ReVIEW.IOptions, original: IConfigRaw);
         read: (path: string) => Promise<string>;
         write: (path: string, data: string) => Promise<void>;
         exists: (path: string) => Promise<{
@@ -594,7 +594,7 @@ declare module ReVIEW {
             result: boolean;
         }>;
         listener: IConfigListener;
-        onReports(reports: ProcessReport[]): void;
+        onReports(reports: ReVIEW.ProcessReport[]): void;
         onCompileSuccess(book: Book): void;
         onCompileFailed(book?: Book): void;
         resolvePath(path: string): string;
@@ -604,11 +604,11 @@ declare module ReVIEW {
 }
 declare module ReVIEW {
     class Controller {
-        options: IOptions;
+        options: ReVIEW.IOptions;
         private config;
         builders: typeof Build;
-        constructor(options?: IOptions);
-        initConfig(data: IConfigRaw): void;
+        constructor(options?: ReVIEW.IOptions);
+        initConfig(data: ReVIEW.IConfigRaw): void;
         process(): Promise<Book>;
         acceptableSyntaxes(book: Book): Promise<Book>;
         toContentChunk(book: Book): Book;
@@ -629,7 +629,7 @@ declare module ReVIEW {
         chapterName: string;
         targetSymbol: string;
         label: string;
-        referenceNode?: Parse.SyntaxTree;
+        referenceNode?: ReVIEW.Parse.SyntaxTree;
     }
     interface ISymbol {
         part?: ContentChunk;
@@ -637,7 +637,7 @@ declare module ReVIEW {
         symbolName: string;
         labelName?: string;
         referenceTo?: IReferenceTo;
-        node: Parse.SyntaxTree;
+        node: ReVIEW.Parse.SyntaxTree;
     }
     enum ReportLevel {
         Info = 0,
@@ -664,7 +664,7 @@ declare module ReVIEW {
         input: string;
         symbols: ISymbol[];
         indexCounter: {
-            [x: string]: number;
+            [kind: string]: number;
         };
         afterProcess: Function[];
         private _reports;
@@ -676,15 +676,15 @@ declare module ReVIEW {
         reports: ProcessReport[];
         addSymbol(symbol: ISymbol): void;
         missingSymbols: ISymbol[];
-        constructReferenceTo(node: Parse.InlineElementSyntaxTree, value: string, targetSymbol?: string, separator?: string): IReferenceTo;
-        constructReferenceTo(node: Parse.BlockElementSyntaxTree, value: string, targetSymbol: string, separator?: string): IReferenceTo;
+        constructReferenceTo(node: ReVIEW.Parse.InlineElementSyntaxTree, value: string, targetSymbol?: string, separator?: string): IReferenceTo;
+        constructReferenceTo(node: ReVIEW.Parse.BlockElementSyntaxTree, value: string, targetSymbol: string, separator?: string): IReferenceTo;
         addAfterProcess(func: Function): void;
         doAfterProcess(): void;
     }
     class BuilderProcess {
-        builder: Build.IBuilder;
+        builder: ReVIEW.Build.IBuilder;
         base: Process;
-        constructor(builder: Build.IBuilder, base: Process);
+        constructor(builder: ReVIEW.Build.IBuilder, base: Process);
         info: (message: string, ...nodes: Parse.SyntaxTree[]) => void;
         warn: (message: string, ...nodes: Parse.SyntaxTree[]) => void;
         error: (message: string, ...nodes: Parse.SyntaxTree[]) => void;
@@ -699,7 +699,7 @@ declare module ReVIEW {
     class Book {
         config: Config;
         process: BookProcess;
-        acceptableSyntaxes: Build.AcceptableSyntaxes;
+        acceptableSyntaxes: ReVIEW.Build.AcceptableSyntaxes;
         predef: ContentChunk[];
         contents: ContentChunk[];
         appendix: ContentChunk[];
@@ -718,17 +718,17 @@ declare module ReVIEW {
         name: string;
         _input: string;
         tree: {
-            ast: Parse.SyntaxTree;
-            cst: Parse.IConcreatSyntaxTree;
+            ast: ReVIEW.Parse.SyntaxTree;
+            cst: ReVIEW.Parse.IConcreatSyntaxTree;
         };
         process: Process;
         builderProcesses: BuilderProcess[];
         constructor(book: Book, parent: ContentChunk, name: string);
         constructor(book: Book, name: string);
         input: string;
-        createBuilderProcess(builder: Build.IBuilder): BuilderProcess;
+        createBuilderProcess(builder: ReVIEW.Build.IBuilder): BuilderProcess;
         findResultByBuilder(builderName: string): string;
-        findResultByBuilder(builder: Build.IBuilder): string;
+        findResultByBuilder(builder: ReVIEW.Build.IBuilder): string;
     }
 }
 declare module ReVIEW {
@@ -747,11 +747,11 @@ declare module ReVIEW {
         book: IConfigBook;
     }
     interface IConfigListener {
-        onAcceptables?: (acceptableSyntaxes: Build.AcceptableSyntaxes) => any;
-        onSymbols?: (symbols: ISymbol[]) => any;
-        onReports?: (reports: ProcessReport[]) => any;
-        onCompileSuccess?: (book: Book) => void;
-        onCompileFailed?: (book?: Book) => void;
+        onAcceptables?: (acceptableSyntaxes: ReVIEW.Build.AcceptableSyntaxes) => any;
+        onSymbols?: (symbols: ReVIEW.ISymbol[]) => any;
+        onReports?: (reports: ReVIEW.ProcessReport[]) => any;
+        onCompileSuccess?: (book: ReVIEW.Book) => void;
+        onCompileFailed?: (book?: ReVIEW.Book) => void;
     }
     interface IConfigBook {
         predef?: IConfigChapter[];
@@ -893,7 +893,7 @@ declare module ReVIEW.Build {
         private standalone;
         extention: string;
         escapeMap: {
-            [x: string]: string;
+            [char: string]: string;
         };
         constructor(standalone?: boolean);
         escape(data: any): string;
@@ -982,7 +982,7 @@ declare module ReVIEW.Build {
 
 
 declare module ReVIEW {
-    function start(setup: (review: Controller) => void, options?: IOptions): Promise<Book>;
+    function start(setup: (review: Controller) => void, options?: ReVIEW.IOptions): Promise<Book>;
 }
 
 declare module "review.js" {
