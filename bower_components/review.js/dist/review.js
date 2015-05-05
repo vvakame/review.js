@@ -4618,7 +4618,8 @@ var PEG = (function() {
 
 	})(ReVIEW.Build || (ReVIEW.Build = {}));
 })(ReVIEW || (ReVIEW = {}));
-;if (typeof Promise === "undefined" && typeof global !== "undefined") {
+;// polyfillの処理
+if (typeof Promise === "undefined" && typeof global !== "undefined") {
     global.Promise = require("ypromise");
 }
 var ReVIEW;
@@ -4831,9 +4832,11 @@ var ReVIEW;
                 success = false;
                 originalCompileFailed(book);
             };
-            return ReVIEW.start(function (review) {
+            return ReVIEW
+                .start(function (review) {
                 review.initConfig(config);
-            }).then(function (book) {
+            })
+                .then(function (book) {
                 return {
                     book: book,
                     results: results
@@ -4925,6 +4928,10 @@ var ReVIEW;
         "sample": "Hello!"
     };
 })(ReVIEW || (ReVIEW = {}));
+///<reference path='../../typings/i18next/i18next.d.ts' />
+///<reference path='../utils/Utils.ts' />
+///<reference path='ja.ts' />
+///<reference path='en.ts' />
 var ReVIEW;
 (function (ReVIEW) {
     var i18n;
@@ -4972,6 +4979,8 @@ var ReVIEW;
         setup();
     })(i18n = ReVIEW.i18n || (ReVIEW.i18n = {}));
 })(ReVIEW || (ReVIEW = {}));
+///<reference path='../model/CompilerModel.ts' />
+///<reference path='Parser.ts' />
 var ReVIEW;
 (function (ReVIEW) {
     "use strict";
@@ -5262,7 +5271,7 @@ var ReVIEW;
                 return pool.consume();
             })();
         }
-        else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && (ast.ruleName === 7 /* Paragraph */ || ast.ruleName === 17 /* BlockElementParagraph */)) {
+        else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && (ast.ruleName === ReVIEW.Parse.RuleName.Paragraph || ast.ruleName === ReVIEW.Parse.RuleName.BlockElementParagraph)) {
             return (function () {
                 var node = ast.toNode();
                 var pool = poolGenerator();
@@ -5398,12 +5407,15 @@ var ReVIEW;
         return AsyncTaskPool;
     })();
 })(ReVIEW || (ReVIEW = {}));
+///<reference path='../typings/peg.js.d.ts' />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+///<reference path='../model/CompilerModel.ts' />
+///<reference path='Walker.ts' />
 var ReVIEW;
 (function (ReVIEW) {
     var Parse;
@@ -5426,7 +5438,7 @@ var ReVIEW;
             var ulistSet = [];
             ReVIEW.visit(root, {
                 visitDefaultPre: function (ast) {
-                    if (ast.ruleName === 28 /* Ulist */) {
+                    if (ast.ruleName === RuleName.Ulist) {
                         ulistSet.push(ast.toNode());
                     }
                 }
@@ -5470,58 +5482,58 @@ var ReVIEW;
                 throw new ParseError(rawResult, "unknown rule: " + rawResult.syntax);
             }
             switch (rule) {
-                case 3 /* Chapter */:
+                case RuleName.Chapter:
                     return new ChapterSyntaxTree(rawResult);
-                case 11 /* BlockElement */:
+                case RuleName.BlockElement:
                     return new BlockElementSyntaxTree(rawResult);
-                case 4 /* Headline */:
+                case RuleName.Headline:
                     return new HeadlineSyntaxTree(rawResult);
-                case 12 /* InlineElement */:
+                case RuleName.InlineElement:
                     return new InlineElementSyntaxTree(rawResult);
-                case 35 /* Column */:
+                case RuleName.Column:
                     return new ColumnSyntaxTree(rawResult);
-                case 36 /* ColumnHeadline */:
+                case RuleName.ColumnHeadline:
                     return new ColumnHeadlineSyntaxTree(rawResult);
-                case 13 /* BracketArg */:
-                case 14 /* BraceArg */:
+                case RuleName.BracketArg:
+                case RuleName.BraceArg:
                     return new ArgumentSyntaxTree(rawResult);
-                case 29 /* UlistElement */:
+                case RuleName.UlistElement:
                     return new UlistElementSyntaxTree(rawResult);
-                case 31 /* OlistElement */:
+                case RuleName.OlistElement:
                     return new OlistElementSyntaxTree(rawResult);
-                case 33 /* DlistElement */:
+                case RuleName.DlistElement:
                     return new DlistElementSyntaxTree(rawResult);
-                case 10 /* ContentText */:
-                case 20 /* BlockElementContentText */:
-                case 23 /* InlineElementContentText */:
-                case 27 /* ContentInlineText */:
-                case 40 /* SinglelineComment */:
+                case RuleName.ContentText:
+                case RuleName.BlockElementContentText:
+                case RuleName.InlineElementContentText:
+                case RuleName.ContentInlineText:
+                case RuleName.SinglelineComment:
                     return new TextNodeSyntaxTree(rawResult);
-                case 2 /* Chapters */:
-                case 5 /* Contents */:
-                case 8 /* ParagraphSubs */:
-                case 15 /* BlockElementContents */:
-                case 18 /* BlockElementParagraphSubs */:
-                case 21 /* InlineElementContents */:
-                case 37 /* ColumnContents */:
-                case 25 /* ContentInlines */:
-                case 28 /* Ulist */:
-                case 30 /* Olist */:
-                case 32 /* Dlist */:
+                case RuleName.Chapters:
+                case RuleName.Contents:
+                case RuleName.ParagraphSubs:
+                case RuleName.BlockElementContents:
+                case RuleName.BlockElementParagraphSubs:
+                case RuleName.InlineElementContents:
+                case RuleName.ColumnContents:
+                case RuleName.ContentInlines:
+                case RuleName.Ulist:
+                case RuleName.Olist:
+                case RuleName.Dlist:
                     return new NodeSyntaxTree(rawResult);
-                case 1 /* Start */:
-                case 7 /* Paragraph */:
-                case 17 /* BlockElementParagraph */:
-                case 19 /* BlockElementParagraphSub */:
-                case 34 /* DlistElementContent */:
+                case RuleName.Start:
+                case RuleName.Paragraph:
+                case RuleName.BlockElementParagraph:
+                case RuleName.BlockElementParagraphSub:
+                case RuleName.DlistElementContent:
                     return new NodeSyntaxTree(rawResult);
-                case 6 /* Content */:
-                case 9 /* ParagraphSub */:
-                case 16 /* BlockElementContent */:
-                case 22 /* InlineElementContent */:
-                case 38 /* ColumnContent */:
-                case 24 /* SinglelineContent */:
-                case 26 /* ContentInline */:
+                case RuleName.Content:
+                case RuleName.ParagraphSub:
+                case RuleName.BlockElementContent:
+                case RuleName.InlineElementContent:
+                case RuleName.ColumnContent:
+                case RuleName.SinglelineContent:
+                case RuleName.ContentInline:
                     return transform(rawResult.content);
                 default:
                     return new SyntaxTree(rawResult);
@@ -5536,7 +5548,7 @@ var ReVIEW;
                 children: []
             };
             originalChildNodes.forEach(function (child) {
-                if (child.ruleName === 40 /* SinglelineComment */) {
+                if (child.ruleName === RuleName.SinglelineComment) {
                     currentSet.children.push(child);
                 }
                 else if (!currentSet.parent) {
@@ -6010,6 +6022,9 @@ var ReVIEW;
         Parse.TextNodeSyntaxTree = TextNodeSyntaxTree;
     })(Parse = ReVIEW.Parse || (ReVIEW.Parse = {}));
 })(ReVIEW || (ReVIEW = {}));
+///<reference path='../typings/analyzer-error.d.ts' />
+///<reference path='../i18n/i18n.ts' />
+///<reference path='../model/CompilerModel.ts' />
 var ReVIEW;
 (function (ReVIEW) {
     var Build;
@@ -6043,21 +6058,21 @@ var ReVIEW;
             };
             Object.defineProperty(AcceptableSyntaxes.prototype, "inlines", {
                 get: function () {
-                    return this.acceptableSyntaxes.filter(function (s) { return s.type === 1 /* Inline */; });
+                    return this.acceptableSyntaxes.filter(function (s) { return s.type === SyntaxType.Inline; });
                 },
                 enumerable: true,
                 configurable: true
             });
             Object.defineProperty(AcceptableSyntaxes.prototype, "blocks", {
                 get: function () {
-                    return this.acceptableSyntaxes.filter(function (s) { return s.type === 0 /* Block */; });
+                    return this.acceptableSyntaxes.filter(function (s) { return s.type === SyntaxType.Block; });
                 },
                 enumerable: true,
                 configurable: true
             });
             Object.defineProperty(AcceptableSyntaxes.prototype, "others", {
                 get: function () {
-                    return this.acceptableSyntaxes.filter(function (s) { return s.type === 2 /* Other */; });
+                    return this.acceptableSyntaxes.filter(function (s) { return s.type === SyntaxType.Other; });
                 },
                 enumerable: true,
                 configurable: true
@@ -6099,29 +6114,29 @@ var ReVIEW;
             };
             AnalyzeProcess.prototype.build = function (methodName) {
                 if (methodName.indexOf("block_") === 0) {
-                    this.current.type = this.current.type || 0 /* Block */;
+                    this.current.type = this.current.type || SyntaxType.Block;
                     this.current.symbolName = this.current.symbolName || methodName.substring("block_".length);
                 }
                 else if (methodName.indexOf("inline_") === 0) {
-                    this.current.type = this.current.type || 1 /* Inline */;
+                    this.current.type = this.current.type || SyntaxType.Inline;
                     this.current.symbolName = this.current.symbolName || methodName.substring("inline_".length);
                 }
                 else {
-                    this.current.type = this.current.type || 2 /* Other */;
+                    this.current.type = this.current.type || SyntaxType.Other;
                     this.current.symbolName = this.current.symbolName || methodName;
                 }
                 switch (this.current.type) {
-                    case 0 /* Block */:
+                    case SyntaxType.Block:
                         if (this.current.argsLength.length === 0) {
                             throw new Build.AnalyzerError("must call builder.checkArgsLength(...number[]) in " + methodName);
                         }
                         break;
-                    case 2 /* Other */:
+                    case SyntaxType.Other:
                         if (!this.current.clazz) {
                             throw new Build.AnalyzerError("must call builder.setClass(class) in " + methodName);
                         }
                         break;
-                    case 1 /* Inline */:
+                    case SyntaxType.Inline:
                         break;
                 }
                 if (!this.current.description) {
@@ -6208,7 +6223,7 @@ var ReVIEW;
                 return process.acceptableSyntaxes;
             };
             DefaultAnalyzer.prototype.headline = function (builder) {
-                builder.setSyntaxType(2 /* Other */);
+                builder.setSyntaxType(SyntaxType.Other);
                 builder.setClass(ReVIEW.Parse.HeadlineSyntaxTree);
                 builder.setDescription(t("description.headline"));
                 builder.processNode(function (process, n) {
@@ -6229,7 +6244,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.column = function (builder) {
-                builder.setSyntaxType(2 /* Other */);
+                builder.setSyntaxType(SyntaxType.Other);
                 builder.setClass(ReVIEW.Parse.ColumnSyntaxTree);
                 builder.setDescription(t("description.column"));
                 builder.processNode(function (process, n) {
@@ -6242,7 +6257,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.ulist = function (builder) {
-                builder.setSyntaxType(2 /* Other */);
+                builder.setSyntaxType(SyntaxType.Other);
                 builder.setClass(ReVIEW.Parse.UlistElementSyntaxTree);
                 builder.setDescription(t("description.ulist"));
                 builder.processNode(function (process, n) {
@@ -6254,7 +6269,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.olist = function (builder) {
-                builder.setSyntaxType(2 /* Other */);
+                builder.setSyntaxType(SyntaxType.Other);
                 builder.setClass(ReVIEW.Parse.OlistElementSyntaxTree);
                 builder.setDescription(t("description.olist"));
                 builder.processNode(function (process, n) {
@@ -6266,7 +6281,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.dlist = function (builder) {
-                builder.setSyntaxType(2 /* Other */);
+                builder.setSyntaxType(SyntaxType.Other);
                 builder.setClass(ReVIEW.Parse.DlistElementSyntaxTree);
                 builder.setDescription(t("description.dlist"));
                 builder.processNode(function (process, n) {
@@ -6278,7 +6293,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.block_list = function (builder) {
-                builder.setSyntaxType(0 /* Block */);
+                builder.setSyntaxType(SyntaxType.Block);
                 builder.setSymbol("list");
                 builder.setDescription(t("description.block_list"));
                 builder.checkArgsLength(2);
@@ -6293,7 +6308,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.block_listnum = function (builder) {
-                builder.setSyntaxType(0 /* Block */);
+                builder.setSyntaxType(SyntaxType.Block);
                 builder.setSymbol("listnum");
                 builder.setDescription(t("description.block_listnum"));
                 builder.checkArgsLength(2);
@@ -6308,7 +6323,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.inline_list = function (builder) {
-                builder.setSyntaxType(1 /* Inline */);
+                builder.setSyntaxType(SyntaxType.Inline);
                 builder.setSymbol("list");
                 builder.setDescription(t("description.inline_list"));
                 builder.processNode(function (process, n) {
@@ -6321,7 +6336,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.block_emlist = function (builder) {
-                builder.setSyntaxType(0 /* Block */);
+                builder.setSyntaxType(SyntaxType.Block);
                 builder.setSymbol("emlist");
                 builder.setDescription(t("description.block_emlist"));
                 builder.checkArgsLength(0, 1);
@@ -6334,7 +6349,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.block_emlistnum = function (builder) {
-                builder.setSyntaxType(0 /* Block */);
+                builder.setSyntaxType(SyntaxType.Block);
                 builder.setSymbol("emlistnum");
                 builder.setDescription(t("description.block_emlistnum"));
                 builder.checkArgsLength(0);
@@ -6347,7 +6362,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.inline_hd = function (builder) {
-                builder.setSyntaxType(1 /* Inline */);
+                builder.setSyntaxType(SyntaxType.Inline);
                 builder.setSymbol("hd");
                 builder.setDescription(t("description.inline_hd"));
                 builder.processNode(function (process, n) {
@@ -6360,7 +6375,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.block_image = function (builder) {
-                builder.setSyntaxType(0 /* Block */);
+                builder.setSyntaxType(SyntaxType.Block);
                 builder.setSymbol("image");
                 builder.setDescription(t("description.block_image"));
                 builder.checkArgsLength(2, 3);
@@ -6375,7 +6390,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.block_indepimage = function (builder) {
-                builder.setSyntaxType(0 /* Block */);
+                builder.setSyntaxType(SyntaxType.Block);
                 builder.setSymbol("indepimage");
                 builder.setDescription(t("description.block_indepimage"));
                 builder.checkArgsLength(1, 2, 3);
@@ -6388,7 +6403,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.inline_img = function (builder) {
-                builder.setSyntaxType(1 /* Inline */);
+                builder.setSyntaxType(SyntaxType.Inline);
                 builder.setSymbol("img");
                 builder.setDescription(t("description.inline_img"));
                 builder.processNode(function (process, n) {
@@ -6401,7 +6416,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.inline_icon = function (builder) {
-                builder.setSyntaxType(0 /* Block */);
+                builder.setSyntaxType(SyntaxType.Block);
                 builder.setSymbol("icon");
                 builder.setDescription(t("description.inline_icon"));
                 builder.processNode(function (process, n) {
@@ -6413,7 +6428,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.block_footnote = function (builder) {
-                builder.setSyntaxType(0 /* Block */);
+                builder.setSyntaxType(SyntaxType.Block);
                 builder.setSymbol("footnote");
                 builder.setDescription(t("description.block_footnote"));
                 builder.checkArgsLength(2);
@@ -6428,7 +6443,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.inline_fn = function (builder) {
-                builder.setSyntaxType(1 /* Inline */);
+                builder.setSyntaxType(SyntaxType.Inline);
                 builder.setSymbol("fn");
                 builder.setDescription(t("description.inline_fn"));
                 builder.processNode(function (process, n) {
@@ -6445,7 +6460,7 @@ var ReVIEW;
                 for (var _i = 2; _i < arguments.length; _i++) {
                     argsLength[_i - 2] = arguments[_i];
                 }
-                builder.setSyntaxType(0 /* Block */);
+                builder.setSyntaxType(SyntaxType.Block);
                 builder.setSymbol(symbol);
                 builder.setDescription(t("description.block_" + symbol));
                 builder.checkArgsLength.apply(builder, argsLength);
@@ -6474,7 +6489,7 @@ var ReVIEW;
                 this.blockDecorationSyntax(builder, "quote", 0);
             };
             DefaultAnalyzer.prototype.inlineDecorationSyntax = function (builder, symbol) {
-                builder.setSyntaxType(1 /* Inline */);
+                builder.setSyntaxType(SyntaxType.Inline);
                 builder.setSymbol(symbol);
                 builder.setDescription(t("description.inline_" + symbol));
                 builder.processNode(function (process, n) {
@@ -6504,7 +6519,7 @@ var ReVIEW;
                 this.inlineDecorationSyntax(builder, "href");
             };
             DefaultAnalyzer.prototype.block_label = function (builder) {
-                builder.setSyntaxType(0 /* Block */);
+                builder.setSyntaxType(SyntaxType.Block);
                 builder.setSymbol("label");
                 builder.setDescription(t("description.block_label"));
                 builder.checkArgsLength(1);
@@ -6549,7 +6564,7 @@ var ReVIEW;
                 this.inlineDecorationSyntax(builder, "uchar");
             };
             DefaultAnalyzer.prototype.block_table = function (builder) {
-                builder.setSyntaxType(0 /* Block */);
+                builder.setSyntaxType(SyntaxType.Block);
                 builder.setSymbol("table");
                 builder.setDescription(t("description.block_table"));
                 builder.checkArgsLength(2);
@@ -6564,7 +6579,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.inline_table = function (builder) {
-                builder.setSyntaxType(1 /* Inline */);
+                builder.setSyntaxType(SyntaxType.Inline);
                 builder.setSymbol("table");
                 builder.setDescription(t("description.inline_table"));
                 builder.processNode(function (process, n) {
@@ -6577,7 +6592,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.block_tsize = function (builder) {
-                builder.setSyntaxType(0 /* Block */);
+                builder.setSyntaxType(SyntaxType.Block);
                 builder.setDescription(t("description.block_tsize"));
                 builder.checkArgsLength(1);
                 builder.processNode(function (process, n) {
@@ -6589,7 +6604,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.block_raw = function (builder) {
-                builder.setSyntaxType(0 /* Block */);
+                builder.setSyntaxType(SyntaxType.Block);
                 builder.setSymbol("raw");
                 builder.setDescription(t("description.block_raw"));
                 builder.checkArgsLength(1);
@@ -6602,7 +6617,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.inline_raw = function (builder) {
-                builder.setSyntaxType(1 /* Inline */);
+                builder.setSyntaxType(SyntaxType.Inline);
                 builder.setSymbol("raw");
                 builder.setDescription(t("description.inline_raw"));
                 builder.processNode(function (process, n) {
@@ -6614,7 +6629,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.block_comment = function (builder) {
-                builder.setSyntaxType(0 /* Block */);
+                builder.setSyntaxType(SyntaxType.Block);
                 builder.setSymbol("comment");
                 builder.setDescription(t("description.block_comment"));
                 builder.checkArgsLength(0);
@@ -6627,7 +6642,7 @@ var ReVIEW;
                 });
             };
             DefaultAnalyzer.prototype.inline_comment = function (builder) {
-                builder.setSyntaxType(1 /* Inline */);
+                builder.setSyntaxType(SyntaxType.Inline);
                 builder.setSymbol("comment");
                 builder.setDescription(t("description.inline_comment"));
                 builder.processNode(function (process, n) {
@@ -6643,6 +6658,10 @@ var ReVIEW;
         Build.DefaultAnalyzer = DefaultAnalyzer;
     })(Build = ReVIEW.Build || (ReVIEW.Build = {}));
 })(ReVIEW || (ReVIEW = {}));
+///<reference path='../utils/Utils.ts' />
+///<reference path='../i18n/i18n.ts' />
+///<reference path='../model/CompilerModel.ts' />
+///<reference path='../parser/Analyzer.ts' />
 var ReVIEW;
 (function (ReVIEW) {
     var Build;
@@ -6734,7 +6753,8 @@ var ReVIEW;
                     visitTextPre: function (node) {
                         _this.text(process, node);
                     }
-                }).then(function () {
+                })
+                    .then(function () {
                     _this.processPost(process, chunk);
                     return Promise.all(chunk.nodes.map(function (chunk) { return _this.processAst(chunk); })).then(function () { return null; });
                 });
@@ -6886,6 +6906,9 @@ var ReVIEW;
         Build.DefaultBuilder = DefaultBuilder;
     })(Build = ReVIEW.Build || (ReVIEW.Build = {}));
 })(ReVIEW || (ReVIEW = {}));
+///<reference path='../utils/Utils.ts' />
+///<reference path='../i18n/i18n.ts' />
+///<reference path='../model/CompilerModel.ts' />
 var ReVIEW;
 (function (ReVIEW) {
     var Build;
@@ -7042,6 +7065,9 @@ var ReVIEW;
         Build.SyntaxPreprocessor = SyntaxPreprocessor;
     })(Build = ReVIEW.Build || (ReVIEW.Build = {}));
 })(ReVIEW || (ReVIEW = {}));
+///<reference path='../i18n/i18n.ts' />
+///<reference path='../model/CompilerModel.ts' />
+///<reference path='Analyzer.ts' />
 var ReVIEW;
 (function (ReVIEW) {
     var Build;
@@ -7063,12 +7089,12 @@ var ReVIEW;
                 acceptableSyntaxes.acceptableSyntaxes.forEach(function (syntax) {
                     var prefix;
                     switch (syntax.type) {
-                        case 2 /* Other */:
+                        case Build.SyntaxType.Other:
                             return;
-                        case 0 /* Block */:
+                        case Build.SyntaxType.Block:
                             prefix = "block_";
                             break;
-                        case 1 /* Inline */:
+                        case Build.SyntaxType.Inline:
                             prefix = "inline_";
                             break;
                     }
@@ -7208,6 +7234,7 @@ var ReVIEW;
         Build.DefaultValidator = DefaultValidator;
     })(Build = ReVIEW.Build || (ReVIEW.Build = {}));
 })(ReVIEW || (ReVIEW = {}));
+///<reference path='../model/CompilerModel.ts' />
 var ReVIEW;
 (function (ReVIEW) {
     "use strict";
@@ -7378,13 +7405,13 @@ var ReVIEW;
                     });
                 }
                 message += report.message;
-                if (report.level === 2 /* Error */) {
+                if (report.level === ReVIEW.ReportLevel.Error) {
                     console.warn(message.error);
                 }
-                else if (report.level === 1 /* Warning */) {
+                else if (report.level === ReVIEW.ReportLevel.Warning) {
                     console.error(message.warn);
                 }
-                else if (report.level === 0 /* Info */) {
+                else if (report.level === ReVIEW.ReportLevel.Info) {
                     console.info(message.info);
                 }
                 else {
@@ -7517,13 +7544,13 @@ var ReVIEW;
                     });
                 }
                 message += report.message;
-                if (report.level === 2 /* Error */) {
+                if (report.level === ReVIEW.ReportLevel.Error) {
                     console.warn(message);
                 }
-                else if (report.level === 1 /* Warning */) {
+                else if (report.level === ReVIEW.ReportLevel.Warning) {
                     console.error(message);
                 }
-                else if (report.level === 0 /* Info */) {
+                else if (report.level === ReVIEW.ReportLevel.Info) {
                     console.info(message);
                 }
                 else {
@@ -7555,6 +7582,14 @@ var ReVIEW;
     })(Config);
     ReVIEW.WebBrowserConfig = WebBrowserConfig;
 })(ReVIEW || (ReVIEW = {}));
+///<reference path='../typings/custom-colors.d.ts' />
+///<reference path='../utils/Utils.ts' />
+///<reference path='../model/CompilerModel.ts' />
+///<reference path='../parser/Parser.ts' />
+///<reference path='../parser/Analyzer.ts' />
+///<reference path='../parser/Preprocessor.ts' />
+///<reference path='../parser/Validator.ts' />
+///<reference path='./Config.ts' />
 var ReVIEW;
 (function (ReVIEW) {
     "use strict";
@@ -7577,7 +7612,16 @@ var ReVIEW;
         };
         Controller.prototype.process = function () {
             var _this = this;
-            return Promise.resolve(new ReVIEW.Book(this.config)).then(function (book) { return _this.acceptableSyntaxes(book); }).then(function (book) { return _this.toContentChunk(book); }).then(function (book) { return _this.readReVIEWFiles(book); }).then(function (book) { return _this.parseContent(book); }).then(function (book) { return _this.preprocessContent(book); }).then(function (book) { return _this.processContent(book); }).then(function (book) { return _this.writeContent(book); }).then(function (book) { return _this.compileFinished(book); }).catch(function (err) { return _this.handleError(err); });
+            return Promise.resolve(new ReVIEW.Book(this.config))
+                .then(function (book) { return _this.acceptableSyntaxes(book); })
+                .then(function (book) { return _this.toContentChunk(book); })
+                .then(function (book) { return _this.readReVIEWFiles(book); })
+                .then(function (book) { return _this.parseContent(book); })
+                .then(function (book) { return _this.preprocessContent(book); })
+                .then(function (book) { return _this.processContent(book); })
+                .then(function (book) { return _this.writeContent(book); })
+                .then(function (book) { return _this.compileFinished(book); })
+                .catch(function (err) { return _this.handleError(err); });
         };
         Controller.prototype.acceptableSyntaxes = function (book) {
             book.acceptableSyntaxes = book.config.analyzer.getAcceptableSyntaxes();
@@ -7703,7 +7747,7 @@ var ReVIEW;
             book.config.validators.forEach(function (validator) {
                 validator.start(book, book.acceptableSyntaxes, _this.config.builders);
             });
-            if (book.reports.some(function (report) { return report.level === 2 /* Error */; })) {
+            if (book.reports.some(function (report) { return report.level === ReVIEW.ReportLevel.Error; })) {
                 return Promise.resolve(book);
             }
             var symbols = book.allChunks.reduce(function (p, c) { return p.concat(c.process.symbols); }, []);
@@ -7750,6 +7794,10 @@ var ReVIEW;
     })();
     ReVIEW.Controller = Controller;
 })(ReVIEW || (ReVIEW = {}));
+///<reference path='../i18n/i18n.ts' />
+///<reference path='../parser/Parser.ts' />
+///<reference path='../builder/Builder.ts' />
+///<reference path='../controller/Controller.ts' />
 var ReVIEW;
 (function (ReVIEW) {
     "use strict";
@@ -7777,13 +7825,13 @@ var ReVIEW;
             this.reports = [];
         }
         BookProcess.prototype.info = function (message) {
-            this.reports.push(new ProcessReport(0 /* Info */, null, null, message));
+            this.reports.push(new ProcessReport(ReportLevel.Info, null, null, message));
         };
         BookProcess.prototype.warn = function (message) {
-            this.reports.push(new ProcessReport(1 /* Warning */, null, null, message));
+            this.reports.push(new ProcessReport(ReportLevel.Warning, null, null, message));
         };
         BookProcess.prototype.error = function (message) {
-            this.reports.push(new ProcessReport(2 /* Error */, null, null, message));
+            this.reports.push(new ProcessReport(ReportLevel.Error, null, null, message));
         };
         return BookProcess;
     })();
@@ -7803,21 +7851,21 @@ var ReVIEW;
             for (var _i = 1; _i < arguments.length; _i++) {
                 nodes[_i - 1] = arguments[_i];
             }
-            this._reports.push(new ProcessReport(0 /* Info */, this.part, this.chapter, message, nodes));
+            this._reports.push(new ProcessReport(ReportLevel.Info, this.part, this.chapter, message, nodes));
         };
         Process.prototype.warn = function (message) {
             var nodes = [];
             for (var _i = 1; _i < arguments.length; _i++) {
                 nodes[_i - 1] = arguments[_i];
             }
-            this._reports.push(new ProcessReport(1 /* Warning */, this.part, this.chapter, message, nodes));
+            this._reports.push(new ProcessReport(ReportLevel.Warning, this.part, this.chapter, message, nodes));
         };
         Process.prototype.error = function (message) {
             var nodes = [];
             for (var _i = 1; _i < arguments.length; _i++) {
                 nodes[_i - 1] = arguments[_i];
             }
-            this._reports.push(new ProcessReport(2 /* Error */, this.part, this.chapter, message, nodes));
+            this._reports.push(new ProcessReport(ReportLevel.Error, this.part, this.chapter, message, nodes));
         };
         Process.prototype.nextIndex = function (kind) {
             var nextIndex = this.indexCounter[kind];
@@ -7969,6 +8017,8 @@ var ReVIEW;
             configurable: true
         });
         BuilderProcess.prototype.findImageFile = function (id) {
+            // NOTE: https://github.com/kmuto/review/wiki/ImagePath
+            // 4軸マトリクス 画像dir, ビルダ有無, chapId位置, 拡張子
             var _this = this;
             var config = (this.base.part || this.base.chapter).book.config;
             var fileNameList = [];
@@ -8055,14 +8105,14 @@ var ReVIEW;
         });
         Object.defineProperty(Book.prototype, "hasError", {
             get: function () {
-                return this.reports.some(function (report) { return report.level === 2 /* Error */; });
+                return this.reports.some(function (report) { return report.level === ReportLevel.Error; });
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(Book.prototype, "hasWarning", {
             get: function () {
-                return this.reports.some(function (report) { return report.level === 1 /* Warning */; });
+                return this.reports.some(function (report) { return report.level === ReportLevel.Warning; });
             },
             enumerable: true,
             configurable: true
@@ -8119,6 +8169,7 @@ var ReVIEW;
     })();
     ReVIEW.ContentChunk = ContentChunk;
 })(ReVIEW || (ReVIEW = {}));
+///<reference path='../model/CompilerModel.ts' />
 var ReVIEW;
 (function (ReVIEW) {
     "use strict";
@@ -8206,6 +8257,10 @@ var ReVIEW;
     })();
     ReVIEW.ContentStructure = ContentStructure;
 })(ReVIEW || (ReVIEW = {}));
+///<reference path='../utils/Utils.ts' />
+///<reference path='../parser/Walker.ts' />
+///<reference path='Builder.ts' />
+///<reference path='../i18n/i18n.ts' />
 var ReVIEW;
 (function (ReVIEW) {
     var Build;
@@ -8476,7 +8531,8 @@ var ReVIEW;
                 process.out("}");
             };
             TextBuilder.prototype.block_image = function (process, node) {
-                return process.findImageFile(node.args[0].arg).then(function (imagePath) {
+                return process.findImageFile(node.args[0].arg)
+                    .then(function (imagePath) {
                     var caption = node.args[1].arg;
                     process.out("◆→開始:図←◆\n");
                     process.out("図").out(process.base.chapter.no).out(".").out(node.no).out("　").out(caption).out("\n");
@@ -8484,7 +8540,8 @@ var ReVIEW;
                     process.out("◆→").out(imagePath).out("←◆\n");
                     process.out("◆→終了:図←◆\n");
                     return false;
-                }).catch(function (id) {
+                })
+                    .catch(function (id) {
                     process.error(t("builder.image_not_found", id), node);
                     return false;
                 });
@@ -8654,6 +8711,9 @@ var ReVIEW;
         Build.TextBuilder = TextBuilder;
     })(Build = ReVIEW.Build || (ReVIEW.Build = {}));
 })(ReVIEW || (ReVIEW = {}));
+///<reference path='../utils/Utils.ts' />
+///<reference path='Builder.ts' />
+///<reference path='../i18n/i18n.ts' />
 var ReVIEW;
 (function (ReVIEW) {
     var Build;
@@ -9027,7 +9087,8 @@ var ReVIEW;
                 process.outRaw("</em>");
             };
             HtmlBuilder.prototype.block_image = function (process, node) {
-                return process.findImageFile(node.args[0].arg).then(function (imagePath) {
+                return process.findImageFile(node.args[0].arg)
+                    .then(function (imagePath) {
                     var caption = node.args[1].arg;
                     var scale = 1;
                     if (node.args[2]) {
@@ -9044,7 +9105,8 @@ var ReVIEW;
                     process.outRaw("\n</p>\n");
                     process.outRaw("</div>\n");
                     return false;
-                }).catch(function (id) {
+                })
+                    .catch(function (id) {
                     process.error(t("builder.image_not_found", id), node);
                     return false;
                 });
@@ -9239,6 +9301,22 @@ var ReVIEW;
         Build.HtmlBuilder = HtmlBuilder;
     })(Build = ReVIEW.Build || (ReVIEW.Build = {}));
 })(ReVIEW || (ReVIEW = {}));
+///<reference path='../typings/node/node.d.ts' />
+///<reference path='../typings/es6-promise/es6-promise.d.ts' />
+///<reference path='utils/Polyfill.ts' />
+///<reference path='utils/Utils.ts' />
+///<reference path='i18n/i18n.ts' />
+///<reference path='controller/ConfigRaw.ts' />
+///<reference path='controller/Config.ts' />
+///<reference path='controller/Controller.ts' />
+///<reference path='model/CompilerModel.ts' />
+///<reference path='parser/Walker.ts' />
+///<reference path='parser/Parser.ts' />
+///<reference path='parser/Analyzer.ts' />
+///<reference path='parser/Validator.ts' />
+///<reference path='builder/Builder.ts' />
+///<reference path='builder/TextBuilder.ts' />
+///<reference path='builder/HtmlBuilder.ts' />
 var ReVIEW;
 (function (ReVIEW) {
     "use strict";
