@@ -5,7 +5,9 @@
 
 "use strict";
 
+/* tslint:disable:no-unused-variable */
 import RuleName = ReVIEW.Parse.RuleName;
+/* tslint:enable:no-unused-variable */
 
 describe("ReVIEW.walkについて", ()=> {
 	"use strict";
