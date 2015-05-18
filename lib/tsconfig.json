@@ -1,0 +1,48 @@
+{
+    "version": "1.5.0-beta",
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "declaration": false,
+        "noImplicitAny": true,
+        "removeComments": false,
+        "noLib": false,
+        "preserveConstEnums": false,
+        "suppressImplicitAnyIndexErrors": false
+    },
+    "filesGlob": [
+        "./**/*.ts",
+        "!./**/*.d.ts",
+        "../typings/**/*.ts"
+    ],
+    "files": [
+        "./Cli.ts",
+        "./Main.ts",
+        "./builder/Builder.ts",
+        "./builder/HtmlBuilder.ts",
+        "./builder/TextBuilder.ts",
+        "./controller/Config.ts",
+        "./controller/ConfigRaw.ts",
+        "./controller/Controller.ts",
+        "./i18n/en.ts",
+        "./i18n/i18n.ts",
+        "./i18n/ja.ts",
+        "./model/CompilerModel.ts",
+        "./parser/Analyzer.ts",
+        "./parser/Parser.ts",
+        "./parser/Preprocessor.ts",
+        "./parser/Validator.ts",
+        "./parser/Walker.ts",
+        "./utils/Polyfill.ts",
+        "./utils/Utils.ts",
+        "../typings/assert/assert.d.ts",
+        "../typings/bundle.d.ts",
+        "../typings/es6-promise/es6-promise.d.ts",
+        "../typings/i18next/i18next.d.ts",
+        "../typings/jquery/jquery.d.ts",
+        "../typings/js-yaml/js-yaml.d.ts",
+        "../typings/mocha/mocha.d.ts",
+        "../typings/node/node.d.ts",
+        "../typings/update-notifier/update-notifier.d.ts"
+    ]
+}

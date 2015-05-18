@@ -1,0 +1,39 @@
+{
+    "version": "1.5.0-beta",
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "declaration": false,
+        "noImplicitAny": true,
+        "removeComments": false,
+        "noLib": false,
+        "preserveConstEnums": false,
+        "suppressImplicitAnyIndexErrors": false
+    },
+    "filesGlob": [
+        "./**/*.ts",
+        "../typings/**/*.ts"
+    ],
+    "files": [
+        "./suite/CliSpec.ts",
+        "./suite/MainSpec.ts",
+        "./suite/RubyReVIEWDiffSpec.ts",
+        "./suite/TestHelper.ts",
+        "./suite/UnsolvedIssueSpec.ts",
+        "./suite/builder/BuilderSpec.ts",
+        "./suite/controller/ConfigSpec.ts",
+        "./suite/controller/ControllerSpec.ts",
+        "./suite/i18n/i18nSpec.ts",
+        "./suite/parser/ParserSpec.ts",
+        "./suite/parser/WalkerSpec.ts",
+        "../typings/assert/assert.d.ts",
+        "../typings/bundle.d.ts",
+        "../typings/es6-promise/es6-promise.d.ts",
+        "../typings/i18next/i18next.d.ts",
+        "../typings/jquery/jquery.d.ts",
+        "../typings/js-yaml/js-yaml.d.ts",
+        "../typings/mocha/mocha.d.ts",
+        "../typings/node/node.d.ts",
+        "../typings/update-notifier/update-notifier.d.ts"
+    ]
+}
