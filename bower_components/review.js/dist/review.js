@@ -8026,7 +8026,7 @@ var ReVIEW;
                 var imageDirList = ["images/"];
                 var builderList = [_this.builder.extention + "/", ""];
                 var chapSeparatorList = ["/", "-"];
-                var extList = ["png", "jpg", "jpeg"];
+                var extList = ["png", "jpg", "jpeg", "gif"];
                 var chunkName = (_this.base.chapter || _this.base.part).name;
                 chunkName = chunkName.substring(0, chunkName.lastIndexOf("."));
                 imageDirList.forEach(function (imageDir) {
@@ -9301,8 +9301,8 @@ var ReVIEW;
         Build.HtmlBuilder = HtmlBuilder;
     })(Build = ReVIEW.Build || (ReVIEW.Build = {}));
 })(ReVIEW || (ReVIEW = {}));
+///<reference path='../node_modules/typescript/bin/lib.es6.d.ts' />
 ///<reference path='../typings/node/node.d.ts' />
-///<reference path='../typings/es6-promise/es6-promise.d.ts' />
 ///<reference path='utils/Polyfill.ts' />
 ///<reference path='utils/Utils.ts' />
 ///<reference path='i18n/i18n.ts' />
