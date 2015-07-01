@@ -8026,7 +8026,7 @@ var ReVIEW;
                 var imageDirList = ["images/"];
                 var builderList = [_this.builder.extention + "/", ""];
                 var chapSeparatorList = ["/", "-"];
-                var extList = ["png", "jpg", "jpeg"];
+                var extList = ["png", "jpg", "jpeg", "gif"];
                 var chunkName = (_this.base.chapter || _this.base.part).name;
                 chunkName = chunkName.substring(0, chunkName.lastIndexOf("."));
                 imageDirList.forEach(function (imageDir) {

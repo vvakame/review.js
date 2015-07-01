@@ -247,7 +247,7 @@ module ReVIEW {
 				var imageDirList = ["images/"];
 				var builderList = [this.builder.extention + "/", ""];
 				var chapSeparatorList = ["/", "-"];
-				var extList = ["png", "jpg", "jpeg"];
+				var extList = ["png", "jpg", "jpeg", "gif"];
 				var chunkName = (this.base.chapter || this.base.part).name; // TODO もっと頭良い感じに
 				chunkName = chunkName.substring(0, chunkName.lastIndexOf("."));
 				imageDirList.forEach(imageDir => {
