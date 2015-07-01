@@ -6807,11 +6807,11 @@ var ReVIEW;
             };
             DefaultBuilder.prototype.blockPre = function (process, name, node) {
                 var func;
-                func = this["block_" + name];
+                func = this[("block_" + name)];
                 if (typeof func === "function") {
                     return func.call(this, process, node);
                 }
-                func = this["block_" + name + "_pre"];
+                func = this[("block_" + name + "_pre")];
                 if (typeof func !== "function") {
                     throw new Build.AnalyzerError("block_" + name + "_pre or block_" + name + " is not Function");
                 }
@@ -6819,11 +6819,11 @@ var ReVIEW;
             };
             DefaultBuilder.prototype.blockPost = function (process, name, node) {
                 var func;
-                func = this["block_" + name];
+                func = this[("block_" + name)];
                 if (typeof func === "function") {
                     return;
                 }
-                func = this["block_" + name + "_post"];
+                func = this[("block_" + name + "_post")];
                 if (typeof func !== "function") {
                     throw new Build.AnalyzerError("block_" + name + "_post is not Function");
                 }
@@ -6831,11 +6831,11 @@ var ReVIEW;
             };
             DefaultBuilder.prototype.inlinePre = function (process, name, node) {
                 var func;
-                func = this["inline_" + name];
+                func = this[("inline_" + name)];
                 if (typeof func === "function") {
                     return func.call(this, process, node);
                 }
-                func = this["inline_" + name + "_pre"];
+                func = this[("inline_" + name + "_pre")];
                 if (typeof func !== "function") {
                     throw new Build.AnalyzerError("inline_" + name + "_pre or inline_" + name + " is not Function");
                 }
@@ -6843,11 +6843,11 @@ var ReVIEW;
             };
             DefaultBuilder.prototype.inlinePost = function (process, name, node) {
                 var func;
-                func = this["inline_" + name];
+                func = this[("inline_" + name)];
                 if (typeof func === "function") {
                     return;
                 }
-                func = this["inline_" + name + "_post"];
+                func = this[("inline_" + name + "_post")];
                 if (typeof func !== "function") {
                     throw new Build.AnalyzerError("inline_" + name + "_post is not Function");
                 }

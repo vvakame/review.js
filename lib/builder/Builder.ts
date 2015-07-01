@@ -201,56 +201,56 @@ module ReVIEW.Build {
 
 		blockPre(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any {
 			var func:Function;
-			func = (<any>this)["block_" + name];
+			func = (<any>this)[`block_${name}`];
 			if (typeof func === "function") {
 				return func.call(this, process, node);
 			}
 
-			func = (<any>this)["block_" + name + "_pre"];
+			func = (<any>this)[`block_${name}_pre`];
 			if (typeof func !== "function") {
-				throw new AnalyzerError("block_" + name + "_pre or block_" + name + " is not Function");
+				throw new AnalyzerError(`block_${name}_pre or block_${name} is not Function`);
 			}
 			return func.call(this, process, node);
 		}
 
 		blockPost(process:BuilderProcess, name:string, node:BlockElementSyntaxTree):any {
 			var func:Function;
-			func = (<any>this)["block_" + name];
+			func = (<any>this)[`block_${name}`];
 			if (typeof func === "function") {
 				return;
 			}
 
-			func = (<any>this)["block_" + name + "_post"];
+			func = (<any>this)[`block_${name}_post`];
 			if (typeof func !== "function") {
-				throw new AnalyzerError("block_" + name + "_post is not Function");
+				throw new AnalyzerError(`block_${name}_post is not Function`);
 			}
 			return func.call(this, process, node);
 		}
 
 		inlinePre(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any {
 			var func:Function;
-			func = (<any>this)["inline_" + name];
+			func = (<any>this)[`inline_${name}`];
 			if (typeof func === "function") {
 				return func.call(this, process, node);
 			}
 
-			func = (<any>this)["inline_" + name + "_pre"];
+			func = (<any>this)[`inline_${name}_pre`];
 			if (typeof func !== "function") {
-				throw new AnalyzerError("inline_" + name + "_pre or inline_" + name + " is not Function");
+				throw new AnalyzerError(`inline_${name}_pre or inline_${name} is not Function`);
 			}
 			return func.call(this, process, node);
 		}
 
 		inlinePost(process:BuilderProcess, name:string, node:InlineElementSyntaxTree):any {
 			var func:Function;
-			func = (<any>this)["inline_" + name];
+			func = (<any>this)[`inline_${name}`];
 			if (typeof func === "function") {
 				return;
 			}
 
-			func = (<any>this)["inline_" + name + "_post"];
+			func = (<any>this)[`inline_${name}_post`];
 			if (typeof func !== "function") {
-				throw new AnalyzerError("inline_" + name + "_post is not Function");
+				throw new AnalyzerError(`inline_${name}_post is not Function`);
 			}
 			return func.call(this, process, node);
 		}
@@ -285,7 +285,7 @@ module ReVIEW.Build {
 			var content = node.args[0].arg;
 			var matches = content.match(/\|(.+)\|/);
 			if (matches && matches[1]) {
-				var target = matches[1].split(",").some(name => this.name.toLowerCase() === name + "builder");
+				var target = matches[1].split(",").some(name => this.name.toLowerCase() === `${name}builder`);
 				if (target) {
 					// "|hoge,fuga| piyo" の場合 matches[1] === "hoge,fuga"
 					process.outRaw(content.substring(matches[0].length));
@@ -300,7 +300,7 @@ module ReVIEW.Build {
 			var content = nodeContentToString(process, node);
 			var matches = content.match(/\|(.+)\|/);
 			if (matches && matches[1]) {
-				var target = matches[1].split(",").some(name => this.name.toLowerCase() === name + "builder");
+				var target = matches[1].split(",").some(name => this.name.toLowerCase() === `${name}builder`);
 				if (target) {
 					// "|hoge,fuga| piyo" の場合 matches[1] === "hoge,fuga"
 					process.outRaw(content.substring(matches[0].length));
