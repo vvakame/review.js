@@ -9112,35 +9112,35 @@ var ReVIEW;
                 });
             };
             HtmlBuilder.prototype.block_indepimage = function (process, node) {
-                var chapterFileName = process.base.chapter.name;
-                var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
-                var imagePath = "images/" + this.escape(chapterName) + "-" + this.escape(node.args[0].arg) + ".png";
-                var caption = "";
-                if (node.args[1]) {
-                    caption = node.args[1].arg;
-                }
-                var scale = 1;
-                if (node.args[2]) {
-                    var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
-                    var result = regexp.exec(node.args[2].arg);
-                    if (result) {
-                        scale = parseFloat(result[1]);
+                return process.findImageFile(node.args[0].arg)
+                    .then(function (imagePath) {
+                    var caption = "";
+                    if (node.args[1]) {
+                        caption = node.args[1].arg;
                     }
-                }
-                process.outRaw("<div class=\"image\">\n");
-                if (scale !== 1) {
-                    process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
-                }
-                else {
-                    process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" />\n");
-                }
-                if (node.args[1]) {
-                    process.outRaw("<p class=\"caption\">\n");
-                    process.out("図: ").out(caption);
-                    process.outRaw("\n</p>\n");
-                }
-                process.outRaw("</div>\n");
-                return false;
+                    var scale = 1;
+                    if (node.args[2]) {
+                        var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
+                        var result = regexp.exec(node.args[2].arg);
+                        if (result) {
+                            scale = parseFloat(result[1]);
+                        }
+                    }
+                    process.outRaw("<div class=\"image\">\n");
+                    if (scale !== 1) {
+                        process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
+                    }
+                    else {
+                        process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" />\n");
+                    }
+                    if (node.args[1]) {
+                        process.outRaw("<p class=\"caption\">\n");
+                        process.out("図: ").out(caption);
+                        process.outRaw("\n</p>\n");
+                    }
+                    process.outRaw("</div>\n");
+                    return false;
+                });
             };
             HtmlBuilder.prototype.inline_img = function (process, node) {
                 var imgNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();

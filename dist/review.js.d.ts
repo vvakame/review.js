@@ -941,7 +941,7 @@ declare module ReVIEW.Build {
         inline_em_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_em_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         block_image(process: BuilderProcess, node: BlockElementSyntaxTree): Promise<boolean>;
-        block_indepimage(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
+        block_indepimage(process: BuilderProcess, node: BlockElementSyntaxTree): Promise<boolean>;
         inline_img(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
         inline_icon(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
         block_footnote(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
