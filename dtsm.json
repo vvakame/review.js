@@ -9,28 +9,30 @@
   "bundle": "typings/bundle.d.ts",
   "dependencies": {
     "jquery/jquery.d.ts": {
-      "ref": "575d70adcad0086ec8c6f672a5eb569a4689486c"
+      "ref": "c7b1128cc9a8f5797bade826e7632b36b06a856c"
     },
     "i18next/i18next.d.ts": {
-      "ref": "575d70adcad0086ec8c6f672a5eb569a4689486c"
+      "ref": "c7b1128cc9a8f5797bade826e7632b36b06a856c"
     },
     "update-notifier/update-notifier.d.ts": {
-      "ref": "575d70adcad0086ec8c6f672a5eb569a4689486c"
-    },
-    "es6-promise/es6-promise.d.ts": {
-      "ref": "575d70adcad0086ec8c6f672a5eb569a4689486c"
+      "ref": "c7b1128cc9a8f5797bade826e7632b36b06a856c"
     },
     "js-yaml/js-yaml.d.ts": {
-      "ref": "575d70adcad0086ec8c6f672a5eb569a4689486c"
+      "ref": "c7b1128cc9a8f5797bade826e7632b36b06a856c"
     },
     "node/node.d.ts": {
-      "ref": "575d70adcad0086ec8c6f672a5eb569a4689486c"
+      "ref": "c7b1128cc9a8f5797bade826e7632b36b06a856c"
     },
     "mocha/mocha.d.ts": {
-      "ref": "575d70adcad0086ec8c6f672a5eb569a4689486c"
+      "ref": "c7b1128cc9a8f5797bade826e7632b36b06a856c"
     },
     "assert/assert.d.ts": {
-      "ref": "575d70adcad0086ec8c6f672a5eb569a4689486c"
+      "ref": "c7b1128cc9a8f5797bade826e7632b36b06a856c"
+    }
+  },
+  "link": {
+    "npm": {
+      "include": true
     }
   }
 }

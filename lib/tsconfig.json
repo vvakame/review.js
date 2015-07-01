@@ -13,6 +13,7 @@
     "filesGlob": [
         "./**/*.ts",
         "!./**/*.d.ts",
+        "../node_modules/typescript/bin/lib.es6.d.ts",
         "../typings/**/*.ts"
     ],
     "files": [
@@ -35,9 +36,9 @@
         "./parser/Walker.ts",
         "./utils/Polyfill.ts",
         "./utils/Utils.ts",
+        "../node_modules/typescript/bin/lib.es6.d.ts",
         "../typings/assert/assert.d.ts",
         "../typings/bundle.d.ts",
-        "../typings/es6-promise/es6-promise.d.ts",
         "../typings/i18next/i18next.d.ts",
         "../typings/jquery/jquery.d.ts",
         "../typings/js-yaml/js-yaml.d.ts",

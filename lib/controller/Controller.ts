@@ -62,7 +62,7 @@ module ReVIEW {
 			if (book.config.listener.onAcceptables(book.acceptableSyntaxes) === false) {
 				// false が帰ってきたら処理を中断する (undefined でも継続)
 				book.config.listener.onCompileFailed();
-				return Promise.reject(null);
+				return Promise.reject<Book>(null);
 			}
 
 			return Promise.resolve(book);
@@ -245,7 +245,7 @@ module ReVIEW {
 			if (err && err.stack) {
 				console.error(err.stack);
 			}
-			return Promise.reject(err);
+			return Promise.reject<Book>(err);
 		}
 	}
 }
