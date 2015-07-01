@@ -6,12 +6,12 @@
 ///<reference path='../../../lib/builder/Builder.ts' />
 ///<reference path='../../../lib/builder/TextBuilder.ts' />
 
-describe("ReVIEW.Buildの", ()=> {
+describe("ReVIEW.Buildの", () => {
 	"use strict";
 
-	it("処理が正しく動くこと", ()=> {
+	it("処理が正しく動くこと", () => {
 		return Test.compile({
-			read: (path:any) => {
+			read: (path: any) => {
 				return Promise.resolve((<any>{
 					"ch01.re": "={ch01} ちゃぷたーだよ\n今日の晩ご飯はラフテーだった",
 					"ch02.re": "={ch02} チャプター2\n参照 @<hd>{ch02} とか\n//list[hoge][fuga]{\ntest\n//}"
@@ -20,8 +20,8 @@ describe("ReVIEW.Buildの", ()=> {
 
 			book: {
 				contents: [
-					{file: "ch01.re"},
-					{file: "ch02.re"}
+					{ file: "ch01.re" },
+					{ file: "ch02.re" }
 				]
 			}
 		}).then(success=> {
@@ -38,21 +38,21 @@ describe("ReVIEW.Buildの", ()=> {
 	});
 
 	describe("DefaultAnalyzerの動作の確認として", () => {
-		it("正しくsymbolの解決が出来る", ()=> {
+		it("正しくsymbolの解決が出来る", () => {
 			return Test.compileSingle("={ch01} chapter01\n@<hd>{ch01}\n@<hd>{missing}")
 				.then(failure=> {
-					var book = failure.book;
-					var missingSymbols = book.contents[0].process.missingSymbols;
-					assert(missingSymbols.length === 1);
-					assert(missingSymbols[0].referenceTo.label === "missing");
-				});
+				var book = failure.book;
+				var missingSymbols = book.contents[0].process.missingSymbols;
+				assert(missingSymbols.length === 1);
+				assert(missingSymbols[0].referenceTo.label === "missing");
+			});
 		});
 	});
 
 	describe("DefaultValidatorの動作の確認として", () => {
-		it("トップレベルのChapterは必ず level 1 であること", ()=> {
+		it("トップレベルのChapterは必ず level 1 であること", () => {
 			return Test.compile({
-				read: (path:any) => {
+				read: (path: any) => {
 					return Promise.resolve((<any>{
 						"ch01.re": "= level 1\n== level2",
 						"ch02.re": "== level 2"
@@ -61,8 +61,8 @@ describe("ReVIEW.Buildの", ()=> {
 
 				book: {
 					contents: [
-						{file: "ch01.re"},
-						{file: "ch02.re"}
+						{ file: "ch01.re" },
+						{ file: "ch02.re" }
 					]
 				}
 			}).then(failure=> {
@@ -73,18 +73,18 @@ describe("ReVIEW.Buildの", ()=> {
 		});
 	});
 
-	describe("DefaultBuilderの動作の確認として", ()=> {
-		it("正常に処理が完了できること", ()=> {
+	describe("DefaultBuilderの動作の確認として", () => {
+		it("正常に処理が完了できること", () => {
 			var builder = new ReVIEW.Build.TextBuilder();
 			return Test.compileSingle(
 				"= hoge\n== fuga\n=== moge\n== piyo\n=== foo\n= bar\n",
-				{builders: [builder]}
-			)
+				{ builders: [builder] }
+				)
 				.then(success=> {
-					var book = success.book;
-					var expected = "■H1■第1章　hoge\n\n■H2■fuga\n\n■H3■moge\n\n■H2■piyo\n\n■H3■foo\n\n■H1■第2章　bar\n\n";
-					assert(book.contents[0].findResultByBuilder(builder) === expected);
-				});
+				var book = success.book;
+				var expected = "■H1■第1章　hoge\n\n■H2■fuga\n\n■H3■moge\n\n■H2■piyo\n\n■H3■foo\n\n■H1■第2章　bar\n\n";
+				assert(book.contents[0].findResultByBuilder(builder) === expected);
+			});
 		});
 	});
 });

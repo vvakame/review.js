@@ -3,10 +3,10 @@
 
 ///<reference path='../../../lib/i18n/i18n.ts' />
 
-describe("ReVIEW.i18nの", ()=> {
+describe("ReVIEW.i18nの", () => {
 	"use strict";
 
-	it("tで正しく文字列が取れること", ()=> {
+	it("tで正しく文字列が取れること", () => {
 		assert(ReVIEW.i18n.t("sample") === "こんちゃーす！");
 
 		ReVIEW.i18n.setup("en");

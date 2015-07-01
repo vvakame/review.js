@@ -7,8 +7,8 @@ module ReVIEW {
 	 * コマンドライン引数を解釈した結果のオプション。
 	 */
 	export interface IOptions {
-		reviewfile?:string;
-		base?:string;
+		reviewfile?: string;
+		base?: string;
 	}
 
 	/**
@@ -18,39 +18,39 @@ module ReVIEW {
 	export interface IConfigRaw {
 		// TODO めんどくさくてまだ書いてない要素がたくさんある
 
-		basePath? :string;
+		basePath?: string;
 
-		read?:(path:string)=>Promise<string>;
-		write?:(path:string, data:string)=>Promise<void>;
+		read?: (path: string) => Promise<string>;
+		write?: (path: string, data: string) => Promise<void>;
 
-		listener?:IConfigListener;
+		listener?: IConfigListener;
 
-		analyzer?:Build.IAnalyzer;
-		validators?:Build.IValidator[];
-		builders?:Build.IBuilder[]; // TODO buildersの存在チェック入れる
+		analyzer?: Build.IAnalyzer;
+		validators?: Build.IValidator[];
+		builders?: Build.IBuilder[]; // TODO buildersの存在チェック入れる
 
-		book:IConfigBook;
+		book: IConfigBook;
 	}
 
 	export interface IConfigListener {
-		onAcceptables?:(acceptableSyntaxes:ReVIEW.Build.AcceptableSyntaxes)=>any;
-		onSymbols?:(symbols:ReVIEW.ISymbol[])=>any;
-		onReports?:(reports:ReVIEW.ProcessReport[])=>any;
+		onAcceptables?: (acceptableSyntaxes: ReVIEW.Build.AcceptableSyntaxes) => any;
+		onSymbols?: (symbols: ReVIEW.ISymbol[]) => any;
+		onReports?: (reports: ReVIEW.ProcessReport[]) => any;
 
-		onCompileSuccess?:(book:ReVIEW.Book)=>void;
-		onCompileFailed?:(book?:ReVIEW.Book)=>void;
+		onCompileSuccess?: (book: ReVIEW.Book) => void;
+		onCompileFailed?: (book?: ReVIEW.Book) => void;
 	}
 
 	export interface IConfigBook {
-		predef?:IConfigChapter[];
-		contents:IConfigPartOrChapter[];
-		appendix?:IConfigChapter[];
-		postdef?:IConfigChapter[];
+		predef?: IConfigChapter[];
+		contents: IConfigPartOrChapter[];
+		appendix?: IConfigChapter[];
+		postdef?: IConfigChapter[];
 	}
 
 	export interface IConfigPartOrChapter {
 		// part or file or chapter のみ来る想定
-		part?:IConfigPart;
+		part?: IConfigPart;
 		chapter?: IConfigChapter;
 		// file は chapter 表記の省略形
 		file?: string;
@@ -70,19 +70,19 @@ module ReVIEW {
 	 */
 	export class BookStructure {
 		// TODO コンストラクタ隠したい
-		constructor(public predef:ContentStructure[], public contents:ContentStructure[], public appendix:ContentStructure[], public postdef:ContentStructure[]) {
+		constructor(public predef: ContentStructure[], public contents: ContentStructure[], public appendix: ContentStructure[], public postdef: ContentStructure[]) {
 			this.predef = this.predef || [];
 			this.contents = this.contents || [];
 			this.appendix = this.appendix || [];
 			this.postdef = this.postdef || [];
 		}
 
-		static createBook(config:IConfigBook) {
+		static createBook(config: IConfigBook) {
 			if (!config) {
 				return new BookStructure(null, null, null, null);
 			}
-			var predef = (config.predef || (<any>config).PREDEF || []).map((v:any /* IConfigChapter */) => ContentStructure.createChapter(v));
-			var contents = (config.contents || (<any>config).CHAPS || []).map((v:any) => {
+			var predef = (config.predef || (<any>config).PREDEF || []).map((v: any /* IConfigChapter */) => ContentStructure.createChapter(v));
+			var contents = (config.contents || (<any>config).CHAPS || []).map((v: any) => {
 				// value は string(YAML由来) か IConfigPartOrChapter
 				if (!v) {
 					return null;
@@ -105,14 +105,14 @@ module ReVIEW {
 					// YAML由来
 					return ContentStructure.createPart({
 						file: Object.keys(v)[0],
-						chapters: v[Object.keys(v)[0]].map((c:any)=>({file: c}))
+						chapters: v[Object.keys(v)[0]].map((c: any) => ({ file: c }))
 					});
 				} else {
 					return null;
 				}
 			});
-			var appendix = (config.appendix || (<any>config).APPENDIX || []).map((v:any /* IConfigChapter */) => ContentStructure.createChapter(v));
-			var postdef = (config.postdef || (<any>config).POSTDEF || []).map((v:any /* IConfigChapter */) => ContentStructure.createChapter(v));
+			var appendix = (config.appendix || (<any>config).APPENDIX || []).map((v: any /* IConfigChapter */) => ContentStructure.createChapter(v));
+			var postdef = (config.postdef || (<any>config).POSTDEF || []).map((v: any /* IConfigChapter */) => ContentStructure.createChapter(v));
 			return new BookStructure(predef, contents, appendix, postdef);
 		}
 	}
@@ -122,16 +122,16 @@ module ReVIEW {
 	 */
 	export class ContentStructure {
 		// TODO コンストラクタ隠したい
-		constructor(public part:IConfigPart, public chapter:IConfigChapter) {
+		constructor(public part: IConfigPart, public chapter: IConfigChapter) {
 		}
 
-		static createChapter(file:string):ContentStructure;
+		static createChapter(file: string): ContentStructure;
 
-		static createChapter(chapter:IConfigChapter):ContentStructure;
+		static createChapter(chapter: IConfigChapter): ContentStructure;
 
-		static createChapter(value:any):ContentStructure {
+		static createChapter(value: any): ContentStructure {
 			if (typeof value === "string") {
-				return new ContentStructure(null, {file: value});
+				return new ContentStructure(null, { file: value });
 			} else if (value && typeof value.file === "string") {
 				return new ContentStructure(null, value);
 			} else {
@@ -139,11 +139,11 @@ module ReVIEW {
 			}
 		}
 
-		static createPart(part:IConfigPart):ContentStructure {
+		static createPart(part: IConfigPart): ContentStructure {
 			if (part) {
-				var p:IConfigPart = {
+				var p: IConfigPart = {
 					file: part.file,
-					chapters: (part.chapters || []).map((c:any) => typeof c === "string" ? {file: c} : c)
+					chapters: (part.chapters || []).map((c: any) => typeof c === "string" ? { file: c } : c)
 				};
 				return new ContentStructure(p, null);
 			} else {

@@ -10,40 +10,40 @@
 
 "use strict";
 
-describe("未解決のエラー", ()=> {
+describe("未解決のエラー", () => {
 	"use strict";
 
-	describe("Builderのパース", ()=> {
-		it.skip("listの中身の途中に改行を含んでいる", ()=> {
-			var files:any = {
+	describe("Builderのパース", () => {
+		it.skip("listの中身の途中に改行を含んでいる", () => {
+			var files: any = {
 				"./ch01.re": "= title\n//list[hoge][きゃぷしょん]{\nalert('hello');\n\n//}\n"
 
 				//死なないパターン
 				//"./ch01.re": "= title\n//list[hoge][きゃぷしょん]{\nalert('hello');\n//}\n"
 			};
-			var result:any = {
+			var result: any = {
 			};
 			var builder = new ReVIEW.Build.TextBuilder();
-			return ReVIEW.start((review)=> {
+			return ReVIEW.start((review) => {
 				review.initConfig({
-					read: (path:string) => {
+					read: (path: string) => {
 						return Promise.resolve(files[path]);
 					},
-					write: (path:string, content:string) => {
+					write: (path: string, content: string) => {
 						result[path] = content;
 						return Promise.resolve<void>(null);
 					},
 
-					compileSuccess: ()=> {
+					compileSuccess: () => {
 					},
-					compileFailed: ()=> {
+					compileFailed: () => {
 					},
 
 					builders: [builder],
 
 					book: {
 						contents: [
-							{file: "ch01.re"}
+							{ file: "ch01.re" }
 						]
 					}
 				});

@@ -23,7 +23,7 @@ module ReVIEW.Build {
 	 * Analyzer内で生成され実際にValidator内でSyntaxTreeの処理を行う処理。
 	 */
 	export interface IAnalyzeProcessor {
-		(process:Process, node:SyntaxTree):any;
+		(process: Process, node: SyntaxTree): any;
 	}
 
 	/**
@@ -31,7 +31,7 @@ module ReVIEW.Build {
 	 * JSON.stringify でJSON化した時、エディタ上での入力補完に活用できるデータが得られる。
 	 */
 	export class AcceptableSyntaxes {
-		constructor(public acceptableSyntaxes:AcceptableSyntax[]) {
+		constructor(public acceptableSyntaxes: AcceptableSyntax[]) {
 		}
 
 		/**
@@ -40,8 +40,8 @@ module ReVIEW.Build {
 		 * @param node
 		 * @returns {AcceptableSyntax[]}
 		 */
-		find(node:SyntaxTree):AcceptableSyntax[] {
-			var results:AcceptableSyntax[];
+		find(node: SyntaxTree): AcceptableSyntax[] {
+			var results: AcceptableSyntax[];
 			if (node instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
 				var inline = node.toInlineElement();
 				results = this.inlines.filter(s => s.symbolName === inline.symbol);
@@ -54,19 +54,19 @@ module ReVIEW.Build {
 			return results;
 		}
 
-		get inlines():AcceptableSyntax[] {
-			return this.acceptableSyntaxes.filter(s=>s.type === SyntaxType.Inline);
+		get inlines(): AcceptableSyntax[] {
+			return this.acceptableSyntaxes.filter(s=> s.type === SyntaxType.Inline);
 		}
 
-		get blocks():AcceptableSyntax[] {
-			return this.acceptableSyntaxes.filter(s=>s.type === SyntaxType.Block);
+		get blocks(): AcceptableSyntax[] {
+			return this.acceptableSyntaxes.filter(s=> s.type === SyntaxType.Block);
 		}
 
-		get others():AcceptableSyntax[] {
-			return this.acceptableSyntaxes.filter(s=>s.type === SyntaxType.Other);
+		get others(): AcceptableSyntax[] {
+			return this.acceptableSyntaxes.filter(s=> s.type === SyntaxType.Other);
 		}
 
-		toJSON():any {
+		toJSON(): any {
 			// そのままJSON化するとAcceptableSyntax.typeの扱いに難儀すると思うので文字列に複合可能なデータを抱き合わせにする
 			return {
 				"rev": "1", // データフォーマットのリビジョン
@@ -80,16 +80,16 @@ module ReVIEW.Build {
 	 * ReVIEW文書として受理可能な要素。
 	 */
 	export class AcceptableSyntax {
-		type:SyntaxType;
-		clazz:any;
-		symbolName:string;
-		argsLength:number[] = [];
-		allowInline:boolean = true;
-		allowFullySyntax:boolean = false;
-		description:string;
-		process:IAnalyzeProcessor;
+		type: SyntaxType;
+		clazz: any;
+		symbolName: string;
+		argsLength: number[] = [];
+		allowInline: boolean = true;
+		allowFullySyntax: boolean = false;
+		description: string;
+		process: IAnalyzeProcessor;
 
-		toJSON():any {
+		toJSON(): any {
 			return {
 				"type": this.type,
 				"class": this.clazz ? this.clazz.name : void 0,
@@ -105,34 +105,34 @@ module ReVIEW.Build {
 	 * 実際に構文木の検査などを行うのはこの後段。
 	 */
 	export interface IAnalyzer {
-		getAcceptableSyntaxes():AcceptableSyntaxes;
+		getAcceptableSyntaxes(): AcceptableSyntaxes;
 	}
 
 	/**
 	 * 1つの構文についての構成要素を組み立てるためのビルダ。
 	 */
 	export interface IAcceptableSyntaxBuilder {
-		setSyntaxType(type:SyntaxType):void;
-		setClass(clazz:any):void;
-		setSymbol(symbolName:string):void;
-		setDescription(description:string):void;
-		checkArgsLength(...argsLength:number[]):void;
-		setAllowInline(enable:boolean):void; // デフォルトtrue
-		setAllowFullySyntax(enable:boolean):void; // デフォルトfalse
+		setSyntaxType(type: SyntaxType): void;
+		setClass(clazz: any): void;
+		setSymbol(symbolName: string): void;
+		setDescription(description: string): void;
+		checkArgsLength(...argsLength: number[]): void;
+		setAllowInline(enable: boolean): void; // デフォルトtrue
+		setAllowFullySyntax(enable: boolean): void; // デフォルトfalse
 
-		processNode(func:IAnalyzeProcessor):void;
+		processNode(func: IAnalyzeProcessor): void;
 	}
 
 	class AnalyzeProcess implements IAcceptableSyntaxBuilder {
-		acceptableSyntaxes:AcceptableSyntax[] = [];
+		acceptableSyntaxes: AcceptableSyntax[] = [];
 
-		current:AcceptableSyntax;
+		current: AcceptableSyntax;
 
 		prepare() {
 			this.current = new AcceptableSyntax();
 		}
 
-		build(methodName:string) {
+		build(methodName: string) {
 			if (methodName.indexOf("block_") === 0) {
 				this.current.type = this.current.type || SyntaxType.Block;
 				this.current.symbolName = this.current.symbolName || methodName.substring("block_".length);
@@ -168,57 +168,57 @@ module ReVIEW.Build {
 			this.acceptableSyntaxes.push(this.current);
 		}
 
-		setSyntaxType(type:SyntaxType) {
+		setSyntaxType(type: SyntaxType) {
 			this.current.type = type;
 		}
 
-		setClass(clazz:any) {
+		setClass(clazz: any) {
 			this.current.clazz = clazz;
 		}
 
-		setSymbol(symbolName:string) {
+		setSymbol(symbolName: string) {
 			this.current.symbolName = symbolName;
 		}
 
-		setDescription(description:string) {
+		setDescription(description: string) {
 			this.current.description = description;
 		}
 
-		checkArgsLength(...argsLength:number[]) {
+		checkArgsLength(...argsLength: number[]) {
 			this.current.argsLength = argsLength;
 		}
 
-		setAllowInline(enable:boolean) {
+		setAllowInline(enable: boolean) {
 			this.current.allowInline = enable;
 		}
 
-		setAllowFullySyntax(enable:boolean) {
+		setAllowFullySyntax(enable: boolean) {
 			this.current.allowFullySyntax = enable;
 		}
 
-		processNode(func:IAnalyzeProcessor) {
+		processNode(func: IAnalyzeProcessor) {
 			this.current.process = func;
 		}
 	}
 
 	export class DefaultAnalyzer implements IAnalyzer {
-		private _acceptableSyntaxes:AcceptableSyntax[];
+		private _acceptableSyntaxes: AcceptableSyntax[];
 
-		getAcceptableSyntaxes():AcceptableSyntaxes {
+		getAcceptableSyntaxes(): AcceptableSyntaxes {
 			if (!this._acceptableSyntaxes) {
 				this._acceptableSyntaxes = this.constructAcceptableSyntaxes();
 			}
 			return new AcceptableSyntaxes(this._acceptableSyntaxes);
 		}
 
-		constructAcceptableSyntaxes():AcceptableSyntax[] {
+		constructAcceptableSyntaxes(): AcceptableSyntax[] {
 			var process = new AnalyzeProcess();
 
 			for (var k in this) {
 				if (typeof (<any>this)[k] !== "function") {
 					continue;
 				}
-				var func:Function = null;
+				var func: Function = null;
 				if (k.indexOf("block_") === 0) {
 					func = (<any>this)[k];
 				} else if (k.indexOf("inline_") === 0) {
@@ -244,13 +244,13 @@ module ReVIEW.Build {
 			return process.acceptableSyntaxes;
 		}
 
-		headline(builder:IAcceptableSyntaxBuilder) {
+		headline(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Other);
 			builder.setClass(ReVIEW.Parse.HeadlineSyntaxTree);
 			builder.setDescription(t("description.headline"));
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toHeadline();
-				var label:string = null;
+				var label: string = null;
 				if (node.label) {
 					label = node.label.arg;
 				} else if (node.caption.childNodes.length === 1) {
@@ -265,11 +265,11 @@ module ReVIEW.Build {
 			});
 		}
 
-		column(builder:IAcceptableSyntaxBuilder) {
+		column(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Other);
 			builder.setClass(ReVIEW.Parse.ColumnSyntaxTree);
 			builder.setDescription(t("description.column"));
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toColumn();
 				node.no = process.nextIndex("column");
 				process.addSymbol({
@@ -279,11 +279,11 @@ module ReVIEW.Build {
 			});
 		}
 
-		ulist(builder:IAcceptableSyntaxBuilder) {
+		ulist(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Other);
 			builder.setClass(ReVIEW.Parse.UlistElementSyntaxTree);
 			builder.setDescription(t("description.ulist"));
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toUlist();
 				process.addSymbol({
 					symbolName: "ul",
@@ -292,11 +292,11 @@ module ReVIEW.Build {
 			});
 		}
 
-		olist(builder:IAcceptableSyntaxBuilder) {
+		olist(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Other);
 			builder.setClass(ReVIEW.Parse.OlistElementSyntaxTree);
 			builder.setDescription(t("description.olist"));
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toOlist();
 				process.addSymbol({
 					symbolName: "ol",
@@ -305,11 +305,11 @@ module ReVIEW.Build {
 			});
 		}
 
-		dlist(builder:IAcceptableSyntaxBuilder) {
+		dlist(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Other);
 			builder.setClass(ReVIEW.Parse.DlistElementSyntaxTree);
 			builder.setDescription(t("description.dlist"));
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toDlist();
 				process.addSymbol({
 					symbolName: "dl",
@@ -318,12 +318,12 @@ module ReVIEW.Build {
 			});
 		}
 
-		block_list(builder:IAcceptableSyntaxBuilder) {
+		block_list(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
 			builder.setSymbol("list");
 			builder.setDescription(t("description.block_list"));
 			builder.checkArgsLength(2);
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toBlockElement();
 				node.no = process.nextIndex("list");
 				process.addSymbol({
@@ -334,12 +334,12 @@ module ReVIEW.Build {
 			});
 		}
 
-		block_listnum(builder:IAcceptableSyntaxBuilder) {
+		block_listnum(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
 			builder.setSymbol("listnum");
 			builder.setDescription(t("description.block_listnum"));
 			builder.checkArgsLength(2);
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toBlockElement();
 				node.no = process.nextIndex("list");
 				process.addSymbol({
@@ -350,11 +350,11 @@ module ReVIEW.Build {
 			});
 		}
 
-		inline_list(builder:IAcceptableSyntaxBuilder) {
+		inline_list(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Inline);
 			builder.setSymbol("list");
 			builder.setDescription(t("description.inline_list"));
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toInlineElement();
 				process.addSymbol({
 					symbolName: node.symbol,
@@ -364,12 +364,12 @@ module ReVIEW.Build {
 			});
 		}
 
-		block_emlist(builder:IAcceptableSyntaxBuilder) {
+		block_emlist(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
 			builder.setSymbol("emlist");
 			builder.setDescription(t("description.block_emlist"));
 			builder.checkArgsLength(0, 1);
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toBlockElement();
 				process.addSymbol({
 					symbolName: node.symbol,
@@ -378,12 +378,12 @@ module ReVIEW.Build {
 			});
 		}
 
-		block_emlistnum(builder:IAcceptableSyntaxBuilder) {
+		block_emlistnum(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
 			builder.setSymbol("emlistnum");
 			builder.setDescription(t("description.block_emlistnum"));
 			builder.checkArgsLength(0);
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toBlockElement();
 				process.addSymbol({
 					symbolName: "emlist",
@@ -392,11 +392,11 @@ module ReVIEW.Build {
 			});
 		}
 
-		inline_hd(builder:IAcceptableSyntaxBuilder) {
+		inline_hd(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Inline);
 			builder.setSymbol("hd");
 			builder.setDescription(t("description.inline_hd"));
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toInlineElement();
 				process.addSymbol({
 					symbolName: node.symbol,
@@ -406,12 +406,12 @@ module ReVIEW.Build {
 			});
 		}
 
-		block_image(builder:IAcceptableSyntaxBuilder) {
+		block_image(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
 			builder.setSymbol("image");
 			builder.setDescription(t("description.block_image"));
 			builder.checkArgsLength(2, 3);
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toBlockElement();
 				node.no = process.nextIndex("image");
 				process.addSymbol({
@@ -422,12 +422,12 @@ module ReVIEW.Build {
 			});
 		}
 
-		block_indepimage(builder:IAcceptableSyntaxBuilder) {
+		block_indepimage(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
 			builder.setSymbol("indepimage");
 			builder.setDescription(t("description.block_indepimage"));
 			builder.checkArgsLength(1, 2, 3);
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toBlockElement();
 				process.addSymbol({
 					symbolName: node.symbol,
@@ -436,11 +436,11 @@ module ReVIEW.Build {
 			});
 		}
 
-		inline_img(builder:IAcceptableSyntaxBuilder) {
+		inline_img(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Inline);
 			builder.setSymbol("img");
 			builder.setDescription(t("description.inline_img"));
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toInlineElement();
 				process.addSymbol({
 					symbolName: node.symbol,
@@ -450,11 +450,11 @@ module ReVIEW.Build {
 			});
 		}
 
-		inline_icon(builder:IAcceptableSyntaxBuilder) {
+		inline_icon(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
 			builder.setSymbol("icon");
 			builder.setDescription(t("description.inline_icon"));
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toInlineElement();
 				process.addSymbol({
 					symbolName: node.symbol,
@@ -463,12 +463,12 @@ module ReVIEW.Build {
 			});
 		}
 
-		block_footnote(builder:IAcceptableSyntaxBuilder) {
+		block_footnote(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
 			builder.setSymbol("footnote");
 			builder.setDescription(t("description.block_footnote"));
 			builder.checkArgsLength(2);
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toBlockElement();
 				node.no = process.nextIndex("footnote");
 				process.addSymbol({
@@ -479,11 +479,11 @@ module ReVIEW.Build {
 			});
 		}
 
-		inline_fn(builder:IAcceptableSyntaxBuilder) {
+		inline_fn(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Inline);
 			builder.setSymbol("fn");
 			builder.setDescription(t("description.inline_fn"));
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toInlineElement();
 				process.addSymbol({
 					symbolName: node.symbol,
@@ -493,12 +493,12 @@ module ReVIEW.Build {
 			});
 		}
 
-		blockDecorationSyntax(builder:IAcceptableSyntaxBuilder, symbol:string, ...argsLength:number[]) {
+		blockDecorationSyntax(builder: IAcceptableSyntaxBuilder, symbol: string, ...argsLength: number[]) {
 			builder.setSyntaxType(SyntaxType.Block);
 			builder.setSymbol(symbol);
 			builder.setDescription(t("description.block_" + symbol));
 			builder.checkArgsLength.apply(builder, argsLength);
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toBlockElement();
 				process.addSymbol({
 					symbolName: node.symbol,
@@ -507,32 +507,32 @@ module ReVIEW.Build {
 			});
 		}
 
-		block_lead(builder:IAcceptableSyntaxBuilder) {
+		block_lead(builder: IAcceptableSyntaxBuilder) {
 			this.blockDecorationSyntax(builder, "lead", 0);
 			builder.setAllowFullySyntax(true);
 		}
 
-		block_noindent(builder:IAcceptableSyntaxBuilder) {
+		block_noindent(builder: IAcceptableSyntaxBuilder) {
 			this.blockDecorationSyntax(builder, "noindent", 0);
 		}
 
-		block_source(builder:IAcceptableSyntaxBuilder) {
+		block_source(builder: IAcceptableSyntaxBuilder) {
 			this.blockDecorationSyntax(builder, "source", 1);
 		}
 
-		block_cmd(builder:IAcceptableSyntaxBuilder) {
+		block_cmd(builder: IAcceptableSyntaxBuilder) {
 			this.blockDecorationSyntax(builder, "cmd", 0);
 		}
 
-		block_quote(builder:IAcceptableSyntaxBuilder) {
+		block_quote(builder: IAcceptableSyntaxBuilder) {
 			this.blockDecorationSyntax(builder, "quote", 0);
 		}
 
-		inlineDecorationSyntax(builder:IAcceptableSyntaxBuilder, symbol:string) {
+		inlineDecorationSyntax(builder: IAcceptableSyntaxBuilder, symbol: string) {
 			builder.setSyntaxType(SyntaxType.Inline);
 			builder.setSymbol(symbol);
 			builder.setDescription(t("description.inline_" + symbol));
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toInlineElement();
 				process.addSymbol({
 					symbolName: node.symbol,
@@ -541,36 +541,36 @@ module ReVIEW.Build {
 			});
 		}
 
-		inline_br(builder:IAcceptableSyntaxBuilder) {
+		inline_br(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "br");
 		}
 
-		inline_ruby(builder:IAcceptableSyntaxBuilder) {
+		inline_ruby(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "ruby");
 		}
 
-		inline_b(builder:IAcceptableSyntaxBuilder) {
+		inline_b(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "b");
 		}
 
-		inline_code(builder:IAcceptableSyntaxBuilder) {
+		inline_code(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "code");
 		}
 
-		inline_tt(builder:IAcceptableSyntaxBuilder) {
+		inline_tt(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "tt");
 		}
 
-		inline_href(builder:IAcceptableSyntaxBuilder) {
+		inline_href(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "href");
 		}
 
-		block_label(builder:IAcceptableSyntaxBuilder) {
+		block_label(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
 			builder.setSymbol("label");
 			builder.setDescription(t("description.block_label"));
 			builder.checkArgsLength(1);
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toBlockElement();
 				node.no = process.nextIndex("label");
 				process.addSymbol({
@@ -581,52 +581,52 @@ module ReVIEW.Build {
 			});
 		}
 
-		inline_u(builder:IAcceptableSyntaxBuilder) {
+		inline_u(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "u");
 		}
 
-		inline_kw(builder:IAcceptableSyntaxBuilder) {
+		inline_kw(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "kw");
 		}
 
-		inline_em(builder:IAcceptableSyntaxBuilder) {
+		inline_em(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "em");
 		}
 
-		inline_tti(builder:IAcceptableSyntaxBuilder) {
+		inline_tti(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "tti");
 		}
 
-		inline_ttb(builder:IAcceptableSyntaxBuilder) {
+		inline_ttb(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "ttb");
 		}
 
-		inline_ami(builder:IAcceptableSyntaxBuilder) {
+		inline_ami(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "ami");
 		}
 
-		inline_bou(builder:IAcceptableSyntaxBuilder) {
+		inline_bou(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "bou");
 		}
 
-		inline_i(builder:IAcceptableSyntaxBuilder) {
+		inline_i(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "i");
 		}
 
-		inline_strong(builder:IAcceptableSyntaxBuilder) {
+		inline_strong(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "strong");
 		}
 
-		inline_uchar(builder:IAcceptableSyntaxBuilder) {
+		inline_uchar(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "uchar");
 		}
 
-		block_table(builder:IAcceptableSyntaxBuilder) {
+		block_table(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
 			builder.setSymbol("table");
 			builder.setDescription(t("description.block_table"));
 			builder.checkArgsLength(2);
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toBlockElement();
 				node.no = process.nextIndex("table");
 				process.addSymbol({
@@ -637,11 +637,11 @@ module ReVIEW.Build {
 			});
 		}
 
-		inline_table(builder:IAcceptableSyntaxBuilder) {
+		inline_table(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Inline);
 			builder.setSymbol("table");
 			builder.setDescription(t("description.inline_table"));
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toInlineElement();
 				process.addSymbol({
 					symbolName: node.symbol,
@@ -651,11 +651,11 @@ module ReVIEW.Build {
 			});
 		}
 
-		block_tsize(builder:IAcceptableSyntaxBuilder) {
+		block_tsize(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
 			builder.setDescription(t("description.block_tsize"));
 			builder.checkArgsLength(1);
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toBlockElement();
 				process.addSymbol({
 					symbolName: node.symbol,
@@ -664,12 +664,12 @@ module ReVIEW.Build {
 			});
 		}
 
-		block_raw(builder:IAcceptableSyntaxBuilder) {
+		block_raw(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
 			builder.setSymbol("raw");
 			builder.setDescription(t("description.block_raw"));
 			builder.checkArgsLength(1);
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toBlockElement();
 				process.addSymbol({
 					symbolName: node.symbol,
@@ -678,11 +678,11 @@ module ReVIEW.Build {
 			});
 		}
 
-		inline_raw(builder:IAcceptableSyntaxBuilder) {
+		inline_raw(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Inline);
 			builder.setSymbol("raw");
 			builder.setDescription(t("description.inline_raw"));
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toInlineElement();
 				process.addSymbol({
 					symbolName: node.symbol,
@@ -691,12 +691,12 @@ module ReVIEW.Build {
 			});
 		}
 
-		block_comment(builder:IAcceptableSyntaxBuilder) {
+		block_comment(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Block);
 			builder.setSymbol("comment");
 			builder.setDescription(t("description.block_comment"));
 			builder.checkArgsLength(0);
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toBlockElement();
 				process.addSymbol({
 					symbolName: node.symbol,
@@ -705,11 +705,11 @@ module ReVIEW.Build {
 			});
 		}
 
-		inline_comment(builder:IAcceptableSyntaxBuilder) {
+		inline_comment(builder: IAcceptableSyntaxBuilder) {
 			builder.setSyntaxType(SyntaxType.Inline);
 			builder.setSymbol("comment");
 			builder.setDescription(t("description.inline_comment"));
-			builder.processNode((process, n)=> {
+			builder.processNode((process, n) => {
 				var node = n.toInlineElement();
 				process.addSymbol({
 					symbolName: node.symbol,

@@ -19,7 +19,7 @@ module ReVIEW.Build {
 	 * 構文木の組み換えを行う機会を提供する。
 	 */
 	export interface IPreprocessor {
-		start(book:Book, acceptableSyntaxes:AcceptableSyntaxes):void;
+		start(book: Book, acceptableSyntaxes: AcceptableSyntaxes): void;
 	}
 
 	/**
@@ -31,9 +31,9 @@ module ReVIEW.Build {
 	 * AcceptableSyntaxes にしたがって処理する。
 	 */
 	export class SyntaxPreprocessor implements IPreprocessor {
-		acceptableSyntaxes:AcceptableSyntaxes;
+		acceptableSyntaxes: AcceptableSyntaxes;
 
-		start(book:Book) {
+		start(book: Book) {
 			this.acceptableSyntaxes = book.acceptableSyntaxes;
 
 			book.predef.forEach(chunk=> this.preprocessChunk(chunk));
@@ -42,19 +42,19 @@ module ReVIEW.Build {
 			book.postdef.forEach(chunk=> this.preprocessChunk(chunk));
 		}
 
-		preprocessChunk(chunk:ContentChunk) {
+		preprocessChunk(chunk: ContentChunk) {
 			ReVIEW.visit(chunk.tree.ast, {
-				visitDefaultPre: (node:SyntaxTree)=> {
+				visitDefaultPre: (node: SyntaxTree) => {
 				},
-				visitColumnPre: (node:ColumnSyntaxTree)=> {
+				visitColumnPre: (node: ColumnSyntaxTree) => {
 					this.preprocessColumnSyntax(chunk, node);
 				},
-				visitBlockElementPre: (node:BlockElementSyntaxTree) => {
+				visitBlockElementPre: (node: BlockElementSyntaxTree) => {
 					this.preprocessBlockSyntax(chunk, node);
 				}
 			});
 
-			chunk.nodes.forEach(chunk=>this.preprocessChunk(chunk));
+			chunk.nodes.forEach(chunk=> this.preprocessChunk(chunk));
 		}
 
 		/**
@@ -64,8 +64,8 @@ module ReVIEW.Build {
 		 * @param chunk
 		 * @param column
 		 */
-		preprocessColumnSyntax(chunk:ContentChunk, column:ColumnSyntaxTree) {
-			function reconstruct(parent:NodeSyntaxTree, target:ChapterSyntaxTree, to = column.parentNode.toChapter()) {
+		preprocessColumnSyntax(chunk: ContentChunk, column: ColumnSyntaxTree) {
+			function reconstruct(parent: NodeSyntaxTree, target: ChapterSyntaxTree, to = column.parentNode.toChapter()) {
 				if (target.level <= to.level) {
 					reconstruct(parent.parentNode.toNode(), target, to.parentNode.toChapter());
 					return;
@@ -77,12 +77,12 @@ module ReVIEW.Build {
 
 			// 組み換え
 			ReVIEW.visit(column, {
-				visitDefaultPre: (node:SyntaxTree)=> {
+				visitDefaultPre: (node: SyntaxTree) => {
 				},
-				visitColumnPre: (node:ColumnSyntaxTree)=> {
+				visitColumnPre: (node: ColumnSyntaxTree) => {
 					// TODO ここに来たらエラーにするべき
 				},
-				visitChapterPre: (node:ChapterSyntaxTree) => {
+				visitChapterPre: (node: ChapterSyntaxTree) => {
 					if (column.level < node.headline.level) {
 						return;
 					}
@@ -94,21 +94,21 @@ module ReVIEW.Build {
 
 			// parentNode を設定
 			ReVIEW.visit(chunk.tree.ast, {
-				visitDefaultPre: (ast:SyntaxTree, parent:SyntaxTree)=> {
+				visitDefaultPre: (ast: SyntaxTree, parent: SyntaxTree) => {
 					ast.parentNode = parent;
 				}
 			});
 			// prev, next を設定
 			ReVIEW.visit(chunk.tree.ast, {
-				visitDefaultPre: (ast:SyntaxTree, parent:SyntaxTree)=> {
+				visitDefaultPre: (ast: SyntaxTree, parent: SyntaxTree) => {
 				},
-				visitChapterPre: (ast:ChapterSyntaxTree) => {
+				visitChapterPre: (ast: ChapterSyntaxTree) => {
 					ast.text.forEach((node, i, nodes) => {
 						node.prev = nodes[i - 1];
 						node.next = nodes[i + 1];
 					});
 				},
-				visitNodePre: (ast:NodeSyntaxTree) => {
+				visitNodePre: (ast: NodeSyntaxTree) => {
 					ast.childNodes.forEach((node, i, nodes) => {
 						node.prev = nodes[i - 1];
 						node.next = nodes[i + 1];
@@ -124,7 +124,7 @@ module ReVIEW.Build {
 		 * @param chapter
 		 * @param node
 		 */
-		preprocessBlockSyntax(chunk:ContentChunk, node:BlockElementSyntaxTree) {
+		preprocessBlockSyntax(chunk: ContentChunk, node: BlockElementSyntaxTree) {
 			if (node.childNodes.length === 0) {
 				return;
 			}
@@ -142,16 +142,16 @@ module ReVIEW.Build {
 			} else if (syntax.allowInline) {
 				// inline構文のみ許可(Paragraphは殺す
 				// inline以外の構文は叩き潰してTextにmergeする
-				var info:{
+				var info: {
 					offset: number;
 					line: number;
 					column: number;
 				};
-				var resultNodes:SyntaxTree[] = [];
-				var lastNode:SyntaxTree;
+				var resultNodes: SyntaxTree[] = [];
+				var lastNode: SyntaxTree;
 				node.childNodes.forEach(node=> {
 					ReVIEW.visit(node, {
-						visitDefaultPre: (node:SyntaxTree) => {
+						visitDefaultPre: (node: SyntaxTree) => {
 							if (!info) {
 								info = {
 									offset: node.offset,
@@ -161,7 +161,7 @@ module ReVIEW.Build {
 							}
 							lastNode = node;
 						},
-						visitInlineElementPre: (node:InlineElementSyntaxTree) => {
+						visitInlineElementPre: (node: InlineElementSyntaxTree) => {
 							var textNode = new TextNodeSyntaxTree({
 								syntax: "BlockElementContentText",
 								offset: info.offset,
@@ -178,7 +178,7 @@ module ReVIEW.Build {
 					});
 				});
 				if (info) {
-					(()=> {
+					(() => {
 						var textNode = new TextNodeSyntaxTree({
 							syntax: "BlockElementContentText",
 							offset: info.offset,
@@ -194,7 +194,7 @@ module ReVIEW.Build {
 				node.childNodes = resultNodes;
 
 			} else {
-				(()=> {
+				(() => {
 					// 全て不許可(テキスト化
 					var first = node.childNodes[0];
 					var last = node.childNodes[node.childNodes.length - 1];

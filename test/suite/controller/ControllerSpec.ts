@@ -4,30 +4,30 @@
 ///<reference path='../../../lib/model/CompilerModel.ts' />
 ///<reference path='../../../lib/builder/TextBuilder.ts' />
 
-describe("ReVIEW.Controllerの", ()=> {
+describe("ReVIEW.Controllerの", () => {
 	"use strict";
 
-	it("処理が正しく動くこと", ()=> {
-		var files:any = {
+	it("処理が正しく動くこと", () => {
+		var files: any = {
 			"ch01.re": "={ch01} ちゃぷたーだよ\n今日の晩ご飯はラフテーだった",
 			"ch02.re": "={ch02} チャプター2\n参照 @<hd>{ch02} とか\n//list[hoge][fuga]{\ntest\n//}"
 		};
-		var result:any = {
+		var result: any = {
 		};
 		return ReVIEW.start(review => {
 			review.initConfig({
-				read: (path:string) => {
+				read: (path: string) => {
 					return Promise.resolve(files[path]);
 				},
-				write: (path:string, content:any) => {
+				write: (path: string, content: any) => {
 					result[path] = content;
 					return Promise.resolve<void>(null);
 				},
 
 				listener: {
-					onCompileSuccess: ()=> {
+					onCompileSuccess: () => {
 					},
-					onCompileFailed: ()=> {
+					onCompileFailed: () => {
 					}
 				},
 
@@ -35,8 +35,8 @@ describe("ReVIEW.Controllerの", ()=> {
 
 				book: {
 					contents: [
-						{file: "ch01.re"},
-						{file: "ch02.re"}
+						{ file: "ch01.re" },
+						{ file: "ch02.re" }
 					]
 				}
 			});
@@ -51,27 +51,27 @@ describe("ReVIEW.Controllerの", ()=> {
 		});
 	});
 
-	it("章番号の連番が正しく振られること", ()=> {
-		var files:any = {
+	it("章番号の連番が正しく振られること", () => {
+		var files: any = {
 			"ch01.re": "={ch01} 章1",
 			"ch02.re": "={ch02} 章2"
 		};
-		var result:any = {
+		var result: any = {
 		};
 		return ReVIEW.start(review => {
 			review.initConfig({
-				read: (path:string) => {
+				read: (path: string) => {
 					return Promise.resolve(files[path]);
 				},
-				write: (path:string, content:any) => {
+				write: (path: string, content: any) => {
 					result[path] = content;
 					return Promise.resolve<void>(null);
 				},
 
 				listener: {
-					onCompileSuccess: ()=> {
+					onCompileSuccess: () => {
 					},
-					onCompileFailed: ()=> {
+					onCompileFailed: () => {
 					}
 				},
 
@@ -79,8 +79,8 @@ describe("ReVIEW.Controllerの", ()=> {
 
 				book: {
 					contents: [
-						{file: "ch01.re"},
-						{file: "ch02.re"}
+						{ file: "ch01.re" },
+						{ file: "ch02.re" }
 					]
 				}
 			});

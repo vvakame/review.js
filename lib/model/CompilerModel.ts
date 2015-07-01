@@ -14,26 +14,26 @@ module ReVIEW {
 	 * 参照先についての情報。
 	 */
 	export interface IReferenceTo {
-		part?:ContentChunk;
-		partName:string;
-		chapter?:ContentChunk;
-		chapterName:string;
-		targetSymbol:string;
-		label:string;
+		part?: ContentChunk;
+		partName: string;
+		chapter?: ContentChunk;
+		chapterName: string;
+		targetSymbol: string;
+		label: string;
 		// 上記情報から解決した結果のNode
-		referenceNode?:ReVIEW.Parse.SyntaxTree;
+		referenceNode?: ReVIEW.Parse.SyntaxTree;
 	}
 
 	/**
 	 * シンボルについての情報。
 	 */
 	export interface ISymbol {
-		part?:ContentChunk;
-		chapter?:ContentChunk;
-		symbolName:string;
-		labelName?:string;
-		referenceTo?:IReferenceTo;
-		node:ReVIEW.Parse.SyntaxTree;
+		part?: ContentChunk;
+		chapter?: ContentChunk;
+		symbolName: string;
+		labelName?: string;
+		referenceTo?: IReferenceTo;
+		node: ReVIEW.Parse.SyntaxTree;
 	}
 
 	/**
@@ -49,7 +49,7 @@ module ReVIEW {
 	 * 処理時に発生したレポート。
 	 */
 	export class ProcessReport {
-		constructor(public level:ReportLevel, public part:ContentChunk, public chapter:ContentChunk, public message:string, public nodes:Parse.SyntaxTree[] = []) {
+		constructor(public level: ReportLevel, public part: ContentChunk, public chapter: ContentChunk, public message: string, public nodes: Parse.SyntaxTree[] = []) {
 		}
 	}
 
@@ -57,17 +57,17 @@ module ReVIEW {
 	 * コンパイル処理時の出力ハンドリング。
 	 */
 	export class BookProcess {
-		reports:ProcessReport[] = [];
+		reports: ProcessReport[] = [];
 
-		info(message:string) {
+		info(message: string) {
 			this.reports.push(new ProcessReport(ReportLevel.Info, null, null, message));
 		}
 
-		warn(message:string) {
+		warn(message: string) {
 			this.reports.push(new ProcessReport(ReportLevel.Warning, null, null, message));
 		}
 
-		error(message:string) {
+		error(message: string) {
 			this.reports.push(new ProcessReport(ReportLevel.Error, null, null, message));
 		}
 	}
@@ -76,27 +76,27 @@ module ReVIEW {
 	 * コンパイル処理時の出力ハンドリング。
 	 */
 	export class Process {
-		symbols:ISymbol[] = [];
-		indexCounter:{ [kind:string]:number;} = {};
-		afterProcess:Function[] = [];
-		private _reports:ProcessReport[] = [];
+		symbols: ISymbol[] = [];
+		indexCounter: { [kind: string]: number; } = {};
+		afterProcess: Function[] = [];
+		private _reports: ProcessReport[] = [];
 
-		constructor(public part:ContentChunk, public chapter:ContentChunk, public input:string) {
+		constructor(public part: ContentChunk, public chapter: ContentChunk, public input: string) {
 		}
 
-		info(message:string, ...nodes:Parse.SyntaxTree[]) {
+		info(message: string, ...nodes: Parse.SyntaxTree[]) {
 			this._reports.push(new ProcessReport(ReportLevel.Info, this.part, this.chapter, message, nodes));
 		}
 
-		warn(message:string, ...nodes:Parse.SyntaxTree[]) {
+		warn(message: string, ...nodes: Parse.SyntaxTree[]) {
 			this._reports.push(new ProcessReport(ReportLevel.Warning, this.part, this.chapter, message, nodes));
 		}
 
-		error(message:string, ...nodes:Parse.SyntaxTree[]) {
+		error(message: string, ...nodes: Parse.SyntaxTree[]) {
 			this._reports.push(new ProcessReport(ReportLevel.Error, this.part, this.chapter, message, nodes));
 		}
 
-		nextIndex(kind:string) {
+		nextIndex(kind: string) {
 			var nextIndex = this.indexCounter[kind];
 			if (typeof nextIndex === "undefined") {
 				nextIndex = 1;
@@ -107,8 +107,8 @@ module ReVIEW {
 			return nextIndex;
 		}
 
-		get reports():ProcessReport[] {
-			return this._reports.sort((a:ProcessReport, b:ProcessReport) => {
+		get reports(): ProcessReport[] {
+			return this._reports.sort((a: ProcessReport, b: ProcessReport) => {
 				if (a.nodes.length === 0 && b.nodes.length === 0) {
 					return 0;
 				} else if (a.nodes.length === 0) {
@@ -121,14 +121,14 @@ module ReVIEW {
 			});
 		}
 
-		addSymbol(symbol:ISymbol) {
+		addSymbol(symbol: ISymbol) {
 			symbol.part = this.part;
 			symbol.chapter = this.chapter;
 			this.symbols.push(symbol);
 		}
 
-		get missingSymbols():ISymbol[] {
-			var result:ISymbol[] = [];
+		get missingSymbols(): ISymbol[] {
+			var result: ISymbol[] = [];
 			this.symbols.forEach(symbol=> {
 				if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
 					result.push(symbol);
@@ -137,11 +137,11 @@ module ReVIEW {
 			return result;
 		}
 
-		constructReferenceTo(node:ReVIEW.Parse.InlineElementSyntaxTree, value:string, targetSymbol?:string, separator?:string):IReferenceTo;
+		constructReferenceTo(node: ReVIEW.Parse.InlineElementSyntaxTree, value: string, targetSymbol?: string, separator?: string): IReferenceTo;
 
-		constructReferenceTo(node:ReVIEW.Parse.BlockElementSyntaxTree, value:string, targetSymbol:string, separator?:string):IReferenceTo;
+		constructReferenceTo(node: ReVIEW.Parse.BlockElementSyntaxTree, value: string, targetSymbol: string, separator?: string): IReferenceTo;
 
-		constructReferenceTo(node:any, value:string, targetSymbol = node.symbol, separator = "|"):IReferenceTo {
+		constructReferenceTo(node: any, value: string, targetSymbol = node.symbol, separator = "|"): IReferenceTo {
 			var splitted = value.split(separator);
 			if (splitted.length === 3) {
 				return {
@@ -174,58 +174,58 @@ module ReVIEW {
 			}
 		}
 
-		addAfterProcess(func:Function) {
+		addAfterProcess(func: Function) {
 			this.afterProcess.push(func);
 		}
 
 		doAfterProcess() {
-			this.afterProcess.forEach((func)=>func());
+			this.afterProcess.forEach((func) => func());
 			this.afterProcess = [];
 		}
 	}
 
 	export class BuilderProcess {
 
-		constructor(public builder:ReVIEW.Build.IBuilder, public base:Process) {
+		constructor(public builder: ReVIEW.Build.IBuilder, public base: Process) {
 		}
 
-		get info():(message:string, ...nodes:Parse.SyntaxTree[])=>void {
+		get info(): (message: string, ...nodes: Parse.SyntaxTree[]) => void {
 			return this.base.info.bind(this.base);
 		}
 
-		get warn():(message:string, ...nodes:Parse.SyntaxTree[])=>void {
+		get warn(): (message: string, ...nodes: Parse.SyntaxTree[]) => void {
 			return this.base.warn.bind(this.base);
 		}
 
-		get error():(message:string, ...nodes:Parse.SyntaxTree[])=>void {
+		get error(): (message: string, ...nodes: Parse.SyntaxTree[]) => void {
 			return this.base.error.bind(this.base);
 		}
 
-		result:string = "";
+		result: string = "";
 
-		out(data:any):BuilderProcess {
+		out(data: any): BuilderProcess {
 			// 最近のブラウザだと単純結合がアホみたいに早いらしいので
 			this.result += this.builder.escape(data);
 			return this;
 		}
 
-		outRaw(data:any):BuilderProcess {
+		outRaw(data: any): BuilderProcess {
 			// 最近のブラウザだと単純結合がアホみたいに早いらしいので
 			this.result += data;
 			return this;
 		}
 
 		// TODO pushOut いみふ感高いのでやめよう 削除だ！
-		pushOut(data:string):BuilderProcess {
+		pushOut(data: string): BuilderProcess {
 			this.result = data + this.result;
 			return this;
 		}
 
-		get input():string {
+		get input(): string {
 			return this.base.input;
 		}
 
-		get symbols():ISymbol[] {
+		get symbols(): ISymbol[] {
 			return this.base.symbols;
 		}
 
@@ -236,14 +236,14 @@ module ReVIEW {
 		 * @param id
 		 * @returns {Promise<string>}
 		 */
-		findImageFile(id:string):Promise<string> {
+		findImageFile(id: string): Promise<string> {
 			// NOTE: https://github.com/kmuto/review/wiki/ImagePath
 			// 4軸マトリクス 画像dir, ビルダ有無, chapId位置, 拡張子
 
 			var config = (this.base.part || this.base.chapter).book.config;
 
-			var fileNameList:string[] = [];
-			(()=> {
+			var fileNameList: string[] = [];
+			(() => {
 				var imageDirList = ["images/"];
 				var builderList = [this.builder.extention + "/", ""];
 				var chapSeparatorList = ["/", "-"];
@@ -285,20 +285,20 @@ module ReVIEW {
 	 * 本全体を表す。
 	 */
 	export class Book {
-		process:BookProcess = new BookProcess();
-		acceptableSyntaxes:ReVIEW.Build.AcceptableSyntaxes;
+		process: BookProcess = new BookProcess();
+		acceptableSyntaxes: ReVIEW.Build.AcceptableSyntaxes;
 
-		predef:ContentChunk[] = [];
-		contents:ContentChunk[] = [];
-		appendix:ContentChunk[] = [];
-		postdef:ContentChunk[] = [];
+		predef: ContentChunk[] = [];
+		contents: ContentChunk[] = [];
+		appendix: ContentChunk[] = [];
+		postdef: ContentChunk[] = [];
 
-		constructor(public config:Config) {
+		constructor(public config: Config) {
 		}
 
-		get allChunks():ContentChunk[] {
-			var tmpArray:ContentChunk[] = [];
-			var add = (chunk:ContentChunk) => {
+		get allChunks(): ContentChunk[] {
+			var tmpArray: ContentChunk[] = [];
+			var add = (chunk: ContentChunk) => {
 				tmpArray.push(chunk);
 				chunk.nodes.forEach(chunk => add(chunk));
 			};
@@ -311,10 +311,10 @@ module ReVIEW {
 			return tmpArray;
 		}
 
-		get reports():ProcessReport[] {
-			var results:ProcessReport[] = [];
+		get reports(): ProcessReport[] {
+			var results: ProcessReport[] = [];
 			results = results.concat(this.process.reports);
-			var gatherReports = (chunk:ContentChunk) => {
+			var gatherReports = (chunk: ContentChunk) => {
 				results = results.concat(chunk.process.reports);
 				chunk.nodes.forEach(chunk => gatherReports(chunk));
 			};
@@ -325,32 +325,32 @@ module ReVIEW {
 			return results;
 		}
 
-		get hasError():boolean {
+		get hasError(): boolean {
 			return this.reports.some(report => report.level === ReportLevel.Error);
 		}
 
-		get hasWarning():boolean {
+		get hasWarning(): boolean {
 			return this.reports.some(report => report.level === ReportLevel.Warning);
 		}
 	}
 
 	export class ContentChunk {
-		parent:ContentChunk;
-		nodes:ContentChunk[] = [];
+		parent: ContentChunk;
+		nodes: ContentChunk[] = [];
 
-		no:number;
-		name:string;
-		_input:string; // TODO get, set やめる
-		tree:{ast:ReVIEW.Parse.SyntaxTree;cst:ReVIEW.Parse.IConcreatSyntaxTree;};
+		no: number;
+		name: string;
+		_input: string; // TODO get, set やめる
+		tree: { ast: ReVIEW.Parse.SyntaxTree; cst: ReVIEW.Parse.IConcreatSyntaxTree; };
 
-		process:Process;
-		builderProcesses:BuilderProcess[] = [];
+		process: Process;
+		builderProcesses: BuilderProcess[] = [];
 
-		constructor(book:Book, parent:ContentChunk, name:string);
+		constructor(book: Book, parent: ContentChunk, name: string);
 
-		constructor(book:Book, name:string);
+		constructor(book: Book, name: string);
 
-		constructor(public book:Book, parent:any, name?:any) {
+		constructor(public book: Book, parent: any, name?: any) {
 			if (parent instanceof ContentChunk) {
 				this.parent = parent;
 				this.name = name;
@@ -360,8 +360,8 @@ module ReVIEW {
 				this.name = parent;
 			}
 
-			var part:ContentChunk = parent ? parent : null;
-			var chapter:ContentChunk = this; // TODO thisがpartでchapterが無しの場合もあるよ…！！
+			var part: ContentChunk = parent ? parent : null;
+			var chapter: ContentChunk = this; // TODO thisがpartでchapterが無しの場合もあるよ…！！
 			this.process = new Process(part, chapter, null);
 		}
 
@@ -369,24 +369,24 @@ module ReVIEW {
 			return this._input;
 		}
 
-		set input(value:string) {
+		set input(value: string) {
 			// TODO やめる
 			this._input = value;
 			this.process.input = value;
 		}
 
-		createBuilderProcess(builder:ReVIEW.Build.IBuilder):BuilderProcess {
+		createBuilderProcess(builder: ReVIEW.Build.IBuilder): BuilderProcess {
 			var builderProcess = new BuilderProcess(builder, this.process);
 			this.builderProcesses.push(builderProcess);
 			return builderProcess;
 		}
 
-		findResultByBuilder(builderName:string):string;
+		findResultByBuilder(builderName: string): string;
 
-		findResultByBuilder(builder:ReVIEW.Build.IBuilder):string;
+		findResultByBuilder(builder: ReVIEW.Build.IBuilder): string;
 
-		findResultByBuilder(builder:any):string {
-			var founds:BuilderProcess[];
+		findResultByBuilder(builder: any): string {
+			var founds: BuilderProcess[];
 			if (typeof builder === "string") {
 				founds = this.builderProcesses.filter(process => process.builder.name === builder);
 			} else {

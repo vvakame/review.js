@@ -25,12 +25,12 @@
 // extend lib.d.ts declaration.
 /* tslint:disable:interface-name */
 interface String {
-	trimLeft():string;
+	trimLeft(): string;
 }
 /* tslint:enable:interface-name */
 
 // AMD用
-declare var define:any;
+declare var define: any;
 
 module ReVIEW {
 	"use strict";
@@ -41,7 +41,7 @@ module ReVIEW {
 	 * @param options
 	 * @returns {Book}
 	 */
-	export function start(setup:(review:Controller)=>void, options?:ReVIEW.IOptions):Promise<Book> {
+	export function start(setup: (review: Controller) => void, options?: ReVIEW.IOptions): Promise<Book> {
 		var controller = new Controller(options);
 		// setup 中で initConfig が呼び出される
 		setup(controller);

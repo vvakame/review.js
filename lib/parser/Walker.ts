@@ -30,7 +30,7 @@ module ReVIEW {
 	 * @param ast
 	 * @param actor
 	 */
-	export function walk(ast:SyntaxTree, actor:(ast:SyntaxTree)=>SyntaxTree) {
+	export function walk(ast: SyntaxTree, actor: (ast: SyntaxTree) => SyntaxTree) {
 		var next = actor(ast);
 		if (next) {
 			walk(next, actor);
@@ -44,8 +44,8 @@ module ReVIEW {
 	 * @param ast
 	 * @param v
 	 */
-	export function visit(ast:SyntaxTree, v:ITreeVisitor):void {
-		_visit(()=> new SyncTaskPool<void>(), ast, v);
+	export function visit(ast: SyntaxTree, v: ITreeVisitor): void {
+		_visit(() => new SyncTaskPool<void>(), ast, v);
 	}
 
 	/**
@@ -55,53 +55,53 @@ module ReVIEW {
 	 * @param ast
 	 * @param v
 	 */
-	export function visitAsync(ast:SyntaxTree, v:ITreeVisitor):Promise<void> {
-		return Promise.resolve(_visit(()=> new AsyncTaskPool<void>(), ast, v));
+	export function visitAsync(ast: SyntaxTree, v: ITreeVisitor): Promise<void> {
+		return Promise.resolve(_visit(() => new AsyncTaskPool<void>(), ast, v));
 	}
 
-	function _visit(poolGenerator:()=>ITaskPool<void>, ast:SyntaxTree, v:ITreeVisitor):any {
-		var newV:ITreeVisitor = {
+	function _visit(poolGenerator: () => ITaskPool<void>, ast: SyntaxTree, v: ITreeVisitor): any {
+		var newV: ITreeVisitor = {
 			visitDefaultPre: v.visitDefaultPre,
-			visitDefaultPost: v.visitDefaultPost || (()=> {
+			visitDefaultPost: v.visitDefaultPost || (() => {
 			}),
 			visitBlockElementPre: v.visitBlockElementPre || v.visitNodePre || v.visitDefaultPre,
-			visitBlockElementPost: v.visitBlockElementPost || v.visitNodePost || v.visitDefaultPost || (()=> {
+			visitBlockElementPost: v.visitBlockElementPost || v.visitNodePost || v.visitDefaultPost || (() => {
 			}),
 			visitInlineElementPre: v.visitInlineElementPre || v.visitNodePre || v.visitDefaultPre,
-			visitInlineElementPost: v.visitInlineElementPost || v.visitNodePost || v.visitDefaultPost || (()=> {
+			visitInlineElementPost: v.visitInlineElementPost || v.visitNodePost || v.visitDefaultPost || (() => {
 			}),
 			visitNodePre: v.visitNodePre || v.visitDefaultPre,
-			visitNodePost: v.visitNodePost || v.visitDefaultPost || (()=> {
+			visitNodePost: v.visitNodePost || v.visitDefaultPost || (() => {
 			}),
 			visitArgumentPre: v.visitArgumentPre || v.visitDefaultPre,
-			visitArgumentPost: v.visitArgumentPost || v.visitDefaultPost || (()=> {
+			visitArgumentPost: v.visitArgumentPost || v.visitDefaultPost || (() => {
 			}),
 			visitChapterPre: v.visitChapterPre || v.visitNodePre || v.visitDefaultPre,
-			visitChapterPost: v.visitChapterPost || v.visitNodePost || v.visitDefaultPost || (()=> {
+			visitChapterPost: v.visitChapterPost || v.visitNodePost || v.visitDefaultPost || (() => {
 			}),
 			visitParagraphPre: v.visitParagraphPre || v.visitNodePre || v.visitDefaultPre,
-			visitParagraphPost: v.visitParagraphPost || v.visitNodePost || (()=> {
+			visitParagraphPost: v.visitParagraphPost || v.visitNodePost || (() => {
 			}),
 			visitHeadlinePre: v.visitHeadlinePre || v.visitDefaultPre,
-			visitHeadlinePost: v.visitHeadlinePost || v.visitDefaultPost || (()=> {
+			visitHeadlinePost: v.visitHeadlinePost || v.visitDefaultPost || (() => {
 			}),
 			visitUlistPre: v.visitUlistPre || v.visitNodePre || v.visitDefaultPre,
-			visitUlistPost: v.visitUlistPost || v.visitNodePost || v.visitDefaultPost || (()=> {
+			visitUlistPost: v.visitUlistPost || v.visitNodePost || v.visitDefaultPost || (() => {
 			}),
 			visitOlistPre: v.visitOlistPre || v.visitDefaultPre,
-			visitOlistPost: v.visitOlistPost || v.visitDefaultPost || (()=> {
+			visitOlistPost: v.visitOlistPost || v.visitDefaultPost || (() => {
 			}),
 			visitDlistPre: v.visitDlistPre || v.visitDefaultPre,
-			visitDlistPost: v.visitDlistPost || v.visitDefaultPost || (()=> {
+			visitDlistPost: v.visitDlistPost || v.visitDefaultPost || (() => {
 			}),
 			visitColumnPre: v.visitColumnPre || v.visitNodePre || v.visitDefaultPre,
-			visitColumnPost: v.visitColumnPost || v.visitNodePost || v.visitDefaultPost || (()=> {
+			visitColumnPost: v.visitColumnPost || v.visitNodePost || v.visitDefaultPost || (() => {
 			}),
 			visitColumnHeadlinePre: v.visitColumnHeadlinePre || v.visitDefaultPre,
-			visitColumnHeadlinePost: v.visitColumnHeadlinePost || v.visitDefaultPost || (()=> {
+			visitColumnHeadlinePost: v.visitColumnHeadlinePost || v.visitDefaultPost || (() => {
 			}),
 			visitTextPre: v.visitTextPre || v.visitDefaultPre,
-			visitTextPost: v.visitTextPost || v.visitDefaultPost || (()=> {
+			visitTextPost: v.visitTextPost || v.visitDefaultPost || (() => {
 			})
 		};
 		newV.visitDefaultPre = newV.visitDefaultPre.bind(v);
@@ -134,258 +134,258 @@ module ReVIEW {
 		return _visitSub(poolGenerator, null, ast, newV);
 	}
 
-	function _visitSub(poolGenerator:()=>ITaskPool<void>, parent:SyntaxTree, ast:SyntaxTree, v:ITreeVisitor):any {
+	function _visitSub(poolGenerator: () => ITaskPool<void>, parent: SyntaxTree, ast: SyntaxTree, v: ITreeVisitor): any {
 		if (ast instanceof ReVIEW.Parse.BlockElementSyntaxTree) {
-			return (()=> {
+			return (() => {
 				var block = ast.toBlockElement();
 				var pool = poolGenerator();
 				var ret = v.visitBlockElementPre(block, parent);
 				pool.handle(ret, {
-					next: ()=> {
-						block.args.forEach((next)=> {
-							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+					next: () => {
+						block.args.forEach((next) => {
+							pool.add(() => _visitSub(poolGenerator, ast, next, v));
 						});
-						block.childNodes.forEach((next)=> {
-							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+						block.childNodes.forEach((next) => {
+							pool.add(() => _visitSub(poolGenerator, ast, next, v));
 						});
 					},
-					func: ()=> {
+					func: () => {
 						ret(v);
 					}
 				});
-				pool.add(()=> v.visitBlockElementPost(block, parent));
+				pool.add(() => v.visitBlockElementPost(block, parent));
 				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.InlineElementSyntaxTree) {
-			return (()=> {
+			return (() => {
 				var inline = ast.toInlineElement();
 				var pool = poolGenerator();
 				var ret = v.visitInlineElementPre(inline, parent);
 				pool.handle(ret, {
-					next: ()=> {
-						inline.childNodes.forEach((next)=> {
-							pool.add(()=>_visitSub(poolGenerator, ast, next, v));
+					next: () => {
+						inline.childNodes.forEach((next) => {
+							pool.add(() => _visitSub(poolGenerator, ast, next, v));
 						});
 					},
-					func: ()=> {
+					func: () => {
 						ret(v);
 					}
 				});
-				pool.add(()=> v.visitInlineElementPost(inline, parent));
+				pool.add(() => v.visitInlineElementPost(inline, parent));
 				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.ArgumentSyntaxTree) {
-			return (()=> {
+			return (() => {
 				var arg = ast.toArgument();
 				var pool = poolGenerator();
 				var ret = v.visitArgumentPre(arg, parent);
 				pool.handle(ret, {
-					next: ()=> {
+					next: () => {
 					},
-					func: ()=> {
+					func: () => {
 						ret(v);
 					}
 				});
-				pool.add(()=> v.visitArgumentPost(arg, parent));
+				pool.add(() => v.visitArgumentPost(arg, parent));
 				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.ChapterSyntaxTree) {
-			return (()=> {
+			return (() => {
 				var chap = ast.toChapter();
 				var pool = poolGenerator();
 				var ret = v.visitChapterPre(chap, parent);
 				pool.handle(ret, {
-					next: ()=> {
-						pool.add(()=> _visitSub(poolGenerator, ast, chap.headline, v));
+					next: () => {
+						pool.add(() => _visitSub(poolGenerator, ast, chap.headline, v));
 						if (chap.text) {
-							chap.text.forEach((next)=> {
-								pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+							chap.text.forEach((next) => {
+								pool.add(() => _visitSub(poolGenerator, ast, next, v));
 							});
 						}
-						chap.childNodes.forEach((next)=> {
-							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+						chap.childNodes.forEach((next) => {
+							pool.add(() => _visitSub(poolGenerator, ast, next, v));
 						});
 					},
-					func: ()=> {
+					func: () => {
 						ret(v);
 					}
 				});
-				pool.add(()=> v.visitChapterPost(chap, parent));
+				pool.add(() => v.visitChapterPost(chap, parent));
 				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.HeadlineSyntaxTree) {
-			return (()=> {
+			return (() => {
 				var head = ast.toHeadline();
 				var pool = poolGenerator();
 				var ret = v.visitHeadlinePre(head, parent);
 				pool.handle(ret, {
-					next: ()=> {
-						pool.add(()=>_visitSub(poolGenerator, ast, head.label, v));
-						pool.add(()=>_visitSub(poolGenerator, ast, head.caption, v));
+					next: () => {
+						pool.add(() => _visitSub(poolGenerator, ast, head.label, v));
+						pool.add(() => _visitSub(poolGenerator, ast, head.caption, v));
 					},
-					func: ()=> {
+					func: () => {
 						ret(v);
 					}
 				});
-				pool.add(()=> v.visitHeadlinePost(head, parent));
+				pool.add(() => v.visitHeadlinePost(head, parent));
 				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.ColumnSyntaxTree) {
-			return (()=> {
+			return (() => {
 				var column = ast.toColumn();
 				var pool = poolGenerator();
 				var ret = v.visitColumnPre(column, parent);
 				pool.handle(ret, {
-					next: ()=> {
-						pool.add(()=> _visitSub(poolGenerator, ast, column.headline, v));
+					next: () => {
+						pool.add(() => _visitSub(poolGenerator, ast, column.headline, v));
 						if (column.text) {
-							column.text.forEach((next)=> {
-								pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+							column.text.forEach((next) => {
+								pool.add(() => _visitSub(poolGenerator, ast, next, v));
 							});
 						}
 					},
-					func: ()=> {
+					func: () => {
 						ret(v);
 					}
 				});
-				pool.add(()=> v.visitColumnPost(column, parent));
+				pool.add(() => v.visitColumnPost(column, parent));
 				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.ColumnHeadlineSyntaxTree) {
-			return (()=> {
+			return (() => {
 				var columnHead = ast.toColumnHeadline();
 				var pool = poolGenerator();
 				var ret = v.visitColumnHeadlinePre(columnHead, parent);
 				pool.handle(ret, {
-					next: ()=> {
-						pool.add(()=>_visitSub(poolGenerator, ast, columnHead.caption, v));
+					next: () => {
+						pool.add(() => _visitSub(poolGenerator, ast, columnHead.caption, v));
 					},
-					func: ()=> {
+					func: () => {
 						ret(v);
 					}
 				});
-				pool.add(()=> v.visitColumnHeadlinePost(columnHead, parent));
+				pool.add(() => v.visitColumnHeadlinePost(columnHead, parent));
 				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.UlistElementSyntaxTree) {
-			return (()=> {
+			return (() => {
 				var ul = ast.toUlist();
 				var pool = poolGenerator();
 				var ret = v.visitUlistPre(ul, parent);
 				pool.handle(ret, {
-					next: ()=> {
-						pool.add(()=> _visitSub(poolGenerator, ast, ul.text, v));
-						ul.childNodes.forEach((next)=> {
-							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+					next: () => {
+						pool.add(() => _visitSub(poolGenerator, ast, ul.text, v));
+						ul.childNodes.forEach((next) => {
+							pool.add(() => _visitSub(poolGenerator, ast, next, v));
 						});
 					},
-					func: ()=> {
+					func: () => {
 						ret(v);
 					}
 				});
-				pool.add(()=> v.visitUlistPost(ul, parent));
+				pool.add(() => v.visitUlistPost(ul, parent));
 				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.OlistElementSyntaxTree) {
-			return (()=> {
+			return (() => {
 				var ol = ast.toOlist();
 				var pool = poolGenerator();
 				var ret = v.visitOlistPre(ol, parent);
 				pool.handle(ret, {
-					next: ()=> {
-						pool.add(()=>_visitSub(poolGenerator, ast, ol.text, v));
+					next: () => {
+						pool.add(() => _visitSub(poolGenerator, ast, ol.text, v));
 					},
-					func: ()=> {
+					func: () => {
 						ret(v);
 					}
 				});
-				pool.add(()=> v.visitOlistPost(ol, parent));
+				pool.add(() => v.visitOlistPost(ol, parent));
 				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.DlistElementSyntaxTree) {
-			return (()=> {
+			return (() => {
 				var dl = ast.toDlist();
 				var pool = poolGenerator();
 				var ret = v.visitDlistPre(dl, parent);
 				pool.handle(ret, {
-					next: ()=> {
-						pool.add(()=> _visitSub(poolGenerator, ast, dl.text, v));
-						pool.add(()=> _visitSub(poolGenerator, ast, dl.content, v));
+					next: () => {
+						pool.add(() => _visitSub(poolGenerator, ast, dl.text, v));
+						pool.add(() => _visitSub(poolGenerator, ast, dl.content, v));
 					},
-					func: ()=> {
+					func: () => {
 						ret(v);
 					}
 				});
-				pool.add(()=> v.visitDlistPost(dl, parent));
+				pool.add(() => v.visitDlistPost(dl, parent));
 				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree && (ast.ruleName === ReVIEW.Parse.RuleName.Paragraph || ast.ruleName === ReVIEW.Parse.RuleName.BlockElementParagraph)) {
-			return (()=> {
+			return (() => {
 				var node = ast.toNode();
 				var pool = poolGenerator();
 				var ret = v.visitParagraphPre(node, parent);
 				pool.handle(ret, {
-					next: ()=> {
-						node.childNodes.forEach((next)=> {
-							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+					next: () => {
+						node.childNodes.forEach((next) => {
+							pool.add(() => _visitSub(poolGenerator, ast, next, v));
 						});
 					},
-					func: ()=> {
+					func: () => {
 						ret(v);
 					}
 				});
-				pool.add(()=> v.visitParagraphPost(node, parent));
+				pool.add(() => v.visitParagraphPost(node, parent));
 				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.NodeSyntaxTree) {
-			return (()=> {
+			return (() => {
 				var node = ast.toNode();
 				var pool = poolGenerator();
 				var ret = v.visitNodePre(node, parent);
 				pool.handle(ret, {
-					next: ()=> {
-						node.childNodes.forEach((next)=> {
-							pool.add(()=> _visitSub(poolGenerator, ast, next, v));
+					next: () => {
+						node.childNodes.forEach((next) => {
+							pool.add(() => _visitSub(poolGenerator, ast, next, v));
 						});
 					},
-					func: ()=> {
+					func: () => {
 						ret(v);
 					}
 				});
-				pool.add(()=> v.visitNodePost(node, parent));
+				pool.add(() => v.visitNodePost(node, parent));
 				return pool.consume();
 			})();
 		} else if (ast instanceof ReVIEW.Parse.TextNodeSyntaxTree) {
-			return (()=> {
+			return (() => {
 				var text = ast.toTextNode();
 				var pool = poolGenerator();
 				var ret = v.visitTextPre(text, parent);
 				pool.handle(ret, {
-					next: ()=> {
+					next: () => {
 					},
-					func: ()=> {
+					func: () => {
 						ret(v);
 					}
 				});
-				pool.add(()=> v.visitTextPost(text, parent));
+				pool.add(() => v.visitTextPost(text, parent));
 				return pool.consume();
 			})();
 		} else if (ast) {
-			return (()=> {
+			return (() => {
 				var pool = poolGenerator();
 				var ret = v.visitDefaultPre(parent, ast);
 				pool.handle(ret, {
-					next: ()=> {
+					next: () => {
 					},
-					func: ()=> {
+					func: () => {
 						ret(v);
 					}
 				});
-				pool.add(()=> v.visitDefaultPost(parent, ast));
+				pool.add(() => v.visitDefaultPost(parent, ast));
 				return pool.consume();
 			})();
 		} else {
-			return (()=> {
+			return (() => {
 				var pool = poolGenerator();
 				return pool.consume();
 			})();
@@ -401,34 +401,34 @@ module ReVIEW {
 	 * Function を返した時、子要素の探索を行う代わりにその関数が実行される。Functionには引数として実行中のTreeVisitorが渡される。
 	 */
 	export interface ITreeVisitor {
-		visitDefaultPre(node:SyntaxTree, parent:SyntaxTree):any;
-		visitDefaultPost?(node:SyntaxTree, parent:SyntaxTree):void;
-		visitNodePre?(node:NodeSyntaxTree, parent:SyntaxTree):any;
-		visitNodePost?(node:NodeSyntaxTree, parent:SyntaxTree):void;
-		visitBlockElementPre?(node:BlockElementSyntaxTree, parent:SyntaxTree):any;
-		visitBlockElementPost?(node:BlockElementSyntaxTree, parent:SyntaxTree):void;
-		visitInlineElementPre?(node:InlineElementSyntaxTree, parent:SyntaxTree):any;
-		visitInlineElementPost?(node:InlineElementSyntaxTree, parent:SyntaxTree):void;
-		visitArgumentPre?(node:ArgumentSyntaxTree, parent:SyntaxTree):any;
-		visitArgumentPost?(node:ArgumentSyntaxTree, parent:SyntaxTree):void;
-		visitChapterPre?(node:ChapterSyntaxTree, parent:SyntaxTree):any;
-		visitChapterPost?(node:ChapterSyntaxTree, parent:SyntaxTree):void;
-		visitParagraphPre?(node:NodeSyntaxTree, parent:SyntaxTree):any;
-		visitParagraphPost?(node:NodeSyntaxTree, parent:SyntaxTree):void;
-		visitHeadlinePre?(node:HeadlineSyntaxTree, parent:SyntaxTree):any;
-		visitHeadlinePost?(node:HeadlineSyntaxTree, parent:SyntaxTree):void;
-		visitUlistPre?(node:UlistElementSyntaxTree, parent:SyntaxTree):any;
-		visitUlistPost?(node:UlistElementSyntaxTree, parent:SyntaxTree):void;
-		visitOlistPre?(node:OlistElementSyntaxTree, parent:SyntaxTree):any;
-		visitOlistPost?(node:OlistElementSyntaxTree, parent:SyntaxTree):void;
-		visitDlistPre?(node:DlistElementSyntaxTree, parent:SyntaxTree):any;
-		visitDlistPost?(node:DlistElementSyntaxTree, parent:SyntaxTree):void;
-		visitColumnPre?(node:ColumnSyntaxTree, parent:SyntaxTree):any;
-		visitColumnPost?(node:ColumnSyntaxTree, parent:SyntaxTree):void;
-		visitColumnHeadlinePre?(node:ColumnHeadlineSyntaxTree, parent:SyntaxTree):any;
-		visitColumnHeadlinePost?(node:ColumnHeadlineSyntaxTree, parent:SyntaxTree):void;
-		visitTextPre?(node:TextNodeSyntaxTree, parent:SyntaxTree):any;
-		visitTextPost?(node:TextNodeSyntaxTree, parent:SyntaxTree):void;
+		visitDefaultPre(node: SyntaxTree, parent: SyntaxTree): any;
+		visitDefaultPost?(node: SyntaxTree, parent: SyntaxTree): void;
+		visitNodePre?(node: NodeSyntaxTree, parent: SyntaxTree): any;
+		visitNodePost?(node: NodeSyntaxTree, parent: SyntaxTree): void;
+		visitBlockElementPre?(node: BlockElementSyntaxTree, parent: SyntaxTree): any;
+		visitBlockElementPost?(node: BlockElementSyntaxTree, parent: SyntaxTree): void;
+		visitInlineElementPre?(node: InlineElementSyntaxTree, parent: SyntaxTree): any;
+		visitInlineElementPost?(node: InlineElementSyntaxTree, parent: SyntaxTree): void;
+		visitArgumentPre?(node: ArgumentSyntaxTree, parent: SyntaxTree): any;
+		visitArgumentPost?(node: ArgumentSyntaxTree, parent: SyntaxTree): void;
+		visitChapterPre?(node: ChapterSyntaxTree, parent: SyntaxTree): any;
+		visitChapterPost?(node: ChapterSyntaxTree, parent: SyntaxTree): void;
+		visitParagraphPre?(node: NodeSyntaxTree, parent: SyntaxTree): any;
+		visitParagraphPost?(node: NodeSyntaxTree, parent: SyntaxTree): void;
+		visitHeadlinePre?(node: HeadlineSyntaxTree, parent: SyntaxTree): any;
+		visitHeadlinePost?(node: HeadlineSyntaxTree, parent: SyntaxTree): void;
+		visitUlistPre?(node: UlistElementSyntaxTree, parent: SyntaxTree): any;
+		visitUlistPost?(node: UlistElementSyntaxTree, parent: SyntaxTree): void;
+		visitOlistPre?(node: OlistElementSyntaxTree, parent: SyntaxTree): any;
+		visitOlistPost?(node: OlistElementSyntaxTree, parent: SyntaxTree): void;
+		visitDlistPre?(node: DlistElementSyntaxTree, parent: SyntaxTree): any;
+		visitDlistPost?(node: DlistElementSyntaxTree, parent: SyntaxTree): void;
+		visitColumnPre?(node: ColumnSyntaxTree, parent: SyntaxTree): any;
+		visitColumnPost?(node: ColumnSyntaxTree, parent: SyntaxTree): void;
+		visitColumnHeadlinePre?(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree): any;
+		visitColumnHeadlinePost?(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree): void;
+		visitTextPre?(node: TextNodeSyntaxTree, parent: SyntaxTree): any;
+		visitTextPost?(node: TextNodeSyntaxTree, parent: SyntaxTree): void;
 	}
 
 	/**
@@ -436,22 +436,22 @@ module ReVIEW {
 	 * 構造が汚いのでexportしないこと。
 	 */
 	interface ITaskPool<T> {
-		add(value:()=>T):void;
-		handle(value:any, statements:{next: ()=>void;func:()=>void;}):void;
-		consume():any; // T | Promise<T[]>
+		add(value: () => T): void;
+		handle(value: any, statements: { next: () => void; func: () => void; }): void;
+		consume(): any; // T | Promise<T[]>
 	}
 
 	/**
 	 * 同期化処理をそのまま同期処理として扱うためのヘルパクラス。
 	 */
 	class SyncTaskPool<T> implements ITaskPool<T> {
-		tasks:{(): T;}[] = [];
+		tasks: { (): T; }[] = [];
 
-		add(value:()=>T):void {
+		add(value: () => T): void {
 			this.tasks.push(value);
 		}
 
-		handle(value:any, statements:{next: ()=>void;func:()=>void;}):void {
+		handle(value: any, statements: { next: () => void; func: () => void; }): void {
 			if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
 				statements.next();
 			} else if (typeof value === "function") {
@@ -459,7 +459,7 @@ module ReVIEW {
 			}
 		}
 
-		consume():T[] {
+		consume(): T[] {
 			return this.tasks.map(task => task());
 		}
 	}
@@ -472,30 +472,30 @@ module ReVIEW {
 	 * pool.consume().then(()=> ...);
 	 */
 	class AsyncTaskPool<T> implements ITaskPool<T> {
-		tasks:{():Promise<T>;}[] = [];
+		tasks: { (): Promise<T>; }[] = [];
 
-		add(value:()=>T):void;
+		add(value: () => T): void;
 
-		add(task:()=>Promise<T>):void;
+		add(task: () => Promise<T>): void;
 
-		add(value:()=>any) {
-			this.tasks.push(()=> Promise.resolve(value()));
+		add(value: () => any) {
+			this.tasks.push(() => Promise.resolve(value()));
 		}
 
-		handle(value:any, statements:{next: ()=>void;func:()=>void;}):void {
+		handle(value: any, statements: { next: () => void; func: () => void; }): void {
 			if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
 				statements.next();
 			} else if (value && typeof value.then === "function") {
-				this.tasks.push(()=> Promise.resolve(value));
+				this.tasks.push(() => Promise.resolve(value));
 			} else if (typeof value === "function") {
 				statements.func();
 			}
 		}
 
-		consume():Promise<T[]> {
-			var promise = new Promise<T[]>((resolve, reject)=> {
-				var result:T[] = [];
-				var next = ()=> {
+		consume(): Promise<T[]> {
+			var promise = new Promise<T[]>((resolve, reject) => {
+				var result: T[] = [];
+				var next = () => {
 					var func = this.tasks.shift();
 					if (!func) {
 						resolve(result);

@@ -15,15 +15,15 @@ module ReVIEW.Parse {
 	 * @param input
 	 * @returns {{ast: NodeSyntaxTree, cst: *}}
 	 */
-	export function parse(input:string):{ast:NodeSyntaxTree;cst:IConcreatSyntaxTree;} {
+	export function parse(input: string): { ast: NodeSyntaxTree; cst: IConcreatSyntaxTree; } {
 		var rawResult = PEG.parse(input);
 		var root = transform(rawResult).toNode();
 
 		// ParagraphSubs は構文上の都合であるだけのものなので潰す
 		ReVIEW.visit(root, {
-			visitDefaultPre: (ast:SyntaxTree)=> {
+			visitDefaultPre: (ast: SyntaxTree) => {
 			},
-			visitParagraphPre: (ast:NodeSyntaxTree) => {
+			visitParagraphPre: (ast: NodeSyntaxTree) => {
 				var subs = ast.childNodes[0].toNode();
 				ast.childNodes = subs.childNodes;
 			}
@@ -32,38 +32,38 @@ module ReVIEW.Parse {
 		// Chapter を Headline の level に応じて構造を組み替える
 		//   level 2 は level 1 の下に来るようにしたい
 		if (root.childNodes.length !== 0) {
-			reconstruct(root.childNodes[0].toNode(), (chapter:ChapterSyntaxTree)=> chapter.headline.level);
+			reconstruct(root.childNodes[0].toNode(), (chapter: ChapterSyntaxTree) => chapter.headline.level);
 		}
 		// Ulist もChapter 同様の level 構造があるので同じように処理したい
-		var ulistSet:NodeSyntaxTree[] = [];
+		var ulistSet: NodeSyntaxTree[] = [];
 		ReVIEW.visit(root, {
-			visitDefaultPre: (ast:SyntaxTree)=> {
+			visitDefaultPre: (ast: SyntaxTree) => {
 				if (ast.ruleName === RuleName.Ulist) {
 					ulistSet.push(ast.toNode());
 				}
 			}
 		});
-		ulistSet.forEach((ulist)=> {
-			reconstruct(ulist, (ulistElement:UlistElementSyntaxTree)=> ulistElement.level);
+		ulistSet.forEach((ulist) => {
+			reconstruct(ulist, (ulistElement: UlistElementSyntaxTree) => ulistElement.level);
 		});
 
 		// parentNode を設定
 		ReVIEW.visit(root, {
-			visitDefaultPre: (ast:SyntaxTree, parent:SyntaxTree)=> {
+			visitDefaultPre: (ast: SyntaxTree, parent: SyntaxTree) => {
 				ast.parentNode = parent;
 			}
 		});
 		// prev, next を設定
 		ReVIEW.visit(root, {
-			visitDefaultPre: (ast:SyntaxTree, parent:SyntaxTree)=> {
+			visitDefaultPre: (ast: SyntaxTree, parent: SyntaxTree) => {
 			},
-			visitChapterPre: (ast:ChapterSyntaxTree) => {
+			visitChapterPre: (ast: ChapterSyntaxTree) => {
 				ast.text.forEach((node, i, nodes) => {
 					node.prev = nodes[i - 1];
 					node.next = nodes[i + 1];
 				});
 			},
-			visitNodePre: (ast:NodeSyntaxTree) => {
+			visitNodePre: (ast: NodeSyntaxTree) => {
 				ast.childNodes.forEach((node, i, nodes) => {
 					node.prev = nodes[i - 1];
 					node.next = nodes[i + 1];
@@ -81,11 +81,11 @@ module ReVIEW.Parse {
 	 * @param rawResult
 	 * @returns {*}
 	 */
-	export function transform(rawResult:IConcreatSyntaxTree):SyntaxTree {
+	export function transform(rawResult: IConcreatSyntaxTree): SyntaxTree {
 		if (!rawResult) {
 			return null;
 		}
-		var rule:number = (<any>RuleName)[rawResult.syntax];
+		var rule: number = (<any>RuleName)[rawResult.syntax];
 		if (typeof rule === "undefined") {
 			throw new ParseError(rawResult, "unknown rule: " + rawResult.syntax);
 		}
@@ -157,16 +157,16 @@ module ReVIEW.Parse {
 	 * @param node
 	 * @param pickLevel
 	 */
-	function reconstruct(node:NodeSyntaxTree, pickLevel:(ast:NodeSyntaxTree)=>number) {
+	function reconstruct(node: NodeSyntaxTree, pickLevel: (ast: NodeSyntaxTree) => number) {
 		var originalChildNodes = node.childNodes;
 
-		var nodeSets:{parent:NodeSyntaxTree; children:NodeSyntaxTree[];}[] = [];
-		var currentSet:{parent:NodeSyntaxTree; children:NodeSyntaxTree[];} = {
+		var nodeSets: { parent: NodeSyntaxTree; children: NodeSyntaxTree[]; }[] = [];
+		var currentSet: { parent: NodeSyntaxTree; children: NodeSyntaxTree[]; } = {
 			parent: null,
 			children: []
 		};
 
-		originalChildNodes.forEach((child:NodeSyntaxTree)=> {
+		originalChildNodes.forEach((child: NodeSyntaxTree) => {
 			if (child.ruleName === RuleName.SinglelineComment) {
 				currentSet.children.push(child);
 			} else if (!currentSet.parent) {
@@ -201,9 +201,9 @@ module ReVIEW.Parse {
 	 * 構文解析時に発生したエラー。
 	 */
 	export class ParseError implements Error {
-		name:string;
+		name: string;
 
-		constructor(public syntax:IConcreatSyntaxTree, public message:string) {
+		constructor(public syntax: IConcreatSyntaxTree, public message: string) {
 			if ((<any>Error).captureStackTrace) {
 				(<any>Error).captureStackTrace(this, ParseError);
 			}
@@ -224,17 +224,17 @@ module ReVIEW.Parse {
 
 		// Ruleによっては
 		headline?: any;
-		text?:any;
-		level?:number;
-		label?:any;
-		cmd?:any;
-		caption?:any;
-		symbol?:any;
-		args?:any;
-		content?:any;
-		contents?:any;
-		arg?:any;
-		no?:any;
+		text?: any;
+		level?: number;
+		label?: any;
+		cmd?: any;
+		caption?: any;
+		symbol?: any;
+		args?: any;
+		content?: any;
+		contents?: any;
+		arg?: any;
+		no?: any;
 	}
 
 	/**
@@ -289,18 +289,18 @@ module ReVIEW.Parse {
 	 * 構文解析後の少し加工したデータ。
 	 */
 	export class SyntaxTree {
-		parentNode:SyntaxTree;
-		offset:number;
-		line:number;
-		column:number;
-		endPos:number;
-		ruleName:RuleName;
+		parentNode: SyntaxTree;
+		offset: number;
+		line: number;
+		column: number;
+		endPos: number;
+		ruleName: RuleName;
 		// analyzer 中で設定する項目
-		no:number;
-		prev:SyntaxTree;
-		next:SyntaxTree;
+		no: number;
+		prev: SyntaxTree;
+		next: SyntaxTree;
 
-		constructor(data:IConcreatSyntaxTree) {
+		constructor(data: IConcreatSyntaxTree) {
 			this.ruleName = (<any>RuleName)[data.syntax];
 			if (typeof this.ruleName === "undefined") {
 				throw new ParseError(data, "unknown rule: " + data.syntax);
@@ -311,9 +311,9 @@ module ReVIEW.Parse {
 			this.endPos = data.endPos;
 		}
 
-		toJSON():any {
-			var result:any = {};
-			var lowPriorities:{():void;}[] = [];
+		toJSON(): any {
+			var result: any = {};
+			var lowPriorities: { (): void; }[] = [];
 			for (var k in this) {
 				if (k === "ruleName") {
 					result[k] = (<any>RuleName)[this.ruleName];
@@ -321,8 +321,8 @@ module ReVIEW.Parse {
 					// 無視する
 				} else if (k === "childNodes") {
 					// childNodesが先に来ると見づらいので
-					lowPriorities.push(((k:string)=> {
-						return ()=> {
+					lowPriorities.push(((k: string) => {
+						return () => {
 							result[k] = (<any>this)[k];
 						};
 					})(k));
@@ -332,11 +332,11 @@ module ReVIEW.Parse {
 					result[k] = (<any>this)[k];
 				}
 			}
-			lowPriorities.forEach(fn=>fn());
+			lowPriorities.forEach(fn=> fn());
 			return result;
 		}
 
-		toString(indentLevel:number = 0):string {
+		toString(indentLevel: number = 0): string {
 			var result = this.makeIndent(indentLevel) + "SyntaxTree:[\n";
 			result += this.makeIndent(indentLevel + 1) + "offset = " + this.offset + ",\n";
 			result += this.makeIndent(indentLevel + 1) + "line=" + this.line + ",\n";
@@ -348,7 +348,7 @@ module ReVIEW.Parse {
 			return result;
 		}
 
-		makeIndent(indentLevel:number) {
+		makeIndent(indentLevel: number) {
 			var indent = "";
 			for (var i = 0; i < indentLevel; i++) {
 				indent += "  ";
@@ -356,7 +356,7 @@ module ReVIEW.Parse {
 			return indent;
 		}
 
-		toStringHook(indentLevel:number, result:string) {
+		toStringHook(indentLevel: number, result: string) {
 		}
 
 		/**
@@ -364,7 +364,7 @@ module ReVIEW.Parse {
 		 * @param value
 		 * @returns {*=}
 		 */
-		checkNumber(value:any):number {
+		checkNumber(value: any): number {
 			if (typeof value !== "number") {
 				throw new Error("number required. actual:" + (typeof value) + ":" + value);
 			} else {
@@ -377,7 +377,7 @@ module ReVIEW.Parse {
 		 * @param value
 		 * @returns {*=}
 		 */
-		checkString(value:any):string {
+		checkString(value: any): string {
 			if (typeof value !== "string") {
 				throw new Error("string required. actual:" + (typeof value) + ":" + value);
 			} else {
@@ -390,7 +390,7 @@ module ReVIEW.Parse {
 		 * @param value
 		 * @returns {*=}
 		 */
-		checkObject(value:any):any {
+		checkObject(value: any): any {
 			if (typeof value !== "object") {
 				throw new Error("object required. actual:" + (typeof value) + ":" + value);
 			} else {
@@ -403,7 +403,7 @@ module ReVIEW.Parse {
 		 * @param value
 		 * @returns {*=}
 		 */
-		checkArray(value:any):any[] {
+		checkArray(value: any): any[] {
 			if (!Array.isArray(value)) {
 				throw new Error("array required. actual:" + (typeof value) + ":" + value);
 			} else {
@@ -411,52 +411,52 @@ module ReVIEW.Parse {
 			}
 		}
 
-		private checkSyntaxType(clazz:any):boolean {
+		private checkSyntaxType(clazz: any): boolean {
 			return this instanceof clazz;
 		}
 
 
-		isNode():boolean {
+		isNode(): boolean {
 			return this.checkSyntaxType(NodeSyntaxTree);
 		}
 
-		isBlockElement():boolean {
+		isBlockElement(): boolean {
 			return this.checkSyntaxType(BlockElementSyntaxTree);
 		}
 
-		isInlineElement():boolean {
+		isInlineElement(): boolean {
 			return this.checkSyntaxType(InlineElementSyntaxTree);
 		}
 
-		isArgument():boolean {
+		isArgument(): boolean {
 			return this.checkSyntaxType(ArgumentSyntaxTree);
 		}
 
-		isChapter():boolean {
+		isChapter(): boolean {
 			return this.checkSyntaxType(ChapterSyntaxTree);
 		}
 
-		isHeadline():boolean {
+		isHeadline(): boolean {
 			return this.checkSyntaxType(HeadlineSyntaxTree);
 		}
 
-		isUlist():boolean {
+		isUlist(): boolean {
 			return this.checkSyntaxType(UlistElementSyntaxTree);
 		}
 
-		isOlist():boolean {
+		isOlist(): boolean {
 			return this.checkSyntaxType(OlistElementSyntaxTree);
 		}
 
-		isDlist():boolean {
+		isDlist(): boolean {
 			return this.checkSyntaxType(DlistElementSyntaxTree);
 		}
 
-		isTextNode():boolean {
+		isTextNode(): boolean {
 			return this.checkSyntaxType(TextNodeSyntaxTree);
 		}
 
-		private toOtherNode<T extends SyntaxTree >(clazz:any):T {
+		private toOtherNode<T extends SyntaxTree>(clazz: any): T {
 			if (this instanceof clazz) {
 				return <T>this;
 			} else {
@@ -467,107 +467,107 @@ module ReVIEW.Parse {
 		/**
 		 * thisをNodeSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-		toNode():NodeSyntaxTree {
+		toNode(): NodeSyntaxTree {
 			return this.toOtherNode<NodeSyntaxTree>(NodeSyntaxTree);
 		}
 
 		/**
 		 * thisをBlockElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-		toBlockElement():BlockElementSyntaxTree {
+		toBlockElement(): BlockElementSyntaxTree {
 			return this.toOtherNode<BlockElementSyntaxTree>(BlockElementSyntaxTree);
 		}
 
 		/**
 		 * thisをInlineElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-		toInlineElement():InlineElementSyntaxTree {
+		toInlineElement(): InlineElementSyntaxTree {
 			return this.toOtherNode<InlineElementSyntaxTree>(InlineElementSyntaxTree);
 		}
 
 		/**
 		 * thisをArgumentSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-		toArgument():ArgumentSyntaxTree {
+		toArgument(): ArgumentSyntaxTree {
 			return this.toOtherNode<ArgumentSyntaxTree>(ArgumentSyntaxTree);
 		}
 
 		/**
 		 * thisをChapterSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-		toChapter():ChapterSyntaxTree {
+		toChapter(): ChapterSyntaxTree {
 			return this.toOtherNode<ChapterSyntaxTree>(ChapterSyntaxTree);
 		}
 
 		/**
 		 * thisをColumnSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-		toColumn():ColumnSyntaxTree {
+		toColumn(): ColumnSyntaxTree {
 			return this.toOtherNode<ColumnSyntaxTree>(ColumnSyntaxTree);
 		}
 
 		/**
 		 * thisをHeadlineSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-		toHeadline():HeadlineSyntaxTree {
+		toHeadline(): HeadlineSyntaxTree {
 			return this.toOtherNode<HeadlineSyntaxTree>(HeadlineSyntaxTree);
 		}
 
 		/**
 		 * thisをColumnHeadlineSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-		toColumnHeadline():ColumnHeadlineSyntaxTree {
+		toColumnHeadline(): ColumnHeadlineSyntaxTree {
 			return this.toOtherNode<ColumnHeadlineSyntaxTree>(ColumnHeadlineSyntaxTree);
 		}
 
 		/**
 		 * thisをUlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-		toUlist():UlistElementSyntaxTree {
+		toUlist(): UlistElementSyntaxTree {
 			return this.toOtherNode<UlistElementSyntaxTree>(UlistElementSyntaxTree);
 		}
 
 		/**
 		 * thisをOlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-		toOlist():OlistElementSyntaxTree {
+		toOlist(): OlistElementSyntaxTree {
 			return this.toOtherNode<OlistElementSyntaxTree>(OlistElementSyntaxTree);
 		}
 
 		/**
 		 * thisをDlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-		toDlist():DlistElementSyntaxTree {
+		toDlist(): DlistElementSyntaxTree {
 			return this.toOtherNode<DlistElementSyntaxTree>(DlistElementSyntaxTree);
 		}
 
 		/**
 		 * thisをTextNodeSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
 		 */
-		toTextNode():TextNodeSyntaxTree {
+		toTextNode(): TextNodeSyntaxTree {
 			return this.toOtherNode<TextNodeSyntaxTree>(TextNodeSyntaxTree);
 		}
 	}
 
 	export class NodeSyntaxTree extends SyntaxTree {
-		childNodes:SyntaxTree[];
+		childNodes: SyntaxTree[];
 
-		constructor(data:IConcreatSyntaxTree) {
+		constructor(data: IConcreatSyntaxTree) {
 			super(data);
 			this.childNodes = [];
 			this.processChildNodes(data.content);
 		}
 
-		private processChildNodes(content:any) {
+		private processChildNodes(content: any) {
 			if (Array.isArray(content)) {
-				content.forEach((rawResult:IConcreatSyntaxTree)=> {
+				content.forEach((rawResult: IConcreatSyntaxTree) => {
 					var tree = transform(rawResult);
 					if (tree) {
 						this.childNodes.push(tree);
 					}
 				});
 			} else if (content !== "" && content) {
-				((rawResult:IConcreatSyntaxTree)=> {
+				((rawResult: IConcreatSyntaxTree) => {
 					var tree = transform(rawResult);
 					if (tree) {
 						this.childNodes.push(tree);
@@ -576,10 +576,10 @@ module ReVIEW.Parse {
 			}
 		}
 
-		toStringHook(indentLevel:number, result:string) {
+		toStringHook(indentLevel: number, result: string) {
 			if (this.childNodes.length !== 0) {
 				result += this.makeIndent(indentLevel + 1) + "childNodes[" + this.childNodes.length + "]=[\n";
-				this.childNodes.forEach((node)=> {
+				this.childNodes.forEach((node) => {
 					result += node.toString(indentLevel + 2);
 					result += "\n";
 				});
@@ -591,10 +591,10 @@ module ReVIEW.Parse {
 	// TODO SyntaxTree と指定されている所についてもっと細かく書けるはず…
 
 	export class ChapterSyntaxTree extends NodeSyntaxTree {
-		headline:HeadlineSyntaxTree;
-		text:SyntaxTree[];
+		headline: HeadlineSyntaxTree;
+		text: SyntaxTree[];
 
-		constructor(data:IConcreatSyntaxTree) {
+		constructor(data: IConcreatSyntaxTree) {
 			super(data);
 
 			this.headline = transform(this.checkObject(data.headline)).toHeadline();
@@ -602,7 +602,7 @@ module ReVIEW.Parse {
 				this.text = [];
 				return;
 			}
-			this.text = this.checkArray(data.text.content).map((data:IConcreatSyntaxTree)=> {
+			this.text = this.checkArray(data.text.content).map((data: IConcreatSyntaxTree) => {
 				return transform(data);
 			});
 
@@ -610,19 +610,19 @@ module ReVIEW.Parse {
 			this.childNodes = [];
 		}
 
-		get level():number {
+		get level(): number {
 			return this.headline.level;
 		}
 
-		get fqn():string {
-			var chapters:ChapterSyntaxTree[] = [];
-			ReVIEW.walk(this, (node:SyntaxTree) => {
+		get fqn(): string {
+			var chapters: ChapterSyntaxTree[] = [];
+			ReVIEW.walk(this, (node: SyntaxTree) => {
 				if (node instanceof ReVIEW.Parse.ChapterSyntaxTree) {
 					chapters.unshift(node.toChapter());
 				}
 				return node.parentNode;
 			});
-			var result = chapters.map((chapter)=> {
+			var result = chapters.map((chapter) => {
 				return chapter.no;
 			}).join(".");
 			return result;
@@ -630,11 +630,11 @@ module ReVIEW.Parse {
 	}
 
 	export class HeadlineSyntaxTree extends SyntaxTree {
-		level:number;
-		label:ArgumentSyntaxTree;
-		caption:NodeSyntaxTree;
+		level: number;
+		label: ArgumentSyntaxTree;
+		caption: NodeSyntaxTree;
 
-		constructor(data:IConcreatSyntaxTree) {
+		constructor(data: IConcreatSyntaxTree) {
 			super(data);
 
 			this.level = this.checkNumber(data.level);
@@ -646,32 +646,32 @@ module ReVIEW.Parse {
 	}
 
 	export class BlockElementSyntaxTree extends NodeSyntaxTree {
-		symbol:string;
-		args:ArgumentSyntaxTree[];
+		symbol: string;
+		args: ArgumentSyntaxTree[];
 
-		constructor(data:IConcreatSyntaxTree) {
+		constructor(data: IConcreatSyntaxTree) {
 			super(data);
 			this.symbol = this.checkString(data.symbol);
-			this.args = this.checkArray(data.args).map((data:IConcreatSyntaxTree)=> {
+			this.args = this.checkArray(data.args).map((data: IConcreatSyntaxTree) => {
 				return transform(data).toArgument();
 			});
 		}
 	}
 
 	export class InlineElementSyntaxTree extends NodeSyntaxTree {
-		symbol:string;
+		symbol: string;
 
-		constructor(data:IConcreatSyntaxTree) {
+		constructor(data: IConcreatSyntaxTree) {
 			super(data);
 			this.symbol = this.checkString(data.symbol);
 		}
 	}
 
 	export class ColumnSyntaxTree extends NodeSyntaxTree {
-		headline:ColumnHeadlineSyntaxTree;
-		text:SyntaxTree[];
+		headline: ColumnHeadlineSyntaxTree;
+		text: SyntaxTree[];
 
-		constructor(data:IConcreatSyntaxTree) {
+		constructor(data: IConcreatSyntaxTree) {
 			super(data);
 
 			this.headline = transform(this.checkObject(data.headline)).toColumnHeadline();
@@ -679,7 +679,7 @@ module ReVIEW.Parse {
 				this.text = [];
 				return;
 			}
-			this.text = this.checkArray(data.text.content).map((data:IConcreatSyntaxTree)=> {
+			this.text = this.checkArray(data.text.content).map((data: IConcreatSyntaxTree) => {
 				return transform(data);
 			});
 
@@ -687,19 +687,19 @@ module ReVIEW.Parse {
 			this.childNodes = [];
 		}
 
-		get level():number {
+		get level(): number {
 			return this.headline.level;
 		}
 
-		get fqn():string {
-			var chapters:ChapterSyntaxTree[] = [];
-			ReVIEW.walk(this, (node:SyntaxTree) => {
+		get fqn(): string {
+			var chapters: ChapterSyntaxTree[] = [];
+			ReVIEW.walk(this, (node: SyntaxTree) => {
 				if (node instanceof ReVIEW.Parse.ChapterSyntaxTree) {
 					chapters.unshift(node.toChapter());
 				}
 				return node.parentNode;
 			});
-			var result = chapters.map((chapter)=> {
+			var result = chapters.map((chapter) => {
 				return chapter.no;
 			}).join(".");
 			return result;
@@ -707,10 +707,10 @@ module ReVIEW.Parse {
 	}
 
 	export class ColumnHeadlineSyntaxTree extends SyntaxTree {
-		level:number;
-		caption:NodeSyntaxTree;
+		level: number;
+		caption: NodeSyntaxTree;
 
-		constructor(data:IConcreatSyntaxTree) {
+		constructor(data: IConcreatSyntaxTree) {
 			super(data);
 
 			this.level = this.checkNumber(data.level);
@@ -719,19 +719,19 @@ module ReVIEW.Parse {
 	}
 
 	export class ArgumentSyntaxTree extends SyntaxTree {
-		arg:string;
+		arg: string;
 
-		constructor(data:IConcreatSyntaxTree) {
+		constructor(data: IConcreatSyntaxTree) {
 			super(data);
 			this.arg = this.checkString(data.arg);
 		}
 	}
 
 	export class UlistElementSyntaxTree extends NodeSyntaxTree {
-		level:number;
-		text:SyntaxTree;
+		level: number;
+		text: SyntaxTree;
 
-		constructor(data:IConcreatSyntaxTree) {
+		constructor(data: IConcreatSyntaxTree) {
 			super(data);
 			this.level = this.checkNumber(data.level);
 			this.text = transform(this.checkObject(data.text));
@@ -742,10 +742,10 @@ module ReVIEW.Parse {
 	}
 
 	export class OlistElementSyntaxTree extends SyntaxTree {
-		no:number;
-		text:SyntaxTree;
+		no: number;
+		text: SyntaxTree;
 
-		constructor(data:IConcreatSyntaxTree) {
+		constructor(data: IConcreatSyntaxTree) {
 			super(data);
 			this.no = this.checkNumber(data.no);
 			this.text = transform(this.checkObject(data.text));
@@ -753,10 +753,10 @@ module ReVIEW.Parse {
 	}
 
 	export class DlistElementSyntaxTree extends SyntaxTree {
-		text:SyntaxTree;
-		content:SyntaxTree;
+		text: SyntaxTree;
+		content: SyntaxTree;
 
-		constructor(data:IConcreatSyntaxTree) {
+		constructor(data: IConcreatSyntaxTree) {
 			super(data);
 			this.text = transform(this.checkObject(data.text));
 			this.content = transform(this.checkObject(data.content));
@@ -764,9 +764,9 @@ module ReVIEW.Parse {
 	}
 
 	export class TextNodeSyntaxTree extends SyntaxTree {
-		text:string;
+		text: string;
 
-		constructor(data:IConcreatSyntaxTree) {
+		constructor(data: IConcreatSyntaxTree) {
 			super(data);
 			this.text = this.checkString(data.text).replace(/\n+$/, "");
 		}

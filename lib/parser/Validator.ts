@@ -20,14 +20,14 @@ module ReVIEW.Build {
 	 * また、Builderと対比させて、未実装の候補がないかをチェックする。
 	 */
 	export interface IValidator {
-		start(book:Book, acceptableSyntaxes:AcceptableSyntaxes, builders:IBuilder[]):void;
+		start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: IBuilder[]): void;
 	}
 
 	export class DefaultValidator implements IValidator {
-		acceptableSyntaxes:AcceptableSyntaxes;
-		builders:IBuilder[];
+		acceptableSyntaxes: AcceptableSyntaxes;
+		builders: IBuilder[];
 
-		start(book:Book, acceptableSyntaxes:AcceptableSyntaxes, builders:IBuilder[]) {
+		start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: IBuilder[]) {
 			this.acceptableSyntaxes = acceptableSyntaxes;
 			this.builders = builders;
 
@@ -36,9 +36,9 @@ module ReVIEW.Build {
 			this.resolveSymbolAndReference(book);
 		}
 
-		checkBuilder(book:Book, acceptableSyntaxes:AcceptableSyntaxes, builders:IBuilder[] = []) {
+		checkBuilder(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: IBuilder[] = []) {
 			acceptableSyntaxes.acceptableSyntaxes.forEach(syntax => {
-				var prefix:string;
+				var prefix: string;
 				switch (syntax.type) {
 					case SyntaxType.Other:
 						// Other系は実装をチェックする必要はない…。(ということにしておく
@@ -61,19 +61,19 @@ module ReVIEW.Build {
 			});
 		}
 
-		checkBook(book:Book) {
+		checkBook(book: Book) {
 			book.predef.forEach(chunk=> this.checkChunk(chunk));
 			book.contents.forEach(chunk=> this.checkChunk(chunk));
 			book.appendix.forEach(chunk=> this.checkChunk(chunk));
 			book.postdef.forEach(chunk=> this.checkChunk(chunk));
 		}
 
-		checkChunk(chunk:ContentChunk) {
+		checkChunk(chunk: ContentChunk) {
 			// Analyzer 内で生成した構文規則に基づき処理
 			ReVIEW.visit(chunk.tree.ast, {
-				visitDefaultPre: (node:SyntaxTree)=> {
+				visitDefaultPre: (node: SyntaxTree) => {
 				},
-				visitHeadlinePre: (node:HeadlineSyntaxTree) => {
+				visitHeadlinePre: (node: HeadlineSyntaxTree) => {
 					var results = this.acceptableSyntaxes.find(node);
 					if (results.length !== 1) {
 						chunk.process.error(t("compile.syntax_definietion_error"), node);
@@ -81,7 +81,7 @@ module ReVIEW.Build {
 					}
 					return results[0].process(chunk.process, node);
 				},
-				visitColumnPre: (node:ColumnSyntaxTree) => {
+				visitColumnPre: (node: ColumnSyntaxTree) => {
 					var results = this.acceptableSyntaxes.find(node);
 					if (results.length !== 1) {
 						chunk.process.error(t("compile.syntax_definietion_error"), node);
@@ -89,16 +89,16 @@ module ReVIEW.Build {
 					}
 					return results[0].process(chunk.process, node);
 				},
-				visitBlockElementPre: (node:BlockElementSyntaxTree) => {
+				visitBlockElementPre: (node: BlockElementSyntaxTree) => {
 					var results = this.acceptableSyntaxes.find(node);
 					if (results.length !== 1) {
 						chunk.process.error(t("compile.block_not_supported", node.symbol), node);
 						return;
 					}
 					var expects = results[0].argsLength;
-					var arg:ArgumentSyntaxTree[] = node.args || [];
+					var arg: ArgumentSyntaxTree[] = node.args || [];
 					if (expects.indexOf(arg.length) === -1) {
-						var expected = expects.map((n)=>Number(n).toString()).join(" or ");
+						var expected = expects.map((n) => Number(n).toString()).join(" or ");
 						var message = t("compile.args_length_mismatch", expected, arg.length);
 						chunk.process.error(message, node);
 						return;
@@ -106,7 +106,7 @@ module ReVIEW.Build {
 
 					return results[0].process(chunk.process, node);
 				},
-				visitInlineElementPre: (node:InlineElementSyntaxTree) => {
+				visitInlineElementPre: (node: InlineElementSyntaxTree) => {
 					var results = this.acceptableSyntaxes.find(node);
 					if (results.length !== 1) {
 						chunk.process.error(t("compile.inline_not_supported", node.symbol), node);
@@ -118,9 +118,9 @@ module ReVIEW.Build {
 
 			// 最初は必ず Level 1
 			ReVIEW.visit(chunk.tree.ast, {
-				visitDefaultPre: (node:SyntaxTree) => {
+				visitDefaultPre: (node: SyntaxTree) => {
 				},
-				visitChapterPre: (node:ChapterSyntaxTree) => {
+				visitChapterPre: (node: ChapterSyntaxTree) => {
 					if (node.level === 1) {
 						if (!findChapter(node)) {
 							// ここに来るのは実装のバグのはず
@@ -136,10 +136,10 @@ module ReVIEW.Build {
 			});
 		}
 
-		resolveSymbolAndReference(book:Book) {
+		resolveSymbolAndReference(book: Book) {
 			// symbols の解決
 			// Arrayにflatten がなくて悲しい reduce だと長い…
-			var symbols:ISymbol[] = book.allChunks.reduce<ISymbol[]>((p, c) => p.concat(c.process.symbols), []);
+			var symbols: ISymbol[] = book.allChunks.reduce<ISymbol[]>((p, c) => p.concat(c.process.symbols), []);
 			symbols.forEach(symbol=> {
 				// referenceToのpartやchapterの解決
 				var referenceTo = symbol.referenceTo;

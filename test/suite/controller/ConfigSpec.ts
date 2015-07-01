@@ -3,10 +3,10 @@
 
 ///<reference path='../../../lib/controller/Config.ts' />
 
-describe("ReVIEWのConfig.tsの", ()=> {
+describe("ReVIEWのConfig.tsの", () => {
 	"use strict";
 
-	function verifyBookData(book:ReVIEW.BookStructure) {
+	function verifyBookData(book: ReVIEW.BookStructure) {
 		assert(book.predef.length === 1);
 		assert(!book.predef[0].part);
 		assert(book.predef[0].chapter.file === "pre.re");
@@ -35,64 +35,64 @@ describe("ReVIEWのConfig.tsの", ()=> {
 		assert(book.postdef[0].chapter.file === "post.re");
 	}
 
-	it("IConfigBookに設定ができる IConfigPartOrChapterでchapterプロパティを使う", ()=> {
-		var book:ReVIEW.IConfigBook = {
+	it("IConfigBookに設定ができる IConfigPartOrChapterでchapterプロパティを使う", () => {
+		var book: ReVIEW.IConfigBook = {
 			predef: [
-				{file: "pre.re"}
+				{ file: "pre.re" }
 			],
 			contents: [
-				{chapter: {file: "fullsetA.re"}},
-				{chapter: {file: "fullsetB.re"}},
+				{ chapter: { file: "fullsetA.re" } },
+				{ chapter: { file: "fullsetB.re" } },
 				{
 					part: {
 						file: "parent.re",
 						chapters: [
-							{file: "child.re"}
+							{ file: "child.re" }
 						]
 					}
 				},
-				{chapter: {file: "fullsetC.re"}}
+				{ chapter: { file: "fullsetC.re" } }
 			],
 			appendix: [
-				{file: "appendix.re"}
+				{ file: "appendix.re" }
 			],
 			postdef: [
-				{file: "post.re"}
+				{ file: "post.re" }
 			]
 		};
 		verifyBookData(ReVIEW.BookStructure.createBook(book));
 	});
 
-	it("IConfigBookに設定ができる IConfigPartOrChapterでnameプロパティを使う", ()=> {
-		var book:ReVIEW.IConfigBook = {
+	it("IConfigBookに設定ができる IConfigPartOrChapterでnameプロパティを使う", () => {
+		var book: ReVIEW.IConfigBook = {
 			predef: [
-				{file: "pre.re"}
+				{ file: "pre.re" }
 			],
 			contents: [
-				{file: "fullsetA.re"},
-				{file: "fullsetB.re"},
+				{ file: "fullsetA.re" },
+				{ file: "fullsetB.re" },
 				{
 					part: {
 						file: "parent.re",
 						chapters: [
-							{file: "child.re"}
+							{ file: "child.re" }
 						]
 					}
 				},
-				{file: "fullsetC.re"}
+				{ file: "fullsetC.re" }
 			],
 			appendix: [
-				{file: "appendix.re"}
+				{ file: "appendix.re" }
 			],
 			postdef: [
-				{file: "post.re"}
+				{ file: "post.re" }
 			]
 		};
 		verifyBookData(ReVIEW.BookStructure.createBook(book));
 	});
 
-	it("IConfigBookに設定ができる JS(型なし)用短縮形式", ()=> {
-		var book:any = {
+	it("IConfigBookに設定ができる JS(型なし)用短縮形式", () => {
+		var book: any = {
 			predef: [
 				"pre.re"
 			],
@@ -117,10 +117,10 @@ describe("ReVIEWのConfig.tsの", ()=> {
 		verifyBookData(ReVIEW.BookStructure.createBook(book));
 	});
 
-	it("IConfigBookに設定ができる YAML形式より", ()=> {
+	it("IConfigBookに設定ができる YAML形式より", () => {
 		// TODO
-		var book:any = {
-			PREDEF: [ 'pre.re' ],
+		var book: any = {
+			PREDEF: ['pre.re'],
 			CHAPS: [
 				'fullsetA.re',
 				'fullsetB.re',
@@ -131,8 +131,8 @@ describe("ReVIEWのConfig.tsの", ()=> {
 				},
 				'fullsetC.re'
 			],
-			APPENDIX: [ 'appendix.re' ],
-			POSTDEF: [ 'post.re' ]
+			APPENDIX: ['appendix.re'],
+			POSTDEF: ['post.re']
 		};
 		verifyBookData(ReVIEW.BookStructure.createBook(book));
 	});

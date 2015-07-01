@@ -15,7 +15,7 @@ module ReVIEW.i18n {
 	export function setup(lang = "ja") {
 		if (typeof (<any>i18next).backend !== "undefined") {
 			(<any>i18next).backend({
-				fetchOne: (lng:any, ns:any, func:Function) => {
+				fetchOne: (lng: any, ns: any, func: Function) => {
 					func(null, data[lng] || data[lang]);
 				}
 			});
@@ -23,18 +23,18 @@ module ReVIEW.i18n {
 		} else {
 			i18next.init({
 				lng: lang,
-				customLoad: function (lng:any, ns:any, options:any, loadComplete:Function) {
+				customLoad: function(lng: any, ns: any, options: any, loadComplete: Function) {
 					loadComplete(null, data[lng] || data["ja-JP"]);
 				}
 			});
 		}
 	}
 
-	export function t(str:string, ...args:any[]):string {
+	export function t(str: string, ...args: any[]): string {
 		return i18next.t(str, { postProcess: "sprintf", sprintf: args });
 	}
 
-	var i18next:I18nextStatic;
+	var i18next: I18nextStatic;
 
 	if (ReVIEW.isNodeJS()) {
 		i18next = require("i18next");
@@ -42,7 +42,7 @@ module ReVIEW.i18n {
 		i18next = (<any>window).i18n;
 	}
 
-	var data:{[lang:string]:any;} = {
+	var data: { [lang: string]: any; } = {
 		"ja": ReVIEW.ja,
 		"en": ReVIEW.en
 	};
