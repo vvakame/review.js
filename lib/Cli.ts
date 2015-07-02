@@ -4,11 +4,15 @@
 
 /// <reference path="../node_modules/commandpost/commandpost.d.ts" />
 
-/// <reference path="./main.d.ts" />
-
 import fs = require("fs");
 import jsyaml = require("js-yaml");
 import updateNotifier = require("update-notifier");
+
+import {start} from "./Main";
+import {IConfigRaw} from "./controller/ConfigRaw";
+import {ReportLevel} from "./model/CompilerModel";
+import {Exec, target2builder} from "./utils/Utils";
+
 var pkg = require("../package.json");
 
 var notifier = updateNotifier({
@@ -20,8 +24,6 @@ if (notifier.update) {
 }
 
 var packageJson = JSON.parse(fs.readFileSync(__dirname + "/../package.json", "utf8"));
-
-var r: typeof ReVIEW = require("./api");
 
 import commandpost = require("commandpost");
 
@@ -66,6 +68,7 @@ root
 			if (!fs.existsSync(targetPath)) {
 				console.error(targetPath + " not exists");
 				reject(null);
+				return;
 			}
 			input = fs.readFileSync(targetPath, "utf8");
 			resolve({ fileName: args.document, input: input });
@@ -80,7 +83,7 @@ root
 			});
 		}
 	})
-		.then(value=> r.Exec.singleCompile(value.input, value.fileName, target, null))
+		.then(value=> Exec.singleCompile(value.input, value.fileName, target, null))
 		.then(result=> {
 		if (!result.book.hasError && !ast) {
 			result.book.allChunks[0].builderProcesses.forEach(process=> {
@@ -95,11 +98,11 @@ root
 			result.book.reports.forEach(report=> {
 				var log: Function;
 				switch (report.level) {
-					case r.ReportLevel.Info:
+					case ReportLevel.Info:
 						log = console.log;
-					case r.ReportLevel.Warning:
+					case ReportLevel.Warning:
 						log = console.warn;
-					case r.ReportLevel.Error:
+					case ReportLevel.Error:
 						log = console.error;
 				}
 				var message = "";
@@ -140,7 +143,7 @@ root
 
 	function byReVIEWConfig() {
 		var setup = require(process.cwd() + "/" + reviewfile);
-		r.start(setup, {
+		start(setup, {
 			reviewfile: reviewfile,
 			base: root.parsedOpts.base[0]
 		})
@@ -158,12 +161,12 @@ root
 		// var configYaml = jsyaml.safeLoad(fs.readFileSync(process.cwd() + "/" + "config.yml", "utf8"));
 		var catalogYaml = jsyaml.safeLoad(fs.readFileSync(process.cwd() + "/" + "catalog.yml", "utf8"));
 
-		var configRaw: ReVIEW.IConfigRaw = {
-			builders: [r.target2builder(target)],
+		var configRaw: IConfigRaw = {
+			builders: [target2builder(target)],
 			book: catalogYaml
 		};
 
-		r.start(review=> {
+		start(review=> {
 			review.initConfig(configRaw);
 		}, {
 				reviewfile: reviewfile,

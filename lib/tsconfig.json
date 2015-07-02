@@ -11,12 +11,14 @@
         "suppressImplicitAnyIndexErrors": false
     },
     "filesGlob": [
+        "../resources/grammar.d.ts",
         "./**/*.ts",
         "!./**/*.d.ts",
         "../node_modules/typescript/bin/lib.es6.d.ts",
         "../typings/**/*.ts"
     ],
     "files": [
+        "../resources/grammar.d.ts",
         "./Cli.ts",
         "./Main.ts",
         "./builder/Builder.ts",
@@ -28,6 +30,7 @@
         "./i18n/en.ts",
         "./i18n/i18n.ts",
         "./i18n/ja.ts",
+        "./js/Exception.ts",
         "./model/CompilerModel.ts",
         "./parser/Analyzer.ts",
         "./parser/Parser.ts",

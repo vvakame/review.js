@@ -3,12 +3,11 @@
 
 ///<reference path='../../typings/node/node.d.ts' />
 
-///<reference path='../../lib/Main.ts' />
-///<reference path='../../lib/builder/Builder.ts' />
-///<reference path='../../lib/builder/TextBuilder.ts' />
-///<reference path='../../lib/builder/HtmlBuilder.ts' />
-
 "use strict";
+
+import {start} from "../../lib/Main";
+
+import {TextBuilder} from "../../lib/builder/TextBuilder";
 
 describe("未解決のエラー", () => {
 	"use strict";
@@ -23,8 +22,8 @@ describe("未解決のエラー", () => {
 			};
 			var result: any = {
 			};
-			var builder = new ReVIEW.Build.TextBuilder();
-			return ReVIEW.start((review) => {
+			var builder = new TextBuilder();
+			return start((review) => {
 				review.initConfig({
 					read: (path: string) => {
 						return Promise.resolve(files[path]);

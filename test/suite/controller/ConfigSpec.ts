@@ -1,12 +1,12 @@
 ///<reference path='../../../typings/mocha/mocha.d.ts' />
 ///<reference path='../../../typings/assert/assert.d.ts' />
 
-///<reference path='../../../lib/controller/Config.ts' />
+import {BookStructure, IConfigBook} from "../../../lib/controller/ConfigRaw";
 
 describe("ReVIEWのConfig.tsの", () => {
 	"use strict";
 
-	function verifyBookData(book: ReVIEW.BookStructure) {
+	function verifyBookData(book: BookStructure) {
 		assert(book.predef.length === 1);
 		assert(!book.predef[0].part);
 		assert(book.predef[0].chapter.file === "pre.re");
@@ -36,7 +36,7 @@ describe("ReVIEWのConfig.tsの", () => {
 	}
 
 	it("IConfigBookに設定ができる IConfigPartOrChapterでchapterプロパティを使う", () => {
-		var book: ReVIEW.IConfigBook = {
+		var book: IConfigBook = {
 			predef: [
 				{ file: "pre.re" }
 			],
@@ -60,11 +60,11 @@ describe("ReVIEWのConfig.tsの", () => {
 				{ file: "post.re" }
 			]
 		};
-		verifyBookData(ReVIEW.BookStructure.createBook(book));
+		verifyBookData(BookStructure.createBook(book));
 	});
 
 	it("IConfigBookに設定ができる IConfigPartOrChapterでnameプロパティを使う", () => {
-		var book: ReVIEW.IConfigBook = {
+		var book: IConfigBook = {
 			predef: [
 				{ file: "pre.re" }
 			],
@@ -88,7 +88,7 @@ describe("ReVIEWのConfig.tsの", () => {
 				{ file: "post.re" }
 			]
 		};
-		verifyBookData(ReVIEW.BookStructure.createBook(book));
+		verifyBookData(BookStructure.createBook(book));
 	});
 
 	it("IConfigBookに設定ができる JS(型なし)用短縮形式", () => {
@@ -114,7 +114,7 @@ describe("ReVIEWのConfig.tsの", () => {
 				"post.re"
 			]
 		};
-		verifyBookData(ReVIEW.BookStructure.createBook(book));
+		verifyBookData(BookStructure.createBook(book));
 	});
 
 	it("IConfigBookに設定ができる YAML形式より", () => {
@@ -134,6 +134,6 @@ describe("ReVIEWのConfig.tsの", () => {
 			APPENDIX: ['appendix.re'],
 			POSTDEF: ['post.re']
 		};
-		verifyBookData(ReVIEW.BookStructure.createBook(book));
+		verifyBookData(BookStructure.createBook(book));
 	});
 });

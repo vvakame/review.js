@@ -283,6 +283,7 @@ readStream(inputStream, function (input) {
 	outputStream.write(
 		exportVar !== "" ? exportVar + " = " + source + ";\n" : source + "\n"
 	);
+	outputStream.write('if (typeof exports === "object") { exports.PEG = PEG; }' + "\n");
 	if (outputStream !== process.stdout) {
 		outputStream.end();
 	}

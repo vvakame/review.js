@@ -11,10 +11,12 @@
         "suppressImplicitAnyIndexErrors": false
     },
     "filesGlob": [
+        "../resources/grammar.d.ts",
         "./**/*.ts",
         "../typings/**/*.ts"
     ],
     "files": [
+        "../resources/grammar.d.ts",
         "./suite/CliSpec.ts",
         "./suite/MainSpec.ts",
         "./suite/RubyReVIEWDiffSpec.ts",

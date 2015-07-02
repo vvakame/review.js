@@ -1,7 +1,5 @@
-module ReVIEW {
-	"use strict";
+"use strict";
 
-	export var en = {
-		"sample": "Hello!"
-	};
-}
+export var en = {
+	"sample": "Hello!"
+};

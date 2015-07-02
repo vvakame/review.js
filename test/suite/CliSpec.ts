@@ -5,17 +5,17 @@
 
 "use strict";
 
+import {isNodeJS} from "../../lib/utils/Utils";
+
 describe("コマンドラインツールの動作", () => {
 	"use strict";
 
-	if (!ReVIEW.isNodeJS()) {
+	if (!isNodeJS()) {
 		return;
 	}
 
 	function exec(command: string, stdin?: string): Promise<string>;
-
 	function exec(command: string, options?: any, stdin?: string): Promise<string>;
-
 	function exec(command: string, options?: any, stdin?: string): Promise<string> {
 		if (typeof options === "string") {
 			stdin = options;

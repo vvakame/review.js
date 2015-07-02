@@ -3,19 +3,20 @@
 
 ///<reference path='../../typings/node/node.d.ts' />
 
-///<reference path='TestHelper.ts' />
-
-///<reference path='../../lib/Main.ts' />
-///<reference path='../../lib/builder/Builder.ts' />
-///<reference path='../../lib/builder/TextBuilder.ts' />
-///<reference path='../../lib/builder/HtmlBuilder.ts' />
-
 "use strict";
+
+import * as Test from "./TestHelper";
+
+import {isNodeJS} from "../../lib/utils/Utils";
+
+import {IBuilder} from "../../lib/builder/Builder";
+import {TextBuilder} from "../../lib/builder/TextBuilder";
+import {HtmlBuilder} from "../../lib/builder/HtmlBuilder";
 
 describe("Ruby版ReVIEWとの出力差確認", () => {
 	"use strict";
 
-	if (!ReVIEW.isNodeJS()) {
+	if (!isNodeJS()) {
 		return;
 	}
 
@@ -24,7 +25,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 	function convertByRubyReVIEW(fileName: string, target: string): Promise<string> {
 		return new Promise<string>((resolve, reject) => {
 			exec(
-				"review-compile  --level=1 --target=" + target + " " + fileName + ".re",
+				"review-compile --level=1 --target=" + target + " " + fileName + ".re",
 				{
 					cwd: "test/fixture/valid",
 					env: process.env
@@ -45,16 +46,16 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 	describe("正しい構文のファイルが処理できること", () => {
 		var fs = require("fs");
 
-		var typeList: { ext: string; target: string; builder: () => ReVIEW.Build.IBuilder; }[] = [
+		var typeList: { ext: string; target: string; builder: () => IBuilder; }[] = [
 			{
 				ext: "txt",
 				target: "text",
-				builder: () => new ReVIEW.Build.TextBuilder()
+				builder: () => new TextBuilder()
 			},
 			{
 				ext: "html",
 				target: "html",
-				builder: () => new ReVIEW.Build.HtmlBuilder()
+				builder: () => new HtmlBuilder()
 			}
 		];
 
@@ -81,7 +82,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 				it("ファイル:" + targetFileName, () => {
 					var text = fs.readFileSync(path + file, "utf8");
 					return Test.compile({
-						basePath: __dirname + "/fixture/valid",
+						basePath: process.cwd() + "/test/fixture/valid",
 						read: path => Promise.resolve(text),
 						builders: [typeInfo.builder()],
 						book: {
