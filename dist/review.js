@@ -6653,6 +6653,12 @@ var ReVIEW;
                     });
                 });
             };
+            DefaultAnalyzer.prototype.inline_chap = function (builder) {
+                this.inlineDecorationSyntax(builder, "chap");
+            };
+            DefaultAnalyzer.prototype.inline_chapref = function (builder) {
+                this.inlineDecorationSyntax(builder, "chapref");
+            };
             return DefaultAnalyzer;
         })();
         Build.DefaultAnalyzer = DefaultAnalyzer;
@@ -6899,6 +6905,16 @@ var ReVIEW;
                 else {
                     process.outRaw(content);
                 }
+                return false;
+            };
+            DefaultBuilder.prototype.inline_chap = function (process, node) {
+                var content = ReVIEW.nodeContentToString(process, node);
+                process.outRaw(content);
+                return false;
+            };
+            DefaultBuilder.prototype.inline_chapref = function (process, node) {
+                var content = ReVIEW.nodeContentToString(process, node);
+                process.outRaw("第x章「" + content + "」");
                 return false;
             };
             return DefaultBuilder;
