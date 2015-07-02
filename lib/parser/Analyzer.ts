@@ -718,11 +718,11 @@ module ReVIEW.Build {
 			});
 		}
 
-		inline_chap(builder:IAcceptableSyntaxBuilder) {
+		inline_chap(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "chap");
 		}
 
-		inline_chapref(builder:IAcceptableSyntaxBuilder) {
+		inline_chapref(builder: IAcceptableSyntaxBuilder) {
 			this.inlineDecorationSyntax(builder, "chapref");
 		}
 
