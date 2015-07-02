@@ -310,5 +310,19 @@ module ReVIEW.Build {
 			}
 			return false;
 		}
+
+		inline_chap(process:BuilderProcess, node:InlineElementSyntaxTree):any {
+			// TODO ひと目でそれと判るスタブ
+			var content = nodeContentToString(process, node);
+			process.outRaw(content);
+			return false;
+		}
+
+		inline_chapref(process:BuilderProcess, node:InlineElementSyntaxTree):any {
+			// TODO ひと目でそれと判るスタブ
+			var content = nodeContentToString(process, node);
+			process.outRaw("第x章「" + content + "」");
+			return false;
+		}
 	}
 }
