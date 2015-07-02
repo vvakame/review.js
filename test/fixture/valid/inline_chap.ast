@@ -1,0 +1,91 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 31,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 31,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 31,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 15,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 13,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 13,
+                  "text": "chapインライン記法"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "offset": 15,
+              "line": 3,
+              "column": 1,
+              "endPos": 31,
+              "childNodes": [
+                {
+                  "ruleName": "InlineElement",
+                  "offset": 15,
+                  "line": 3,
+                  "column": 1,
+                  "endPos": 30,
+                  "symbol": "chap",
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "offset": 23,
+                      "line": 3,
+                      "column": 9,
+                      "endPos": 29,
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "offset": 23,
+                          "line": 3,
+                          "column": 9,
+                          "endPos": 29,
+                          "text": "fooooo"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "no": 1,
+          "level": 1,
+          "childNodes": []
+        }
+      ]
+    }
+  ]
+}

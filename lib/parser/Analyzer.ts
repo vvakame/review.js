@@ -718,12 +718,18 @@ module ReVIEW.Build {
 			});
 		}
 
+		inline_chap(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "chap");
+		}
+
+		inline_chapref(builder:IAcceptableSyntaxBuilder) {
+			this.inlineDecorationSyntax(builder, "chapref");
+		}
+
 		// TODO 以下のものの実装をすすめる
 		// ↑実装が簡単
 		// block_texequation // latexの式のやつなので…
-		// inline_chap // Ruby版の実装が謎い…
 		// inline_title // Ruby版の実装が謎い…
-		// inline_chapref // Ruby版の実装が謎い…
 		// inline_m // latex のインラインのやつなので…
 		// クソめんどくさいの壁
 		// block_bibpaper

@@ -437,6 +437,8 @@ declare module ReVIEW.Build {
         inline_raw(builder: IAcceptableSyntaxBuilder): void;
         block_comment(builder: IAcceptableSyntaxBuilder): void;
         inline_comment(builder: IAcceptableSyntaxBuilder): void;
+        inline_chap(builder: IAcceptableSyntaxBuilder): void;
+        inline_chapref(builder: IAcceptableSyntaxBuilder): void;
     }
 }
 declare module ReVIEW.Build {
@@ -508,6 +510,8 @@ declare module ReVIEW.Build {
         findReference(process: BuilderProcess, node: SyntaxTree): ISymbol;
         block_raw(process: BuilderProcess, node: BlockElementSyntaxTree): any;
         inline_raw(process: BuilderProcess, node: InlineElementSyntaxTree): any;
+        inline_chap(process: BuilderProcess, node: InlineElementSyntaxTree): any;
+        inline_chapref(process: BuilderProcess, node: InlineElementSyntaxTree): any;
     }
 }
 declare module ReVIEW.Build {
