@@ -92,8 +92,11 @@ export class NodeJSConfig extends Config {
 
 	get exists(): (path: string) => Promise<{ path: string; result: boolean; }> {
 		return path => {
-			var fs = require("fs");
-			var _path = require("path");
+			/* tslint:disable:no-require-imports */
+			let fs = require("fs");
+			let _path = require("path");
+			/* tslint:enable:no-require-imports */
+
 			var basePath = this.original.basePath || __dirname;
 			var promise = new Promise<{ path: string; result: boolean; }>((resolve, reject) => {
 				fs.exists(_path.resolve(basePath, path), (result: boolean) => {
@@ -124,7 +127,9 @@ export class NodeJSConfig extends Config {
 	}
 
 	onReports(reports: ProcessReport[]): void {
-		var colors = require("colors");
+		/* tslint:disable:no-require-imports */
+		let colors = require("colors");
+		/* tslint:enable:no-require-imports */
 		colors.setTheme({
 			info: "cyan",
 			warn: "yellow",
@@ -163,7 +168,9 @@ export class NodeJSConfig extends Config {
 	}
 
 	resolvePath(path: string): string {
-		var p = require("path");
+		/* tslint:disable:no-require-imports */
+		let p = require("path");
+		/* tslint:enable:no-require-imports */
 		var base = this.options.base || "./";
 		return p.join(base, path);
 	}

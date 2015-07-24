@@ -222,7 +222,9 @@ export module IO {
 	 * @returns {*}
 	 */
 	export function read(path: string): Promise<string> {
-		var fs = require("fs");
+		/* tslint:disable:no-require-imports */
+		let fs = require("fs");
+		/* tslint:enable:no-require-imports */
 		return new Promise((resolve, reject) => {
 			fs.readFile(path, { encoding: "utf8" }, (err: any, data: string) => {
 				if (err) {
@@ -240,9 +242,9 @@ export module IO {
 	 * @param content
 	 */
 	export function write(path: string, content: string): Promise<void> {
-		"use strict";
-
-		var fs = require("fs");
+		/* tslint:disable:no-require-imports */
+		let fs = require("fs");
+		/* tslint:enable:no-require-imports */
 		return new Promise<void>((resolve, reject) => {
 			fs.writeFile(path, content, (err: any) => {
 				if (err) {

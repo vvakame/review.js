@@ -28,7 +28,9 @@ describe("ReVIEW構文の", () => {
 	"use strict";
 
 	if (isNodeJS()) {
-		var fs = require("fs");
+		/* tslint:disable:no-require-imports */
+		let fs = require("fs");
+		/* tslint:enable:no-require-imports */
 		// PhantomJS 環境下専用のテスト
 		describe("正しい構文のファイルが処理できること", () => {
 			var ignoreFiles = [

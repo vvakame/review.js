@@ -27,7 +27,7 @@ declare var define: any;
 export function start(setup: (review: Controller) => void, options?: IOptions): Promise<Book> {
 	"use strict";
 
-	var controller = new Controller(options);
+	let controller = new Controller(options);
 	// setup 中で initConfig が呼び出される
 	setup(controller);
 	return controller.process();

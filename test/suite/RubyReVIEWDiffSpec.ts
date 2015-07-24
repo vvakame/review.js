@@ -44,7 +44,9 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 
 	// PhantomJS 環境下専用のテスト
 	describe("正しい構文のファイルが処理できること", () => {
-		var fs = require("fs");
+		/* tslint:disable:no-require-imports */
+		let fs = require("fs");
+		/* tslint:enable:no-require-imports */
 
 		var typeList: { ext: string; target: string; builder: () => IBuilder; }[] = [
 			{

@@ -26,9 +26,9 @@ import {isNodeJS} from "../utils/Utils";
  * 処理の起点。
  */
 export class Controller {
-	private config: Config;
-
 	builders = { TextBuilder, HtmlBuilder };
+
+	private config: Config;
 
 	constructor(public options: IOptions = {}) {
 	}
