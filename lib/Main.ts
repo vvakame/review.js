@@ -15,6 +15,20 @@ import {Book} from "./model/CompilerModel";
 import {IOptions} from "./controller/ConfigRaw";
 import {Controller} from "./controller/Controller";
 
+import {HtmlBuilder as _HtmlBuilder} from "./builder/HtmlBuilder";
+import {TextBuilder as _TextBuilder} from "./builder/TextBuilder";
+import {SyntaxType as _SyntaxType} from "./parser/Analyzer";
+
+export namespace Build {
+	"use strict";
+
+	/* tslint:disable:variable-name */
+	export var HtmlBuilder = _HtmlBuilder;
+	export var TextBuilder = _TextBuilder;
+	export var SyntaxType = _SyntaxType;
+	/* tslint:enable:variable-name */
+}
+
 // AMD用
 declare var define: any;
 

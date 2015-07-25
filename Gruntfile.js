@@ -34,10 +34,7 @@ module.exports = function (grunt) {
 				experimentalDecorators: true
 			},
 			clientCli: {
-				src: ['<%= opt.client.tsMain %>/Cli.ts'],
-				options: {
-					module: 'commonjs'
-				}
+				src: ['<%= opt.client.tsMain %>/Cli.ts']
 			},
 			clientMain: {
 				src: ['<%= opt.client.tsMain %>/Main.ts'],
@@ -71,7 +68,6 @@ module.exports = function (grunt) {
 				},
 				src: [
 					'<%= opt.client.tsMain %>/**/*.ts',
-					'!<%= opt.client.tsMain %>/main.d.ts',
 					'!<%= opt.client.tsMain %>/Cli.ts' // main.d.ts読み込んでて重複が発生するので
 				]
 			},
@@ -84,7 +80,6 @@ module.exports = function (grunt) {
 				},
 				src: [
 					'<%= opt.client.tsMain %>/**/*.ts',
-					'!<%= opt.client.tsMain %>/main.d.ts',
 					'!<%= opt.client.tsMain %>/Cli.ts' // main.d.ts読み込んでて重複が発生するので
 				]
 			}
@@ -111,21 +106,10 @@ module.exports = function (grunt) {
 			options: {
 				separator: ';'
 			},
-			browser: {
-				src: [
-					'<%= opt.client.peg %>/grammar.js',
-					'<%= opt.client.jsMain %>/Exception.js',
-					'<%= opt.client.jsMainOut %>/*.js',
-					'!<%= opt.client.jsMainOut %>/Cli.js',
-					'!<%= opt.client.jsMainOut %>/api.js'
-				],
-				dest: '<%= opt.client.outBase %>/review.js'
-			},
 			test: {
 				src: [
-					'<%= opt.client.peg %>/grammar.js',
-					'<%= opt.client.jsMain %>/Exception.js',
-					'<%= opt.client.jsTestOut %>/main-spec.js'
+					// '<%= opt.client.outBase %>/review.js',
+					'<%= opt.client.jsTestOut %>/suite/main-spec.js'
 				],
 				dest: '<%= opt.client.jsTestOut %>/test.js'
 			},
@@ -162,6 +146,35 @@ module.exports = function (grunt) {
 				]
 			}
 		},
+		browserify: {
+			main: {
+				files: {
+					"dist/review.js": [
+						"lib/Main.js"
+					]
+				},
+				options: {
+					browserifyOptions: {
+						bundleExternal: false,
+						standalone: "ReVIEW",
+						detectGlobals: false
+					}
+				}
+			},
+		test: {
+			files: {
+				"test/suite/main-spec.js": [
+					"test/suite/MainSpec.js"
+				]
+			},
+			options: {
+				browserifyOptions: {
+					bundleExternal: false,
+					detectGlobals: false
+				}
+			}
+		}
+		},
 		uglify: {
 			browser: {
 				options: {
@@ -172,11 +185,7 @@ module.exports = function (grunt) {
 				},
 				files: {
 					'<%= opt.client.outBase %>/review.min.js': [
-						'<%= opt.client.peg %>/grammar.js',
-						'<%= opt.client.jsMain %>/Exception.js',
-						'<%= opt.client.jsMainOut %>/*.js',
-						'!<%= opt.client.jsMainOut %>/Cli.js',
-						'!<%= opt.client.jsMainOut %>/api.js'
+						'<%= opt.client.outBase %>/review.js'
 					]
 				}
 			}
@@ -266,7 +275,7 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'compile-for-browser',
 		"ブラウザライブラリ用のコンパイルを行う",
-		['concat:browser', 'replace:definitions', 'uglify:browser']);
+		['replace:definitions', 'browserify:main', 'uglify:browser']);
 
 	grunt.registerTask(
 		'default',
@@ -276,7 +285,7 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'test-preprocess',
 		"テストに必要な前準備を実行する。",
-		['default', 'ts:clientTest', 'concat:test']);
+		['default', 'ts:clientTest', 'browserify:test', 'concat:test']);
 
 	grunt.registerTask(
 		'test',

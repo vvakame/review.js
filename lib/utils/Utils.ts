@@ -16,13 +16,23 @@ declare var define: any; // TODO コンパイル通す用
 false && Book; // tslint消し
 
 /**
+ * ブラウザ上での実行かどうかを判別する。
+ * @returns {boolean}
+ */
+export function isBrowser(): boolean {
+	"use strict";
+
+	return typeof window !== "undefined";
+}
+
+/**
  * Node.js上での実行かどうかを判別する。
  * @returns {boolean}
  */
 export function isNodeJS(): boolean {
 	"use strict";
 
-	return !isAMD() && typeof exports === "object";
+	return !isBrowser() && !isAMD() && typeof exports === "object";
 }
 
 /**
