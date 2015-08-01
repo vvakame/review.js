@@ -7,7 +7,7 @@ import {isNodeJS} from "../../lib/utils/utils";
 
 import {start} from "../../lib/index";
 
-import {IConfigRaw} from "../../lib/controller/configRaw";
+import {ConfigRaw} from "../../lib/controller/configRaw";
 import {ProcessReport} from "../../lib/model/compilerModel";
 
 import {DefaultAnalyzer} from "../../lib/parser/analyzer";
@@ -21,7 +21,7 @@ import {TextBuilder} from "../../lib/builder/textBuilder";
  * @param tmpConfig
  * @returns {{success: (function(): {book: ReVIEW.Book, results: *}), failure: (function(): {})}}
  */
-export function compile(config?: IConfigRaw) {
+export function compile(config?: ConfigRaw) {
 	"use strict";
 
 	config = config || <any>{};
@@ -91,7 +91,7 @@ export function compile(config?: IConfigRaw) {
 export function compileSingle(input: string, tmpConfig?: any /* ReVIEW.IConfigRaw */) {
 	"use strict";
 
-	var config: IConfigRaw = tmpConfig || <any>{};
+	var config: ConfigRaw = tmpConfig || <any>{};
 	config.read = config.read || (() => Promise.resolve(input));
 	config.listener = config.listener || {
 		onCompileSuccess: (book) => {

@@ -25,7 +25,7 @@ export function walk(ast: SyntaxTree, actor: (ast: SyntaxTree) => SyntaxTree) {
  * @param ast
  * @param v
  */
-export function visit(ast: SyntaxTree, v: ITreeVisitor): void {
+export function visit(ast: SyntaxTree, v: TreeVisitor): void {
 	"use strict";
 
 	_visit(() => new SyncTaskPool<void>(), ast, v);
@@ -38,16 +38,16 @@ export function visit(ast: SyntaxTree, v: ITreeVisitor): void {
  * @param ast
  * @param v
  */
-export function visitAsync(ast: SyntaxTree, v: ITreeVisitor): Promise<void> {
+export function visitAsync(ast: SyntaxTree, v: TreeVisitor): Promise<void> {
 	"use strict";
 
 	return Promise.resolve(_visit(() => new AsyncTaskPool<void>(), ast, v));
 }
 
-function _visit(poolGenerator: () => ITaskPool<void>, ast: SyntaxTree, v: ITreeVisitor): any {
+function _visit(poolGenerator: () => TaskPool<void>, ast: SyntaxTree, v: TreeVisitor): any {
 	"use strict";
 
-	var newV: ITreeVisitor = {
+	var newV: TreeVisitor = {
 		visitDefaultPre: v.visitDefaultPre,
 		visitDefaultPost: v.visitDefaultPost || (() => {
 		}),
@@ -121,7 +121,7 @@ function _visit(poolGenerator: () => ITaskPool<void>, ast: SyntaxTree, v: ITreeV
 	return _visitSub(poolGenerator, null, ast, newV);
 }
 
-function _visitSub(poolGenerator: () => ITaskPool<void>, parent: SyntaxTree, ast: SyntaxTree, v: ITreeVisitor): any {
+function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast: SyntaxTree, v: TreeVisitor): any {
 	"use strict";
 
 	if (ast instanceof BlockElementSyntaxTree) {
@@ -389,7 +389,7 @@ function _visitSub(poolGenerator: () => ITaskPool<void>, parent: SyntaxTree, ast
  * false を返した時、子要素の探索は行われない。
  * Function を返した時、子要素の探索を行う代わりにその関数が実行される。Functionには引数として実行中のTreeVisitorが渡される。
  */
-export interface ITreeVisitor {
+export interface TreeVisitor {
 	visitDefaultPre(node: SyntaxTree, parent: SyntaxTree): any;
 	visitDefaultPost?(node: SyntaxTree, parent: SyntaxTree): void;
 	visitNodePre?(node: NodeSyntaxTree, parent: SyntaxTree): any;
@@ -424,7 +424,7 @@ export interface ITreeVisitor {
  * 同期化処理と非同期化処理の記述を一本化するためのヘルパインタフェース。
  * 構造が汚いのでexportしないこと。
  */
-interface ITaskPool<T> {
+interface TaskPool<T> {
 	add(value: () => T): void;
 	handle(value: any, statements: { next: () => void; func: () => void; }): void;
 	consume(): any; // T | Promise<T[]>
@@ -433,7 +433,7 @@ interface ITaskPool<T> {
 /**
  * 同期化処理をそのまま同期処理として扱うためのヘルパクラス。
  */
-class SyncTaskPool<T> implements ITaskPool<T> {
+class SyncTaskPool<T> implements TaskPool<T> {
 	tasks: { (): T; }[] = [];
 
 	add(value: () => T): void {
@@ -460,7 +460,7 @@ class SyncTaskPool<T> implements ITaskPool<T> {
  * array.forEach(value => pool.add(()=> process(value));
  * pool.consume().then(()=> ...);
  */
-class AsyncTaskPool<T> implements ITaskPool<T> {
+class AsyncTaskPool<T> implements TaskPool<T> {
 	tasks: { (): Promise<T>; }[] = [];
 
 	add(value: () => T): void;

@@ -22,7 +22,7 @@ export enum SyntaxType {
 /**
  * Analyzer内で生成され実際にValidator内でSyntaxTreeの処理を行う処理。
  */
-export interface IAnalyzeProcessor {
+export interface AnalyzeProcessor {
 	(process: Process, node: SyntaxTree): any;
 }
 
@@ -87,7 +87,7 @@ export class AcceptableSyntax {
 	allowInline: boolean = true;
 	allowFullySyntax: boolean = false;
 	description: string;
-	process: IAnalyzeProcessor;
+	process: AnalyzeProcessor;
 
 	toJSON(): any {
 		return {
@@ -104,14 +104,14 @@ export class AcceptableSyntax {
  * 受理できる構文の定義を行う。
  * 実際に構文木の検査などを行うのはこの後段。
  */
-export interface IAnalyzer {
+export interface Analyzer {
 	getAcceptableSyntaxes(): AcceptableSyntaxes;
 }
 
 /**
  * 1つの構文についての構成要素を組み立てるためのビルダ。
  */
-export interface IAcceptableSyntaxBuilder {
+export interface AcceptableSyntaxBuilder {
 	setSyntaxType(type: SyntaxType): void;
 	setClass(clazz: any): void;
 	setSymbol(symbolName: string): void;
@@ -120,10 +120,10 @@ export interface IAcceptableSyntaxBuilder {
 	setAllowInline(enable: boolean): void; // デフォルトtrue
 	setAllowFullySyntax(enable: boolean): void; // デフォルトfalse
 
-	processNode(func: IAnalyzeProcessor): void;
+	processNode(func: AnalyzeProcessor): void;
 }
 
-class AnalyzeProcess implements IAcceptableSyntaxBuilder {
+class AnalyzeProcess implements AcceptableSyntaxBuilder {
 	acceptableSyntaxes: AcceptableSyntax[] = [];
 
 	current: AcceptableSyntax;
@@ -196,12 +196,12 @@ class AnalyzeProcess implements IAcceptableSyntaxBuilder {
 		this.current.allowFullySyntax = enable;
 	}
 
-	processNode(func: IAnalyzeProcessor) {
+	processNode(func: AnalyzeProcessor) {
 		this.current.process = func;
 	}
 }
 
-export class DefaultAnalyzer implements IAnalyzer {
+export class DefaultAnalyzer implements Analyzer {
 	private _acceptableSyntaxes: AcceptableSyntax[];
 
 	getAcceptableSyntaxes(): AcceptableSyntaxes {
@@ -244,7 +244,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		return process.acceptableSyntaxes;
 	}
 
-	headline(builder: IAcceptableSyntaxBuilder) {
+	headline(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Other);
 		builder.setClass(HeadlineSyntaxTree);
 		builder.setDescription(t("description.headline"));
@@ -265,7 +265,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	column(builder: IAcceptableSyntaxBuilder) {
+	column(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Other);
 		builder.setClass(ColumnSyntaxTree);
 		builder.setDescription(t("description.column"));
@@ -279,7 +279,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	ulist(builder: IAcceptableSyntaxBuilder) {
+	ulist(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Other);
 		builder.setClass(UlistElementSyntaxTree);
 		builder.setDescription(t("description.ulist"));
@@ -292,7 +292,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	olist(builder: IAcceptableSyntaxBuilder) {
+	olist(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Other);
 		builder.setClass(OlistElementSyntaxTree);
 		builder.setDescription(t("description.olist"));
@@ -305,7 +305,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	dlist(builder: IAcceptableSyntaxBuilder) {
+	dlist(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Other);
 		builder.setClass(DlistElementSyntaxTree);
 		builder.setDescription(t("description.dlist"));
@@ -318,7 +318,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	block_list(builder: IAcceptableSyntaxBuilder) {
+	block_list(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setSymbol("list");
 		builder.setDescription(t("description.block_list"));
@@ -334,7 +334,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	block_listnum(builder: IAcceptableSyntaxBuilder) {
+	block_listnum(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setSymbol("listnum");
 		builder.setDescription(t("description.block_listnum"));
@@ -350,7 +350,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	inline_list(builder: IAcceptableSyntaxBuilder) {
+	inline_list(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Inline);
 		builder.setSymbol("list");
 		builder.setDescription(t("description.inline_list"));
@@ -364,7 +364,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	block_emlist(builder: IAcceptableSyntaxBuilder) {
+	block_emlist(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setSymbol("emlist");
 		builder.setDescription(t("description.block_emlist"));
@@ -378,7 +378,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	block_emlistnum(builder: IAcceptableSyntaxBuilder) {
+	block_emlistnum(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setSymbol("emlistnum");
 		builder.setDescription(t("description.block_emlistnum"));
@@ -392,7 +392,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	inline_hd(builder: IAcceptableSyntaxBuilder) {
+	inline_hd(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Inline);
 		builder.setSymbol("hd");
 		builder.setDescription(t("description.inline_hd"));
@@ -406,7 +406,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	block_image(builder: IAcceptableSyntaxBuilder) {
+	block_image(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setSymbol("image");
 		builder.setDescription(t("description.block_image"));
@@ -422,7 +422,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	block_indepimage(builder: IAcceptableSyntaxBuilder) {
+	block_indepimage(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setSymbol("indepimage");
 		builder.setDescription(t("description.block_indepimage"));
@@ -436,7 +436,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	inline_img(builder: IAcceptableSyntaxBuilder) {
+	inline_img(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Inline);
 		builder.setSymbol("img");
 		builder.setDescription(t("description.inline_img"));
@@ -450,7 +450,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	inline_icon(builder: IAcceptableSyntaxBuilder) {
+	inline_icon(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setSymbol("icon");
 		builder.setDescription(t("description.inline_icon"));
@@ -463,7 +463,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	block_footnote(builder: IAcceptableSyntaxBuilder) {
+	block_footnote(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setSymbol("footnote");
 		builder.setDescription(t("description.block_footnote"));
@@ -479,7 +479,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	inline_fn(builder: IAcceptableSyntaxBuilder) {
+	inline_fn(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Inline);
 		builder.setSymbol("fn");
 		builder.setDescription(t("description.inline_fn"));
@@ -493,7 +493,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	blockDecorationSyntax(builder: IAcceptableSyntaxBuilder, symbol: string, ...argsLength: number[]) {
+	blockDecorationSyntax(builder: AcceptableSyntaxBuilder, symbol: string, ...argsLength: number[]) {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setSymbol(symbol);
 		builder.setDescription(t("description.block_" + symbol));
@@ -507,28 +507,28 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	block_lead(builder: IAcceptableSyntaxBuilder) {
+	block_lead(builder: AcceptableSyntaxBuilder) {
 		this.blockDecorationSyntax(builder, "lead", 0);
 		builder.setAllowFullySyntax(true);
 	}
 
-	block_noindent(builder: IAcceptableSyntaxBuilder) {
+	block_noindent(builder: AcceptableSyntaxBuilder) {
 		this.blockDecorationSyntax(builder, "noindent", 0);
 	}
 
-	block_source(builder: IAcceptableSyntaxBuilder) {
+	block_source(builder: AcceptableSyntaxBuilder) {
 		this.blockDecorationSyntax(builder, "source", 1);
 	}
 
-	block_cmd(builder: IAcceptableSyntaxBuilder) {
+	block_cmd(builder: AcceptableSyntaxBuilder) {
 		this.blockDecorationSyntax(builder, "cmd", 0);
 	}
 
-	block_quote(builder: IAcceptableSyntaxBuilder) {
+	block_quote(builder: AcceptableSyntaxBuilder) {
 		this.blockDecorationSyntax(builder, "quote", 0);
 	}
 
-	inlineDecorationSyntax(builder: IAcceptableSyntaxBuilder, symbol: string) {
+	inlineDecorationSyntax(builder: AcceptableSyntaxBuilder, symbol: string) {
 		builder.setSyntaxType(SyntaxType.Inline);
 		builder.setSymbol(symbol);
 		builder.setDescription(t("description.inline_" + symbol));
@@ -541,31 +541,31 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	inline_br(builder: IAcceptableSyntaxBuilder) {
+	inline_br(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "br");
 	}
 
-	inline_ruby(builder: IAcceptableSyntaxBuilder) {
+	inline_ruby(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "ruby");
 	}
 
-	inline_b(builder: IAcceptableSyntaxBuilder) {
+	inline_b(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "b");
 	}
 
-	inline_code(builder: IAcceptableSyntaxBuilder) {
+	inline_code(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "code");
 	}
 
-	inline_tt(builder: IAcceptableSyntaxBuilder) {
+	inline_tt(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "tt");
 	}
 
-	inline_href(builder: IAcceptableSyntaxBuilder) {
+	inline_href(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "href");
 	}
 
-	block_label(builder: IAcceptableSyntaxBuilder) {
+	block_label(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setSymbol("label");
 		builder.setDescription(t("description.block_label"));
@@ -581,47 +581,47 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	inline_u(builder: IAcceptableSyntaxBuilder) {
+	inline_u(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "u");
 	}
 
-	inline_kw(builder: IAcceptableSyntaxBuilder) {
+	inline_kw(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "kw");
 	}
 
-	inline_em(builder: IAcceptableSyntaxBuilder) {
+	inline_em(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "em");
 	}
 
-	inline_tti(builder: IAcceptableSyntaxBuilder) {
+	inline_tti(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "tti");
 	}
 
-	inline_ttb(builder: IAcceptableSyntaxBuilder) {
+	inline_ttb(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "ttb");
 	}
 
-	inline_ami(builder: IAcceptableSyntaxBuilder) {
+	inline_ami(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "ami");
 	}
 
-	inline_bou(builder: IAcceptableSyntaxBuilder) {
+	inline_bou(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "bou");
 	}
 
-	inline_i(builder: IAcceptableSyntaxBuilder) {
+	inline_i(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "i");
 	}
 
-	inline_strong(builder: IAcceptableSyntaxBuilder) {
+	inline_strong(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "strong");
 	}
 
-	inline_uchar(builder: IAcceptableSyntaxBuilder) {
+	inline_uchar(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "uchar");
 	}
 
-	block_table(builder: IAcceptableSyntaxBuilder) {
+	block_table(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setSymbol("table");
 		builder.setDescription(t("description.block_table"));
@@ -637,7 +637,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	inline_table(builder: IAcceptableSyntaxBuilder) {
+	inline_table(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Inline);
 		builder.setSymbol("table");
 		builder.setDescription(t("description.inline_table"));
@@ -651,7 +651,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	block_tsize(builder: IAcceptableSyntaxBuilder) {
+	block_tsize(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setDescription(t("description.block_tsize"));
 		builder.checkArgsLength(1);
@@ -664,7 +664,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	block_raw(builder: IAcceptableSyntaxBuilder) {
+	block_raw(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setSymbol("raw");
 		builder.setDescription(t("description.block_raw"));
@@ -678,7 +678,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	inline_raw(builder: IAcceptableSyntaxBuilder) {
+	inline_raw(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Inline);
 		builder.setSymbol("raw");
 		builder.setDescription(t("description.inline_raw"));
@@ -691,7 +691,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	block_comment(builder: IAcceptableSyntaxBuilder) {
+	block_comment(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setSymbol("comment");
 		builder.setDescription(t("description.block_comment"));
@@ -705,7 +705,7 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	inline_comment(builder: IAcceptableSyntaxBuilder) {
+	inline_comment(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Inline);
 		builder.setSymbol("comment");
 		builder.setDescription(t("description.inline_comment"));
@@ -718,11 +718,11 @@ export class DefaultAnalyzer implements IAnalyzer {
 		});
 	}
 
-	inline_chap(builder: IAcceptableSyntaxBuilder) {
+	inline_chap(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "chap");
 	}
 
-	inline_chapref(builder: IAcceptableSyntaxBuilder) {
+	inline_chapref(builder: AcceptableSyntaxBuilder) {
 		this.inlineDecorationSyntax(builder, "chapref");
 	}
 

@@ -1,15 +1,15 @@
 "use strict";
 
-import {IConfigRaw} from "../controller/configRaw";
+import {ConfigRaw} from "../controller/configRaw";
 import {Book, Process, BuilderProcess} from "../model/compilerModel";
 
 import {SyntaxTree, NodeSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, DlistElementSyntaxTree, OlistElementSyntaxTree, TextNodeSyntaxTree, ChapterSyntaxTree, ColumnSyntaxTree} from "../parser/parser";
-import {IBuilder} from "../builder/builder";
+import {Builder} from "../builder/builder";
 import {TextBuilder} from "../builder/textBuilder";
 import {HtmlBuilder} from "../builder/htmlBuilder";
 import {DefaultAnalyzer} from "../parser/analyzer";
 import {DefaultValidator} from "../parser/validator";
-import {ITreeVisitor, visit, walk} from "../parser/walker";
+import {TreeVisitor, visit, walk} from "../parser/walker";
 import {start} from "../index";
 
 declare var define: any; // TODO コンパイル通す用
@@ -87,7 +87,7 @@ export function nodeContentToString(process: any, node: SyntaxTree): string {
 	var minPos = Number.MAX_VALUE;
 	var maxPos = -1;
 	// child
-	var childVisitor: ITreeVisitor = {
+	var childVisitor: TreeVisitor = {
 		visitDefaultPre: (node: SyntaxTree) => {
 			minPos = Math.min(minPos, node.offset);
 			maxPos = Math.max(maxPos, node.endPos);
@@ -198,7 +198,7 @@ export function findChapterOrColumn(node: SyntaxTree, level?: number): NodeSynta
 	return chapter || column;
 }
 
-export function target2builder(target: string): IBuilder {
+export function target2builder(target: string): Builder {
 	"use strict";
 
 	// TODO 適当になおす…
@@ -282,7 +282,7 @@ export module Exec {
 	export function singleCompile(input: string, fileName?: string, target?: string, tmpConfig?: any /* ReVIEW.IConfig */) {
 		"use strict";
 
-		var config: IConfigRaw = tmpConfig || <any>{};
+		var config: ConfigRaw = tmpConfig || <any>{};
 		config.read = config.read || (() => Promise.resolve(input));
 
 		config.analyzer = config.analyzer || new DefaultAnalyzer();

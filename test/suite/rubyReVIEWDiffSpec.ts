@@ -9,7 +9,7 @@ import * as Test from "./testHelper";
 
 import {isNodeJS} from "../../lib/utils/utils";
 
-import {IBuilder} from "../../lib/builder/builder";
+import {Builder} from "../../lib/builder/builder";
 import {TextBuilder} from "../../lib/builder/textBuilder";
 import {HtmlBuilder} from "../../lib/builder/htmlBuilder";
 
@@ -48,7 +48,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 		let fs = require("fs");
 		/* tslint:enable:no-require-imports */
 
-		var typeList: { ext: string; target: string; builder: () => IBuilder; }[] = [
+		var typeList: { ext: string; target: string; builder: () => Builder; }[] = [
 			{
 				ext: "txt",
 				target: "text",

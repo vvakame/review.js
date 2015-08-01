@@ -13,7 +13,7 @@ import {nodeContentToString} from "../utils/utils";
 /**
  * 構文木の組み換えを行う機会を提供する。
  */
-export interface IPreprocessor {
+export interface Preprocessor {
 	start(book: Book, acceptableSyntaxes: AcceptableSyntaxes): void;
 }
 
@@ -25,7 +25,7 @@ export interface IPreprocessor {
  * 3. 全てを許可する(なにもしない
  * AcceptableSyntaxes にしたがって処理する。
  */
-export class SyntaxPreprocessor implements IPreprocessor {
+export class SyntaxPreprocessor implements Preprocessor {
 	acceptableSyntaxes: AcceptableSyntaxes;
 
 	start(book: Book) {

@@ -2,7 +2,7 @@
 
 declare module 'review.js' {
     import { Book, ReportLevel } from "review.js/lib/model/compilerModel";
-    import { IOptions } from "review.js/lib/controller/configRaw";
+    import { Options } from "review.js/lib/controller/configRaw";
     import { Controller } from "review.js/lib/controller/controller";
     import { HtmlBuilder as _HtmlBuilder } from "review.js/lib/builder/htmlBuilder";
     import { TextBuilder as _TextBuilder } from "review.js/lib/builder/textBuilder";
@@ -13,15 +13,15 @@ declare module 'review.js' {
         var SyntaxType: typeof _SyntaxType;
     }
     export { ReportLevel };
-    export function start(setup: (review: Controller) => void, options?: IOptions): Promise<Book>;
+    export function start(setup: (review: Controller) => void, options?: Options): Promise<Book>;
 }
 
 declare module 'review.js/lib/model/compilerModel' {
-    import { IConcreatSyntaxTree, SyntaxTree, InlineElementSyntaxTree, BlockElementSyntaxTree } from "review.js/lib/parser/parser";
+    import { ConcreatSyntaxTree, SyntaxTree, InlineElementSyntaxTree, BlockElementSyntaxTree } from "review.js/lib/parser/parser";
     import { AcceptableSyntaxes } from "review.js/lib/parser/analyzer";
-    import { IBuilder } from "review.js/lib/builder/builder";
+    import { Builder } from "review.js/lib/builder/builder";
     import { Config } from "review.js/lib/controller/config";
-    export interface IReferenceTo {
+    export interface ReferenceTo {
         part?: ContentChunk;
         partName: string;
         chapter?: ContentChunk;
@@ -30,12 +30,12 @@ declare module 'review.js/lib/model/compilerModel' {
         label: string;
         referenceNode?: SyntaxTree;
     }
-    export interface ISymbol {
+    export interface Symbol {
         part?: ContentChunk;
         chapter?: ContentChunk;
         symbolName: string;
         labelName?: string;
-        referenceTo?: IReferenceTo;
+        referenceTo?: ReferenceTo;
         node: SyntaxTree;
     }
     export enum ReportLevel {
@@ -61,7 +61,7 @@ declare module 'review.js/lib/model/compilerModel' {
         part: ContentChunk;
         chapter: ContentChunk;
         input: string;
-        symbols: ISymbol[];
+        symbols: Symbol[];
         indexCounter: {
             [kind: string]: number;
         };
@@ -72,17 +72,17 @@ declare module 'review.js/lib/model/compilerModel' {
         error(message: string, ...nodes: SyntaxTree[]): void;
         nextIndex(kind: string): number;
         reports: ProcessReport[];
-        addSymbol(symbol: ISymbol): void;
-        missingSymbols: ISymbol[];
-        constructReferenceTo(node: InlineElementSyntaxTree, value: string, targetSymbol?: string, separator?: string): IReferenceTo;
-        constructReferenceTo(node: BlockElementSyntaxTree, value: string, targetSymbol: string, separator?: string): IReferenceTo;
+        addSymbol(symbol: Symbol): void;
+        missingSymbols: Symbol[];
+        constructReferenceTo(node: InlineElementSyntaxTree, value: string, targetSymbol?: string, separator?: string): ReferenceTo;
+        constructReferenceTo(node: BlockElementSyntaxTree, value: string, targetSymbol: string, separator?: string): ReferenceTo;
         addAfterProcess(func: Function): void;
         doAfterProcess(): void;
     }
     export class BuilderProcess {
-        builder: IBuilder;
+        builder: Builder;
         base: Process;
-        constructor(builder: IBuilder, base: Process);
+        constructor(builder: Builder, base: Process);
         info: (message: string, ...nodes: SyntaxTree[]) => void;
         warn: (message: string, ...nodes: SyntaxTree[]) => void;
         error: (message: string, ...nodes: SyntaxTree[]) => void;
@@ -91,7 +91,7 @@ declare module 'review.js/lib/model/compilerModel' {
         outRaw(data: any): BuilderProcess;
         pushOut(data: string): BuilderProcess;
         input: string;
-        symbols: ISymbol[];
+        symbols: Symbol[];
         findImageFile(id: string): Promise<string>;
     }
     export class Book {
@@ -117,61 +117,61 @@ declare module 'review.js/lib/model/compilerModel' {
         _input: string;
         tree: {
             ast: SyntaxTree;
-            cst: IConcreatSyntaxTree;
+            cst: ConcreatSyntaxTree;
         };
         process: Process;
         builderProcesses: BuilderProcess[];
         constructor(book: Book, parent: ContentChunk, name: string);
         constructor(book: Book, name: string);
         input: string;
-        createBuilderProcess(builder: IBuilder): BuilderProcess;
+        createBuilderProcess(builder: Builder): BuilderProcess;
         findResultByBuilder(builderName: string): string;
-        findResultByBuilder(builder: IBuilder): string;
+        findResultByBuilder(builder: Builder): string;
     }
 }
 
 declare module 'review.js/lib/controller/configRaw' {
-    import { Book, ISymbol, ProcessReport } from "review.js/lib/model/compilerModel";
-    import { IAnalyzer, AcceptableSyntaxes } from "review.js/lib/parser/analyzer";
-    import { IValidator } from "review.js/lib/parser/validator";
-    import { IBuilder } from "review.js/lib/builder/builder";
-    export interface IOptions {
+    import { Book, Symbol, ProcessReport } from "review.js/lib/model/compilerModel";
+    import { Analyzer, AcceptableSyntaxes } from "review.js/lib/parser/analyzer";
+    import { Validator } from "review.js/lib/parser/validator";
+    import { Builder } from "review.js/lib/builder/builder";
+    export interface Options {
         reviewfile?: string;
         base?: string;
     }
-    export interface IConfigRaw {
+    export interface ConfigRaw {
         basePath?: string;
         read?: (path: string) => Promise<string>;
         write?: (path: string, data: string) => Promise<void>;
-        listener?: IConfigListener;
-        analyzer?: IAnalyzer;
-        validators?: IValidator[];
-        builders?: IBuilder[];
-        book: IConfigBook;
+        listener?: ConfigListener;
+        analyzer?: Analyzer;
+        validators?: Validator[];
+        builders?: Builder[];
+        book: ConfigBook;
     }
-    export interface IConfigListener {
+    export interface ConfigListener {
         onAcceptables?: (acceptableSyntaxes: AcceptableSyntaxes) => any;
-        onSymbols?: (symbols: ISymbol[]) => any;
+        onSymbols?: (symbols: Symbol[]) => any;
         onReports?: (reports: ProcessReport[]) => any;
         onCompileSuccess?: (book: Book) => void;
         onCompileFailed?: (book?: Book) => void;
     }
-    export interface IConfigBook {
-        predef?: IConfigChapter[];
-        contents: IConfigPartOrChapter[];
-        appendix?: IConfigChapter[];
-        postdef?: IConfigChapter[];
+    export interface ConfigBook {
+        predef?: ConfigChapter[];
+        contents: ConfigPartOrChapter[];
+        appendix?: ConfigChapter[];
+        postdef?: ConfigChapter[];
     }
-    export interface IConfigPartOrChapter {
-        part?: IConfigPart;
-        chapter?: IConfigChapter;
+    export interface ConfigPartOrChapter {
+        part?: ConfigPart;
+        chapter?: ConfigChapter;
         file?: string;
     }
-    export interface IConfigPart {
+    export interface ConfigPart {
         file: string;
-        chapters: IConfigChapter[];
+        chapters: ConfigChapter[];
     }
-    export interface IConfigChapter {
+    export interface ConfigChapter {
         file: string;
     }
     export class BookStructure {
@@ -180,31 +180,31 @@ declare module 'review.js/lib/controller/configRaw' {
         appendix: ContentStructure[];
         postdef: ContentStructure[];
         constructor(predef: ContentStructure[], contents: ContentStructure[], appendix: ContentStructure[], postdef: ContentStructure[]);
-        static createBook(config: IConfigBook): BookStructure;
+        static createBook(config: ConfigBook): BookStructure;
     }
     export class ContentStructure {
-        part: IConfigPart;
-        chapter: IConfigChapter;
-        constructor(part: IConfigPart, chapter: IConfigChapter);
+        part: ConfigPart;
+        chapter: ConfigChapter;
+        constructor(part: ConfigPart, chapter: ConfigChapter);
         static createChapter(file: string): ContentStructure;
-        static createChapter(chapter: IConfigChapter): ContentStructure;
-        static createPart(part: IConfigPart): ContentStructure;
+        static createChapter(chapter: ConfigChapter): ContentStructure;
+        static createPart(part: ConfigPart): ContentStructure;
     }
 }
 
 declare module 'review.js/lib/controller/controller' {
     import { Book } from "review.js/lib/model/compilerModel";
-    import { IOptions, IConfigRaw } from "review.js/lib/controller/configRaw";
+    import { Options, ConfigRaw } from "review.js/lib/controller/configRaw";
     import { TextBuilder } from "review.js/lib/builder/textBuilder";
     import { HtmlBuilder } from "review.js/lib/builder/htmlBuilder";
     export class Controller {
-        options: IOptions;
+        options: Options;
         builders: {
             TextBuilder: typeof TextBuilder;
             HtmlBuilder: typeof HtmlBuilder;
         };
-        constructor(options?: IOptions);
-        initConfig(data: IConfigRaw): void;
+        constructor(options?: Options);
+        initConfig(data: ConfigRaw): void;
         process(): Promise<Book>;
         acceptableSyntaxes(book: Book): Promise<Book>;
         toContentChunk(book: Book): Book;
@@ -222,7 +222,7 @@ declare module 'review.js/lib/builder/htmlBuilder' {
     import { BuilderProcess, ContentChunk } from "review.js/lib/model/compilerModel";
     import { DefaultBuilder } from "review.js/lib/builder/builder";
     import { NodeSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree } from "review.js/lib/parser/parser";
-    import { ITreeVisitor } from "review.js/lib/parser/walker";
+    import { TreeVisitor } from "review.js/lib/parser/walker";
     export class HtmlBuilder extends DefaultBuilder {
         extention: string;
         escapeMap: {
@@ -235,7 +235,7 @@ declare module 'review.js/lib/builder/htmlBuilder' {
         headlinePost(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): void;
         columnPre(process: BuilderProcess, node: ColumnSyntaxTree): void;
         columnPost(process: BuilderProcess, node: ColumnSyntaxTree): void;
-        columnHeadlinePre(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): (v: ITreeVisitor) => void;
+        columnHeadlinePre(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): (v: TreeVisitor) => void;
         columnHeadlinePost(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): void;
         paragraphPre(process: BuilderProcess, name: string, node: NodeSyntaxTree): void;
         paragraphPost(process: BuilderProcess, name: string, node: NodeSyntaxTree): void;
@@ -243,16 +243,16 @@ declare module 'review.js/lib/builder/htmlBuilder' {
         ulistPost(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): void;
         olistPre(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): void;
         olistPost(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): void;
-        dlistPre(process: BuilderProcess, name: string, node: DlistElementSyntaxTree): (v: ITreeVisitor) => void;
+        dlistPre(process: BuilderProcess, name: string, node: DlistElementSyntaxTree): (v: TreeVisitor) => void;
         dlistPost(process: BuilderProcess, name: string, node: DlistElementSyntaxTree): void;
-        block_list_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_list_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_list_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
-        block_listnum_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_listnum_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_listnum_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
         inline_list(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
-        block_emlist_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_emlist_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_emlist_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
-        block_emlistnum_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_emlistnum_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_emlistnum_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
         inline_hd_pre(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
         inline_hd_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
@@ -265,11 +265,11 @@ declare module 'review.js/lib/builder/htmlBuilder' {
         block_label(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
         inline_tt_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_tt_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
-        inline_ruby_pre(process: BuilderProcess, node: InlineElementSyntaxTree): (v: ITreeVisitor) => void;
+        inline_ruby_pre(process: BuilderProcess, node: InlineElementSyntaxTree): (v: TreeVisitor) => void;
         inline_ruby_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_u_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_u_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
-        inline_kw_pre(process: BuilderProcess, node: InlineElementSyntaxTree): (v: ITreeVisitor) => void;
+        inline_kw_pre(process: BuilderProcess, node: InlineElementSyntaxTree): (v: TreeVisitor) => void;
         inline_kw_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_em_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_em_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
@@ -286,11 +286,11 @@ declare module 'review.js/lib/builder/htmlBuilder' {
         inline_ttb_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_ttb_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         block_noindent(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
-        block_source_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_source_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_source_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
-        block_cmd_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_cmd_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_cmd_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
-        block_quote_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_quote_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_quote_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
         inline_ami_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_ami_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
@@ -302,11 +302,11 @@ declare module 'review.js/lib/builder/htmlBuilder' {
         inline_strong_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_uchar_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_uchar_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
-        block_table_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_table_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_table_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
         inline_table(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
         block_tsize(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
-        block_comment_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_comment_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_comment_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
         inline_comment_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_comment_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
@@ -317,13 +317,13 @@ declare module 'review.js/lib/builder/textBuilder' {
     import { BuilderProcess } from "review.js/lib/model/compilerModel";
     import { DefaultBuilder } from "review.js/lib/builder/builder";
     import { NodeSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree } from "review.js/lib/parser/parser";
-    import { ITreeVisitor } from "review.js/lib/parser/walker";
+    import { TreeVisitor } from "review.js/lib/parser/walker";
     export class TextBuilder extends DefaultBuilder {
         extention: string;
         escape(data: any): string;
         headlinePre(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): void;
         headlinePost(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): void;
-        columnHeadlinePre(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): (v: ITreeVisitor) => void;
+        columnHeadlinePre(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): (v: TreeVisitor) => void;
         columnHeadlinePost(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): void;
         columnPost(process: BuilderProcess, node: ColumnSyntaxTree): void;
         paragraphPost(process: BuilderProcess, name: string, node: NodeSyntaxTree): void;
@@ -331,16 +331,16 @@ declare module 'review.js/lib/builder/textBuilder' {
         ulistPost(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): void;
         olistPre(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): void;
         olistPost(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): void;
-        dlistPre(process: BuilderProcess, name: string, node: DlistElementSyntaxTree): (v: ITreeVisitor) => void;
+        dlistPre(process: BuilderProcess, name: string, node: DlistElementSyntaxTree): (v: TreeVisitor) => void;
         dlistPost(process: BuilderProcess, name: string, node: DlistElementSyntaxTree): void;
-        block_list_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_list_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_list_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
-        block_listnum_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_listnum_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_listnum_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
         inline_list(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
-        block_emlist_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_emlist_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_emlist_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
-        block_emlistnum_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_emlistnum_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_emlistnum_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
         inline_hd_pre(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
         inline_hd_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
@@ -353,10 +353,10 @@ declare module 'review.js/lib/builder/textBuilder' {
         inline_href_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_href(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
         block_label(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
-        inline_ruby(process: BuilderProcess, node: InlineElementSyntaxTree): (v: ITreeVisitor) => void;
+        inline_ruby(process: BuilderProcess, node: InlineElementSyntaxTree): (v: TreeVisitor) => void;
         inline_u_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_u_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
-        inline_kw(process: BuilderProcess, node: InlineElementSyntaxTree): (v: ITreeVisitor) => void;
+        inline_kw(process: BuilderProcess, node: InlineElementSyntaxTree): (v: TreeVisitor) => void;
         inline_tt_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_tt_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_em_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
@@ -374,11 +374,11 @@ declare module 'review.js/lib/builder/textBuilder' {
         inline_ttb_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_ttb_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         block_noindent(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
-        block_source_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_source_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_source_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
-        block_cmd_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_cmd_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_cmd_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
-        block_quote_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_quote_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_quote_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
         inline_ami_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_ami_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
@@ -389,11 +389,11 @@ declare module 'review.js/lib/builder/textBuilder' {
         inline_strong_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_strong_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_uchar(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
-        block_table_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_table_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_table_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
         inline_table(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
         block_tsize(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
-        block_comment_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: ITreeVisitor) => void;
+        block_comment_pre(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         block_comment_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
         inline_comment_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_comment_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
@@ -408,7 +408,7 @@ declare module 'review.js/lib/parser/analyzer' {
         Inline = 1,
         Other = 2,
     }
-    export interface IAnalyzeProcessor {
+    export interface AnalyzeProcessor {
         (process: Process, node: SyntaxTree): any;
     }
     export class AcceptableSyntaxes {
@@ -428,13 +428,13 @@ declare module 'review.js/lib/parser/analyzer' {
         allowInline: boolean;
         allowFullySyntax: boolean;
         description: string;
-        process: IAnalyzeProcessor;
+        process: AnalyzeProcessor;
         toJSON(): any;
     }
-    export interface IAnalyzer {
+    export interface Analyzer {
         getAcceptableSyntaxes(): AcceptableSyntaxes;
     }
-    export interface IAcceptableSyntaxBuilder {
+    export interface AcceptableSyntaxBuilder {
         setSyntaxType(type: SyntaxType): void;
         setClass(clazz: any): void;
         setSymbol(symbolName: string): void;
@@ -442,77 +442,77 @@ declare module 'review.js/lib/parser/analyzer' {
         checkArgsLength(...argsLength: number[]): void;
         setAllowInline(enable: boolean): void;
         setAllowFullySyntax(enable: boolean): void;
-        processNode(func: IAnalyzeProcessor): void;
+        processNode(func: AnalyzeProcessor): void;
     }
-    export class DefaultAnalyzer implements IAnalyzer {
+    export class DefaultAnalyzer implements Analyzer {
         getAcceptableSyntaxes(): AcceptableSyntaxes;
         constructAcceptableSyntaxes(): AcceptableSyntax[];
-        headline(builder: IAcceptableSyntaxBuilder): void;
-        column(builder: IAcceptableSyntaxBuilder): void;
-        ulist(builder: IAcceptableSyntaxBuilder): void;
-        olist(builder: IAcceptableSyntaxBuilder): void;
-        dlist(builder: IAcceptableSyntaxBuilder): void;
-        block_list(builder: IAcceptableSyntaxBuilder): void;
-        block_listnum(builder: IAcceptableSyntaxBuilder): void;
-        inline_list(builder: IAcceptableSyntaxBuilder): void;
-        block_emlist(builder: IAcceptableSyntaxBuilder): void;
-        block_emlistnum(builder: IAcceptableSyntaxBuilder): void;
-        inline_hd(builder: IAcceptableSyntaxBuilder): void;
-        block_image(builder: IAcceptableSyntaxBuilder): void;
-        block_indepimage(builder: IAcceptableSyntaxBuilder): void;
-        inline_img(builder: IAcceptableSyntaxBuilder): void;
-        inline_icon(builder: IAcceptableSyntaxBuilder): void;
-        block_footnote(builder: IAcceptableSyntaxBuilder): void;
-        inline_fn(builder: IAcceptableSyntaxBuilder): void;
-        blockDecorationSyntax(builder: IAcceptableSyntaxBuilder, symbol: string, ...argsLength: number[]): void;
-        block_lead(builder: IAcceptableSyntaxBuilder): void;
-        block_noindent(builder: IAcceptableSyntaxBuilder): void;
-        block_source(builder: IAcceptableSyntaxBuilder): void;
-        block_cmd(builder: IAcceptableSyntaxBuilder): void;
-        block_quote(builder: IAcceptableSyntaxBuilder): void;
-        inlineDecorationSyntax(builder: IAcceptableSyntaxBuilder, symbol: string): void;
-        inline_br(builder: IAcceptableSyntaxBuilder): void;
-        inline_ruby(builder: IAcceptableSyntaxBuilder): void;
-        inline_b(builder: IAcceptableSyntaxBuilder): void;
-        inline_code(builder: IAcceptableSyntaxBuilder): void;
-        inline_tt(builder: IAcceptableSyntaxBuilder): void;
-        inline_href(builder: IAcceptableSyntaxBuilder): void;
-        block_label(builder: IAcceptableSyntaxBuilder): void;
-        inline_u(builder: IAcceptableSyntaxBuilder): void;
-        inline_kw(builder: IAcceptableSyntaxBuilder): void;
-        inline_em(builder: IAcceptableSyntaxBuilder): void;
-        inline_tti(builder: IAcceptableSyntaxBuilder): void;
-        inline_ttb(builder: IAcceptableSyntaxBuilder): void;
-        inline_ami(builder: IAcceptableSyntaxBuilder): void;
-        inline_bou(builder: IAcceptableSyntaxBuilder): void;
-        inline_i(builder: IAcceptableSyntaxBuilder): void;
-        inline_strong(builder: IAcceptableSyntaxBuilder): void;
-        inline_uchar(builder: IAcceptableSyntaxBuilder): void;
-        block_table(builder: IAcceptableSyntaxBuilder): void;
-        inline_table(builder: IAcceptableSyntaxBuilder): void;
-        block_tsize(builder: IAcceptableSyntaxBuilder): void;
-        block_raw(builder: IAcceptableSyntaxBuilder): void;
-        inline_raw(builder: IAcceptableSyntaxBuilder): void;
-        block_comment(builder: IAcceptableSyntaxBuilder): void;
-        inline_comment(builder: IAcceptableSyntaxBuilder): void;
-        inline_chap(builder: IAcceptableSyntaxBuilder): void;
-        inline_chapref(builder: IAcceptableSyntaxBuilder): void;
+        headline(builder: AcceptableSyntaxBuilder): void;
+        column(builder: AcceptableSyntaxBuilder): void;
+        ulist(builder: AcceptableSyntaxBuilder): void;
+        olist(builder: AcceptableSyntaxBuilder): void;
+        dlist(builder: AcceptableSyntaxBuilder): void;
+        block_list(builder: AcceptableSyntaxBuilder): void;
+        block_listnum(builder: AcceptableSyntaxBuilder): void;
+        inline_list(builder: AcceptableSyntaxBuilder): void;
+        block_emlist(builder: AcceptableSyntaxBuilder): void;
+        block_emlistnum(builder: AcceptableSyntaxBuilder): void;
+        inline_hd(builder: AcceptableSyntaxBuilder): void;
+        block_image(builder: AcceptableSyntaxBuilder): void;
+        block_indepimage(builder: AcceptableSyntaxBuilder): void;
+        inline_img(builder: AcceptableSyntaxBuilder): void;
+        inline_icon(builder: AcceptableSyntaxBuilder): void;
+        block_footnote(builder: AcceptableSyntaxBuilder): void;
+        inline_fn(builder: AcceptableSyntaxBuilder): void;
+        blockDecorationSyntax(builder: AcceptableSyntaxBuilder, symbol: string, ...argsLength: number[]): void;
+        block_lead(builder: AcceptableSyntaxBuilder): void;
+        block_noindent(builder: AcceptableSyntaxBuilder): void;
+        block_source(builder: AcceptableSyntaxBuilder): void;
+        block_cmd(builder: AcceptableSyntaxBuilder): void;
+        block_quote(builder: AcceptableSyntaxBuilder): void;
+        inlineDecorationSyntax(builder: AcceptableSyntaxBuilder, symbol: string): void;
+        inline_br(builder: AcceptableSyntaxBuilder): void;
+        inline_ruby(builder: AcceptableSyntaxBuilder): void;
+        inline_b(builder: AcceptableSyntaxBuilder): void;
+        inline_code(builder: AcceptableSyntaxBuilder): void;
+        inline_tt(builder: AcceptableSyntaxBuilder): void;
+        inline_href(builder: AcceptableSyntaxBuilder): void;
+        block_label(builder: AcceptableSyntaxBuilder): void;
+        inline_u(builder: AcceptableSyntaxBuilder): void;
+        inline_kw(builder: AcceptableSyntaxBuilder): void;
+        inline_em(builder: AcceptableSyntaxBuilder): void;
+        inline_tti(builder: AcceptableSyntaxBuilder): void;
+        inline_ttb(builder: AcceptableSyntaxBuilder): void;
+        inline_ami(builder: AcceptableSyntaxBuilder): void;
+        inline_bou(builder: AcceptableSyntaxBuilder): void;
+        inline_i(builder: AcceptableSyntaxBuilder): void;
+        inline_strong(builder: AcceptableSyntaxBuilder): void;
+        inline_uchar(builder: AcceptableSyntaxBuilder): void;
+        block_table(builder: AcceptableSyntaxBuilder): void;
+        inline_table(builder: AcceptableSyntaxBuilder): void;
+        block_tsize(builder: AcceptableSyntaxBuilder): void;
+        block_raw(builder: AcceptableSyntaxBuilder): void;
+        inline_raw(builder: AcceptableSyntaxBuilder): void;
+        block_comment(builder: AcceptableSyntaxBuilder): void;
+        inline_comment(builder: AcceptableSyntaxBuilder): void;
+        inline_chap(builder: AcceptableSyntaxBuilder): void;
+        inline_chapref(builder: AcceptableSyntaxBuilder): void;
     }
 }
 
 declare module 'review.js/lib/parser/parser' {
     export function parse(input: string): {
         ast: NodeSyntaxTree;
-        cst: IConcreatSyntaxTree;
+        cst: ConcreatSyntaxTree;
     };
-    export function transform(rawResult: IConcreatSyntaxTree): SyntaxTree;
+    export function transform(rawResult: ConcreatSyntaxTree): SyntaxTree;
     export class ParseError implements Error {
-        syntax: IConcreatSyntaxTree;
+        syntax: ConcreatSyntaxTree;
         message: string;
         name: string;
-        constructor(syntax: IConcreatSyntaxTree, message: string);
+        constructor(syntax: ConcreatSyntaxTree, message: string);
     }
-    export interface IConcreatSyntaxTree {
+    export interface ConcreatSyntaxTree {
         syntax: string;
         line: number;
         column: number;
@@ -584,7 +584,7 @@ declare module 'review.js/lib/parser/parser' {
         no: number;
         prev: SyntaxTree;
         next: SyntaxTree;
-        constructor(data: IConcreatSyntaxTree);
+        constructor(data: ConcreatSyntaxTree);
         toJSON(): any;
         toString(indentLevel?: number): string;
         makeIndent(indentLevel: number): string;
@@ -618,13 +618,13 @@ declare module 'review.js/lib/parser/parser' {
     }
     export class NodeSyntaxTree extends SyntaxTree {
         childNodes: SyntaxTree[];
-        constructor(data: IConcreatSyntaxTree);
+        constructor(data: ConcreatSyntaxTree);
         toStringHook(indentLevel: number, result: string): void;
     }
     export class ChapterSyntaxTree extends NodeSyntaxTree {
         headline: HeadlineSyntaxTree;
         text: SyntaxTree[];
-        constructor(data: IConcreatSyntaxTree);
+        constructor(data: ConcreatSyntaxTree);
         level: number;
         fqn: string;
     }
@@ -632,58 +632,58 @@ declare module 'review.js/lib/parser/parser' {
         level: number;
         label: ArgumentSyntaxTree;
         caption: NodeSyntaxTree;
-        constructor(data: IConcreatSyntaxTree);
+        constructor(data: ConcreatSyntaxTree);
     }
     export class BlockElementSyntaxTree extends NodeSyntaxTree {
         symbol: string;
         args: ArgumentSyntaxTree[];
-        constructor(data: IConcreatSyntaxTree);
+        constructor(data: ConcreatSyntaxTree);
     }
     export class InlineElementSyntaxTree extends NodeSyntaxTree {
         symbol: string;
-        constructor(data: IConcreatSyntaxTree);
+        constructor(data: ConcreatSyntaxTree);
     }
     export class ColumnSyntaxTree extends NodeSyntaxTree {
         headline: ColumnHeadlineSyntaxTree;
         text: SyntaxTree[];
-        constructor(data: IConcreatSyntaxTree);
+        constructor(data: ConcreatSyntaxTree);
         level: number;
         fqn: string;
     }
     export class ColumnHeadlineSyntaxTree extends SyntaxTree {
         level: number;
         caption: NodeSyntaxTree;
-        constructor(data: IConcreatSyntaxTree);
+        constructor(data: ConcreatSyntaxTree);
     }
     export class ArgumentSyntaxTree extends SyntaxTree {
         arg: string;
-        constructor(data: IConcreatSyntaxTree);
+        constructor(data: ConcreatSyntaxTree);
     }
     export class UlistElementSyntaxTree extends NodeSyntaxTree {
         level: number;
         text: SyntaxTree;
-        constructor(data: IConcreatSyntaxTree);
+        constructor(data: ConcreatSyntaxTree);
     }
     export class OlistElementSyntaxTree extends SyntaxTree {
         no: number;
         text: SyntaxTree;
-        constructor(data: IConcreatSyntaxTree);
+        constructor(data: ConcreatSyntaxTree);
     }
     export class DlistElementSyntaxTree extends SyntaxTree {
         text: SyntaxTree;
         content: SyntaxTree;
-        constructor(data: IConcreatSyntaxTree);
+        constructor(data: ConcreatSyntaxTree);
     }
     export class TextNodeSyntaxTree extends SyntaxTree {
         text: string;
-        constructor(data: IConcreatSyntaxTree);
+        constructor(data: ConcreatSyntaxTree);
     }
 }
 
 declare module 'review.js/lib/builder/builder' {
-    import { Book, BuilderProcess, ContentChunk, ISymbol } from "review.js/lib/model/compilerModel";
+    import { Book, BuilderProcess, ContentChunk, Symbol } from "review.js/lib/model/compilerModel";
     import { SyntaxTree, NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, TextNodeSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree } from "review.js/lib/parser/parser";
-    export interface IBuilder {
+    export interface Builder {
         name: string;
         extention: string;
         init(book: Book): Promise<void>;
@@ -706,7 +706,7 @@ declare module 'review.js/lib/builder/builder' {
         inlinePost(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
         text(process: BuilderProcess, node: TextNodeSyntaxTree): any;
     }
-    export class DefaultBuilder implements IBuilder {
+    export class DefaultBuilder implements Builder {
         book: Book;
         extention: string;
         name: string;
@@ -736,7 +736,7 @@ declare module 'review.js/lib/builder/builder' {
         inlinePre(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
         inlinePost(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
         ulistParentHelper(process: BuilderProcess, node: UlistElementSyntaxTree, action: () => void, currentLevel?: number): void;
-        findReference(process: BuilderProcess, node: SyntaxTree): ISymbol;
+        findReference(process: BuilderProcess, node: SyntaxTree): Symbol;
         block_raw(process: BuilderProcess, node: BlockElementSyntaxTree): any;
         inline_raw(process: BuilderProcess, node: InlineElementSyntaxTree): any;
         inline_chap(process: BuilderProcess, node: InlineElementSyntaxTree): any;
@@ -745,51 +745,51 @@ declare module 'review.js/lib/builder/builder' {
 }
 
 declare module 'review.js/lib/controller/config' {
-    import { IBuilder } from "review.js/lib/builder/builder";
-    import { BookStructure, IConfigRaw, IOptions, IConfigListener } from "review.js/lib/controller/configRaw";
+    import { Builder } from "review.js/lib/builder/builder";
+    import { BookStructure, ConfigRaw, Options, ConfigListener } from "review.js/lib/controller/configRaw";
     import { ProcessReport, Book } from "review.js/lib/model/compilerModel";
-    import { IAnalyzer } from "review.js/lib/parser/analyzer";
-    import { IValidator } from "review.js/lib/parser/validator";
+    import { Analyzer } from "review.js/lib/parser/analyzer";
+    import { Validator } from "review.js/lib/parser/validator";
     export class Config {
-        original: IConfigRaw;
-        _builders: IBuilder[];
+        original: ConfigRaw;
+        _builders: Builder[];
         _bookStructure: BookStructure;
-        constructor(original: IConfigRaw);
+        constructor(original: ConfigRaw);
         read: (path: string) => Promise<string>;
         write: (path: string, data: string) => Promise<void>;
         exists: (path: string) => Promise<{
             path: string;
             result: boolean;
         }>;
-        analyzer: IAnalyzer;
-        validators: IValidator[];
-        builders: IBuilder[];
-        listener: IConfigListener;
+        analyzer: Analyzer;
+        validators: Validator[];
+        builders: Builder[];
+        listener: ConfigListener;
         book: BookStructure;
         resolvePath(path: string): string;
     }
     export class NodeJSConfig extends Config {
-        options: IOptions;
-        original: IConfigRaw;
-        _listener: IConfigListener;
-        constructor(options: IOptions, original: IConfigRaw);
+        options: Options;
+        original: ConfigRaw;
+        _listener: ConfigListener;
+        constructor(options: Options, original: ConfigRaw);
         read: (path: string) => Promise<string>;
         write: (path: string, data: string) => Promise<void>;
         exists: (path: string) => Promise<{
             path: string;
             result: boolean;
         }>;
-        listener: IConfigListener;
+        listener: ConfigListener;
         onReports(reports: ProcessReport[]): void;
         onCompileSuccess(book: Book): void;
         onCompileFailed(): void;
         resolvePath(path: string): string;
     }
     export class WebBrowserConfig extends Config {
-        options: IOptions;
-        original: IConfigRaw;
-        _listener: IConfigListener;
-        constructor(options: IOptions, original: IConfigRaw);
+        options: Options;
+        original: ConfigRaw;
+        _listener: ConfigListener;
+        constructor(options: Options, original: ConfigRaw);
         read: (path: string) => Promise<string>;
         write: (path: string, data: string) => Promise<void>;
         exists: (path: string) => Promise<{
@@ -804,7 +804,7 @@ declare module 'review.js/lib/controller/config' {
             path: string;
             result: boolean;
         }>;
-        listener: IConfigListener;
+        listener: ConfigListener;
         onReports(reports: ProcessReport[]): void;
         onCompileSuccess(book: Book): void;
         onCompileFailed(book?: Book): void;
@@ -815,15 +815,15 @@ declare module 'review.js/lib/controller/config' {
 declare module 'review.js/lib/parser/validator' {
     import { Book, ContentChunk } from "review.js/lib/model/compilerModel";
     import { AcceptableSyntaxes } from "review.js/lib/parser/analyzer";
-    import { IBuilder } from "review.js/lib/builder/builder";
-    export interface IValidator {
-        start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: IBuilder[]): void;
+    import { Builder } from "review.js/lib/builder/builder";
+    export interface Validator {
+        start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: Builder[]): void;
     }
-    export class DefaultValidator implements IValidator {
+    export class DefaultValidator implements Validator {
         acceptableSyntaxes: AcceptableSyntaxes;
-        builders: IBuilder[];
-        start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: IBuilder[]): void;
-        checkBuilder(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders?: IBuilder[]): void;
+        builders: Builder[];
+        start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: Builder[]): void;
+        checkBuilder(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders?: Builder[]): void;
         checkBook(book: Book): void;
         checkChunk(chunk: ContentChunk): void;
         resolveSymbolAndReference(book: Book): void;
@@ -833,9 +833,9 @@ declare module 'review.js/lib/parser/validator' {
 declare module 'review.js/lib/parser/walker' {
     import { SyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree, ChapterSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, NodeSyntaxTree, TextNodeSyntaxTree } from "review.js/lib/parser/parser";
     export function walk(ast: SyntaxTree, actor: (ast: SyntaxTree) => SyntaxTree): void;
-    export function visit(ast: SyntaxTree, v: ITreeVisitor): void;
-    export function visitAsync(ast: SyntaxTree, v: ITreeVisitor): Promise<void>;
-    export interface ITreeVisitor {
+    export function visit(ast: SyntaxTree, v: TreeVisitor): void;
+    export function visitAsync(ast: SyntaxTree, v: TreeVisitor): Promise<void>;
+    export interface TreeVisitor {
         visitDefaultPre(node: SyntaxTree, parent: SyntaxTree): any;
         visitDefaultPost?(node: SyntaxTree, parent: SyntaxTree): void;
         visitNodePre?(node: NodeSyntaxTree, parent: SyntaxTree): any;
@@ -866,3 +866,4 @@ declare module 'review.js/lib/parser/walker' {
         visitTextPost?(node: TextNodeSyntaxTree, parent: SyntaxTree): void;
     }
 }
+

@@ -4,11 +4,11 @@
 
 import {PEG} from "../../resources/grammar";
 
-import {Book, ContentChunk, ReportLevel, ISymbol} from "../model/compilerModel";
+import {Book, ContentChunk, ReportLevel, Symbol} from "../model/compilerModel";
 
 import {SyntaxTree} from "../parser/parser";
 import {Config, NodeJSConfig, WebBrowserConfig} from "./config";
-import {IOptions, IConfigRaw, ContentStructure} from "./configRaw";
+import {Options, ConfigRaw, ContentStructure} from "./configRaw";
 
 import {parse, ChapterSyntaxTree} from "../parser/parser";
 
@@ -30,7 +30,7 @@ export class Controller {
 
 	private config: Config;
 
-	constructor(public options: IOptions = {}) {
+	constructor(public options: Options = {}) {
 	}
 
 	/**
@@ -38,7 +38,7 @@ export class Controller {
 	 * 通常、 ReVIEW.start 経由で呼び出される。
 	 * @param data
 	 */
-	initConfig(data: IConfigRaw): void {
+	initConfig(data: ConfigRaw): void {
 		if (isNodeJS()) {
 			this.config = new NodeJSConfig(this.options, data);
 		} else {
@@ -202,7 +202,7 @@ export class Controller {
 			return Promise.resolve(book);
 		}
 
-		var symbols = book.allChunks.reduce<ISymbol[]>((p, c) => p.concat(c.process.symbols), []);
+		var symbols = book.allChunks.reduce<Symbol[]>((p, c) => p.concat(c.process.symbols), []);
 		if (this.config.listener.onSymbols(symbols) === false) {
 			// false が帰ってきたら処理を中断する (undefined でも継続)
 			return Promise.resolve(book);

@@ -4,16 +4,16 @@
 
 import {t} from "../i18n/i18n";
 
-import {IConcreatSyntaxTree, SyntaxTree, InlineElementSyntaxTree, BlockElementSyntaxTree} from "../parser/parser";
+import {ConcreatSyntaxTree, SyntaxTree, InlineElementSyntaxTree, BlockElementSyntaxTree} from "../parser/parser";
 
 import {AcceptableSyntaxes} from "../parser/analyzer";
-import {IBuilder} from "../builder/builder";
+import {Builder} from "../builder/builder";
 import {Config} from "../controller/config";
 
 /**
  * 参照先についての情報。
  */
-export interface IReferenceTo {
+export interface ReferenceTo {
 	part?: ContentChunk;
 	partName: string;
 	chapter?: ContentChunk;
@@ -27,12 +27,12 @@ export interface IReferenceTo {
 /**
  * シンボルについての情報。
  */
-export interface ISymbol {
+export interface Symbol {
 	part?: ContentChunk;
 	chapter?: ContentChunk;
 	symbolName: string;
 	labelName?: string;
-	referenceTo?: IReferenceTo;
+	referenceTo?: ReferenceTo;
 	node: SyntaxTree;
 }
 
@@ -76,7 +76,7 @@ export class BookProcess {
  * コンパイル処理時の出力ハンドリング。
  */
 export class Process {
-	symbols: ISymbol[] = [];
+	symbols: Symbol[] = [];
 	indexCounter: { [kind: string]: number; } = {};
 	afterProcess: Function[] = [];
 	private _reports: ProcessReport[] = [];
@@ -121,14 +121,14 @@ export class Process {
 		});
 	}
 
-	addSymbol(symbol: ISymbol) {
+	addSymbol(symbol: Symbol) {
 		symbol.part = this.part;
 		symbol.chapter = this.chapter;
 		this.symbols.push(symbol);
 	}
 
-	get missingSymbols(): ISymbol[] {
-		var result: ISymbol[] = [];
+	get missingSymbols(): Symbol[] {
+		var result: Symbol[] = [];
 		this.symbols.forEach(symbol=> {
 			if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
 				result.push(symbol);
@@ -137,11 +137,11 @@ export class Process {
 		return result;
 	}
 
-	constructReferenceTo(node: InlineElementSyntaxTree, value: string, targetSymbol?: string, separator?: string): IReferenceTo;
+	constructReferenceTo(node: InlineElementSyntaxTree, value: string, targetSymbol?: string, separator?: string): ReferenceTo;
 
-	constructReferenceTo(node: BlockElementSyntaxTree, value: string, targetSymbol: string, separator?: string): IReferenceTo;
+	constructReferenceTo(node: BlockElementSyntaxTree, value: string, targetSymbol: string, separator?: string): ReferenceTo;
 
-	constructReferenceTo(node: any, value: string, targetSymbol = node.symbol, separator = "|"): IReferenceTo {
+	constructReferenceTo(node: any, value: string, targetSymbol = node.symbol, separator = "|"): ReferenceTo {
 		var splitted = value.split(separator);
 		if (splitted.length === 3) {
 			return {
@@ -186,7 +186,7 @@ export class Process {
 
 export class BuilderProcess {
 
-	constructor(public builder: IBuilder, public base: Process) {
+	constructor(public builder: Builder, public base: Process) {
 	}
 
 	get info(): (message: string, ...nodes: SyntaxTree[]) => void {
@@ -225,7 +225,7 @@ export class BuilderProcess {
 		return this.base.input;
 	}
 
-	get symbols(): ISymbol[] {
+	get symbols(): Symbol[] {
 		return this.base.symbols;
 	}
 
@@ -341,7 +341,7 @@ export class ContentChunk {
 	no: number;
 	name: string;
 	_input: string; // TODO get, set やめる
-	tree: { ast: SyntaxTree; cst: IConcreatSyntaxTree; };
+	tree: { ast: SyntaxTree; cst: ConcreatSyntaxTree; };
 
 	process: Process;
 	builderProcesses: BuilderProcess[] = [];
@@ -375,7 +375,7 @@ export class ContentChunk {
 		this.process.input = value;
 	}
 
-	createBuilderProcess(builder: IBuilder): BuilderProcess {
+	createBuilderProcess(builder: Builder): BuilderProcess {
 		var builderProcess = new BuilderProcess(builder, this.process);
 		this.builderProcesses.push(builderProcess);
 		return builderProcess;
@@ -383,7 +383,7 @@ export class ContentChunk {
 
 	findResultByBuilder(builderName: string): string;
 
-	findResultByBuilder(builder: IBuilder): string;
+	findResultByBuilder(builder: Builder): string;
 
 	findResultByBuilder(builder: any): string {
 		var founds: BuilderProcess[];

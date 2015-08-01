@@ -14,7 +14,7 @@ import {visit, walk} from "./walker";
  * @param input
  * @returns {{ast: NodeSyntaxTree, cst: *}}
  */
-export function parse(input: string): { ast: NodeSyntaxTree; cst: IConcreatSyntaxTree; } {
+export function parse(input: string): { ast: NodeSyntaxTree; cst: ConcreatSyntaxTree; } {
 	"use strict";
 
 	var rawResult = PEG.parse(input);
@@ -82,7 +82,7 @@ export function parse(input: string): { ast: NodeSyntaxTree; cst: IConcreatSynta
  * @param rawResult
  * @returns {*}
  */
-export function transform(rawResult: IConcreatSyntaxTree): SyntaxTree {
+export function transform(rawResult: ConcreatSyntaxTree): SyntaxTree {
 	"use strict";
 
 	if (!rawResult) {
@@ -208,7 +208,7 @@ function reconstruct(node: NodeSyntaxTree, pickLevel: (ast: NodeSyntaxTree) => n
 export class ParseError implements Error {
 	name: string;
 
-	constructor(public syntax: IConcreatSyntaxTree, public message: string) {
+	constructor(public syntax: ConcreatSyntaxTree, public message: string) {
 		if ((<any>Error).captureStackTrace) {
 			(<any>Error).captureStackTrace(this, ParseError);
 		}
@@ -219,7 +219,7 @@ export class ParseError implements Error {
 /**
  * 構文解析直後の生データ。
  */
-export interface IConcreatSyntaxTree {
+export interface ConcreatSyntaxTree {
 	// 共通
 	syntax: string;
 	line: number;
@@ -305,7 +305,7 @@ export class SyntaxTree {
 	prev: SyntaxTree;
 	next: SyntaxTree;
 
-	constructor(data: IConcreatSyntaxTree) {
+	constructor(data: ConcreatSyntaxTree) {
 		this.ruleName = (<any>RuleName)[data.syntax];
 		if (typeof this.ruleName === "undefined") {
 			throw new ParseError(data, "unknown rule: " + data.syntax);
@@ -557,7 +557,7 @@ export class SyntaxTree {
 export class NodeSyntaxTree extends SyntaxTree {
 	childNodes: SyntaxTree[];
 
-	constructor(data: IConcreatSyntaxTree) {
+	constructor(data: ConcreatSyntaxTree) {
 		super(data);
 		this.childNodes = [];
 		this.processChildNodes(data.content);
@@ -565,14 +565,14 @@ export class NodeSyntaxTree extends SyntaxTree {
 
 	private processChildNodes(content: any) {
 		if (Array.isArray(content)) {
-			content.forEach((rawResult: IConcreatSyntaxTree) => {
+			content.forEach((rawResult: ConcreatSyntaxTree) => {
 				var tree = transform(rawResult);
 				if (tree) {
 					this.childNodes.push(tree);
 				}
 			});
 		} else if (content !== "" && content) {
-			((rawResult: IConcreatSyntaxTree) => {
+			((rawResult: ConcreatSyntaxTree) => {
 				var tree = transform(rawResult);
 				if (tree) {
 					this.childNodes.push(tree);
@@ -599,7 +599,7 @@ export class ChapterSyntaxTree extends NodeSyntaxTree {
 	headline: HeadlineSyntaxTree;
 	text: SyntaxTree[];
 
-	constructor(data: IConcreatSyntaxTree) {
+	constructor(data: ConcreatSyntaxTree) {
 		super(data);
 
 		this.headline = transform(this.checkObject(data.headline)).toHeadline();
@@ -607,7 +607,7 @@ export class ChapterSyntaxTree extends NodeSyntaxTree {
 			this.text = [];
 			return;
 		}
-		this.text = this.checkArray(data.text.content).map((data: IConcreatSyntaxTree) => {
+		this.text = this.checkArray(data.text.content).map((data: ConcreatSyntaxTree) => {
 			return transform(data);
 		});
 
@@ -639,7 +639,7 @@ export class HeadlineSyntaxTree extends SyntaxTree {
 	label: ArgumentSyntaxTree;
 	caption: NodeSyntaxTree;
 
-	constructor(data: IConcreatSyntaxTree) {
+	constructor(data: ConcreatSyntaxTree) {
 		super(data);
 
 		this.level = this.checkNumber(data.level);
@@ -654,10 +654,10 @@ export class BlockElementSyntaxTree extends NodeSyntaxTree {
 	symbol: string;
 	args: ArgumentSyntaxTree[];
 
-	constructor(data: IConcreatSyntaxTree) {
+	constructor(data: ConcreatSyntaxTree) {
 		super(data);
 		this.symbol = this.checkString(data.symbol);
-		this.args = this.checkArray(data.args).map((data: IConcreatSyntaxTree) => {
+		this.args = this.checkArray(data.args).map((data: ConcreatSyntaxTree) => {
 			return transform(data).toArgument();
 		});
 	}
@@ -666,7 +666,7 @@ export class BlockElementSyntaxTree extends NodeSyntaxTree {
 export class InlineElementSyntaxTree extends NodeSyntaxTree {
 	symbol: string;
 
-	constructor(data: IConcreatSyntaxTree) {
+	constructor(data: ConcreatSyntaxTree) {
 		super(data);
 		this.symbol = this.checkString(data.symbol);
 	}
@@ -676,7 +676,7 @@ export class ColumnSyntaxTree extends NodeSyntaxTree {
 	headline: ColumnHeadlineSyntaxTree;
 	text: SyntaxTree[];
 
-	constructor(data: IConcreatSyntaxTree) {
+	constructor(data: ConcreatSyntaxTree) {
 		super(data);
 
 		this.headline = transform(this.checkObject(data.headline)).toColumnHeadline();
@@ -684,7 +684,7 @@ export class ColumnSyntaxTree extends NodeSyntaxTree {
 			this.text = [];
 			return;
 		}
-		this.text = this.checkArray(data.text.content).map((data: IConcreatSyntaxTree) => {
+		this.text = this.checkArray(data.text.content).map((data: ConcreatSyntaxTree) => {
 			return transform(data);
 		});
 
@@ -715,7 +715,7 @@ export class ColumnHeadlineSyntaxTree extends SyntaxTree {
 	level: number;
 	caption: NodeSyntaxTree;
 
-	constructor(data: IConcreatSyntaxTree) {
+	constructor(data: ConcreatSyntaxTree) {
 		super(data);
 
 		this.level = this.checkNumber(data.level);
@@ -726,7 +726,7 @@ export class ColumnHeadlineSyntaxTree extends SyntaxTree {
 export class ArgumentSyntaxTree extends SyntaxTree {
 	arg: string;
 
-	constructor(data: IConcreatSyntaxTree) {
+	constructor(data: ConcreatSyntaxTree) {
 		super(data);
 		this.arg = this.checkString(data.arg);
 	}
@@ -736,7 +736,7 @@ export class UlistElementSyntaxTree extends NodeSyntaxTree {
 	level: number;
 	text: SyntaxTree;
 
-	constructor(data: IConcreatSyntaxTree) {
+	constructor(data: ConcreatSyntaxTree) {
 		super(data);
 		this.level = this.checkNumber(data.level);
 		this.text = transform(this.checkObject(data.text));
@@ -750,7 +750,7 @@ export class OlistElementSyntaxTree extends SyntaxTree {
 	no: number;
 	text: SyntaxTree;
 
-	constructor(data: IConcreatSyntaxTree) {
+	constructor(data: ConcreatSyntaxTree) {
 		super(data);
 		this.no = this.checkNumber(data.no);
 		this.text = transform(this.checkObject(data.text));
@@ -761,7 +761,7 @@ export class DlistElementSyntaxTree extends SyntaxTree {
 	text: SyntaxTree;
 	content: SyntaxTree;
 
-	constructor(data: IConcreatSyntaxTree) {
+	constructor(data: ConcreatSyntaxTree) {
 		super(data);
 		this.text = transform(this.checkObject(data.text));
 		this.content = transform(this.checkObject(data.content));
@@ -771,7 +771,7 @@ export class DlistElementSyntaxTree extends SyntaxTree {
 export class TextNodeSyntaxTree extends SyntaxTree {
 	text: string;
 
-	constructor(data: IConcreatSyntaxTree) {
+	constructor(data: ConcreatSyntaxTree) {
 		super(data);
 		this.text = this.checkString(data.text).replace(/\n+$/, "");
 	}

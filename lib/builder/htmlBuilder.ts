@@ -7,7 +7,7 @@ import {DefaultBuilder} from "./builder";
 
 import {SyntaxTree, NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree} from "../parser/parser";
 
-import {visit, walk, ITreeVisitor} from "../parser/walker";
+import {visit, walk, TreeVisitor} from "../parser/walker";
 
 import {nodeContentToString, findChapter} from "../utils/utils";
 
@@ -119,7 +119,7 @@ export class HtmlBuilder extends DefaultBuilder {
 		process.outRaw("<h").out(node.level).outRaw(">");
 		process.outRaw("<a id=\"column-").out(node.parentNode.no).outRaw("\"></a>");
 
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			visit(node.caption, v);
 		};
 	}
@@ -179,7 +179,7 @@ export class HtmlBuilder extends DefaultBuilder {
 		if (node.prev instanceof DlistElementSyntaxTree === false) {
 			process.outRaw("<dl>\n");
 		}
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			process.outRaw("<dt>");
 			visit(node.text, v);
 			process.outRaw("</dt>\n");
@@ -201,7 +201,7 @@ export class HtmlBuilder extends DefaultBuilder {
 		var text = t("builder.list", chapter.fqn, node.no);
 		process.outRaw("<p class=\"caption\">").out(text).outRaw(": ").out(node.args[1].arg).outRaw("</p>\n");
 		process.outRaw("<pre class=\"list\">");
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node) => {
 				visit(node, v);
@@ -220,7 +220,7 @@ export class HtmlBuilder extends DefaultBuilder {
 		process.outRaw("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).outRaw("</p>\n");
 		process.outRaw("<pre class=\"list\">");
 		var lineCount = 1;
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node, index, childNodes) => {
 				if (node.isTextNode()) {
@@ -263,7 +263,7 @@ export class HtmlBuilder extends DefaultBuilder {
 			process.outRaw("<p class=\"caption\">").out(node.args[0].arg).outRaw("</p>\n");
 		}
 		process.outRaw("<pre class=\"emlist\">");
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node) => {
 				visit(node, v);
@@ -279,7 +279,7 @@ export class HtmlBuilder extends DefaultBuilder {
 		process.outRaw("<div class=\"emlistnum-code\">\n");
 		process.outRaw("<pre class=\"emlist\">");
 		var lineCount = 1;
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node, index, childNodes) => {
 				if (node.isTextNode()) {
@@ -370,7 +370,7 @@ export class HtmlBuilder extends DefaultBuilder {
 
 	inline_ruby_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
 		process.outRaw("<ruby>");
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパス
 			node.childNodes.forEach(node=> {
 				var contentString = nodeContentToString(process, node);
@@ -397,7 +397,7 @@ export class HtmlBuilder extends DefaultBuilder {
 
 	inline_kw_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
 		process.outRaw("<b class=\"kw\">");
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパス
 			node.childNodes.forEach(node=> {
 				var contentString = nodeContentToString(process, node);
@@ -546,7 +546,7 @@ export class HtmlBuilder extends DefaultBuilder {
 		process.outRaw("<div class=\"source-code\">\n");
 		process.outRaw("<p class=\"caption\">").out(node.args[0].arg).outRaw("</p>\n");
 		process.outRaw("<pre class=\"source\">");
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node) => {
 				visit(node, v);
@@ -561,7 +561,7 @@ export class HtmlBuilder extends DefaultBuilder {
 	block_cmd_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		process.outRaw("<div class=\"cmd-code\">\n");
 		process.outRaw("<pre class=\"cmd\">");
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node) => {
 				visit(node, v);
@@ -575,7 +575,7 @@ export class HtmlBuilder extends DefaultBuilder {
 
 	block_quote_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		process.outRaw("<blockquote><p>");
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node) => {
 				visit(node, v);
@@ -634,7 +634,7 @@ export class HtmlBuilder extends DefaultBuilder {
 		var text = t("builder.table", chapter.fqn, node.no);
 		process.outRaw("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).outRaw("</p>\n");
 		process.outRaw("<pre>");
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node) => {
 				visit(node, v);
@@ -664,7 +664,7 @@ export class HtmlBuilder extends DefaultBuilder {
 	block_comment_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		process.outRaw("<!-- ");
 
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node) => {
 				visit(node, v);

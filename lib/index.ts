@@ -12,7 +12,7 @@
 "use strict";
 
 import {Book, ReportLevel} from "./model/compilerModel";
-import {IOptions} from "./controller/configRaw";
+import {Options} from "./controller/configRaw";
 import {Controller} from "./controller/controller";
 
 import {HtmlBuilder as _HtmlBuilder} from "./builder/htmlBuilder";
@@ -41,7 +41,7 @@ declare var define: any;
  * @param options
  * @returns {Book}
  */
-export function start(setup: (review: Controller) => void, options?: IOptions): Promise<Book> {
+export function start(setup: (review: Controller) => void, options?: Options): Promise<Book> {
 	"use strict";
 
 	let controller = new Controller(options);

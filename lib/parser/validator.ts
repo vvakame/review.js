@@ -2,13 +2,13 @@
 
 import {t} from "../i18n/i18n";
 
-import {Book, ContentChunk, ISymbol} from "../model/compilerModel";
+import {Book, ContentChunk, Symbol} from "../model/compilerModel";
 
 import {SyntaxTree, ChapterSyntaxTree, ColumnSyntaxTree, HeadlineSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree} from "./parser";
 
 import {AcceptableSyntaxes, SyntaxType} from "./analyzer";
 
-import {IBuilder} from "../builder/builder";
+import {Builder} from "../builder/builder";
 
 import {visit} from "./walker";
 
@@ -18,15 +18,15 @@ import {findChapter} from "../utils/utils";
  * IAnalyzerで処理した後の構文木について構文上のエラーがないかチェックする。
  * また、Builderと対比させて、未実装の候補がないかをチェックする。
  */
-export interface IValidator {
-	start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: IBuilder[]): void;
+export interface Validator {
+	start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: Builder[]): void;
 }
 
-export class DefaultValidator implements IValidator {
+export class DefaultValidator implements Validator {
 	acceptableSyntaxes: AcceptableSyntaxes;
-	builders: IBuilder[];
+	builders: Builder[];
 
-	start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: IBuilder[]) {
+	start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: Builder[]) {
 		this.acceptableSyntaxes = acceptableSyntaxes;
 		this.builders = builders;
 
@@ -35,7 +35,7 @@ export class DefaultValidator implements IValidator {
 		this.resolveSymbolAndReference(book);
 	}
 
-	checkBuilder(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: IBuilder[] = []) {
+	checkBuilder(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: Builder[] = []) {
 		acceptableSyntaxes.acceptableSyntaxes.forEach(syntax => {
 			var prefix: string;
 			switch (syntax.type) {
@@ -138,7 +138,7 @@ export class DefaultValidator implements IValidator {
 	resolveSymbolAndReference(book: Book) {
 		// symbols の解決
 		// Arrayにflatten がなくて悲しい reduce だと長い…
-		var symbols: ISymbol[] = book.allChunks.reduce<ISymbol[]>((p, c) => p.concat(c.process.symbols), []);
+		var symbols: Symbol[] = book.allChunks.reduce<Symbol[]>((p, c) => p.concat(c.process.symbols), []);
 		symbols.forEach(symbol=> {
 			// referenceToのpartやchapterの解決
 			var referenceTo = symbol.referenceTo;

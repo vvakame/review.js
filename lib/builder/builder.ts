@@ -2,7 +2,7 @@
 
 import {AnalyzerError} from "../js/exception";
 
-import {Book, BuilderProcess, ContentChunk, ISymbol} from "../model/compilerModel";
+import {Book, BuilderProcess, ContentChunk, Symbol} from "../model/compilerModel";
 
 import {SyntaxTree, NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, TextNodeSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree} from "../parser/parser";
 
@@ -13,7 +13,7 @@ import {nodeContentToString, findUp} from "../utils/utils";
 /**
  * IAnalyzerとIValidatorでチェックをした後に構文木から出力を生成する。
  */
-export interface IBuilder {
+export interface Builder {
 	name: string;
 	extention: string;
 	init(book: Book): Promise<void>;
@@ -41,7 +41,7 @@ export interface IBuilder {
  * デフォルトのビルダ。
  * Re:VIEWのASTから何らかのテキストに変換する時はこのクラスを拡張し作成する。
  */
-export class DefaultBuilder implements IBuilder {
+export class DefaultBuilder implements Builder {
 	book: Book;
 	extention = "bug";
 
@@ -263,7 +263,7 @@ export class DefaultBuilder implements IBuilder {
 		}
 	}
 
-	findReference(process: BuilderProcess, node: SyntaxTree): ISymbol {
+	findReference(process: BuilderProcess, node: SyntaxTree): Symbol {
 		var founds = process.symbols.filter(symbol => symbol.node === node);
 		if (founds.length !== 1) {
 			throw new AnalyzerError("invalid status.");

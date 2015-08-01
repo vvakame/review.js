@@ -8,7 +8,7 @@ import {t} from "../i18n/i18n";
 
 import {NodeSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree} from "../parser/parser";
 
-import {visit, ITreeVisitor} from "../parser/walker";
+import {visit, TreeVisitor} from "../parser/walker";
 
 import {nodeContentToString, findChapter} from "../utils/utils";
 
@@ -38,7 +38,7 @@ export class TextBuilder extends DefaultBuilder {
 	columnHeadlinePre(process: BuilderProcess, node: ColumnHeadlineSyntaxTree) {
 		process.out("\n◆→開始:←◆\n");
 		process.out("■");
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			visit(node.caption, v);
 		};
 	}
@@ -80,7 +80,7 @@ export class TextBuilder extends DefaultBuilder {
 	}
 
 	dlistPre(process: BuilderProcess, name: string, node: DlistElementSyntaxTree) {
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			process.out("★");
 			visit(node.text, v);
 			process.out("☆\n");
@@ -99,7 +99,7 @@ export class TextBuilder extends DefaultBuilder {
 		var chapter = findChapter(node, 1);
 		var text = t("builder.list", chapter.fqn, node.no);
 		process.out(text).out("　").out(node.args[1].arg).out("\n\n");
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node) => {
 				visit(node, v);
@@ -117,7 +117,7 @@ export class TextBuilder extends DefaultBuilder {
 		var text = t("builder.list", chapter.fqn, node.no);
 		process.out(text).out("　").out(node.args[1].arg).out("\n\n");
 		var lineCount = 1;
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node, index, childNodes) => {
 				if (node.isTextNode()) {
@@ -157,7 +157,7 @@ export class TextBuilder extends DefaultBuilder {
 		if (node.args[0]) {
 			process.out("■").out("").out(node.args[0].arg).out("\n");
 		}
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node) => {
 				visit(node, v);
@@ -175,7 +175,7 @@ export class TextBuilder extends DefaultBuilder {
 			process.out("■").out("").out(node.args[0].arg).out("\n");
 		}
 		var lineCount = 1;
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node, index, childNodes) => {
 				if (node.isTextNode()) {
@@ -269,7 +269,7 @@ export class TextBuilder extends DefaultBuilder {
 		var contentString = nodeContentToString(process, node);
 		var keywordData = contentString.split(",");
 		process.out(keywordData[0]);
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパス
 			node.childNodes.forEach(node=> {
 				process.out("◆→DTP連絡:「").out(keywordData[0]);
@@ -288,7 +288,7 @@ export class TextBuilder extends DefaultBuilder {
 
 	inline_kw(process: BuilderProcess, node: InlineElementSyntaxTree) {
 		process.out("★");
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパス
 			node.childNodes.forEach(node=> {
 				var contentString = nodeContentToString(process, node);
@@ -400,7 +400,7 @@ export class TextBuilder extends DefaultBuilder {
 		process.out("◆→開始:ソースコードリスト←◆\n");
 		process.out("■").out(node.args[0].arg).out("\n");
 
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node) => {
 				visit(node, v);
@@ -415,7 +415,7 @@ export class TextBuilder extends DefaultBuilder {
 	block_cmd_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		process.out("◆→開始:コマンド←◆\n");
 
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node) => {
 				visit(node, v);
@@ -430,7 +430,7 @@ export class TextBuilder extends DefaultBuilder {
 	block_quote_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		process.out("◆→開始:引用←◆\n");
 
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node) => {
 				visit(node, v);
@@ -495,7 +495,7 @@ export class TextBuilder extends DefaultBuilder {
 		var chapter = findChapter(node, 1);
 		var text = t("builder.table", chapter.fqn, node.no);
 		process.out(text).out("　").out(node.args[1].arg).out("\n\n");
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node) => {
 				visit(node, v);
@@ -525,7 +525,7 @@ export class TextBuilder extends DefaultBuilder {
 	block_comment_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		process.out("◆→DTP連絡:");
 
-		return (v: ITreeVisitor) => {
+		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node) => {
 				visit(node, v);

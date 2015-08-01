@@ -1,18 +1,18 @@
 "use strict";
 
-import {IBuilder, DefaultBuilder} from "../builder/builder";
-import {BookStructure, IConfigRaw, IOptions, IConfigListener} from "./configRaw";
+import {Builder, DefaultBuilder} from "../builder/builder";
+import {BookStructure, ConfigRaw, Options, ConfigListener} from "./configRaw";
 import {ProcessReport, ReportLevel, Book} from "../model/compilerModel";
-import {IAnalyzer, DefaultAnalyzer} from "../parser/analyzer";
-import {IValidator, DefaultValidator} from "../parser/validator";
+import {Analyzer, DefaultAnalyzer} from "../parser/analyzer";
+import {Validator, DefaultValidator} from "../parser/validator";
 
 import {IO} from "../utils/Utils";
 
 export class Config {
-	_builders: IBuilder[];
+	_builders: Builder[];
 	_bookStructure: BookStructure;
 
-	constructor(public original: IConfigRaw) {
+	constructor(public original: ConfigRaw) {
 	}
 
 	get read(): (path: string) => Promise<string> {
@@ -27,11 +27,11 @@ export class Config {
 		throw new Error("please implements this method");
 	}
 
-	get analyzer(): IAnalyzer {
+	get analyzer(): Analyzer {
 		return this.original.analyzer || new DefaultAnalyzer();
 	}
 
-	get validators(): IValidator[] {
+	get validators(): Validator[] {
 		var config = this.original;
 		if (!config.validators || config.validators.length === 0) {
 			return [new DefaultValidator()];
@@ -42,7 +42,7 @@ export class Config {
 		}
 	}
 
-	get builders(): IBuilder[] {
+	get builders(): Builder[] {
 		if (this._builders) {
 			return this._builders;
 		}
@@ -59,7 +59,7 @@ export class Config {
 		return this._builders;
 	}
 
-	get listener(): IConfigListener {
+	get listener(): ConfigListener {
 		throw new Error("please implements this method");
 	}
 
@@ -76,9 +76,9 @@ export class Config {
 }
 
 export class NodeJSConfig extends Config {
-	_listener: IConfigListener;
+	_listener: ConfigListener;
 
-	constructor(public options: IOptions, public original: IConfigRaw) {
+	constructor(public options: Options, public original: ConfigRaw) {
 		super(original);
 	}
 
@@ -107,12 +107,12 @@ export class NodeJSConfig extends Config {
 		};
 	}
 
-	get listener(): IConfigListener {
+	get listener(): ConfigListener {
 		if (this._listener) {
 			return this._listener;
 		}
 
-		var listener: IConfigListener = this.original.listener || {
+		var listener: ConfigListener = this.original.listener || {
 		};
 		listener.onAcceptables = listener.onAcceptables || (() => {
 		});
@@ -177,9 +177,9 @@ export class NodeJSConfig extends Config {
 }
 
 export class WebBrowserConfig extends Config {
-	_listener: IConfigListener;
+	_listener: ConfigListener;
 
-	constructor(public options: IOptions, public original: IConfigRaw) {
+	constructor(public options: Options, public original: ConfigRaw) {
 		super(original);
 	}
 
@@ -246,12 +246,12 @@ export class WebBrowserConfig extends Config {
 		return promise;
 	}
 
-	get listener(): IConfigListener {
+	get listener(): ConfigListener {
 		if (this._listener) {
 			return this._listener;
 		}
 
-		var listener: IConfigListener = this.original.listener || {
+		var listener: ConfigListener = this.original.listener || {
 		};
 		listener.onAcceptables = listener.onAcceptables || (() => {
 		});

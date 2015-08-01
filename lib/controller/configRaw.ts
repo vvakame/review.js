@@ -1,14 +1,14 @@
 "use strict";
 
-import {Book, ISymbol, ProcessReport} from "../model/compilerModel";
-import {IAnalyzer, AcceptableSyntaxes} from "../parser/analyzer";
-import {IValidator} from "../parser/validator";
-import {IBuilder} from "../builder/builder";
+import {Book, Symbol, ProcessReport} from "../model/compilerModel";
+import {Analyzer, AcceptableSyntaxes} from "../parser/analyzer";
+import {Validator} from "../parser/validator";
+import {Builder} from "../builder/builder";
 
 /**
  * コマンドライン引数を解釈した結果のオプション。
  */
-export interface IOptions {
+export interface Options {
 	reviewfile?: string;
 	base?: string;
 }
@@ -17,7 +17,7 @@ export interface IOptions {
  * コンパイル実行時の設定。
  * 本についての情報や処理実行時のプログラムの差し替え。
  */
-export interface IConfigRaw {
+export interface ConfigRaw {
 	// TODO めんどくさくてまだ書いてない要素がたくさんある
 
 	basePath?: string;
@@ -25,45 +25,45 @@ export interface IConfigRaw {
 	read?: (path: string) => Promise<string>;
 	write?: (path: string, data: string) => Promise<void>;
 
-	listener?: IConfigListener;
+	listener?: ConfigListener;
 
-	analyzer?: IAnalyzer;
-	validators?: IValidator[];
-	builders?: IBuilder[]; // TODO buildersの存在チェック入れる
+	analyzer?: Analyzer;
+	validators?: Validator[];
+	builders?: Builder[]; // TODO buildersの存在チェック入れる
 
-	book: IConfigBook;
+	book: ConfigBook;
 }
 
-export interface IConfigListener {
+export interface ConfigListener {
 	onAcceptables?: (acceptableSyntaxes: AcceptableSyntaxes) => any;
-	onSymbols?: (symbols: ISymbol[]) => any;
+	onSymbols?: (symbols: Symbol[]) => any;
 	onReports?: (reports: ProcessReport[]) => any;
 
 	onCompileSuccess?: (book: Book) => void;
 	onCompileFailed?: (book?: Book) => void;
 }
 
-export interface IConfigBook {
-	predef?: IConfigChapter[];
-	contents: IConfigPartOrChapter[];
-	appendix?: IConfigChapter[];
-	postdef?: IConfigChapter[];
+export interface ConfigBook {
+	predef?: ConfigChapter[];
+	contents: ConfigPartOrChapter[];
+	appendix?: ConfigChapter[];
+	postdef?: ConfigChapter[];
 }
 
-export interface IConfigPartOrChapter {
+export interface ConfigPartOrChapter {
 	// part or file or chapter のみ来る想定
-	part?: IConfigPart;
-	chapter?: IConfigChapter;
+	part?: ConfigPart;
+	chapter?: ConfigChapter;
 	// file は chapter 表記の省略形
 	file?: string;
 }
 
-export interface IConfigPart {
+export interface ConfigPart {
 	file: string;
-	chapters: IConfigChapter[];
+	chapters: ConfigChapter[];
 }
 
-export interface IConfigChapter {
+export interface ConfigChapter {
 	file: string;
 }
 
@@ -79,7 +79,7 @@ export class BookStructure {
 		this.postdef = this.postdef || [];
 	}
 
-	static createBook(config: IConfigBook) {
+	static createBook(config: ConfigBook) {
 		if (!config) {
 			return new BookStructure(null, null, null, null);
 		}
@@ -124,12 +124,12 @@ export class BookStructure {
  */
 export class ContentStructure {
 	// TODO コンストラクタ隠したい
-	constructor(public part: IConfigPart, public chapter: IConfigChapter) {
+	constructor(public part: ConfigPart, public chapter: ConfigChapter) {
 	}
 
 	static createChapter(file: string): ContentStructure;
 
-	static createChapter(chapter: IConfigChapter): ContentStructure;
+	static createChapter(chapter: ConfigChapter): ContentStructure;
 
 	static createChapter(value: any): ContentStructure {
 		if (typeof value === "string") {
@@ -141,9 +141,9 @@ export class ContentStructure {
 		}
 	}
 
-	static createPart(part: IConfigPart): ContentStructure {
+	static createPart(part: ConfigPart): ContentStructure {
 		if (part) {
-			var p: IConfigPart = {
+			var p: ConfigPart = {
 				file: part.file,
 				chapters: (part.chapters || []).map((c: any) => typeof c === "string" ? { file: c } : c)
 			};

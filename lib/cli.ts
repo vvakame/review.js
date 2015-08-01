@@ -9,7 +9,7 @@ import * as jsyaml from "js-yaml";
 import * as updateNotifier from "update-notifier";
 
 import {start} from "./index";
-import {IConfigRaw} from "./controller/configRaw";
+import {ConfigRaw} from "./controller/configRaw";
 import {ReportLevel} from "./model/compilerModel";
 import {Exec, target2builder} from "./utils/utils";
 
@@ -29,13 +29,13 @@ let packageJson = JSON.parse(fs.readFileSync(__dirname + "/../package.json", "ut
 
 import * as commandpost from "commandpost";
 
-interface IRootOpts {
+interface RootOpts {
 	reviewfile: string[];
 	base: string[];
 }
 
 let root = commandpost
-	.create<IRootOpts, {}>("reviewjs")
+	.create<RootOpts, {}>("reviewjs")
 	.version(packageJson.version, "-v, --version")
 	.option("--reviewfile <file>", "where is ReVIEWconfig.js?")
 	.option("--base <path>", "alternative base path")
@@ -44,17 +44,17 @@ let root = commandpost
 	process.exit(0);
 });
 
-interface ICompileOpts {
+interface CompileOpts {
 	ast: boolean;
 	target: string[];
 }
 
-interface ICompileArgs {
+interface CompileArgs {
 	document: string;
 }
 
 root
-	.subCommand<ICompileOpts, ICompileArgs>("compile [document]")
+	.subCommand<CompileOpts, CompileArgs>("compile [document]")
 	.description("compile ReVIEW document")
 	.option("--ast", "output JSON format abstract syntax tree")
 	.option("-t, --target <target>", "output format of document")
@@ -128,12 +128,12 @@ root
 	});
 });
 
-interface IBuildArgs {
+interface BuildArgs {
 	target: string;
 }
 
 root
-	.subCommand<{}, IBuildArgs>("build [target]")
+	.subCommand<{}, BuildArgs>("build [target]")
 	.description("build book")
 	.action((opts, args) => {
 	// .action((target:string, options:any)=> {
@@ -165,7 +165,7 @@ root
 		// var configYaml = jsyaml.safeLoad(fs.readFileSync(process.cwd() + "/" + "config.yml", "utf8"));
 		let catalogYaml = jsyaml.safeLoad(fs.readFileSync(process.cwd() + "/" + "catalog.yml", "utf8"));
 
-		let configRaw: IConfigRaw = {
+		let configRaw: ConfigRaw = {
 			builders: [target2builder(target)],
 			book: catalogYaml
 		};

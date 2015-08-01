@@ -9,7 +9,7 @@ import {RuleName} from "../../../lib/parser/parser";
 
 import {parse, SyntaxTree, ChapterSyntaxTree, HeadlineSyntaxTree, TextNodeSyntaxTree, NodeSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree} from "../../../lib/parser/parser";
 
-import {visit, walk, ITreeVisitor} from "../../../lib/parser/walker";
+import {visit, walk, TreeVisitor} from "../../../lib/parser/walker";
 
 describe("ReVIEW.walkについて", () => {
 	"use strict";
@@ -481,7 +481,7 @@ describe("ReVIEW.visitについて", () => {
 				visitDefaultPre: (ast: SyntaxTree): any=> {
 					count++;
 					if (ast.ruleName === RuleName.Start) {
-						return (v: ITreeVisitor) => {
+						return (v: TreeVisitor) => {
 							visit(ast.toNode().childNodes[0], v);
 						};
 					} else {

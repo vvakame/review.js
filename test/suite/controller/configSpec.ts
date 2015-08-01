@@ -1,7 +1,7 @@
 ///<reference path='../../../typings/mocha/mocha.d.ts' />
 ///<reference path='../../../typings/assert/assert.d.ts' />
 
-import {BookStructure, IConfigBook} from "../../../lib/controller/configRaw";
+import {BookStructure, ConfigBook} from "../../../lib/controller/configRaw";
 
 describe("ReVIEWのConfig.tsの", () => {
 	"use strict";
@@ -36,7 +36,7 @@ describe("ReVIEWのConfig.tsの", () => {
 	}
 
 	it("IConfigBookに設定ができる IConfigPartOrChapterでchapterプロパティを使う", () => {
-		var book: IConfigBook = {
+		var book: ConfigBook = {
 			predef: [
 				{ file: "pre.re" }
 			],
@@ -64,7 +64,7 @@ describe("ReVIEWのConfig.tsの", () => {
 	});
 
 	it("IConfigBookに設定ができる IConfigPartOrChapterでnameプロパティを使う", () => {
-		var book: IConfigBook = {
+		var book: ConfigBook = {
 			predef: [
 				{ file: "pre.re" }
 			],
