@@ -102,50 +102,6 @@ module.exports = function (grunt) {
 				}
 			}
 		},
-		concat: {
-			options: {
-				separator: ';'
-			},
-			test: {
-				src: [
-					// '<%= opt.client.outBase %>/review.js',
-					'<%= opt.client.jsTestOut %>/suite/main-spec.js'
-				],
-				dest: '<%= opt.client.jsTestOut %>/test.js'
-			},
-			nodeRuntime: {
-				src: [
-					'<%= opt.client.peg %>/grammar.js',
-					'<%= opt.client.jsMain %>/exception.js',
-					'<%= opt.client.jsMainOut %>/index.js'
-				],
-				dest: '<%= opt.client.jsMainOut %>/api.js'
-			}
-		},
-		replace: {
-			definitions: {
-				src: ['<%= opt.client.jsMainOut %>/index.d.ts'],
-				dest: '<%= opt.client.outBase %>/review.js.d.ts',
-				replacements: [
-					{
-						from: /^\/\/\/.*$/gm,
-						to: ''
-					},
-					{
-						from: /interface String \{[^}]*\}/gm,
-						to: ''
-					},
-					{
-						from: "declare var define: any;",
-						to: ''
-					},
-					{
-						from: /$/g,
-						to: '\ndeclare module "review.js" {\n    export = ReVIEW;\n}\n'
-					}
-				]
-			}
-		},
 		browserify: {
 			main: {
 				files: {
@@ -163,7 +119,7 @@ module.exports = function (grunt) {
 			},
 			test: {
 				files: {
-					"test/suite/index-spec.js": [
+					"test/test.js": [
 						"test/suite/indexSpec.js"
 					]
 				},
@@ -194,13 +150,15 @@ module.exports = function (grunt) {
 			clientScript: {
 				src: [
 					// client
-					'<%= opt.client.jsMainOut %>/*.js',
-					'<%= opt.client.jsMainOut %>/*.d.ts',
-					'<%= opt.client.jsMainOut %>/*.js.map',
+					'<%= opt.client.jsMainOut %>/**/*.js',
+					'<%= opt.client.jsMainOut %>/**/*.d.ts',
+					'<%= opt.client.jsMainOut %>/**/*.js.map',
+					'!<%= opt.client.jsMainOut %>/typings/**/*.d.ts',
 					// client test
 					'<%= opt.client.jsTestOut %>/*.js',
-					'<%= opt.client.jsTestOut %>/*.js.map',
-					'<%= opt.client.jsTestOut %>/*.d.ts',
+					'<%= opt.client.jsTestOut %>/suite/**/*.js',
+					'<%= opt.client.jsTestOut %>/suite/**/*.js.map',
+					'<%= opt.client.jsTestOut %>/suite/**/*.d.ts',
 					// peg.js
 					'<%= opt.client.peg %>/grammar.js'
 				]
@@ -270,12 +228,12 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'compile-for-npm',
 		"npm用(nodeモジュール兼コマンドラインクライアント)のコンパイルを行う",
-		['concat:nodeRuntime', 'replace:definitions', 'ts:clientCli', 'tslint']);
+		['ts:clientCli', 'tslint']);
 
 	grunt.registerTask(
 		'compile-for-browser',
 		"ブラウザライブラリ用のコンパイルを行う",
-		['replace:definitions', 'browserify:main', 'uglify:browser']);
+		['browserify:main', 'uglify:browser']);
 
 	grunt.registerTask(
 		'default',
@@ -285,7 +243,7 @@ module.exports = function (grunt) {
 	grunt.registerTask(
 		'test-preprocess',
 		"テストに必要な前準備を実行する。",
-		['default', 'ts:clientTest', 'browserify:test', 'concat:test']);
+		['default', 'ts:clientTest', 'browserify:test']);
 
 	grunt.registerTask(
 		'test',
