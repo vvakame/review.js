@@ -1,10 +1,10 @@
 "use strict";
 
-import {IBuilder, DefaultBuilder} from "../builder/Builder";
-import {BookStructure, IConfigRaw, IOptions, IConfigListener} from "./ConfigRaw";
-import {ProcessReport, ReportLevel, Book} from "../model/CompilerModel";
-import {IAnalyzer, DefaultAnalyzer} from "../parser/Analyzer";
-import {IValidator, DefaultValidator} from "../parser/Validator";
+import {IBuilder, DefaultBuilder} from "../builder/builder";
+import {BookStructure, IConfigRaw, IOptions, IConfigListener} from "./configRaw";
+import {ProcessReport, ReportLevel, Book} from "../model/compilerModel";
+import {IAnalyzer, DefaultAnalyzer} from "../parser/analyzer";
+import {IValidator, DefaultValidator} from "../parser/validator";
 
 import {IO} from "../utils/Utils";
 

@@ -2,7 +2,7 @@
 var dts = require("../dts-bundle");
 dts.bundle({
 	name: "review.js",
-	main: "lib/Main.d.ts",
+	main: "lib/index.d.ts",
 	baseDir: "",
 	out: "./dist/review.js.d.ts",
 	prefix: '',

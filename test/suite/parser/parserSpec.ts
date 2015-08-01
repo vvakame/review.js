@@ -5,14 +5,14 @@
 
 "use strict";
 
-import * as Test from "../TestHelper";
+import * as Test from "../testHelper";
 
 import {PEG} from "../../../resources/grammar";
 
-import {isNodeJS} from "../../../lib/utils/Utils";
+import {isNodeJS} from "../../../lib/utils/utils";
 
-import {parse, SyntaxTree} from "../../../lib/parser/Parser";
-import {TextBuilder} from "../../../lib/builder/TextBuilder";
+import {parse, SyntaxTree} from "../../../lib/parser/parser";
+import {TextBuilder} from "../../../lib/builder/textBuilder";
 
 function updateIfSyntaxError(e: any) {
 	"use strict";

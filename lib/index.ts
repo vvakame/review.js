@@ -11,13 +11,13 @@
 
 "use strict";
 
-import {Book} from "./model/CompilerModel";
-import {IOptions} from "./controller/ConfigRaw";
-import {Controller} from "./controller/Controller";
+import {Book, ReportLevel} from "./model/compilerModel";
+import {IOptions} from "./controller/configRaw";
+import {Controller} from "./controller/controller";
 
-import {HtmlBuilder as _HtmlBuilder} from "./builder/HtmlBuilder";
-import {TextBuilder as _TextBuilder} from "./builder/TextBuilder";
-import {SyntaxType as _SyntaxType} from "./parser/Analyzer";
+import {HtmlBuilder as _HtmlBuilder} from "./builder/htmlBuilder";
+import {TextBuilder as _TextBuilder} from "./builder/textBuilder";
+import {SyntaxType as _SyntaxType} from "./parser/analyzer";
 
 export namespace Build {
 	"use strict";
@@ -28,6 +28,9 @@ export namespace Build {
 	export var SyntaxType = _SyntaxType;
 	/* tslint:enable:variable-name */
 }
+
+ReportLevel;
+export { ReportLevel };
 
 // AMD用
 declare var define: any;

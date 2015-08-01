@@ -1,9 +1,9 @@
 ///<reference path='../../../typings/mocha/mocha.d.ts' />
 ///<reference path='../../../typings/assert/assert.d.ts' />
 
-import {start} from "../../../lib/Main";
+import {start} from "../../../lib/index";
 
-import {TextBuilder} from "../../../lib/builder/TextBuilder";
+import {TextBuilder} from "../../../lib/builder/textBuilder";
 
 describe("ReVIEW.Controllerの", () => {
 	"use strict";

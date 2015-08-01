@@ -5,11 +5,11 @@
 
 "use strict";
 
-import {RuleName} from "../../../lib/parser/Parser";
+import {RuleName} from "../../../lib/parser/parser";
 
-import {parse, SyntaxTree, ChapterSyntaxTree, HeadlineSyntaxTree, TextNodeSyntaxTree, NodeSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree} from "../../../lib/parser/Parser";
+import {parse, SyntaxTree, ChapterSyntaxTree, HeadlineSyntaxTree, TextNodeSyntaxTree, NodeSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree} from "../../../lib/parser/parser";
 
-import {visit, walk, ITreeVisitor} from "../../../lib/parser/Walker";
+import {visit, walk, ITreeVisitor} from "../../../lib/parser/walker";
 
 describe("ReVIEW.walkについて", () => {
 	"use strict";

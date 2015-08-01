@@ -3,17 +3,17 @@
 
 "use strict";
 
-import {isNodeJS} from "../../lib/utils/Utils";
+import {isNodeJS} from "../../lib/utils/utils";
 
-import {start} from "../../lib/Main";
+import {start} from "../../lib/index";
 
-import {IConfigRaw} from "../../lib/controller/ConfigRaw";
-import {ProcessReport} from "../../lib/model/CompilerModel";
+import {IConfigRaw} from "../../lib/controller/configRaw";
+import {ProcessReport} from "../../lib/model/compilerModel";
 
-import {DefaultAnalyzer} from "../../lib/parser/Analyzer";
-import {DefaultValidator} from "../../lib/parser/Validator";
+import {DefaultAnalyzer} from "../../lib/parser/analyzer";
+import {DefaultValidator} from "../../lib/parser/validator";
 
-import {TextBuilder} from "../../lib/builder/TextBuilder";
+import {TextBuilder} from "../../lib/builder/textBuilder";
 
 /**
  * コンパイルを行う。

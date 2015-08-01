@@ -1,15 +1,15 @@
 "use strict";
 
 import {t} from "../i18n/i18n";
-import {BuilderProcess, ContentChunk} from "../model/CompilerModel";
+import {BuilderProcess, ContentChunk} from "../model/compilerModel";
 
-import {DefaultBuilder} from "./Builder";
+import {DefaultBuilder} from "./builder";
 
-import {SyntaxTree, NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree} from "../parser/Parser";
+import {SyntaxTree, NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree} from "../parser/parser";
 
-import {visit, walk, ITreeVisitor} from "../parser/Walker";
+import {visit, walk, ITreeVisitor} from "../parser/walker";
 
-import {nodeContentToString, findChapter} from "../utils/Utils";
+import {nodeContentToString, findChapter} from "../utils/utils";
 
 export class HtmlBuilder extends DefaultBuilder {
 	extention = "html";

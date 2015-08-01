@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {isNodeJS} from "../utils/Utils";
+import {isNodeJS} from "../utils/utils";
 
 import {en} from "./en";
 import {ja} from "./ja";

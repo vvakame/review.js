@@ -5,7 +5,7 @@
 
 "use strict";
 
-import {isNodeJS} from "../../lib/utils/Utils";
+import {isNodeJS} from "../../lib/utils/utils";
 
 describe("コマンドラインツールの動作", () => {
 	"use strict";

@@ -1,11 +1,11 @@
 ///<reference path='../../../typings/mocha/mocha.d.ts' />
 ///<reference path='../../../typings/assert/assert.d.ts' />
 
-import * as Test from "../TestHelper";
+import * as Test from "../testHelper";
 
-import {ReportLevel} from "../../../lib/model/CompilerModel";
+import {ReportLevel} from "../../../lib/model/compilerModel";
 
-import {TextBuilder} from "../../../lib/builder/TextBuilder";
+import {TextBuilder} from "../../../lib/builder/textBuilder";
 
 describe("ReVIEW.Buildの", () => {
 	"use strict";

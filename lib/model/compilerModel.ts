@@ -4,11 +4,11 @@
 
 import {t} from "../i18n/i18n";
 
-import {IConcreatSyntaxTree, SyntaxTree, InlineElementSyntaxTree, BlockElementSyntaxTree} from "../parser/Parser";
+import {IConcreatSyntaxTree, SyntaxTree, InlineElementSyntaxTree, BlockElementSyntaxTree} from "../parser/parser";
 
-import {AcceptableSyntaxes} from "../parser/Analyzer";
-import {IBuilder} from "../builder/Builder";
-import {Config} from "../controller/Config";
+import {AcceptableSyntaxes} from "../parser/analyzer";
+import {IBuilder} from "../builder/builder";
+import {Config} from "../controller/config";
 
 /**
  * 参照先についての情報。

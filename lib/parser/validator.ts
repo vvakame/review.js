@@ -2,17 +2,17 @@
 
 import {t} from "../i18n/i18n";
 
-import {Book, ContentChunk, ISymbol} from "../model/CompilerModel";
+import {Book, ContentChunk, ISymbol} from "../model/compilerModel";
 
-import {SyntaxTree, ChapterSyntaxTree, ColumnSyntaxTree, HeadlineSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree} from "./Parser";
+import {SyntaxTree, ChapterSyntaxTree, ColumnSyntaxTree, HeadlineSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree} from "./parser";
 
-import {AcceptableSyntaxes, SyntaxType} from "./Analyzer";
+import {AcceptableSyntaxes, SyntaxType} from "./analyzer";
 
-import {IBuilder} from "../builder/Builder";
+import {IBuilder} from "../builder/builder";
 
-import {visit} from "./Walker";
+import {visit} from "./walker";
 
-import {findChapter} from "../utils/Utils";
+import {findChapter} from "../utils/utils";
 
 /**
  * IAnalyzerで処理した後の構文木について構文上のエラーがないかチェックする。

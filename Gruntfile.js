@@ -34,16 +34,16 @@ module.exports = function (grunt) {
 				experimentalDecorators: true
 			},
 			clientCli: {
-				src: ['<%= opt.client.tsMain %>/Cli.ts']
+				src: ['<%= opt.client.tsMain %>/cli.ts']
 			},
 			clientMain: {
-				src: ['<%= opt.client.tsMain %>/Main.ts'],
+				src: ['<%= opt.client.tsMain %>/index.ts'],
 				options: {
 					declaration: true
 				}
 			},
 			clientTest: {
-				src: ['<%= opt.client.tsTest %>/MainSpec.ts']
+				src: ['<%= opt.client.tsTest %>/indexSpec.ts']
 			}
 		},
 		tslint: {
@@ -68,7 +68,7 @@ module.exports = function (grunt) {
 				},
 				src: [
 					'<%= opt.client.tsMain %>/**/*.ts',
-					'!<%= opt.client.tsMain %>/Cli.ts' // main.d.ts読み込んでて重複が発生するので
+					'!<%= opt.client.tsMain %>/cli.ts' // main.d.ts読み込んでて重複が発生するので
 				]
 			},
 			travisCI: {
@@ -80,7 +80,7 @@ module.exports = function (grunt) {
 				},
 				src: [
 					'<%= opt.client.tsMain %>/**/*.ts',
-					'!<%= opt.client.tsMain %>/Cli.ts' // main.d.ts読み込んでて重複が発生するので
+					'!<%= opt.client.tsMain %>/cli.ts' // main.d.ts読み込んでて重複が発生するので
 				]
 			}
 		},
@@ -116,15 +116,15 @@ module.exports = function (grunt) {
 			nodeRuntime: {
 				src: [
 					'<%= opt.client.peg %>/grammar.js',
-					'<%= opt.client.jsMain %>/Exception.js',
-					'<%= opt.client.jsMainOut %>/main.js'
+					'<%= opt.client.jsMain %>/exception.js',
+					'<%= opt.client.jsMainOut %>/index.js'
 				],
 				dest: '<%= opt.client.jsMainOut %>/api.js'
 			}
 		},
 		replace: {
 			definitions: {
-				src: ['<%= opt.client.jsMainOut %>/main.d.ts'],
+				src: ['<%= opt.client.jsMainOut %>/index.d.ts'],
 				dest: '<%= opt.client.outBase %>/review.js.d.ts',
 				replacements: [
 					{
@@ -150,7 +150,7 @@ module.exports = function (grunt) {
 			main: {
 				files: {
 					"dist/review.js": [
-						"lib/Main.js"
+						"lib/index.js"
 					]
 				},
 				options: {
@@ -161,19 +161,19 @@ module.exports = function (grunt) {
 					}
 				}
 			},
-		test: {
-			files: {
-				"test/suite/main-spec.js": [
-					"test/suite/MainSpec.js"
-				]
-			},
-			options: {
-				browserifyOptions: {
-					bundleExternal: false,
-					detectGlobals: false
+			test: {
+				files: {
+					"test/suite/index-spec.js": [
+						"test/suite/indexSpec.js"
+					]
+				},
+				options: {
+					browserifyOptions: {
+						bundleExternal: false,
+						detectGlobals: false
+					}
 				}
 			}
-		}
 		},
 		uglify: {
 			browser: {
@@ -238,7 +238,7 @@ module.exports = function (grunt) {
 					]
 				},
 				src: [
-					'<%= opt.client.jsTestOut %>/suite/MainSpec.js'
+					'<%= opt.client.jsTestOut %>/suite/indexSpec.js'
 				]
 			}
 		},

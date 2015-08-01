@@ -1,16 +1,14 @@
-///<reference path='../typings/analyzer-error.d.ts' />
-
 "use strict";
 
 import {t} from "../i18n/i18n";
 
-import {AnalyzerError} from "../js/Exception";
+import {AnalyzerError} from "../js/exception";
 
-import {Process} from "../model/CompilerModel";
+import {Process} from "../model/compilerModel";
 
-import {SyntaxTree, InlineElementSyntaxTree, BlockElementSyntaxTree, HeadlineSyntaxTree, ColumnSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree} from "../parser/Parser";
+import {SyntaxTree, InlineElementSyntaxTree, BlockElementSyntaxTree, HeadlineSyntaxTree, ColumnSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree} from "../parser/parser";
 
-import {nodeContentToString} from "../utils/Utils";
+import {nodeContentToString} from "../utils/utils";
 
 /**
  * 構文のタイプ。

@@ -5,13 +5,13 @@
 
 "use strict";
 
-import * as Test from "./TestHelper";
+import * as Test from "./testHelper";
 
-import {isNodeJS} from "../../lib/utils/Utils";
+import {isNodeJS} from "../../lib/utils/utils";
 
-import {IBuilder} from "../../lib/builder/Builder";
-import {TextBuilder} from "../../lib/builder/TextBuilder";
-import {HtmlBuilder} from "../../lib/builder/HtmlBuilder";
+import {IBuilder} from "../../lib/builder/builder";
+import {TextBuilder} from "../../lib/builder/textBuilder";
+import {HtmlBuilder} from "../../lib/builder/htmlBuilder";
 
 describe("Ruby版ReVIEWとの出力差確認", () => {
 	"use strict";

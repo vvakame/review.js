@@ -1,7 +1,7 @@
 ///<reference path='../../../typings/mocha/mocha.d.ts' />
 ///<reference path='../../../typings/assert/assert.d.ts' />
 
-import {BookStructure, IConfigBook} from "../../../lib/controller/ConfigRaw";
+import {BookStructure, IConfigBook} from "../../../lib/controller/configRaw";
 
 describe("ReVIEWのConfig.tsの", () => {
 	"use strict";

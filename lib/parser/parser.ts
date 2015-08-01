@@ -6,7 +6,7 @@
 
 import {PEG} from "../../resources/grammar";
 
-import {visit, walk} from "./Walker";
+import {visit, walk} from "./walker";
 
 /**
  * 文字列をReVIEW文書として解釈し構文木を返す。

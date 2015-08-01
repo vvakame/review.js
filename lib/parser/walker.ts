@@ -1,6 +1,6 @@
 "use strict";
 
-import {RuleName, SyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree, ChapterSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, NodeSyntaxTree, TextNodeSyntaxTree} from "./Parser";
+import {RuleName, SyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree, ChapterSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, NodeSyntaxTree, TextNodeSyntaxTree} from "./parser";
 
 /**
  * 指定された構文木を歩きまわる。

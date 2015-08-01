@@ -5,9 +5,9 @@
 
 "use strict";
 
-import {start} from "../../lib/Main";
+import {start} from "../../lib/index";
 
-import {TextBuilder} from "../../lib/builder/TextBuilder";
+import {TextBuilder} from "../../lib/builder/textBuilder";
 
 describe("未解決のエラー", () => {
 	"use strict";
