@@ -3,14 +3,16 @@
 
 ///<reference path='../../../typings/node/node.d.ts' />
 
-///<reference path='../../../lib/typings/peg.js.d.ts' />
-
-///<reference path='../TestHelper.ts' />
-
-///<reference path='../../../lib/utils/Utils.ts' />
-///<reference path='../../../lib/Main.ts' />
-
 "use strict";
+
+import * as Test from "../TestHelper";
+
+import {PEG} from "../../../resources/grammar";
+
+import {isNodeJS} from "../../../lib/utils/Utils";
+
+import {parse, SyntaxTree} from "../../../lib/parser/Parser";
+import {TextBuilder} from "../../../lib/builder/TextBuilder";
 
 function updateIfSyntaxError(e: any) {
 	"use strict";
@@ -25,8 +27,10 @@ function updateIfSyntaxError(e: any) {
 describe("ReVIEW構文の", () => {
 	"use strict";
 
-	if (ReVIEW.isNodeJS()) {
-		var fs = require("fs");
+	if (isNodeJS()) {
+		/* tslint:disable:no-require-imports */
+		let fs = require("fs");
+		/* tslint:enable:no-require-imports */
 		// PhantomJS 環境下専用のテスト
 		describe("正しい構文のファイルが処理できること", () => {
 			var ignoreFiles = [
@@ -51,7 +55,7 @@ describe("ReVIEW構文の", () => {
 					return Test.compile({
 						basePath: __dirname + "/fixture/valid",
 						read: path => Promise.resolve(text),
-						builders: [new ReVIEW.Build.TextBuilder()],
+						builders: [new TextBuilder()],
 						book: {
 							contents: [
 								file
@@ -87,7 +91,7 @@ describe("ReVIEW構文の", () => {
 				it("ファイル:" + file, () => {
 					var data = fs.readFileSync(path + file, "utf8");
 					try {
-						ReVIEW.Parse.parse(data);
+						parse(data);
 						throw new Error("正しく処理できてしまった");
 					} catch (e) {
 						if (e instanceof PEG.SyntaxError) {
@@ -123,7 +127,7 @@ describe("ReVIEW構文の", () => {
 		strings.forEach((str) => {
 			it("try: " + str.substr(0, 15), () => {
 				try {
-					var result = ReVIEW.Parse.parse(str);
+					var result = parse(str);
 					false && console.log(JSON.stringify(result));
 				} catch (e) {
 					updateIfSyntaxError(e);
@@ -135,7 +139,7 @@ describe("ReVIEW構文の", () => {
 
 	describe("SyntaxTreeクラスの", () => {
 		it("JSON.stringifyで無限再起にならないこと", () => {
-			var syntax = new ReVIEW.Parse.SyntaxTree({
+			var syntax = new SyntaxTree({
 				line: 0, column: 0, offset: 0, endPos: 0,
 				syntax: "SinglelineComment",
 				content: ""

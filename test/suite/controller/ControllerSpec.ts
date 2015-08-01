@@ -1,8 +1,9 @@
 ///<reference path='../../../typings/mocha/mocha.d.ts' />
 ///<reference path='../../../typings/assert/assert.d.ts' />
 
-///<reference path='../../../lib/model/CompilerModel.ts' />
-///<reference path='../../../lib/builder/TextBuilder.ts' />
+import {start} from "../../../lib/Main";
+
+import {TextBuilder} from "../../../lib/builder/TextBuilder";
 
 describe("ReVIEW.Controllerの", () => {
 	"use strict";
@@ -14,7 +15,7 @@ describe("ReVIEW.Controllerの", () => {
 		};
 		var result: any = {
 		};
-		return ReVIEW.start(review => {
+		return start(review => {
 			review.initConfig({
 				read: (path: string) => {
 					return Promise.resolve(files[path]);
@@ -31,7 +32,7 @@ describe("ReVIEW.Controllerの", () => {
 					}
 				},
 
-				builders: [new ReVIEW.Build.TextBuilder()],
+				builders: [new TextBuilder()],
 
 				book: {
 					contents: [
@@ -58,7 +59,7 @@ describe("ReVIEW.Controllerの", () => {
 		};
 		var result: any = {
 		};
-		return ReVIEW.start(review => {
+		return start(review => {
 			review.initConfig({
 				read: (path: string) => {
 					return Promise.resolve(files[path]);
@@ -75,7 +76,7 @@ describe("ReVIEW.Controllerの", () => {
 					}
 				},
 
-				builders: [new ReVIEW.Build.TextBuilder()],
+				builders: [new TextBuilder()],
 
 				book: {
 					contents: [

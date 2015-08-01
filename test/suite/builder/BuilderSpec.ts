@@ -1,10 +1,11 @@
 ///<reference path='../../../typings/mocha/mocha.d.ts' />
 ///<reference path='../../../typings/assert/assert.d.ts' />
 
-///<reference path='../TestHelper.ts' />
+import * as Test from "../TestHelper";
 
-///<reference path='../../../lib/builder/Builder.ts' />
-///<reference path='../../../lib/builder/TextBuilder.ts' />
+import {ReportLevel} from "../../../lib/model/CompilerModel";
+
+import {TextBuilder} from "../../../lib/builder/TextBuilder";
 
 describe("ReVIEW.Buildの", () => {
 	"use strict";
@@ -68,14 +69,14 @@ describe("ReVIEW.Buildの", () => {
 			}).then(failure=> {
 				var book = failure.book;
 				assert(book.reports.length === 1);
-				assert(book.reports[0].level === ReVIEW.ReportLevel.Error);
+				assert(book.reports[0].level === ReportLevel.Error);
 			});
 		});
 	});
 
 	describe("DefaultBuilderの動作の確認として", () => {
 		it("正常に処理が完了できること", () => {
-			var builder = new ReVIEW.Build.TextBuilder();
+			var builder = new TextBuilder();
 			return Test.compileSingle(
 				"= hoge\n== fuga\n=== moge\n== piyo\n=== foo\n= bar\n",
 				{ builders: [builder] }

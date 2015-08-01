@@ -5,17 +5,17 @@
 
 "use strict";
 
+import {isNodeJS} from "../../lib/utils/Utils";
+
 describe("コマンドラインツールの動作", () => {
 	"use strict";
 
-	if (!ReVIEW.isNodeJS()) {
+	if (!isNodeJS()) {
 		return;
 	}
 
 	function exec(command: string, stdin?: string): Promise<string>;
-
 	function exec(command: string, options?: any, stdin?: string): Promise<string>;
-
 	function exec(command: string, options?: any, stdin?: string): Promise<string> {
 		if (typeof options === "string") {
 			stdin = options;
@@ -41,7 +41,9 @@ describe("コマンドラインツールの動作", () => {
 	describe("reviewjs build の動作", () => {
 		it("reviewjs build でファイル群のコンパイルができること", () => {
 			var baseDir = "test/fixture/reviewjs-book/";
-			var fs = require("fs");
+			/* tslint:disable:no-require-imports */
+			let fs = require("fs");
+			/* tslint:enable:no-require-imports */
 			if (fs.existsSync(baseDir + "ch01.html")) {
 				fs.unlinkSync(baseDir + "ch01.html");
 			}
@@ -59,7 +61,9 @@ describe("コマンドラインツールの動作", () => {
 
 		it("reviewjs build でRuby用設定ファイルを元にファイル群のコンパイルができること", () => {
 			var baseDir = "test/fixture/ruby-book/";
-			var fs = require("fs");
+			/* tslint:disable:no-require-imports */
+			let fs = require("fs");
+			/* tslint:enable:no-require-imports */
 			if (fs.existsSync(baseDir + "ch01.html")) {
 				fs.unlinkSync(baseDir + "ch01.html");
 			}

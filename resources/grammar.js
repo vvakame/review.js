@@ -4588,3 +4588,4 @@ var PEG = (function() {
     parse:       parse
   };
 })();
+if (typeof exports === "object") { exports.PEG = PEG; }

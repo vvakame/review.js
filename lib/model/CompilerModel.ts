@@ -1,399 +1,398 @@
-///<reference path='../i18n/i18n.ts' />
-///<reference path='../parser/Parser.ts' />
-///<reference path='../builder/Builder.ts' />
-///<reference path='../controller/Controller.ts' />
-
 // parser/ と builder/ で共用するモデル
 
-module ReVIEW {
-	"use strict";
+"use strict";
 
-	import t = ReVIEW.i18n.t;
+import {t} from "../i18n/i18n";
 
-	/**
-	 * 参照先についての情報。
-	 */
-	export interface IReferenceTo {
-		part?: ContentChunk;
-		partName: string;
-		chapter?: ContentChunk;
-		chapterName: string;
-		targetSymbol: string;
-		label: string;
-		// 上記情報から解決した結果のNode
-		referenceNode?: ReVIEW.Parse.SyntaxTree;
+import {IConcreatSyntaxTree, SyntaxTree, InlineElementSyntaxTree, BlockElementSyntaxTree} from "../parser/Parser";
+
+import {AcceptableSyntaxes} from "../parser/Analyzer";
+import {IBuilder} from "../builder/Builder";
+import {Config} from "../controller/Config";
+
+/**
+ * 参照先についての情報。
+ */
+export interface IReferenceTo {
+	part?: ContentChunk;
+	partName: string;
+	chapter?: ContentChunk;
+	chapterName: string;
+	targetSymbol: string;
+	label: string;
+	// 上記情報から解決した結果のNode
+	referenceNode?: SyntaxTree;
+}
+
+/**
+ * シンボルについての情報。
+ */
+export interface ISymbol {
+	part?: ContentChunk;
+	chapter?: ContentChunk;
+	symbolName: string;
+	labelName?: string;
+	referenceTo?: IReferenceTo;
+	node: SyntaxTree;
+}
+
+/**
+ * 処理時に発生したレポートのレベル。
+ */
+export enum ReportLevel {
+	Info,
+	Warning,
+	Error
+}
+
+/**
+ * 処理時に発生したレポート。
+ */
+export class ProcessReport {
+	constructor(public level: ReportLevel, public part: ContentChunk, public chapter: ContentChunk, public message: string, public nodes: SyntaxTree[] = []) {
+	}
+}
+
+/**
+ * コンパイル処理時の出力ハンドリング。
+ */
+export class BookProcess {
+	reports: ProcessReport[] = [];
+
+	info(message: string) {
+		this.reports.push(new ProcessReport(ReportLevel.Info, null, null, message));
 	}
 
-	/**
-	 * シンボルについての情報。
-	 */
-	export interface ISymbol {
-		part?: ContentChunk;
-		chapter?: ContentChunk;
-		symbolName: string;
-		labelName?: string;
-		referenceTo?: IReferenceTo;
-		node: ReVIEW.Parse.SyntaxTree;
+	warn(message: string) {
+		this.reports.push(new ProcessReport(ReportLevel.Warning, null, null, message));
 	}
 
-	/**
-	 * 処理時に発生したレポートのレベル。
-	 */
-	export enum ReportLevel {
-		Info,
-		Warning,
-		Error
+	error(message: string) {
+		this.reports.push(new ProcessReport(ReportLevel.Error, null, null, message));
+	}
+}
+
+/**
+ * コンパイル処理時の出力ハンドリング。
+ */
+export class Process {
+	symbols: ISymbol[] = [];
+	indexCounter: { [kind: string]: number; } = {};
+	afterProcess: Function[] = [];
+	private _reports: ProcessReport[] = [];
+
+	constructor(public part: ContentChunk, public chapter: ContentChunk, public input: string) {
 	}
 
-	/**
-	 * 処理時に発生したレポート。
-	 */
-	export class ProcessReport {
-		constructor(public level: ReportLevel, public part: ContentChunk, public chapter: ContentChunk, public message: string, public nodes: Parse.SyntaxTree[] = []) {
-		}
+	info(message: string, ...nodes: SyntaxTree[]) {
+		this._reports.push(new ProcessReport(ReportLevel.Info, this.part, this.chapter, message, nodes));
 	}
 
-	/**
-	 * コンパイル処理時の出力ハンドリング。
-	 */
-	export class BookProcess {
-		reports: ProcessReport[] = [];
-
-		info(message: string) {
-			this.reports.push(new ProcessReport(ReportLevel.Info, null, null, message));
-		}
-
-		warn(message: string) {
-			this.reports.push(new ProcessReport(ReportLevel.Warning, null, null, message));
-		}
-
-		error(message: string) {
-			this.reports.push(new ProcessReport(ReportLevel.Error, null, null, message));
-		}
+	warn(message: string, ...nodes: SyntaxTree[]) {
+		this._reports.push(new ProcessReport(ReportLevel.Warning, this.part, this.chapter, message, nodes));
 	}
 
-	/**
-	 * コンパイル処理時の出力ハンドリング。
-	 */
-	export class Process {
-		symbols: ISymbol[] = [];
-		indexCounter: { [kind: string]: number; } = {};
-		afterProcess: Function[] = [];
-		private _reports: ProcessReport[] = [];
+	error(message: string, ...nodes: SyntaxTree[]) {
+		this._reports.push(new ProcessReport(ReportLevel.Error, this.part, this.chapter, message, nodes));
+	}
 
-		constructor(public part: ContentChunk, public chapter: ContentChunk, public input: string) {
+	nextIndex(kind: string) {
+		var nextIndex = this.indexCounter[kind];
+		if (typeof nextIndex === "undefined") {
+			nextIndex = 1;
+		} else {
+			nextIndex++;
 		}
+		this.indexCounter[kind] = nextIndex;
+		return nextIndex;
+	}
 
-		info(message: string, ...nodes: Parse.SyntaxTree[]) {
-			this._reports.push(new ProcessReport(ReportLevel.Info, this.part, this.chapter, message, nodes));
-		}
-
-		warn(message: string, ...nodes: Parse.SyntaxTree[]) {
-			this._reports.push(new ProcessReport(ReportLevel.Warning, this.part, this.chapter, message, nodes));
-		}
-
-		error(message: string, ...nodes: Parse.SyntaxTree[]) {
-			this._reports.push(new ProcessReport(ReportLevel.Error, this.part, this.chapter, message, nodes));
-		}
-
-		nextIndex(kind: string) {
-			var nextIndex = this.indexCounter[kind];
-			if (typeof nextIndex === "undefined") {
-				nextIndex = 1;
+	get reports(): ProcessReport[] {
+		return this._reports.sort((a: ProcessReport, b: ProcessReport) => {
+			if (a.nodes.length === 0 && b.nodes.length === 0) {
+				return 0;
+			} else if (a.nodes.length === 0) {
+				return -1;
+			} else if (b.nodes.length === 0) {
+				return 1;
 			} else {
-				nextIndex++;
+				return a.nodes[0].offset - b.nodes[0].offset;
 			}
-			this.indexCounter[kind] = nextIndex;
-			return nextIndex;
-		}
+		});
+	}
 
-		get reports(): ProcessReport[] {
-			return this._reports.sort((a: ProcessReport, b: ProcessReport) => {
-				if (a.nodes.length === 0 && b.nodes.length === 0) {
-					return 0;
-				} else if (a.nodes.length === 0) {
-					return -1;
-				} else if (b.nodes.length === 0) {
-					return 1;
-				} else {
-					return a.nodes[0].offset - b.nodes[0].offset;
-				}
-			});
-		}
+	addSymbol(symbol: ISymbol) {
+		symbol.part = this.part;
+		symbol.chapter = this.chapter;
+		this.symbols.push(symbol);
+	}
 
-		addSymbol(symbol: ISymbol) {
-			symbol.part = this.part;
-			symbol.chapter = this.chapter;
-			this.symbols.push(symbol);
-		}
-
-		get missingSymbols(): ISymbol[] {
-			var result: ISymbol[] = [];
-			this.symbols.forEach(symbol=> {
-				if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
-					result.push(symbol);
-				}
-			});
-			return result;
-		}
-
-		constructReferenceTo(node: ReVIEW.Parse.InlineElementSyntaxTree, value: string, targetSymbol?: string, separator?: string): IReferenceTo;
-
-		constructReferenceTo(node: ReVIEW.Parse.BlockElementSyntaxTree, value: string, targetSymbol: string, separator?: string): IReferenceTo;
-
-		constructReferenceTo(node: any, value: string, targetSymbol = node.symbol, separator = "|"): IReferenceTo {
-			var splitted = value.split(separator);
-			if (splitted.length === 3) {
-				return {
-					partName: splitted[0],
-					chapterName: splitted[1],
-					targetSymbol: targetSymbol,
-					label: splitted[2]
-				};
-			} else if (splitted.length === 2) {
-				return {
-					part: this.part,
-					partName: (this.part || <any>{}).name,
-					chapterName: splitted[0],
-					targetSymbol: targetSymbol,
-					label: splitted[1]
-				};
-			} else if (splitted.length === 1) {
-				return {
-					part: this.part,
-					partName: (this.part || <any>{}).name,
-					chapter: this.chapter,
-					chapterName: (this.chapter || <any>{}).name,
-					targetSymbol: targetSymbol,
-					label: splitted[0]
-				};
-			} else {
-				var message = t("compile.args_length_mismatch", "1 or 2 or 3", splitted.length);
-				this.error(message, node);
-				return null;
+	get missingSymbols(): ISymbol[] {
+		var result: ISymbol[] = [];
+		this.symbols.forEach(symbol=> {
+			if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
+				result.push(symbol);
 			}
-		}
+		});
+		return result;
+	}
 
-		addAfterProcess(func: Function) {
-			this.afterProcess.push(func);
-		}
+	constructReferenceTo(node: InlineElementSyntaxTree, value: string, targetSymbol?: string, separator?: string): IReferenceTo;
 
-		doAfterProcess() {
-			this.afterProcess.forEach((func) => func());
-			this.afterProcess = [];
+	constructReferenceTo(node: BlockElementSyntaxTree, value: string, targetSymbol: string, separator?: string): IReferenceTo;
+
+	constructReferenceTo(node: any, value: string, targetSymbol = node.symbol, separator = "|"): IReferenceTo {
+		var splitted = value.split(separator);
+		if (splitted.length === 3) {
+			return {
+				partName: splitted[0],
+				chapterName: splitted[1],
+				targetSymbol: targetSymbol,
+				label: splitted[2]
+			};
+		} else if (splitted.length === 2) {
+			return {
+				part: this.part,
+				partName: (this.part || <any>{}).name,
+				chapterName: splitted[0],
+				targetSymbol: targetSymbol,
+				label: splitted[1]
+			};
+		} else if (splitted.length === 1) {
+			return {
+				part: this.part,
+				partName: (this.part || <any>{}).name,
+				chapter: this.chapter,
+				chapterName: (this.chapter || <any>{}).name,
+				targetSymbol: targetSymbol,
+				label: splitted[0]
+			};
+		} else {
+			var message = t("compile.args_length_mismatch", "1 or 2 or 3", splitted.length);
+			this.error(message, node);
+			return null;
 		}
 	}
 
-	export class BuilderProcess {
+	addAfterProcess(func: Function) {
+		this.afterProcess.push(func);
+	}
 
-		constructor(public builder: ReVIEW.Build.IBuilder, public base: Process) {
-		}
+	doAfterProcess() {
+		this.afterProcess.forEach((func) => func());
+		this.afterProcess = [];
+	}
+}
 
-		get info(): (message: string, ...nodes: Parse.SyntaxTree[]) => void {
-			return this.base.info.bind(this.base);
-		}
+export class BuilderProcess {
 
-		get warn(): (message: string, ...nodes: Parse.SyntaxTree[]) => void {
-			return this.base.warn.bind(this.base);
-		}
+	constructor(public builder: IBuilder, public base: Process) {
+	}
 
-		get error(): (message: string, ...nodes: Parse.SyntaxTree[]) => void {
-			return this.base.error.bind(this.base);
-		}
+	get info(): (message: string, ...nodes: SyntaxTree[]) => void {
+		return this.base.info.bind(this.base);
+	}
 
-		result: string = "";
+	get warn(): (message: string, ...nodes: SyntaxTree[]) => void {
+		return this.base.warn.bind(this.base);
+	}
 
-		out(data: any): BuilderProcess {
-			// 最近のブラウザだと単純結合がアホみたいに早いらしいので
-			this.result += this.builder.escape(data);
-			return this;
-		}
+	get error(): (message: string, ...nodes: SyntaxTree[]) => void {
+		return this.base.error.bind(this.base);
+	}
 
-		outRaw(data: any): BuilderProcess {
-			// 最近のブラウザだと単純結合がアホみたいに早いらしいので
-			this.result += data;
-			return this;
-		}
+	result: string = "";
 
-		// TODO pushOut いみふ感高いのでやめよう 削除だ！
-		pushOut(data: string): BuilderProcess {
-			this.result = data + this.result;
-			return this;
-		}
+	out(data: any): BuilderProcess {
+		// 最近のブラウザだと単純結合がアホみたいに早いらしいので
+		this.result += this.builder.escape(data);
+		return this;
+	}
 
-		get input(): string {
-			return this.base.input;
-		}
+	outRaw(data: any): BuilderProcess {
+		// 最近のブラウザだと単純結合がアホみたいに早いらしいので
+		this.result += data;
+		return this;
+	}
 
-		get symbols(): ISymbol[] {
-			return this.base.symbols;
-		}
+	// TODO pushOut いみふ感高いのでやめよう 削除だ！
+	pushOut(data: string): BuilderProcess {
+		this.result = data + this.result;
+		return this;
+	}
 
-		/**
-		 * 指定されたidの画像を探す。
-		 * 解決ルールは https://github.com/kmuto/review/wiki/ImagePath の通り。
-		 * Config側で絶対パス化やリソースの差し替えを行う可能性があるため、このメソッドの返り値は無加工で使うこと。
-		 * @param id
-		 * @returns {Promise<string>}
-		 */
-		findImageFile(id: string): Promise<string> {
-			// NOTE: https://github.com/kmuto/review/wiki/ImagePath
-			// 4軸マトリクス 画像dir, ビルダ有無, chapId位置, 拡張子
+	get input(): string {
+		return this.base.input;
+	}
 
-			var config = (this.base.part || this.base.chapter).book.config;
+	get symbols(): ISymbol[] {
+		return this.base.symbols;
+	}
 
-			var fileNameList: string[] = [];
-			(() => {
-				var imageDirList = ["images/"];
-				var builderList = [this.builder.extention + "/", ""];
-				var chapSeparatorList = ["/", "-"];
-				var extList = ["png", "jpg", "jpeg", "gif"];
-				var chunkName = (this.base.chapter || this.base.part).name; // TODO もっと頭良い感じに
-				chunkName = chunkName.substring(0, chunkName.lastIndexOf("."));
-				imageDirList.forEach(imageDir => {
-					builderList.forEach(builder=> {
-						chapSeparatorList.forEach(chapSeparator=> {
-							extList.forEach(ext => {
-								fileNameList.push(imageDir + builder + chunkName + chapSeparator + id + "." + ext);
-							});
+	/**
+	 * 指定されたidの画像を探す。
+	 * 解決ルールは https://github.com/kmuto/review/wiki/ImagePath の通り。
+	 * Config側で絶対パス化やリソースの差し替えを行う可能性があるため、このメソッドの返り値は無加工で使うこと。
+	 * @param id
+	 * @returns {Promise<string>}
+	 */
+	findImageFile(id: string): Promise<string> {
+		// NOTE: https://github.com/kmuto/review/wiki/ImagePath
+		// 4軸マトリクス 画像dir, ビルダ有無, chapId位置, 拡張子
+
+		var config = (this.base.part || this.base.chapter).book.config;
+
+		var fileNameList: string[] = [];
+		(() => {
+			var imageDirList = ["images/"];
+			var builderList = [this.builder.extention + "/", ""];
+			var chapSeparatorList = ["/", "-"];
+			var extList = ["png", "jpg", "jpeg", "gif"];
+			var chunkName = (this.base.chapter || this.base.part).name; // TODO もっと頭良い感じに
+			chunkName = chunkName.substring(0, chunkName.lastIndexOf("."));
+			imageDirList.forEach(imageDir => {
+				builderList.forEach(builder=> {
+					chapSeparatorList.forEach(chapSeparator=> {
+						extList.forEach(ext => {
+							fileNameList.push(imageDir + builder + chunkName + chapSeparator + id + "." + ext);
 						});
 					});
 				});
-			})();
-			var promise = new Promise<string>((resolve, reject) => {
-				var checkFileExists = () => {
-					if (fileNameList.length === 0) {
-						reject(id);
+			});
+		})();
+		var promise = new Promise<string>((resolve, reject) => {
+			var checkFileExists = () => {
+				if (fileNameList.length === 0) {
+					reject(id);
+					return;
+				}
+				var fileName = fileNameList.shift();
+				config.exists(fileName).then(result=> {
+					if (result.result) {
+						resolve(result.path);
 						return;
 					}
-					var fileName = fileNameList.shift();
-					config.exists(fileName).then(result=> {
-						if (result.result) {
-							resolve(result.path);
-							return;
-						}
-						checkFileExists();
-					});
-				};
-				checkFileExists();
-			});
-			return promise;
-		}
+					checkFileExists();
+				});
+			};
+			checkFileExists();
+		});
+		return promise;
+	}
+}
+
+/**
+ * 本全体を表す。
+ */
+export class Book {
+	process: BookProcess = new BookProcess();
+	acceptableSyntaxes: AcceptableSyntaxes;
+
+	predef: ContentChunk[] = [];
+	contents: ContentChunk[] = [];
+	appendix: ContentChunk[] = [];
+	postdef: ContentChunk[] = [];
+
+	constructor(public config: Config) {
 	}
 
-	/**
-	 * 本全体を表す。
-	 */
-	export class Book {
-		process: BookProcess = new BookProcess();
-		acceptableSyntaxes: ReVIEW.Build.AcceptableSyntaxes;
+	get allChunks(): ContentChunk[] {
+		var tmpArray: ContentChunk[] = [];
+		var add = (chunk: ContentChunk) => {
+			tmpArray.push(chunk);
+			chunk.nodes.forEach(chunk => add(chunk));
+		};
 
-		predef: ContentChunk[] = [];
-		contents: ContentChunk[] = [];
-		appendix: ContentChunk[] = [];
-		postdef: ContentChunk[] = [];
+		this.predef.forEach(chunk => add(chunk));
+		this.contents.forEach(chunk => add(chunk));
+		this.appendix.forEach(chunk => add(chunk));
+		this.postdef.forEach(chunk => add(chunk));
 
-		constructor(public config: Config) {
-		}
-
-		get allChunks(): ContentChunk[] {
-			var tmpArray: ContentChunk[] = [];
-			var add = (chunk: ContentChunk) => {
-				tmpArray.push(chunk);
-				chunk.nodes.forEach(chunk => add(chunk));
-			};
-
-			this.predef.forEach(chunk => add(chunk));
-			this.contents.forEach(chunk => add(chunk));
-			this.appendix.forEach(chunk => add(chunk));
-			this.postdef.forEach(chunk => add(chunk));
-
-			return tmpArray;
-		}
-
-		get reports(): ProcessReport[] {
-			var results: ProcessReport[] = [];
-			results = results.concat(this.process.reports);
-			var gatherReports = (chunk: ContentChunk) => {
-				results = results.concat(chunk.process.reports);
-				chunk.nodes.forEach(chunk => gatherReports(chunk));
-			};
-			this.predef.forEach(chunk => gatherReports(chunk));
-			this.contents.forEach(chunk => gatherReports(chunk));
-			this.appendix.forEach(chunk => gatherReports(chunk));
-			this.postdef.forEach(chunk => gatherReports(chunk));
-			return results;
-		}
-
-		get hasError(): boolean {
-			return this.reports.some(report => report.level === ReportLevel.Error);
-		}
-
-		get hasWarning(): boolean {
-			return this.reports.some(report => report.level === ReportLevel.Warning);
-		}
+		return tmpArray;
 	}
 
-	export class ContentChunk {
-		parent: ContentChunk;
-		nodes: ContentChunk[] = [];
+	get reports(): ProcessReport[] {
+		var results: ProcessReport[] = [];
+		results = results.concat(this.process.reports);
+		var gatherReports = (chunk: ContentChunk) => {
+			results = results.concat(chunk.process.reports);
+			chunk.nodes.forEach(chunk => gatherReports(chunk));
+		};
+		this.predef.forEach(chunk => gatherReports(chunk));
+		this.contents.forEach(chunk => gatherReports(chunk));
+		this.appendix.forEach(chunk => gatherReports(chunk));
+		this.postdef.forEach(chunk => gatherReports(chunk));
+		return results;
+	}
 
-		no: number;
-		name: string;
-		_input: string; // TODO get, set やめる
-		tree: { ast: ReVIEW.Parse.SyntaxTree; cst: ReVIEW.Parse.IConcreatSyntaxTree; };
+	get hasError(): boolean {
+		return this.reports.some(report => report.level === ReportLevel.Error);
+	}
 
-		process: Process;
-		builderProcesses: BuilderProcess[] = [];
+	get hasWarning(): boolean {
+		return this.reports.some(report => report.level === ReportLevel.Warning);
+	}
+}
 
-		constructor(book: Book, parent: ContentChunk, name: string);
+export class ContentChunk {
+	parent: ContentChunk;
+	nodes: ContentChunk[] = [];
 
-		constructor(book: Book, name: string);
+	no: number;
+	name: string;
+	_input: string; // TODO get, set やめる
+	tree: { ast: SyntaxTree; cst: IConcreatSyntaxTree; };
 
-		constructor(public book: Book, parent: any, name?: any) {
-			if (parent instanceof ContentChunk) {
-				this.parent = parent;
-				this.name = name;
-			} else if (typeof name === "string") {
-				this.name = name;
-			} else {
-				this.name = parent;
-			}
+	process: Process;
+	builderProcesses: BuilderProcess[] = [];
 
-			var part: ContentChunk = parent ? parent : null;
-			var chapter: ContentChunk = this; // TODO thisがpartでchapterが無しの場合もあるよ…！！
-			this.process = new Process(part, chapter, null);
+	constructor(book: Book, parent: ContentChunk, name: string);
+
+	constructor(book: Book, name: string);
+
+	constructor(public book: Book, parent: any, name?: any) {
+		if (parent instanceof ContentChunk) {
+			this.parent = parent;
+			this.name = name;
+		} else if (typeof name === "string") {
+			this.name = name;
+		} else {
+			this.name = parent;
 		}
 
-		get input() {
-			return this._input;
+		var part: ContentChunk = parent ? parent : null;
+		var chapter: ContentChunk = this; // TODO thisがpartでchapterが無しの場合もあるよ…！！
+		this.process = new Process(part, chapter, null);
+	}
+
+	get input() {
+		return this._input;
+	}
+
+	set input(value: string) {
+		// TODO やめる
+		this._input = value;
+		this.process.input = value;
+	}
+
+	createBuilderProcess(builder: IBuilder): BuilderProcess {
+		var builderProcess = new BuilderProcess(builder, this.process);
+		this.builderProcesses.push(builderProcess);
+		return builderProcess;
+	}
+
+	findResultByBuilder(builderName: string): string;
+
+	findResultByBuilder(builder: IBuilder): string;
+
+	findResultByBuilder(builder: any): string {
+		var founds: BuilderProcess[];
+		if (typeof builder === "string") {
+			founds = this.builderProcesses.filter(process => process.builder.name === builder);
+		} else {
+			founds = this.builderProcesses.filter(process => process.builder === builder);
 		}
-
-		set input(value: string) {
-			// TODO やめる
-			this._input = value;
-			this.process.input = value;
-		}
-
-		createBuilderProcess(builder: ReVIEW.Build.IBuilder): BuilderProcess {
-			var builderProcess = new BuilderProcess(builder, this.process);
-			this.builderProcesses.push(builderProcess);
-			return builderProcess;
-		}
-
-		findResultByBuilder(builderName: string): string;
-
-		findResultByBuilder(builder: ReVIEW.Build.IBuilder): string;
-
-		findResultByBuilder(builder: any): string {
-			var founds: BuilderProcess[];
-			if (typeof builder === "string") {
-				founds = this.builderProcesses.filter(process => process.builder.name === builder);
-			} else {
-				founds = this.builderProcesses.filter(process => process.builder === builder);
-			}
-			// TODO 何かエラー投げたほうがいい気もするなー
-			return founds[0].result;
-		}
+		// TODO 何かエラー投げたほうがいい気もするなー
+		return founds[0].result;
 	}
 }

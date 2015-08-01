@@ -1,7 +1,7 @@
-declare module PEG {
-	function parse(input: string): any;
+export module PEG {
+	export function parse(input: string): any;
 
-	class SyntaxError {
+	export class SyntaxError {
 		line: number;
 		column: number;
 		offset: number;
