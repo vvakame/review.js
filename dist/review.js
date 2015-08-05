@@ -88,6 +88,9 @@ var DefaultBuilder = (function () {
             },
             visitTextPre: function (node) {
                 _this.text(process, node);
+            },
+            visitSingleLineCommentPre: function (node) {
+                _this.singleLineComment(process, node);
             }
         })
             .then(function () {
@@ -246,6 +249,8 @@ var DefaultBuilder = (function () {
         var content = utils_1.nodeContentToString(process, node);
         process.outRaw("第x章「" + content + "」");
         return false;
+    };
+    DefaultBuilder.prototype.singleLineComment = function (process, node) {
     };
     return DefaultBuilder;
 })();
@@ -3257,8 +3262,9 @@ function transform(rawResult) {
         case RuleName.BlockElementContentText:
         case RuleName.InlineElementContentText:
         case RuleName.ContentInlineText:
-        case RuleName.SinglelineComment:
             return new TextNodeSyntaxTree(rawResult);
+        case RuleName.SinglelineComment:
+            return new SingleLineCommentSyntaxTree(rawResult);
         case RuleName.Chapters:
         case RuleName.Contents:
         case RuleName.ParagraphSubs:
@@ -3551,6 +3557,9 @@ var SyntaxTree = (function () {
     SyntaxTree.prototype.toTextNode = function () {
         return this.toOtherNode(TextNodeSyntaxTree);
     };
+    SyntaxTree.prototype.toSingleLineCommentNode = function () {
+        return this.toOtherNode(SingleLineCommentSyntaxTree);
+    };
     return SyntaxTree;
 })();
 exports.SyntaxTree = SyntaxTree;
@@ -3771,6 +3780,15 @@ var TextNodeSyntaxTree = (function (_super) {
     return TextNodeSyntaxTree;
 })(SyntaxTree);
 exports.TextNodeSyntaxTree = TextNodeSyntaxTree;
+var SingleLineCommentSyntaxTree = (function (_super) {
+    __extends(SingleLineCommentSyntaxTree, _super);
+    function SingleLineCommentSyntaxTree(data) {
+        _super.call(this, data);
+        this.text = this.checkString(data.text).replace(/^#@/, "").replace(/\n+$/, "");
+    }
+    return SingleLineCommentSyntaxTree;
+})(SyntaxTree);
+exports.SingleLineCommentSyntaxTree = SingleLineCommentSyntaxTree;
 
 },{"../../resources/grammar":20,"./walker":17}],15:[function(require,module,exports){
 "use strict";
@@ -4155,6 +4173,9 @@ function _visit(poolGenerator, ast, v) {
         }),
         visitTextPre: v.visitTextPre || v.visitDefaultPre,
         visitTextPost: v.visitTextPost || v.visitDefaultPost || (function () {
+        }),
+        visitSingleLineCommentPre: v.visitSingleLineCommentPre || v.visitDefaultPre,
+        visitSingleLineCommentPost: v.visitSingleLineCommentPost || v.visitDefaultPost || (function () {
         })
     };
     newV.visitDefaultPre = newV.visitDefaultPre.bind(v);
@@ -4183,6 +4204,8 @@ function _visit(poolGenerator, ast, v) {
     newV.visitColumnHeadlinePost = newV.visitColumnHeadlinePost.bind(v);
     newV.visitTextPre = newV.visitTextPre.bind(v);
     newV.visitTextPost = newV.visitTextPost.bind(v);
+    newV.visitSingleLineCommentPre = newV.visitSingleLineCommentPre.bind(v);
+    newV.visitSingleLineCommentPost = newV.visitSingleLineCommentPost.bind(v);
     return _visitSub(poolGenerator, null, ast, newV);
 }
 function _visitSub(poolGenerator, parent, ast, v) {
@@ -4432,6 +4455,22 @@ function _visitSub(poolGenerator, parent, ast, v) {
                 }
             });
             pool.add(function () { return v.visitTextPost(text, parent); });
+            return pool.consume();
+        })();
+    }
+    else if (ast instanceof parser_1.SingleLineCommentSyntaxTree) {
+        return (function () {
+            var comment = ast.toSingleLineCommentNode();
+            var pool = poolGenerator();
+            var ret = v.visitSingleLineCommentPre(comment, parent);
+            pool.handle(ret, {
+                next: function () {
+                },
+                func: function () {
+                    ret(v);
+                }
+            });
+            pool.add(function () { return v.visitSingleLineCommentPost(comment, parent); });
             return pool.consume();
         })();
     }

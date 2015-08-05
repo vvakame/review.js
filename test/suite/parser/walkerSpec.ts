@@ -7,7 +7,7 @@
 
 import {RuleName} from "../../../lib/parser/parser";
 
-import {parse, SyntaxTree, ChapterSyntaxTree, HeadlineSyntaxTree, TextNodeSyntaxTree, NodeSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree} from "../../../lib/parser/parser";
+import {parse, SyntaxTree, ChapterSyntaxTree, HeadlineSyntaxTree, TextNodeSyntaxTree, NodeSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, SingleLineCommentSyntaxTree} from "../../../lib/parser/parser";
 
 import {visit, walk, TreeVisitor} from "../../../lib/parser/walker";
 
@@ -452,6 +452,34 @@ describe("ReVIEW.visitについて", () => {
 			visit(result.ast, {
 				visitDefaultPre: (ast: SyntaxTree) => {
 					if (ast instanceof TextNodeSyntaxTree) {
+						actual += "n";
+					}
+				}
+			});
+			assert(actual === "n");
+		});
+	});
+
+	describe("visitSingleLineCommentについて", () => {
+		var input = "= chap1\n#@ コメントだよ\nコメントじゃないよ";
+		var result = parse(input);
+
+		it("SingleLineCommentSyntaxTreeが処理できる", () => {
+			var actual = "";
+			visit(result.ast, {
+				visitDefaultPre: (ast: SyntaxTree) => {
+				},
+				visitSingleLineCommentPre: (ast: TextNodeSyntaxTree) => {
+					actual += "n";
+				}
+			});
+			assert(actual === "n");
+		});
+		it("visitSingleLineCommentが無い時visitDefaultに行く", () => {
+			var actual = "";
+			visit(result.ast, {
+				visitDefaultPre: (ast: SyntaxTree) => {
+					if (ast instanceof SingleLineCommentSyntaxTree) {
 						actual += "n";
 					}
 				}

@@ -118,8 +118,9 @@ export function transform(rawResult: ConcreatSyntaxTree): SyntaxTree {
 		case RuleName.BlockElementContentText:
 		case RuleName.InlineElementContentText:
 		case RuleName.ContentInlineText:
-		case RuleName.SinglelineComment:
 			return new TextNodeSyntaxTree(rawResult);
+		case RuleName.SinglelineComment:
+			return new SingleLineCommentSyntaxTree(rawResult);
 		// c, cc パターン
 		case RuleName.Chapters:
 		case RuleName.Contents:
@@ -552,6 +553,13 @@ export class SyntaxTree {
 	toTextNode(): TextNodeSyntaxTree {
 		return this.toOtherNode<TextNodeSyntaxTree>(TextNodeSyntaxTree);
 	}
+
+	/**
+	 * thisをSingleLineCommentSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+	 */
+	toSingleLineCommentNode(): SingleLineCommentSyntaxTree {
+		return this.toOtherNode<SingleLineCommentSyntaxTree>(SingleLineCommentSyntaxTree);
+	}
 }
 
 export class NodeSyntaxTree extends SyntaxTree {
@@ -774,5 +782,14 @@ export class TextNodeSyntaxTree extends SyntaxTree {
 	constructor(data: ConcreatSyntaxTree) {
 		super(data);
 		this.text = this.checkString(data.text).replace(/\n+$/, "");
+	}
+}
+
+export class SingleLineCommentSyntaxTree extends SyntaxTree {
+	text: string;
+
+	constructor(data: ConcreatSyntaxTree) {
+		super(data);
+		this.text = this.checkString(data.text).replace(/^#@/, "").replace(/\n+$/, "");
 	}
 }

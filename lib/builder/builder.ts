@@ -4,7 +4,7 @@ import {AnalyzerError} from "../js/exception";
 
 import {Book, BuilderProcess, ContentChunk, Symbol} from "../model/compilerModel";
 
-import {SyntaxTree, NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, TextNodeSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree} from "../parser/parser";
+import {SyntaxTree, NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, TextNodeSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, SingleLineCommentSyntaxTree} from "../parser/parser";
 
 import {visitAsync} from "../parser/walker";
 
@@ -35,6 +35,7 @@ export interface Builder {
 	inlinePre(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
 	inlinePost(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
 	text(process: BuilderProcess, node: TextNodeSyntaxTree): any;
+	singleLineComment?(process: BuilderProcess, node: SingleLineCommentSyntaxTree): any;
 }
 
 /**
@@ -122,6 +123,9 @@ export class DefaultBuilder implements Builder {
 			},
 			visitTextPre: (node: TextNodeSyntaxTree) => {
 				this.text(process, node);
+			},
+			visitSingleLineCommentPre: (node: SingleLineCommentSyntaxTree) => {
+				this.singleLineComment(process, node);
 			}
 		})
 			.then(() => {
@@ -314,5 +318,9 @@ export class DefaultBuilder implements Builder {
 		var content = nodeContentToString(process, node);
 		process.outRaw("第x章「" + content + "」");
 		return false;
+	}
+
+	singleLineComment(process: BuilderProcess, node: SingleLineCommentSyntaxTree): any {
+		// 特に何もしない
 	}
 }

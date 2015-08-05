@@ -1,6 +1,6 @@
 "use strict";
 
-import {RuleName, SyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree, ChapterSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, NodeSyntaxTree, TextNodeSyntaxTree} from "./parser";
+import {RuleName, SyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree, ChapterSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, NodeSyntaxTree, TextNodeSyntaxTree, SingleLineCommentSyntaxTree} from "./parser";
 
 /**
  * 指定された構文木を歩きまわる。
@@ -89,6 +89,9 @@ function _visit(poolGenerator: () => TaskPool<void>, ast: SyntaxTree, v: TreeVis
 		}),
 		visitTextPre: v.visitTextPre || v.visitDefaultPre,
 		visitTextPost: v.visitTextPost || v.visitDefaultPost || (() => {
+		}),
+		visitSingleLineCommentPre: v.visitSingleLineCommentPre || v.visitDefaultPre,
+		visitSingleLineCommentPost: v.visitSingleLineCommentPost || v.visitDefaultPost || (() => {
 		})
 	};
 	newV.visitDefaultPre = newV.visitDefaultPre.bind(v);
@@ -117,6 +120,8 @@ function _visit(poolGenerator: () => TaskPool<void>, ast: SyntaxTree, v: TreeVis
 	newV.visitColumnHeadlinePost = newV.visitColumnHeadlinePost.bind(v);
 	newV.visitTextPre = newV.visitTextPre.bind(v);
 	newV.visitTextPost = newV.visitTextPost.bind(v);
+	newV.visitSingleLineCommentPre = newV.visitSingleLineCommentPre.bind(v);
+	newV.visitSingleLineCommentPost = newV.visitSingleLineCommentPost.bind(v);
 
 	return _visitSub(poolGenerator, null, ast, newV);
 }
@@ -359,6 +364,21 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
 			pool.add(() => v.visitTextPost(text, parent));
 			return pool.consume();
 		})();
+	} else if (ast instanceof SingleLineCommentSyntaxTree) {
+		return (() => {
+			var comment = ast.toSingleLineCommentNode();
+			var pool = poolGenerator();
+			var ret = v.visitSingleLineCommentPre(comment, parent);
+			pool.handle(ret, {
+				next: () => {
+				},
+				func: () => {
+					ret(v);
+				}
+			});
+			pool.add(() => v.visitSingleLineCommentPost(comment, parent));
+			return pool.consume();
+		})();
 	} else if (ast) {
 		return (() => {
 			var pool = poolGenerator();
@@ -416,6 +436,8 @@ export interface TreeVisitor {
 	visitColumnPost?(node: ColumnSyntaxTree, parent: SyntaxTree): void;
 	visitColumnHeadlinePre?(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree): any;
 	visitColumnHeadlinePost?(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree): void;
+	visitSingleLineCommentPre?(node: SingleLineCommentSyntaxTree, parent: SyntaxTree): any;
+	visitSingleLineCommentPost?(node: SingleLineCommentSyntaxTree, parent: SyntaxTree): void;
 	visitTextPre?(node: TextNodeSyntaxTree, parent: SyntaxTree): any;
 	visitTextPost?(node: TextNodeSyntaxTree, parent: SyntaxTree): void;
 }

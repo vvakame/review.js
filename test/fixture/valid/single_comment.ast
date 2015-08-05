@@ -50,7 +50,7 @@
               "line": 3,
               "column": 1,
               "endPos": 21,
-              "text": "#@# コメント"
+              "text": "# コメント"
             },
             {
               "ruleName": "Paragraph",
@@ -75,7 +75,7 @@
               "line": 6,
               "column": 1,
               "endPos": 35,
-              "text": "#@# コメント"
+              "text": "# コメント"
             },
             {
               "ruleName": "Paragraph",
@@ -117,7 +117,7 @@
               "line": 10,
               "column": 1,
               "endPos": 56,
-              "text": "#@# コメント"
+              "text": "# コメント"
             },
             {
               "ruleName": "SinglelineComment",
@@ -125,12 +125,12 @@
               "line": 12,
               "column": 1,
               "endPos": 64,
-              "text": "#@# コメント"
+              "text": "# コメント"
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }
