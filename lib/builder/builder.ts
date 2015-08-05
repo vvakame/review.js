@@ -129,9 +129,9 @@ export class DefaultBuilder implements Builder {
 			}
 		})
 			.then(() => {
-			this.processPost(process, chunk);
-			return Promise.all(chunk.nodes.map(chunk => this.processAst(chunk))).then(() => <void>null);
-		});
+				this.processPost(process, chunk);
+				return Promise.all(chunk.nodes.map(chunk => this.processAst(chunk))).then(() => <void>null);
+			});
 	}
 
 	escape(data: any): string {

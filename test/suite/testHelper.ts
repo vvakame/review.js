@@ -80,11 +80,11 @@ export function compile(config?: ConfigRaw) {
 		review.initConfig(config);
 	})
 		.then(book=> {
-		return {
-			book: book,
-			results: results
-		};
-	});
+			return {
+				book: book,
+				results: results
+			};
+		});
 }
 
 // TODO basePathの解決がうまくないのでそのうち消す

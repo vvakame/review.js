@@ -48,38 +48,38 @@ describe("ReVIEW構文の", () => {
 			files
 				.filter((file: string) => file.indexOf(".re") !== -1)
 				.forEach((file: string) => {
-				var baseName = file.substr(0, file.length - 3);
-				var astFilePath = path + baseName + ".ast";
-				it("ファイル:" + file, () => {
-					var text = fs.readFileSync(path + file, "utf8");
-					return Test.compile({
-						basePath: __dirname + "/fixture/valid",
-						read: path => Promise.resolve(text),
-						builders: [new TextBuilder()],
-						book: {
-							contents: [
-								file
-							]
-						}
-					})
-						.then(s=> {
-						var result: string = s.results[baseName + ".txt"];
-						assert(result !== null);
+					var baseName = file.substr(0, file.length - 3);
+					var astFilePath = path + baseName + ".ast";
+					it("ファイル:" + file, () => {
+						var text = fs.readFileSync(path + file, "utf8");
+						return Test.compile({
+							basePath: __dirname + "/fixture/valid",
+							read: path => Promise.resolve(text),
+							builders: [new TextBuilder()],
+							book: {
+								contents: [
+									file
+								]
+							}
+						})
+							.then(s=> {
+								var result: string = s.results[baseName + ".txt"];
+								assert(result !== null);
 
-						var ast = JSON.stringify(s.book.allChunks[0].tree.ast, null, 2);
-						if (!fs.existsSync(astFilePath)) {
-							// ASTファイルが無い場合、現時点で生成されるASTを出力する
-							fs.writeFileSync(astFilePath, ast);
-						}
-						var expectedAST = fs.readFileSync(astFilePath, "utf8");
-						assert.deepEqual(JSON.parse(ast), JSON.parse(expectedAST));
-					})
-						.catch(e=> {
-						updateIfSyntaxError(e);
-						throw e;
+								var ast = JSON.stringify(s.book.allChunks[0].tree.ast, null, 2);
+								if (!fs.existsSync(astFilePath)) {
+									// ASTファイルが無い場合、現時点で生成されるASTを出力する
+									fs.writeFileSync(astFilePath, ast);
+								}
+								var expectedAST = fs.readFileSync(astFilePath, "utf8");
+								assert.deepEqual(JSON.parse(ast), JSON.parse(expectedAST));
+							})
+							.catch(e=> {
+								updateIfSyntaxError(e);
+								throw e;
+							});
 					});
 				});
-			});
 		});
 
 		describe("正しくない構文のファイルが処理できること", () => {
@@ -88,20 +88,20 @@ describe("ReVIEW構文の", () => {
 			files
 				.filter((file: string) => file.indexOf(".re") !== -1)
 				.forEach((file: string) => {
-				it("ファイル:" + file, () => {
-					var data = fs.readFileSync(path + file, "utf8");
-					try {
-						parse(data);
-						throw new Error("正しく処理できてしまった");
-					} catch (e) {
-						if (e instanceof PEG.SyntaxError) {
-							// ok
-						} else {
-							throw e;
+					it("ファイル:" + file, () => {
+						var data = fs.readFileSync(path + file, "utf8");
+						try {
+							parse(data);
+							throw new Error("正しく処理できてしまった");
+						} catch (e) {
+							if (e instanceof PEG.SyntaxError) {
+								// ok
+							} else {
+								throw e;
+							}
 						}
-					}
+					});
 				});
-			});
 		});
 	}
 

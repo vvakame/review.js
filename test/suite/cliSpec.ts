@@ -54,9 +54,9 @@ describe("コマンドラインツールの動作", () => {
 			assert(!fs.existsSync(baseDir + "ch02.html"));
 			return exec("../../../bin/reviewjs build", { cwd: baseDir })
 				.then(() => {
-				assert(fs.existsSync(baseDir + "ch01.html"));
-				assert(fs.existsSync(baseDir + "ch02.html"));
-			});
+					assert(fs.existsSync(baseDir + "ch01.html"));
+					assert(fs.existsSync(baseDir + "ch02.html"));
+				});
 		});
 
 		it("reviewjs build でRuby用設定ファイルを元にファイル群のコンパイルができること", () => {
@@ -74,9 +74,9 @@ describe("コマンドラインツールの動作", () => {
 			assert(!fs.existsSync(baseDir + "ch02.html"));
 			return exec("../../../bin/reviewjs build", { cwd: baseDir })
 				.then(() => {
-				assert(fs.existsSync(baseDir + "ch01.html"));
-				assert(fs.existsSync(baseDir + "ch02.html"));
-			});
+					assert(fs.existsSync(baseDir + "ch01.html"));
+					assert(fs.existsSync(baseDir + "ch02.html"));
+				});
 		});
 	});
 
@@ -84,22 +84,22 @@ describe("コマンドラインツールの動作", () => {
 		it("reviewjs compile fileName でコンパイルができること", () => {
 			return exec("./bin/reviewjs compile test/fixture/valid/block.re")
 				.then(stdout=> {
-				assert(stdout.indexOf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>") === 0);
-			});
+					assert(stdout.indexOf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>") === 0);
+				});
 		});
 
 		it("reviewjs compile --target text fileName でコンパイルができること", () => {
 			return exec("./bin/reviewjs compile --target text test/fixture/valid/block.re")
 				.then(stdout=> {
-				assert(stdout.indexOf("■H1■第1章") === 0);
-			});
+					assert(stdout.indexOf("■H1■第1章") === 0);
+				});
 		});
 
 		it("reviewjs compile --target text < ??? でコンパイルができること", () => {
 			return exec("./bin/reviewjs compile --target text", "= Hello\nworld!")
 				.then(stdout=> {
-				assert(stdout === "■H1■第1章　Hello\n\nworld!\n\n");
-			});
+					assert(stdout === "■H1■第1章　Hello\n\nworld!\n\n");
+				});
 		});
 	});
 });

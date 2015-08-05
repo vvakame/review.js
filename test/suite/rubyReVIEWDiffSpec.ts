@@ -76,47 +76,47 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 		fs.readdirSync(path)
 			.filter((file: string) => file.indexOf(".re") !== -1 && !ignoreFiles.some(ignore => ignore === file))
 			.forEach((file: string) => {
-			var baseName = file.substr(0, file.length - 3);
+				var baseName = file.substr(0, file.length - 3);
 
-			typeList.forEach(typeInfo => {
-				var targetFileName = path + baseName + "." + typeInfo.ext;
-				it("ファイル:" + targetFileName, () => {
-					var text = fs.readFileSync(path + file, "utf8");
-					return Test.compile({
-						basePath: process.cwd() + "/test/fixture/valid",
-						read: path => Promise.resolve(text),
-						builders: [typeInfo.builder()],
-						book: {
-							contents: [
-								file
-							]
-						}
-					})
-						.then(s=> {
-						var result: string = s.results[baseName + "." + typeInfo.ext];
-						assert(result !== null);
+				typeList.forEach(typeInfo => {
+					var targetFileName = path + baseName + "." + typeInfo.ext;
+					it("ファイル:" + targetFileName, () => {
+						var text = fs.readFileSync(path + file, "utf8");
+						return Test.compile({
+							basePath: process.cwd() + "/test/fixture/valid",
+							read: path => Promise.resolve(text),
+							builders: [typeInfo.builder()],
+							book: {
+								contents: [
+									file
+								]
+							}
+						})
+							.then(s=> {
+								var result: string = s.results[baseName + "." + typeInfo.ext];
+								assert(result !== null);
 
-						var assertResult = () => {
-							var expected = fs.readFileSync(targetFileName, "utf8");
-							assert(result === expected);
-						};
+								var assertResult = () => {
+									var expected = fs.readFileSync(targetFileName, "utf8");
+									assert(result === expected);
+								};
 
-						if (!fs.existsSync(targetFileName)) {
-							// Ruby版の出力ファイルがない場合、出力処理を行う
-							return convertByRubyReVIEW(baseName, typeInfo.target)
-								.then(data=> {
-								fs.writeFileSync(targetFileName, data);
+								if (!fs.existsSync(targetFileName)) {
+									// Ruby版の出力ファイルがない場合、出力処理を行う
+									return convertByRubyReVIEW(baseName, typeInfo.target)
+										.then(data=> {
+											fs.writeFileSync(targetFileName, data);
 
-								assertResult();
-								return true;
+											assertResult();
+											return true;
+										});
+								} else {
+									assertResult();
+									return Promise.resolve(true);
+								}
 							});
-						} else {
-							assertResult();
-							return Promise.resolve(true);
-						}
 					});
 				});
 			});
-		});
 	});
 });

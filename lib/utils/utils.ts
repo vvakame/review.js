@@ -334,10 +334,10 @@ export module Exec {
 			review.initConfig(config);
 		})
 			.then(book=> {
-			return {
-				book: book,
-				results: results
-			};
-		});
+				return {
+					book: book,
+					results: results
+				};
+			});
 	}
 }

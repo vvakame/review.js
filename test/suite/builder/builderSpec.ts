@@ -42,11 +42,11 @@ describe("ReVIEW.Buildの", () => {
 		it("正しくsymbolの解決が出来る", () => {
 			return Test.compileSingle("={ch01} chapter01\n@<hd>{ch01}\n@<hd>{missing}")
 				.then(failure=> {
-				var book = failure.book;
-				var missingSymbols = book.contents[0].process.missingSymbols;
-				assert(missingSymbols.length === 1);
-				assert(missingSymbols[0].referenceTo.label === "missing");
-			});
+					var book = failure.book;
+					var missingSymbols = book.contents[0].process.missingSymbols;
+					assert(missingSymbols.length === 1);
+					assert(missingSymbols[0].referenceTo.label === "missing");
+				});
 		});
 	});
 
@@ -82,10 +82,10 @@ describe("ReVIEW.Buildの", () => {
 				{ builders: [builder] }
 				)
 				.then(success=> {
-				var book = success.book;
-				var expected = "■H1■第1章　hoge\n\n■H2■fuga\n\n■H3■moge\n\n■H2■piyo\n\n■H3■foo\n\n■H1■第2章　bar\n\n";
-				assert(book.contents[0].findResultByBuilder(builder) === expected);
-			});
+					var book = success.book;
+					var expected = "■H1■第1章　hoge\n\n■H2■fuga\n\n■H3■moge\n\n■H2■piyo\n\n■H3■foo\n\n■H1■第2章　bar\n\n";
+					assert(book.contents[0].findResultByBuilder(builder) === expected);
+				});
 		});
 	});
 });

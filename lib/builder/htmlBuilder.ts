@@ -425,62 +425,62 @@ export class HtmlBuilder extends DefaultBuilder {
 	block_image(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		return process.findImageFile(node.args[0].arg)
 			.then(imagePath=> {
-			var caption = node.args[1].arg;
-			var scale: number = 1;
-			if (node.args[2]) {
-				// var arg3 = node.args[2].arg;
-				var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
-				var result = regexp.exec(node.args[2].arg);
-				if (result) {
-					scale = parseFloat(result[1]);
+				var caption = node.args[1].arg;
+				var scale: number = 1;
+				if (node.args[2]) {
+					// var arg3 = node.args[2].arg;
+					var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
+					var result = regexp.exec(node.args[2].arg);
+					if (result) {
+						scale = parseFloat(result[1]);
+					}
 				}
-			}
-			process.outRaw("<div class=\"image\">\n");
-			// imagePathは変数作成時点でユーザ入力部分をescapeしている
-			process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
-			process.outRaw("<p class=\"caption\">\n");
-			process.out("図").out(process.base.chapter.no).out(".").out(node.no).out(": ").out(caption);
-			process.outRaw("\n</p>\n");
-			process.outRaw("</div>\n");
-			return false;
-		})
+				process.outRaw("<div class=\"image\">\n");
+				// imagePathは変数作成時点でユーザ入力部分をescapeしている
+				process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
+				process.outRaw("<p class=\"caption\">\n");
+				process.out("図").out(process.base.chapter.no).out(".").out(node.no).out(": ").out(caption);
+				process.outRaw("\n</p>\n");
+				process.outRaw("</div>\n");
+				return false;
+			})
 			.catch(id=> {
-			process.error(t("builder.image_not_found", id), node);
-			return false;
-		});
+				process.error(t("builder.image_not_found", id), node);
+				return false;
+			});
 	}
 
 	block_indepimage(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		return process.findImageFile(node.args[0].arg)
 			.then(imagePath=> {
-			var caption: string = "";
-			if (node.args[1]) {
-				caption = node.args[1].arg;
-			}
-			var scale: number = 1;
-			if (node.args[2]) {
-				// var arg3 = node.args[2].arg;
-				var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
-				var result = regexp.exec(node.args[2].arg);
-				if (result) {
-					scale = parseFloat(result[1]);
+				var caption: string = "";
+				if (node.args[1]) {
+					caption = node.args[1].arg;
 				}
-			}
-			process.outRaw("<div class=\"image\">\n");
-			// imagePathは変数作成時点でユーザ入力部分をescapeしている
-			if (scale !== 1) {
-				process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
-			} else {
-				process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" />\n");
-			}
-			if (node.args[1]) {
-				process.outRaw("<p class=\"caption\">\n");
-				process.out("図: ").out(caption);
-				process.outRaw("\n</p>\n");
-			}
-			process.outRaw("</div>\n");
-			return false;
-		});
+				var scale: number = 1;
+				if (node.args[2]) {
+					// var arg3 = node.args[2].arg;
+					var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
+					var result = regexp.exec(node.args[2].arg);
+					if (result) {
+						scale = parseFloat(result[1]);
+					}
+				}
+				process.outRaw("<div class=\"image\">\n");
+				// imagePathは変数作成時点でユーザ入力部分をescapeしている
+				if (scale !== 1) {
+					process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
+				} else {
+					process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" />\n");
+				}
+				if (node.args[1]) {
+					process.outRaw("<p class=\"caption\">\n");
+					process.out("図: ").out(caption);
+					process.outRaw("\n</p>\n");
+				}
+				process.outRaw("</div>\n");
+				return false;
+			});
 	}
 
 	inline_img(process: BuilderProcess, node: InlineElementSyntaxTree) {

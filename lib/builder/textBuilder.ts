@@ -318,18 +318,18 @@ export class TextBuilder extends DefaultBuilder {
 	block_image(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		return process.findImageFile(node.args[0].arg)
 			.then(imagePath=> {
-			var caption = node.args[1].arg;
-			process.out("◆→開始:図←◆\n");
-			process.out("図").out(process.base.chapter.no).out(".").out(node.no).out("　").out(caption).out("\n");
-			process.out("\n");
-			process.out("◆→").out(imagePath).out("←◆\n");
-			process.out("◆→終了:図←◆\n");
-			return false;
-		})
+				var caption = node.args[1].arg;
+				process.out("◆→開始:図←◆\n");
+				process.out("図").out(process.base.chapter.no).out(".").out(node.no).out("　").out(caption).out("\n");
+				process.out("\n");
+				process.out("◆→").out(imagePath).out("←◆\n");
+				process.out("◆→終了:図←◆\n");
+				return false;
+			})
 			.catch(id=> {
-			process.error(t("builder.image_not_found", id), node);
-			return false;
-		});
+				process.error(t("builder.image_not_found", id), node);
+				return false;
+			});
 	}
 
 	block_indepimage(process: BuilderProcess, node: BlockElementSyntaxTree) {
