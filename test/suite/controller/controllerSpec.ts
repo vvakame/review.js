@@ -47,8 +47,8 @@ describe("ReVIEW.Controllerの", () => {
 				assert(!!chunk.tree.ast);
 			});
 
-			assert(book.contents[0].process.symbols.length === 1);
-			assert(book.contents[1].process.symbols.length === 3);
+			assert(book.contents[0].process.symbols.length === 2); // トップレベルheadlineはシンボルを1つ追加で生成する
+			assert(book.contents[1].process.symbols.length === 4); // トップレベルheadlineはシンボルを1つ追加で生成する
 		});
 	});
 

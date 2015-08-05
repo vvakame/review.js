@@ -262,6 +262,21 @@ export class DefaultAnalyzer implements Analyzer {
 				labelName: label,
 				node: node
 			});
+
+			// chap, title, chapref 用
+			if (node.level === 1) {
+				let label: string = null;
+				if (node.label) {
+					label = node.label.arg;
+				} else {
+					label = process.chapter.name.substr(0, process.chapter.name.lastIndexOf(".re"));
+				}
+				process.addSymbol({
+					symbolName: "chapter",
+					labelName: label,
+					node: node
+				});
+			}
 		});
 	}
 
@@ -719,17 +734,50 @@ export class DefaultAnalyzer implements Analyzer {
 	}
 
 	inline_chap(builder: AcceptableSyntaxBuilder) {
-		this.inlineDecorationSyntax(builder, "chap");
+		builder.setSyntaxType(SyntaxType.Inline);
+		builder.setSymbol("chap");
+		builder.setDescription(t("description.inline_chap"));
+		builder.processNode((process, n) => {
+			var node = n.toInlineElement();
+			process.addSymbol({
+				symbolName: node.symbol,
+				referenceTo: process.constructReferenceTo(node, nodeContentToString(process, node), "chapter"),
+				node: node
+			});
+		});
+	}
+
+	inline_title(builder: AcceptableSyntaxBuilder) {
+		builder.setSyntaxType(SyntaxType.Inline);
+		builder.setSymbol("title");
+		builder.setDescription(t("description.inline_title"));
+		builder.processNode((process, n) => {
+			var node = n.toInlineElement();
+			process.addSymbol({
+				symbolName: node.symbol,
+				referenceTo: process.constructReferenceTo(node, nodeContentToString(process, node), "chapter"),
+				node: node
+			});
+		});
 	}
 
 	inline_chapref(builder: AcceptableSyntaxBuilder) {
-		this.inlineDecorationSyntax(builder, "chapref");
+		builder.setSyntaxType(SyntaxType.Inline);
+		builder.setSymbol("chapref");
+		builder.setDescription(t("description.inline_chapref"));
+		builder.processNode((process, n) => {
+			var node = n.toInlineElement();
+			process.addSymbol({
+				symbolName: node.symbol,
+				referenceTo: process.constructReferenceTo(node, nodeContentToString(process, node), "chapter"),
+				node: node
+			});
+		});
 	}
 
 	// TODO 以下のものの実装をすすめる
 	// ↑実装が簡単
 	// block_texequation // latexの式のやつなので…
-	// inline_title // Ruby版の実装が謎い…
 	// inline_m // latex のインラインのやつなので…
 	// クソめんどくさいの壁
 	// block_bibpaper

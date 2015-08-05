@@ -46,6 +46,9 @@ export var ja = {
 		"inline_raw": "生データを表します。\n@<raw>{|html,text|ほげ}と書くと、出力先がhtmlかtextの時のみ内容がそのまま出力されます。\nRe:VIEWの記法を超えてそのまま出力されるので、構造を壊さぬよう慎重に使ってください。",
 		"block_comment": "コメントを示します。\n//comment{\nコメントですよー\n//}\nと書くことにより、文書には出力されない文を書くことができます。",
 		"inline_comment": "コメントを示します。\n@<comment>{コメントですよー}と書くことにより、文書には出力されない文を書くことができます。",
+		"inline_chap": "章番号を示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<chap>{sample} と書きます。",
+		"inline_title": "章タイトルを示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<title>{sample} と書きます。",
+		"inline_chapref": "章番号+章タイトルを示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<chapref>{sample} と書きます。",
 
 		// TODO 以下は今後書き直す
 		"block_table": "テーブルを示します。\nTODO 正しく実装した後に書く",

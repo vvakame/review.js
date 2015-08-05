@@ -4,11 +4,12 @@
 
 import {t} from "../i18n/i18n";
 
-import {ConcreatSyntaxTree, SyntaxTree, InlineElementSyntaxTree, BlockElementSyntaxTree} from "../parser/parser";
+import {ConcreatSyntaxTree, SyntaxTree, InlineElementSyntaxTree, BlockElementSyntaxTree, ChapterSyntaxTree} from "../parser/parser";
 
 import {AcceptableSyntaxes} from "../parser/analyzer";
 import {Builder} from "../builder/builder";
 import {Config} from "../controller/config";
+import {visit} from "../parser/walker";
 
 /**
  * 参照先についての情報。
@@ -227,6 +228,31 @@ export class BuilderProcess {
 
 	get symbols(): Symbol[] {
 		return this.base.symbols;
+	}
+
+	findChapter(chapId: string): ContentChunk {
+		let book = this.base.chapter.book;
+		let chaps = book.allChunks.filter(chunk => {
+			let name = chunk.name.substr(0, chunk.name.lastIndexOf(".re"));
+			if (name === chapId) {
+				return true;
+			}
+			let chapter: ChapterSyntaxTree;
+			visit(chunk.tree.ast, {
+				visitDefaultPre: (node, parent) => {
+					return !chapter;
+				},
+				visitChapterPre: (node, parent) => {
+					chapter = node;
+					return false;
+				}
+			});
+			if (chapter.headline.label) {
+				return chapter.headline.label.arg === chapId;
+			}
+			return false;
+		});
+		return chaps[0];
 	}
 
 	/**

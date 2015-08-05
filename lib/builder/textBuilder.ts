@@ -544,4 +544,27 @@ export class TextBuilder extends DefaultBuilder {
 	inline_comment_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
 		process.out("←◆");
 	}
+
+	inline_chap(process: BuilderProcess, node: InlineElementSyntaxTree) {
+		var chapName = nodeContentToString(process, node);
+		let chapter = process.findChapter(chapName);
+		process.out("第").out(chapter.no).out("章");
+		return false;
+	}
+
+	inline_title(process: BuilderProcess, node: InlineElementSyntaxTree) {
+		var chapName = nodeContentToString(process, node);
+		let chapter = process.findChapter(chapName);
+		let title = this.getChapterTitle(process, chapter);
+		process.out(title);
+		return false;
+	}
+
+	inline_chapref(process: BuilderProcess, node: InlineElementSyntaxTree) {
+		var chapName = nodeContentToString(process, node);
+		let chapter = process.findChapter(chapName);
+		let title = this.getChapterTitle(process, chapter);
+		process.out("第").out(chapter.no).out("章「").out(title).out("」");
+		return false;
+	}
 }

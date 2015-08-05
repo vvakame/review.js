@@ -101,6 +101,22 @@ var DefaultBuilder = (function () {
     DefaultBuilder.prototype.escape = function (data) {
         throw new Error("please override this method");
     };
+    DefaultBuilder.prototype.getChapterTitle = function (process, chapter) {
+        var chapterNode;
+        walker_1.visit(chapter.tree.ast, {
+            visitDefaultPre: function (node, parent) {
+                return !chapterNode;
+            },
+            visitChapterPre: function (node, parent) {
+                chapterNode = node;
+                return false;
+            }
+        });
+        if (!chapterNode) {
+            return null;
+        }
+        return utils_1.nodeContentToString(process, chapterNode.headline);
+    };
     DefaultBuilder.prototype.processPost = function (process, chunk) {
     };
     DefaultBuilder.prototype.chapterPre = function (process, node) {
@@ -238,16 +254,6 @@ var DefaultBuilder = (function () {
         else {
             process.outRaw(content);
         }
-        return false;
-    };
-    DefaultBuilder.prototype.inline_chap = function (process, node) {
-        var content = utils_1.nodeContentToString(process, node);
-        process.outRaw(content);
-        return false;
-    };
-    DefaultBuilder.prototype.inline_chapref = function (process, node) {
-        var content = utils_1.nodeContentToString(process, node);
-        process.outRaw("第x章「" + content + "」");
         return false;
     };
     DefaultBuilder.prototype.singleLineComment = function (process, node) {
@@ -840,6 +846,26 @@ var HtmlBuilder = (function (_super) {
     HtmlBuilder.prototype.inline_comment_post = function (process, node) {
         process.outRaw(" -->");
     };
+    HtmlBuilder.prototype.inline_chap = function (process, node) {
+        var chapName = utils_1.nodeContentToString(process, node);
+        var chapter = process.findChapter(chapName);
+        process.out("第").out(chapter.no).out("章");
+        return false;
+    };
+    HtmlBuilder.prototype.inline_title = function (process, node) {
+        var chapName = utils_1.nodeContentToString(process, node);
+        var chapter = process.findChapter(chapName);
+        var title = this.getChapterTitle(process, chapter);
+        process.out(title);
+        return false;
+    };
+    HtmlBuilder.prototype.inline_chapref = function (process, node) {
+        var chapName = utils_1.nodeContentToString(process, node);
+        var chapter = process.findChapter(chapName);
+        var title = this.getChapterTitle(process, chapter);
+        process.out("第").out(chapter.no).out("章「").out(title).out("」");
+        return false;
+    };
     return HtmlBuilder;
 })(builder_1.DefaultBuilder);
 exports.HtmlBuilder = HtmlBuilder;
@@ -1292,6 +1318,26 @@ var TextBuilder = (function (_super) {
     };
     TextBuilder.prototype.inline_comment_post = function (process, node) {
         process.out("←◆");
+    };
+    TextBuilder.prototype.inline_chap = function (process, node) {
+        var chapName = utils_1.nodeContentToString(process, node);
+        var chapter = process.findChapter(chapName);
+        process.out("第").out(chapter.no).out("章");
+        return false;
+    };
+    TextBuilder.prototype.inline_title = function (process, node) {
+        var chapName = utils_1.nodeContentToString(process, node);
+        var chapter = process.findChapter(chapName);
+        var title = this.getChapterTitle(process, chapter);
+        process.out(title);
+        return false;
+    };
+    TextBuilder.prototype.inline_chapref = function (process, node) {
+        var chapName = utils_1.nodeContentToString(process, node);
+        var chapter = process.findChapter(chapName);
+        var title = this.getChapterTitle(process, chapter);
+        process.out("第").out(chapter.no).out("章「").out(title).out("」");
+        return false;
     };
     return TextBuilder;
 })(builder_1.DefaultBuilder);
@@ -2056,6 +2102,9 @@ exports.ja = {
         "inline_raw": "生データを表します。\n@<raw>{|html,text|ほげ}と書くと、出力先がhtmlかtextの時のみ内容がそのまま出力されます。\nRe:VIEWの記法を超えてそのまま出力されるので、構造を壊さぬよう慎重に使ってください。",
         "block_comment": "コメントを示します。\n//comment{\nコメントですよー\n//}\nと書くことにより、文書には出力されない文を書くことができます。",
         "inline_comment": "コメントを示します。\n@<comment>{コメントですよー}と書くことにより、文書には出力されない文を書くことができます。",
+        "inline_chap": "章番号を示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<chap>{sample} と書きます。",
+        "inline_title": "章タイトルを示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<title>{sample} と書きます。",
+        "inline_chapref": "章番号+章タイトルを示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<chapref>{sample} と書きます。",
         "block_table": "テーブルを示します。\nTODO 正しく実装した後に書く",
         "inline_table": "テーブルへの参照を示します。\nTODO 正しく実装した後に書く",
         "block_tsize": "テーブルの大きさを指定します。\nTODO 正しく実装した後に書く"
@@ -2156,6 +2205,7 @@ exports.AnalyzerError = AnalyzerError;
 // parser/ と builder/ で共用するモデル
 "use strict";
 var i18n_1 = require("../i18n/i18n");
+var walker_1 = require("../parser/walker");
 (function (ReportLevel) {
     ReportLevel[ReportLevel["Info"] = 0] = "Info";
     ReportLevel[ReportLevel["Warning"] = 1] = "Warning";
@@ -2370,6 +2420,30 @@ var BuilderProcess = (function () {
         enumerable: true,
         configurable: true
     });
+    BuilderProcess.prototype.findChapter = function (chapId) {
+        var book = this.base.chapter.book;
+        var chaps = book.allChunks.filter(function (chunk) {
+            var name = chunk.name.substr(0, chunk.name.lastIndexOf(".re"));
+            if (name === chapId) {
+                return true;
+            }
+            var chapter;
+            walker_1.visit(chunk.tree.ast, {
+                visitDefaultPre: function (node, parent) {
+                    return !chapter;
+                },
+                visitChapterPre: function (node, parent) {
+                    chapter = node;
+                    return false;
+                }
+            });
+            if (chapter.headline.label) {
+                return chapter.headline.label.arg === chapId;
+            }
+            return false;
+        });
+        return chaps[0];
+    };
     BuilderProcess.prototype.findImageFile = function (id) {
         // NOTE: https://github.com/kmuto/review/wiki/ImagePath
         // 4軸マトリクス 画像dir, ビルダ有無, chapId位置, 拡張子
@@ -2523,7 +2597,7 @@ var ContentChunk = (function () {
 })();
 exports.ContentChunk = ContentChunk;
 
-},{"../i18n/i18n":8}],13:[function(require,module,exports){
+},{"../i18n/i18n":8,"../parser/walker":17}],13:[function(require,module,exports){
 "use strict";
 var i18n_1 = require("../i18n/i18n");
 var exception_1 = require("../js/exception");
@@ -2739,6 +2813,20 @@ var DefaultAnalyzer = (function () {
                 labelName: label,
                 node: node
             });
+            if (node.level === 1) {
+                var label_1 = null;
+                if (node.label) {
+                    label_1 = node.label.arg;
+                }
+                else {
+                    label_1 = process.chapter.name.substr(0, process.chapter.name.lastIndexOf(".re"));
+                }
+                process.addSymbol({
+                    symbolName: "chapter",
+                    labelName: label_1,
+                    node: node
+                });
+            }
         });
     };
     DefaultAnalyzer.prototype.column = function (builder) {
@@ -3152,10 +3240,43 @@ var DefaultAnalyzer = (function () {
         });
     };
     DefaultAnalyzer.prototype.inline_chap = function (builder) {
-        this.inlineDecorationSyntax(builder, "chap");
+        builder.setSyntaxType(SyntaxType.Inline);
+        builder.setSymbol("chap");
+        builder.setDescription(i18n_1.t("description.inline_chap"));
+        builder.processNode(function (process, n) {
+            var node = n.toInlineElement();
+            process.addSymbol({
+                symbolName: node.symbol,
+                referenceTo: process.constructReferenceTo(node, utils_1.nodeContentToString(process, node), "chapter"),
+                node: node
+            });
+        });
+    };
+    DefaultAnalyzer.prototype.inline_title = function (builder) {
+        builder.setSyntaxType(SyntaxType.Inline);
+        builder.setSymbol("title");
+        builder.setDescription(i18n_1.t("description.inline_title"));
+        builder.processNode(function (process, n) {
+            var node = n.toInlineElement();
+            process.addSymbol({
+                symbolName: node.symbol,
+                referenceTo: process.constructReferenceTo(node, utils_1.nodeContentToString(process, node), "chapter"),
+                node: node
+            });
+        });
     };
     DefaultAnalyzer.prototype.inline_chapref = function (builder) {
-        this.inlineDecorationSyntax(builder, "chapref");
+        builder.setSyntaxType(SyntaxType.Inline);
+        builder.setSymbol("chapref");
+        builder.setDescription(i18n_1.t("description.inline_chapref"));
+        builder.processNode(function (process, n) {
+            var node = n.toInlineElement();
+            process.addSymbol({
+                symbolName: node.symbol,
+                referenceTo: process.constructReferenceTo(node, utils_1.nodeContentToString(process, node), "chapter"),
+                node: node
+            });
+        });
     };
     return DefaultAnalyzer;
 })();

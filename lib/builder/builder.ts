@@ -6,7 +6,7 @@ import {Book, BuilderProcess, ContentChunk, Symbol} from "../model/compilerModel
 
 import {SyntaxTree, NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, TextNodeSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, SingleLineCommentSyntaxTree} from "../parser/parser";
 
-import {visitAsync} from "../parser/walker";
+import {visit, visitAsync} from "../parser/walker";
 
 import {nodeContentToString, findUp} from "../utils/utils";
 
@@ -136,6 +136,23 @@ export class DefaultBuilder implements Builder {
 
 	escape(data: any): string {
 		throw new Error("please override this method");
+	}
+
+	getChapterTitle(process: BuilderProcess, chapter: ContentChunk): string {
+		let chapterNode: ChapterSyntaxTree;
+		visit(chapter.tree.ast, {
+			visitDefaultPre: (node, parent) => {
+				return !chapterNode;
+			},
+			visitChapterPre: (node, parent) => {
+				chapterNode = node;
+				return false;
+			}
+		});
+		if (!chapterNode) {
+			return null;
+		}
+		return nodeContentToString(process, chapterNode.headline);
 	}
 
 	processPost(process: BuilderProcess, chunk: ContentChunk): void {
@@ -303,20 +320,6 @@ export class DefaultBuilder implements Builder {
 		} else {
 			process.outRaw(content);
 		}
-		return false;
-	}
-
-	inline_chap(process: BuilderProcess, node: InlineElementSyntaxTree): any {
-		// TODO ひと目でそれと判るスタブ
-		var content = nodeContentToString(process, node);
-		process.outRaw(content);
-		return false;
-	}
-
-	inline_chapref(process: BuilderProcess, node: InlineElementSyntaxTree): any {
-		// TODO ひと目でそれと判るスタブ
-		var content = nodeContentToString(process, node);
-		process.outRaw("第x章「" + content + "」");
 		return false;
 	}
 

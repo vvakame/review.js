@@ -1,3 +1,3 @@
-= chapインライン記法
+={referenced} chapインライン記法
 
-@<chap>{fooooo}
+@<chap>{referenced}を参照。

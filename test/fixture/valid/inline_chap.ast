@@ -3,41 +3,49 @@
   "offset": 0,
   "line": 1,
   "column": 1,
-  "endPos": 31,
+  "endPos": 51,
   "childNodes": [
     {
       "ruleName": "Chapters",
       "offset": 0,
       "line": 1,
       "column": 1,
-      "endPos": 31,
+      "endPos": 51,
       "childNodes": [
         {
           "ruleName": "Chapter",
           "offset": 0,
           "line": 1,
           "column": 1,
-          "endPos": 31,
+          "endPos": 51,
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
             "line": 1,
             "column": 1,
-            "endPos": 15,
+            "endPos": 27,
             "level": 1,
+            "label": {
+              "ruleName": "BraceArg",
+              "offset": 1,
+              "line": 1,
+              "column": 2,
+              "endPos": 13,
+              "arg": "referenced"
+            },
             "caption": {
               "ruleName": "ContentInlines",
-              "offset": 2,
+              "offset": 14,
               "line": 1,
-              "column": 3,
-              "endPos": 13,
+              "column": 15,
+              "endPos": 25,
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
-                  "offset": 2,
+                  "offset": 14,
                   "line": 1,
-                  "column": 3,
-                  "endPos": 13,
+                  "column": 15,
+                  "endPos": 25,
                   "text": "chapインライン記法"
                 }
               ]
@@ -46,37 +54,45 @@
           "text": [
             {
               "ruleName": "Paragraph",
-              "offset": 15,
+              "offset": 27,
               "line": 3,
               "column": 1,
-              "endPos": 31,
+              "endPos": 51,
               "childNodes": [
                 {
                   "ruleName": "InlineElement",
-                  "offset": 15,
+                  "offset": 27,
                   "line": 3,
                   "column": 1,
-                  "endPos": 30,
+                  "endPos": 46,
                   "symbol": "chap",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
-                      "offset": 23,
+                      "offset": 35,
                       "line": 3,
                       "column": 9,
-                      "endPos": 29,
+                      "endPos": 45,
                       "childNodes": [
                         {
                           "ruleName": "InlineElementContentText",
-                          "offset": 23,
+                          "offset": 35,
                           "line": 3,
                           "column": 9,
-                          "endPos": 29,
-                          "text": "fooooo"
+                          "endPos": 45,
+                          "text": "referenced"
                         }
                       ]
                     }
                   ]
+                },
+                {
+                  "ruleName": "ContentText",
+                  "offset": 46,
+                  "line": 3,
+                  "column": 20,
+                  "endPos": 51,
+                  "text": "を参照。"
                 }
               ]
             }

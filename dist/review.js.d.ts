@@ -92,6 +92,7 @@ declare module 'review.js/lib/model/compilerModel' {
         pushOut(data: string): BuilderProcess;
         input: string;
         symbols: Symbol[];
+        findChapter(chapId: string): ContentChunk;
         findImageFile(id: string): Promise<string>;
     }
     export class Book {
@@ -310,6 +311,9 @@ declare module 'review.js/lib/builder/htmlBuilder' {
         block_comment_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
         inline_comment_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_comment_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_chap(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        inline_title(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        inline_chapref(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
     }
 }
 
@@ -397,6 +401,9 @@ declare module 'review.js/lib/builder/textBuilder' {
         block_comment_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
         inline_comment_pre(process: BuilderProcess, node: InlineElementSyntaxTree): void;
         inline_comment_post(process: BuilderProcess, node: InlineElementSyntaxTree): void;
+        inline_chap(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        inline_title(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
+        inline_chapref(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
     }
 }
 
@@ -496,6 +503,7 @@ declare module 'review.js/lib/parser/analyzer' {
         block_comment(builder: AcceptableSyntaxBuilder): void;
         inline_comment(builder: AcceptableSyntaxBuilder): void;
         inline_chap(builder: AcceptableSyntaxBuilder): void;
+        inline_title(builder: AcceptableSyntaxBuilder): void;
         inline_chapref(builder: AcceptableSyntaxBuilder): void;
     }
 }
@@ -615,6 +623,7 @@ declare module 'review.js/lib/parser/parser' {
         toOlist(): OlistElementSyntaxTree;
         toDlist(): DlistElementSyntaxTree;
         toTextNode(): TextNodeSyntaxTree;
+        toSingleLineCommentNode(): SingleLineCommentSyntaxTree;
     }
     export class NodeSyntaxTree extends SyntaxTree {
         childNodes: SyntaxTree[];
@@ -678,11 +687,15 @@ declare module 'review.js/lib/parser/parser' {
         text: string;
         constructor(data: ConcreatSyntaxTree);
     }
+    export class SingleLineCommentSyntaxTree extends SyntaxTree {
+        text: string;
+        constructor(data: ConcreatSyntaxTree);
+    }
 }
 
 declare module 'review.js/lib/builder/builder' {
     import { Book, BuilderProcess, ContentChunk, Symbol } from "review.js/lib/model/compilerModel";
-    import { SyntaxTree, NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, TextNodeSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree } from "review.js/lib/parser/parser";
+    import { SyntaxTree, NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, TextNodeSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, SingleLineCommentSyntaxTree } from "review.js/lib/parser/parser";
     export interface Builder {
         name: string;
         extention: string;
@@ -705,6 +718,7 @@ declare module 'review.js/lib/builder/builder' {
         inlinePre(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
         inlinePost(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
         text(process: BuilderProcess, node: TextNodeSyntaxTree): any;
+        singleLineComment?(process: BuilderProcess, node: SingleLineCommentSyntaxTree): any;
     }
     export class DefaultBuilder implements Builder {
         book: Book;
@@ -713,6 +727,7 @@ declare module 'review.js/lib/builder/builder' {
         init(book: Book): Promise<void>;
         processAst(chunk: ContentChunk): Promise<void>;
         escape(data: any): string;
+        getChapterTitle(process: BuilderProcess, chapter: ContentChunk): string;
         processPost(process: BuilderProcess, chunk: ContentChunk): void;
         chapterPre(process: BuilderProcess, node: ChapterSyntaxTree): any;
         chapterPost(process: BuilderProcess, node: ChapterSyntaxTree): any;
@@ -739,8 +754,7 @@ declare module 'review.js/lib/builder/builder' {
         findReference(process: BuilderProcess, node: SyntaxTree): Symbol;
         block_raw(process: BuilderProcess, node: BlockElementSyntaxTree): any;
         inline_raw(process: BuilderProcess, node: InlineElementSyntaxTree): any;
-        inline_chap(process: BuilderProcess, node: InlineElementSyntaxTree): any;
-        inline_chapref(process: BuilderProcess, node: InlineElementSyntaxTree): any;
+        singleLineComment(process: BuilderProcess, node: SingleLineCommentSyntaxTree): any;
     }
 }
 
@@ -831,7 +845,7 @@ declare module 'review.js/lib/parser/validator' {
 }
 
 declare module 'review.js/lib/parser/walker' {
-    import { SyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree, ChapterSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, NodeSyntaxTree, TextNodeSyntaxTree } from "review.js/lib/parser/parser";
+    import { SyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree, ChapterSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, NodeSyntaxTree, TextNodeSyntaxTree, SingleLineCommentSyntaxTree } from "review.js/lib/parser/parser";
     export function walk(ast: SyntaxTree, actor: (ast: SyntaxTree) => SyntaxTree): void;
     export function visit(ast: SyntaxTree, v: TreeVisitor): void;
     export function visitAsync(ast: SyntaxTree, v: TreeVisitor): Promise<void>;
@@ -862,6 +876,8 @@ declare module 'review.js/lib/parser/walker' {
         visitColumnPost?(node: ColumnSyntaxTree, parent: SyntaxTree): void;
         visitColumnHeadlinePre?(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree): any;
         visitColumnHeadlinePost?(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree): void;
+        visitSingleLineCommentPre?(node: SingleLineCommentSyntaxTree, parent: SyntaxTree): any;
+        visitSingleLineCommentPost?(node: SingleLineCommentSyntaxTree, parent: SyntaxTree): void;
         visitTextPre?(node: TextNodeSyntaxTree, parent: SyntaxTree): any;
         visitTextPost?(node: TextNodeSyntaxTree, parent: SyntaxTree): void;
     }

@@ -33,8 +33,8 @@ describe("ReVIEW.Buildの", () => {
 				assert(!!chunk.tree.ast);
 			});
 
-			assert(book.contents[0].process.symbols.length === 1);
-			assert(book.contents[1].process.symbols.length === 3);
+			assert(book.contents[0].process.symbols.length === 2); // トップレベルheadlineはシンボルを1つ追加で生成する
+			assert(book.contents[1].process.symbols.length === 4); // トップレベルheadlineはシンボルを1つ追加で生成する
 		});
 	});
 
@@ -78,12 +78,12 @@ describe("ReVIEW.Buildの", () => {
 		it("正常に処理が完了できること", () => {
 			var builder = new TextBuilder();
 			return Test.compileSingle(
-				"= hoge\n== fuga\n=== moge\n== piyo\n=== foo\n= bar\n",
+				"= hoge\n== fuga\n=== moge\n== piyo\n=== foo\n== bar\n",
 				{ builders: [builder] }
 				)
 				.then(success=> {
 					var book = success.book;
-					var expected = "■H1■第1章　hoge\n\n■H2■fuga\n\n■H3■moge\n\n■H2■piyo\n\n■H3■foo\n\n■H1■第2章　bar\n\n";
+					var expected = "■H1■第1章　hoge\n\n■H2■fuga\n\n■H3■moge\n\n■H2■piyo\n\n■H3■foo\n\n■H2■bar\n\n";
 					assert(book.contents[0].findResultByBuilder(builder) === expected);
 				});
 		});
