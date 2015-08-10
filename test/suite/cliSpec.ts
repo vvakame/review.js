@@ -22,9 +22,9 @@ describe("コマンドラインツールの動作", () => {
 			options = void 0;
 		}
 
-		var exec = require("child_process").exec;
+		let exec = require("child_process").exec;
 		return new Promise<string>((resolve, reject) => {
-			var child = exec(command, options, (error: string, stdout: string, stderr: string) => {
+			let child = exec(command, options, (error: string, stdout: string, stderr: string) => {
 				if (error) {
 					reject(error);
 					return;
@@ -40,7 +40,7 @@ describe("コマンドラインツールの動作", () => {
 
 	describe("reviewjs build の動作", () => {
 		it("reviewjs build でファイル群のコンパイルができること", () => {
-			var baseDir = "test/fixture/reviewjs-book/";
+			let baseDir = "test/fixture/reviewjs-book/";
 			/* tslint:disable:no-require-imports */
 			let fs = require("fs");
 			/* tslint:enable:no-require-imports */
@@ -60,7 +60,7 @@ describe("コマンドラインツールの動作", () => {
 		});
 
 		it("reviewjs build でRuby用設定ファイルを元にファイル群のコンパイルができること", () => {
-			var baseDir = "test/fixture/ruby-book/";
+			let baseDir = "test/fixture/ruby-book/";
 			/* tslint:disable:no-require-imports */
 			let fs = require("fs");
 			/* tslint:enable:no-require-imports */

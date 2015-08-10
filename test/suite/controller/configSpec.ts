@@ -36,7 +36,7 @@ describe("ReVIEWのConfig.tsの", () => {
 	}
 
 	it("IConfigBookに設定ができる IConfigPartOrChapterでchapterプロパティを使う", () => {
-		var book: ConfigBook = {
+		let book: ConfigBook = {
 			predef: [
 				{ file: "pre.re" }
 			],
@@ -64,7 +64,7 @@ describe("ReVIEWのConfig.tsの", () => {
 	});
 
 	it("IConfigBookに設定ができる IConfigPartOrChapterでnameプロパティを使う", () => {
-		var book: ConfigBook = {
+		let book: ConfigBook = {
 			predef: [
 				{ file: "pre.re" }
 			],
@@ -92,7 +92,7 @@ describe("ReVIEWのConfig.tsの", () => {
 	});
 
 	it("IConfigBookに設定ができる JS(型なし)用短縮形式", () => {
-		var book: any = {
+		let book: any = {
 			predef: [
 				"pre.re"
 			],
@@ -119,7 +119,7 @@ describe("ReVIEWのConfig.tsの", () => {
 
 	it("IConfigBookに設定ができる YAML形式より", () => {
 		// TODO
-		var book: any = {
+		let book: any = {
 			PREDEF: ['pre.re'],
 			CHAPS: [
 				'fullsetA.re',

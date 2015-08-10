@@ -57,7 +57,7 @@ export class DefaultBuilder implements Builder {
 	}
 
 	processAst(chunk: ContentChunk): Promise<void> {
-		var process = chunk.createBuilderProcess(this);
+		let process = chunk.createBuilderProcess(this);
 		return visitAsync(chunk.tree.ast, {
 			visitDefaultPre: (node: SyntaxTree) => {
 			},
@@ -212,7 +212,7 @@ export class DefaultBuilder implements Builder {
 	}
 
 	blockPre(process: BuilderProcess, name: string, node: BlockElementSyntaxTree): any {
-		var func: Function;
+		let func: Function;
 		func = (<any>this)[`block_${name}`];
 		if (typeof func === "function") {
 			return func.call(this, process, node);
@@ -226,7 +226,7 @@ export class DefaultBuilder implements Builder {
 	}
 
 	blockPost(process: BuilderProcess, name: string, node: BlockElementSyntaxTree): any {
-		var func: Function;
+		let func: Function;
 		func = (<any>this)[`block_${name}`];
 		if (typeof func === "function") {
 			return;
@@ -240,7 +240,7 @@ export class DefaultBuilder implements Builder {
 	}
 
 	inlinePre(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any {
-		var func: Function;
+		let func: Function;
 		func = (<any>this)[`inline_${name}`];
 		if (typeof func === "function") {
 			return func.call(this, process, node);
@@ -254,7 +254,7 @@ export class DefaultBuilder implements Builder {
 	}
 
 	inlinePost(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any {
-		var func: Function;
+		let func: Function;
 		func = (<any>this)[`inline_${name}`];
 		if (typeof func === "function") {
 			return;
@@ -269,7 +269,7 @@ export class DefaultBuilder implements Builder {
 
 	ulistParentHelper(process: BuilderProcess, node: UlistElementSyntaxTree, action: () => void, currentLevel: number = node.level) {
 		if (currentLevel !== 1) {
-			var result = findUp(node.parentNode, (n) => {
+			let result = findUp(node.parentNode, (n) => {
 				if (n instanceof UlistElementSyntaxTree) {
 					return n.level === (currentLevel - 1);
 				}
@@ -284,7 +284,7 @@ export class DefaultBuilder implements Builder {
 	}
 
 	findReference(process: BuilderProcess, node: SyntaxTree): Symbol {
-		var founds = process.symbols.filter(symbol => symbol.node === node);
+		let founds = process.symbols.filter(symbol => symbol.node === node);
 		if (founds.length !== 1) {
 			throw new AnalyzerError("invalid status.");
 		}
@@ -293,10 +293,10 @@ export class DefaultBuilder implements Builder {
 
 	block_raw(process: BuilderProcess, node: BlockElementSyntaxTree): any {
 		// TODO Ruby版との出力差が結構あるのでテスト含め直す
-		var content = node.args[0].arg;
-		var matches = content.match(/\|(.+)\|/);
+		let content = node.args[0].arg;
+		let matches = content.match(/\|(.+)\|/);
 		if (matches && matches[1]) {
-			var target = matches[1].split(",").some(name => this.name.toLowerCase() === `${name}builder`);
+			let target = matches[1].split(",").some(name => this.name.toLowerCase() === `${name}builder`);
 			if (target) {
 				// "|hoge,fuga| piyo" の場合 matches[1] === "hoge,fuga"
 				process.outRaw(content.substring(matches[0].length));
@@ -308,10 +308,10 @@ export class DefaultBuilder implements Builder {
 	}
 
 	inline_raw(process: BuilderProcess, node: InlineElementSyntaxTree): any {
-		var content = nodeContentToString(process, node);
-		var matches = content.match(/\|(.+)\|/);
+		let content = nodeContentToString(process, node);
+		let matches = content.match(/\|(.+)\|/);
 		if (matches && matches[1]) {
-			var target = matches[1].split(",").some(name => this.name.toLowerCase() === `${name}builder`);
+			let target = matches[1].split(",").some(name => this.name.toLowerCase() === `${name}builder`);
 			if (target) {
 				// "|hoge,fuga| piyo" の場合 matches[1] === "hoge,fuga"
 				process.outRaw(content.substring(matches[0].length));

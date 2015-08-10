@@ -34,7 +34,7 @@ export class HtmlBuilder extends DefaultBuilder {
 	processPost(process: BuilderProcess, chunk: ContentChunk): void {
 		if (this.standalone) {
 
-			var pre = "";
+			let pre = "";
 			pre += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 			pre += "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n";
 			pre += "<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:ops=\"http://www.idpf.org/2007/ops\" xml:lang=\"ja\">\n";
@@ -42,7 +42,7 @@ export class HtmlBuilder extends DefaultBuilder {
 			pre += "  <meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\" />\n";
 			pre += "  <meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n";
 			pre += "  <meta name=\"generator\" content=\"Re:VIEW\" />\n";
-			var name: string = null;
+			let name: string = null;
 			visit(chunk.tree.ast, {
 				visitDefaultPre: () => {
 				},
@@ -68,9 +68,9 @@ export class HtmlBuilder extends DefaultBuilder {
 			process.outRaw(" id=\"").out(node.label.arg).outRaw("\"");
 		}
 		process.outRaw(">");
-		var constructLabel = (node: SyntaxTree) => {
-			var numbers: { [no: number]: number; } = {};
-			var maxLevel = 0;
+		let constructLabel = (node: SyntaxTree) => {
+			let numbers: { [no: number]: number; } = {};
+			let maxLevel = 0;
 			walk(node, (node: SyntaxTree) => {
 				if (node instanceof ChapterSyntaxTree) {
 					numbers[node.level] = node.no;
@@ -81,8 +81,8 @@ export class HtmlBuilder extends DefaultBuilder {
 				}
 				return node.parentNode;
 			});
-			var result: number[] = [];
-			for (var i = 1; i <= maxLevel; i++) {
+			let result: number[] = [];
+			for (let i = 1; i <= maxLevel; i++) {
 				if (numbers[i] === -1) {
 					result.push(0);
 				} else if (typeof numbers[i] === "undefined") {
@@ -96,7 +96,7 @@ export class HtmlBuilder extends DefaultBuilder {
 		process.outRaw("<a id=\"h").out(constructLabel(node)).outRaw("\"></a>");
 
 		if (node.level === 1) {
-			var text = t("builder.chapter", node.parentNode.no);
+			let text = t("builder.chapter", node.parentNode.no);
 			process.out(text).out("　");
 		} else if (node.level === 2) {
 			// process.out(node.parentNode.toChapter().fqn).out("　");
@@ -197,8 +197,8 @@ export class HtmlBuilder extends DefaultBuilder {
 
 	block_list_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		process.outRaw("<div class=\"caption-code\">\n");
-		var chapter = findChapter(node, 1);
-		var text = t("builder.list", chapter.fqn, node.no);
+		let chapter = findChapter(node, 1);
+		let text = t("builder.list", chapter.fqn, node.no);
 		process.outRaw("<p class=\"caption\">").out(text).outRaw(": ").out(node.args[1].arg).outRaw("</p>\n");
 		process.outRaw("<pre class=\"list\">");
 		return (v: TreeVisitor) => {
@@ -215,19 +215,19 @@ export class HtmlBuilder extends DefaultBuilder {
 
 	block_listnum_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		process.outRaw("<div class=\"code\">\n");
-		var chapter = findChapter(node, 1);
-		var text = t("builder.list", chapter.fqn, node.no);
+		let chapter = findChapter(node, 1);
+		let text = t("builder.list", chapter.fqn, node.no);
 		process.outRaw("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).outRaw("</p>\n");
 		process.outRaw("<pre class=\"list\">");
-		var lineCount = 1;
+		let lineCount = 1;
 		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node, index, childNodes) => {
 				if (node.isTextNode()) {
 					// 改行する可能性があるのはTextNodeだけ…のはず
-					var hasNext = !!childNodes[index + 1];
-					var textNode = node.toTextNode();
-					var lines = textNode.text.split("\n");
+					let hasNext = !!childNodes[index + 1];
+					let textNode = node.toTextNode();
+					let lines = textNode.text.split("\n");
 					lines.forEach((line, index) => {
 						process.out(" ").out(lineCount).out(": ");
 						process.out(line);
@@ -250,9 +250,9 @@ export class HtmlBuilder extends DefaultBuilder {
 	}
 
 	inline_list(process: BuilderProcess, node: InlineElementSyntaxTree) {
-		var chapter = findChapter(node, 1);
-		var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-		var text = t("builder.list", chapter.fqn, listNode.no);
+		let chapter = findChapter(node, 1);
+		let listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+		let text = t("builder.list", chapter.fqn, listNode.no);
 		process.out(text);
 		return false;
 	}
@@ -278,15 +278,15 @@ export class HtmlBuilder extends DefaultBuilder {
 	block_emlistnum_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		process.outRaw("<div class=\"emlistnum-code\">\n");
 		process.outRaw("<pre class=\"emlist\">");
-		var lineCount = 1;
+		let lineCount = 1;
 		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node, index, childNodes) => {
 				if (node.isTextNode()) {
 					// 改行する可能性があるのはTextNodeだけ…のはず
-					var hasNext = !!childNodes[index + 1];
-					var textNode = node.toTextNode();
-					var lines = textNode.text.split("\n");
+					let hasNext = !!childNodes[index + 1];
+					let textNode = node.toTextNode();
+					let lines = textNode.text.split("\n");
 					lines.forEach((line, index) => {
 						process.out(" ").out(lineCount).out(": ");
 						process.out(line);
@@ -310,7 +310,7 @@ export class HtmlBuilder extends DefaultBuilder {
 
 	inline_hd_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
 		process.out("「");
-		var chapter = findChapter(node);
+		let chapter = findChapter(node);
 		if (chapter.level === 1) {
 			process.out(chapter.fqn).out("章 ");
 		} else {
@@ -345,8 +345,8 @@ export class HtmlBuilder extends DefaultBuilder {
 	}
 
 	inline_href(process: BuilderProcess, node: InlineElementSyntaxTree) {
-		var href = nodeContentToString(process, node);
-		var text = href;
+		let href = nodeContentToString(process, node);
+		let text = href;
 		if (href.indexOf(",") !== -1) {
 			text = href.slice(href.indexOf(",") + 1).trimLeft();
 			href = href.slice(0, href.indexOf(","));
@@ -373,8 +373,8 @@ export class HtmlBuilder extends DefaultBuilder {
 		return (v: TreeVisitor) => {
 			// name, args はパス
 			node.childNodes.forEach(node=> {
-				var contentString = nodeContentToString(process, node);
-				var keywordData = contentString.split(",");
+				let contentString = nodeContentToString(process, node);
+				let keywordData = contentString.split(",");
 				process.outRaw("<rb>").out(keywordData[0]).outRaw("</rb>");
 				process.outRaw("<rp>（</rp><rt>");
 				process.out(keywordData[1]);
@@ -400,8 +400,8 @@ export class HtmlBuilder extends DefaultBuilder {
 		return (v: TreeVisitor) => {
 			// name, args はパス
 			node.childNodes.forEach(node=> {
-				var contentString = nodeContentToString(process, node);
-				var keywordData = contentString.split(",");
+				let contentString = nodeContentToString(process, node);
+				let keywordData = contentString.split(",");
 				// TODO ユーザの入力内容のチェックが必要
 				process.out(keywordData[0] + " (" + keywordData[1].trimLeft() + ")");
 			});
@@ -409,8 +409,8 @@ export class HtmlBuilder extends DefaultBuilder {
 	}
 
 	inline_kw_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
-		var contentString = nodeContentToString(process, node);
-		var keywordData = contentString.split(",");
+		let contentString = nodeContentToString(process, node);
+		let keywordData = contentString.split(",");
 		process.outRaw("</b>").outRaw("<!-- IDX:").out(keywordData[0]).outRaw(" -->");
 	}
 
@@ -425,12 +425,12 @@ export class HtmlBuilder extends DefaultBuilder {
 	block_image(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		return process.findImageFile(node.args[0].arg)
 			.then(imagePath=> {
-				var caption = node.args[1].arg;
-				var scale: number = 1;
+				let caption = node.args[1].arg;
+				let scale: number = 1;
 				if (node.args[2]) {
-					// var arg3 = node.args[2].arg;
-					var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
-					var result = regexp.exec(node.args[2].arg);
+					// let arg3 = node.args[2].arg;
+					let regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
+					let result = regexp.exec(node.args[2].arg);
 					if (result) {
 						scale = parseFloat(result[1]);
 					}
@@ -453,15 +453,15 @@ export class HtmlBuilder extends DefaultBuilder {
 	block_indepimage(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		return process.findImageFile(node.args[0].arg)
 			.then(imagePath=> {
-				var caption: string = "";
+				let caption: string = "";
 				if (node.args[1]) {
 					caption = node.args[1].arg;
 				}
-				var scale: number = 1;
+				let scale: number = 1;
 				if (node.args[2]) {
-					// var arg3 = node.args[2].arg;
-					var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
-					var result = regexp.exec(node.args[2].arg);
+					// let arg3 = node.args[2].arg;
+					let regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
+					let result = regexp.exec(node.args[2].arg);
 					if (result) {
 						scale = parseFloat(result[1]);
 					}
@@ -484,17 +484,17 @@ export class HtmlBuilder extends DefaultBuilder {
 	}
 
 	inline_img(process: BuilderProcess, node: InlineElementSyntaxTree) {
-		var imgNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+		let imgNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
 		process.out("図").out(process.base.chapter.no).out(".").out(imgNode.no);
 		return false;
 	}
 
 	inline_icon(process: BuilderProcess, node: InlineElementSyntaxTree) {
 		// TODO ファイル名探索ロジックをもっと頑張る(jpgとかsvgとか)
-		var chapterFileName = process.base.chapter.name;
-		var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
-		var imageName = nodeContentToString(process, node);
-		var imagePath = "images/" + this.escape(chapterName) + "-" + this.escape(imageName) + ".png";
+		let chapterFileName = process.base.chapter.name;
+		let chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
+		let imageName = nodeContentToString(process, node);
+		let imagePath = "images/" + this.escape(chapterName) + "-" + this.escape(imageName) + ".png";
 		process.outRaw("<img src=\"" + imagePath + "\" alt=\"[").out(imageName).outRaw("]\" />");
 		return false;
 	}
@@ -508,7 +508,7 @@ export class HtmlBuilder extends DefaultBuilder {
 	}
 
 	inline_fn(process: BuilderProcess, node: InlineElementSyntaxTree) {
-		var footnoteNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+		let footnoteNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
 		process.outRaw("<a href=\"#fn-").out(footnoteNode.args[0].arg).outRaw("\">*").out(footnoteNode.no).outRaw("</a>");
 		return false;
 	}
@@ -630,8 +630,8 @@ export class HtmlBuilder extends DefaultBuilder {
 	block_table_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		// TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
 		process.outRaw("<div>\n");
-		var chapter = findChapter(node, 1);
-		var text = t("builder.table", chapter.fqn, node.no);
+		let chapter = findChapter(node, 1);
+		let text = t("builder.table", chapter.fqn, node.no);
 		process.outRaw("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).outRaw("</p>\n");
 		process.outRaw("<pre>");
 		return (v: TreeVisitor) => {
@@ -649,9 +649,9 @@ export class HtmlBuilder extends DefaultBuilder {
 
 	inline_table(process: BuilderProcess, node: InlineElementSyntaxTree) {
 		// TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
-		var chapter = findChapter(node, 1);
-		var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-		var text = t("builder.table", chapter.fqn, listNode.no);
+		let chapter = findChapter(node, 1);
+		let listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+		let text = t("builder.table", chapter.fqn, listNode.no);
 		process.out(text);
 		return false;
 	}
@@ -685,14 +685,14 @@ export class HtmlBuilder extends DefaultBuilder {
 	}
 
 	inline_chap(process: BuilderProcess, node: InlineElementSyntaxTree) {
-		var chapName = nodeContentToString(process, node);
+		let chapName = nodeContentToString(process, node);
 		let chapter = process.findChapter(chapName);
 		process.out("第").out(chapter.no).out("章");
 		return false;
 	}
 
 	inline_title(process: BuilderProcess, node: InlineElementSyntaxTree) {
-		var chapName = nodeContentToString(process, node);
+		let chapName = nodeContentToString(process, node);
 		let chapter = process.findChapter(chapName);
 		let title = this.getChapterTitle(process, chapter);
 		process.out(title);
@@ -700,7 +700,7 @@ export class HtmlBuilder extends DefaultBuilder {
 	}
 
 	inline_chapref(process: BuilderProcess, node: InlineElementSyntaxTree) {
-		var chapName = nodeContentToString(process, node);
+		let chapName = nodeContentToString(process, node);
 		let chapter = process.findChapter(chapName);
 		let title = this.getChapterTitle(process, chapter);
 		process.out("第").out(chapter.no).out("章「").out(title).out("」");

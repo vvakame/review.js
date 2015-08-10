@@ -32,7 +32,7 @@ export class Config {
 	}
 
 	get validators(): Validator[] {
-		var config = this.original;
+		let config = this.original;
 		if (!config.validators || config.validators.length === 0) {
 			return [new DefaultValidator()];
 		} else if (!Array.isArray(config.validators)) {
@@ -47,7 +47,7 @@ export class Config {
 			return this._builders;
 		}
 
-		var config = this.original;
+		let config = this.original;
 		if (!config.builders || config.builders.length === 0) {
 			// TODO DefaultBuilder は微妙感
 			this._builders = [new DefaultBuilder()];
@@ -97,8 +97,8 @@ export class NodeJSConfig extends Config {
 			let _path = require("path");
 			/* tslint:enable:no-require-imports */
 
-			var basePath = this.original.basePath || __dirname;
-			var promise = new Promise<{ path: string; result: boolean; }>((resolve, reject) => {
+			let basePath = this.original.basePath || __dirname;
+			let promise = new Promise<{ path: string; result: boolean; }>((resolve, reject) => {
 				fs.exists(_path.resolve(basePath, path), (result: boolean) => {
 					resolve({ path: path, result: result });
 				});
@@ -112,7 +112,7 @@ export class NodeJSConfig extends Config {
 			return this._listener;
 		}
 
-		var listener: ConfigListener = this.original.listener || {
+		let listener: ConfigListener = this.original.listener || {
 		};
 		listener.onAcceptables = listener.onAcceptables || (() => {
 		});
@@ -137,7 +137,7 @@ export class NodeJSConfig extends Config {
 		});
 
 		reports.forEach(report=> {
-			var message = "";
+			let message = "";
 			if (report.chapter) {
 				message += report.chapter.name + " ";
 			}
@@ -171,7 +171,7 @@ export class NodeJSConfig extends Config {
 		/* tslint:disable:no-require-imports */
 		let p = require("path");
 		/* tslint:enable:no-require-imports */
-		var base = this.options.base || "./";
+		let base = this.options.base || "./";
 		return p.join(base, path);
 	}
 }
@@ -206,22 +206,22 @@ export class WebBrowserConfig extends Config {
 	}
 
 	_existsFileScheme(path: string): Promise<{ path: string; result: boolean; }> {
-		var promise = new Promise<{ path: string; result: boolean; }>((resolve, reject) => {
-			var canvas = document.createElement('canvas');
+		let promise = new Promise<{ path: string; result: boolean; }>((resolve, reject) => {
+			let canvas = document.createElement('canvas');
 			canvas.width = 200;
 			canvas.height = 14;
-			var ctx = <CanvasRenderingContext2D>canvas.getContext("2d");
+			let ctx = <CanvasRenderingContext2D>canvas.getContext("2d");
 			ctx.fillText("file://では画像の存在チェックができません", 2, 10);
-			var dataUrl = canvas.toDataURL();
+			let dataUrl = canvas.toDataURL();
 			resolve({ path: dataUrl, result: true });
 		});
 		return promise;
 	}
 
 	_existsHttpScheme(path: string): Promise<{ path: string; result: boolean; }> {
-		var promise = new Promise<{ path: string; result: boolean; }>((resolve, reject) => {
+		let promise = new Promise<{ path: string; result: boolean; }>((resolve, reject) => {
 			try {
-				var xhr = new XMLHttpRequest();
+				let xhr = new XMLHttpRequest();
 				xhr.onreadystatechange = function() {
 					if (xhr.readyState === 4) {
 						if (xhr.status === 200 || xhr.status === 304) {
@@ -237,7 +237,7 @@ export class WebBrowserConfig extends Config {
 				xhr.send();
 			} catch (e) {
 				if (e instanceof DOMException) {
-					var de: DOMException = <DOMException> e;
+					let de: DOMException = <DOMException> e;
 					console.log(de.message);
 				}
 				resolve({ path: path, result: false });
@@ -251,7 +251,7 @@ export class WebBrowserConfig extends Config {
 			return this._listener;
 		}
 
-		var listener: ConfigListener = this.original.listener || {
+		let listener: ConfigListener = this.original.listener || {
 		};
 		listener.onAcceptables = listener.onAcceptables || (() => {
 		});
@@ -267,7 +267,7 @@ export class WebBrowserConfig extends Config {
 
 	onReports(reports: ProcessReport[]): void {
 		reports.forEach(report=> {
-			var message = "";
+			let message = "";
 			if (report.chapter) {
 				message += report.chapter.name + " ";
 			}
@@ -300,7 +300,7 @@ export class WebBrowserConfig extends Config {
 			return path;
 		}
 
-		var base = this.options.base;
+		let base = this.options.base;
 		if (!this.endWith(base, "/") && !this.startWith(path, "/")) {
 			base += "/";
 		}

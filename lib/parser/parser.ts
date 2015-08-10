@@ -17,15 +17,15 @@ import {visit, walk} from "./walker";
 export function parse(input: string): { ast: NodeSyntaxTree; cst: ConcreatSyntaxTree; } {
 	"use strict";
 
-	var rawResult = PEG.parse(input);
-	var root = transform(rawResult).toNode();
+	let rawResult = PEG.parse(input);
+	let root = transform(rawResult).toNode();
 
 	// ParagraphSubs は構文上の都合であるだけのものなので潰す
 	visit(root, {
 		visitDefaultPre: (ast: SyntaxTree) => {
 		},
 		visitParagraphPre: (ast: NodeSyntaxTree) => {
-			var subs = ast.childNodes[0].toNode();
+			let subs = ast.childNodes[0].toNode();
 			ast.childNodes = subs.childNodes;
 		}
 	});
@@ -36,7 +36,7 @@ export function parse(input: string): { ast: NodeSyntaxTree; cst: ConcreatSyntax
 		reconstruct(root.childNodes[0].toNode(), (chapter: ChapterSyntaxTree) => chapter.headline.level);
 	}
 	// Ulist もChapter 同様の level 構造があるので同じように処理したい
-	var ulistSet: NodeSyntaxTree[] = [];
+	let ulistSet: NodeSyntaxTree[] = [];
 	visit(root, {
 		visitDefaultPre: (ast: SyntaxTree) => {
 			if (ast.ruleName === RuleName.Ulist) {
@@ -88,7 +88,7 @@ export function transform(rawResult: ConcreatSyntaxTree): SyntaxTree {
 	if (!rawResult) {
 		return null;
 	}
-	var rule: number = (<any>RuleName)[rawResult.syntax];
+	let rule: number = (<any>RuleName)[rawResult.syntax];
 	if (typeof rule === "undefined") {
 		throw new ParseError(rawResult, "unknown rule: " + rawResult.syntax);
 	}
@@ -164,10 +164,10 @@ export function transform(rawResult: ConcreatSyntaxTree): SyntaxTree {
 function reconstruct(node: NodeSyntaxTree, pickLevel: (ast: NodeSyntaxTree) => number) {
 	"use strict";
 
-	var originalChildNodes = node.childNodes;
+	let originalChildNodes = node.childNodes;
 
-	var nodeSets: { parent: NodeSyntaxTree; children: NodeSyntaxTree[]; }[] = [];
-	var currentSet: { parent: NodeSyntaxTree; children: NodeSyntaxTree[]; } = {
+	let nodeSets: { parent: NodeSyntaxTree; children: NodeSyntaxTree[]; }[] = [];
+	let currentSet: { parent: NodeSyntaxTree; children: NodeSyntaxTree[]; } = {
 		parent: null,
 		children: []
 	};
@@ -194,7 +194,7 @@ function reconstruct(node: NodeSyntaxTree, pickLevel: (ast: NodeSyntaxTree) => n
 	}
 	node.childNodes = [];
 	nodeSets.forEach(nodes=> {
-		var parent = nodes.parent;
+		let parent = nodes.parent;
 		node.childNodes.push(parent);
 		nodes.children.forEach(child => {
 			parent.childNodes.push(child);
@@ -318,9 +318,9 @@ export class SyntaxTree {
 	}
 
 	toJSON(): any {
-		var result: any = {};
-		var lowPriorities: { (): void; }[] = [];
-		for (var k in this) {
+		let result: any = {};
+		let lowPriorities: { (): void; }[] = [];
+		for (let k in this) {
 			if (k === "ruleName") {
 				result[k] = (<any>RuleName)[this.ruleName];
 			} else if (k === "prev" || k === "next" || k === "parentNode") {
@@ -343,7 +343,7 @@ export class SyntaxTree {
 	}
 
 	toString(indentLevel: number = 0): string {
-		var result = this.makeIndent(indentLevel) + "SyntaxTree:[\n";
+		let result = this.makeIndent(indentLevel) + "SyntaxTree:[\n";
 		result += this.makeIndent(indentLevel + 1) + "offset = " + this.offset + ",\n";
 		result += this.makeIndent(indentLevel + 1) + "line=" + this.line + ",\n";
 		result += this.makeIndent(indentLevel + 1) + "column=" + this.column + ",\n";
@@ -355,8 +355,8 @@ export class SyntaxTree {
 	}
 
 	makeIndent(indentLevel: number) {
-		var indent = "";
-		for (var i = 0; i < indentLevel; i++) {
+		let indent = "";
+		for (let i = 0; i < indentLevel; i++) {
 			indent += "  ";
 		}
 		return indent;
@@ -574,14 +574,14 @@ export class NodeSyntaxTree extends SyntaxTree {
 	private processChildNodes(content: any) {
 		if (Array.isArray(content)) {
 			content.forEach((rawResult: ConcreatSyntaxTree) => {
-				var tree = transform(rawResult);
+				let tree = transform(rawResult);
 				if (tree) {
 					this.childNodes.push(tree);
 				}
 			});
 		} else if (content !== "" && content) {
 			((rawResult: ConcreatSyntaxTree) => {
-				var tree = transform(rawResult);
+				let tree = transform(rawResult);
 				if (tree) {
 					this.childNodes.push(tree);
 				}
@@ -628,14 +628,14 @@ export class ChapterSyntaxTree extends NodeSyntaxTree {
 	}
 
 	get fqn(): string {
-		var chapters: ChapterSyntaxTree[] = [];
+		let chapters: ChapterSyntaxTree[] = [];
 		walk(this, (node: SyntaxTree) => {
 			if (node instanceof ChapterSyntaxTree) {
 				chapters.unshift(node);
 			}
 			return node.parentNode;
 		});
-		var result = chapters.map((chapter) => {
+		let result = chapters.map((chapter) => {
 			return chapter.no;
 		}).join(".");
 		return result;
@@ -705,14 +705,14 @@ export class ColumnSyntaxTree extends NodeSyntaxTree {
 	}
 
 	get fqn(): string {
-		var chapters: ChapterSyntaxTree[] = [];
+		let chapters: ChapterSyntaxTree[] = [];
 		walk(this, (node: SyntaxTree) => {
 			if (node instanceof ChapterSyntaxTree) {
 				chapters.unshift(node);
 			}
 			return node.parentNode;
 		});
-		var result = chapters.map((chapter) => {
+		let result = chapters.map((chapter) => {
 			return chapter.no;
 		}).join(".");
 		return result;

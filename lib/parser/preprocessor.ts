@@ -124,26 +124,26 @@ export class SyntaxPreprocessor implements Preprocessor {
 			return;
 		}
 
-		var syntaxes = this.acceptableSyntaxes.find(node);
+		let syntaxes = this.acceptableSyntaxes.find(node);
 		if (syntaxes.length !== 1) {
 			// TODO エラーにしたほうがいいかなぁ
 			return;
 		}
 
-		var syntax = syntaxes[0];
+		let syntax = syntaxes[0];
 		if (syntax.allowFullySyntax) {
 			// 全て許可
 			return;
 		} else if (syntax.allowInline) {
 			// inline構文のみ許可(Paragraphは殺す
 			// inline以外の構文は叩き潰してTextにmergeする
-			var info: {
+			let info: {
 				offset: number;
 				line: number;
 				column: number;
 			};
-			var resultNodes: SyntaxTree[] = [];
-			var lastNode: SyntaxTree;
+			let resultNodes: SyntaxTree[] = [];
+			let lastNode: SyntaxTree;
 			node.childNodes.forEach(node=> {
 				visit(node, {
 					visitDefaultPre: (node: SyntaxTree) => {
@@ -157,7 +157,7 @@ export class SyntaxPreprocessor implements Preprocessor {
 						lastNode = node;
 					},
 					visitInlineElementPre: (node: InlineElementSyntaxTree) => {
-						var textNode = new TextNodeSyntaxTree({
+						let textNode = new TextNodeSyntaxTree({
 							syntax: "BlockElementContentText",
 							offset: info.offset,
 							line: info.line,
@@ -174,7 +174,7 @@ export class SyntaxPreprocessor implements Preprocessor {
 			});
 			if (info) {
 				(() => {
-					var textNode = new TextNodeSyntaxTree({
+					let textNode = new TextNodeSyntaxTree({
 						syntax: "BlockElementContentText",
 						offset: info.offset,
 						line: info.line,
@@ -191,9 +191,9 @@ export class SyntaxPreprocessor implements Preprocessor {
 		} else {
 			(() => {
 				// 全て不許可(テキスト化
-				var first = node.childNodes[0];
-				var last = node.childNodes[node.childNodes.length - 1];
-				var textNode = new TextNodeSyntaxTree({
+				let first = node.childNodes[0];
+				let last = node.childNodes[node.childNodes.length - 1];
+				let textNode = new TextNodeSyntaxTree({
 					syntax: "BlockElementContentText",
 					offset: first.offset,
 					line: first.line,

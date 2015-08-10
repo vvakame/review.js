@@ -1,6 +1,6 @@
 "use strict";
 
-export var ja = {
+export let ja = {
 	"sample": "こんちゃーす！",
 	"description": {
 		"headline": "チャプターの始まりを示します。\n\"= 見出し\" という形式で書きます。",

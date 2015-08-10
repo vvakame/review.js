@@ -304,17 +304,17 @@ var HtmlBuilder = (function (_super) {
             pre += "  <meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\" />\n";
             pre += "  <meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n";
             pre += "  <meta name=\"generator\" content=\"Re:VIEW\" />\n";
-            var name = null;
+            var name_1 = null;
             walker_1.visit(chunk.tree.ast, {
                 visitDefaultPre: function () {
                 },
                 visitChapterPre: function (node) {
                     if (node.headline.level === 1) {
-                        name = utils_1.nodeContentToString(process, node.headline.caption);
+                        name_1 = utils_1.nodeContentToString(process, node.headline.caption);
                     }
                 }
             });
-            pre += "  <title>" + this.escape(name) + "</title>\n";
+            pre += "  <title>" + this.escape(name_1) + "</title>\n";
             pre += "</head>\n";
             pre += "<body>\n";
             process.pushOut(pre);
@@ -2010,6 +2010,11 @@ exports.en = {
 var utils_1 = require("../utils/utils");
 var en_1 = require("./en");
 var ja_1 = require("./ja");
+var i18next;
+var data = {
+    "ja": ja_1.ja,
+    "en": en_1.en
+};
 function setup(lang) {
     "use strict";
     if (lang === void 0) { lang = "ja"; }
@@ -2040,17 +2045,12 @@ function t(str) {
     return i18next.t(str, { postProcess: "sprintf", sprintf: args });
 }
 exports.t = t;
-var i18next;
 if (utils_1.isNodeJS()) {
     i18next = require("i18next");
 }
 else {
     i18next = window.i18n;
 }
-var data = {
-    "ja": ja_1.ja,
-    "en": en_1.en
-};
 setup();
 
 },{"../utils/utils":19,"./en":7,"./ja":9,"i18next":undefined}],9:[function(require,module,exports){
@@ -4164,8 +4164,8 @@ var DefaultValidator = (function () {
                     }
                 }
                 else {
-                    var parent = utils_1.findChapter(node.parentNode);
-                    if (!parent) {
+                    var parent_1 = utils_1.findChapter(node.parentNode);
+                    if (!parent_1) {
                         chunk.process.error(i18n_1.t("compile.chapter_topleve_eq1"), node);
                     }
                 }

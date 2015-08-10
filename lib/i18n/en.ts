@@ -1,5 +1,5 @@
 "use strict";
 
-export var en = {
+export let en = {
 	"sample": "Hello!"
 };

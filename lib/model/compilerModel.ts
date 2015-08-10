@@ -98,7 +98,7 @@ export class Process {
 	}
 
 	nextIndex(kind: string) {
-		var nextIndex = this.indexCounter[kind];
+		let nextIndex = this.indexCounter[kind];
 		if (typeof nextIndex === "undefined") {
 			nextIndex = 1;
 		} else {
@@ -129,7 +129,7 @@ export class Process {
 	}
 
 	get missingSymbols(): Symbol[] {
-		var result: Symbol[] = [];
+		let result: Symbol[] = [];
 		this.symbols.forEach(symbol=> {
 			if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
 				result.push(symbol);
@@ -143,7 +143,7 @@ export class Process {
 	constructReferenceTo(node: BlockElementSyntaxTree, value: string, targetSymbol: string, separator?: string): ReferenceTo;
 
 	constructReferenceTo(node: any, value: string, targetSymbol = node.symbol, separator = "|"): ReferenceTo {
-		var splitted = value.split(separator);
+		let splitted = value.split(separator);
 		if (splitted.length === 3) {
 			return {
 				partName: splitted[0],
@@ -169,7 +169,7 @@ export class Process {
 				label: splitted[0]
 			};
 		} else {
-			var message = t("compile.args_length_mismatch", "1 or 2 or 3", splitted.length);
+			let message = t("compile.args_length_mismatch", "1 or 2 or 3", splitted.length);
 			this.error(message, node);
 			return null;
 		}
@@ -266,15 +266,15 @@ export class BuilderProcess {
 		// NOTE: https://github.com/kmuto/review/wiki/ImagePath
 		// 4軸マトリクス 画像dir, ビルダ有無, chapId位置, 拡張子
 
-		var config = (this.base.part || this.base.chapter).book.config;
+		let config = (this.base.part || this.base.chapter).book.config;
 
-		var fileNameList: string[] = [];
+		let fileNameList: string[] = [];
 		(() => {
-			var imageDirList = ["images/"];
-			var builderList = [this.builder.extention + "/", ""];
-			var chapSeparatorList = ["/", "-"];
-			var extList = ["png", "jpg", "jpeg", "gif"];
-			var chunkName = (this.base.chapter || this.base.part).name; // TODO もっと頭良い感じに
+			let imageDirList = ["images/"];
+			let builderList = [this.builder.extention + "/", ""];
+			let chapSeparatorList = ["/", "-"];
+			let extList = ["png", "jpg", "jpeg", "gif"];
+			let chunkName = (this.base.chapter || this.base.part).name; // TODO もっと頭良い感じに
 			chunkName = chunkName.substring(0, chunkName.lastIndexOf("."));
 			imageDirList.forEach(imageDir => {
 				builderList.forEach(builder=> {
@@ -286,13 +286,13 @@ export class BuilderProcess {
 				});
 			});
 		})();
-		var promise = new Promise<string>((resolve, reject) => {
-			var checkFileExists = () => {
+		let promise = new Promise<string>((resolve, reject) => {
+			let checkFileExists = () => {
 				if (fileNameList.length === 0) {
 					reject(id);
 					return;
 				}
-				var fileName = fileNameList.shift();
+				let fileName = fileNameList.shift();
 				config.exists(fileName).then(result=> {
 					if (result.result) {
 						resolve(result.path);
@@ -323,8 +323,8 @@ export class Book {
 	}
 
 	get allChunks(): ContentChunk[] {
-		var tmpArray: ContentChunk[] = [];
-		var add = (chunk: ContentChunk) => {
+		let tmpArray: ContentChunk[] = [];
+		let add = (chunk: ContentChunk) => {
 			tmpArray.push(chunk);
 			chunk.nodes.forEach(chunk => add(chunk));
 		};
@@ -338,9 +338,9 @@ export class Book {
 	}
 
 	get reports(): ProcessReport[] {
-		var results: ProcessReport[] = [];
+		let results: ProcessReport[] = [];
 		results = results.concat(this.process.reports);
-		var gatherReports = (chunk: ContentChunk) => {
+		let gatherReports = (chunk: ContentChunk) => {
 			results = results.concat(chunk.process.reports);
 			chunk.nodes.forEach(chunk => gatherReports(chunk));
 		};
@@ -386,8 +386,8 @@ export class ContentChunk {
 			this.name = parent;
 		}
 
-		var part: ContentChunk = parent ? parent : null;
-		var chapter: ContentChunk = this; // TODO thisがpartでchapterが無しの場合もあるよ…！！
+		let part: ContentChunk = parent ? parent : null;
+		let chapter: ContentChunk = this; // TODO thisがpartでchapterが無しの場合もあるよ…！！
 		this.process = new Process(part, chapter, null);
 	}
 
@@ -402,7 +402,7 @@ export class ContentChunk {
 	}
 
 	createBuilderProcess(builder: Builder): BuilderProcess {
-		var builderProcess = new BuilderProcess(builder, this.process);
+		let builderProcess = new BuilderProcess(builder, this.process);
 		this.builderProcesses.push(builderProcess);
 		return builderProcess;
 	}
@@ -412,7 +412,7 @@ export class ContentChunk {
 	findResultByBuilder(builder: Builder): string;
 
 	findResultByBuilder(builder: any): string {
-		var founds: BuilderProcess[];
+		let founds: BuilderProcess[];
 		if (typeof builder === "string") {
 			founds = this.builderProcesses.filter(process => process.builder.name === builder);
 		} else {

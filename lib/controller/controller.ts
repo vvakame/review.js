@@ -72,8 +72,8 @@ export class Controller {
 	}
 
 	toContentChunk(book: Book): Book {
-		var convert = (c: ContentStructure, parent?: ContentChunk): ContentChunk => {
-			var chunk: ContentChunk;
+		let convert = (c: ContentStructure, parent?: ContentChunk): ContentChunk => {
+			let chunk: ContentChunk;
 			if (c.part) {
 				chunk = new ContentChunk(book, c.part.file);
 				c.part.chapters.forEach(c=> {
@@ -99,10 +99,10 @@ export class Controller {
 	}
 
 	readReVIEWFiles(book: Book): Promise<Book> {
-		var promises: Promise<any>[] = [];
+		let promises: Promise<any>[] = [];
 
-		var read = (chunk: ContentChunk) => {
-			var resolvedPath = book.config.resolvePath(chunk.name);
+		let read = (chunk: ContentChunk) => {
+			let resolvedPath = book.config.resolvePath(chunk.name);
 			promises.push(book.config.read(resolvedPath).then(input => chunk.input = input));
 			chunk.nodes.forEach(chunk => read(chunk));
 		};
@@ -116,15 +116,15 @@ export class Controller {
 	}
 
 	parseContent(book: Book): Book {
-		var _parse = (chunk: ContentChunk) => {
+		let _parse = (chunk: ContentChunk) => {
 			try {
 				chunk.tree = parse(chunk.input);
 			} catch (e) {
 				if (!(e instanceof PEG.SyntaxError)) {
 					throw e;
 				}
-				var se: PEG.SyntaxError = e;
-				var errorNode = new SyntaxTree({
+				let se: PEG.SyntaxError = e;
+				let errorNode = new SyntaxTree({
 					syntax: se.name,
 					line: se.line,
 					column: se.column,
@@ -147,9 +147,9 @@ export class Controller {
 
 	preprocessContent(book: Book): Book {
 		// Chapterに採番を行う
-		var numberingChapter = (chunk: ContentChunk, counter: { [index: number]: number; }) => {
+		let numberingChapter = (chunk: ContentChunk, counter: { [index: number]: number; }) => {
 			// TODO partにも分け隔てなく採番してるけど間違ってるっしょ
-			var chapters: ChapterSyntaxTree[] = [];
+			let chapters: ChapterSyntaxTree[] = [];
 			visit(chunk.tree.ast, {
 				visitDefaultPre: (node) => {
 				},
@@ -157,12 +157,12 @@ export class Controller {
 					chapters.push(node);
 				}
 			});
-			var max = 0;
-			var currentLevel = 1;
+			let max = 0;
+			let currentLevel = 1;
 			chapters.forEach((chapter) => {
-				var level = chapter.headline.level;
+				let level = chapter.headline.level;
 				max = Math.max(max, level);
-				var i: number;
+				let i: number;
 				if (currentLevel > level) {
 					for (i = level + 1; i <= max; i++) {
 						counter[i] = 0;
@@ -179,7 +179,7 @@ export class Controller {
 			chunk.no = counter[1];
 			chunk.nodes.forEach(chunk=> numberingChapter(chunk, counter));
 		};
-		var numberingChapters = (chunks: ContentChunk[], counter: { [index: number]: number; } = {}) => {
+		let numberingChapters = (chunks: ContentChunk[], counter: { [index: number]: number; } = {}) => {
 			chunks.forEach(chunk => numberingChapter(chunk, counter));
 		};
 
@@ -188,7 +188,7 @@ export class Controller {
 		numberingChapters(book.appendix);
 		numberingChapters(book.postdef);
 
-		var preprocessor = new SyntaxPreprocessor();
+		let preprocessor = new SyntaxPreprocessor();
 		preprocessor.start(book);
 		return book;
 	}
@@ -202,7 +202,7 @@ export class Controller {
 			return Promise.resolve(book);
 		}
 
-		var symbols = book.allChunks.reduce<Symbol[]>((p, c) => p.concat(c.process.symbols), []);
+		let symbols = book.allChunks.reduce<Symbol[]>((p, c) => p.concat(c.process.symbols), []);
 		if (this.config.listener.onSymbols(symbols) === false) {
 			// false が帰ってきたら処理を中断する (undefined でも継続)
 			return Promise.resolve(book);
@@ -212,12 +212,12 @@ export class Controller {
 	}
 
 	writeContent(book: Book): Promise<Book> {
-		var promises: Promise<any>[] = [];
+		let promises: Promise<any>[] = [];
 
-		var write = (chunk: ContentChunk) => {
+		let write = (chunk: ContentChunk) => {
 			chunk.builderProcesses.forEach(process=> {
-				var baseName = chunk.name.substr(0, chunk.name.lastIndexOf(".re"));
-				var fileName = baseName + "." + process.builder.extention;
+				let baseName = chunk.name.substr(0, chunk.name.lastIndexOf(".re"));
+				let fileName = baseName + "." + process.builder.extention;
 				promises.push(this.config.write(fileName, process.result));
 			});
 			chunk.nodes.forEach(chunk => write(chunk));

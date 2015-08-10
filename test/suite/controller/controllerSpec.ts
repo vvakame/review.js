@@ -9,11 +9,11 @@ describe("ReVIEW.Controllerの", () => {
 	"use strict";
 
 	it("処理が正しく動くこと", () => {
-		var files: any = {
+		let files: any = {
 			"ch01.re": "={ch01} ちゃぷたーだよ\n今日の晩ご飯はラフテーだった",
 			"ch02.re": "={ch02} チャプター2\n参照 @<hd>{ch02} とか\n//list[hoge][fuga]{\ntest\n//}"
 		};
-		var result: any = {
+		let result: any = {
 		};
 		return start(review => {
 			review.initConfig({
@@ -53,11 +53,11 @@ describe("ReVIEW.Controllerの", () => {
 	});
 
 	it("章番号の連番が正しく振られること", () => {
-		var files: any = {
+		let files: any = {
 			"ch01.re": "={ch01} 章1",
 			"ch02.re": "={ch02} 章2"
 		};
-		var result: any = {
+		let result: any = {
 		};
 		return start(review => {
 			review.initConfig({

@@ -26,7 +26,7 @@ describe("ReVIEW.Buildの", () => {
 				]
 			}
 		}).then(success=> {
-			var book = success.book;
+			let book = success.book;
 
 			assert(book.contents.length === 2);
 			book.contents.forEach(chunk=> {
@@ -42,8 +42,8 @@ describe("ReVIEW.Buildの", () => {
 		it("正しくsymbolの解決が出来る", () => {
 			return Test.compileSingle("={ch01} chapter01\n@<hd>{ch01}\n@<hd>{missing}")
 				.then(failure=> {
-					var book = failure.book;
-					var missingSymbols = book.contents[0].process.missingSymbols;
+					let book = failure.book;
+					let missingSymbols = book.contents[0].process.missingSymbols;
 					assert(missingSymbols.length === 1);
 					assert(missingSymbols[0].referenceTo.label === "missing");
 				});
@@ -67,7 +67,7 @@ describe("ReVIEW.Buildの", () => {
 					]
 				}
 			}).then(failure=> {
-				var book = failure.book;
+				let book = failure.book;
 				assert(book.reports.length === 1);
 				assert(book.reports[0].level === ReportLevel.Error);
 			});
@@ -76,14 +76,14 @@ describe("ReVIEW.Buildの", () => {
 
 	describe("DefaultBuilderの動作の確認として", () => {
 		it("正常に処理が完了できること", () => {
-			var builder = new TextBuilder();
+			let builder = new TextBuilder();
 			return Test.compileSingle(
 				"= hoge\n== fuga\n=== moge\n== piyo\n=== foo\n== bar\n",
 				{ builders: [builder] }
 				)
 				.then(success=> {
-					var book = success.book;
-					var expected = "■H1■第1章　hoge\n\n■H2■fuga\n\n■H3■moge\n\n■H2■piyo\n\n■H3■foo\n\n■H2■bar\n\n";
+					let book = success.book;
+					let expected = "■H1■第1章　hoge\n\n■H2■fuga\n\n■H3■moge\n\n■H2■piyo\n\n■H3■foo\n\n■H2■bar\n\n";
 					assert(book.contents[0].findResultByBuilder(builder) === expected);
 				});
 		});

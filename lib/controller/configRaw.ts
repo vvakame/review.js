@@ -83,8 +83,8 @@ export class BookStructure {
 		if (!config) {
 			return new BookStructure(null, null, null, null);
 		}
-		var predef = (config.predef || (<any>config).PREDEF || []).map((v: any /* IConfigChapter */) => ContentStructure.createChapter(v));
-		var contents = (config.contents || (<any>config).CHAPS || []).map((v: any) => {
+		let predef = (config.predef || (<any>config).PREDEF || []).map((v: any /* IConfigChapter */) => ContentStructure.createChapter(v));
+		let contents = (config.contents || (<any>config).CHAPS || []).map((v: any) => {
 			// value は string(YAML由来) か IConfigPartOrChapter
 			if (!v) {
 				return null;
@@ -113,8 +113,8 @@ export class BookStructure {
 				return null;
 			}
 		});
-		var appendix = (config.appendix || (<any>config).APPENDIX || []).map((v: any /* IConfigChapter */) => ContentStructure.createChapter(v));
-		var postdef = (config.postdef || (<any>config).POSTDEF || []).map((v: any /* IConfigChapter */) => ContentStructure.createChapter(v));
+		let appendix = (config.appendix || (<any>config).APPENDIX || []).map((v: any /* IConfigChapter */) => ContentStructure.createChapter(v));
+		let postdef = (config.postdef || (<any>config).POSTDEF || []).map((v: any /* IConfigChapter */) => ContentStructure.createChapter(v));
 		return new BookStructure(predef, contents, appendix, postdef);
 	}
 }
@@ -143,7 +143,7 @@ export class ContentStructure {
 
 	static createPart(part: ConfigPart): ContentStructure {
 		if (part) {
-			var p: ConfigPart = {
+			let p: ConfigPart = {
 				file: part.file,
 				chapters: (part.chapters || []).map((c: any) => typeof c === "string" ? { file: c } : c)
 			};

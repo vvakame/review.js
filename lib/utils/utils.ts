@@ -12,7 +12,7 @@ import {DefaultValidator} from "../parser/validator";
 import {TreeVisitor, visit, walk} from "../parser/walker";
 import {start} from "../index";
 
-declare var define: any; // TODO コンパイル通す用
+declare let define: any; // TODO コンパイル通す用
 false && Book; // tslint消し
 
 /**
@@ -84,10 +84,10 @@ export function nodeContentToString(process: BuilderProcess, node: SyntaxTree): 
 export function nodeContentToString(process: any, node: SyntaxTree): string {
 	"use strict";
 
-	var minPos = Number.MAX_VALUE;
-	var maxPos = -1;
+	let minPos = Number.MAX_VALUE;
+	let maxPos = -1;
 	// child
-	var childVisitor: TreeVisitor = {
+	let childVisitor: TreeVisitor = {
 		visitDefaultPre: (node: SyntaxTree) => {
 			minPos = Math.min(minPos, node.offset);
 			maxPos = Math.max(maxPos, node.endPos);
@@ -141,7 +141,7 @@ export function nodeContentToString(process: any, node: SyntaxTree): string {
 export function findUp(node: SyntaxTree, predicate: (node: SyntaxTree) => boolean): SyntaxTree {
 	"use strict";
 
-	var result: SyntaxTree = null;
+	let result: SyntaxTree = null;
 	walk(node, (node: SyntaxTree) => {
 		if (predicate(node)) {
 			result = node;
@@ -163,7 +163,7 @@ export function findUp(node: SyntaxTree, predicate: (node: SyntaxTree) => boolea
 export function findChapter(node: SyntaxTree, level?: number): ChapterSyntaxTree {
 	"use strict";
 
-	var chapter: ChapterSyntaxTree = null;
+	let chapter: ChapterSyntaxTree = null;
 	walk(node, (node: SyntaxTree) => {
 		if (node instanceof ChapterSyntaxTree) {
 			chapter = node;
@@ -179,8 +179,8 @@ export function findChapter(node: SyntaxTree, level?: number): ChapterSyntaxTree
 export function findChapterOrColumn(node: SyntaxTree, level?: number): NodeSyntaxTree {
 	"use strict";
 
-	var chapter: ChapterSyntaxTree = null;
-	var column: ColumnSyntaxTree = null;
+	let chapter: ChapterSyntaxTree = null;
+	let column: ColumnSyntaxTree = null;
 	walk(node, (node: SyntaxTree) => {
 		if (node instanceof ChapterSyntaxTree) {
 			chapter = node;
@@ -202,7 +202,7 @@ export function target2builder(target: string): Builder {
 	"use strict";
 
 	// TODO 適当になおす…
-	var builderName = target.charAt(0).toUpperCase() + target.substring(1) + "Builder";
+	let builderName = target.charAt(0).toUpperCase() + target.substring(1) + "Builder";
 	if (builderName === "TextBuilder") {
 		return new TextBuilder();
 	}
@@ -210,9 +210,9 @@ export function target2builder(target: string): Builder {
 		return new HtmlBuilder();
 	}
 	/*
-	for (var name in ReVIEW.Build) {
+	for (let name in ReVIEW.Build) {
 		if (name === builderName) {
-			var ctor = (<any>ReVIEW.Build)[name];
+			let ctor = (<any>ReVIEW.Build)[name];
 			return new ctor();
 		}
 	}
@@ -282,7 +282,7 @@ export module Exec {
 	export function singleCompile(input: string, fileName?: string, target?: string, tmpConfig?: any /* ReVIEW.IConfig */) {
 		"use strict";
 
-		var config: ConfigRaw = tmpConfig || <any>{};
+		let config: ConfigRaw = tmpConfig || <any>{};
 		config.read = config.read || (() => Promise.resolve(input));
 
 		config.analyzer = config.analyzer || new DefaultAnalyzer();
@@ -301,7 +301,7 @@ export module Exec {
 			{ file: fileName }
 		];
 
-		var results: any = {};
+		let results: any = {};
 		config.write = config.write || ((path: string, content: any) => results[path] = content);
 
 		config.listener = config.listener || {
@@ -318,13 +318,13 @@ export module Exec {
 		});
 		config.listener.onCompileFailed = config.listener.onCompileFailed || (() => {
 		});
-		var success: boolean;
-		var originalCompileSuccess = config.listener.onCompileSuccess;
+		let success: boolean;
+		let originalCompileSuccess = config.listener.onCompileSuccess;
 		config.listener.onCompileSuccess = (book) => {
 			success = true;
 			originalCompileSuccess(book);
 		};
-		var originalCompileFailed = config.listener.onCompileFailed;
+		let originalCompileFailed = config.listener.onCompileFailed;
 		config.listener.onCompileFailed = (book) => {
 			success = false;
 			originalCompileFailed(book);

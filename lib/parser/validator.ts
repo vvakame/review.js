@@ -37,7 +37,7 @@ export class DefaultValidator implements Validator {
 
 	checkBuilder(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: Builder[] = []) {
 		acceptableSyntaxes.acceptableSyntaxes.forEach(syntax => {
-			var prefix: string;
+			let prefix: string;
 			switch (syntax.type) {
 				case SyntaxType.Other:
 					// Other系は実装をチェックする必要はない…。(ということにしておく
@@ -49,10 +49,10 @@ export class DefaultValidator implements Validator {
 					prefix = "inline_";
 					break;
 			}
-			var funcName1 = prefix + syntax.symbolName;
-			var funcName2 = prefix + syntax.symbolName + "_pre";
+			let funcName1 = prefix + syntax.symbolName;
+			let funcName2 = prefix + syntax.symbolName + "_pre";
 			builders.forEach(builder=> {
-				var func = (<any>builder)[funcName1] || (<any>builder)[funcName2];
+				let func = (<any>builder)[funcName1] || (<any>builder)[funcName2];
 				if (!func) {
 					book.process.error(SyntaxType[syntax.type] + " " + syntax.symbolName + " is not supported in " + builder.name);
 				}
@@ -73,7 +73,7 @@ export class DefaultValidator implements Validator {
 			visitDefaultPre: (node: SyntaxTree) => {
 			},
 			visitHeadlinePre: (node: HeadlineSyntaxTree) => {
-				var results = this.acceptableSyntaxes.find(node);
+				let results = this.acceptableSyntaxes.find(node);
 				if (results.length !== 1) {
 					chunk.process.error(t("compile.syntax_definietion_error"), node);
 					return;
@@ -81,7 +81,7 @@ export class DefaultValidator implements Validator {
 				return results[0].process(chunk.process, node);
 			},
 			visitColumnPre: (node: ColumnSyntaxTree) => {
-				var results = this.acceptableSyntaxes.find(node);
+				let results = this.acceptableSyntaxes.find(node);
 				if (results.length !== 1) {
 					chunk.process.error(t("compile.syntax_definietion_error"), node);
 					return;
@@ -89,16 +89,16 @@ export class DefaultValidator implements Validator {
 				return results[0].process(chunk.process, node);
 			},
 			visitBlockElementPre: (node: BlockElementSyntaxTree) => {
-				var results = this.acceptableSyntaxes.find(node);
+				let results = this.acceptableSyntaxes.find(node);
 				if (results.length !== 1) {
 					chunk.process.error(t("compile.block_not_supported", node.symbol), node);
 					return;
 				}
-				var expects = results[0].argsLength;
-				var arg: ArgumentSyntaxTree[] = node.args || [];
+				let expects = results[0].argsLength;
+				let arg: ArgumentSyntaxTree[] = node.args || [];
 				if (expects.indexOf(arg.length) === -1) {
-					var expected = expects.map((n) => Number(n).toString()).join(" or ");
-					var message = t("compile.args_length_mismatch", expected, arg.length);
+					let expected = expects.map((n) => Number(n).toString()).join(" or ");
+					let message = t("compile.args_length_mismatch", expected, arg.length);
 					chunk.process.error(message, node);
 					return;
 				}
@@ -106,7 +106,7 @@ export class DefaultValidator implements Validator {
 				return results[0].process(chunk.process, node);
 			},
 			visitInlineElementPre: (node: InlineElementSyntaxTree) => {
-				var results = this.acceptableSyntaxes.find(node);
+				let results = this.acceptableSyntaxes.find(node);
 				if (results.length !== 1) {
 					chunk.process.error(t("compile.inline_not_supported", node.symbol), node);
 					return;
@@ -126,7 +126,7 @@ export class DefaultValidator implements Validator {
 						chunk.process.error(t("compile.chapter_not_toplevel"), node);
 					}
 				} else {
-					var parent = findChapter(node.parentNode);
+					let parent = findChapter(node.parentNode);
 					if (!parent) {
 						chunk.process.error(t("compile.chapter_topleve_eq1"), node);
 					}
@@ -138,10 +138,10 @@ export class DefaultValidator implements Validator {
 	resolveSymbolAndReference(book: Book) {
 		// symbols の解決
 		// Arrayにflatten がなくて悲しい reduce だと長い…
-		var symbols: Symbol[] = book.allChunks.reduce<Symbol[]>((p, c) => p.concat(c.process.symbols), []);
+		let symbols: Symbol[] = book.allChunks.reduce<Symbol[]>((p, c) => p.concat(c.process.symbols), []);
 		symbols.forEach(symbol=> {
 			// referenceToのpartやchapterの解決
-			var referenceTo = symbol.referenceTo;
+			let referenceTo = symbol.referenceTo;
 			if (!referenceTo) {
 				return;
 			}
@@ -163,7 +163,7 @@ export class DefaultValidator implements Validator {
 		// referenceTo.node の解決
 		symbols.forEach(symbol=> {
 			if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
-				var reference = symbol.referenceTo;
+				let reference = symbol.referenceTo;
 				symbols.forEach(symbol=> {
 					if (reference.part === symbol.part && reference.chapter === symbol.chapter && reference.targetSymbol === symbol.symbolName && reference.label === symbol.labelName) {
 						reference.referenceNode = symbol.node;

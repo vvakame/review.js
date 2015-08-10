@@ -13,6 +13,12 @@ import {ja} from "./ja";
 
 /* tslint:disable:no-use-before-declare */
 
+let i18next: I18nextStatic;
+let data: { [lang: string]: any; } = {
+	"ja": ja,
+	"en": en
+};
+
 export function setup(lang = "ja") {
 	"use strict";
 
@@ -39,18 +45,11 @@ export function t(str: string, ...args: any[]): string {
 	return i18next.t(str, { postProcess: "sprintf", sprintf: args });
 }
 
-var i18next: I18nextStatic;
-
 if (isNodeJS()) {
 	i18next = require("i18next");
 } else {
 	i18next = (<any>window).i18n;
 }
-
-var data: { [lang: string]: any; } = {
-	"ja": ja,
-	"en": en
-};
 
 /* tslint:enable:no-use-before-declare */
 

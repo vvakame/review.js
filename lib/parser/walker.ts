@@ -12,7 +12,7 @@ import {RuleName, SyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, A
 export function walk(ast: SyntaxTree, actor: (ast: SyntaxTree) => SyntaxTree) {
 	"use strict";
 
-	var next = actor(ast);
+	let next = actor(ast);
 	if (next) {
 		walk(next, actor);
 	}
@@ -47,7 +47,7 @@ export function visitAsync(ast: SyntaxTree, v: TreeVisitor): Promise<void> {
 function _visit(poolGenerator: () => TaskPool<void>, ast: SyntaxTree, v: TreeVisitor): any {
 	"use strict";
 
-	var newV: TreeVisitor = {
+	let newV: TreeVisitor = {
 		visitDefaultPre: v.visitDefaultPre,
 		visitDefaultPost: v.visitDefaultPost || (() => {
 		}),
@@ -131,8 +131,8 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
 
 	if (ast instanceof BlockElementSyntaxTree) {
 		return (() => {
-			var pool = poolGenerator();
-			var ret = v.visitBlockElementPre(ast, parent);
+			let pool = poolGenerator();
+			let ret = v.visitBlockElementPre(ast, parent);
 			pool.handle(ret, {
 				next: () => {
 					ast.args.forEach((next) => {
@@ -151,8 +151,8 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
 		})();
 	} else if (ast instanceof InlineElementSyntaxTree) {
 		return (() => {
-			var pool = poolGenerator();
-			var ret = v.visitInlineElementPre(ast, parent);
+			let pool = poolGenerator();
+			let ret = v.visitInlineElementPre(ast, parent);
 			pool.handle(ret, {
 				next: () => {
 					ast.childNodes.forEach((next) => {
@@ -168,8 +168,8 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
 		})();
 	} else if (ast instanceof ArgumentSyntaxTree) {
 		return (() => {
-			var pool = poolGenerator();
-			var ret = v.visitArgumentPre(ast, parent);
+			let pool = poolGenerator();
+			let ret = v.visitArgumentPre(ast, parent);
 			pool.handle(ret, {
 				next: () => {
 				},
@@ -182,8 +182,8 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
 		})();
 	} else if (ast instanceof ChapterSyntaxTree) {
 		return (() => {
-			var pool = poolGenerator();
-			var ret = v.visitChapterPre(ast, parent);
+			let pool = poolGenerator();
+			let ret = v.visitChapterPre(ast, parent);
 			pool.handle(ret, {
 				next: () => {
 					pool.add(() => _visitSub(poolGenerator, ast, ast.headline, v));
@@ -205,8 +205,8 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
 		})();
 	} else if (ast instanceof HeadlineSyntaxTree) {
 		return (() => {
-			var pool = poolGenerator();
-			var ret = v.visitHeadlinePre(ast, parent);
+			let pool = poolGenerator();
+			let ret = v.visitHeadlinePre(ast, parent);
 			pool.handle(ret, {
 				next: () => {
 					pool.add(() => _visitSub(poolGenerator, ast, ast.label, v));
@@ -221,8 +221,8 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
 		})();
 	} else if (ast instanceof ColumnSyntaxTree) {
 		return (() => {
-			var pool = poolGenerator();
-			var ret = v.visitColumnPre(ast, parent);
+			let pool = poolGenerator();
+			let ret = v.visitColumnPre(ast, parent);
 			pool.handle(ret, {
 				next: () => {
 					pool.add(() => _visitSub(poolGenerator, ast, ast.headline, v));
@@ -241,8 +241,8 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
 		})();
 	} else if (ast instanceof ColumnHeadlineSyntaxTree) {
 		return (() => {
-			var pool = poolGenerator();
-			var ret = v.visitColumnHeadlinePre(ast, parent);
+			let pool = poolGenerator();
+			let ret = v.visitColumnHeadlinePre(ast, parent);
 			pool.handle(ret, {
 				next: () => {
 					pool.add(() => _visitSub(poolGenerator, ast, ast.caption, v));
@@ -256,8 +256,8 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
 		})();
 	} else if (ast instanceof UlistElementSyntaxTree) {
 		return (() => {
-			var pool = poolGenerator();
-			var ret = v.visitUlistPre(ast, parent);
+			let pool = poolGenerator();
+			let ret = v.visitUlistPre(ast, parent);
 			pool.handle(ret, {
 				next: () => {
 					pool.add(() => _visitSub(poolGenerator, ast, ast.text, v));
@@ -274,8 +274,8 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
 		})();
 	} else if (ast instanceof OlistElementSyntaxTree) {
 		return (() => {
-			var pool = poolGenerator();
-			var ret = v.visitOlistPre(ast, parent);
+			let pool = poolGenerator();
+			let ret = v.visitOlistPre(ast, parent);
 			pool.handle(ret, {
 				next: () => {
 					pool.add(() => _visitSub(poolGenerator, ast, ast.text, v));
@@ -289,8 +289,8 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
 		})();
 	} else if (ast instanceof DlistElementSyntaxTree) {
 		return (() => {
-			var pool = poolGenerator();
-			var ret = v.visitDlistPre(ast, parent);
+			let pool = poolGenerator();
+			let ret = v.visitDlistPre(ast, parent);
 			pool.handle(ret, {
 				next: () => {
 					pool.add(() => _visitSub(poolGenerator, ast, ast.text, v));
@@ -305,8 +305,8 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
 		})();
 	} else if (ast instanceof NodeSyntaxTree && (ast.ruleName === RuleName.Paragraph || ast.ruleName === RuleName.BlockElementParagraph)) {
 		return (() => {
-			var pool = poolGenerator();
-			var ret = v.visitParagraphPre(ast, parent);
+			let pool = poolGenerator();
+			let ret = v.visitParagraphPre(ast, parent);
 			pool.handle(ret, {
 				next: () => {
 					ast.childNodes.forEach((next) => {
@@ -322,8 +322,8 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
 		})();
 	} else if (ast instanceof NodeSyntaxTree) {
 		return (() => {
-			var pool = poolGenerator();
-			var ret = v.visitNodePre(ast, parent);
+			let pool = poolGenerator();
+			let ret = v.visitNodePre(ast, parent);
 			pool.handle(ret, {
 				next: () => {
 					ast.childNodes.forEach((next) => {
@@ -339,8 +339,8 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
 		})();
 	} else if (ast instanceof TextNodeSyntaxTree) {
 		return (() => {
-			var pool = poolGenerator();
-			var ret = v.visitTextPre(ast, parent);
+			let pool = poolGenerator();
+			let ret = v.visitTextPre(ast, parent);
 			pool.handle(ret, {
 				next: () => {
 				},
@@ -353,8 +353,8 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
 		})();
 	} else if (ast instanceof SingleLineCommentSyntaxTree) {
 		return (() => {
-			var pool = poolGenerator();
-			var ret = v.visitSingleLineCommentPre(ast, parent);
+			let pool = poolGenerator();
+			let ret = v.visitSingleLineCommentPre(ast, parent);
 			pool.handle(ret, {
 				next: () => {
 				},
@@ -367,8 +367,8 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
 		})();
 	} else if (ast) {
 		return (() => {
-			var pool = poolGenerator();
-			var ret = v.visitDefaultPre(parent, ast);
+			let pool = poolGenerator();
+			let ret = v.visitDefaultPre(parent, ast);
 			pool.handle(ret, {
 				next: () => {
 				},
@@ -381,7 +381,7 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
 		})();
 	} else {
 		return (() => {
-			var pool = poolGenerator();
+			let pool = poolGenerator();
 			return pool.consume();
 		})();
 	}
@@ -464,7 +464,7 @@ class SyncTaskPool<T> implements TaskPool<T> {
 /**
  * 同期化処理を非同期化するためのヘルパクラス。
  * array.forEach(value => process(value)); を以下のように書き換えて使う。
- * var pool = new AsyncTaskPool<any>();
+ * let pool = new AsyncTaskPool<any>();
  * array.forEach(value => pool.add(()=> process(value));
  * pool.consume().then(()=> ...);
  */
@@ -490,10 +490,10 @@ class AsyncTaskPool<T> implements TaskPool<T> {
 	}
 
 	consume(): Promise<T[]> {
-		var promise = new Promise<T[]>((resolve, reject) => {
-			var result: T[] = [];
-			var next = () => {
-				var func = this.tasks.shift();
+		let promise = new Promise<T[]>((resolve, reject) => {
+			let result: T[] = [];
+			let next = () => {
+				let func = this.tasks.shift();
 				if (!func) {
 					resolve(result);
 					return;

@@ -41,7 +41,7 @@ export class AcceptableSyntaxes {
 	 * @returns {AcceptableSyntax[]}
 	 */
 	find(node: SyntaxTree): AcceptableSyntax[] {
-		var results: AcceptableSyntax[];
+		let results: AcceptableSyntax[];
 		if (node instanceof InlineElementSyntaxTree) {
 			results = this.inlines.filter(s => s.symbolName === node.symbol);
 		} else if (node instanceof BlockElementSyntaxTree) {
@@ -210,13 +210,13 @@ export class DefaultAnalyzer implements Analyzer {
 	}
 
 	constructAcceptableSyntaxes(): AcceptableSyntax[] {
-		var process = new AnalyzeProcess();
+		let process = new AnalyzeProcess();
 
-		for (var k in this) {
+		for (let k in this) {
 			if (typeof (<any>this)[k] !== "function") {
 				continue;
 			}
-			var func: Function = null;
+			let func: Function = null;
 			if (k.indexOf("block_") === 0) {
 				func = (<any>this)[k];
 			} else if (k.indexOf("inline_") === 0) {
@@ -247,12 +247,12 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setClass(HeadlineSyntaxTree);
 		builder.setDescription(t("description.headline"));
 		builder.processNode((process, n) => {
-			var node = n.toHeadline();
-			var label: string = null;
+			let node = n.toHeadline();
+			let label: string = null;
 			if (node.label) {
 				label = node.label.arg;
 			} else if (node.caption.childNodes.length === 1) {
-				var textNode = node.caption.childNodes[0].toTextNode();
+				let textNode = node.caption.childNodes[0].toTextNode();
 				label = textNode.text;
 			}
 			process.addSymbol({
@@ -283,7 +283,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setClass(ColumnSyntaxTree);
 		builder.setDescription(t("description.column"));
 		builder.processNode((process, n) => {
-			var node = n.toColumn();
+			let node = n.toColumn();
 			node.no = process.nextIndex("column");
 			process.addSymbol({
 				symbolName: "column",
@@ -297,7 +297,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setClass(UlistElementSyntaxTree);
 		builder.setDescription(t("description.ulist"));
 		builder.processNode((process, n) => {
-			var node = n.toUlist();
+			let node = n.toUlist();
 			process.addSymbol({
 				symbolName: "ul",
 				node: node
@@ -310,7 +310,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setClass(OlistElementSyntaxTree);
 		builder.setDescription(t("description.olist"));
 		builder.processNode((process, n) => {
-			var node = n.toOlist();
+			let node = n.toOlist();
 			process.addSymbol({
 				symbolName: "ol",
 				node: node
@@ -323,7 +323,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setClass(DlistElementSyntaxTree);
 		builder.setDescription(t("description.dlist"));
 		builder.processNode((process, n) => {
-			var node = n.toDlist();
+			let node = n.toDlist();
 			process.addSymbol({
 				symbolName: "dl",
 				node: node
@@ -337,7 +337,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setDescription(t("description.block_list"));
 		builder.checkArgsLength(2);
 		builder.processNode((process, n) => {
-			var node = n.toBlockElement();
+			let node = n.toBlockElement();
 			node.no = process.nextIndex("list");
 			process.addSymbol({
 				symbolName: node.symbol,
@@ -353,7 +353,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setDescription(t("description.block_listnum"));
 		builder.checkArgsLength(2);
 		builder.processNode((process, n) => {
-			var node = n.toBlockElement();
+			let node = n.toBlockElement();
 			node.no = process.nextIndex("list");
 			process.addSymbol({
 				symbolName: "list",
@@ -368,7 +368,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setSymbol("list");
 		builder.setDescription(t("description.inline_list"));
 		builder.processNode((process, n) => {
-			var node = n.toInlineElement();
+			let node = n.toInlineElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				referenceTo: process.constructReferenceTo(node, nodeContentToString(process, node)),
@@ -383,7 +383,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setDescription(t("description.block_emlist"));
 		builder.checkArgsLength(0, 1);
 		builder.processNode((process, n) => {
-			var node = n.toBlockElement();
+			let node = n.toBlockElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				node: node
@@ -397,7 +397,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setDescription(t("description.block_emlistnum"));
 		builder.checkArgsLength(0);
 		builder.processNode((process, n) => {
-			var node = n.toBlockElement();
+			let node = n.toBlockElement();
 			process.addSymbol({
 				symbolName: "emlist",
 				node: node
@@ -410,7 +410,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setSymbol("hd");
 		builder.setDescription(t("description.inline_hd"));
 		builder.processNode((process, n) => {
-			var node = n.toInlineElement();
+			let node = n.toInlineElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				referenceTo: process.constructReferenceTo(node, nodeContentToString(process, node)),
@@ -425,7 +425,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setDescription(t("description.block_image"));
 		builder.checkArgsLength(2, 3);
 		builder.processNode((process, n) => {
-			var node = n.toBlockElement();
+			let node = n.toBlockElement();
 			node.no = process.nextIndex("image");
 			process.addSymbol({
 				symbolName: node.symbol,
@@ -441,7 +441,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setDescription(t("description.block_indepimage"));
 		builder.checkArgsLength(1, 2, 3);
 		builder.processNode((process, n) => {
-			var node = n.toBlockElement();
+			let node = n.toBlockElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				node: node
@@ -454,7 +454,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setSymbol("img");
 		builder.setDescription(t("description.inline_img"));
 		builder.processNode((process, n) => {
-			var node = n.toInlineElement();
+			let node = n.toInlineElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				referenceTo: process.constructReferenceTo(node, nodeContentToString(process, node), "image"),
@@ -468,7 +468,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setSymbol("icon");
 		builder.setDescription(t("description.inline_icon"));
 		builder.processNode((process, n) => {
-			var node = n.toInlineElement();
+			let node = n.toInlineElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				node: node
@@ -482,7 +482,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setDescription(t("description.block_footnote"));
 		builder.checkArgsLength(2);
 		builder.processNode((process, n) => {
-			var node = n.toBlockElement();
+			let node = n.toBlockElement();
 			node.no = process.nextIndex("footnote");
 			process.addSymbol({
 				symbolName: node.symbol,
@@ -497,7 +497,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setSymbol("fn");
 		builder.setDescription(t("description.inline_fn"));
 		builder.processNode((process, n) => {
-			var node = n.toInlineElement();
+			let node = n.toInlineElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				referenceTo: process.constructReferenceTo(node, nodeContentToString(process, node), "footnote"),
@@ -512,7 +512,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setDescription(t("description.block_" + symbol));
 		builder.checkArgsLength.apply(builder, argsLength);
 		builder.processNode((process, n) => {
-			var node = n.toBlockElement();
+			let node = n.toBlockElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				node: node
@@ -546,7 +546,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setSymbol(symbol);
 		builder.setDescription(t("description.inline_" + symbol));
 		builder.processNode((process, n) => {
-			var node = n.toInlineElement();
+			let node = n.toInlineElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				node: node
@@ -584,7 +584,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setDescription(t("description.block_label"));
 		builder.checkArgsLength(1);
 		builder.processNode((process, n) => {
-			var node = n.toBlockElement();
+			let node = n.toBlockElement();
 			node.no = process.nextIndex("label");
 			process.addSymbol({
 				symbolName: node.symbol,
@@ -640,7 +640,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setDescription(t("description.block_table"));
 		builder.checkArgsLength(2);
 		builder.processNode((process, n) => {
-			var node = n.toBlockElement();
+			let node = n.toBlockElement();
 			node.no = process.nextIndex("table");
 			process.addSymbol({
 				symbolName: node.symbol,
@@ -655,7 +655,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setSymbol("table");
 		builder.setDescription(t("description.inline_table"));
 		builder.processNode((process, n) => {
-			var node = n.toInlineElement();
+			let node = n.toInlineElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				referenceTo: process.constructReferenceTo(node, nodeContentToString(process, node)),
@@ -669,7 +669,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setDescription(t("description.block_tsize"));
 		builder.checkArgsLength(1);
 		builder.processNode((process, n) => {
-			var node = n.toBlockElement();
+			let node = n.toBlockElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				node: node
@@ -683,7 +683,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setDescription(t("description.block_raw"));
 		builder.checkArgsLength(1);
 		builder.processNode((process, n) => {
-			var node = n.toBlockElement();
+			let node = n.toBlockElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				node: node
@@ -696,7 +696,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setSymbol("raw");
 		builder.setDescription(t("description.inline_raw"));
 		builder.processNode((process, n) => {
-			var node = n.toInlineElement();
+			let node = n.toInlineElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				node: node
@@ -710,7 +710,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setDescription(t("description.block_comment"));
 		builder.checkArgsLength(0);
 		builder.processNode((process, n) => {
-			var node = n.toBlockElement();
+			let node = n.toBlockElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				node: node
@@ -723,7 +723,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setSymbol("comment");
 		builder.setDescription(t("description.inline_comment"));
 		builder.processNode((process, n) => {
-			var node = n.toInlineElement();
+			let node = n.toInlineElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				node: node
@@ -736,7 +736,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setSymbol("chap");
 		builder.setDescription(t("description.inline_chap"));
 		builder.processNode((process, n) => {
-			var node = n.toInlineElement();
+			let node = n.toInlineElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				referenceTo: process.constructReferenceTo(node, nodeContentToString(process, node), "chapter"),
@@ -750,7 +750,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setSymbol("title");
 		builder.setDescription(t("description.inline_title"));
 		builder.processNode((process, n) => {
-			var node = n.toInlineElement();
+			let node = n.toInlineElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				referenceTo: process.constructReferenceTo(node, nodeContentToString(process, node), "chapter"),
@@ -764,7 +764,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setSymbol("chapref");
 		builder.setDescription(t("description.inline_chapref"));
 		builder.processNode((process, n) => {
-			var node = n.toInlineElement();
+			let node = n.toInlineElement();
 			process.addSymbol({
 				symbolName: node.symbol,
 				referenceTo: process.constructReferenceTo(node, nodeContentToString(process, node), "chapter"),

@@ -38,7 +38,7 @@ export function compile(config?: ConfigRaw) {
 		{ file: "sample.re" }
 	];
 
-	var results: any = {};
+	let results: any = {};
 	config.write = config.write || ((path: string, content: any) => {
 		results[path] = content;
 		return Promise.resolve<void>(null);
@@ -58,19 +58,19 @@ export function compile(config?: ConfigRaw) {
 	});
 	config.listener.onCompileFailed = config.listener.onCompileFailed || (() => {
 	});
-	var success: boolean;
-	var originalCompileSuccess = config.listener.onCompileSuccess;
+	let success: boolean;
+	let originalCompileSuccess = config.listener.onCompileSuccess;
 	config.listener.onCompileSuccess = (book) => {
 		success = true;
 		originalCompileSuccess(book);
 	};
-	var originalReports = config.listener.onReports;
-	var reports: ProcessReport[];
+	let originalReports = config.listener.onReports;
+	let reports: ProcessReport[];
 	config.listener.onReports = _reports => {
 		reports = _reports;
 		originalReports(_reports);
 	};
-	var originalCompileFailed = config.listener.onCompileFailed;
+	let originalCompileFailed = config.listener.onCompileFailed;
 	config.listener.onCompileFailed = (book) => {
 		success = false;
 		originalCompileFailed(book);
@@ -91,14 +91,14 @@ export function compile(config?: ConfigRaw) {
 export function compileSingle(input: string, tmpConfig?: any /* ReVIEW.IConfigRaw */) {
 	"use strict";
 
-	var config: ConfigRaw = tmpConfig || <any>{};
+	let config: ConfigRaw = tmpConfig || <any>{};
 	config.read = config.read || (() => Promise.resolve(input));
 	config.listener = config.listener || {
 		onCompileSuccess: (book) => {
 		}
 	};
-	var resultString: string;
-	var originalCompileSuccess = config.listener.onCompileSuccess;
+	let resultString: string;
+	let originalCompileSuccess = config.listener.onCompileSuccess;
 	config.listener.onCompileSuccess = (book) => {
 		resultString = book.allChunks[0].builderProcesses[0].result;
 		originalCompileSuccess(book);
