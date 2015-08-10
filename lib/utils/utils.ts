@@ -166,8 +166,8 @@ export function findChapter(node: SyntaxTree, level?: number): ChapterSyntaxTree
 	var chapter: ChapterSyntaxTree = null;
 	walk(node, (node: SyntaxTree) => {
 		if (node instanceof ChapterSyntaxTree) {
-			chapter = node.toChapter();
-			if (typeof level === "undefined" || chapter.level === level) {
+			chapter = node;
+			if (typeof level === "undefined" || node.level === level) {
 				return null;
 			}
 		}
@@ -183,13 +183,13 @@ export function findChapterOrColumn(node: SyntaxTree, level?: number): NodeSynta
 	var column: ColumnSyntaxTree = null;
 	walk(node, (node: SyntaxTree) => {
 		if (node instanceof ChapterSyntaxTree) {
-			chapter = node.toChapter();
-			if (typeof level === "undefined" || chapter.level === level) {
+			chapter = node;
+			if (typeof level === "undefined" || node.level === level) {
 				return null;
 			}
 		} else if (node instanceof ColumnSyntaxTree) {
-			column = node.toColumn();
-			if (typeof level === "undefined" || column.level === level) {
+			column = node;
+			if (typeof level === "undefined" || node.level === level) {
 				return null;
 			}
 		}

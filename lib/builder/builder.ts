@@ -271,8 +271,7 @@ export class DefaultBuilder implements Builder {
 		if (currentLevel !== 1) {
 			var result = findUp(node.parentNode, (n) => {
 				if (n instanceof UlistElementSyntaxTree) {
-					var ulist = n.toUlist();
-					return ulist.level === (currentLevel - 1);
+					return n.level === (currentLevel - 1);
 				}
 				return false;
 			});

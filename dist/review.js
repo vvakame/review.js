@@ -207,8 +207,7 @@ var DefaultBuilder = (function () {
         if (currentLevel !== 1) {
             var result = utils_1.findUp(node.parentNode, function (n) {
                 if (n instanceof parser_1.UlistElementSyntaxTree) {
-                    var ulist = n.toUlist();
-                    return ulist.level === (currentLevel - 1);
+                    return n.level === (currentLevel - 1);
                 }
                 return false;
             });
@@ -334,12 +333,12 @@ var HtmlBuilder = (function (_super) {
             var maxLevel = 0;
             walker_1.walk(node, function (node) {
                 if (node instanceof parser_1.ChapterSyntaxTree) {
-                    numbers[node.toChapter().level] = node.no;
-                    maxLevel = Math.max(maxLevel, node.toChapter().level);
+                    numbers[node.level] = node.no;
+                    maxLevel = Math.max(maxLevel, node.level);
                 }
                 else if (node instanceof parser_1.ColumnSyntaxTree) {
-                    numbers[node.toColumn().level] = -1;
-                    maxLevel = Math.max(maxLevel, node.toColumn().level);
+                    numbers[node.level] = -1;
+                    maxLevel = Math.max(maxLevel, node.level);
                 }
                 return node.parentNode;
             });
@@ -2616,12 +2615,10 @@ var AcceptableSyntaxes = (function () {
     AcceptableSyntaxes.prototype.find = function (node) {
         var results;
         if (node instanceof parser_1.InlineElementSyntaxTree) {
-            var inline = node.toInlineElement();
-            results = this.inlines.filter(function (s) { return s.symbolName === inline.symbol; });
+            results = this.inlines.filter(function (s) { return s.symbolName === node.symbol; });
         }
         else if (node instanceof parser_1.BlockElementSyntaxTree) {
-            var block = node.toBlockElement();
-            results = this.blocks.filter(function (s) { return s.symbolName === block.symbol; });
+            results = this.blocks.filter(function (s) { return s.symbolName === node.symbol; });
         }
         else {
             results = this.others.filter(function (s) { return node instanceof s.clazz; });
@@ -3750,7 +3747,7 @@ var ChapterSyntaxTree = (function (_super) {
             var chapters = [];
             walker_1.walk(this, function (node) {
                 if (node instanceof ChapterSyntaxTree) {
-                    chapters.unshift(node.toChapter());
+                    chapters.unshift(node);
                 }
                 return node.parentNode;
             });
@@ -3826,7 +3823,7 @@ var ColumnSyntaxTree = (function (_super) {
             var chapters = [];
             walker_1.walk(this, function (node) {
                 if (node instanceof ChapterSyntaxTree) {
-                    chapters.unshift(node.toChapter());
+                    chapters.unshift(node);
                 }
                 return node.parentNode;
             });
@@ -4333,15 +4330,14 @@ function _visitSub(poolGenerator, parent, ast, v) {
     "use strict";
     if (ast instanceof parser_1.BlockElementSyntaxTree) {
         return (function () {
-            var block = ast.toBlockElement();
             var pool = poolGenerator();
-            var ret = v.visitBlockElementPre(block, parent);
+            var ret = v.visitBlockElementPre(ast, parent);
             pool.handle(ret, {
                 next: function () {
-                    block.args.forEach(function (next) {
+                    ast.args.forEach(function (next) {
                         pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                     });
-                    block.childNodes.forEach(function (next) {
+                    ast.childNodes.forEach(function (next) {
                         pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                     });
                 },
@@ -4349,18 +4345,17 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitBlockElementPost(block, parent); });
+            pool.add(function () { return v.visitBlockElementPost(ast, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.InlineElementSyntaxTree) {
         return (function () {
-            var inline = ast.toInlineElement();
             var pool = poolGenerator();
-            var ret = v.visitInlineElementPre(inline, parent);
+            var ret = v.visitInlineElementPre(ast, parent);
             pool.handle(ret, {
                 next: function () {
-                    inline.childNodes.forEach(function (next) {
+                    ast.childNodes.forEach(function (next) {
                         pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                     });
                 },
@@ -4368,15 +4363,14 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitInlineElementPost(inline, parent); });
+            pool.add(function () { return v.visitInlineElementPost(ast, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.ArgumentSyntaxTree) {
         return (function () {
-            var arg = ast.toArgument();
             var pool = poolGenerator();
-            var ret = v.visitArgumentPre(arg, parent);
+            var ret = v.visitArgumentPre(ast, parent);
             pool.handle(ret, {
                 next: function () {
                 },
@@ -4384,24 +4378,23 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitArgumentPost(arg, parent); });
+            pool.add(function () { return v.visitArgumentPost(ast, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.ChapterSyntaxTree) {
         return (function () {
-            var chap = ast.toChapter();
             var pool = poolGenerator();
-            var ret = v.visitChapterPre(chap, parent);
+            var ret = v.visitChapterPre(ast, parent);
             pool.handle(ret, {
                 next: function () {
-                    pool.add(function () { return _visitSub(poolGenerator, ast, chap.headline, v); });
-                    if (chap.text) {
-                        chap.text.forEach(function (next) {
+                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.headline, v); });
+                    if (ast.text) {
+                        ast.text.forEach(function (next) {
                             pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                         });
                     }
-                    chap.childNodes.forEach(function (next) {
+                    ast.childNodes.forEach(function (next) {
                         pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                     });
                 },
@@ -4409,38 +4402,36 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitChapterPost(chap, parent); });
+            pool.add(function () { return v.visitChapterPost(ast, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.HeadlineSyntaxTree) {
         return (function () {
-            var head = ast.toHeadline();
             var pool = poolGenerator();
-            var ret = v.visitHeadlinePre(head, parent);
+            var ret = v.visitHeadlinePre(ast, parent);
             pool.handle(ret, {
                 next: function () {
-                    pool.add(function () { return _visitSub(poolGenerator, ast, head.label, v); });
-                    pool.add(function () { return _visitSub(poolGenerator, ast, head.caption, v); });
+                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.label, v); });
+                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.caption, v); });
                 },
                 func: function () {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitHeadlinePost(head, parent); });
+            pool.add(function () { return v.visitHeadlinePost(ast, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.ColumnSyntaxTree) {
         return (function () {
-            var column = ast.toColumn();
             var pool = poolGenerator();
-            var ret = v.visitColumnPre(column, parent);
+            var ret = v.visitColumnPre(ast, parent);
             pool.handle(ret, {
                 next: function () {
-                    pool.add(function () { return _visitSub(poolGenerator, ast, column.headline, v); });
-                    if (column.text) {
-                        column.text.forEach(function (next) {
+                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.headline, v); });
+                    if (ast.text) {
+                        ast.text.forEach(function (next) {
                             pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                         });
                     }
@@ -4449,36 +4440,34 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitColumnPost(column, parent); });
+            pool.add(function () { return v.visitColumnPost(ast, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.ColumnHeadlineSyntaxTree) {
         return (function () {
-            var columnHead = ast.toColumnHeadline();
             var pool = poolGenerator();
-            var ret = v.visitColumnHeadlinePre(columnHead, parent);
+            var ret = v.visitColumnHeadlinePre(ast, parent);
             pool.handle(ret, {
                 next: function () {
-                    pool.add(function () { return _visitSub(poolGenerator, ast, columnHead.caption, v); });
+                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.caption, v); });
                 },
                 func: function () {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitColumnHeadlinePost(columnHead, parent); });
+            pool.add(function () { return v.visitColumnHeadlinePost(ast, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.UlistElementSyntaxTree) {
         return (function () {
-            var ul = ast.toUlist();
             var pool = poolGenerator();
-            var ret = v.visitUlistPre(ul, parent);
+            var ret = v.visitUlistPre(ast, parent);
             pool.handle(ret, {
                 next: function () {
-                    pool.add(function () { return _visitSub(poolGenerator, ast, ul.text, v); });
-                    ul.childNodes.forEach(function (next) {
+                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.text, v); });
+                    ast.childNodes.forEach(function (next) {
                         pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                     });
                 },
@@ -4486,53 +4475,50 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitUlistPost(ul, parent); });
+            pool.add(function () { return v.visitUlistPost(ast, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.OlistElementSyntaxTree) {
         return (function () {
-            var ol = ast.toOlist();
             var pool = poolGenerator();
-            var ret = v.visitOlistPre(ol, parent);
+            var ret = v.visitOlistPre(ast, parent);
             pool.handle(ret, {
                 next: function () {
-                    pool.add(function () { return _visitSub(poolGenerator, ast, ol.text, v); });
+                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.text, v); });
                 },
                 func: function () {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitOlistPost(ol, parent); });
+            pool.add(function () { return v.visitOlistPost(ast, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.DlistElementSyntaxTree) {
         return (function () {
-            var dl = ast.toDlist();
             var pool = poolGenerator();
-            var ret = v.visitDlistPre(dl, parent);
+            var ret = v.visitDlistPre(ast, parent);
             pool.handle(ret, {
                 next: function () {
-                    pool.add(function () { return _visitSub(poolGenerator, ast, dl.text, v); });
-                    pool.add(function () { return _visitSub(poolGenerator, ast, dl.content, v); });
+                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.text, v); });
+                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.content, v); });
                 },
                 func: function () {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitDlistPost(dl, parent); });
+            pool.add(function () { return v.visitDlistPost(ast, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.NodeSyntaxTree && (ast.ruleName === parser_1.RuleName.Paragraph || ast.ruleName === parser_1.RuleName.BlockElementParagraph)) {
         return (function () {
-            var node = ast.toNode();
             var pool = poolGenerator();
-            var ret = v.visitParagraphPre(node, parent);
+            var ret = v.visitParagraphPre(ast, parent);
             pool.handle(ret, {
                 next: function () {
-                    node.childNodes.forEach(function (next) {
+                    ast.childNodes.forEach(function (next) {
                         pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                     });
                 },
@@ -4540,18 +4526,17 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitParagraphPost(node, parent); });
+            pool.add(function () { return v.visitParagraphPost(ast, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.NodeSyntaxTree) {
         return (function () {
-            var node = ast.toNode();
             var pool = poolGenerator();
-            var ret = v.visitNodePre(node, parent);
+            var ret = v.visitNodePre(ast, parent);
             pool.handle(ret, {
                 next: function () {
-                    node.childNodes.forEach(function (next) {
+                    ast.childNodes.forEach(function (next) {
                         pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                     });
                 },
@@ -4559,15 +4544,14 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitNodePost(node, parent); });
+            pool.add(function () { return v.visitNodePost(ast, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.TextNodeSyntaxTree) {
         return (function () {
-            var text = ast.toTextNode();
             var pool = poolGenerator();
-            var ret = v.visitTextPre(text, parent);
+            var ret = v.visitTextPre(ast, parent);
             pool.handle(ret, {
                 next: function () {
                 },
@@ -4575,15 +4559,14 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitTextPost(text, parent); });
+            pool.add(function () { return v.visitTextPost(ast, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.SingleLineCommentSyntaxTree) {
         return (function () {
-            var comment = ast.toSingleLineCommentNode();
             var pool = poolGenerator();
-            var ret = v.visitSingleLineCommentPre(comment, parent);
+            var ret = v.visitSingleLineCommentPre(ast, parent);
             pool.handle(ret, {
                 next: function () {
                 },
@@ -4591,7 +4574,7 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitSingleLineCommentPost(comment, parent); });
+            pool.add(function () { return v.visitSingleLineCommentPost(ast, parent); });
             return pool.consume();
         })();
     }
@@ -4783,8 +4766,8 @@ function findChapter(node, level) {
     var chapter = null;
     walker_1.walk(node, function (node) {
         if (node instanceof parser_1.ChapterSyntaxTree) {
-            chapter = node.toChapter();
-            if (typeof level === "undefined" || chapter.level === level) {
+            chapter = node;
+            if (typeof level === "undefined" || node.level === level) {
                 return null;
             }
         }
@@ -4799,14 +4782,14 @@ function findChapterOrColumn(node, level) {
     var column = null;
     walker_1.walk(node, function (node) {
         if (node instanceof parser_1.ChapterSyntaxTree) {
-            chapter = node.toChapter();
-            if (typeof level === "undefined" || chapter.level === level) {
+            chapter = node;
+            if (typeof level === "undefined" || node.level === level) {
                 return null;
             }
         }
         else if (node instanceof parser_1.ColumnSyntaxTree) {
-            column = node.toColumn();
-            if (typeof level === "undefined" || column.level === level) {
+            column = node;
+            if (typeof level === "undefined" || node.level === level) {
                 return null;
             }
         }

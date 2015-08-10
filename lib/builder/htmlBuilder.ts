@@ -73,11 +73,11 @@ export class HtmlBuilder extends DefaultBuilder {
 			var maxLevel = 0;
 			walk(node, (node: SyntaxTree) => {
 				if (node instanceof ChapterSyntaxTree) {
-					numbers[node.toChapter().level] = node.no;
-					maxLevel = Math.max(maxLevel, node.toChapter().level);
+					numbers[node.level] = node.no;
+					maxLevel = Math.max(maxLevel, node.level);
 				} else if (node instanceof ColumnSyntaxTree) {
-					numbers[node.toColumn().level] = -1;
-					maxLevel = Math.max(maxLevel, node.toColumn().level);
+					numbers[node.level] = -1;
+					maxLevel = Math.max(maxLevel, node.level);
 				}
 				return node.parentNode;
 			});

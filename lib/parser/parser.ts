@@ -631,7 +631,7 @@ export class ChapterSyntaxTree extends NodeSyntaxTree {
 		var chapters: ChapterSyntaxTree[] = [];
 		walk(this, (node: SyntaxTree) => {
 			if (node instanceof ChapterSyntaxTree) {
-				chapters.unshift(node.toChapter());
+				chapters.unshift(node);
 			}
 			return node.parentNode;
 		});
@@ -708,7 +708,7 @@ export class ColumnSyntaxTree extends NodeSyntaxTree {
 		var chapters: ChapterSyntaxTree[] = [];
 		walk(this, (node: SyntaxTree) => {
 			if (node instanceof ChapterSyntaxTree) {
-				chapters.unshift(node.toChapter());
+				chapters.unshift(node);
 			}
 			return node.parentNode;
 		});
