@@ -18,6 +18,7 @@ resources/
 util/
 test/
 example/
+benchmark/
 
 # bower
 dest/
