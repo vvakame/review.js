@@ -8,7 +8,7 @@ export class DummyError {
 function replace(src: any) {
 	"use strict";
 
-    return () => src;
+    return (_: any) => src;
 }
 
 export class AnalyzerError extends DummyError {

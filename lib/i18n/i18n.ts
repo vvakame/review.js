@@ -30,12 +30,13 @@ export function setup(lang = "ja") {
 		});
 		i18next.init({ lng: lang });
 	} else {
-		i18next.init({
+		let opts = {
 			lng: lang,
 			customLoad: function(lng: any, ns: any, options: any, loadComplete: Function) {
 				loadComplete(null, data[lng] || data["ja-JP"]);
 			}
-		});
+		};
+		i18next.init(opts);
 	}
 }
 

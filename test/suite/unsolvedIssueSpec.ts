@@ -33,11 +33,6 @@ describe("未解決のエラー", () => {
 						return Promise.resolve<void>(null);
 					},
 
-					compileSuccess: () => {
-					},
-					compileFailed: () => {
-					},
-
 					builders: [builder],
 
 					book: {
