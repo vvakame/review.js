@@ -43,6 +43,7 @@
     "grunt-browserify": "4.0.0",
     "grunt-contrib-clean": "0.6.0",
     "grunt-contrib-uglify": "0.9.1",
+    "grunt-dts-bundle": "0.3.0",
     "grunt-dtsm": "0.2.9",
     "grunt-exec": "0.4.6",
     "grunt-mocha": "0.4.13",

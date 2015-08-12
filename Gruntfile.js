@@ -102,6 +102,19 @@ module.exports = function (grunt) {
 				}
 			}
 		},
+		dts_bundle: {
+			build: {
+				options: {
+					name: "review.js",
+					main: "lib/index.d.ts",
+					baseDir: "",
+					out: "./dist/review.js.d.ts",
+					prefix: '',
+					exclude: function () {return false;},
+					verbose: false
+				}
+			}
+		},
 		browserify: {
 			main: {
 				files: {

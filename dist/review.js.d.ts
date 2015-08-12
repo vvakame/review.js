@@ -879,4 +879,3 @@ declare module 'review.js/lib/parser/walker' {
         visitTextPost?(node: TextNodeSyntaxTree, parent: SyntaxTree): void;
     }
 }
-
