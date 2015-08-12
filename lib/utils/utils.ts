@@ -25,12 +25,19 @@ export function isBrowser(): boolean {
 	return typeof window !== "undefined";
 }
 
+declare var atom: any;
+
 /**
  * Node.js上での実行かどうかを判別する。
  * @returns {boolean}
  */
 export function isNodeJS(): boolean {
 	"use strict";
+
+	if (typeof atom !== "undefined") {
+		// atomはNode.jsと判定したいけどwindowあるしbrowserify環境下と区別するために特別扱いする
+		return true;
+	}
 
 	return !isBrowser() && !isAMD() && typeof exports === "object";
 }

@@ -4683,6 +4683,9 @@ function isBrowser() {
 exports.isBrowser = isBrowser;
 function isNodeJS() {
     "use strict";
+    if (typeof atom !== "undefined") {
+        return true;
+    }
     return !isBrowser() && !isAMD() && typeof exports === "object";
 }
 exports.isNodeJS = isNodeJS;
