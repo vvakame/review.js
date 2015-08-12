@@ -15,22 +15,14 @@ import {Book, ReportLevel} from "./model/compilerModel";
 import {Options} from "./controller/configRaw";
 import {Controller} from "./controller/controller";
 
-import {HtmlBuilder as _HtmlBuilder} from "./builder/htmlBuilder";
-import {TextBuilder as _TextBuilder} from "./builder/textBuilder";
-import {SyntaxType as _SyntaxType} from "./parser/analyzer";
+import {Analyzer, DefaultAnalyzer} from "./parser/analyzer";
 
-export namespace Build {
-	"use strict";
+import {Builder, DefaultBuilder} from "./builder/builder";
+import {HtmlBuilder} from "./builder/htmlBuilder";
+import {TextBuilder} from "./builder/textBuilder";
+import {SyntaxType} from "./parser/analyzer";
 
-	/* tslint:disable:variable-name */
-	export var HtmlBuilder = _HtmlBuilder;
-	export var TextBuilder = _TextBuilder;
-	export var SyntaxType = _SyntaxType;
-	/* tslint:enable:variable-name */
-}
-
-ReportLevel;
-export { ReportLevel };
+export { Analyzer, DefaultAnalyzer, Builder, DefaultBuilder, HtmlBuilder, TextBuilder, SyntaxType, ReportLevel };
 
 // AMD用
 declare var define: any;
@@ -48,4 +40,18 @@ export function start(setup: (review: Controller) => void, options?: Options): P
 	// setup 中で initConfig が呼び出される
 	setup(controller);
 	return controller.process();
+}
+
+// hack for https://github.com/Microsoft/TypeScript/issues/4274
+export function _doNotUseHackForTypeScriptIssue4274() {
+	"use strict";
+
+	/* tslint:disable:variable-name */
+	let Analyzer: Analyzer;
+	let Builder: Builder;
+	return {
+		Analyzer, DefaultAnalyzer,
+		Builder, DefaultBuilder, HtmlBuilder, TextBuilder, SyntaxType, ReportLevel
+	};
+	/* tslint:enable:variable-name */
 }

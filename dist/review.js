@@ -2027,12 +2027,13 @@ function setup(lang) {
         i18next.init({ lng: lang });
     }
     else {
-        i18next.init({
+        var opts = {
             lng: lang,
             customLoad: function (lng, ns, options, loadComplete) {
                 loadComplete(null, data[lng] || data["ja-JP"]);
             }
-        });
+        };
+        i18next.init(opts);
     }
 }
 exports.setup = setup;
@@ -2138,17 +2139,16 @@ exports.ja = {
 var compilerModel_1 = require("./model/compilerModel");
 exports.ReportLevel = compilerModel_1.ReportLevel;
 var controller_1 = require("./controller/controller");
-var htmlBuilder_1 = require("./builder/htmlBuilder");
-var textBuilder_1 = require("./builder/textBuilder");
 var analyzer_1 = require("./parser/analyzer");
-var Build;
-(function (Build) {
-    "use strict";
-    Build.HtmlBuilder = htmlBuilder_1.HtmlBuilder;
-    Build.TextBuilder = textBuilder_1.TextBuilder;
-    Build.SyntaxType = analyzer_1.SyntaxType;
-})(Build = exports.Build || (exports.Build = {}));
-compilerModel_1.ReportLevel;
+exports.DefaultAnalyzer = analyzer_1.DefaultAnalyzer;
+var builder_1 = require("./builder/builder");
+exports.DefaultBuilder = builder_1.DefaultBuilder;
+var htmlBuilder_1 = require("./builder/htmlBuilder");
+exports.HtmlBuilder = htmlBuilder_1.HtmlBuilder;
+var textBuilder_1 = require("./builder/textBuilder");
+exports.TextBuilder = textBuilder_1.TextBuilder;
+var analyzer_2 = require("./parser/analyzer");
+exports.SyntaxType = analyzer_2.SyntaxType;
 function start(setup, options) {
     "use strict";
     var controller = new controller_1.Controller(options);
@@ -2156,8 +2156,18 @@ function start(setup, options) {
     return controller.process();
 }
 exports.start = start;
+function _doNotUseHackForTypeScriptIssue4274() {
+    "use strict";
+    var Analyzer;
+    var Builder;
+    return {
+        Analyzer: Analyzer, DefaultAnalyzer: analyzer_1.DefaultAnalyzer,
+        Builder: Builder, DefaultBuilder: builder_1.DefaultBuilder, HtmlBuilder: htmlBuilder_1.HtmlBuilder, TextBuilder: textBuilder_1.TextBuilder, SyntaxType: analyzer_2.SyntaxType, ReportLevel: compilerModel_1.ReportLevel
+    };
+}
+exports._doNotUseHackForTypeScriptIssue4274 = _doNotUseHackForTypeScriptIssue4274;
 
-},{"./builder/htmlBuilder":2,"./builder/textBuilder":3,"./controller/controller":6,"./model/compilerModel":12,"./parser/analyzer":13}],11:[function(require,module,exports){
+},{"./builder/builder":1,"./builder/htmlBuilder":2,"./builder/textBuilder":3,"./controller/controller":6,"./model/compilerModel":12,"./parser/analyzer":13}],11:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -2184,7 +2194,7 @@ var DummyError = (function () {
 exports.DummyError = DummyError;
 function replace(src) {
     "use strict";
-    return function () { return src; };
+    return function (_) { return src; };
 }
 var AnalyzerError = (function (_super) {
     __extends(AnalyzerError, _super);

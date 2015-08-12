@@ -4,15 +4,12 @@ declare module 'review.js' {
     import { Book, ReportLevel } from "review.js/lib/model/compilerModel";
     import { Options } from "review.js/lib/controller/configRaw";
     import { Controller } from "review.js/lib/controller/controller";
-    import { HtmlBuilder as _HtmlBuilder } from "review.js/lib/builder/htmlBuilder";
-    import { TextBuilder as _TextBuilder } from "review.js/lib/builder/textBuilder";
-    import { SyntaxType as _SyntaxType } from "review.js/lib/parser/analyzer";
-    export module Build {
-        var HtmlBuilder: typeof _HtmlBuilder;
-        var TextBuilder: typeof _TextBuilder;
-        var SyntaxType: typeof _SyntaxType;
-    }
-    export { ReportLevel };
+    import { Analyzer, DefaultAnalyzer } from "review.js/lib/parser/analyzer";
+    import { Builder, DefaultBuilder } from "review.js/lib/builder/builder";
+    import { HtmlBuilder } from "review.js/lib/builder/htmlBuilder";
+    import { TextBuilder } from "review.js/lib/builder/textBuilder";
+    import { SyntaxType } from "review.js/lib/parser/analyzer";
+    export { Analyzer, DefaultAnalyzer, Builder, DefaultBuilder, HtmlBuilder, TextBuilder, SyntaxType, ReportLevel };
     export function start(setup: (review: Controller) => void, options?: Options): Promise<Book>;
 }
 
@@ -219,6 +216,172 @@ declare module 'review.js/lib/controller/controller' {
     }
 }
 
+declare module 'review.js/lib/parser/analyzer' {
+    import { Process } from "review.js/lib/model/compilerModel";
+    import { SyntaxTree } from "review.js/lib/parser/parser";
+    export enum SyntaxType {
+        Block = 0,
+        Inline = 1,
+        Other = 2,
+    }
+    export interface AnalyzeProcessor {
+        (process: Process, node: SyntaxTree): any;
+    }
+    export class AcceptableSyntaxes {
+        acceptableSyntaxes: AcceptableSyntax[];
+        constructor(acceptableSyntaxes: AcceptableSyntax[]);
+        find(node: SyntaxTree): AcceptableSyntax[];
+        inlines: AcceptableSyntax[];
+        blocks: AcceptableSyntax[];
+        others: AcceptableSyntax[];
+        toJSON(): any;
+    }
+    export class AcceptableSyntax {
+        type: SyntaxType;
+        clazz: any;
+        symbolName: string;
+        argsLength: number[];
+        allowInline: boolean;
+        allowFullySyntax: boolean;
+        description: string;
+        process: AnalyzeProcessor;
+        toJSON(): any;
+    }
+    export interface Analyzer {
+        getAcceptableSyntaxes(): AcceptableSyntaxes;
+    }
+    export interface AcceptableSyntaxBuilder {
+        setSyntaxType(type: SyntaxType): void;
+        setClass(clazz: any): void;
+        setSymbol(symbolName: string): void;
+        setDescription(description: string): void;
+        checkArgsLength(...argsLength: number[]): void;
+        setAllowInline(enable: boolean): void;
+        setAllowFullySyntax(enable: boolean): void;
+        processNode(func: AnalyzeProcessor): void;
+    }
+    export class DefaultAnalyzer implements Analyzer {
+        getAcceptableSyntaxes(): AcceptableSyntaxes;
+        constructAcceptableSyntaxes(): AcceptableSyntax[];
+        headline(builder: AcceptableSyntaxBuilder): void;
+        column(builder: AcceptableSyntaxBuilder): void;
+        ulist(builder: AcceptableSyntaxBuilder): void;
+        olist(builder: AcceptableSyntaxBuilder): void;
+        dlist(builder: AcceptableSyntaxBuilder): void;
+        block_list(builder: AcceptableSyntaxBuilder): void;
+        block_listnum(builder: AcceptableSyntaxBuilder): void;
+        inline_list(builder: AcceptableSyntaxBuilder): void;
+        block_emlist(builder: AcceptableSyntaxBuilder): void;
+        block_emlistnum(builder: AcceptableSyntaxBuilder): void;
+        inline_hd(builder: AcceptableSyntaxBuilder): void;
+        block_image(builder: AcceptableSyntaxBuilder): void;
+        block_indepimage(builder: AcceptableSyntaxBuilder): void;
+        inline_img(builder: AcceptableSyntaxBuilder): void;
+        inline_icon(builder: AcceptableSyntaxBuilder): void;
+        block_footnote(builder: AcceptableSyntaxBuilder): void;
+        inline_fn(builder: AcceptableSyntaxBuilder): void;
+        blockDecorationSyntax(builder: AcceptableSyntaxBuilder, symbol: string, ...argsLength: number[]): void;
+        block_lead(builder: AcceptableSyntaxBuilder): void;
+        block_noindent(builder: AcceptableSyntaxBuilder): void;
+        block_source(builder: AcceptableSyntaxBuilder): void;
+        block_cmd(builder: AcceptableSyntaxBuilder): void;
+        block_quote(builder: AcceptableSyntaxBuilder): void;
+        inlineDecorationSyntax(builder: AcceptableSyntaxBuilder, symbol: string): void;
+        inline_br(builder: AcceptableSyntaxBuilder): void;
+        inline_ruby(builder: AcceptableSyntaxBuilder): void;
+        inline_b(builder: AcceptableSyntaxBuilder): void;
+        inline_code(builder: AcceptableSyntaxBuilder): void;
+        inline_tt(builder: AcceptableSyntaxBuilder): void;
+        inline_href(builder: AcceptableSyntaxBuilder): void;
+        block_label(builder: AcceptableSyntaxBuilder): void;
+        inline_u(builder: AcceptableSyntaxBuilder): void;
+        inline_kw(builder: AcceptableSyntaxBuilder): void;
+        inline_em(builder: AcceptableSyntaxBuilder): void;
+        inline_tti(builder: AcceptableSyntaxBuilder): void;
+        inline_ttb(builder: AcceptableSyntaxBuilder): void;
+        inline_ami(builder: AcceptableSyntaxBuilder): void;
+        inline_bou(builder: AcceptableSyntaxBuilder): void;
+        inline_i(builder: AcceptableSyntaxBuilder): void;
+        inline_strong(builder: AcceptableSyntaxBuilder): void;
+        inline_uchar(builder: AcceptableSyntaxBuilder): void;
+        block_table(builder: AcceptableSyntaxBuilder): void;
+        inline_table(builder: AcceptableSyntaxBuilder): void;
+        block_tsize(builder: AcceptableSyntaxBuilder): void;
+        block_raw(builder: AcceptableSyntaxBuilder): void;
+        inline_raw(builder: AcceptableSyntaxBuilder): void;
+        block_comment(builder: AcceptableSyntaxBuilder): void;
+        inline_comment(builder: AcceptableSyntaxBuilder): void;
+        inline_chap(builder: AcceptableSyntaxBuilder): void;
+        inline_title(builder: AcceptableSyntaxBuilder): void;
+        inline_chapref(builder: AcceptableSyntaxBuilder): void;
+    }
+}
+
+declare module 'review.js/lib/builder/builder' {
+    import { Book, BuilderProcess, ContentChunk, Symbol } from "review.js/lib/model/compilerModel";
+    import { SyntaxTree, NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, TextNodeSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, SingleLineCommentSyntaxTree } from "review.js/lib/parser/parser";
+    export interface Builder {
+        name: string;
+        extention: string;
+        init(book: Book): Promise<void>;
+        escape(data: any): string;
+        chapterPre(process: BuilderProcess, node: ChapterSyntaxTree): any;
+        chapterPost(process: BuilderProcess, node: ChapterSyntaxTree): any;
+        headlinePre(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): any;
+        headlinePost(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): any;
+        columnPre(process: BuilderProcess, node: ColumnSyntaxTree): any;
+        columnPost(process: BuilderProcess, node: ColumnSyntaxTree): any;
+        columnHeadlinePre(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): any;
+        columnHeadlinePost(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): any;
+        ulistPre(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): any;
+        ulistPost(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): any;
+        olistPre(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): any;
+        olistPost(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): any;
+        blockPre(process: BuilderProcess, name: string, node: BlockElementSyntaxTree): any;
+        blockPost(process: BuilderProcess, name: string, node: BlockElementSyntaxTree): any;
+        inlinePre(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
+        inlinePost(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
+        text(process: BuilderProcess, node: TextNodeSyntaxTree): any;
+        singleLineComment?(process: BuilderProcess, node: SingleLineCommentSyntaxTree): any;
+    }
+    export class DefaultBuilder implements Builder {
+        book: Book;
+        extention: string;
+        name: string;
+        init(book: Book): Promise<void>;
+        processAst(chunk: ContentChunk): Promise<void>;
+        escape(data: any): string;
+        getChapterTitle(process: BuilderProcess, chapter: ContentChunk): string;
+        processPost(process: BuilderProcess, chunk: ContentChunk): void;
+        chapterPre(process: BuilderProcess, node: ChapterSyntaxTree): any;
+        chapterPost(process: BuilderProcess, node: ChapterSyntaxTree): any;
+        headlinePre(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): any;
+        headlinePost(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): any;
+        columnPre(process: BuilderProcess, node: ColumnSyntaxTree): any;
+        columnPost(process: BuilderProcess, node: ColumnSyntaxTree): any;
+        columnHeadlinePre(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): any;
+        columnHeadlinePost(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): any;
+        paragraphPre(process: BuilderProcess, name: string, node: NodeSyntaxTree): any;
+        paragraphPost(process: BuilderProcess, name: string, node: NodeSyntaxTree): any;
+        ulistPre(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): any;
+        ulistPost(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): any;
+        olistPre(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): any;
+        olistPost(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): any;
+        dlistPre(process: BuilderProcess, name: string, node: DlistElementSyntaxTree): any;
+        dlistPost(process: BuilderProcess, name: string, node: DlistElementSyntaxTree): any;
+        text(process: BuilderProcess, node: TextNodeSyntaxTree): any;
+        blockPre(process: BuilderProcess, name: string, node: BlockElementSyntaxTree): any;
+        blockPost(process: BuilderProcess, name: string, node: BlockElementSyntaxTree): any;
+        inlinePre(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
+        inlinePost(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
+        ulistParentHelper(process: BuilderProcess, node: UlistElementSyntaxTree, action: () => void, currentLevel?: number): void;
+        findReference(process: BuilderProcess, node: SyntaxTree): Symbol;
+        block_raw(process: BuilderProcess, node: BlockElementSyntaxTree): any;
+        inline_raw(process: BuilderProcess, node: InlineElementSyntaxTree): any;
+        singleLineComment(process: BuilderProcess, node: SingleLineCommentSyntaxTree): any;
+    }
+}
+
 declare module 'review.js/lib/builder/htmlBuilder' {
     import { BuilderProcess, ContentChunk } from "review.js/lib/model/compilerModel";
     import { DefaultBuilder } from "review.js/lib/builder/builder";
@@ -407,107 +570,6 @@ declare module 'review.js/lib/builder/textBuilder' {
     }
 }
 
-declare module 'review.js/lib/parser/analyzer' {
-    import { Process } from "review.js/lib/model/compilerModel";
-    import { SyntaxTree } from "review.js/lib/parser/parser";
-    export enum SyntaxType {
-        Block = 0,
-        Inline = 1,
-        Other = 2,
-    }
-    export interface AnalyzeProcessor {
-        (process: Process, node: SyntaxTree): any;
-    }
-    export class AcceptableSyntaxes {
-        acceptableSyntaxes: AcceptableSyntax[];
-        constructor(acceptableSyntaxes: AcceptableSyntax[]);
-        find(node: SyntaxTree): AcceptableSyntax[];
-        inlines: AcceptableSyntax[];
-        blocks: AcceptableSyntax[];
-        others: AcceptableSyntax[];
-        toJSON(): any;
-    }
-    export class AcceptableSyntax {
-        type: SyntaxType;
-        clazz: any;
-        symbolName: string;
-        argsLength: number[];
-        allowInline: boolean;
-        allowFullySyntax: boolean;
-        description: string;
-        process: AnalyzeProcessor;
-        toJSON(): any;
-    }
-    export interface Analyzer {
-        getAcceptableSyntaxes(): AcceptableSyntaxes;
-    }
-    export interface AcceptableSyntaxBuilder {
-        setSyntaxType(type: SyntaxType): void;
-        setClass(clazz: any): void;
-        setSymbol(symbolName: string): void;
-        setDescription(description: string): void;
-        checkArgsLength(...argsLength: number[]): void;
-        setAllowInline(enable: boolean): void;
-        setAllowFullySyntax(enable: boolean): void;
-        processNode(func: AnalyzeProcessor): void;
-    }
-    export class DefaultAnalyzer implements Analyzer {
-        getAcceptableSyntaxes(): AcceptableSyntaxes;
-        constructAcceptableSyntaxes(): AcceptableSyntax[];
-        headline(builder: AcceptableSyntaxBuilder): void;
-        column(builder: AcceptableSyntaxBuilder): void;
-        ulist(builder: AcceptableSyntaxBuilder): void;
-        olist(builder: AcceptableSyntaxBuilder): void;
-        dlist(builder: AcceptableSyntaxBuilder): void;
-        block_list(builder: AcceptableSyntaxBuilder): void;
-        block_listnum(builder: AcceptableSyntaxBuilder): void;
-        inline_list(builder: AcceptableSyntaxBuilder): void;
-        block_emlist(builder: AcceptableSyntaxBuilder): void;
-        block_emlistnum(builder: AcceptableSyntaxBuilder): void;
-        inline_hd(builder: AcceptableSyntaxBuilder): void;
-        block_image(builder: AcceptableSyntaxBuilder): void;
-        block_indepimage(builder: AcceptableSyntaxBuilder): void;
-        inline_img(builder: AcceptableSyntaxBuilder): void;
-        inline_icon(builder: AcceptableSyntaxBuilder): void;
-        block_footnote(builder: AcceptableSyntaxBuilder): void;
-        inline_fn(builder: AcceptableSyntaxBuilder): void;
-        blockDecorationSyntax(builder: AcceptableSyntaxBuilder, symbol: string, ...argsLength: number[]): void;
-        block_lead(builder: AcceptableSyntaxBuilder): void;
-        block_noindent(builder: AcceptableSyntaxBuilder): void;
-        block_source(builder: AcceptableSyntaxBuilder): void;
-        block_cmd(builder: AcceptableSyntaxBuilder): void;
-        block_quote(builder: AcceptableSyntaxBuilder): void;
-        inlineDecorationSyntax(builder: AcceptableSyntaxBuilder, symbol: string): void;
-        inline_br(builder: AcceptableSyntaxBuilder): void;
-        inline_ruby(builder: AcceptableSyntaxBuilder): void;
-        inline_b(builder: AcceptableSyntaxBuilder): void;
-        inline_code(builder: AcceptableSyntaxBuilder): void;
-        inline_tt(builder: AcceptableSyntaxBuilder): void;
-        inline_href(builder: AcceptableSyntaxBuilder): void;
-        block_label(builder: AcceptableSyntaxBuilder): void;
-        inline_u(builder: AcceptableSyntaxBuilder): void;
-        inline_kw(builder: AcceptableSyntaxBuilder): void;
-        inline_em(builder: AcceptableSyntaxBuilder): void;
-        inline_tti(builder: AcceptableSyntaxBuilder): void;
-        inline_ttb(builder: AcceptableSyntaxBuilder): void;
-        inline_ami(builder: AcceptableSyntaxBuilder): void;
-        inline_bou(builder: AcceptableSyntaxBuilder): void;
-        inline_i(builder: AcceptableSyntaxBuilder): void;
-        inline_strong(builder: AcceptableSyntaxBuilder): void;
-        inline_uchar(builder: AcceptableSyntaxBuilder): void;
-        block_table(builder: AcceptableSyntaxBuilder): void;
-        inline_table(builder: AcceptableSyntaxBuilder): void;
-        block_tsize(builder: AcceptableSyntaxBuilder): void;
-        block_raw(builder: AcceptableSyntaxBuilder): void;
-        inline_raw(builder: AcceptableSyntaxBuilder): void;
-        block_comment(builder: AcceptableSyntaxBuilder): void;
-        inline_comment(builder: AcceptableSyntaxBuilder): void;
-        inline_chap(builder: AcceptableSyntaxBuilder): void;
-        inline_title(builder: AcceptableSyntaxBuilder): void;
-        inline_chapref(builder: AcceptableSyntaxBuilder): void;
-    }
-}
-
 declare module 'review.js/lib/parser/parser' {
     export function parse(input: string): {
         ast: NodeSyntaxTree;
@@ -690,71 +752,6 @@ declare module 'review.js/lib/parser/parser' {
     export class SingleLineCommentSyntaxTree extends SyntaxTree {
         text: string;
         constructor(data: ConcreatSyntaxTree);
-    }
-}
-
-declare module 'review.js/lib/builder/builder' {
-    import { Book, BuilderProcess, ContentChunk, Symbol } from "review.js/lib/model/compilerModel";
-    import { SyntaxTree, NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, TextNodeSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, SingleLineCommentSyntaxTree } from "review.js/lib/parser/parser";
-    export interface Builder {
-        name: string;
-        extention: string;
-        init(book: Book): Promise<void>;
-        escape(data: any): string;
-        chapterPre(process: BuilderProcess, node: ChapterSyntaxTree): any;
-        chapterPost(process: BuilderProcess, node: ChapterSyntaxTree): any;
-        headlinePre(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): any;
-        headlinePost(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): any;
-        columnPre(process: BuilderProcess, node: ColumnSyntaxTree): any;
-        columnPost(process: BuilderProcess, node: ColumnSyntaxTree): any;
-        columnHeadlinePre(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): any;
-        columnHeadlinePost(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): any;
-        ulistPre(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): any;
-        ulistPost(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): any;
-        olistPre(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): any;
-        olistPost(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): any;
-        blockPre(process: BuilderProcess, name: string, node: BlockElementSyntaxTree): any;
-        blockPost(process: BuilderProcess, name: string, node: BlockElementSyntaxTree): any;
-        inlinePre(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
-        inlinePost(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
-        text(process: BuilderProcess, node: TextNodeSyntaxTree): any;
-        singleLineComment?(process: BuilderProcess, node: SingleLineCommentSyntaxTree): any;
-    }
-    export class DefaultBuilder implements Builder {
-        book: Book;
-        extention: string;
-        name: string;
-        init(book: Book): Promise<void>;
-        processAst(chunk: ContentChunk): Promise<void>;
-        escape(data: any): string;
-        getChapterTitle(process: BuilderProcess, chapter: ContentChunk): string;
-        processPost(process: BuilderProcess, chunk: ContentChunk): void;
-        chapterPre(process: BuilderProcess, node: ChapterSyntaxTree): any;
-        chapterPost(process: BuilderProcess, node: ChapterSyntaxTree): any;
-        headlinePre(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): any;
-        headlinePost(process: BuilderProcess, name: string, node: HeadlineSyntaxTree): any;
-        columnPre(process: BuilderProcess, node: ColumnSyntaxTree): any;
-        columnPost(process: BuilderProcess, node: ColumnSyntaxTree): any;
-        columnHeadlinePre(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): any;
-        columnHeadlinePost(process: BuilderProcess, node: ColumnHeadlineSyntaxTree): any;
-        paragraphPre(process: BuilderProcess, name: string, node: NodeSyntaxTree): any;
-        paragraphPost(process: BuilderProcess, name: string, node: NodeSyntaxTree): any;
-        ulistPre(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): any;
-        ulistPost(process: BuilderProcess, name: string, node: UlistElementSyntaxTree): any;
-        olistPre(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): any;
-        olistPost(process: BuilderProcess, name: string, node: OlistElementSyntaxTree): any;
-        dlistPre(process: BuilderProcess, name: string, node: DlistElementSyntaxTree): any;
-        dlistPost(process: BuilderProcess, name: string, node: DlistElementSyntaxTree): any;
-        text(process: BuilderProcess, node: TextNodeSyntaxTree): any;
-        blockPre(process: BuilderProcess, name: string, node: BlockElementSyntaxTree): any;
-        blockPost(process: BuilderProcess, name: string, node: BlockElementSyntaxTree): any;
-        inlinePre(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
-        inlinePost(process: BuilderProcess, name: string, node: InlineElementSyntaxTree): any;
-        ulistParentHelper(process: BuilderProcess, node: UlistElementSyntaxTree, action: () => void, currentLevel?: number): void;
-        findReference(process: BuilderProcess, node: SyntaxTree): Symbol;
-        block_raw(process: BuilderProcess, node: BlockElementSyntaxTree): any;
-        inline_raw(process: BuilderProcess, node: InlineElementSyntaxTree): any;
-        singleLineComment(process: BuilderProcess, node: SingleLineCommentSyntaxTree): any;
     }
 }
 
