@@ -2137,9 +2137,14 @@ exports.ja = {
 ///<reference path='./typings/polyfill.d.ts' />
 "use strict";
 var compilerModel_1 = require("./model/compilerModel");
+exports.Book = compilerModel_1.Book;
 exports.ReportLevel = compilerModel_1.ReportLevel;
+exports.ProcessReport = compilerModel_1.ProcessReport;
 var controller_1 = require("./controller/controller");
+var parser_1 = require("./parser/parser");
+exports.SyntaxTree = parser_1.SyntaxTree;
 var analyzer_1 = require("./parser/analyzer");
+exports.AcceptableSyntaxes = analyzer_1.AcceptableSyntaxes;
 exports.DefaultAnalyzer = analyzer_1.DefaultAnalyzer;
 var builder_1 = require("./builder/builder");
 exports.DefaultBuilder = builder_1.DefaultBuilder;
@@ -2158,16 +2163,19 @@ function start(setup, options) {
 exports.start = start;
 function _doNotUseHackForTypeScriptIssue4274() {
     "use strict";
+    var Symbol;
     var Analyzer;
     var Builder;
     return {
-        Analyzer: Analyzer, DefaultAnalyzer: analyzer_1.DefaultAnalyzer,
-        Builder: Builder, DefaultBuilder: builder_1.DefaultBuilder, HtmlBuilder: htmlBuilder_1.HtmlBuilder, TextBuilder: textBuilder_1.TextBuilder, SyntaxType: analyzer_2.SyntaxType, ReportLevel: compilerModel_1.ReportLevel
+        Book: compilerModel_1.Book, ReportLevel: compilerModel_1.ReportLevel, ProcessReport: compilerModel_1.ProcessReport, Symbol: Symbol,
+        SyntaxTree: parser_1.SyntaxTree,
+        AcceptableSyntaxes: analyzer_1.AcceptableSyntaxes, Analyzer: Analyzer, DefaultAnalyzer: analyzer_1.DefaultAnalyzer,
+        Builder: Builder, DefaultBuilder: builder_1.DefaultBuilder, HtmlBuilder: htmlBuilder_1.HtmlBuilder, TextBuilder: textBuilder_1.TextBuilder, SyntaxType: analyzer_2.SyntaxType
     };
 }
 exports._doNotUseHackForTypeScriptIssue4274 = _doNotUseHackForTypeScriptIssue4274;
 
-},{"./builder/builder":1,"./builder/htmlBuilder":2,"./builder/textBuilder":3,"./controller/controller":6,"./model/compilerModel":12,"./parser/analyzer":13}],11:[function(require,module,exports){
+},{"./builder/builder":1,"./builder/htmlBuilder":2,"./builder/textBuilder":3,"./controller/controller":6,"./model/compilerModel":12,"./parser/analyzer":13,"./parser/parser":14}],11:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
