@@ -2011,30 +2011,17 @@ var utils_1 = require("../utils/utils");
 var en_1 = require("./en");
 var ja_1 = require("./ja");
 var i18next;
-var data = {
-    "ja": ja_1.ja,
-    "en": en_1.en
-};
 function setup(lang) {
     "use strict";
     if (lang === void 0) { lang = "ja"; }
-    if (typeof i18next.backend !== "undefined") {
-        i18next.backend({
-            fetchOne: function (lng, ns, func) {
-                func(null, data[lng] || data[lang]);
-            }
-        });
-        i18next.init({ lng: lang });
-    }
-    else {
-        var opts = {
-            lng: lang,
-            customLoad: function (lng, ns, options, loadComplete) {
-                loadComplete(null, data[lng] || data["ja-JP"]);
-            }
-        };
-        i18next.init(opts);
-    }
+    i18next.init({
+        lng: lang,
+        fallbackLng: "ja",
+        resStore: {
+            "ja": { translation: ja_1.ja },
+            "en": { translation: en_1.en }
+        }
+    });
 }
 exports.setup = setup;
 function t(str) {

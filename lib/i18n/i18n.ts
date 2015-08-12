@@ -14,30 +14,18 @@ import {ja} from "./ja";
 /* tslint:disable:no-use-before-declare */
 
 let i18next: I18nextStatic;
-let data: { [lang: string]: any; } = {
-	"ja": ja,
-	"en": en
-};
 
 export function setup(lang = "ja") {
 	"use strict";
 
-	if (typeof (<any>i18next).backend !== "undefined") {
-		(<any>i18next).backend({
-			fetchOne: (lng: any, ns: any, func: Function) => {
-				func(null, data[lng] || data[lang]);
-			}
-		});
-		i18next.init({ lng: lang });
-	} else {
-		let opts = {
-			lng: lang,
-			customLoad: function(lng: any, ns: any, options: any, loadComplete: Function) {
-				loadComplete(null, data[lng] || data["ja-JP"]);
-			}
-		};
-		i18next.init(opts);
-	}
+	i18next.init({
+		lng: lang,
+		fallbackLng: "ja",
+		resStore: {
+			"ja": { translation: ja },
+			"en": { translation: en }
+		}
+	});
 }
 
 export function t(str: string, ...args: any[]): string {
