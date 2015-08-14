@@ -261,7 +261,7 @@ var DefaultBuilder = (function () {
 })();
 exports.DefaultBuilder = DefaultBuilder;
 
-},{"../js/exception":11,"../parser/parser":14,"../parser/walker":17,"../utils/utils":19}],2:[function(require,module,exports){
+},{"../js/exception":11,"../parser/parser":14,"../parser/walker":17,"../utils/utils":18}],2:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -869,7 +869,7 @@ var HtmlBuilder = (function (_super) {
 })(builder_1.DefaultBuilder);
 exports.HtmlBuilder = HtmlBuilder;
 
-},{"../i18n/i18n":8,"../parser/parser":14,"../parser/walker":17,"../utils/utils":19,"./builder":1}],3:[function(require,module,exports){
+},{"../i18n/i18n":8,"../parser/parser":14,"../parser/walker":17,"../utils/utils":18,"./builder":1}],3:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1342,7 +1342,7 @@ var TextBuilder = (function (_super) {
 })(builder_1.DefaultBuilder);
 exports.TextBuilder = TextBuilder;
 
-},{"../i18n/i18n":8,"../parser/parser":14,"../parser/walker":17,"../utils/utils":19,"./builder":1}],4:[function(require,module,exports){
+},{"../i18n/i18n":8,"../parser/parser":14,"../parser/walker":17,"../utils/utils":18,"./builder":1}],4:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1355,7 +1355,7 @@ var configRaw_1 = require("./configRaw");
 var compilerModel_1 = require("../model/compilerModel");
 var analyzer_1 = require("../parser/analyzer");
 var validator_1 = require("../parser/validator");
-var Utils_1 = require("../utils/Utils");
+var utils_1 = require("../utils/utils");
 var Config = (function () {
     function Config(original) {
         this.original = original;
@@ -1456,14 +1456,14 @@ var NodeJSConfig = (function (_super) {
     }
     Object.defineProperty(NodeJSConfig.prototype, "read", {
         get: function () {
-            return this.original.read || Utils_1.IO.read;
+            return this.original.read || utils_1.IO.read;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(NodeJSConfig.prototype, "write", {
         get: function () {
-            return this.original.write || Utils_1.IO.write;
+            return this.original.write || utils_1.IO.write;
         },
         enumerable: true,
         configurable: true
@@ -1700,7 +1700,7 @@ var WebBrowserConfig = (function (_super) {
 })(Config);
 exports.WebBrowserConfig = WebBrowserConfig;
 
-},{"../builder/builder":1,"../model/compilerModel":12,"../parser/analyzer":13,"../parser/validator":16,"../utils/Utils":18,"./configRaw":5,"colors":undefined,"fs":undefined,"path":undefined}],5:[function(require,module,exports){
+},{"../builder/builder":1,"../model/compilerModel":12,"../parser/analyzer":13,"../parser/validator":16,"../utils/utils":18,"./configRaw":5,"colors":undefined,"fs":undefined,"path":undefined}],5:[function(require,module,exports){
 "use strict";
 var BookStructure = (function () {
     function BookStructure(predef, contents, appendix, postdef) {
@@ -1998,7 +1998,7 @@ var Controller = (function () {
 })();
 exports.Controller = Controller;
 
-},{"../../resources/grammar":20,"../builder/htmlBuilder":2,"../builder/textBuilder":3,"../model/compilerModel":12,"../parser/parser":14,"../parser/preprocessor":15,"../parser/walker":17,"../utils/utils":19,"./config":4,"./configRaw":5}],7:[function(require,module,exports){
+},{"../../resources/grammar":19,"../builder/htmlBuilder":2,"../builder/textBuilder":3,"../model/compilerModel":12,"../parser/parser":14,"../parser/preprocessor":15,"../parser/walker":17,"../utils/utils":18,"./config":4,"./configRaw":5}],7:[function(require,module,exports){
 "use strict";
 exports.en = {
     "sample": "Hello!"
@@ -2041,7 +2041,7 @@ else {
 }
 setup();
 
-},{"../utils/utils":19,"./en":7,"./ja":9,"i18next":undefined}],9:[function(require,module,exports){
+},{"../utils/utils":18,"./en":7,"./ja":9,"i18next":undefined}],9:[function(require,module,exports){
 "use strict";
 exports.ja = {
     "sample": "こんちゃーす！",
@@ -3284,7 +3284,7 @@ var DefaultAnalyzer = (function () {
 })();
 exports.DefaultAnalyzer = DefaultAnalyzer;
 
-},{"../i18n/i18n":8,"../js/exception":11,"../parser/parser":14,"../utils/utils":19}],14:[function(require,module,exports){
+},{"../i18n/i18n":8,"../js/exception":11,"../parser/parser":14,"../utils/utils":18}],14:[function(require,module,exports){
 /**
  * 構文解析用途のモジュール。
  */
@@ -3913,7 +3913,7 @@ var SingleLineCommentSyntaxTree = (function (_super) {
 })(SyntaxTree);
 exports.SingleLineCommentSyntaxTree = SingleLineCommentSyntaxTree;
 
-},{"../../resources/grammar":20,"./walker":17}],15:[function(require,module,exports){
+},{"../../resources/grammar":19,"./walker":17}],15:[function(require,module,exports){
 "use strict";
 var parser_1 = require("./parser");
 var walker_1 = require("./walker");
@@ -4066,7 +4066,7 @@ var SyntaxPreprocessor = (function () {
 })();
 exports.SyntaxPreprocessor = SyntaxPreprocessor;
 
-},{"../utils/utils":19,"./parser":14,"./walker":17}],16:[function(require,module,exports){
+},{"../utils/utils":18,"./parser":14,"./walker":17}],16:[function(require,module,exports){
 "use strict";
 var i18n_1 = require("../i18n/i18n");
 var analyzer_1 = require("./analyzer");
@@ -4231,7 +4231,7 @@ var DefaultValidator = (function () {
 })();
 exports.DefaultValidator = DefaultValidator;
 
-},{"../i18n/i18n":8,"../utils/utils":19,"./analyzer":13,"./walker":17}],17:[function(require,module,exports){
+},{"../i18n/i18n":8,"../utils/utils":18,"./analyzer":13,"./walker":17}],17:[function(require,module,exports){
 "use strict";
 var parser_1 = require("./parser");
 function walk(ast, actor) {
@@ -4918,8 +4918,6 @@ var Exec;
 })(Exec = exports.Exec || (exports.Exec = {}));
 
 },{"../builder/htmlBuilder":2,"../builder/textBuilder":3,"../index":10,"../model/compilerModel":12,"../parser/analyzer":13,"../parser/parser":14,"../parser/validator":16,"../parser/walker":17,"fs":undefined}],19:[function(require,module,exports){
-arguments[4][18][0].apply(exports,arguments)
-},{"../builder/htmlBuilder":2,"../builder/textBuilder":3,"../index":10,"../model/compilerModel":12,"../parser/analyzer":13,"../parser/parser":14,"../parser/validator":16,"../parser/walker":17,"dup":18,"fs":undefined}],20:[function(require,module,exports){
 var PEG = (function() {
   "use strict";
 

@@ -6,7 +6,7 @@ import {ProcessReport, ReportLevel, Book} from "../model/compilerModel";
 import {Analyzer, DefaultAnalyzer} from "../parser/analyzer";
 import {Validator, DefaultValidator} from "../parser/validator";
 
-import {IO} from "../utils/Utils";
+import {IO} from "../utils/utils";
 
 export class Config {
 	_builders: Builder[];
