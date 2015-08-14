@@ -1,7 +1,7 @@
 ///<reference path='../../../typings/mocha/mocha.d.ts' />
 ///<reference path='../../../typings/assert/assert.d.ts' />
 
-///<reference path='../../../lib/parser/Walker.ts' />
+///<reference path='../../../lib/parser/walker.ts' />
 
 "use strict";
 
