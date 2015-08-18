@@ -133,6 +133,7 @@ export function transform(rawResult: ConcreatSyntaxTree): SyntaxTree {
 		case RuleName.Ulist:
 		case RuleName.Olist:
 		case RuleName.Dlist:
+		case RuleName.DlistElementContents:
 			return new NodeSyntaxTree(rawResult);
 		// c パターン
 		case RuleName.Start:
@@ -282,6 +283,7 @@ export enum RuleName {
 	OlistElement,
 	Dlist,
 	DlistElement,
+	DlistElementContents,
 	DlistElementContent,
 	Column,
 	ColumnHeadline,

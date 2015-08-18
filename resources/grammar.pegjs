@@ -168,11 +168,15 @@ Dlist "dlist"
     ;
 
 DlistElement "dlist element"
-    = " "* ":" " " Space* text:SinglelineContent content:DlistElementContent _l
+    = " "* ":" " " Space* text:SinglelineContent content:DlistElementContents _l
+    ;
+
+DlistElementContents "contents of dlist element"
+    = c:DlistElementContent cc:DlistElementContents? _l
     ;
 
 DlistElementContent "content of dlist element"
-    = [ \t]+ c:SinglelineContent
+    = [ \t]+ c:SinglelineContent Newline?
     ;
 
 SinglelineComment "signle line comment"

@@ -279,6 +279,7 @@ var options =
 					content: content
 				};
 			},
+			DlistElementContents: template.contents("DlistElementContents"),
 			DlistElementContent: template.content("DlistElementContent"),
 			SinglelineComment: template.text("SinglelineComment")
 		}
