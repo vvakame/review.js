@@ -111,7 +111,7 @@
 						var $hint = $("#hint").empty();
 						var text = "サポートしている構文\n";
 						syntaxes.acceptableSyntaxes.forEach(function (acceptable) {
-							var SyntaxType = ReVIEW.Build.SyntaxType;
+							var SyntaxType = ReVIEW.SyntaxType;
 							switch (acceptable.type) {
 								case SyntaxType.Other:
 									switch (acceptable.symbolName) {
@@ -163,7 +163,7 @@
 					}
 				},
 
-				builders: [new ReVIEW.Build.TextBuilder(), new ReVIEW.Build.HtmlBuilder(false)],
+				builders: [new ReVIEW.TextBuilder(), new ReVIEW.HtmlBuilder(false)],
 
 				book: {
 					predef: [
