@@ -79,11 +79,11 @@ ColumnTerminator "column terminator"
     = level:"="+ "[/column]" Space* _l
 
 BracketArg "bracket argument"
-    = "[" arg:$([^\r\n\]]*) "]"
+    = "[" arg:$( ( [^\r\n\]\\]+ ( "\\\\" / "\\]" / "\\" )? )* ) "]"
     ;
 
 BraceArg "brace argument"
-    = "{" arg:$([^\r\n\}]*) "}"
+    = "{" arg:$( ( [^\r\n\}\\]+ ( "\\\\" / "\\}" / "\\" )? )* ) "}"
     ;
 
 // contents との差は paragraph を切るか切らないか
