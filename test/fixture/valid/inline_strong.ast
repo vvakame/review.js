@@ -65,6 +65,7 @@
                   "line": 3,
                   "column": 4,
                   "endPos": 32,
+                  "symbol": "strong",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
@@ -83,23 +84,22 @@
                         }
                       ]
                     }
-                  ],
-                  "symbol": "strong"
+                  ]
                 },
                 {
                   "ruleName": "ContentText",
                   "offset": 32,
                   "line": 3,
                   "column": 18,
-                  "endPos": 35,
+                  "endPos": 34,
                   "text": "だ！"
                 }
               ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

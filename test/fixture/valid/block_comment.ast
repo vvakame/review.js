@@ -56,7 +56,7 @@
                   "offset": 17,
                   "line": 3,
                   "column": 1,
-                  "endPos": 19,
+                  "endPos": 18,
                   "text": "前"
                 }
               ]
@@ -92,7 +92,7 @@
                   "offset": 44,
                   "line": 9,
                   "column": 1,
-                  "endPos": 46,
+                  "endPos": 45,
                   "text": "後"
                 }
               ]

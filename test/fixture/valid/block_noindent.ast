@@ -56,7 +56,7 @@
                   "offset": 12,
                   "line": 3,
                   "column": 1,
-                  "endPos": 16,
+                  "endPos": 15,
                   "text": "前段。"
                 }
               ]
@@ -67,16 +67,6 @@
               "line": 5,
               "column": 1,
               "endPos": 56,
-              "childNodes": [
-                {
-                  "ruleName": "BlockElementContentText",
-                  "offset": 35,
-                  "line": 6,
-                  "column": 1,
-                  "endPos": 51,
-                  "text": "var hoge = ...;"
-                }
-              ],
               "symbol": "list",
               "args": [
                 {
@@ -96,7 +86,17 @@
                   "arg": "ほげ"
                 }
               ],
-              "no": 1
+              "no": 1,
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "offset": 35,
+                  "line": 6,
+                  "column": 1,
+                  "endPos": 51,
+                  "text": "var hoge = ...;"
+                }
+              ]
             },
             {
               "ruleName": "Paragraph",
@@ -110,7 +110,7 @@
                   "offset": 56,
                   "line": 9,
                   "column": 1,
-                  "endPos": 60,
+                  "endPos": 59,
                   "text": "中段。"
                 }
               ]
@@ -121,16 +121,6 @@
               "line": 11,
               "column": 1,
               "endPos": 100,
-              "childNodes": [
-                {
-                  "ruleName": "BlockElementContentText",
-                  "offset": 79,
-                  "line": 12,
-                  "column": 1,
-                  "endPos": 95,
-                  "text": "var fuga = ...;"
-                }
-              ],
               "symbol": "list",
               "args": [
                 {
@@ -150,7 +140,17 @@
                   "arg": "ふが"
                 }
               ],
-              "no": 2
+              "no": 2,
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "offset": 79,
+                  "line": 12,
+                  "column": 1,
+                  "endPos": 95,
+                  "text": "var fuga = ...;"
+                }
+              ]
             },
             {
               "ruleName": "BlockElement",
@@ -158,9 +158,9 @@
               "line": 15,
               "column": 1,
               "endPos": 111,
-              "childNodes": [],
               "symbol": "noindent",
-              "args": []
+              "args": [],
+              "childNodes": []
             },
             {
               "ruleName": "Paragraph",
@@ -174,15 +174,15 @@
                   "offset": 111,
                   "line": 16,
                   "column": 1,
-                  "endPos": 115,
+                  "endPos": 114,
                   "text": "後段。"
                 }
               ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

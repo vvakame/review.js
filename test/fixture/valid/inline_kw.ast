@@ -65,6 +65,7 @@
                   "line": 3,
                   "column": 6,
                   "endPos": 41,
+                  "symbol": "kw",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
@@ -83,23 +84,22 @@
                         }
                       ]
                     }
-                  ],
-                  "symbol": "kw"
+                  ]
                 },
                 {
                   "ruleName": "ContentText",
                   "offset": 41,
                   "line": 3,
                   "column": 32,
-                  "endPos": 43,
+                  "endPos": 42,
                   "text": "。"
                 }
               ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

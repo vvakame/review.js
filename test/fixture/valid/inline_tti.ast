@@ -56,7 +56,7 @@
                   "offset": 12,
                   "line": 3,
                   "column": 1,
-                  "endPos": 25,
+                  "endPos": 24,
                   "text": "Hello world!"
                 }
               ]
@@ -74,6 +74,7 @@
                   "line": 5,
                   "column": 1,
                   "endPos": 46,
+                  "symbol": "tti",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
@@ -92,15 +93,14 @@
                         }
                       ]
                     }
-                  ],
-                  "symbol": "tti"
+                  ]
                 }
               ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

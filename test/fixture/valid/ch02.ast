@@ -56,15 +56,15 @@
                   "offset": 11,
                   "line": 3,
                   "column": 1,
-                  "endPos": 25,
+                  "endPos": 24,
                   "text": "基本はサンプルと同様です。"
                 }
               ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

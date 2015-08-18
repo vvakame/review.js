@@ -50,16 +50,6 @@
               "line": 3,
               "column": 1,
               "endPos": 66,
-              "childNodes": [
-                {
-                  "ruleName": "BlockElementContentText",
-                  "offset": 58,
-                  "line": 4,
-                  "column": 1,
-                  "endPos": 61,
-                  "text": "メモ"
-                }
-              ],
               "symbol": "indepimage",
               "args": [
                 {
@@ -86,6 +76,16 @@
                   "endPos": 56,
                   "arg": "scale=0.3"
                 }
+              ],
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "offset": 58,
+                  "line": 4,
+                  "column": 1,
+                  "endPos": 61,
+                  "text": "メモ"
+                }
               ]
             },
             {
@@ -94,16 +94,6 @@
               "line": 7,
               "column": 1,
               "endPos": 103,
-              "childNodes": [
-                {
-                  "ruleName": "BlockElementContentText",
-                  "offset": 95,
-                  "line": 8,
-                  "column": 1,
-                  "endPos": 98,
-                  "text": "メモ"
-                }
-              ],
               "symbol": "indepimage",
               "args": [
                 {
@@ -122,6 +112,16 @@
                   "endPos": 93,
                   "arg": "サンプル"
                 }
+              ],
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "offset": 95,
+                  "line": 8,
+                  "column": 1,
+                  "endPos": 98,
+                  "text": "メモ"
+                }
               ]
             },
             {
@@ -130,16 +130,6 @@
               "line": 11,
               "column": 1,
               "endPos": 133,
-              "childNodes": [
-                {
-                  "ruleName": "BlockElementContentText",
-                  "offset": 126,
-                  "line": 12,
-                  "column": 1,
-                  "endPos": 129,
-                  "text": "メモ"
-                }
-              ],
               "symbol": "indepimage",
               "args": [
                 {
@@ -150,12 +140,22 @@
                   "endPos": 124,
                   "arg": "vvakame"
                 }
+              ],
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "offset": 126,
+                  "line": 12,
+                  "column": 1,
+                  "endPos": 129,
+                  "text": "メモ"
+                }
               ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

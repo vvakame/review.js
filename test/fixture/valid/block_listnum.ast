@@ -65,6 +65,7 @@
                   "line": 3,
                   "column": 10,
                   "endPos": 38,
+                  "symbol": "list",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
@@ -83,15 +84,14 @@
                         }
                       ]
                     }
-                  ],
-                  "symbol": "list"
+                  ]
                 },
                 {
                   "ruleName": "ContentText",
                   "offset": 38,
                   "line": 3,
                   "column": 24,
-                  "endPos": 41,
+                  "endPos": 40,
                   "text": ")。"
                 }
               ]
@@ -102,16 +102,6 @@
               "line": 5,
               "column": 1,
               "endPos": 121,
-              "childNodes": [
-                {
-                  "ruleName": "BlockElementContentText",
-                  "offset": 70,
-                  "line": 6,
-                  "column": 1,
-                  "endPos": 117,
-                  "text": "console.log(\"だと思ったか…！？\");\nconsole.log(\"はろわー\");"
-                }
-              ],
               "symbol": "listnum",
               "args": [
                 {
@@ -131,12 +121,22 @@
                   "arg": "はろーわーるど！"
                 }
               ],
-              "no": 1
+              "no": 1,
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "offset": 70,
+                  "line": 6,
+                  "column": 1,
+                  "endPos": 117,
+                  "text": "console.log(\"だと思ったか…！？\");\nconsole.log(\"はろわー\");"
+                }
+              ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

@@ -50,6 +50,8 @@
               "line": 3,
               "column": 1,
               "endPos": 59,
+              "symbol": "lead",
+              "args": [],
               "childNodes": [
                 {
                   "ruleName": "BlockElementContents",
@@ -88,6 +90,7 @@
                           "line": 6,
                           "column": 1,
                           "endPos": 53,
+                          "symbol": "b",
                           "childNodes": [
                             {
                               "ruleName": "InlineElementContents",
@@ -106,16 +109,13 @@
                                 }
                               ]
                             }
-                          ],
-                          "symbol": "b"
+                          ]
                         }
                       ]
                     }
                   ]
                 }
-              ],
-              "symbol": "lead",
-              "args": []
+              ]
             },
             {
               "ruleName": "BlockElement",
@@ -123,16 +123,6 @@
               "line": 9,
               "column": 1,
               "endPos": 97,
-              "childNodes": [
-                {
-                  "ruleName": "BlockElementContentText",
-                  "offset": 79,
-                  "line": 10,
-                  "column": 1,
-                  "endPos": 92,
-                  "text": "わかめ\n: 定義\n  解説"
-                }
-              ],
               "symbol": "list",
               "args": [
                 {
@@ -152,12 +142,22 @@
                   "arg": "hoge"
                 }
               ],
-              "no": 1
+              "no": 1,
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "offset": 79,
+                  "line": 10,
+                  "column": 1,
+                  "endPos": 92,
+                  "text": "わかめ\n: 定義\n  解説"
+                }
+              ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

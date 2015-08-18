@@ -65,6 +65,7 @@
                   "line": 3,
                   "column": 3,
                   "endPos": 44,
+                  "symbol": "ruby",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
@@ -83,23 +84,22 @@
                         }
                       ]
                     }
-                  ],
-                  "symbol": "ruby"
+                  ]
                 },
                 {
                   "ruleName": "ContentText",
                   "offset": 44,
                   "line": 3,
                   "column": 33,
-                  "endPos": 48,
+                  "endPos": 47,
                   "text": "です。"
                 }
               ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

@@ -3,42 +3,42 @@
   "offset": 0,
   "line": 1,
   "column": 1,
-  "endPos": 76,
+  "endPos": 77,
   "childNodes": [
     {
       "ruleName": "Chapters",
       "offset": 0,
       "line": 1,
       "column": 1,
-      "endPos": 76,
+      "endPos": 77,
       "childNodes": [
         {
           "ruleName": "Chapter",
           "offset": 0,
           "line": 1,
           "column": 1,
-          "endPos": 76,
+          "endPos": 77,
           "headline": {
             "ruleName": "Headline",
             "offset": 0,
             "line": 1,
             "column": 1,
-            "endPos": 6,
+            "endPos": 26,
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
               "offset": 2,
               "line": 1,
               "column": 3,
-              "endPos": 4,
+              "endPos": 24,
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
                   "offset": 2,
                   "line": 1,
                   "column": 3,
-                  "endPos": 4,
-                  "text": "脚注"
+                  "endPos": 24,
+                  "text": "Issue8 inline記法の分割が不適切"
                 }
               ]
             }
@@ -46,41 +46,41 @@
           "text": [
             {
               "ruleName": "Paragraph",
-              "offset": 6,
+              "offset": 26,
               "line": 3,
               "column": 1,
-              "endPos": 43,
+              "endPos": 46,
               "childNodes": [
                 {
                   "ruleName": "ContentText",
-                  "offset": 6,
+                  "offset": 26,
                   "line": 3,
                   "column": 1,
-                  "endPos": 26,
-                  "text": "もんじゃ焼きの焼き方を知っているとモテる"
+                  "endPos": 29,
+                  "text": "あああ"
                 },
                 {
                   "ruleName": "InlineElement",
-                  "offset": 26,
+                  "offset": 29,
                   "line": 3,
-                  "column": 21,
+                  "column": 4,
                   "endPos": 40,
                   "symbol": "fn",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
-                      "offset": 32,
+                      "offset": 35,
                       "line": 3,
-                      "column": 27,
+                      "column": 10,
                       "endPos": 39,
                       "childNodes": [
                         {
                           "ruleName": "InlineElementContentText",
-                          "offset": 32,
+                          "offset": 35,
                           "line": 3,
-                          "column": 27,
+                          "column": 10,
                           "endPos": 39,
-                          "text": "tadaike"
+                          "text": "test"
                         }
                       ]
                     }
@@ -88,37 +88,62 @@
                 },
                 {
                   "ruleName": "ContentText",
-                  "offset": 40,
-                  "line": 3,
-                  "column": 35,
-                  "endPos": 41,
-                  "text": "。"
+                  "offset": 41,
+                  "line": 4,
+                  "column": 1,
+                  "endPos": 44,
+                  "text": "いいい"
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "offset": 46,
+              "line": 6,
+              "column": 1,
+              "endPos": 55,
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "offset": 46,
+                  "line": 6,
+                  "column": 1,
+                  "endPos": 49,
+                  "text": "ううう"
+                },
+                {
+                  "ruleName": "ContentText",
+                  "offset": 50,
+                  "line": 7,
+                  "column": 1,
+                  "endPos": 53,
+                  "text": "えええ"
                 }
               ]
             },
             {
               "ruleName": "BlockElement",
-              "offset": 43,
-              "line": 5,
+              "offset": 55,
+              "line": 9,
               "column": 1,
-              "endPos": 76,
+              "endPos": 77,
               "symbol": "footnote",
               "args": [
                 {
                   "ruleName": "BracketArg",
-                  "offset": 53,
-                  "line": 5,
+                  "offset": 65,
+                  "line": 9,
                   "column": 11,
-                  "endPos": 62,
-                  "arg": "tadaike"
+                  "endPos": 71,
+                  "arg": "test"
                 },
                 {
                   "ruleName": "BracketArg",
-                  "offset": 62,
-                  "line": 5,
-                  "column": 20,
-                  "endPos": 75,
-                  "arg": "ただしイケメンに限る。"
+                  "offset": 71,
+                  "line": 9,
+                  "column": 17,
+                  "endPos": 76,
+                  "arg": "テスト"
                 }
               ],
               "no": 1,

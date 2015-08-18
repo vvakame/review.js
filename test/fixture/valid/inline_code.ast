@@ -65,6 +65,7 @@
                   "line": 3,
                   "column": 4,
                   "endPos": 52,
+                  "symbol": "code",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
@@ -83,23 +84,22 @@
                         }
                       ]
                     }
-                  ],
-                  "symbol": "code"
+                  ]
                 },
                 {
                   "ruleName": "ContentText",
                   "offset": 52,
                   "line": 3,
                   "column": 40,
-                  "endPos": 55,
+                  "endPos": 54,
                   "text": "だ！"
                 }
               ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

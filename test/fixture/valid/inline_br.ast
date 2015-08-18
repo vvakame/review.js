@@ -65,23 +65,23 @@
                   "line": 3,
                   "column": 13,
                   "endPos": 30,
-                  "childNodes": [],
-                  "symbol": "br"
+                  "symbol": "br",
+                  "childNodes": []
                 },
                 {
                   "ruleName": "ContentText",
                   "offset": 30,
                   "line": 3,
                   "column": 20,
-                  "endPos": 36,
+                  "endPos": 35,
                   "text": "ですねー！"
                 }
               ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

@@ -50,16 +50,6 @@
               "line": 3,
               "column": 1,
               "endPos": 54,
-              "childNodes": [
-                {
-                  "ruleName": "BlockElementContentText",
-                  "offset": 46,
-                  "line": 4,
-                  "column": 1,
-                  "endPos": 49,
-                  "text": "メモ"
-                }
-              ],
               "symbol": "image",
               "args": [
                 {
@@ -87,7 +77,17 @@
                   "arg": "scale=0.3"
                 }
               ],
-              "no": 1
+              "no": 1,
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "offset": 46,
+                  "line": 4,
+                  "column": 1,
+                  "endPos": 49,
+                  "text": "メモ"
+                }
+              ]
             },
             {
               "ruleName": "Paragraph",
@@ -102,6 +102,7 @@
                   "line": 7,
                   "column": 1,
                   "endPos": 69,
+                  "symbol": "img",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
@@ -120,15 +121,14 @@
                         }
                       ]
                     }
-                  ],
-                  "symbol": "img"
+                  ]
                 }
               ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

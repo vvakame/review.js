@@ -34,12 +34,12 @@ ParagraphSubs "paragraph subs"
     ;
 
 ParagraphSub "paragraph sub"
-    = c:InlineElement
-    / c:ContentText
+    = c:InlineElement Newline?
+    / c:ContentText Newline?
     ;
 
 ContentText "text of content"
-    = text:$( !Newline !Headline !SinglelineComment !BlockElement !Ulist !Olist !Dlist ( !InlineElement [^\r\n] )+ Newline? ContentText? )
+    = text:$( !Newline !Headline !SinglelineComment !BlockElement !Ulist !Olist !Dlist ( !InlineElement [^\r\n] )+ )
     ;
 
 BlockElement "block element"

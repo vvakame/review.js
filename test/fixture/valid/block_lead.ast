@@ -50,6 +50,8 @@
               "line": 3,
               "column": 1,
               "endPos": 51,
+              "symbol": "lead",
+              "args": [],
               "childNodes": [
                 {
                   "ruleName": "BlockElementContents",
@@ -111,14 +113,12 @@
                     }
                   ]
                 }
-              ],
-              "symbol": "lead",
-              "args": []
+              ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

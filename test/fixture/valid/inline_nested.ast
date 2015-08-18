@@ -57,6 +57,7 @@
                   "line": 2,
                   "column": 1,
                   "endPos": 27,
+                  "symbol": "b",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
@@ -79,6 +80,7 @@
                           "line": 2,
                           "column": 8,
                           "endPos": 26,
+                          "symbol": "b",
                           "childNodes": [
                             {
                               "ruleName": "InlineElementContents",
@@ -97,20 +99,18 @@
                                 }
                               ]
                             }
-                          ],
-                          "symbol": "b"
+                          ]
                         }
                       ]
                     }
-                  ],
-                  "symbol": "b"
+                  ]
                 }
               ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

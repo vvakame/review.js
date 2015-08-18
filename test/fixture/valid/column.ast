@@ -91,7 +91,7 @@
                       "offset": 24,
                       "line": 5,
                       "column": 1,
-                      "endPos": 27,
+                      "endPos": 26,
                       "text": "本文"
                     }
                   ]
@@ -140,7 +140,7 @@
                           "offset": 47,
                           "line": 9,
                           "column": 1,
-                          "endPos": 54,
+                          "endPos": 53,
                           "text": "コラム本文1"
                         }
                       ]
@@ -199,7 +199,7 @@
                       "offset": 85,
                       "line": 15,
                       "column": 1,
-                      "endPos": 88,
+                      "endPos": 87,
                       "text": "本文"
                     }
                   ]
@@ -248,7 +248,7 @@
                           "offset": 108,
                           "line": 19,
                           "column": 1,
-                          "endPos": 115,
+                          "endPos": 114,
                           "text": "コラム本文2"
                         }
                       ]
@@ -307,7 +307,7 @@
                       "offset": 126,
                       "line": 23,
                       "column": 1,
-                      "endPos": 130,
+                      "endPos": 129,
                       "text": "本文前"
                     }
                   ]
@@ -356,7 +356,7 @@
                           "offset": 150,
                           "line": 27,
                           "column": 1,
-                          "endPos": 157,
+                          "endPos": 156,
                           "text": "コラム本文3"
                         }
                       ]
@@ -378,7 +378,7 @@
                       "offset": 172,
                       "line": 31,
                       "column": 1,
-                      "endPos": 176,
+                      "endPos": 175,
                       "text": "本文後"
                     }
                   ]

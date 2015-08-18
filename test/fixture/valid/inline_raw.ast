@@ -85,7 +85,7 @@
               "offset": 29,
               "line": 5,
               "column": 1,
-              "endPos": 54,
+              "endPos": 113,
               "childNodes": [
                 {
                   "ruleName": "InlineElement",
@@ -113,16 +113,7 @@
                       ]
                     }
                   ]
-                }
-              ]
-            },
-            {
-              "ruleName": "Paragraph",
-              "offset": 54,
-              "line": 6,
-              "column": 1,
-              "endPos": 79,
-              "childNodes": [
+                },
                 {
                   "ruleName": "InlineElement",
                   "offset": 54,
@@ -149,16 +140,7 @@
                       ]
                     }
                   ]
-                }
-              ]
-            },
-            {
-              "ruleName": "Paragraph",
-              "offset": 79,
-              "line": 7,
-              "column": 1,
-              "endPos": 113,
-              "childNodes": [
+                },
                 {
                   "ruleName": "InlineElement",
                   "offset": 79,

@@ -56,7 +56,7 @@
                   "offset": 14,
                   "line": 3,
                   "column": 1,
-                  "endPos": 24,
+                  "endPos": 23,
                   "text": "わかんねんけどな。"
                 }
               ]
@@ -67,16 +67,6 @@
               "line": 5,
               "column": 1,
               "endPos": 73,
-              "childNodes": [
-                {
-                  "ruleName": "BlockElementContentText",
-                  "offset": 47,
-                  "line": 6,
-                  "column": 1,
-                  "endPos": 68,
-                  "text": "console.log(\"hoge\");"
-                }
-              ],
               "symbol": "emlist",
               "args": [
                 {
@@ -87,6 +77,16 @@
                   "endPos": 45,
                   "arg": "hogeでございます"
                 }
+              ],
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "offset": 47,
+                  "line": 6,
+                  "column": 1,
+                  "endPos": 68,
+                  "text": "console.log(\"hoge\");"
+                }
               ]
             },
             {
@@ -95,6 +95,8 @@
               "line": 9,
               "column": 1,
               "endPos": 108,
+              "symbol": "emlist",
+              "args": [],
               "childNodes": [
                 {
                   "ruleName": "BlockElementContentText",
@@ -104,14 +106,12 @@
                   "endPos": 104,
                   "text": "console.log(\"fuga\");"
                 }
-              ],
-              "symbol": "emlist",
-              "args": []
+              ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

@@ -56,7 +56,7 @@
                   "offset": 15,
                   "line": 3,
                   "column": 1,
-                  "endPos": 28,
+                  "endPos": 27,
                   "text": "Hello world!"
                 }
               ]
@@ -67,16 +67,6 @@
               "line": 5,
               "column": 1,
               "endPos": 88,
-              "childNodes": [
-                {
-                  "ruleName": "BlockElementContentText",
-                  "offset": 56,
-                  "line": 6,
-                  "column": 1,
-                  "endPos": 84,
-                  "text": "console.log(\"Hello world\");"
-                }
-              ],
               "symbol": "source",
               "args": [
                 {
@@ -87,12 +77,22 @@
                   "endPos": 54,
                   "arg": "/hello/world.ts"
                 }
+              ],
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "offset": 56,
+                  "line": 6,
+                  "column": 1,
+                  "endPos": 84,
+                  "text": "console.log(\"Hello world\");"
+                }
               ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

@@ -65,6 +65,7 @@
                   "line": 3,
                   "column": 21,
                   "endPos": 40,
+                  "symbol": "fn",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
@@ -83,15 +84,14 @@
                         }
                       ]
                     }
-                  ],
-                  "symbol": "fn"
+                  ]
                 },
                 {
                   "ruleName": "ContentText",
                   "offset": 40,
                   "line": 3,
                   "column": 35,
-                  "endPos": 42,
+                  "endPos": 41,
                   "text": "。"
                 }
               ]
@@ -102,7 +102,6 @@
               "line": 5,
               "column": 1,
               "endPos": 76,
-              "childNodes": [],
               "symbol": "footnote",
               "args": [
                 {
@@ -122,12 +121,13 @@
                   "arg": "ただしイケメンに限る。"
                 }
               ],
-              "no": 1
+              "no": 1,
+              "childNodes": []
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

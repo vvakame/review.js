@@ -65,6 +65,7 @@
                   "line": 3,
                   "column": 20,
                   "endPos": 52,
+                  "symbol": "href",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
@@ -83,16 +84,23 @@
                         }
                       ]
                     }
-                  ],
-                  "symbol": "href"
+                  ]
                 },
                 {
                   "ruleName": "ContentText",
                   "offset": 52,
                   "line": 3,
                   "column": 40,
+                  "endPos": 64,
+                  "text": "の場所をわきまえなヨー！"
+                },
+                {
+                  "ruleName": "ContentText",
+                  "offset": 65,
+                  "line": 4,
+                  "column": 1,
                   "endPos": 67,
-                  "text": "の場所をわきまえなヨー！\nあと"
+                  "text": "あと"
                 },
                 {
                   "ruleName": "InlineElement",
@@ -100,6 +108,7 @@
                   "line": 4,
                   "column": 3,
                   "endPos": 82,
+                  "symbol": "href",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
@@ -118,15 +127,14 @@
                         }
                       ]
                     }
-                  ],
-                  "symbol": "href"
+                  ]
                 },
                 {
                   "ruleName": "ContentText",
                   "offset": 82,
                   "line": 4,
                   "column": 18,
-                  "endPos": 87,
+                  "endPos": 86,
                   "text": "だよー。"
                 }
               ]
@@ -143,7 +151,7 @@
                   "offset": 88,
                   "line": 6,
                   "column": 1,
-                  "endPos": 95,
+                  "endPos": 94,
                   "text": "え？ラベル？"
                 }
               ]
@@ -154,7 +162,6 @@
               "line": 7,
               "column": 1,
               "endPos": 110,
-              "childNodes": [],
               "symbol": "label",
               "args": [
                 {
@@ -166,7 +173,8 @@
                   "arg": "label"
                 }
               ],
-              "no": 1
+              "no": 1,
+              "childNodes": []
             },
             {
               "ruleName": "Paragraph",
@@ -180,15 +188,15 @@
                   "offset": 110,
                   "line": 8,
                   "column": 1,
-                  "endPos": 120,
+                  "endPos": 119,
                   "text": "ここっすわ、ここ。"
                 }
               ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }

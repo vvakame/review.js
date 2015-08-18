@@ -65,6 +65,7 @@
                   "line": 3,
                   "column": 20,
                   "endPos": 53,
+                  "symbol": "href",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
@@ -83,15 +84,14 @@
                         }
                       ]
                     }
-                  ],
-                  "symbol": "href"
+                  ]
                 },
                 {
                   "ruleName": "ContentText",
                   "offset": 53,
                   "line": 3,
                   "column": 40,
-                  "endPos": 66,
+                  "endPos": 65,
                   "text": "の場所をわきまえなヨー！"
                 }
               ]
@@ -108,7 +108,7 @@
                   "offset": 67,
                   "line": 5,
                   "column": 1,
-                  "endPos": 74,
+                  "endPos": 73,
                   "text": "え？ラベル？"
                 }
               ]
@@ -119,7 +119,6 @@
               "line": 6,
               "column": 1,
               "endPos": 89,
-              "childNodes": [],
               "symbol": "label",
               "args": [
                 {
@@ -131,7 +130,8 @@
                   "arg": "label"
                 }
               ],
-              "no": 1
+              "no": 1,
+              "childNodes": []
             },
             {
               "ruleName": "Paragraph",
@@ -145,15 +145,15 @@
                   "offset": 89,
                   "line": 7,
                   "column": 1,
-                  "endPos": 99,
+                  "endPos": 98,
                   "text": "ここっすわ、ここ。"
                 }
               ]
             }
           ],
-          "childNodes": [],
           "no": 1,
-          "level": 1
+          "level": 1,
+          "childNodes": []
         }
       ]
     }
