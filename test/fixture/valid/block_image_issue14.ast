@@ -1,0 +1,83 @@
+{
+  "ruleName": "Start",
+  "offset": 0,
+  "line": 1,
+  "column": 1,
+  "endPos": 52,
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "offset": 0,
+      "line": 1,
+      "column": 1,
+      "endPos": 52,
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "offset": 0,
+          "line": 1,
+          "column": 1,
+          "endPos": 52,
+          "headline": {
+            "ruleName": "Headline",
+            "offset": 0,
+            "line": 1,
+            "column": 1,
+            "endPos": 11,
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "offset": 2,
+              "line": 1,
+              "column": 3,
+              "endPos": 9,
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "offset": 2,
+                  "line": 1,
+                  "column": 3,
+                  "endPos": 9,
+                  "text": "Issue14"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "BlockElement",
+              "offset": 11,
+              "line": 3,
+              "column": 1,
+              "endPos": 52,
+              "symbol": "image",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 18,
+                  "line": 3,
+                  "column": 8,
+                  "endPos": 27,
+                  "arg": "vvakame"
+                },
+                {
+                  "ruleName": "BracketArg",
+                  "offset": 27,
+                  "line": 3,
+                  "column": 17,
+                  "endPos": 44,
+                  "arg": "これらは全てマウスで操作できる"
+                }
+              ],
+              "no": 1,
+              "childNodes": []
+            }
+          ],
+          "no": 1,
+          "level": 1,
+          "childNodes": []
+        }
+      ]
+    }
+  ]
+}

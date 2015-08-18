@@ -12,12 +12,12 @@ Chapter "chapter"
 
 // = 章タイトル
 Headline "headline"
-    = level:"="+ label:BraceArg? Space* caption:SinglelineContent Newline*
+    = level:"="+ label:BraceArg? Space* caption:SinglelineContent _l
     ;
 
 Contents "contents"
     // eof 検出に &. を使っている
-    = &. c:Content cc:Contents? Newline?
+    = &. c:Content cc:Contents? _l
     ;
 
 Content "content"
@@ -43,7 +43,7 @@ ContentText "text of content"
     ;
 
 BlockElement "block element"
-    = "//" symbol:$(AZ+) args:BracketArg* "{" Newline contents:BlockElementContents? "//}" _l
+    = "//" symbol:$(AZ+) args:BracketArg* "{" _l contents:BlockElementContents? "//}" _l
     / "//" symbol:$(AZ+) args:BracketArg* _l
     ;
 
@@ -56,12 +56,12 @@ Column "column"
     ;
 
 ColumnHeadline "column headline"
-    = level:"="+ "[column]" Space* caption:SinglelineContent Newline*
+    = level:"="+ "[column]" Space* caption:SinglelineContent _l
     ;
 
 ColumnContents "column contents"
     // eof 検出に &. を使っている
-    = &. c:ColumnContent cc:ColumnContents? Newline?
+    = &. c:ColumnContent cc:ColumnContents? _l
     ;
 
 ColumnContent "column content"
@@ -76,7 +76,7 @@ ColumnContent "column content"
     ;
 
 ColumnTerminator "column terminator"
-    = level:"="+ "[/column]" Space* Newline+
+    = level:"="+ "[/column]" Space* _l
 
 BracketArg "bracket argument"
     = "[" arg:$([^\r\n\]]*) "]"

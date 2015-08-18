@@ -984,7 +984,7 @@ var PEG = (function() {
     }
 
     function peg$parseHeadline() {
-      var s0, s1, s2, s3, s4, s5, s6;
+      var s0, s1, s2, s3, s4, s5;
 
       var key    = peg$currPos * 48 + 3,
           cached = peg$resultsCache[key];
@@ -1034,12 +1034,7 @@ var PEG = (function() {
           if (s3 !== peg$FAILED) {
             s4 = peg$parseSinglelineContent();
             if (s4 !== peg$FAILED) {
-              s5 = [];
-              s6 = peg$parseNewline();
-              while (s6 !== peg$FAILED) {
-                s5.push(s6);
-                s6 = peg$parseNewline();
-              }
+              s5 = peg$parse_l();
               if (s5 !== peg$FAILED) {
                 peg$savedPos = s0;
                 s1 = peg$c9(s1, s2, s4);
@@ -1113,10 +1108,7 @@ var PEG = (function() {
             s3 = null;
           }
           if (s3 !== peg$FAILED) {
-            s4 = peg$parseNewline();
-            if (s4 === peg$FAILED) {
-              s4 = null;
-            }
+            s4 = peg$parse_l();
             if (s4 !== peg$FAILED) {
               peg$savedPos = s0;
               s1 = peg$c12(s2, s3);
@@ -1666,7 +1658,7 @@ var PEG = (function() {
               if (peg$silentFails === 0) { peg$fail(peg$c29); }
             }
             if (s4 !== peg$FAILED) {
-              s5 = peg$parseNewline();
+              s5 = peg$parse_l();
               if (s5 !== peg$FAILED) {
                 s6 = peg$parseBlockElementContents();
                 if (s6 === peg$FAILED) {
@@ -1956,7 +1948,7 @@ var PEG = (function() {
     }
 
     function peg$parseColumnHeadline() {
-      var s0, s1, s2, s3, s4, s5, s6;
+      var s0, s1, s2, s3, s4, s5;
 
       var key    = peg$currPos * 48 + 13,
           cached = peg$resultsCache[key];
@@ -2009,12 +2001,7 @@ var PEG = (function() {
           if (s3 !== peg$FAILED) {
             s4 = peg$parseSinglelineContent();
             if (s4 !== peg$FAILED) {
-              s5 = [];
-              s6 = peg$parseNewline();
-              while (s6 !== peg$FAILED) {
-                s5.push(s6);
-                s6 = peg$parseNewline();
-              }
+              s5 = peg$parse_l();
               if (s5 !== peg$FAILED) {
                 peg$savedPos = s0;
                 s1 = peg$c49(s1, s4);
@@ -2088,10 +2075,7 @@ var PEG = (function() {
             s3 = null;
           }
           if (s3 !== peg$FAILED) {
-            s4 = peg$parseNewline();
-            if (s4 === peg$FAILED) {
-              s4 = null;
-            }
+            s4 = peg$parse_l();
             if (s4 !== peg$FAILED) {
               peg$savedPos = s0;
               s1 = peg$c51(s2, s3);
@@ -2335,7 +2319,7 @@ var PEG = (function() {
     }
 
     function peg$parseColumnTerminator() {
-      var s0, s1, s2, s3, s4, s5;
+      var s0, s1, s2, s3, s4;
 
       var key    = peg$currPos * 48 + 16,
           cached = peg$resultsCache[key];
@@ -2386,16 +2370,7 @@ var PEG = (function() {
             s4 = peg$parseSpace();
           }
           if (s3 !== peg$FAILED) {
-            s4 = [];
-            s5 = peg$parseNewline();
-            if (s5 !== peg$FAILED) {
-              while (s5 !== peg$FAILED) {
-                s4.push(s5);
-                s5 = peg$parseNewline();
-              }
-            } else {
-              s4 = peg$FAILED;
-            }
+            s4 = peg$parse_l();
             if (s4 !== peg$FAILED) {
               peg$savedPos = s0;
               s1 = peg$c57(s1);
