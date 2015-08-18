@@ -20,9 +20,6 @@ Node.js上とモダンなWebブラウザ上で動作することを目指しま�
 現状Ruby版で使えて、ReVIEW.jsで使えない記法は以下の通りです。
 
 * texequation ブロック記法
-* chap インライン記法
-* title インライン記法
-* chapref インライン記法
 * m インライン記法
 * bibpaper ブロック記法
 * bib インライン記法
@@ -69,12 +66,12 @@ WebStormで開発している場合、Cmd+Oとかでクラス一覧が参照で�
 # 構文追加のための最初の一歩
 
  1. 構文のノード構築部分を追加する
-lib/parser/Analyzer.ts の DefaultAnalyzer に構文用のメソッドを追加します。
-Analyzer.tsの末尾にある TODO 以下のものの実装をすすめます。
-Analyzer.tsの中でinlineが先頭になっているものが簡単に実装できる。実装はまわりのメソッドを参考に。
+lib/parser/analyzer.ts の DefaultAnalyzer に構文用のメソッドを追加します。
+analyzer.tsの末尾にある TODO 以下のものの実装をすすめます。
+analyzer.tsの中でinlineが先頭になっているものが簡単に実装できる。実装はまわりのメソッドを参考に。
  2. 出力部分を追加する
 lib/builder/ のなかに出力用ファイルがあります。
-HtmlBuilder.ts,TextBuilder.ts のファイルにも1と同様に同名のメソッドを追加します。
+htmlBuilder.ts,textBuilder.ts のファイルにも1と同様に同名のメソッドを追加します。
 メソッド名＿pre,メソッド名＿postの関数を用意した場合にはメソッドの実行前、実行後にそれぞれ処理が実行されます。
 まずはテキストのデータを表示してみましょう。
 テキストのデータを取り出したい場合は以下の様に記述すると文字の部分が取得できます。
