@@ -293,10 +293,17 @@ export enum RuleName {
 	SinglelineComment,
 }
 
+export interface NodeLocation {
+	line: number;
+	column: number;
+	offset: number;
+	endPos: number;
+}
+
 /**
  * 構文解析後の少し加工したデータ。
  */
-export class SyntaxTree {
+export class SyntaxTree implements NodeLocation {
 	parentNode: SyntaxTree;
 	offset: number;
 	line: number;

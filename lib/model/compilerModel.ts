@@ -4,7 +4,7 @@
 
 import {t} from "../i18n/i18n";
 
-import {ConcreatSyntaxTree, SyntaxTree, InlineElementSyntaxTree, BlockElementSyntaxTree, ChapterSyntaxTree} from "../parser/parser";
+import {ConcreatSyntaxTree, NodeLocation, SyntaxTree, InlineElementSyntaxTree, BlockElementSyntaxTree, ChapterSyntaxTree} from "../parser/parser";
 
 import {AcceptableSyntaxes} from "../parser/analyzer";
 import {Builder} from "../builder/builder";
@@ -50,7 +50,7 @@ export enum ReportLevel {
  * 処理時に発生したレポート。
  */
 export class ProcessReport {
-	constructor(public level: ReportLevel, public part: ContentChunk, public chapter: ContentChunk, public message: string, public nodes: SyntaxTree[] = []) {
+	constructor(public level: ReportLevel, public part: ContentChunk, public chapter: ContentChunk, public message: string, public nodes: NodeLocation[] = []) {
 	}
 }
 
@@ -85,15 +85,15 @@ export class Process {
 	constructor(public part: ContentChunk, public chapter: ContentChunk, public input: string) {
 	}
 
-	info(message: string, ...nodes: SyntaxTree[]) {
+	info(message: string, ...nodes: NodeLocation[]) {
 		this._reports.push(new ProcessReport(ReportLevel.Info, this.part, this.chapter, message, nodes));
 	}
 
-	warn(message: string, ...nodes: SyntaxTree[]) {
+	warn(message: string, ...nodes: NodeLocation[]) {
 		this._reports.push(new ProcessReport(ReportLevel.Warning, this.part, this.chapter, message, nodes));
 	}
 
-	error(message: string, ...nodes: SyntaxTree[]) {
+	error(message: string, ...nodes: NodeLocation[]) {
 		this._reports.push(new ProcessReport(ReportLevel.Error, this.part, this.chapter, message, nodes));
 	}
 

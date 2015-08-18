@@ -15,7 +15,7 @@ import {Book, ReportLevel, ProcessReport, Symbol} from "./model/compilerModel";
 import {Options} from "./controller/configRaw";
 import {Controller} from "./controller/controller";
 
-import {SyntaxTree} from "./parser/parser";
+import {NodeLocation, SyntaxTree} from "./parser/parser";
 import {AcceptableSyntaxes, Analyzer, DefaultAnalyzer} from "./parser/analyzer";
 
 import {Builder, DefaultBuilder} from "./builder/builder";
@@ -23,7 +23,7 @@ import {HtmlBuilder} from "./builder/htmlBuilder";
 import {TextBuilder} from "./builder/textBuilder";
 import {SyntaxType} from "./parser/analyzer";
 
-export { Book, ReportLevel, ProcessReport, Symbol, SyntaxTree, AcceptableSyntaxes, Analyzer, DefaultAnalyzer, Builder, DefaultBuilder, HtmlBuilder, TextBuilder, SyntaxType };
+export { Book, ReportLevel, ProcessReport, NodeLocation, Symbol, SyntaxTree, AcceptableSyntaxes, Analyzer, DefaultAnalyzer, Builder, DefaultBuilder, HtmlBuilder, TextBuilder, SyntaxType };
 
 // AMD用
 declare var define: any;
@@ -48,12 +48,13 @@ export function _doNotUseHackForTypeScriptIssue4274() {
 	"use strict";
 
 	/* tslint:disable:variable-name */
+	let NodeLocation: NodeLocation;
 	let Symbol: Symbol;
 	let Analyzer: Analyzer;
 	let Builder: Builder;
 	return {
 		Book, ReportLevel, ProcessReport, Symbol,
-		SyntaxTree,
+		NodeLocation, SyntaxTree,
 		AcceptableSyntaxes, Analyzer, DefaultAnalyzer,
 		Builder, DefaultBuilder, HtmlBuilder, TextBuilder, SyntaxType
 	};
