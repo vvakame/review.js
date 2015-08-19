@@ -1,43 +1,91 @@
 {
   "ruleName": "Start",
-  "offset": 0,
-  "line": 1,
-  "column": 1,
-  "endPos": 25,
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 1,
+      "offset": 25
+    }
+  },
   "childNodes": [
     {
       "ruleName": "Chapters",
-      "offset": 0,
-      "line": 1,
-      "column": 1,
-      "endPos": 25,
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 1,
+          "offset": 25
+        }
+      },
       "childNodes": [
         {
           "ruleName": "Chapter",
-          "offset": 0,
-          "line": 1,
-          "column": 1,
-          "endPos": 25,
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 4,
+              "column": 1,
+              "offset": 25
+            }
+          },
           "headline": {
             "ruleName": "Headline",
-            "offset": 0,
-            "line": 1,
-            "column": 1,
-            "endPos": 11,
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 11
+              }
+            },
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
-              "offset": 2,
-              "line": 1,
-              "column": 3,
-              "endPos": 9,
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 10,
+                  "offset": 9
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
-                  "offset": 2,
-                  "line": 1,
-                  "column": 3,
-                  "endPos": 9,
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 10,
+                      "offset": 9
+                    }
+                  },
                   "text": "サンプルその２"
                 }
               ]
@@ -46,17 +94,33 @@
           "text": [
             {
               "ruleName": "Paragraph",
-              "offset": 11,
-              "line": 3,
-              "column": 1,
-              "endPos": 25,
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 11
+                },
+                "end": {
+                  "line": 4,
+                  "column": 1,
+                  "offset": 25
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentText",
-                  "offset": 11,
-                  "line": 3,
-                  "column": 1,
-                  "endPos": 24,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 1,
+                      "offset": 11
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 14,
+                      "offset": 24
+                    }
+                  },
                   "text": "基本はサンプルと同様です。"
                 }
               ]

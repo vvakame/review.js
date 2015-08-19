@@ -1,43 +1,91 @@
 {
   "ruleName": "Start",
-  "offset": 0,
-  "line": 1,
-  "column": 1,
-  "endPos": 88,
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 8,
+      "column": 1,
+      "offset": 88
+    }
+  },
   "childNodes": [
     {
       "ruleName": "Chapters",
-      "offset": 0,
-      "line": 1,
-      "column": 1,
-      "endPos": 88,
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 1,
+          "offset": 88
+        }
+      },
       "childNodes": [
         {
           "ruleName": "Chapter",
-          "offset": 0,
-          "line": 1,
-          "column": 1,
-          "endPos": 88,
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 8,
+              "column": 1,
+              "offset": 88
+            }
+          },
           "headline": {
             "ruleName": "Headline",
-            "offset": 0,
-            "line": 1,
-            "column": 1,
-            "endPos": 15,
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 15
+              }
+            },
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
-              "offset": 2,
-              "line": 1,
-              "column": 3,
-              "endPos": 13,
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 14,
+                  "offset": 13
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
-                  "offset": 2,
-                  "line": 1,
-                  "column": 3,
-                  "endPos": 13,
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 14,
+                      "offset": 13
+                    }
+                  },
                   "text": "source のテスト"
                 }
               ]
@@ -46,45 +94,85 @@
           "text": [
             {
               "ruleName": "Paragraph",
-              "offset": 15,
-              "line": 3,
-              "column": 1,
-              "endPos": 29,
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 15
+                },
+                "end": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 29
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentText",
-                  "offset": 15,
-                  "line": 3,
-                  "column": 1,
-                  "endPos": 27,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 1,
+                      "offset": 15
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 13,
+                      "offset": 27
+                    }
+                  },
                   "text": "Hello world!"
                 }
               ]
             },
             {
               "ruleName": "BlockElement",
-              "offset": 29,
-              "line": 5,
-              "column": 1,
-              "endPos": 88,
+              "location": {
+                "start": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 29
+                },
+                "end": {
+                  "line": 8,
+                  "column": 1,
+                  "offset": 88
+                }
+              },
               "symbol": "source",
               "args": [
                 {
                   "ruleName": "BracketArg",
-                  "offset": 37,
-                  "line": 5,
-                  "column": 9,
-                  "endPos": 54,
+                  "location": {
+                    "start": {
+                      "line": 5,
+                      "column": 9,
+                      "offset": 37
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 26,
+                      "offset": 54
+                    }
+                  },
                   "arg": "/hello/world.ts"
                 }
               ],
               "childNodes": [
                 {
                   "ruleName": "BlockElementContentText",
-                  "offset": 56,
-                  "line": 6,
-                  "column": 1,
-                  "endPos": 84,
+                  "location": {
+                    "start": {
+                      "line": 6,
+                      "column": 1,
+                      "offset": 56
+                    },
+                    "end": {
+                      "line": null,
+                      "column": null,
+                      "offset": 28
+                    }
+                  },
                   "text": "console.log(\"Hello world\");"
                 }
               ]

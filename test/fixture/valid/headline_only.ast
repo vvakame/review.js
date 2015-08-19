@@ -1,51 +1,107 @@
 {
   "ruleName": "Start",
-  "offset": 0,
-  "line": 1,
-  "column": 1,
-  "endPos": 14,
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 1,
+      "offset": 14
+    }
+  },
   "childNodes": [
     {
       "ruleName": "Chapters",
-      "offset": 0,
-      "line": 1,
-      "column": 1,
-      "endPos": 14,
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 1,
+          "offset": 14
+        }
+      },
       "childNodes": [
         {
           "ruleName": "Chapter",
-          "offset": 0,
-          "line": 1,
-          "column": 1,
-          "endPos": 14,
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 1,
+              "offset": 14
+            }
+          },
           "headline": {
             "ruleName": "Headline",
-            "offset": 0,
-            "line": 1,
-            "column": 1,
-            "endPos": 14,
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 2,
+                "column": 1,
+                "offset": 14
+              }
+            },
             "level": 1,
             "label": {
               "ruleName": "BraceArg",
-              "offset": 1,
-              "line": 1,
-              "column": 2,
-              "endPos": 7,
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 2,
+                  "offset": 1
+                },
+                "end": {
+                  "line": 1,
+                  "column": 8,
+                  "offset": 7
+                }
+              },
               "arg": "fuga"
             },
             "caption": {
               "ruleName": "ContentInlines",
-              "offset": 8,
-              "line": 1,
-              "column": 9,
-              "endPos": 13,
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 9,
+                  "offset": 8
+                },
+                "end": {
+                  "line": 1,
+                  "column": 14,
+                  "offset": 13
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
-                  "offset": 8,
-                  "line": 1,
-                  "column": 9,
-                  "endPos": 13,
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 9,
+                      "offset": 8
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 14,
+                      "offset": 13
+                    }
+                  },
                   "text": "ヘッダのみ"
                 }
               ]

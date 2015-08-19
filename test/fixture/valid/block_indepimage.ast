@@ -1,43 +1,91 @@
 {
   "ruleName": "Start",
-  "offset": 0,
-  "line": 1,
-  "column": 1,
-  "endPos": 133,
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 14,
+      "column": 1,
+      "offset": 133
+    }
+  },
   "childNodes": [
     {
       "ruleName": "Chapters",
-      "offset": 0,
-      "line": 1,
-      "column": 1,
-      "endPos": 133,
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 14,
+          "column": 1,
+          "offset": 133
+        }
+      },
       "childNodes": [
         {
           "ruleName": "Chapter",
-          "offset": 0,
-          "line": 1,
-          "column": 1,
-          "endPos": 133,
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 14,
+              "column": 1,
+              "offset": 133
+            }
+          },
           "headline": {
             "ruleName": "Headline",
-            "offset": 0,
-            "line": 1,
-            "column": 1,
-            "endPos": 18,
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 18
+              }
+            },
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
-              "offset": 2,
-              "line": 1,
-              "column": 3,
-              "endPos": 16,
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 17,
+                  "offset": 16
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
-                  "offset": 2,
-                  "line": 1,
-                  "column": 3,
-                  "endPos": 16,
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 17,
+                      "offset": 16
+                    }
+                  },
                   "text": "indepimageのテスト"
                 }
               ]
@@ -46,108 +94,204 @@
           "text": [
             {
               "ruleName": "BlockElement",
-              "offset": 18,
-              "line": 3,
-              "column": 1,
-              "endPos": 66,
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 18
+                },
+                "end": {
+                  "line": 7,
+                  "column": 1,
+                  "offset": 66
+                }
+              },
               "symbol": "indepimage",
               "args": [
                 {
                   "ruleName": "BracketArg",
-                  "offset": 30,
-                  "line": 3,
-                  "column": 13,
-                  "endPos": 39,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 13,
+                      "offset": 30
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 22,
+                      "offset": 39
+                    }
+                  },
                   "arg": "vvakame"
                 },
                 {
                   "ruleName": "BracketArg",
-                  "offset": 39,
-                  "line": 3,
-                  "column": 22,
-                  "endPos": 45,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 22,
+                      "offset": 39
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 28,
+                      "offset": 45
+                    }
+                  },
                   "arg": "サンプル"
                 },
                 {
                   "ruleName": "BracketArg",
-                  "offset": 45,
-                  "line": 3,
-                  "column": 28,
-                  "endPos": 56,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 28,
+                      "offset": 45
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 39,
+                      "offset": 56
+                    }
+                  },
                   "arg": "scale=0.3"
                 }
               ],
               "childNodes": [
                 {
                   "ruleName": "BlockElementContentText",
-                  "offset": 58,
-                  "line": 4,
-                  "column": 1,
-                  "endPos": 61,
+                  "location": {
+                    "start": {
+                      "line": 4,
+                      "column": 1,
+                      "offset": 58
+                    },
+                    "end": {
+                      "line": null,
+                      "column": null,
+                      "offset": 17
+                    }
+                  },
                   "text": "メモ"
                 }
               ]
             },
             {
               "ruleName": "BlockElement",
-              "offset": 66,
-              "line": 7,
-              "column": 1,
-              "endPos": 103,
+              "location": {
+                "start": {
+                  "line": 7,
+                  "column": 1,
+                  "offset": 66
+                },
+                "end": {
+                  "line": 11,
+                  "column": 1,
+                  "offset": 103
+                }
+              },
               "symbol": "indepimage",
               "args": [
                 {
                   "ruleName": "BracketArg",
-                  "offset": 78,
-                  "line": 7,
-                  "column": 13,
-                  "endPos": 87,
+                  "location": {
+                    "start": {
+                      "line": 7,
+                      "column": 13,
+                      "offset": 78
+                    },
+                    "end": {
+                      "line": 7,
+                      "column": 22,
+                      "offset": 87
+                    }
+                  },
                   "arg": "vvakame"
                 },
                 {
                   "ruleName": "BracketArg",
-                  "offset": 87,
-                  "line": 7,
-                  "column": 22,
-                  "endPos": 93,
+                  "location": {
+                    "start": {
+                      "line": 7,
+                      "column": 22,
+                      "offset": 87
+                    },
+                    "end": {
+                      "line": 7,
+                      "column": 28,
+                      "offset": 93
+                    }
+                  },
                   "arg": "サンプル"
                 }
               ],
               "childNodes": [
                 {
                   "ruleName": "BlockElementContentText",
-                  "offset": 95,
-                  "line": 8,
-                  "column": 1,
-                  "endPos": 98,
+                  "location": {
+                    "start": {
+                      "line": 8,
+                      "column": 1,
+                      "offset": 95
+                    },
+                    "end": {
+                      "line": null,
+                      "column": null,
+                      "offset": 65
+                    }
+                  },
                   "text": "メモ"
                 }
               ]
             },
             {
               "ruleName": "BlockElement",
-              "offset": 103,
-              "line": 11,
-              "column": 1,
-              "endPos": 133,
+              "location": {
+                "start": {
+                  "line": 11,
+                  "column": 1,
+                  "offset": 103
+                },
+                "end": {
+                  "line": 14,
+                  "column": 1,
+                  "offset": 133
+                }
+              },
               "symbol": "indepimage",
               "args": [
                 {
                   "ruleName": "BracketArg",
-                  "offset": 115,
-                  "line": 11,
-                  "column": 13,
-                  "endPos": 124,
+                  "location": {
+                    "start": {
+                      "line": 11,
+                      "column": 13,
+                      "offset": 115
+                    },
+                    "end": {
+                      "line": 11,
+                      "column": 22,
+                      "offset": 124
+                    }
+                  },
                   "arg": "vvakame"
                 }
               ],
               "childNodes": [
                 {
                   "ruleName": "BlockElementContentText",
-                  "offset": 126,
-                  "line": 12,
-                  "column": 1,
-                  "endPos": 129,
+                  "location": {
+                    "start": {
+                      "line": 12,
+                      "column": 1,
+                      "offset": 126
+                    },
+                    "end": {
+                      "line": null,
+                      "column": null,
+                      "offset": 102
+                    }
+                  },
                   "text": "メモ"
                 }
               ]

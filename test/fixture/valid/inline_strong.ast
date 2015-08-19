@@ -1,43 +1,91 @@
 {
   "ruleName": "Start",
-  "offset": 0,
-  "line": 1,
-  "column": 1,
-  "endPos": 35,
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 1,
+      "offset": 35
+    }
+  },
   "childNodes": [
     {
       "ruleName": "Chapters",
-      "offset": 0,
-      "line": 1,
-      "column": 1,
-      "endPos": 35,
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 1,
+          "offset": 35
+        }
+      },
       "childNodes": [
         {
           "ruleName": "Chapter",
-          "offset": 0,
-          "line": 1,
-          "column": 1,
-          "endPos": 35,
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 4,
+              "column": 1,
+              "offset": 35
+            }
+          },
           "headline": {
             "ruleName": "Headline",
-            "offset": 0,
-            "line": 1,
-            "column": 1,
-            "endPos": 15,
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 15
+              }
+            },
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
-              "offset": 2,
-              "line": 1,
-              "column": 3,
-              "endPos": 13,
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 14,
+                  "offset": 13
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
-                  "offset": 2,
-                  "line": 1,
-                  "column": 3,
-                  "endPos": 13,
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 14,
+                      "offset": 13
+                    }
+                  },
                   "text": "strong のテスト"
                 }
               ]
@@ -46,40 +94,80 @@
           "text": [
             {
               "ruleName": "Paragraph",
-              "offset": 15,
-              "line": 3,
-              "column": 1,
-              "endPos": 35,
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 15
+                },
+                "end": {
+                  "line": 4,
+                  "column": 1,
+                  "offset": 35
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentText",
-                  "offset": 15,
-                  "line": 3,
-                  "column": 1,
-                  "endPos": 18,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 1,
+                      "offset": 15
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 4,
+                      "offset": 18
+                    }
+                  },
                   "text": "今日は"
                 },
                 {
                   "ruleName": "InlineElement",
-                  "offset": 18,
-                  "line": 3,
-                  "column": 4,
-                  "endPos": 32,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 4,
+                      "offset": 18
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 18,
+                      "offset": 32
+                    }
+                  },
                   "symbol": "strong",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
-                      "offset": 28,
-                      "line": 3,
-                      "column": 14,
-                      "endPos": 31,
+                      "location": {
+                        "start": {
+                          "line": 3,
+                          "column": 14,
+                          "offset": 28
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 17,
+                          "offset": 31
+                        }
+                      },
                       "childNodes": [
                         {
                           "ruleName": "InlineElementContentText",
-                          "offset": 28,
-                          "line": 3,
-                          "column": 14,
-                          "endPos": 31,
+                          "location": {
+                            "start": {
+                              "line": 3,
+                              "column": 14,
+                              "offset": 28
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 17,
+                              "offset": 31
+                            }
+                          },
                           "text": "焼き肉"
                         }
                       ]
@@ -88,10 +176,18 @@
                 },
                 {
                   "ruleName": "ContentText",
-                  "offset": 32,
-                  "line": 3,
-                  "column": 18,
-                  "endPos": 34,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 18,
+                      "offset": 32
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 20,
+                      "offset": 34
+                    }
+                  },
                   "text": "だ！"
                 }
               ]

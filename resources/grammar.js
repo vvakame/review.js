@@ -38,12 +38,8 @@ var PEG = (function() {
 
         peg$c0 = { type: "other", description: "start" },
         peg$c1 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "Start",
         				content: c
         			};
@@ -60,25 +56,17 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "Chapters",
         				content: processed
         			};
         		},
         peg$c4 = { type: "other", description: "chapter" },
         peg$c5 = function(headline, text) {
-        				var loc = location();
         				return {
         					syntax: "Chapter",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(), 
         					headline: headline,
         					text: text
         				};
@@ -87,13 +75,9 @@ var PEG = (function() {
         peg$c7 = "=",
         peg$c8 = { type: "literal", value: "=", description: "\"=\"" },
         peg$c9 = function(level, label, caption) {
-        				var loc = location();
         				return {
         					syntax: "Headline",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(), 
         					level: level.length,
         					label: label,
         					caption: caption
@@ -112,36 +96,24 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "Contents",
         				content: processed
         			};
         		},
         peg$c13 = { type: "other", description: "content" },
         peg$c14 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "Content",
         				content: c
         			};
         		},
         peg$c15 = { type: "other", description: "paragraph" },
         peg$c16 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "Paragraph",
         				content: c
         			};
@@ -158,24 +130,16 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "ParagraphSubs",
         				content: processed
         			};
         		},
         peg$c19 = { type: "other", description: "paragraph sub" },
         peg$c20 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "ParagraphSub",
         				content: c
         			};
@@ -184,12 +148,8 @@ var PEG = (function() {
         peg$c22 = /^[^\r\n]/,
         peg$c23 = { type: "class", value: "[^\\r\\n]", description: "[^\\r\\n]" },
         peg$c24 = function(text) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "ContentText",
         				text: text
         			};
@@ -202,26 +162,18 @@ var PEG = (function() {
         peg$c30 = "//}",
         peg$c31 = { type: "literal", value: "//}", description: "\"//}\"" },
         peg$c32 = function(symbol, args, contents) {
-        					var loc = location();
         					return {
         						syntax: "BlockElement",
-        						line: loc.start.line,
-        						column: loc.start.column,
-        						offset: loc.start.offset,
-        						endPos: peg$currPos,
+        						location: location(),
         						symbol: symbol,
         						args: args,
         						content: contents
         					};
         				},
         peg$c33 = function(symbol, args) {
-        					var loc = location();
         					return {
         						syntax: "BlockElement",
-        						line: loc.start.line,
-        						column: loc.start.column,
-        						offset: loc.start.offset,
-        						endPos: peg$currPos,
+        						location: location(),
         						symbol: symbol,
         						args: args,
         						content: []
@@ -237,26 +189,18 @@ var PEG = (function() {
         peg$c41 = "}",
         peg$c42 = { type: "literal", value: "}", description: "\"}\"" },
         peg$c43 = function(symbol, contents) {
-        				var loc = location();
         				return {
         					syntax: "InlineElement",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					symbol: symbol,
         					content: contents
         				};
         			},
         peg$c44 = { type: "other", description: "column" },
         peg$c45 = function(headline, text) {
-        				var loc = location();
         				return {
         					syntax: "Column",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					headline: headline,
         					text: text
         				};
@@ -265,13 +209,9 @@ var PEG = (function() {
         peg$c47 = "[column]",
         peg$c48 = { type: "literal", value: "[column]", description: "\"[column]\"" },
         peg$c49 = function(level, caption) {
-        				var loc = location();
         				return {
         					syntax: "ColumnHeadline",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					level: level.length,
         					caption: caption
         				};
@@ -288,24 +228,16 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "ColumnContents",
         				content: processed
         			};
         		},
         peg$c52 = { type: "other", description: "column content" },
         peg$c53 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "ColumnContent",
         				content: c
         			};
@@ -314,13 +246,9 @@ var PEG = (function() {
         peg$c55 = "[/column]",
         peg$c56 = { type: "literal", value: "[/column]", description: "\"[/column]\"" },
         peg$c57 = function(level) {
-        				var loc = location();
         				return {
         					syntax: "ColumnTerminator",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					level: level.length
         				};
         			},
@@ -338,13 +266,9 @@ var PEG = (function() {
         peg$c69 = "]",
         peg$c70 = { type: "literal", value: "]", description: "\"]\"" },
         peg$c71 = function(arg) {
-        				var loc = location();
         				return {
         					syntax: "BracketArg",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					arg: arg
         				};
         			},
@@ -354,13 +278,9 @@ var PEG = (function() {
         peg$c75 = "\\}",
         peg$c76 = { type: "literal", value: "\\}", description: "\"\\\\}\"" },
         peg$c77 = function(arg) {
-        				var loc = location();
         				return {
         					syntax: "BraceArg",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					arg: arg
         				};
         			},
@@ -376,24 +296,16 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "BlockElementContents",
         				content: processed
         			};
         		},
         peg$c80 = { type: "other", description: "content of block element" },
         peg$c81 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "BlockElementContent",
         				content: c
         			};
@@ -414,24 +326,16 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "InlineElementContents",
         				content: processed
         			};
         		},
         peg$c88 = { type: "other", description: "content of inline element" },
         peg$c89 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "InlineElementContent",
         				content: c
         			};
@@ -440,24 +344,16 @@ var PEG = (function() {
         peg$c91 = /^[^\r\n}]/,
         peg$c92 = { type: "class", value: "[^\\r\\n}]", description: "[^\\r\\n}]" },
         peg$c93 = function(text) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "InlineElementContentText",
         				text: text
         			};
         		},
         peg$c94 = { type: "other", description: "inline content" },
         peg$c95 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "SinglelineContent",
         				content: c
         			};
@@ -474,36 +370,24 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "ContentInlines",
         				content: processed
         			};
         		},
         peg$c98 = { type: "other", description: "child of inline content" },
         peg$c99 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "ContentInline",
         				content: c
         			};
         		},
         peg$c100 = { type: "other", description: "text of child of inline content" },
         peg$c101 = function(text) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "ContentInlineText",
         				text: text
         			};
@@ -520,12 +404,8 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "Ulist",
         				content: processed
         			};
@@ -536,13 +416,9 @@ var PEG = (function() {
         peg$c107 = "*",
         peg$c108 = { type: "literal", value: "*", description: "\"*\"" },
         peg$c109 = function(level, text) {
-        				var loc = location();
         				return {
         					syntax: "UlistElement",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					level: level.length,
         					text: text
         				};
@@ -559,12 +435,8 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "Olist",
         				content: processed
         			};
@@ -573,13 +445,9 @@ var PEG = (function() {
         peg$c113 = ".",
         peg$c114 = { type: "literal", value: ".", description: "\".\"" },
         peg$c115 = function(n, text) {
-        				var loc = location();
         				return {
         					syntax: "OlistElement",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					no: parseInt(n),
         					text: text
         				};
@@ -596,12 +464,8 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "Dlist",
         				content: processed
         			};
@@ -610,13 +474,9 @@ var PEG = (function() {
         peg$c119 = ":",
         peg$c120 = { type: "literal", value: ":", description: "\":\"" },
         peg$c121 = function(text, content) {
-        				var loc = location();
         				return {
         					syntax: "DlistElement",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					text: text,
         					content: content
         				};
@@ -633,12 +493,8 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "DlistElementContents",
         				content: processed
         			};
@@ -647,12 +503,8 @@ var PEG = (function() {
         peg$c125 = /^[ \t]/,
         peg$c126 = { type: "class", value: "[ \\t]", description: "[ \\t]" },
         peg$c127 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "DlistElementContent",
         				content: c
         			};
@@ -661,12 +513,8 @@ var PEG = (function() {
         peg$c129 = "#@",
         peg$c130 = { type: "literal", value: "#@", description: "\"#@\"" },
         peg$c131 = function(text) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "SinglelineComment",
         				text: text
         			};

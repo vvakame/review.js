@@ -1,43 +1,91 @@
 {
   "ruleName": "Start",
-  "offset": 0,
-  "line": 1,
-  "column": 1,
-  "endPos": 156,
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 10,
+      "column": 1,
+      "offset": 156
+    }
+  },
   "childNodes": [
     {
       "ruleName": "Chapters",
-      "offset": 0,
-      "line": 1,
-      "column": 1,
-      "endPos": 156,
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 10,
+          "column": 1,
+          "offset": 156
+        }
+      },
       "childNodes": [
         {
           "ruleName": "Chapter",
-          "offset": 0,
-          "line": 1,
-          "column": 1,
-          "endPos": 156,
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 10,
+              "column": 1,
+              "offset": 156
+            }
+          },
           "headline": {
             "ruleName": "Headline",
-            "offset": 0,
-            "line": 1,
-            "column": 1,
-            "endPos": 14,
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 14
+              }
+            },
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
-              "offset": 2,
-              "line": 1,
-              "column": 3,
-              "endPos": 12,
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 13,
+                  "offset": 12
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
-                  "offset": 2,
-                  "line": 1,
-                  "column": 3,
-                  "endPos": 12,
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 13,
+                      "offset": 12
+                    }
+                  },
                   "text": "rawインライン記法"
                 }
               ]
@@ -46,32 +94,64 @@
           "text": [
             {
               "ruleName": "Paragraph",
-              "offset": 14,
-              "line": 3,
-              "column": 1,
-              "endPos": 29,
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 14
+                },
+                "end": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 29
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "InlineElement",
-                  "offset": 14,
-                  "line": 3,
-                  "column": 1,
-                  "endPos": 27,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 1,
+                      "offset": 14
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 14,
+                      "offset": 27
+                    }
+                  },
                   "symbol": "raw",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
-                      "offset": 21,
-                      "line": 3,
-                      "column": 8,
-                      "endPos": 26,
+                      "location": {
+                        "start": {
+                          "line": 3,
+                          "column": 8,
+                          "offset": 21
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 13,
+                          "offset": 26
+                        }
+                      },
                       "childNodes": [
                         {
                           "ruleName": "InlineElementContentText",
-                          "offset": 21,
-                          "line": 3,
-                          "column": 8,
-                          "endPos": 26,
+                          "location": {
+                            "start": {
+                              "line": 3,
+                              "column": 8,
+                              "offset": 21
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 13,
+                              "offset": 26
+                            }
+                          },
                           "text": "生で出る。"
                         }
                       ]
@@ -82,32 +162,64 @@
             },
             {
               "ruleName": "Paragraph",
-              "offset": 29,
-              "line": 5,
-              "column": 1,
-              "endPos": 113,
+              "location": {
+                "start": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 29
+                },
+                "end": {
+                  "line": 9,
+                  "column": 1,
+                  "offset": 113
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "InlineElement",
-                  "offset": 29,
-                  "line": 5,
-                  "column": 1,
-                  "endPos": 53,
+                  "location": {
+                    "start": {
+                      "line": 5,
+                      "column": 1,
+                      "offset": 29
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 25,
+                      "offset": 53
+                    }
+                  },
                   "symbol": "raw",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
-                      "offset": 36,
-                      "line": 5,
-                      "column": 8,
-                      "endPos": 52,
+                      "location": {
+                        "start": {
+                          "line": 5,
+                          "column": 8,
+                          "offset": 36
+                        },
+                        "end": {
+                          "line": 5,
+                          "column": 24,
+                          "offset": 52
+                        }
+                      },
                       "childNodes": [
                         {
                           "ruleName": "InlineElementContentText",
-                          "offset": 36,
-                          "line": 5,
-                          "column": 8,
-                          "endPos": 52,
+                          "location": {
+                            "start": {
+                              "line": 5,
+                              "column": 8,
+                              "offset": 36
+                            },
+                            "end": {
+                              "line": 5,
+                              "column": 24,
+                              "offset": 52
+                            }
+                          },
                           "text": "|text|textでだけ出る。"
                         }
                       ]
@@ -116,25 +228,49 @@
                 },
                 {
                   "ruleName": "InlineElement",
-                  "offset": 54,
-                  "line": 6,
-                  "column": 1,
-                  "endPos": 78,
+                  "location": {
+                    "start": {
+                      "line": 6,
+                      "column": 1,
+                      "offset": 54
+                    },
+                    "end": {
+                      "line": 6,
+                      "column": 25,
+                      "offset": 78
+                    }
+                  },
                   "symbol": "raw",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
-                      "offset": 61,
-                      "line": 6,
-                      "column": 8,
-                      "endPos": 77,
+                      "location": {
+                        "start": {
+                          "line": 6,
+                          "column": 8,
+                          "offset": 61
+                        },
+                        "end": {
+                          "line": 6,
+                          "column": 24,
+                          "offset": 77
+                        }
+                      },
                       "childNodes": [
                         {
                           "ruleName": "InlineElementContentText",
-                          "offset": 61,
-                          "line": 6,
-                          "column": 8,
-                          "endPos": 77,
+                          "location": {
+                            "start": {
+                              "line": 6,
+                              "column": 8,
+                              "offset": 61
+                            },
+                            "end": {
+                              "line": 6,
+                              "column": 24,
+                              "offset": 77
+                            }
+                          },
                           "text": "|html|htmlでだけ出る。"
                         }
                       ]
@@ -143,25 +279,49 @@
                 },
                 {
                   "ruleName": "InlineElement",
-                  "offset": 79,
-                  "line": 7,
-                  "column": 1,
-                  "endPos": 111,
+                  "location": {
+                    "start": {
+                      "line": 7,
+                      "column": 1,
+                      "offset": 79
+                    },
+                    "end": {
+                      "line": 7,
+                      "column": 33,
+                      "offset": 111
+                    }
+                  },
                   "symbol": "raw",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
-                      "offset": 86,
-                      "line": 7,
-                      "column": 8,
-                      "endPos": 110,
+                      "location": {
+                        "start": {
+                          "line": 7,
+                          "column": 8,
+                          "offset": 86
+                        },
+                        "end": {
+                          "line": 7,
+                          "column": 32,
+                          "offset": 110
+                        }
+                      },
                       "childNodes": [
                         {
                           "ruleName": "InlineElementContentText",
-                          "offset": 86,
-                          "line": 7,
-                          "column": 8,
-                          "endPos": 110,
+                          "location": {
+                            "start": {
+                              "line": 7,
+                              "column": 8,
+                              "offset": 86
+                            },
+                            "end": {
+                              "line": 7,
+                              "column": 32,
+                              "offset": 110
+                            }
+                          },
                           "text": "|text,html|textとhtmlで出る。"
                         }
                       ]
@@ -172,32 +332,64 @@
             },
             {
               "ruleName": "Paragraph",
-              "offset": 113,
-              "line": 9,
-              "column": 1,
-              "endPos": 156,
+              "location": {
+                "start": {
+                  "line": 9,
+                  "column": 1,
+                  "offset": 113
+                },
+                "end": {
+                  "line": 10,
+                  "column": 1,
+                  "offset": 156
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "InlineElement",
-                  "offset": 113,
-                  "line": 9,
-                  "column": 1,
-                  "endPos": 155,
+                  "location": {
+                    "start": {
+                      "line": 9,
+                      "column": 1,
+                      "offset": 113
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 43,
+                      "offset": 155
+                    }
+                  },
                   "symbol": "raw",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
-                      "offset": 120,
-                      "line": 9,
-                      "column": 8,
-                      "endPos": 154,
+                      "location": {
+                        "start": {
+                          "line": 9,
+                          "column": 8,
+                          "offset": 120
+                        },
+                        "end": {
+                          "line": 9,
+                          "column": 42,
+                          "offset": 154
+                        }
+                      },
                       "childNodes": [
                         {
                           "ruleName": "InlineElementContentText",
-                          "offset": 120,
-                          "line": 9,
-                          "column": 8,
-                          "endPos": 154,
+                          "location": {
+                            "start": {
+                              "line": 9,
+                              "column": 8,
+                              "offset": 120
+                            },
+                            "end": {
+                              "line": 9,
+                              "column": 42,
+                              "offset": 154
+                            }
+                          },
                           "text": "|html|<strong>HTMLタグ書いてみる</strong>"
                         }
                       ]

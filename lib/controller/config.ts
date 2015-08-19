@@ -143,7 +143,7 @@ export class NodeJSConfig extends Config {
 			}
 			if (report.nodes) {
 				report.nodes.forEach(node => {
-					message += "[" + node.line + "," + node.column + "] ";
+					message += "[" + node.location.start.line + "," + node.location.start.column + "] ";
 				});
 			}
 			message += report.message;
@@ -273,7 +273,7 @@ export class WebBrowserConfig extends Config {
 			}
 			if (report.nodes) {
 				report.nodes.forEach(node => {
-					message += "[" + node.line + "," + node.column + "] ";
+					message += "[" + node.location.start.line + "," + node.location.start.column + "] ";
 				});
 			}
 			message += report.message;

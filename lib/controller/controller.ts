@@ -126,10 +126,14 @@ export class Controller {
 				let se: PEG.SyntaxError = e;
 				let errorNode = new SyntaxTree({
 					syntax: se.name,
-					line: se.line,
-					column: se.column,
-					offset: se.offset,
-					endPos: -1 // TODO SyntaxError が置き換えられたらなんとかできるかも…
+					location: {
+						start: {
+							line: se.line,
+							column: se.column,
+							offset: se.offset
+						},
+						end: null // TODO SyntaxError が置き換えられたらなんとかできるかも…
+					}
 				});
 				chunk.tree = { ast: errorNode, cst: null };
 				// TODO エラー表示が必要 process.error 的なやつ

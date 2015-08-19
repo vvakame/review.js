@@ -1,51 +1,107 @@
 {
   "ruleName": "Start",
-  "offset": 0,
-  "line": 1,
-  "column": 1,
-  "endPos": 57,
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 1,
+      "offset": 57
+    }
+  },
   "childNodes": [
     {
       "ruleName": "Chapters",
-      "offset": 0,
-      "line": 1,
-      "column": 1,
-      "endPos": 57,
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 1,
+          "offset": 57
+        }
+      },
       "childNodes": [
         {
           "ruleName": "Chapter",
-          "offset": 0,
-          "line": 1,
-          "column": 1,
-          "endPos": 57,
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 4,
+              "column": 1,
+              "offset": 57
+            }
+          },
           "headline": {
             "ruleName": "Headline",
-            "offset": 0,
-            "line": 1,
-            "column": 1,
-            "endPos": 30,
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 30
+              }
+            },
             "level": 1,
             "label": {
               "ruleName": "BraceArg",
-              "offset": 1,
-              "line": 1,
-              "column": 2,
-              "endPos": 13,
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 2,
+                  "offset": 1
+                },
+                "end": {
+                  "line": 1,
+                  "column": 14,
+                  "offset": 13
+                }
+              },
               "arg": "referenced"
             },
             "caption": {
               "ruleName": "ContentInlines",
-              "offset": 14,
-              "line": 1,
-              "column": 15,
-              "endPos": 28,
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 15,
+                  "offset": 14
+                },
+                "end": {
+                  "line": 1,
+                  "column": 29,
+                  "offset": 28
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
-                  "offset": 14,
-                  "line": 1,
-                  "column": 15,
-                  "endPos": 28,
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 15,
+                      "offset": 14
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 29,
+                      "offset": 28
+                    }
+                  },
                   "text": "chaprefインライン記法"
                 }
               ]
@@ -54,32 +110,64 @@
           "text": [
             {
               "ruleName": "Paragraph",
-              "offset": 30,
-              "line": 3,
-              "column": 1,
-              "endPos": 57,
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 30
+                },
+                "end": {
+                  "line": 4,
+                  "column": 1,
+                  "offset": 57
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "InlineElement",
-                  "offset": 30,
-                  "line": 3,
-                  "column": 1,
-                  "endPos": 52,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 1,
+                      "offset": 30
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 23,
+                      "offset": 52
+                    }
+                  },
                   "symbol": "chapref",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
-                      "offset": 41,
-                      "line": 3,
-                      "column": 12,
-                      "endPos": 51,
+                      "location": {
+                        "start": {
+                          "line": 3,
+                          "column": 12,
+                          "offset": 41
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 22,
+                          "offset": 51
+                        }
+                      },
                       "childNodes": [
                         {
                           "ruleName": "InlineElementContentText",
-                          "offset": 41,
-                          "line": 3,
-                          "column": 12,
-                          "endPos": 51,
+                          "location": {
+                            "start": {
+                              "line": 3,
+                              "column": 12,
+                              "offset": 41
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 22,
+                              "offset": 51
+                            }
+                          },
                           "text": "referenced"
                         }
                       ]
@@ -88,10 +176,18 @@
                 },
                 {
                   "ruleName": "ContentText",
-                  "offset": 52,
-                  "line": 3,
-                  "column": 23,
-                  "endPos": 56,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 23,
+                      "offset": 52
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 27,
+                      "offset": 56
+                    }
+                  },
                   "text": "を参照。"
                 }
               ]

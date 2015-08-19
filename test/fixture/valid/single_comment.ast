@@ -1,43 +1,91 @@
 {
   "ruleName": "Start",
-  "offset": 0,
-  "line": 1,
-  "column": 1,
-  "endPos": 64,
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 12,
+      "column": 9,
+      "offset": 64
+    }
+  },
   "childNodes": [
     {
       "ruleName": "Chapters",
-      "offset": 0,
-      "line": 1,
-      "column": 1,
-      "endPos": 64,
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 12,
+          "column": 9,
+          "offset": 64
+        }
+      },
       "childNodes": [
         {
           "ruleName": "Chapter",
-          "offset": 0,
-          "line": 1,
-          "column": 1,
-          "endPos": 64,
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 12,
+              "column": 9,
+              "offset": 64
+            }
+          },
           "headline": {
             "ruleName": "Headline",
-            "offset": 0,
-            "line": 1,
-            "column": 1,
-            "endPos": 11,
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 11
+              }
+            },
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
-              "offset": 2,
-              "line": 1,
-              "column": 3,
-              "endPos": 9,
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 10,
+                  "offset": 9
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
-                  "offset": 2,
-                  "line": 1,
-                  "column": 3,
-                  "endPos": 9,
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 10,
+                      "offset": 9
+                    }
+                  },
                   "text": "＼(^o^)／"
                 }
               ]
@@ -46,85 +94,165 @@
           "text": [
             {
               "ruleName": "SinglelineComment",
-              "offset": 11,
-              "line": 3,
-              "column": 1,
-              "endPos": 21,
-              "text": "# コメント"
-            },
-            {
-              "ruleName": "Paragraph",
-              "offset": 21,
-              "line": 5,
-              "column": 1,
-              "endPos": 26,
-              "childNodes": [
-                {
-                  "ruleName": "ContentText",
-                  "offset": 21,
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 11
+                },
+                "end": {
                   "line": 5,
                   "column": 1,
-                  "endPos": 25,
+                  "offset": 21
+                }
+              },
+              "text": "# コメント"
+            },
+            {
+              "ruleName": "Paragraph",
+              "location": {
+                "start": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 21
+                },
+                "end": {
+                  "line": 6,
+                  "column": 1,
+                  "offset": 26
+                }
+              },
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "location": {
+                    "start": {
+                      "line": 5,
+                      "column": 1,
+                      "offset": 21
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 5,
+                      "offset": 25
+                    }
+                  },
                   "text": "ほげほげ"
                 }
               ]
             },
             {
               "ruleName": "SinglelineComment",
-              "offset": 26,
-              "line": 6,
-              "column": 1,
-              "endPos": 35,
-              "text": "# コメント"
-            },
-            {
-              "ruleName": "Paragraph",
-              "offset": 35,
-              "line": 7,
-              "column": 1,
-              "endPos": 41,
-              "childNodes": [
-                {
-                  "ruleName": "ContentText",
-                  "offset": 35,
+              "location": {
+                "start": {
+                  "line": 6,
+                  "column": 1,
+                  "offset": 26
+                },
+                "end": {
                   "line": 7,
                   "column": 1,
-                  "endPos": 39,
+                  "offset": 35
+                }
+              },
+              "text": "# コメント"
+            },
+            {
+              "ruleName": "Paragraph",
+              "location": {
+                "start": {
+                  "line": 7,
+                  "column": 1,
+                  "offset": 35
+                },
+                "end": {
+                  "line": 9,
+                  "column": 1,
+                  "offset": 41
+                }
+              },
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "location": {
+                    "start": {
+                      "line": 7,
+                      "column": 1,
+                      "offset": 35
+                    },
+                    "end": {
+                      "line": 7,
+                      "column": 5,
+                      "offset": 39
+                    }
+                  },
                   "text": "ほげほげ"
                 }
               ]
             },
             {
               "ruleName": "Paragraph",
-              "offset": 41,
-              "line": 9,
-              "column": 1,
-              "endPos": 46,
+              "location": {
+                "start": {
+                  "line": 9,
+                  "column": 1,
+                  "offset": 41
+                },
+                "end": {
+                  "line": 10,
+                  "column": 1,
+                  "offset": 46
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentText",
-                  "offset": 41,
-                  "line": 9,
-                  "column": 1,
-                  "endPos": 45,
+                  "location": {
+                    "start": {
+                      "line": 9,
+                      "column": 1,
+                      "offset": 41
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 5,
+                      "offset": 45
+                    }
+                  },
                   "text": "ほげほげ"
                 }
               ]
             },
             {
               "ruleName": "SinglelineComment",
-              "offset": 46,
-              "line": 10,
-              "column": 1,
-              "endPos": 56,
+              "location": {
+                "start": {
+                  "line": 10,
+                  "column": 1,
+                  "offset": 46
+                },
+                "end": {
+                  "line": 12,
+                  "column": 1,
+                  "offset": 56
+                }
+              },
               "text": "# コメント"
             },
             {
               "ruleName": "SinglelineComment",
-              "offset": 56,
-              "line": 12,
-              "column": 1,
-              "endPos": 64,
+              "location": {
+                "start": {
+                  "line": 12,
+                  "column": 1,
+                  "offset": 56
+                },
+                "end": {
+                  "line": 12,
+                  "column": 9,
+                  "offset": 64
+                }
+              },
               "text": "# コメント"
             }
           ],

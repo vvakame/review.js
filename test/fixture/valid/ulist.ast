@@ -1,43 +1,91 @@
 {
   "ruleName": "Start",
-  "offset": 0,
-  "line": 1,
-  "column": 1,
-  "endPos": 107,
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 10,
+      "column": 1,
+      "offset": 107
+    }
+  },
   "childNodes": [
     {
       "ruleName": "Chapters",
-      "offset": 0,
-      "line": 1,
-      "column": 1,
-      "endPos": 107,
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 10,
+          "column": 1,
+          "offset": 107
+        }
+      },
       "childNodes": [
         {
           "ruleName": "Chapter",
-          "offset": 0,
-          "line": 1,
-          "column": 1,
-          "endPos": 107,
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 10,
+              "column": 1,
+              "offset": 107
+            }
+          },
           "headline": {
             "ruleName": "Headline",
-            "offset": 0,
-            "line": 1,
-            "column": 1,
-            "endPos": 9,
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 9
+              }
+            },
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
-              "offset": 2,
-              "line": 1,
-              "column": 3,
-              "endPos": 7,
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 8,
+                  "offset": 7
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
-                  "offset": 2,
-                  "line": 1,
-                  "column": 3,
-                  "endPos": 7,
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 8,
+                      "offset": 7
+                    }
+                  },
                   "text": "ulist"
                 }
               ]
@@ -46,31 +94,63 @@
           "text": [
             {
               "ruleName": "Ulist",
-              "offset": 9,
-              "line": 3,
-              "column": 1,
-              "endPos": 107,
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 9
+                },
+                "end": {
+                  "line": 10,
+                  "column": 1,
+                  "offset": 107
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "UlistElement",
-                  "offset": 9,
-                  "line": 3,
-                  "column": 1,
-                  "endPos": 22,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 1,
+                      "offset": 9
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 1,
+                      "offset": 22
+                    }
+                  },
                   "level": 1,
                   "text": {
                     "ruleName": "ContentInlines",
-                    "offset": 12,
-                    "line": 3,
-                    "column": 4,
-                    "endPos": 21,
+                    "location": {
+                      "start": {
+                        "line": 3,
+                        "column": 4,
+                        "offset": 12
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 13,
+                        "offset": 21
+                      }
+                    },
                     "childNodes": [
                       {
                         "ruleName": "ContentInlineText",
-                        "offset": 12,
-                        "line": 3,
-                        "column": 4,
-                        "endPos": 21,
+                        "location": {
+                          "start": {
+                            "line": 3,
+                            "column": 4,
+                            "offset": 12
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 13,
+                            "offset": 21
+                          }
+                        },
                         "text": "level 1-1"
                       }
                     ]
@@ -78,24 +158,48 @@
                   "childNodes": [
                     {
                       "ruleName": "UlistElement",
-                      "offset": 22,
-                      "line": 4,
-                      "column": 1,
-                      "endPos": 36,
+                      "location": {
+                        "start": {
+                          "line": 4,
+                          "column": 1,
+                          "offset": 22
+                        },
+                        "end": {
+                          "line": 5,
+                          "column": 1,
+                          "offset": 36
+                        }
+                      },
                       "level": 2,
                       "text": {
                         "ruleName": "ContentInlines",
-                        "offset": 26,
-                        "line": 4,
-                        "column": 5,
-                        "endPos": 35,
+                        "location": {
+                          "start": {
+                            "line": 4,
+                            "column": 5,
+                            "offset": 26
+                          },
+                          "end": {
+                            "line": 4,
+                            "column": 14,
+                            "offset": 35
+                          }
+                        },
                         "childNodes": [
                           {
                             "ruleName": "ContentInlineText",
-                            "offset": 26,
-                            "line": 4,
-                            "column": 5,
-                            "endPos": 35,
+                            "location": {
+                              "start": {
+                                "line": 4,
+                                "column": 5,
+                                "offset": 26
+                              },
+                              "end": {
+                                "line": 4,
+                                "column": 14,
+                                "offset": 35
+                              }
+                            },
                             "text": "level 2-1"
                           }
                         ]
@@ -104,24 +208,48 @@
                     },
                     {
                       "ruleName": "UlistElement",
-                      "offset": 36,
-                      "line": 5,
-                      "column": 1,
-                      "endPos": 50,
+                      "location": {
+                        "start": {
+                          "line": 5,
+                          "column": 1,
+                          "offset": 36
+                        },
+                        "end": {
+                          "line": 6,
+                          "column": 1,
+                          "offset": 50
+                        }
+                      },
                       "level": 2,
                       "text": {
                         "ruleName": "ContentInlines",
-                        "offset": 40,
-                        "line": 5,
-                        "column": 5,
-                        "endPos": 49,
+                        "location": {
+                          "start": {
+                            "line": 5,
+                            "column": 5,
+                            "offset": 40
+                          },
+                          "end": {
+                            "line": 5,
+                            "column": 14,
+                            "offset": 49
+                          }
+                        },
                         "childNodes": [
                           {
                             "ruleName": "ContentInlineText",
-                            "offset": 40,
-                            "line": 5,
-                            "column": 5,
-                            "endPos": 49,
+                            "location": {
+                              "start": {
+                                "line": 5,
+                                "column": 5,
+                                "offset": 40
+                              },
+                              "end": {
+                                "line": 5,
+                                "column": 14,
+                                "offset": 49
+                              }
+                            },
                             "text": "level 2-2"
                           }
                         ]
@@ -129,24 +257,48 @@
                       "childNodes": [
                         {
                           "ruleName": "UlistElement",
-                          "offset": 50,
-                          "line": 6,
-                          "column": 1,
-                          "endPos": 65,
+                          "location": {
+                            "start": {
+                              "line": 6,
+                              "column": 1,
+                              "offset": 50
+                            },
+                            "end": {
+                              "line": 7,
+                              "column": 1,
+                              "offset": 65
+                            }
+                          },
                           "level": 3,
                           "text": {
                             "ruleName": "ContentInlines",
-                            "offset": 55,
-                            "line": 6,
-                            "column": 6,
-                            "endPos": 64,
+                            "location": {
+                              "start": {
+                                "line": 6,
+                                "column": 6,
+                                "offset": 55
+                              },
+                              "end": {
+                                "line": 6,
+                                "column": 15,
+                                "offset": 64
+                              }
+                            },
                             "childNodes": [
                               {
                                 "ruleName": "ContentInlineText",
-                                "offset": 55,
-                                "line": 6,
-                                "column": 6,
-                                "endPos": 64,
+                                "location": {
+                                  "start": {
+                                    "line": 6,
+                                    "column": 6,
+                                    "offset": 55
+                                  },
+                                  "end": {
+                                    "line": 6,
+                                    "column": 15,
+                                    "offset": 64
+                                  }
+                                },
                                 "text": "level 3-1"
                               }
                             ]
@@ -157,24 +309,48 @@
                     },
                     {
                       "ruleName": "UlistElement",
-                      "offset": 65,
-                      "line": 7,
-                      "column": 1,
-                      "endPos": 79,
+                      "location": {
+                        "start": {
+                          "line": 7,
+                          "column": 1,
+                          "offset": 65
+                        },
+                        "end": {
+                          "line": 8,
+                          "column": 1,
+                          "offset": 79
+                        }
+                      },
                       "level": 2,
                       "text": {
                         "ruleName": "ContentInlines",
-                        "offset": 69,
-                        "line": 7,
-                        "column": 5,
-                        "endPos": 78,
+                        "location": {
+                          "start": {
+                            "line": 7,
+                            "column": 5,
+                            "offset": 69
+                          },
+                          "end": {
+                            "line": 7,
+                            "column": 14,
+                            "offset": 78
+                          }
+                        },
                         "childNodes": [
                           {
                             "ruleName": "ContentInlineText",
-                            "offset": 69,
-                            "line": 7,
-                            "column": 5,
-                            "endPos": 78,
+                            "location": {
+                              "start": {
+                                "line": 7,
+                                "column": 5,
+                                "offset": 69
+                              },
+                              "end": {
+                                "line": 7,
+                                "column": 14,
+                                "offset": 78
+                              }
+                            },
                             "text": "level 2-3"
                           }
                         ]
@@ -185,24 +361,48 @@
                 },
                 {
                   "ruleName": "UlistElement",
-                  "offset": 79,
-                  "line": 8,
-                  "column": 1,
-                  "endPos": 92,
+                  "location": {
+                    "start": {
+                      "line": 8,
+                      "column": 1,
+                      "offset": 79
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 1,
+                      "offset": 92
+                    }
+                  },
                   "level": 1,
                   "text": {
                     "ruleName": "ContentInlines",
-                    "offset": 82,
-                    "line": 8,
-                    "column": 4,
-                    "endPos": 91,
+                    "location": {
+                      "start": {
+                        "line": 8,
+                        "column": 4,
+                        "offset": 82
+                      },
+                      "end": {
+                        "line": 8,
+                        "column": 13,
+                        "offset": 91
+                      }
+                    },
                     "childNodes": [
                       {
                         "ruleName": "ContentInlineText",
-                        "offset": 82,
-                        "line": 8,
-                        "column": 4,
-                        "endPos": 91,
+                        "location": {
+                          "start": {
+                            "line": 8,
+                            "column": 4,
+                            "offset": 82
+                          },
+                          "end": {
+                            "line": 8,
+                            "column": 13,
+                            "offset": 91
+                          }
+                        },
                         "text": "level 1-2"
                       }
                     ]
@@ -210,24 +410,48 @@
                   "childNodes": [
                     {
                       "ruleName": "UlistElement",
-                      "offset": 92,
-                      "line": 9,
-                      "column": 1,
-                      "endPos": 107,
+                      "location": {
+                        "start": {
+                          "line": 9,
+                          "column": 1,
+                          "offset": 92
+                        },
+                        "end": {
+                          "line": 10,
+                          "column": 1,
+                          "offset": 107
+                        }
+                      },
                       "level": 3,
                       "text": {
                         "ruleName": "ContentInlines",
-                        "offset": 97,
-                        "line": 9,
-                        "column": 6,
-                        "endPos": 106,
+                        "location": {
+                          "start": {
+                            "line": 9,
+                            "column": 6,
+                            "offset": 97
+                          },
+                          "end": {
+                            "line": 9,
+                            "column": 15,
+                            "offset": 106
+                          }
+                        },
                         "childNodes": [
                           {
                             "ruleName": "ContentInlineText",
-                            "offset": 97,
-                            "line": 9,
-                            "column": 6,
-                            "endPos": 106,
+                            "location": {
+                              "start": {
+                                "line": 9,
+                                "column": 6,
+                                "offset": 97
+                              },
+                              "end": {
+                                "line": 9,
+                                "column": 15,
+                                "offset": 106
+                              }
+                            },
                             "text": "level 3-2"
                           }
                         ]

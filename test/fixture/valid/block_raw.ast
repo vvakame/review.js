@@ -1,43 +1,91 @@
 {
   "ruleName": "Start",
-  "offset": 0,
-  "line": 1,
-  "column": 1,
-  "endPos": 150,
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 10,
+      "column": 1,
+      "offset": 150
+    }
+  },
   "childNodes": [
     {
       "ruleName": "Chapters",
-      "offset": 0,
-      "line": 1,
-      "column": 1,
-      "endPos": 150,
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 10,
+          "column": 1,
+          "offset": 150
+        }
+      },
       "childNodes": [
         {
           "ruleName": "Chapter",
-          "offset": 0,
-          "line": 1,
-          "column": 1,
-          "endPos": 150,
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 10,
+              "column": 1,
+              "offset": 150
+            }
+          },
           "headline": {
             "ruleName": "Headline",
-            "offset": 0,
-            "line": 1,
-            "column": 1,
-            "endPos": 13,
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 13
+              }
+            },
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
-              "offset": 2,
-              "line": 1,
-              "column": 3,
-              "endPos": 11,
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 12,
+                  "offset": 11
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
-                  "offset": 2,
-                  "line": 1,
-                  "column": 3,
-                  "endPos": 11,
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 12,
+                      "offset": 11
+                    }
+                  },
                   "text": "rawブロック記法"
                 }
               ]
@@ -46,18 +94,34 @@
           "text": [
             {
               "ruleName": "BlockElement",
-              "offset": 13,
-              "line": 3,
-              "column": 1,
-              "endPos": 27,
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 13
+                },
+                "end": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 27
+                }
+              },
               "symbol": "raw",
               "args": [
                 {
                   "ruleName": "BracketArg",
-                  "offset": 18,
-                  "line": 3,
-                  "column": 6,
-                  "endPos": 25,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 6,
+                      "offset": 18
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 13,
+                      "offset": 25
+                    }
+                  },
                   "arg": "生で出る。"
                 }
               ],
@@ -65,18 +129,34 @@
             },
             {
               "ruleName": "BlockElement",
-              "offset": 27,
-              "line": 5,
-              "column": 1,
-              "endPos": 51,
+              "location": {
+                "start": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 27
+                },
+                "end": {
+                  "line": 6,
+                  "column": 1,
+                  "offset": 51
+                }
+              },
               "symbol": "raw",
               "args": [
                 {
                   "ruleName": "BracketArg",
-                  "offset": 32,
-                  "line": 5,
-                  "column": 6,
-                  "endPos": 50,
+                  "location": {
+                    "start": {
+                      "line": 5,
+                      "column": 6,
+                      "offset": 32
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 24,
+                      "offset": 50
+                    }
+                  },
                   "arg": "|text|textでだけ出る。"
                 }
               ],
@@ -84,18 +164,34 @@
             },
             {
               "ruleName": "BlockElement",
-              "offset": 51,
-              "line": 6,
-              "column": 1,
-              "endPos": 75,
+              "location": {
+                "start": {
+                  "line": 6,
+                  "column": 1,
+                  "offset": 51
+                },
+                "end": {
+                  "line": 7,
+                  "column": 1,
+                  "offset": 75
+                }
+              },
               "symbol": "raw",
               "args": [
                 {
                   "ruleName": "BracketArg",
-                  "offset": 56,
-                  "line": 6,
-                  "column": 6,
-                  "endPos": 74,
+                  "location": {
+                    "start": {
+                      "line": 6,
+                      "column": 6,
+                      "offset": 56
+                    },
+                    "end": {
+                      "line": 6,
+                      "column": 24,
+                      "offset": 74
+                    }
+                  },
                   "arg": "|html|htmlでだけ出る。"
                 }
               ],
@@ -103,18 +199,34 @@
             },
             {
               "ruleName": "BlockElement",
-              "offset": 75,
-              "line": 7,
-              "column": 1,
-              "endPos": 108,
+              "location": {
+                "start": {
+                  "line": 7,
+                  "column": 1,
+                  "offset": 75
+                },
+                "end": {
+                  "line": 9,
+                  "column": 1,
+                  "offset": 108
+                }
+              },
               "symbol": "raw",
               "args": [
                 {
                   "ruleName": "BracketArg",
-                  "offset": 80,
-                  "line": 7,
-                  "column": 6,
-                  "endPos": 106,
+                  "location": {
+                    "start": {
+                      "line": 7,
+                      "column": 6,
+                      "offset": 80
+                    },
+                    "end": {
+                      "line": 7,
+                      "column": 32,
+                      "offset": 106
+                    }
+                  },
                   "arg": "|text,html|textとhtmlで出る。"
                 }
               ],
@@ -122,18 +234,34 @@
             },
             {
               "ruleName": "BlockElement",
-              "offset": 108,
-              "line": 9,
-              "column": 1,
-              "endPos": 150,
+              "location": {
+                "start": {
+                  "line": 9,
+                  "column": 1,
+                  "offset": 108
+                },
+                "end": {
+                  "line": 10,
+                  "column": 1,
+                  "offset": 150
+                }
+              },
               "symbol": "raw",
               "args": [
                 {
                   "ruleName": "BracketArg",
-                  "offset": 113,
-                  "line": 9,
-                  "column": 6,
-                  "endPos": 149,
+                  "location": {
+                    "start": {
+                      "line": 9,
+                      "column": 6,
+                      "offset": 113
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 42,
+                      "offset": 149
+                    }
+                  },
                   "arg": "|html|<strong>HTMLタグ書いてみる</strong>"
                 }
               ],

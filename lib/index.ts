@@ -11,19 +11,21 @@
 
 "use strict";
 
-import {Book, ReportLevel, ProcessReport, Symbol} from "./model/compilerModel";
+import {Book, ContentChunk, ReportLevel, ProcessReport, Symbol} from "./model/compilerModel";
 import {Options} from "./controller/configRaw";
 import {Controller} from "./controller/controller";
 
 import {NodeLocation, SyntaxTree} from "./parser/parser";
+export * from "./parser/parser";
 import {AcceptableSyntaxes, Analyzer, DefaultAnalyzer} from "./parser/analyzer";
+import {Validator, DefaultValidator} from "./parser/validator";
 
 import {Builder, DefaultBuilder} from "./builder/builder";
 import {HtmlBuilder} from "./builder/htmlBuilder";
 import {TextBuilder} from "./builder/textBuilder";
 import {SyntaxType} from "./parser/analyzer";
 
-export { Book, ReportLevel, ProcessReport, NodeLocation, Symbol, SyntaxTree, AcceptableSyntaxes, Analyzer, DefaultAnalyzer, Builder, DefaultBuilder, HtmlBuilder, TextBuilder, SyntaxType };
+export { Book, ContentChunk, ReportLevel, ProcessReport, NodeLocation, Symbol, SyntaxTree, AcceptableSyntaxes, Analyzer, DefaultAnalyzer, Validator, DefaultValidator, Builder, DefaultBuilder, HtmlBuilder, TextBuilder, SyntaxType };
 
 // AMD用
 declare var define: any;
@@ -49,12 +51,14 @@ export function _doNotUseHackForTypeScriptIssue4274() {
 
 	/* tslint:disable:variable-name */
 	let NodeLocation: NodeLocation;
+	let Validator: Validator;
 	let Symbol: Symbol;
 	let Analyzer: Analyzer;
 	let Builder: Builder;
 	return {
-		Book, ReportLevel, ProcessReport, Symbol,
+		Book, ContentChunk, ReportLevel, ProcessReport, Symbol,
 		NodeLocation, SyntaxTree,
+		Validator, DefaultValidator,
 		AcceptableSyntaxes, Analyzer, DefaultAnalyzer,
 		Builder, DefaultBuilder, HtmlBuilder, TextBuilder, SyntaxType
 	};

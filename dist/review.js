@@ -1519,7 +1519,7 @@ var NodeJSConfig = (function (_super) {
             }
             if (report.nodes) {
                 report.nodes.forEach(function (node) {
-                    message += "[" + node.line + "," + node.column + "] ";
+                    message += "[" + node.location.start.line + "," + node.location.start.column + "] ";
                 });
             }
             message += report.message;
@@ -1658,7 +1658,7 @@ var WebBrowserConfig = (function (_super) {
             }
             if (report.nodes) {
                 report.nodes.forEach(function (node) {
-                    message += "[" + node.line + "," + node.column + "] ";
+                    message += "[" + node.location.start.line + "," + node.location.start.column + "] ";
                 });
             }
             message += report.message;
@@ -1886,10 +1886,14 @@ var Controller = (function () {
                 var se = e;
                 var errorNode = new parser_1.SyntaxTree({
                     syntax: se.name,
-                    line: se.line,
-                    column: se.column,
-                    offset: se.offset,
-                    endPos: -1
+                    location: {
+                        start: {
+                            line: se.line,
+                            column: se.column,
+                            offset: se.offset
+                        },
+                        end: null
+                    }
                 });
                 chunk.tree = { ast: errorNode, cst: null };
             }
@@ -2123,16 +2127,23 @@ exports.ja = {
 ///<reference path='../typings/node/node.d.ts' />
 ///<reference path='./typings/polyfill.d.ts' />
 "use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
 var compilerModel_1 = require("./model/compilerModel");
 exports.Book = compilerModel_1.Book;
+exports.ContentChunk = compilerModel_1.ContentChunk;
 exports.ReportLevel = compilerModel_1.ReportLevel;
 exports.ProcessReport = compilerModel_1.ProcessReport;
 var controller_1 = require("./controller/controller");
 var parser_1 = require("./parser/parser");
 exports.SyntaxTree = parser_1.SyntaxTree;
+__export(require("./parser/parser"));
 var analyzer_1 = require("./parser/analyzer");
 exports.AcceptableSyntaxes = analyzer_1.AcceptableSyntaxes;
 exports.DefaultAnalyzer = analyzer_1.DefaultAnalyzer;
+var validator_1 = require("./parser/validator");
+exports.DefaultValidator = validator_1.DefaultValidator;
 var builder_1 = require("./builder/builder");
 exports.DefaultBuilder = builder_1.DefaultBuilder;
 var htmlBuilder_1 = require("./builder/htmlBuilder");
@@ -2150,19 +2161,22 @@ function start(setup, options) {
 exports.start = start;
 function _doNotUseHackForTypeScriptIssue4274() {
     "use strict";
+    var NodeLocation;
+    var Validator;
     var Symbol;
     var Analyzer;
     var Builder;
     return {
-        Book: compilerModel_1.Book, ReportLevel: compilerModel_1.ReportLevel, ProcessReport: compilerModel_1.ProcessReport, Symbol: Symbol,
-        SyntaxTree: parser_1.SyntaxTree,
+        Book: compilerModel_1.Book, ContentChunk: compilerModel_1.ContentChunk, ReportLevel: compilerModel_1.ReportLevel, ProcessReport: compilerModel_1.ProcessReport, Symbol: Symbol,
+        NodeLocation: NodeLocation, SyntaxTree: parser_1.SyntaxTree,
+        Validator: Validator, DefaultValidator: validator_1.DefaultValidator,
         AcceptableSyntaxes: analyzer_1.AcceptableSyntaxes, Analyzer: Analyzer, DefaultAnalyzer: analyzer_1.DefaultAnalyzer,
         Builder: Builder, DefaultBuilder: builder_1.DefaultBuilder, HtmlBuilder: htmlBuilder_1.HtmlBuilder, TextBuilder: textBuilder_1.TextBuilder, SyntaxType: analyzer_2.SyntaxType
     };
 }
 exports._doNotUseHackForTypeScriptIssue4274 = _doNotUseHackForTypeScriptIssue4274;
 
-},{"./builder/builder":1,"./builder/htmlBuilder":2,"./builder/textBuilder":3,"./controller/controller":6,"./model/compilerModel":12,"./parser/analyzer":13,"./parser/parser":14}],11:[function(require,module,exports){
+},{"./builder/builder":1,"./builder/htmlBuilder":2,"./builder/textBuilder":3,"./controller/controller":6,"./model/compilerModel":12,"./parser/analyzer":13,"./parser/parser":14,"./parser/validator":16}],11:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -2299,7 +2313,7 @@ var Process = (function () {
                     return 1;
                 }
                 else {
-                    return a.nodes[0].offset - b.nodes[0].offset;
+                    return a.nodes[0].location.start.offset - b.nodes[0].location.start.offset;
                 }
             });
         },
@@ -3522,10 +3536,18 @@ var SyntaxTree = (function () {
         if (typeof this.ruleName === "undefined") {
             throw new ParseError(data, "unknown rule: " + data.syntax);
         }
-        this.offset = data.offset;
-        this.line = data.line;
-        this.column = data.column;
-        this.endPos = data.endPos;
+        this.location = {
+            start: {
+                line: data.location.start.line,
+                column: data.location.start.column,
+                offset: data.location.start.offset
+            },
+            end: {
+                line: data.location.end.line,
+                column: data.location.end.column,
+                offset: data.location.end.offset
+            }
+        };
     }
     SyntaxTree.prototype.toJSON = function () {
         var _this = this;
@@ -3556,9 +3578,9 @@ var SyntaxTree = (function () {
     SyntaxTree.prototype.toString = function (indentLevel) {
         if (indentLevel === void 0) { indentLevel = 0; }
         var result = this.makeIndent(indentLevel) + "SyntaxTree:[\n";
-        result += this.makeIndent(indentLevel + 1) + "offset = " + this.offset + ",\n";
-        result += this.makeIndent(indentLevel + 1) + "line=" + this.line + ",\n";
-        result += this.makeIndent(indentLevel + 1) + "column=" + this.column + ",\n";
+        result += this.makeIndent(indentLevel + 1) + "offset = " + this.location.start.offset + ",\n";
+        result += this.makeIndent(indentLevel + 1) + "line=" + this.location.start.line + ",\n";
+        result += this.makeIndent(indentLevel + 1) + "column=" + this.location.start.column + ",\n";
         result += this.makeIndent(indentLevel + 1) + "name=" + RuleName[this.ruleName] + ",\n";
         this.toStringHook(indentLevel, result);
         result += this.makeIndent(indentLevel) + "]";
@@ -4010,9 +4032,9 @@ var SyntaxPreprocessor = (function () {
                     visitDefaultPre: function (node) {
                         if (!info) {
                             info = {
-                                offset: node.offset,
-                                line: node.line,
-                                column: node.column
+                                offset: node.location.start.offset,
+                                line: node.location.start.line,
+                                column: node.location.start.column
                             };
                         }
                         lastNode = node;
@@ -4020,11 +4042,19 @@ var SyntaxPreprocessor = (function () {
                     visitInlineElementPre: function (node) {
                         var textNode = new parser_1.TextNodeSyntaxTree({
                             syntax: "BlockElementContentText",
-                            offset: info.offset,
-                            line: info.line,
-                            column: info.column,
-                            endPos: node.offset - 1,
-                            text: chunk.process.input.substring(info.offset, node.offset - 1)
+                            location: {
+                                start: {
+                                    offset: info.offset,
+                                    line: info.line,
+                                    column: info.column
+                                },
+                                end: {
+                                    offset: node.location.start.offset - 1,
+                                    line: null,
+                                    column: null
+                                }
+                            },
+                            text: chunk.process.input.substring(info.offset, node.location.start.offset - 1)
                         });
                         resultNodes.push(textNode);
                         resultNodes.push(node);
@@ -4037,11 +4067,19 @@ var SyntaxPreprocessor = (function () {
                 (function () {
                     var textNode = new parser_1.TextNodeSyntaxTree({
                         syntax: "BlockElementContentText",
-                        offset: info.offset,
-                        line: info.line,
-                        column: info.column,
-                        endPos: lastNode.endPos,
-                        text: chunk.process.input.substring(info.offset, lastNode.endPos)
+                        location: {
+                            start: {
+                                offset: info.offset,
+                                line: info.line,
+                                column: info.column
+                            },
+                            end: {
+                                offset: node.location.start.offset - 1,
+                                line: null,
+                                column: null
+                            }
+                        },
+                        text: chunk.process.input.substring(info.offset, lastNode.location.end.offset)
                     });
                     resultNodes.push(textNode);
                 })();
@@ -4054,10 +4092,18 @@ var SyntaxPreprocessor = (function () {
                 var last = node.childNodes[node.childNodes.length - 1];
                 var textNode = new parser_1.TextNodeSyntaxTree({
                     syntax: "BlockElementContentText",
-                    offset: first.offset,
-                    line: first.line,
-                    column: first.column,
-                    endPos: last.endPos,
+                    location: {
+                        start: {
+                            offset: first.location.start.offset,
+                            line: first.location.start.line,
+                            column: first.location.start.column
+                        },
+                        end: {
+                            offset: last.location.start.offset - 1,
+                            line: null,
+                            column: null
+                        }
+                    },
                     text: utils_1.nodeContentToString(chunk.process, node)
                 });
                 node.childNodes = [textNode];
@@ -4708,7 +4754,7 @@ function flatten(data) {
 exports.flatten = flatten;
 function nodeToString(process, node) {
     "use strict";
-    return process.input.substring(node.offset, node.endPos);
+    return process.input.substring(node.location.start.offset, node.location.end.offset);
 }
 exports.nodeToString = nodeToString;
 function nodeContentToString(process, node) {
@@ -4717,8 +4763,8 @@ function nodeContentToString(process, node) {
     var maxPos = -1;
     var childVisitor = {
         visitDefaultPre: function (node) {
-            minPos = Math.min(minPos, node.offset);
-            maxPos = Math.max(maxPos, node.endPos);
+            minPos = Math.min(minPos, node.location.start.offset);
+            maxPos = Math.max(maxPos, node.location.end.offset);
         }
     };
     walker_1.visit(node, {
@@ -4960,12 +5006,8 @@ var PEG = (function() {
 
         peg$c0 = { type: "other", description: "start" },
         peg$c1 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "Start",
         				content: c
         			};
@@ -4982,25 +5024,17 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "Chapters",
         				content: processed
         			};
         		},
         peg$c4 = { type: "other", description: "chapter" },
         peg$c5 = function(headline, text) {
-        				var loc = location();
         				return {
         					syntax: "Chapter",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(), 
         					headline: headline,
         					text: text
         				};
@@ -5009,13 +5043,9 @@ var PEG = (function() {
         peg$c7 = "=",
         peg$c8 = { type: "literal", value: "=", description: "\"=\"" },
         peg$c9 = function(level, label, caption) {
-        				var loc = location();
         				return {
         					syntax: "Headline",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(), 
         					level: level.length,
         					label: label,
         					caption: caption
@@ -5034,36 +5064,24 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "Contents",
         				content: processed
         			};
         		},
         peg$c13 = { type: "other", description: "content" },
         peg$c14 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "Content",
         				content: c
         			};
         		},
         peg$c15 = { type: "other", description: "paragraph" },
         peg$c16 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "Paragraph",
         				content: c
         			};
@@ -5080,24 +5098,16 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "ParagraphSubs",
         				content: processed
         			};
         		},
         peg$c19 = { type: "other", description: "paragraph sub" },
         peg$c20 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "ParagraphSub",
         				content: c
         			};
@@ -5106,12 +5116,8 @@ var PEG = (function() {
         peg$c22 = /^[^\r\n]/,
         peg$c23 = { type: "class", value: "[^\\r\\n]", description: "[^\\r\\n]" },
         peg$c24 = function(text) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "ContentText",
         				text: text
         			};
@@ -5124,26 +5130,18 @@ var PEG = (function() {
         peg$c30 = "//}",
         peg$c31 = { type: "literal", value: "//}", description: "\"//}\"" },
         peg$c32 = function(symbol, args, contents) {
-        					var loc = location();
         					return {
         						syntax: "BlockElement",
-        						line: loc.start.line,
-        						column: loc.start.column,
-        						offset: loc.start.offset,
-        						endPos: peg$currPos,
+        						location: location(),
         						symbol: symbol,
         						args: args,
         						content: contents
         					};
         				},
         peg$c33 = function(symbol, args) {
-        					var loc = location();
         					return {
         						syntax: "BlockElement",
-        						line: loc.start.line,
-        						column: loc.start.column,
-        						offset: loc.start.offset,
-        						endPos: peg$currPos,
+        						location: location(),
         						symbol: symbol,
         						args: args,
         						content: []
@@ -5159,26 +5157,18 @@ var PEG = (function() {
         peg$c41 = "}",
         peg$c42 = { type: "literal", value: "}", description: "\"}\"" },
         peg$c43 = function(symbol, contents) {
-        				var loc = location();
         				return {
         					syntax: "InlineElement",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					symbol: symbol,
         					content: contents
         				};
         			},
         peg$c44 = { type: "other", description: "column" },
         peg$c45 = function(headline, text) {
-        				var loc = location();
         				return {
         					syntax: "Column",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					headline: headline,
         					text: text
         				};
@@ -5187,13 +5177,9 @@ var PEG = (function() {
         peg$c47 = "[column]",
         peg$c48 = { type: "literal", value: "[column]", description: "\"[column]\"" },
         peg$c49 = function(level, caption) {
-        				var loc = location();
         				return {
         					syntax: "ColumnHeadline",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					level: level.length,
         					caption: caption
         				};
@@ -5210,24 +5196,16 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "ColumnContents",
         				content: processed
         			};
         		},
         peg$c52 = { type: "other", description: "column content" },
         peg$c53 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "ColumnContent",
         				content: c
         			};
@@ -5236,13 +5214,9 @@ var PEG = (function() {
         peg$c55 = "[/column]",
         peg$c56 = { type: "literal", value: "[/column]", description: "\"[/column]\"" },
         peg$c57 = function(level) {
-        				var loc = location();
         				return {
         					syntax: "ColumnTerminator",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					level: level.length
         				};
         			},
@@ -5260,13 +5234,9 @@ var PEG = (function() {
         peg$c69 = "]",
         peg$c70 = { type: "literal", value: "]", description: "\"]\"" },
         peg$c71 = function(arg) {
-        				var loc = location();
         				return {
         					syntax: "BracketArg",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					arg: arg
         				};
         			},
@@ -5276,13 +5246,9 @@ var PEG = (function() {
         peg$c75 = "\\}",
         peg$c76 = { type: "literal", value: "\\}", description: "\"\\\\}\"" },
         peg$c77 = function(arg) {
-        				var loc = location();
         				return {
         					syntax: "BraceArg",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					arg: arg
         				};
         			},
@@ -5298,24 +5264,16 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "BlockElementContents",
         				content: processed
         			};
         		},
         peg$c80 = { type: "other", description: "content of block element" },
         peg$c81 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "BlockElementContent",
         				content: c
         			};
@@ -5336,24 +5294,16 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "InlineElementContents",
         				content: processed
         			};
         		},
         peg$c88 = { type: "other", description: "content of inline element" },
         peg$c89 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "InlineElementContent",
         				content: c
         			};
@@ -5362,24 +5312,16 @@ var PEG = (function() {
         peg$c91 = /^[^\r\n}]/,
         peg$c92 = { type: "class", value: "[^\\r\\n}]", description: "[^\\r\\n}]" },
         peg$c93 = function(text) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "InlineElementContentText",
         				text: text
         			};
         		},
         peg$c94 = { type: "other", description: "inline content" },
         peg$c95 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "SinglelineContent",
         				content: c
         			};
@@ -5396,36 +5338,24 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "ContentInlines",
         				content: processed
         			};
         		},
         peg$c98 = { type: "other", description: "child of inline content" },
         peg$c99 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "ContentInline",
         				content: c
         			};
         		},
         peg$c100 = { type: "other", description: "text of child of inline content" },
         peg$c101 = function(text) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "ContentInlineText",
         				text: text
         			};
@@ -5442,12 +5372,8 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "Ulist",
         				content: processed
         			};
@@ -5458,13 +5384,9 @@ var PEG = (function() {
         peg$c107 = "*",
         peg$c108 = { type: "literal", value: "*", description: "\"*\"" },
         peg$c109 = function(level, text) {
-        				var loc = location();
         				return {
         					syntax: "UlistElement",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					level: level.length,
         					text: text
         				};
@@ -5481,12 +5403,8 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "Olist",
         				content: processed
         			};
@@ -5495,13 +5413,9 @@ var PEG = (function() {
         peg$c113 = ".",
         peg$c114 = { type: "literal", value: ".", description: "\".\"" },
         peg$c115 = function(n, text) {
-        				var loc = location();
         				return {
         					syntax: "OlistElement",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					no: parseInt(n),
         					text: text
         				};
@@ -5518,12 +5432,8 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "Dlist",
         				content: processed
         			};
@@ -5532,13 +5442,9 @@ var PEG = (function() {
         peg$c119 = ":",
         peg$c120 = { type: "literal", value: ":", description: "\":\"" },
         peg$c121 = function(text, content) {
-        				var loc = location();
         				return {
         					syntax: "DlistElement",
-        					line: loc.start.line,
-        					column: loc.start.column,
-        					offset: loc.start.offset,
-        					endPos: peg$currPos,
+        					location: location(),
         					text: text,
         					content: content
         				};
@@ -5555,12 +5461,8 @@ var PEG = (function() {
         					processed.push(cc.content);
         				}
         			}
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "DlistElementContents",
         				content: processed
         			};
@@ -5569,12 +5471,8 @@ var PEG = (function() {
         peg$c125 = /^[ \t]/,
         peg$c126 = { type: "class", value: "[ \\t]", description: "[ \\t]" },
         peg$c127 = function(c) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "DlistElementContent",
         				content: c
         			};
@@ -5583,12 +5481,8 @@ var PEG = (function() {
         peg$c129 = "#@",
         peg$c130 = { type: "literal", value: "#@", description: "\"#@\"" },
         peg$c131 = function(text) {
-        			var loc = location();
         			return {
-        				line: loc.start.line,
-        				column: loc.start.column,
-        				offset: loc.start.offset,
-        				endPos: peg$currPos,
+        				location: location(), 
         				syntax: "SinglelineComment",
         				text: text
         			};

@@ -35,12 +35,8 @@ var template = {
 					processed.push(cc.content);
 				}
 			}
-			var loc = location();
 			return {
-				line: loc.start.line,
-				column: loc.start.column,
-				offset: loc.start.offset,
-				endPos: peg$currPos,
+				location: location(), 
 				syntax: "RuleName",
 				content: processed
 			};
@@ -50,12 +46,8 @@ var template = {
 	},
 	content: function (ruleName) {
 		var func = (function () {
-			var loc = location();
 			return {
-				line: loc.start.line,
-				column: loc.start.column,
-				offset: loc.start.offset,
-				endPos: peg$currPos,
+				location: location(), 
 				syntax: "RuleName",
 				content: c
 			};
@@ -65,12 +57,8 @@ var template = {
 	},
 	text: function (ruleName) {
 		var func = (function () {
-			var loc = location();
 			return {
-				line: loc.start.line,
-				column: loc.start.column,
-				offset: loc.start.offset,
-				endPos: peg$currPos,
+				location: location(), 
 				syntax: "RuleName",
 				text: text
 			};
@@ -99,25 +87,17 @@ var options =
 			Start: template.content("Start"),
 			Chapters: template.contents("Chapters"),
 			Chapter: function () {
-				var loc = location();
 				return {
 					syntax: "Chapter",
-					line: loc.start.line,
-					column: loc.start.column,
-					offset: loc.start.offset,
-					endPos: peg$currPos,
+					location: location(), 
 					headline: headline,
 					text: text
 				};
 			},
 			Headline: function () {
-				var loc = location();
 				return {
 					syntax: "Headline",
-					line: loc.start.line,
-					column: loc.start.column,
-					offset: loc.start.offset,
-					endPos: peg$currPos,
+					location: location(), 
 					level: level.length,
 					label: label,
 					caption: caption
@@ -131,25 +111,17 @@ var options =
 			ContentText: template.text("ContentText"),
 			BlockElement: [
 				function () {
-					var loc = location();
 					return {
 						syntax: "BlockElement",
-						line: loc.start.line,
-						column: loc.start.column,
-						offset: loc.start.offset,
-						endPos: peg$currPos,
+						location: location(),
 						symbol: symbol,
 						args: args,
 						content: contents
 					};
 				}, function () {
-					var loc = location();
 					return {
 						syntax: "BlockElement",
-						line: loc.start.line,
-						column: loc.start.column,
-						offset: loc.start.offset,
-						endPos: peg$currPos,
+						location: location(),
 						symbol: symbol,
 						args: args,
 						content: []
@@ -157,37 +129,25 @@ var options =
 				}
 			],
 			InlineElement: function () {
-				var loc = location();
 				return {
 					syntax: "InlineElement",
-					line: loc.start.line,
-					column: loc.start.column,
-					offset: loc.start.offset,
-					endPos: peg$currPos,
+					location: location(),
 					symbol: symbol,
 					content: contents
 				};
 			},
 			Column: function () {
-				var loc = location();
 				return {
 					syntax: "Column",
-					line: loc.start.line,
-					column: loc.start.column,
-					offset: loc.start.offset,
-					endPos: peg$currPos,
+					location: location(),
 					headline: headline,
 					text: text
 				};
 			},
 			ColumnHeadline: function () {
-				var loc = location();
 				return {
 					syntax: "ColumnHeadline",
-					line: loc.start.line,
-					column: loc.start.column,
-					offset: loc.start.offset,
-					endPos: peg$currPos,
+					location: location(),
 					level: level.length,
 					caption: caption
 				};
@@ -195,35 +155,23 @@ var options =
 			ColumnContents: template.contents("ColumnContents"),
 			ColumnContent: template.repeat(7, template.content("ColumnContent")),
 			ColumnTerminator: function () {
-				var loc = location();
 				return {
 					syntax: "ColumnTerminator",
-					line: loc.start.line,
-					column: loc.start.column,
-					offset: loc.start.offset,
-					endPos: peg$currPos,
+					location: location(),
 					level: level.length
 				};
 			},
 			BracketArg: function () {
-				var loc = location();
 				return {
 					syntax: "BracketArg",
-					line: loc.start.line,
-					column: loc.start.column,
-					offset: loc.start.offset,
-					endPos: peg$currPos,
+					location: location(),
 					arg: arg
 				};
 			},
 			BraceArg: function () {
-				var loc = location();
 				return {
 					syntax: "BraceArg",
-					line: loc.start.line,
-					column: loc.start.column,
-					offset: loc.start.offset,
-					endPos: peg$currPos,
+					location: location(),
 					arg: arg
 				};
 			},
@@ -242,39 +190,27 @@ var options =
 			ContentInlineText: template.text("ContentInlineText"),
 			Ulist: template.contents("Ulist"),
 			UlistElement: function () {
-				var loc = location();
 				return {
 					syntax: "UlistElement",
-					line: loc.start.line,
-					column: loc.start.column,
-					offset: loc.start.offset,
-					endPos: peg$currPos,
+					location: location(),
 					level: level.length,
 					text: text
 				};
 			},
 			Olist: template.contents("Olist"),
 			OlistElement: function () {
-				var loc = location();
 				return {
 					syntax: "OlistElement",
-					line: loc.start.line,
-					column: loc.start.column,
-					offset: loc.start.offset,
-					endPos: peg$currPos,
+					location: location(),
 					no: parseInt(n),
 					text: text
 				};
 			},
 			Dlist: template.contents("Dlist"),
 			DlistElement: function () {
-				var loc = location();
 				return {
 					syntax: "DlistElement",
-					line: loc.start.line,
-					column: loc.start.column,
-					offset: loc.start.offset,
-					endPos: peg$currPos,
+					location: location(),
 					text: text,
 					content: content
 				};

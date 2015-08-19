@@ -149,9 +149,9 @@ export class SyntaxPreprocessor implements Preprocessor {
 					visitDefaultPre: (node: SyntaxTree) => {
 						if (!info) {
 							info = {
-								offset: node.offset,
-								line: node.line,
-								column: node.column
+								offset: node.location.start.offset,
+								line: node.location.start.line,
+								column: node.location.start.column
 							};
 						}
 						lastNode = node;
@@ -159,11 +159,19 @@ export class SyntaxPreprocessor implements Preprocessor {
 					visitInlineElementPre: (node: InlineElementSyntaxTree) => {
 						let textNode = new TextNodeSyntaxTree({
 							syntax: "BlockElementContentText",
-							offset: info.offset,
-							line: info.line,
-							column: info.column,
-							endPos: node.offset - 1,
-							text: chunk.process.input.substring(info.offset, node.offset - 1)
+							location: {
+								start: {
+									offset: info.offset,
+									line: info.line,
+									column: info.column
+								},
+								end: {
+									offset: node.location.start.offset - 1,
+									line: null,
+									column: null
+								}
+							},
+							text: chunk.process.input.substring(info.offset, node.location.start.offset - 1)
 						});
 						resultNodes.push(textNode);
 						resultNodes.push(node);
@@ -176,11 +184,19 @@ export class SyntaxPreprocessor implements Preprocessor {
 				(() => {
 					let textNode = new TextNodeSyntaxTree({
 						syntax: "BlockElementContentText",
-						offset: info.offset,
-						line: info.line,
-						column: info.column,
-						endPos: lastNode.endPos,
-						text: chunk.process.input.substring(info.offset, lastNode.endPos)
+						location: {
+							start: {
+								offset: info.offset,
+								line: info.line,
+								column: info.column
+							},
+							end: {
+								offset: node.location.start.offset - 1,
+								line: null,
+								column: null
+							}
+						},
+						text: chunk.process.input.substring(info.offset, lastNode.location.end.offset)
 					});
 					resultNodes.push(textNode);
 				})();
@@ -195,10 +211,18 @@ export class SyntaxPreprocessor implements Preprocessor {
 				let last = node.childNodes[node.childNodes.length - 1];
 				let textNode = new TextNodeSyntaxTree({
 					syntax: "BlockElementContentText",
-					offset: first.offset,
-					line: first.line,
-					column: first.column,
-					endPos: last.endPos,
+					location: {
+						start: {
+							offset: first.location.start.offset,
+							line: first.location.start.line,
+							column: first.location.start.column
+						},
+						end: {
+							offset: last.location.start.offset - 1,
+							line: null,
+							column: null
+						}
+					},
 					text: nodeContentToString(chunk.process, node)
 				});
 				node.childNodes = [textNode];

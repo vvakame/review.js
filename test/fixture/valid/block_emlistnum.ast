@@ -1,43 +1,91 @@
 {
   "ruleName": "Start",
-  "offset": 0,
-  "line": 1,
-  "column": 1,
-  "endPos": 76,
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 9,
+      "column": 1,
+      "offset": 76
+    }
+  },
   "childNodes": [
     {
       "ruleName": "Chapters",
-      "offset": 0,
-      "line": 1,
-      "column": 1,
-      "endPos": 76,
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 1,
+          "offset": 76
+        }
+      },
       "childNodes": [
         {
           "ruleName": "Chapter",
-          "offset": 0,
-          "line": 1,
-          "column": 1,
-          "endPos": 76,
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 9,
+              "column": 1,
+              "offset": 76
+            }
+          },
           "headline": {
             "ruleName": "Headline",
-            "offset": 0,
-            "line": 1,
-            "column": 1,
-            "endPos": 17,
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 17
+              }
+            },
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
-              "offset": 2,
-              "line": 1,
-              "column": 3,
-              "endPos": 15,
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 16,
+                  "offset": 15
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
-                  "offset": 2,
-                  "line": 1,
-                  "column": 3,
-                  "endPos": 15,
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 16,
+                      "offset": 15
+                    }
+                  },
                   "text": "emlistnumのテスト"
                 }
               ]
@@ -46,36 +94,68 @@
           "text": [
             {
               "ruleName": "Paragraph",
-              "offset": 17,
-              "line": 3,
-              "column": 1,
-              "endPos": 28,
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 17
+                },
+                "end": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 28
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentText",
-                  "offset": 17,
-                  "line": 3,
-                  "column": 1,
-                  "endPos": 26,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 1,
+                      "offset": 17
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 10,
+                      "offset": 26
+                    }
+                  },
                   "text": "わかんねんけどな。"
                 }
               ]
             },
             {
               "ruleName": "BlockElement",
-              "offset": 28,
-              "line": 5,
-              "column": 1,
-              "endPos": 76,
+              "location": {
+                "start": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 28
+                },
+                "end": {
+                  "line": 9,
+                  "column": 1,
+                  "offset": 76
+                }
+              },
               "symbol": "emlistnum",
               "args": [],
               "childNodes": [
                 {
                   "ruleName": "BlockElementContentText",
-                  "offset": 41,
-                  "line": 6,
-                  "column": 1,
-                  "endPos": 72,
+                  "location": {
+                    "start": {
+                      "line": 6,
+                      "column": 1,
+                      "offset": 41
+                    },
+                    "end": {
+                      "line": null,
+                      "column": null,
+                      "offset": 27
+                    }
+                  },
                   "text": "console.log(\"hoge\");\ndebugger;"
                 }
               ]

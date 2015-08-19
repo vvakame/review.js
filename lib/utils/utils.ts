@@ -78,7 +78,7 @@ export function nodeToString(process: BuilderProcess, node: SyntaxTree): string;
 export function nodeToString(process: any, node: SyntaxTree): string {
 	"use strict";
 
-	return process.input.substring(node.offset, node.endPos);
+	return process.input.substring(node.location.start.offset, node.location.end.offset);
 }
 
 /**
@@ -96,8 +96,8 @@ export function nodeContentToString(process: any, node: SyntaxTree): string {
 	// child
 	let childVisitor: TreeVisitor = {
 		visitDefaultPre: (node: SyntaxTree) => {
-			minPos = Math.min(minPos, node.offset);
-			maxPos = Math.max(maxPos, node.endPos);
+			minPos = Math.min(minPos, node.location.start.offset);
+			maxPos = Math.max(maxPos, node.location.end.offset);
 		}
 	};
 	// root (子要素だけ抽出したい)

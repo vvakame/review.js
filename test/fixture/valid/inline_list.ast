@@ -1,43 +1,91 @@
 {
   "ruleName": "Start",
-  "offset": 0,
-  "line": 1,
-  "column": 1,
-  "endPos": 115,
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 9,
+      "column": 1,
+      "offset": 115
+    }
+  },
   "childNodes": [
     {
       "ruleName": "Chapters",
-      "offset": 0,
-      "line": 1,
-      "column": 1,
-      "endPos": 115,
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 1,
+          "offset": 115
+        }
+      },
       "childNodes": [
         {
           "ruleName": "Chapter",
-          "offset": 0,
-          "line": 1,
-          "column": 1,
-          "endPos": 115,
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 9,
+              "column": 1,
+              "offset": 115
+            }
+          },
           "headline": {
             "ruleName": "Headline",
-            "offset": 0,
-            "line": 1,
-            "column": 1,
-            "endPos": 12,
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 12
+              }
+            },
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
-              "offset": 2,
-              "line": 1,
-              "column": 3,
-              "endPos": 10,
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 11,
+                  "offset": 10
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
-                  "offset": 2,
-                  "line": 1,
-                  "column": 3,
-                  "endPos": 10,
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 11,
+                      "offset": 10
+                    }
+                  },
                   "text": "listのテスト"
                 }
               ]
@@ -46,40 +94,80 @@
           "text": [
             {
               "ruleName": "Paragraph",
-              "offset": 12,
-              "line": 3,
-              "column": 1,
-              "endPos": 39,
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 12
+                },
+                "end": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 39
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentText",
-                  "offset": 12,
-                  "line": 3,
-                  "column": 1,
-                  "endPos": 21,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 1,
+                      "offset": 12
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 10,
+                      "offset": 21
+                    }
+                  },
                   "text": "わかんねんけどな("
                 },
                 {
                   "ruleName": "InlineElement",
-                  "offset": 21,
-                  "line": 3,
-                  "column": 10,
-                  "endPos": 35,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 10,
+                      "offset": 21
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 24,
+                      "offset": 35
+                    }
+                  },
                   "symbol": "list",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
-                      "offset": 29,
-                      "line": 3,
-                      "column": 18,
-                      "endPos": 34,
+                      "location": {
+                        "start": {
+                          "line": 3,
+                          "column": 18,
+                          "offset": 29
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 23,
+                          "offset": 34
+                        }
+                      },
                       "childNodes": [
                         {
                           "ruleName": "InlineElementContentText",
-                          "offset": 29,
-                          "line": 3,
-                          "column": 18,
-                          "endPos": 34,
+                          "location": {
+                            "start": {
+                              "line": 3,
+                              "column": 18,
+                              "offset": 29
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 23,
+                              "offset": 34
+                            }
+                          },
                           "text": "hello"
                         }
                       ]
@@ -88,36 +176,68 @@
                 },
                 {
                   "ruleName": "ContentText",
-                  "offset": 35,
-                  "line": 3,
-                  "column": 24,
-                  "endPos": 37,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 24,
+                      "offset": 35
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 26,
+                      "offset": 37
+                    }
+                  },
                   "text": ")。"
                 }
               ]
             },
             {
               "ruleName": "BlockElement",
-              "offset": 39,
-              "line": 5,
-              "column": 1,
-              "endPos": 115,
+              "location": {
+                "start": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 39
+                },
+                "end": {
+                  "line": 9,
+                  "column": 1,
+                  "offset": 115
+                }
+              },
               "symbol": "list",
               "args": [
                 {
                   "ruleName": "BracketArg",
-                  "offset": 45,
-                  "line": 5,
-                  "column": 7,
-                  "endPos": 52,
+                  "location": {
+                    "start": {
+                      "line": 5,
+                      "column": 7,
+                      "offset": 45
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 14,
+                      "offset": 52
+                    }
+                  },
                   "arg": "hello"
                 },
                 {
                   "ruleName": "BracketArg",
-                  "offset": 52,
-                  "line": 5,
-                  "column": 14,
-                  "endPos": 62,
+                  "location": {
+                    "start": {
+                      "line": 5,
+                      "column": 14,
+                      "offset": 52
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 24,
+                      "offset": 62
+                    }
+                  },
                   "arg": "はろーわーるど！"
                 }
               ],
@@ -125,10 +245,18 @@
               "childNodes": [
                 {
                   "ruleName": "BlockElementContentText",
-                  "offset": 64,
-                  "line": 6,
-                  "column": 1,
-                  "endPos": 111,
+                  "location": {
+                    "start": {
+                      "line": 6,
+                      "column": 1,
+                      "offset": 64
+                    },
+                    "end": {
+                      "line": null,
+                      "column": null,
+                      "offset": 38
+                    }
+                  },
                   "text": "console.log(\"だと思ったか…！？\");\nconsole.log(\"はろわー\");"
                 }
               ]

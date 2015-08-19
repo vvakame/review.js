@@ -117,7 +117,7 @@ export class Process {
 			} else if (b.nodes.length === 0) {
 				return 1;
 			} else {
-				return a.nodes[0].offset - b.nodes[0].offset;
+				return a.nodes[0].location.start.offset - b.nodes[0].location.start.offset;
 			}
 		});
 	}

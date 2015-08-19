@@ -224,10 +224,18 @@ export class ParseError implements Error {
 export interface ConcreatSyntaxTree {
 	// 共通
 	syntax: string;
-	line: number;
-	column: number;
-	offset: number;
-	endPos: number;
+	location: {
+		start: {
+			line: number;
+			column: number;
+			offset: number;
+		};
+		end: {
+			line: number;
+			column: number;
+			offset: number;
+		};
+	};
 
 	// Ruleによっては
 	headline?: any;
@@ -294,10 +302,18 @@ export enum RuleName {
 }
 
 export interface NodeLocation {
-	line: number;
-	column: number;
-	offset: number;
-	endPos: number;
+	location: {
+		start: {
+			line: number;
+			column: number;
+			offset: number;
+		};
+		end: {
+			line: number;
+			column: number;
+			offset: number;
+		};
+	};
 }
 
 /**
@@ -305,10 +321,19 @@ export interface NodeLocation {
  */
 export class SyntaxTree implements NodeLocation {
 	parentNode: SyntaxTree;
-	offset: number;
-	line: number;
-	column: number;
-	endPos: number;
+	location: {
+		start: {
+			line: number;
+			column: number;
+			offset: number;
+		};
+		end: {
+			line: number;
+			column: number;
+			offset: number;
+		};
+	};
+
 	ruleName: RuleName;
 	// analyzer 中で設定する項目
 	no: number;
@@ -320,10 +345,18 @@ export class SyntaxTree implements NodeLocation {
 		if (typeof this.ruleName === "undefined") {
 			throw new ParseError(data, "unknown rule: " + data.syntax);
 		}
-		this.offset = data.offset;
-		this.line = data.line;
-		this.column = data.column;
-		this.endPos = data.endPos;
+		this.location = {
+			start: {
+				line: data.location.start.line,
+				column: data.location.start.column,
+				offset: data.location.start.offset
+			},
+			end: {
+				line: data.location.end.line,
+				column: data.location.end.column,
+				offset: data.location.end.offset
+			}
+		};
 	}
 
 	toJSON(): any {
@@ -353,9 +386,9 @@ export class SyntaxTree implements NodeLocation {
 
 	toString(indentLevel: number = 0): string {
 		let result = this.makeIndent(indentLevel) + "SyntaxTree:[\n";
-		result += this.makeIndent(indentLevel + 1) + "offset = " + this.offset + ",\n";
-		result += this.makeIndent(indentLevel + 1) + "line=" + this.line + ",\n";
-		result += this.makeIndent(indentLevel + 1) + "column=" + this.column + ",\n";
+		result += this.makeIndent(indentLevel + 1) + "offset = " + this.location.start.offset + ",\n";
+		result += this.makeIndent(indentLevel + 1) + "line=" + this.location.start.line + ",\n";
+		result += this.makeIndent(indentLevel + 1) + "column=" + this.location.start.column + ",\n";
 		result += this.makeIndent(indentLevel + 1) + "name=" + RuleName[this.ruleName] + ",\n";
 		this.toStringHook(indentLevel, result);
 		result += this.makeIndent(indentLevel) + "]";

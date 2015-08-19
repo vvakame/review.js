@@ -1,43 +1,91 @@
 {
   "ruleName": "Start",
-  "offset": 0,
-  "line": 1,
-  "column": 1,
-  "endPos": 70,
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 8,
+      "column": 1,
+      "offset": 70
+    }
+  },
   "childNodes": [
     {
       "ruleName": "Chapters",
-      "offset": 0,
-      "line": 1,
-      "column": 1,
-      "endPos": 70,
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 1,
+          "offset": 70
+        }
+      },
       "childNodes": [
         {
           "ruleName": "Chapter",
-          "offset": 0,
-          "line": 1,
-          "column": 1,
-          "endPos": 70,
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 8,
+              "column": 1,
+              "offset": 70
+            }
+          },
           "headline": {
             "ruleName": "Headline",
-            "offset": 0,
-            "line": 1,
-            "column": 1,
-            "endPos": 11,
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 11
+              }
+            },
             "level": 1,
             "caption": {
               "ruleName": "ContentInlines",
-              "offset": 2,
-              "line": 1,
-              "column": 3,
-              "endPos": 9,
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 10,
+                  "offset": 9
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "ContentInlineText",
-                  "offset": 2,
-                  "line": 1,
-                  "column": 3,
-                  "endPos": 9,
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 10,
+                      "offset": 9
+                    }
+                  },
                   "text": "imgのテスト"
                 }
               ]
@@ -46,34 +94,66 @@
           "text": [
             {
               "ruleName": "BlockElement",
-              "offset": 11,
-              "line": 3,
-              "column": 1,
-              "endPos": 54,
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 11
+                },
+                "end": {
+                  "line": 7,
+                  "column": 1,
+                  "offset": 54
+                }
+              },
               "symbol": "image",
               "args": [
                 {
                   "ruleName": "BracketArg",
-                  "offset": 18,
-                  "line": 3,
-                  "column": 8,
-                  "endPos": 27,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 8,
+                      "offset": 18
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 17,
+                      "offset": 27
+                    }
+                  },
                   "arg": "vvakame"
                 },
                 {
                   "ruleName": "BracketArg",
-                  "offset": 27,
-                  "line": 3,
-                  "column": 17,
-                  "endPos": 33,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 17,
+                      "offset": 27
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 23,
+                      "offset": 33
+                    }
+                  },
                   "arg": "サンプル"
                 },
                 {
                   "ruleName": "BracketArg",
-                  "offset": 33,
-                  "line": 3,
-                  "column": 23,
-                  "endPos": 44,
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 23,
+                      "offset": 33
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 34,
+                      "offset": 44
+                    }
+                  },
                   "arg": "scale=0.3"
                 }
               ],
@@ -81,42 +161,82 @@
               "childNodes": [
                 {
                   "ruleName": "BlockElementContentText",
-                  "offset": 46,
-                  "line": 4,
-                  "column": 1,
-                  "endPos": 49,
+                  "location": {
+                    "start": {
+                      "line": 4,
+                      "column": 1,
+                      "offset": 46
+                    },
+                    "end": {
+                      "line": null,
+                      "column": null,
+                      "offset": 10
+                    }
+                  },
                   "text": "メモ"
                 }
               ]
             },
             {
               "ruleName": "Paragraph",
-              "offset": 54,
-              "line": 7,
-              "column": 1,
-              "endPos": 70,
+              "location": {
+                "start": {
+                  "line": 7,
+                  "column": 1,
+                  "offset": 54
+                },
+                "end": {
+                  "line": 8,
+                  "column": 1,
+                  "offset": 70
+                }
+              },
               "childNodes": [
                 {
                   "ruleName": "InlineElement",
-                  "offset": 54,
-                  "line": 7,
-                  "column": 1,
-                  "endPos": 69,
+                  "location": {
+                    "start": {
+                      "line": 7,
+                      "column": 1,
+                      "offset": 54
+                    },
+                    "end": {
+                      "line": 7,
+                      "column": 16,
+                      "offset": 69
+                    }
+                  },
                   "symbol": "img",
                   "childNodes": [
                     {
                       "ruleName": "InlineElementContents",
-                      "offset": 61,
-                      "line": 7,
-                      "column": 8,
-                      "endPos": 68,
+                      "location": {
+                        "start": {
+                          "line": 7,
+                          "column": 8,
+                          "offset": 61
+                        },
+                        "end": {
+                          "line": 7,
+                          "column": 15,
+                          "offset": 68
+                        }
+                      },
                       "childNodes": [
                         {
                           "ruleName": "InlineElementContentText",
-                          "offset": 61,
-                          "line": 7,
-                          "column": 8,
-                          "endPos": 68,
+                          "location": {
+                            "start": {
+                              "line": 7,
+                              "column": 8,
+                              "offset": 61
+                            },
+                            "end": {
+                              "line": 7,
+                              "column": 15,
+                              "offset": 68
+                            }
+                          },
                           "text": "vvakame"
                         }
                       ]

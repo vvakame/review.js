@@ -109,7 +109,7 @@ root
 						}
 						let message = "";
 						report.nodes.forEach(function(node) {
-							message += "[" + node.line + "," + node.column + "] ";
+							message += "[" + node.location.start.line + "," + node.location.start.column + "] ";
 						});
 						message += report.message;
 						log(message);
