@@ -8,7 +8,6 @@ import * as ConfigSpec from "./controller/configSpec";
 import * as ControllerSpec from "./controller/controllerSpec";
 import * as BuilderSpec from "./builder/builderSpec";
 import * as RubyReVIEWDiffSpec from "./rubyReVIEWDiffSpec";
-import * as UnsolvedIssueSpec from "./unsolvedIssueSpec";
 
 import * as CliSpec from "./cliSpec";
 
@@ -19,5 +18,4 @@ ConfigSpec;
 ControllerSpec;
 BuilderSpec;
 RubyReVIEWDiffSpec;
-UnsolvedIssueSpec;
 CliSpec;
