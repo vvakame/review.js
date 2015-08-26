@@ -127,11 +127,7 @@ export class ContentStructure {
 	constructor(public part: ConfigPart, public chapter: ConfigChapter) {
 	}
 
-	static createChapter(file: string): ContentStructure;
-
-	static createChapter(chapter: ConfigChapter): ContentStructure;
-
-	static createChapter(value: any): ContentStructure {
+	static createChapter(value: string | ConfigChapter): ContentStructure {
 		if (typeof value === "string") {
 			return new ContentStructure(null, { file: value });
 		} else if (value && typeof value.file === "string") {
@@ -142,14 +138,14 @@ export class ContentStructure {
 	}
 
 	static createPart(part: ConfigPart): ContentStructure {
-		if (part) {
-			let p: ConfigPart = {
-				file: part.file,
-				chapters: (part.chapters || []).map((c: any) => typeof c === "string" ? { file: c } : c)
-			};
-			return new ContentStructure(p, null);
-		} else {
+		if (!part) {
 			return null;
 		}
+
+		let p: ConfigPart = {
+			file: part.file,
+			chapters: (part.chapters || []).map((c: any) => typeof c === "string" ? { file: c } : c)
+		};
+		return new ContentStructure(p, null);
 	}
 }

@@ -1771,16 +1771,14 @@ var ContentStructure = (function () {
         }
     };
     ContentStructure.createPart = function (part) {
-        if (part) {
-            var p = {
-                file: part.file,
-                chapters: (part.chapters || []).map(function (c) { return typeof c === "string" ? { file: c } : c; })
-            };
-            return new ContentStructure(p, null);
-        }
-        else {
+        if (!part) {
             return null;
         }
+        var p = {
+            file: part.file,
+            chapters: (part.chapters || []).map(function (c) { return typeof c === "string" ? { file: c } : c; })
+        };
+        return new ContentStructure(p, null);
     };
     return ContentStructure;
 })();
