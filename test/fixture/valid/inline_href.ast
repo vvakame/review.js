@@ -338,7 +338,41 @@
                       "offset": 109
                     }
                   },
-                  "arg": "label"
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 7,
+                          "column": 9,
+                          "offset": 103
+                        },
+                        "end": {
+                          "line": 7,
+                          "column": 14,
+                          "offset": 108
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 7,
+                              "column": 9,
+                              "offset": 103
+                            },
+                            "end": {
+                              "line": 7,
+                              "column": 14,
+                              "offset": 108
+                            }
+                          },
+                          "text": "label"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ],
               "no": 1,

@@ -222,7 +222,41 @@
                       "offset": 62
                     }
                   },
-                  "arg": "tadaike"
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 5,
+                          "column": 12,
+                          "offset": 54
+                        },
+                        "end": {
+                          "line": 5,
+                          "column": 19,
+                          "offset": 61
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 5,
+                              "column": 12,
+                              "offset": 54
+                            },
+                            "end": {
+                              "line": 5,
+                              "column": 19,
+                              "offset": 61
+                            }
+                          },
+                          "text": "tadaike"
+                        }
+                      ]
+                    }
+                  ]
                 },
                 {
                   "ruleName": "BracketArg",
@@ -238,7 +272,41 @@
                       "offset": 75
                     }
                   },
-                  "arg": "ただしイケメンに限る。"
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 5,
+                          "column": 21,
+                          "offset": 63
+                        },
+                        "end": {
+                          "line": 5,
+                          "column": 32,
+                          "offset": 74
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 5,
+                              "column": 21,
+                              "offset": 63
+                            },
+                            "end": {
+                              "line": 5,
+                              "column": 32,
+                              "offset": 74
+                            }
+                          },
+                          "text": "ただしイケメンに限る。"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ],
               "no": 1,

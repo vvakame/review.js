@@ -122,7 +122,41 @@
                       "offset": 27
                     }
                   },
-                  "arg": "vvakame"
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 3,
+                          "column": 9,
+                          "offset": 19
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 16,
+                          "offset": 26
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 3,
+                              "column": 9,
+                              "offset": 19
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 16,
+                              "offset": 26
+                            }
+                          },
+                          "text": "vvakame"
+                        }
+                      ]
+                    }
+                  ]
                 },
                 {
                   "ruleName": "BracketArg",
@@ -138,7 +172,41 @@
                       "offset": 33
                     }
                   },
-                  "arg": "サンプル"
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 3,
+                          "column": 18,
+                          "offset": 28
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 22,
+                          "offset": 32
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 3,
+                              "column": 18,
+                              "offset": 28
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 22,
+                              "offset": 32
+                            }
+                          },
+                          "text": "サンプル"
+                        }
+                      ]
+                    }
+                  ]
                 },
                 {
                   "ruleName": "BracketArg",
@@ -154,7 +222,41 @@
                       "offset": 44
                     }
                   },
-                  "arg": "scale=0.3"
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 3,
+                          "column": 24,
+                          "offset": 34
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 33,
+                          "offset": 43
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 3,
+                              "column": 24,
+                              "offset": 34
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 33,
+                              "offset": 43
+                            }
+                          },
+                          "text": "scale=0.3"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ],
               "no": 1,

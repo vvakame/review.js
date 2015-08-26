@@ -341,7 +341,7 @@ export class DefaultAnalyzer implements Analyzer {
 			node.no = process.nextIndex("list");
 			process.addSymbol({
 				symbolName: node.symbol,
-				labelName: node.args[0].arg,
+				labelName: nodeContentToString(process, node.args[0]),
 				node: node
 			});
 		});
@@ -357,7 +357,7 @@ export class DefaultAnalyzer implements Analyzer {
 			node.no = process.nextIndex("list");
 			process.addSymbol({
 				symbolName: "list",
-				labelName: node.args[0].arg,
+				labelName: nodeContentToString(process, node.args[0]),
 				node: node
 			});
 		});
@@ -429,7 +429,7 @@ export class DefaultAnalyzer implements Analyzer {
 			node.no = process.nextIndex("image");
 			process.addSymbol({
 				symbolName: node.symbol,
-				labelName: node.args[0].arg,
+				labelName: nodeContentToString(process, node.args[0]),
 				node: node
 			});
 		});
@@ -486,7 +486,7 @@ export class DefaultAnalyzer implements Analyzer {
 			node.no = process.nextIndex("footnote");
 			process.addSymbol({
 				symbolName: node.symbol,
-				labelName: node.args[0].arg,
+				labelName: nodeContentToString(process, node.args[0]),
 				node: node
 			});
 		});
@@ -588,7 +588,7 @@ export class DefaultAnalyzer implements Analyzer {
 			node.no = process.nextIndex("label");
 			process.addSymbol({
 				symbolName: node.symbol,
-				labelName: node.args[0].arg,
+				labelName: nodeContentToString(process, node.args[0]),
 				node: node
 			});
 		});
@@ -644,7 +644,7 @@ export class DefaultAnalyzer implements Analyzer {
 			node.no = process.nextIndex("table");
 			process.addSymbol({
 				symbolName: node.symbol,
-				labelName: node.args[0].arg,
+				labelName: nodeContentToString(process, node.args[0]),
 				node: node
 			});
 		});

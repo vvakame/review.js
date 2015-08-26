@@ -98,9 +98,13 @@ export class TextBuilder extends DefaultBuilder {
 		process.out("◆→開始:リスト←◆\n");
 		let chapter = findChapter(node, 1);
 		let text = t("builder.list", chapter.fqn, node.no);
-		process.out(text).out("　").out(node.args[1].arg).out("\n\n");
+		process.out(text).out("　");
 		return (v: TreeVisitor) => {
-			// name, args はパスしたい
+			// name はパスしたい
+			node.args.slice(1).forEach(node => {
+				visit(node, v);
+			});
+			process.outRaw("\n\n");
 			node.childNodes.forEach((node) => {
 				visit(node, v);
 			});
@@ -115,10 +119,14 @@ export class TextBuilder extends DefaultBuilder {
 		process.out("◆→開始:リスト←◆\n");
 		let chapter = findChapter(node, 1);
 		let text = t("builder.list", chapter.fqn, node.no);
-		process.out(text).out("　").out(node.args[1].arg).out("\n\n");
+		process.out(text).out("　");
 		let lineCount = 1;
 		return (v: TreeVisitor) => {
-			// name, args はパスしたい
+			// name はパスしたい
+			node.args.slice(1).forEach(node => {
+				visit(node, v);
+			});
+			process.outRaw("\n\n");
 			node.childNodes.forEach((node, index, childNodes) => {
 				if (node.isTextNode()) {
 					// 改行する可能性があるのはTextNodeだけ…のはず
@@ -154,11 +162,13 @@ export class TextBuilder extends DefaultBuilder {
 
 	block_emlist_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		process.out("◆→開始:インラインリスト←◆\n");
-		if (node.args[0]) {
-			process.out("■").out("").out(node.args[0].arg).out("\n");
-		}
 		return (v: TreeVisitor) => {
-			// name, args はパスしたい
+			// name はパスしたい
+			if (node.args[0]) {
+				process.out("■");
+				visit(node.args[0], v);
+				process.out("\n");
+			}
 			node.childNodes.forEach((node) => {
 				visit(node, v);
 			});
@@ -171,12 +181,14 @@ export class TextBuilder extends DefaultBuilder {
 
 	block_emlistnum_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		process.out("◆→開始:インラインリスト←◆\n");
-		if (node.args[0]) {
-			process.out("■").out("").out(node.args[0].arg).out("\n");
-		}
 		let lineCount = 1;
 		return (v: TreeVisitor) => {
-			// name, args はパスしたい
+			// name はパスしたい
+			if (node.args[0]) {
+				process.out("■");
+				visit(node.args[0], v);
+				process.out("\n");
+			}
 			node.childNodes.forEach((node, index, childNodes) => {
 				if (node.isTextNode()) {
 					// 改行する可能性があるのはTextNodeだけ…のはず
@@ -321,9 +333,10 @@ export class TextBuilder extends DefaultBuilder {
 	}
 
 	block_image(process: BuilderProcess, node: BlockElementSyntaxTree) {
-		return process.findImageFile(node.args[0].arg)
+		let label = nodeContentToString(process, node.args[0]);
+		return process.findImageFile(label)
 			.then(imagePath=> {
-				let caption = node.args[1].arg;
+				let caption = nodeContentToString(process, node.args[1]);
 				process.out("◆→開始:図←◆\n");
 				process.out("図").out(process.base.chapter.no).out(".").out(node.no).out("　").out(caption).out("\n");
 				process.out("\n");
@@ -338,9 +351,9 @@ export class TextBuilder extends DefaultBuilder {
 	}
 
 	block_indepimage(process: BuilderProcess, node: BlockElementSyntaxTree) {
-		process.out("◆→画像 ").out(node.args[0].arg).out("←◆\n");
+		process.out("◆→画像 ").out(nodeContentToString(process, node.args[0])).out("←◆\n");
 		if (node.args[1]) {
-			process.out("図　").out(node.args[1].arg).out("\n\n");
+			process.out("図　").out(nodeContentToString(process, node.args[1])).out("\n\n");
 		}
 		return false;
 	}
@@ -362,8 +375,11 @@ export class TextBuilder extends DefaultBuilder {
 	}
 
 	block_footnote(process: BuilderProcess, node: BlockElementSyntaxTree) {
-		process.out("【注").out(node.no).out("】").out(node.args[1].arg).out("\n");
-		return false;
+		process.out("【注").out(node.no).out("】");
+		return (v: TreeVisitor) => {
+			visit(node.args[1], v);
+			process.out("\n");
+		};
 	}
 
 	inline_fn(process: BuilderProcess, node: InlineElementSyntaxTree) {
@@ -403,7 +419,7 @@ export class TextBuilder extends DefaultBuilder {
 
 	block_source_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		process.out("◆→開始:ソースコードリスト←◆\n");
-		process.out("■").out(node.args[0].arg).out("\n");
+		process.out("■").out(nodeContentToString(process, node.args[0])).out("\n");
 
 		return (v: TreeVisitor) => {
 			// name, args はパスしたい
@@ -499,7 +515,7 @@ export class TextBuilder extends DefaultBuilder {
 		process.out("TODO 現在table記法は仮実装です\n");
 		let chapter = findChapter(node, 1);
 		let text = t("builder.table", chapter.fqn, node.no);
-		process.out(text).out("　").out(node.args[1].arg).out("\n\n");
+		process.out(text).out("　").out(nodeContentToString(process, node.args[1])).out("\n\n");
 		return (v: TreeVisitor) => {
 			// name, args はパスしたい
 			node.childNodes.forEach((node) => {

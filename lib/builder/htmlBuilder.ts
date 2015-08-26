@@ -199,10 +199,14 @@ export class HtmlBuilder extends DefaultBuilder {
 		process.outRaw("<div class=\"caption-code\">\n");
 		let chapter = findChapter(node, 1);
 		let text = t("builder.list", chapter.fqn, node.no);
-		process.outRaw("<p class=\"caption\">").out(text).outRaw(": ").out(node.args[1].arg).outRaw("</p>\n");
-		process.outRaw("<pre class=\"list\">");
+		process.outRaw("<p class=\"caption\">").out(text).outRaw(": ");
 		return (v: TreeVisitor) => {
-			// name, args はパスしたい
+			// name はパスしたい
+			node.args.slice(1).forEach(node => {
+				visit(node, v);
+			});
+			process.outRaw("</p>\n");
+			process.outRaw("<pre class=\"list\">");
 			node.childNodes.forEach((node) => {
 				visit(node, v);
 			});
@@ -217,11 +221,15 @@ export class HtmlBuilder extends DefaultBuilder {
 		process.outRaw("<div class=\"code\">\n");
 		let chapter = findChapter(node, 1);
 		let text = t("builder.list", chapter.fqn, node.no);
-		process.outRaw("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).outRaw("</p>\n");
-		process.outRaw("<pre class=\"list\">");
+		process.outRaw("<p class=\"caption\">").out(text).out(": ");
 		let lineCount = 1;
 		return (v: TreeVisitor) => {
-			// name, args はパスしたい
+			// name はパスしたい
+			node.args.slice(1).forEach(node => {
+				visit(node, v);
+			});
+			process.outRaw("</p>\n");
+			process.outRaw("<pre class=\"list\">");
 			node.childNodes.forEach((node, index, childNodes) => {
 				if (node.isTextNode()) {
 					// 改行する可能性があるのはTextNodeだけ…のはず
@@ -259,12 +267,14 @@ export class HtmlBuilder extends DefaultBuilder {
 
 	block_emlist_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		process.outRaw("<div class=\"emlist-code\">\n");
-		if (node.args[0]) {
-			process.outRaw("<p class=\"caption\">").out(node.args[0].arg).outRaw("</p>\n");
-		}
-		process.outRaw("<pre class=\"emlist\">");
 		return (v: TreeVisitor) => {
-			// name, args はパスしたい
+			// name はパスしたい
+			if (node.args[0]) {
+				process.outRaw("<p class=\"caption\">");
+				visit(node.args[0], v);
+				process.outRaw("</p>\n");
+			}
+			process.outRaw("<pre class=\"emlist\">");
 			node.childNodes.forEach((node) => {
 				visit(node, v);
 			});
@@ -351,12 +361,14 @@ export class HtmlBuilder extends DefaultBuilder {
 			text = href.slice(href.indexOf(",") + 1).trimLeft();
 			href = href.slice(0, href.indexOf(","));
 		}
-		process.outRaw("<a href=\"").out(href).outRaw("\" class=\"link\">").out(text).outRaw("</a>");
+		process.outRaw("<a href=\"").outRaw(href).outRaw("\" class=\"link\">").out(text).outRaw("</a>");
 		return false;
 	}
 
 	block_label(process: BuilderProcess, node: BlockElementSyntaxTree) {
-		process.outRaw("<a id=\"").out(node.args[0].arg).outRaw("\"></a>\n");
+		process.outRaw("<a id=\"");
+		process.out(nodeContentToString(process, node.args[0]));
+		process.outRaw("\"></a>\n");
 		return false;
 	}
 
@@ -428,14 +440,15 @@ export class HtmlBuilder extends DefaultBuilder {
 	}
 
 	block_image(process: BuilderProcess, node: BlockElementSyntaxTree) {
-		return process.findImageFile(node.args[0].arg)
+		let label = nodeContentToString(process, node.args[0]);
+		return process.findImageFile(label)
 			.then(imagePath=> {
-				let caption = node.args[1].arg;
+				let caption = nodeContentToString(process, node.args[1]); // TODO vistでinlineの処理をきっちりするべき
 				let scale: number = 1;
 				if (node.args[2]) {
 					// let arg3 = node.args[2].arg;
 					let regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
-					let result = regexp.exec(node.args[2].arg);
+					let result = regexp.exec(nodeContentToString(process, node.args[2]));
 					if (result) {
 						scale = parseFloat(result[1]);
 					}
@@ -456,17 +469,18 @@ export class HtmlBuilder extends DefaultBuilder {
 	}
 
 	block_indepimage(process: BuilderProcess, node: BlockElementSyntaxTree) {
-		return process.findImageFile(node.args[0].arg)
+		let label = nodeContentToString(process, node.args[0]);
+		return process.findImageFile(label)
 			.then(imagePath=> {
 				let caption: string = "";
 				if (node.args[1]) {
-					caption = node.args[1].arg;
+					caption = nodeContentToString(process, node.args[1]);
 				}
 				let scale: number = 1;
 				if (node.args[2]) {
 					// let arg3 = node.args[2].arg;
 					let regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
-					let result = regexp.exec(node.args[2].arg);
+					let result = regexp.exec(nodeContentToString(process, node.args[2]));
 					if (result) {
 						scale = parseFloat(result[1]);
 					}
@@ -506,15 +520,16 @@ export class HtmlBuilder extends DefaultBuilder {
 
 	block_footnote(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		process.outRaw("<div class=\"footnote\"><p class=\"footnote\">[<a id=\"fn-");
-		process.out(node.args[0].arg).outRaw("\">*").out(node.no).outRaw("</a>] ");
-		process.out(node.args[1].arg);
-		process.outRaw("</p></div>\n");
-		return false;
+		return (v: TreeVisitor) => {
+			process.outRaw(nodeContentToString(process, node.args[0])).outRaw("\">*").out(node.no).outRaw("</a>] ");
+			visit(node.args[1], v);
+			process.outRaw("</p></div>\n");
+		};
 	}
 
 	inline_fn(process: BuilderProcess, node: InlineElementSyntaxTree) {
 		let footnoteNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-		process.outRaw("<a href=\"#fn-").out(footnoteNode.args[0].arg).outRaw("\">*").out(footnoteNode.no).outRaw("</a>");
+		process.outRaw("<a href=\"#fn-").out(nodeContentToString(process, footnoteNode.args[0])).outRaw("\">*").out(footnoteNode.no).outRaw("</a>");
 		return false;
 	}
 
@@ -549,7 +564,7 @@ export class HtmlBuilder extends DefaultBuilder {
 
 	block_source_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
 		process.outRaw("<div class=\"source-code\">\n");
-		process.outRaw("<p class=\"caption\">").out(node.args[0].arg).outRaw("</p>\n");
+		process.outRaw("<p class=\"caption\">").out(nodeContentToString(process, node.args[0])).outRaw("</p>\n");
 		process.outRaw("<pre class=\"source\">");
 		return (v: TreeVisitor) => {
 			// name, args はパスしたい
@@ -637,7 +652,7 @@ export class HtmlBuilder extends DefaultBuilder {
 		process.outRaw("<div>\n");
 		let chapter = findChapter(node, 1);
 		let text = t("builder.table", chapter.fqn, node.no);
-		process.outRaw("<p class=\"caption\">").out(text).out(": ").out(node.args[1].arg).outRaw("</p>\n");
+		process.outRaw("<p class=\"caption\">").out(text).out(": ").out(nodeContentToString(process, node.args[1])).outRaw("</p>\n");
 		process.outRaw("<pre>");
 		return (v: TreeVisitor) => {
 			// name, args はパスしたい

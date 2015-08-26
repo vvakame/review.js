@@ -161,13 +161,10 @@ var options =
 					level: level.length
 				};
 			},
-			BracketArg: function () {
-				return {
-					syntax: "BracketArg",
-					location: location(),
-					arg: arg
-				};
-			},
+			BracketArg: template.content("BracketArg"),
+			BracketArgSubs: template.contents("BracketArgSubs"),
+			BracketArgSub: template.repeat(2, template.content("BracketArgSub")),
+			BracketArgText: template.text("BracketArgText"),
 			BraceArg: function () {
 				return {
 					syntax: "BraceArg",

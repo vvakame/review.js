@@ -122,7 +122,41 @@
                       "offset": 25
                     }
                   },
-                  "arg": "生で出る。"
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 3,
+                          "column": 7,
+                          "offset": 19
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 12,
+                          "offset": 24
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 3,
+                              "column": 7,
+                              "offset": 19
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 12,
+                              "offset": 24
+                            }
+                          },
+                          "text": "生で出る。"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ],
               "childNodes": []
@@ -157,7 +191,41 @@
                       "offset": 50
                     }
                   },
-                  "arg": "|text|textでだけ出る。"
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 5,
+                          "column": 7,
+                          "offset": 33
+                        },
+                        "end": {
+                          "line": 5,
+                          "column": 23,
+                          "offset": 49
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 5,
+                              "column": 7,
+                              "offset": 33
+                            },
+                            "end": {
+                              "line": 5,
+                              "column": 23,
+                              "offset": 49
+                            }
+                          },
+                          "text": "|text|textでだけ出る。"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ],
               "childNodes": []
@@ -192,7 +260,41 @@
                       "offset": 74
                     }
                   },
-                  "arg": "|html|htmlでだけ出る。"
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 6,
+                          "column": 7,
+                          "offset": 57
+                        },
+                        "end": {
+                          "line": 6,
+                          "column": 23,
+                          "offset": 73
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 6,
+                              "column": 7,
+                              "offset": 57
+                            },
+                            "end": {
+                              "line": 6,
+                              "column": 23,
+                              "offset": 73
+                            }
+                          },
+                          "text": "|html|htmlでだけ出る。"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ],
               "childNodes": []
@@ -227,7 +329,41 @@
                       "offset": 106
                     }
                   },
-                  "arg": "|text,html|textとhtmlで出る。"
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 7,
+                          "column": 7,
+                          "offset": 81
+                        },
+                        "end": {
+                          "line": 7,
+                          "column": 31,
+                          "offset": 105
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 7,
+                              "column": 7,
+                              "offset": 81
+                            },
+                            "end": {
+                              "line": 7,
+                              "column": 31,
+                              "offset": 105
+                            }
+                          },
+                          "text": "|text,html|textとhtmlで出る。"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ],
               "childNodes": []
@@ -262,7 +398,41 @@
                       "offset": 149
                     }
                   },
-                  "arg": "|html|<strong>HTMLタグ書いてみる</strong>"
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 9,
+                          "column": 7,
+                          "offset": 114
+                        },
+                        "end": {
+                          "line": 9,
+                          "column": 41,
+                          "offset": 148
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 9,
+                              "column": 7,
+                              "offset": 114
+                            },
+                            "end": {
+                              "line": 9,
+                              "column": 41,
+                              "offset": 148
+                            }
+                          },
+                          "text": "|html|<strong>HTMLタグ書いてみる</strong>"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ],
               "childNodes": []

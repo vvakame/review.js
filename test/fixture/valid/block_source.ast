@@ -155,7 +155,41 @@
                       "offset": 54
                     }
                   },
-                  "arg": "/hello/world.ts"
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 5,
+                          "column": 10,
+                          "offset": 38
+                        },
+                        "end": {
+                          "line": 5,
+                          "column": 25,
+                          "offset": 53
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 5,
+                              "column": 10,
+                              "offset": 38
+                            },
+                            "end": {
+                              "line": 5,
+                              "column": 25,
+                              "offset": 53
+                            }
+                          },
+                          "text": "/hello/world.ts"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ],
               "childNodes": [

@@ -4,7 +4,7 @@ import {t} from "../i18n/i18n";
 
 import {Book, ContentChunk, Symbol} from "../model/compilerModel";
 
-import {SyntaxTree, ChapterSyntaxTree, ColumnSyntaxTree, HeadlineSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree} from "./parser";
+import {SyntaxTree, ChapterSyntaxTree, ColumnSyntaxTree, HeadlineSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, NodeSyntaxTree} from "./parser";
 
 import {AcceptableSyntaxes, SyntaxType} from "./analyzer";
 
@@ -95,7 +95,7 @@ export class DefaultValidator implements Validator {
 					return;
 				}
 				let expects = results[0].argsLength;
-				let arg: ArgumentSyntaxTree[] = node.args || [];
+				let arg: NodeSyntaxTree[] = node.args || [];
 				if (expects.indexOf(arg.length) === -1) {
 					let expected = expects.map((n) => Number(n).toString()).join(" or ");
 					let message = t("compile.args_length_mismatch", expected, arg.length);

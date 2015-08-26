@@ -105,7 +105,6 @@ export function transform(rawResult: ConcreatSyntaxTree): SyntaxTree {
 			return new ColumnSyntaxTree(rawResult);
 		case RuleName.ColumnHeadline:
 			return new ColumnHeadlineSyntaxTree(rawResult);
-		case RuleName.BracketArg:
 		case RuleName.BraceArg:
 			return new ArgumentSyntaxTree(rawResult);
 		case RuleName.UlistElement:
@@ -115,6 +114,7 @@ export function transform(rawResult: ConcreatSyntaxTree): SyntaxTree {
 		case RuleName.DlistElement:
 			return new DlistElementSyntaxTree(rawResult);
 		case RuleName.ContentText:
+		case RuleName.BracketArgText:
 		case RuleName.BlockElementContentText:
 		case RuleName.InlineElementContentText:
 		case RuleName.ContentInlineText:
@@ -125,6 +125,7 @@ export function transform(rawResult: ConcreatSyntaxTree): SyntaxTree {
 		case RuleName.Chapters:
 		case RuleName.Contents:
 		case RuleName.ParagraphSubs:
+		case RuleName.BracketArgSubs:
 		case RuleName.BlockElementContents:
 		case RuleName.BlockElementParagraphSubs:
 		case RuleName.InlineElementContents:
@@ -138,6 +139,7 @@ export function transform(rawResult: ConcreatSyntaxTree): SyntaxTree {
 		// c パターン
 		case RuleName.Start:
 		case RuleName.Paragraph:
+		case RuleName.BracketArg:
 		case RuleName.BlockElementParagraph:
 		case RuleName.BlockElementParagraphSub:
 		case RuleName.DlistElementContent:
@@ -145,6 +147,7 @@ export function transform(rawResult: ConcreatSyntaxTree): SyntaxTree {
 		// パースした内容は直接役にたたない c / c / c 系
 		case RuleName.Content:
 		case RuleName.ParagraphSub:
+		case RuleName.BracketArgSub:
 		case RuleName.BlockElementContent:
 		case RuleName.InlineElementContent:
 		case RuleName.ColumnContent:
@@ -271,6 +274,9 @@ export enum RuleName {
 	BlockElement,
 	InlineElement,
 	BracketArg,
+	BracketArgSubs,
+	BracketArgSub,
+	BracketArgText,
 	BraceArg,
 	BlockElementContents,
 	BlockElementContent,
@@ -702,13 +708,13 @@ export class HeadlineSyntaxTree extends SyntaxTree {
 
 export class BlockElementSyntaxTree extends NodeSyntaxTree {
 	symbol: string;
-	args: ArgumentSyntaxTree[];
+	args: NodeSyntaxTree[];
 
 	constructor(data: ConcreatSyntaxTree) {
 		super(data);
 		this.symbol = this.checkString(data.symbol);
 		this.args = this.checkArray(data.args).map((data: ConcreatSyntaxTree) => {
-			return transform(data).toArgument();
+			return transform(data).toNode();
 		});
 	}
 }

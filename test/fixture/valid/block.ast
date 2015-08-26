@@ -122,7 +122,41 @@
                       "offset": 26
                     }
                   },
-                  "arg": "hoge"
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 3,
+                          "column": 8,
+                          "offset": 21
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 12,
+                          "offset": 25
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 3,
+                              "column": 8,
+                              "offset": 21
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 12,
+                              "offset": 25
+                            }
+                          },
+                          "text": "hoge"
+                        }
+                      ]
+                    }
+                  ]
                 },
                 {
                   "ruleName": "BracketArg",
@@ -138,7 +172,41 @@
                       "offset": 32
                     }
                   },
-                  "arg": "fuga"
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 3,
+                          "column": 14,
+                          "offset": 27
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 18,
+                          "offset": 31
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 3,
+                              "column": 14,
+                              "offset": 27
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 18,
+                              "offset": 31
+                            }
+                          },
+                          "text": "fuga"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ],
               "no": 1,

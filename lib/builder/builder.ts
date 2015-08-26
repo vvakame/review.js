@@ -293,7 +293,7 @@ export class DefaultBuilder implements Builder {
 
 	block_raw(process: BuilderProcess, node: BlockElementSyntaxTree): any {
 		// TODO Ruby版との出力差が結構あるのでテスト含め直す
-		let content = node.args[0].arg;
+		let content = nodeContentToString(process, node.args[0]);
 		let matches = content.match(/\|(.+)\|/);
 		if (matches && matches[1]) {
 			let target = matches[1].split(",").some(name => this.name.toLowerCase() === `${name}builder`);

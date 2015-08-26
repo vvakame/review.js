@@ -79,7 +79,19 @@ ColumnTerminator "column terminator"
     = level:"="+ "[/column]" Space* _l
 
 BracketArg "bracket argument"
-    = "[" arg:$( ( [^\r\n\]\\]+ ( "\\\\" / "\\]" / "\\" )? )* ) "]"
+    = "[" c:BracketArgSubs "]"
+    ;
+
+BracketArgSubs "bracket arg subs"
+    = c:BracketArgSub cc:BracketArgSubs?
+    ;
+
+BracketArgSub "bracket arg sub"
+    = c:InlineElement / c:BracketArgText
+    ;
+
+BracketArgText "text of bracket arg"
+    = text:$( ( !Newline !InlineElement ( "\\\\" / "\\]" / "\\" / !"]" . ) )+ )
     ;
 
 BraceArg "brace argument"

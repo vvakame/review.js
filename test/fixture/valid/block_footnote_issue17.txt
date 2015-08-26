@@ -1,0 +1,4 @@
+■H1■第1章　Issue17
+
+bracket argの中にinline記法【注1】。
+【注1】たとえば△http://gigazine.net/news/20141222-google-fido-u2f-security-key/☆

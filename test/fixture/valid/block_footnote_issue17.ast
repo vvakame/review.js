@@ -9,7 +9,7 @@
     "end": {
       "line": 6,
       "column": 1,
-      "offset": 76
+      "offset": 158
     }
   },
   "childNodes": [
@@ -24,7 +24,7 @@
         "end": {
           "line": 6,
           "column": 1,
-          "offset": 76
+          "offset": 158
         }
       },
       "childNodes": [
@@ -39,7 +39,7 @@
             "end": {
               "line": 6,
               "column": 1,
-              "offset": 76
+              "offset": 158
             }
           },
           "headline": {
@@ -53,7 +53,7 @@
               "end": {
                 "line": 3,
                 "column": 1,
-                "offset": 6
+                "offset": 11
               }
             },
             "level": 1,
@@ -67,8 +67,8 @@
                 },
                 "end": {
                   "line": 1,
-                  "column": 5,
-                  "offset": 4
+                  "column": 10,
+                  "offset": 9
                 }
               },
               "childNodes": [
@@ -82,11 +82,11 @@
                     },
                     "end": {
                       "line": 1,
-                      "column": 5,
-                      "offset": 4
+                      "column": 10,
+                      "offset": 9
                     }
                   },
-                  "text": "脚注"
+                  "text": "Issue17"
                 }
               ]
             }
@@ -98,12 +98,12 @@
                 "start": {
                   "line": 3,
                   "column": 1,
-                  "offset": 6
+                  "offset": 11
                 },
                 "end": {
                   "line": 5,
                   "column": 1,
-                  "offset": 43
+                  "offset": 55
                 }
               },
               "childNodes": [
@@ -113,28 +113,28 @@
                     "start": {
                       "line": 3,
                       "column": 1,
-                      "offset": 6
+                      "offset": 11
                     },
                     "end": {
                       "line": 3,
-                      "column": 21,
-                      "offset": 26
+                      "column": 23,
+                      "offset": 33
                     }
                   },
-                  "text": "もんじゃ焼きの焼き方を知っているとモテる"
+                  "text": "bracket argの中にinline記法"
                 },
                 {
                   "ruleName": "InlineElement",
                   "location": {
                     "start": {
                       "line": 3,
-                      "column": 21,
-                      "offset": 26
+                      "column": 23,
+                      "offset": 33
                     },
                     "end": {
                       "line": 3,
-                      "column": 35,
-                      "offset": 40
+                      "column": 42,
+                      "offset": 52
                     }
                   },
                   "symbol": "fn",
@@ -144,13 +144,13 @@
                       "location": {
                         "start": {
                           "line": 3,
-                          "column": 27,
-                          "offset": 32
+                          "column": 29,
+                          "offset": 39
                         },
                         "end": {
                           "line": 3,
-                          "column": 34,
-                          "offset": 39
+                          "column": 41,
+                          "offset": 51
                         }
                       },
                       "childNodes": [
@@ -159,16 +159,16 @@
                           "location": {
                             "start": {
                               "line": 3,
-                              "column": 27,
-                              "offset": 32
+                              "column": 29,
+                              "offset": 39
                             },
                             "end": {
                               "line": 3,
-                              "column": 34,
-                              "offset": 39
+                              "column": 41,
+                              "offset": 51
                             }
                           },
-                          "text": "tadaike"
+                          "text": "gigazine-u2f"
                         }
                       ]
                     }
@@ -179,13 +179,13 @@
                   "location": {
                     "start": {
                       "line": 3,
-                      "column": 35,
-                      "offset": 40
+                      "column": 42,
+                      "offset": 52
                     },
                     "end": {
                       "line": 3,
-                      "column": 36,
-                      "offset": 41
+                      "column": 43,
+                      "offset": 53
                     }
                   },
                   "text": "。"
@@ -198,12 +198,12 @@
                 "start": {
                   "line": 5,
                   "column": 1,
-                  "offset": 43
+                  "offset": 55
                 },
                 "end": {
                   "line": 6,
                   "column": 1,
-                  "offset": 76
+                  "offset": 158
                 }
               },
               "symbol": "footnote",
@@ -214,12 +214,12 @@
                     "start": {
                       "line": 5,
                       "column": 11,
-                      "offset": 53
+                      "offset": 65
                     },
                     "end": {
                       "line": 5,
-                      "column": 20,
-                      "offset": 62
+                      "column": 25,
+                      "offset": 79
                     }
                   },
                   "childNodes": [
@@ -229,12 +229,12 @@
                         "start": {
                           "line": 5,
                           "column": 12,
-                          "offset": 54
+                          "offset": 66
                         },
                         "end": {
                           "line": 5,
-                          "column": 19,
-                          "offset": 61
+                          "column": 24,
+                          "offset": 78
                         }
                       },
                       "childNodes": [
@@ -244,15 +244,15 @@
                             "start": {
                               "line": 5,
                               "column": 12,
-                              "offset": 54
+                              "offset": 66
                             },
                             "end": {
                               "line": 5,
-                              "column": 19,
-                              "offset": 61
+                              "column": 24,
+                              "offset": 78
                             }
                           },
-                          "text": "tadaike"
+                          "text": "gigazine-u2f"
                         }
                       ]
                     }
@@ -263,13 +263,13 @@
                   "location": {
                     "start": {
                       "line": 5,
-                      "column": 20,
-                      "offset": 62
+                      "column": 25,
+                      "offset": 79
                     },
                     "end": {
                       "line": 5,
-                      "column": 33,
-                      "offset": 75
+                      "column": 103,
+                      "offset": 157
                     }
                   },
                   "childNodes": [
@@ -278,13 +278,13 @@
                       "location": {
                         "start": {
                           "line": 5,
-                          "column": 21,
-                          "offset": 63
+                          "column": 26,
+                          "offset": 80
                         },
                         "end": {
                           "line": 5,
-                          "column": 32,
-                          "offset": 74
+                          "column": 102,
+                          "offset": 156
                         }
                       },
                       "childNodes": [
@@ -293,16 +293,67 @@
                           "location": {
                             "start": {
                               "line": 5,
-                              "column": 21,
-                              "offset": 63
+                              "column": 26,
+                              "offset": 80
                             },
                             "end": {
                               "line": 5,
-                              "column": 32,
-                              "offset": 74
+                              "column": 30,
+                              "offset": 84
                             }
                           },
-                          "text": "ただしイケメンに限る。"
+                          "text": "たとえば"
+                        },
+                        {
+                          "ruleName": "InlineElement",
+                          "location": {
+                            "start": {
+                              "line": 5,
+                              "column": 30,
+                              "offset": 84
+                            },
+                            "end": {
+                              "line": 5,
+                              "column": 102,
+                              "offset": 156
+                            }
+                          },
+                          "symbol": "href",
+                          "childNodes": [
+                            {
+                              "ruleName": "InlineElementContents",
+                              "location": {
+                                "start": {
+                                  "line": 5,
+                                  "column": 38,
+                                  "offset": 92
+                                },
+                                "end": {
+                                  "line": 5,
+                                  "column": 101,
+                                  "offset": 155
+                                }
+                              },
+                              "childNodes": [
+                                {
+                                  "ruleName": "InlineElementContentText",
+                                  "location": {
+                                    "start": {
+                                      "line": 5,
+                                      "column": 38,
+                                      "offset": 92
+                                    },
+                                    "end": {
+                                      "line": 5,
+                                      "column": 101,
+                                      "offset": 155
+                                    }
+                                  },
+                                  "text": "http://gigazine.net/news/20141222-google-fido-u2f-security-key/"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }

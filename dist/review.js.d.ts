@@ -14,25 +14,6 @@ declare module 'review.js' {
     import { SyntaxType } from "review.js/lib/parser/analyzer";
     export { Book, ContentChunk, ReportLevel, ProcessReport, NodeLocation, Symbol, SyntaxTree, AcceptableSyntaxes, Analyzer, DefaultAnalyzer, Validator, DefaultValidator, Builder, DefaultBuilder, HtmlBuilder, TextBuilder, SyntaxType };
     export function start(setup: (review: Controller) => void, options?: Options): Promise<Book>;
-    export function _doNotUseHackForTypeScriptIssue4274(): {
-        Book: typeof Book;
-        ContentChunk: typeof ContentChunk;
-        ReportLevel: typeof ReportLevel;
-        ProcessReport: typeof ProcessReport;
-        Symbol: Symbol;
-        NodeLocation: NodeLocation;
-        SyntaxTree: typeof SyntaxTree;
-        Validator: Validator;
-        DefaultValidator: typeof DefaultValidator;
-        AcceptableSyntaxes: typeof AcceptableSyntaxes;
-        Analyzer: Analyzer;
-        DefaultAnalyzer: typeof DefaultAnalyzer;
-        Builder: Builder;
-        DefaultBuilder: typeof DefaultBuilder;
-        HtmlBuilder: typeof HtmlBuilder;
-        TextBuilder: typeof TextBuilder;
-        SyntaxType: typeof SyntaxType;
-    };
 }
 
 declare module 'review.js/lib/model/compilerModel' {
@@ -206,8 +187,7 @@ declare module 'review.js/lib/controller/configRaw' {
         part: ConfigPart;
         chapter: ConfigChapter;
         constructor(part: ConfigPart, chapter: ConfigChapter);
-        static createChapter(file: string): ContentStructure;
-        static createChapter(chapter: ConfigChapter): ContentStructure;
+        static createChapter(value: string | ConfigChapter): ContentStructure;
         static createPart(part: ConfigPart): ContentStructure;
     }
 }
@@ -292,34 +272,37 @@ declare module 'review.js/lib/parser/parser' {
         BlockElement = 11,
         InlineElement = 12,
         BracketArg = 13,
-        BraceArg = 14,
-        BlockElementContents = 15,
-        BlockElementContent = 16,
-        BlockElementParagraph = 17,
-        BlockElementParagraphSubs = 18,
-        BlockElementParagraphSub = 19,
-        BlockElementContentText = 20,
-        InlineElementContents = 21,
-        InlineElementContent = 22,
-        InlineElementContentText = 23,
-        SinglelineContent = 24,
-        ContentInlines = 25,
-        ContentInline = 26,
-        ContentInlineText = 27,
-        Ulist = 28,
-        UlistElement = 29,
-        Olist = 30,
-        OlistElement = 31,
-        Dlist = 32,
-        DlistElement = 33,
-        DlistElementContents = 34,
-        DlistElementContent = 35,
-        Column = 36,
-        ColumnHeadline = 37,
-        ColumnContents = 38,
-        ColumnContent = 39,
-        ColumnTerminator = 40,
-        SinglelineComment = 41,
+        BracketArgSubs = 14,
+        BracketArgSub = 15,
+        BracketArgText = 16,
+        BraceArg = 17,
+        BlockElementContents = 18,
+        BlockElementContent = 19,
+        BlockElementParagraph = 20,
+        BlockElementParagraphSubs = 21,
+        BlockElementParagraphSub = 22,
+        BlockElementContentText = 23,
+        InlineElementContents = 24,
+        InlineElementContent = 25,
+        InlineElementContentText = 26,
+        SinglelineContent = 27,
+        ContentInlines = 28,
+        ContentInline = 29,
+        ContentInlineText = 30,
+        Ulist = 31,
+        UlistElement = 32,
+        Olist = 33,
+        OlistElement = 34,
+        Dlist = 35,
+        DlistElement = 36,
+        DlistElementContents = 37,
+        DlistElementContent = 38,
+        Column = 39,
+        ColumnHeadline = 40,
+        ColumnContents = 41,
+        ColumnContent = 42,
+        ColumnTerminator = 43,
+        SinglelineComment = 44,
     }
     export interface NodeLocation {
         location: {
@@ -406,7 +389,7 @@ declare module 'review.js/lib/parser/parser' {
     }
     export class BlockElementSyntaxTree extends NodeSyntaxTree {
         symbol: string;
-        args: ArgumentSyntaxTree[];
+        args: NodeSyntaxTree[];
         constructor(data: ConcreatSyntaxTree);
     }
     export class InlineElementSyntaxTree extends NodeSyntaxTree {
@@ -697,7 +680,7 @@ declare module 'review.js/lib/builder/htmlBuilder' {
         block_indepimage(process: BuilderProcess, node: BlockElementSyntaxTree): Promise<boolean>;
         inline_img(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
         inline_icon(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
-        block_footnote(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
+        block_footnote(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         inline_fn(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
         block_lead_pre(process: BuilderProcess, node: BlockElementSyntaxTree): void;
         block_lead_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
@@ -788,7 +771,7 @@ declare module 'review.js/lib/builder/textBuilder' {
         block_indepimage(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
         inline_img(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
         inline_icon(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
-        block_footnote(process: BuilderProcess, node: BlockElementSyntaxTree): boolean;
+        block_footnote(process: BuilderProcess, node: BlockElementSyntaxTree): (v: TreeVisitor) => void;
         inline_fn(process: BuilderProcess, node: InlineElementSyntaxTree): boolean;
         block_lead_pre(process: BuilderProcess, node: BlockElementSyntaxTree): void;
         block_lead_post(process: BuilderProcess, node: BlockElementSyntaxTree): void;
