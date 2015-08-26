@@ -620,14 +620,20 @@ var HtmlBuilder = (function (_super) {
             node.childNodes.forEach(function (node) {
                 var contentString = utils_1.nodeContentToString(process, node);
                 var keywordData = contentString.split(",");
-                process.out(keywordData[0] + " (" + keywordData[1].trimLeft() + ")");
+                var pre = keywordData[0];
+                var post = (keywordData[1] || "").trimLeft();
+                process.out("" + pre);
+                if (post) {
+                    process.out(" (" + post + ")");
+                }
             });
         };
     };
     HtmlBuilder.prototype.inline_kw_post = function (process, node) {
         var contentString = utils_1.nodeContentToString(process, node);
         var keywordData = contentString.split(",");
-        process.outRaw("</b>").outRaw("<!-- IDX:").out(keywordData[0]).outRaw(" -->");
+        var pre = keywordData[0];
+        process.outRaw("</b>").outRaw("<!-- IDX:").out(pre).outRaw(" -->");
     };
     HtmlBuilder.prototype.inline_em_pre = function (process, node) {
         process.outRaw("<em>");
@@ -1125,7 +1131,12 @@ var TextBuilder = (function (_super) {
             node.childNodes.forEach(function (node) {
                 var contentString = utils_1.nodeContentToString(process, node);
                 var keywordData = contentString.split(",");
-                process.out(keywordData[0] + "☆（" + keywordData[1].trimLeft() + "）");
+                var pre = keywordData[0];
+                var post = (keywordData[1] || "").trimLeft();
+                process.out(pre + "\u2606");
+                if (post) {
+                    process.out("\uFF08" + post + "\uFF09");
+                }
             });
         };
     };

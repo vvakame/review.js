@@ -402,8 +402,12 @@ export class HtmlBuilder extends DefaultBuilder {
 			node.childNodes.forEach(node=> {
 				let contentString = nodeContentToString(process, node);
 				let keywordData = contentString.split(",");
-				// TODO ユーザの入力内容のチェックが必要
-				process.out(keywordData[0] + " (" + keywordData[1].trimLeft() + ")");
+				let pre = keywordData[0];
+				let post = (keywordData[1] || "").trimLeft();
+				process.out(`${pre}`);
+				if (post) {
+					process.out(` (${post})`);
+				}
 			});
 		};
 	}
@@ -411,7 +415,8 @@ export class HtmlBuilder extends DefaultBuilder {
 	inline_kw_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
 		let contentString = nodeContentToString(process, node);
 		let keywordData = contentString.split(",");
-		process.outRaw("</b>").outRaw("<!-- IDX:").out(keywordData[0]).outRaw(" -->");
+		let pre = keywordData[0];
+		process.outRaw("</b>").outRaw("<!-- IDX:").out(pre).outRaw(" -->");
 	}
 
 	inline_em_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
