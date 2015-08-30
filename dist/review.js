@@ -2050,10 +2050,14 @@ exports.en = {
 
 },{}],8:[function(require,module,exports){
 ///<reference path='../../typings/i18next/i18next.d.ts' />
+/**
+ * 国際化対応のためのモジュール。デフォルトでは日本語。
+ */
 "use strict";
 var utils_1 = require("../utils/utils");
 var en_1 = require("./en");
 var ja_1 = require("./ja");
+/* tslint:disable:no-use-before-declare */
 var i18next;
 function setup(lang) {
     "use strict";
@@ -2077,12 +2081,14 @@ function t(str) {
     return i18next.t(str, { postProcess: "sprintf", sprintf: args });
 }
 exports.t = t;
-if (utils_1.isNodeJS()) {
-    i18next = require("i18next");
-}
-else {
+if (typeof window !== "undefined" && window.i18n) {
     i18next = window.i18n;
 }
+else {
+    i18next = require("i18next");
+}
+utils_1.isNodeJS(); // TODO utilsをi18n.ts内で使わないと実行時エラーになる
+/* tslint:enable:no-use-before-declare */
 setup();
 
 },{"../utils/utils":18,"./en":7,"./ja":9,"i18next":undefined}],9:[function(require,module,exports){

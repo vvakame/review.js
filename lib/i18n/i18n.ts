@@ -34,11 +34,12 @@ export function t(str: string, ...args: any[]): string {
 	return i18next.t(str, { postProcess: "sprintf", sprintf: args });
 }
 
-if (isNodeJS()) {
-	i18next = require("i18next");
-} else {
+if (typeof window !== "undefined" && (<any>window).i18n) {
 	i18next = (<any>window).i18n;
+} else {
+	i18next = require("i18next");
 }
+isNodeJS(); // TODO utilsをi18n.ts内で使わないと実行時エラーになる
 
 /* tslint:enable:no-use-before-declare */
 
