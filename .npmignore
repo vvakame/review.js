@@ -33,6 +33,7 @@ tsd.json
 Gruntfile.js
 karma.conf.js
 Gemfile*
+npm-shrinkwrap.json
 
 test-results.xml
 npm-debug.log
