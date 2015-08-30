@@ -27,6 +27,9 @@
   "engines": {
     "node": ">= 0.10.0"
   },
+  "typescript": {
+    "definition": "./dist/review.js.d.ts"
+  },
   "dependencies": {
     "update-notifier": "0.5.0",
     "commandpost": "0.1.1",
