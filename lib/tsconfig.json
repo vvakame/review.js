@@ -14,7 +14,7 @@
         "../resources/grammar.d.ts",
         "./**/*.ts",
         "!./**/*.d.ts",
-        "../node_modules/typescript/bin/lib.es6.d.ts",
+        "../node_modules/typescript/lib/lib.es6.d.ts",
         "../typings/**/*.ts"
     ],
     "files": [
@@ -39,7 +39,7 @@
         "./parser/walker.ts",
         "./utils/polyfill.ts",
         "./utils/utils.ts",
-        "../node_modules/typescript/bin/lib.es6.d.ts",
+        "../node_modules/typescript/lib/lib.es6.d.ts",
         "../typings/assert/assert.d.ts",
         "../typings/bundle.d.ts",
         "../typings/i18next/i18next.d.ts",

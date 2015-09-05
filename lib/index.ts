@@ -1,4 +1,4 @@
-///<reference path='../node_modules/typescript/bin/lib.es6.d.ts' />
+///<reference path='../node_modules/typescript/lib/lib.es6.d.ts' />
 ///<reference path='../typings/node/node.d.ts' />
 
 ///<reference path='./typings/polyfill.d.ts' />

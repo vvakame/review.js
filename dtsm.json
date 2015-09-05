@@ -9,25 +9,25 @@
   "bundle": "typings/bundle.d.ts",
   "dependencies": {
     "jquery/jquery.d.ts": {
-      "ref": "977da240f263e88215a27cb44f2e31524ca07135"
+      "ref": "d9fea91e842c2cf5bd0f7d861ac378e571d2ad7c"
     },
     "i18next/i18next.d.ts": {
-      "ref": "977da240f263e88215a27cb44f2e31524ca07135"
+      "ref": "d9fea91e842c2cf5bd0f7d861ac378e571d2ad7c"
     },
     "update-notifier/update-notifier.d.ts": {
-      "ref": "977da240f263e88215a27cb44f2e31524ca07135"
+      "ref": "d9fea91e842c2cf5bd0f7d861ac378e571d2ad7c"
     },
     "js-yaml/js-yaml.d.ts": {
-      "ref": "977da240f263e88215a27cb44f2e31524ca07135"
+      "ref": "d9fea91e842c2cf5bd0f7d861ac378e571d2ad7c"
     },
     "node/node.d.ts": {
-      "ref": "977da240f263e88215a27cb44f2e31524ca07135"
+      "ref": "d9fea91e842c2cf5bd0f7d861ac378e571d2ad7c"
     },
     "mocha/mocha.d.ts": {
-      "ref": "977da240f263e88215a27cb44f2e31524ca07135"
+      "ref": "d9fea91e842c2cf5bd0f7d861ac378e571d2ad7c"
     },
     "assert/assert.d.ts": {
-      "ref": "977da240f263e88215a27cb44f2e31524ca07135"
+      "ref": "d9fea91e842c2cf5bd0f7d861ac378e571d2ad7c"
     }
   },
   "link": {

@@ -266,8 +266,7 @@ exports.DefaultBuilder = DefaultBuilder;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var i18n_1 = require("../i18n/i18n");
 var builder_1 = require("./builder");
@@ -895,8 +894,7 @@ exports.HtmlBuilder = HtmlBuilder;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var builder_1 = require("./builder");
 var i18n_1 = require("../i18n/i18n");
@@ -1389,8 +1387,7 @@ exports.TextBuilder = TextBuilder;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var builder_1 = require("../builder/builder");
 var configRaw_1 = require("./configRaw");
@@ -2164,7 +2161,7 @@ exports.ja = {
 };
 
 },{}],10:[function(require,module,exports){
-///<reference path='../node_modules/typescript/bin/lib.es6.d.ts' />
+///<reference path='../node_modules/typescript/lib/lib.es6.d.ts' />
 ///<reference path='../typings/node/node.d.ts' />
 ///<reference path='./typings/polyfill.d.ts' />
 "use strict";
@@ -2221,8 +2218,7 @@ exports._doNotUseHackForTypeScriptIssue4274 = _doNotUseHackForTypeScriptIssue427
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
@@ -3347,8 +3343,7 @@ exports.DefaultAnalyzer = DefaultAnalyzer;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var grammar_1 = require("../../resources/grammar");
 var walker_1 = require("./walker");

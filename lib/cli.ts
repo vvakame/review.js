@@ -2,8 +2,6 @@
 /// <reference path="../typings/update-notifier/update-notifier.d.ts" />
 /// <reference path="../typings/js-yaml/js-yaml.d.ts" />
 
-/// <reference path="../node_modules/commandpost/commandpost.d.ts" />
-
 import * as fs from "fs";
 import * as jsyaml from "js-yaml";
 import * as updateNotifier from "update-notifier";
