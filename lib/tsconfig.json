@@ -8,7 +8,9 @@
         "removeComments": false,
         "noLib": false,
         "preserveConstEnums": false,
-        "suppressImplicitAnyIndexErrors": false
+        "suppressImplicitAnyIndexErrors": false,
+        "experimentalDecorators": true,
+        "listFiles": true
     },
     "filesGlob": [
         "../resources/grammar.d.ts",

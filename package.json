@@ -25,18 +25,18 @@
     "url": "https://github.com/vvakame/review.js/issues"
   },
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 0.12.0"
   },
   "typescript": {
     "definition": "./dist/review.js.d.ts"
   },
   "dependencies": {
     "update-notifier": "0.5.0",
-    "commandpost": "0.2.0",
+    "commandpost": "0.2.4",
     "i18next": "1.10.4",
     "colors": "1.1.2",
     "ypromise": "0.3.0",
-    "js-yaml": "3.4.1"
+    "js-yaml": "3.4.2"
   },
   "devDependencies": {
     "benchmark": "1.0.0",
@@ -52,15 +52,15 @@
     "grunt-mocha": "0.4.13",
     "grunt-mocha-test": "0.12.7",
     "grunt-open": "0.2.3",
-    "grunt-ts": "5.0.0-beta.4",
+    "grunt-ts": "5.0.0-beta.5",
     "grunt-tslint": "2.5.0",
     "grunt-typedoc": "0.2.2",
     "load-grunt-tasks": "3.2.0",
-    "mocha": "2.3.0",
+    "mocha": "2.3.2",
     "pegjs": "0.9.0",
     "pegjs-override-action": "0.2.3",
-    "power-assert": "1.0.0",
+    "power-assert": "1.0.1",
     "time-grunt": "1.2.1",
-    "typescript": "1.6.0-beta"
+    "typescript": "1.6.2"
   }
 }
