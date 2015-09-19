@@ -61,7 +61,6 @@
     "pegjs-override-action": "0.2.3",
     "power-assert": "1.0.1",
     "time-grunt": "1.2.1",
-    "tslint": "2.5.0",
     "typescript": "1.6.2"
   }
 }
