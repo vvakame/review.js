@@ -10,7 +10,10 @@
         "preserveConstEnums": false,
         "suppressImplicitAnyIndexErrors": false,
         "experimentalDecorators": true,
-        "listFiles": true
+        "listFiles": true,
+        "noEmitOnError": true,
+        "sourceMap": true,
+        "inlineSources": true
     },
     "filesGlob": [
         "../resources/grammar.d.ts",
