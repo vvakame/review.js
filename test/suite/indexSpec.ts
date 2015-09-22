@@ -1,6 +1,3 @@
-///<reference path='../../typings/mocha/mocha.d.ts' />
-///<reference path='../../typings/assert/assert.d.ts' />
-
 import * as i18nSpec from "./i18n/i18nSpec";
 import * as ParserSpec from "./parser/parserSpec";
 import * as WalkerSpec from "./parser/walkerSpec";

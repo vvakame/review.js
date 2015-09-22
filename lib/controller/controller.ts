@@ -1,5 +1,3 @@
-///<reference path='../typings/custom-colors.d.ts' />
-
 "use strict";
 
 import {PEG} from "../../resources/grammar";

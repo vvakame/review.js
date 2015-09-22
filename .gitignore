@@ -1,3 +1,5 @@
+.DS_Store
+
 # for WebStorm
 # from http://gihyo.jp/dev/serial/01/android_studio/0035
 .idea/**/*.xml

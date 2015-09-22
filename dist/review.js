@@ -1824,7 +1824,6 @@ var ContentStructure = (function () {
 exports.ContentStructure = ContentStructure;
 
 },{}],6:[function(require,module,exports){
-///<reference path='../typings/custom-colors.d.ts' />
 "use strict";
 var grammar_1 = require("../../resources/grammar");
 var compilerModel_1 = require("../model/compilerModel");
@@ -2046,7 +2045,9 @@ exports.en = {
 };
 
 },{}],8:[function(require,module,exports){
-///<reference path='../../typings/i18next/i18next.d.ts' />
+/**
+ * 国際化対応のためのモジュール。デフォルトでは日本語。
+ */
 "use strict";
 var utils_1 = require("../utils/utils");
 var en_1 = require("./en");
@@ -2161,9 +2162,6 @@ exports.ja = {
 };
 
 },{}],10:[function(require,module,exports){
-///<reference path='../node_modules/typescript/lib/lib.es6.d.ts' />
-///<reference path='../typings/node/node.d.ts' />
-///<reference path='./typings/polyfill.d.ts' />
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -2197,22 +2195,6 @@ function start(setup, options) {
     return controller.process();
 }
 exports.start = start;
-function _doNotUseHackForTypeScriptIssue4274() {
-    "use strict";
-    var NodeLocation;
-    var Validator;
-    var Symbol;
-    var Analyzer;
-    var Builder;
-    return {
-        Book: compilerModel_1.Book, ContentChunk: compilerModel_1.ContentChunk, ReportLevel: compilerModel_1.ReportLevel, ProcessReport: compilerModel_1.ProcessReport, Symbol: Symbol,
-        NodeLocation: NodeLocation, SyntaxTree: parser_1.SyntaxTree,
-        Validator: Validator, DefaultValidator: validator_1.DefaultValidator,
-        AcceptableSyntaxes: analyzer_1.AcceptableSyntaxes, Analyzer: Analyzer, DefaultAnalyzer: analyzer_1.DefaultAnalyzer,
-        Builder: Builder, DefaultBuilder: builder_1.DefaultBuilder, HtmlBuilder: htmlBuilder_1.HtmlBuilder, TextBuilder: textBuilder_1.TextBuilder, SyntaxType: analyzer_2.SyntaxType
-    };
-}
-exports._doNotUseHackForTypeScriptIssue4274 = _doNotUseHackForTypeScriptIssue4274;
 
 },{"./builder/builder":1,"./builder/htmlBuilder":2,"./builder/textBuilder":3,"./controller/controller":6,"./model/compilerModel":12,"./parser/analyzer":13,"./parser/parser":14,"./parser/validator":16}],11:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {

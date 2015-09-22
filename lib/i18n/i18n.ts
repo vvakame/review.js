@@ -1,5 +1,3 @@
-///<reference path='../../typings/i18next/i18next.d.ts' />
-
 /**
  * 国際化対応のためのモジュール。デフォルトでは日本語。
  */

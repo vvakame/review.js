@@ -1,6 +1,3 @@
-///<reference path='../../typings/mocha/mocha.d.ts' />
-///<reference path='../../typings/assert/assert.d.ts' />
-
 "use strict";
 
 import {isNodeJS} from "../../lib/utils/utils";
@@ -8,7 +5,7 @@ import {isNodeJS} from "../../lib/utils/utils";
 import {start} from "../../lib/index";
 
 import {ConfigRaw} from "../../lib/controller/configRaw";
-import {ProcessReport} from "../../lib/model/compilerModel";
+import {Book, ProcessReport} from "../../lib/model/compilerModel";
 
 import {DefaultAnalyzer} from "../../lib/parser/analyzer";
 import {DefaultValidator} from "../../lib/parser/validator";
@@ -21,7 +18,7 @@ import {TextBuilder} from "../../lib/builder/textBuilder";
  * @param tmpConfig
  * @returns {{success: (function(): {book: ReVIEW.Book, results: *}), failure: (function(): {})}}
  */
-export function compile(config?: ConfigRaw) {
+export function compile(config?: ConfigRaw): Promise<{book:Book; results: any;}>  {
 	"use strict";
 
 	config = config || <any>{};
@@ -88,7 +85,7 @@ export function compile(config?: ConfigRaw) {
 }
 
 // TODO basePathの解決がうまくないのでそのうち消す
-export function compileSingle(input: string, tmpConfig?: any /* ReVIEW.IConfigRaw */) {
+export function compileSingle(input: string, tmpConfig?: any /* ReVIEW.IConfigRaw */): Promise<{book:Book; results: any; result: string;}> {
 	"use strict";
 
 	let config: ConfigRaw = tmpConfig || <any>{};

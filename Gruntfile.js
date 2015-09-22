@@ -21,30 +21,16 @@ module.exports = function (grunt) {
 		},
 
 		ts: {
-			options: {
-				compile: true,                 // perform compilation. [true (default) | false]
-				comments: false,               // same as !removeComments. [true | false (default)]
-				target: 'es5',                 // target javascript language. [es3 (default) | es5]
-				module: 'commonjs',            // target javascript module style. [amd (default) | commonjs]
-				noImplicitAny: true,
-				sourceMap: false,              // generate a source map for every output js file. [true (default) | false]
-				sourceRoot: '',                // where to locate TypeScript files. [(default) '' == source ts location]
-				mapRoot: '',                   // where to locate .map.js files. [(default) '' == generated js location.]
-				declaration: false,            // generate a declaration .d.ts file for every output js file. [true | false (default)]
-				experimentalDecorators: true
-			},
-			clientCli: {
-				src: ['<%= opt.client.tsMain %>/cli.ts']
-			},
-			clientMain: {
-				src: ['<%= opt.client.tsMain %>/index.ts'],
-				options: {
-					declaration: true
+			default: {
+				tsconfig: {
+					tsconfig: "./tsconfig.json",
+					updateFiles:false
 				}
-			},
-			clientTest: {
-				src: ['<%= opt.client.tsTest %>/indexSpec.ts']
 			}
+		},
+		tsconfig: {
+				main: {
+				}
 		},
 		tslint: {
 			options: {
@@ -99,19 +85,6 @@ module.exports = function (grunt) {
 				options: {
 					// optional: specify config file
 					confog: './dtsm.json'
-				}
-			}
-		},
-		dts_bundle: {
-			build: {
-				options: {
-					name: "review.js",
-					main: "lib/index.d.ts",
-					baseDir: "",
-					out: "./dist/review.js.d.ts",
-					prefix: '',
-					exclude: function () {return false;},
-					verbose: false
 				}
 			}
 		},
@@ -230,47 +203,26 @@ module.exports = function (grunt) {
 
 	grunt.registerTask(
 		'setup',
-		"プロジェクトの初期セットアップを行う。",
 		['clean', 'bower', 'dtsm']);
 
 	grunt.registerTask(
-		'compile-prepare',
-		"npm用(nodeモジュール兼コマンドラインクライアント)のコンパイルを行う",
-		['clean:clientScript', 'ts:clientMain', 'exec:pegjs']);
-
-	grunt.registerTask(
-		'compile-for-npm',
-		"npm用(nodeモジュール兼コマンドラインクライアント)のコンパイルを行う",
-		['ts:clientCli', 'tslint']);
-
-	grunt.registerTask(
-		'compile-for-browser',
-		"ブラウザライブラリ用のコンパイルを行う",
-		['browserify:main', 'uglify:browser']);
-
-	grunt.registerTask(
 		'default',
-		"必要なコンパイルを行い画面表示できるようにする。",
-		['compile-prepare', 'compile-for-npm', 'compile-for-browser', 'tslint']);
+		['clean:clientScript', 'ts', 'tslint', 'exec:pegjs', 'browserify:main', 'uglify:browser']);
 
 	grunt.registerTask(
 		'test-preprocess',
-		"テストに必要な前準備を実行する。",
-		['default', 'ts:clientTest', 'browserify:test']);
+		['default', 'browserify:test']);
 
 	grunt.registerTask(
 		'test',
-		"必要なコンパイルを行いテストを実行する。",
 		['test-node']);
 
 	grunt.registerTask(
 		'test-node',
-		"必要なコンパイルを行いnode.js上でテストを実行する。",
 		['test-preprocess', 'mochaTest']);
 
 	grunt.registerTask(
 		'test-browser',
-		"必要なコンパイルを行いブラウザ上でテストを実行する。",
 		['test-preprocess', 'open:test-browser']);
 
 	require('load-grunt-tasks')(grunt);

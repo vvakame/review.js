@@ -1,8 +1,3 @@
-///<reference path='../../typings/mocha/mocha.d.ts' />
-///<reference path='../../typings/assert/assert.d.ts' />
-
-///<reference path='../../typings/node/node.d.ts' />
-
 "use strict";
 
 import {isNodeJS} from "../../lib/utils/utils";
