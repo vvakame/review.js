@@ -217,7 +217,7 @@ module.exports = function (grunt) {
 			"pegjs": {
 				cmd: function () {
 					var peg = grunt.config.get("opt.client.peg") + "/";
-					return "./util/review-parser-generator > " + peg + "/grammar.js";
+					return "./node_modules/.bin/pegjs " + peg + "/grammar.pegjs " + peg + "/grammar.js";
 				}
 			}
 		}
@@ -229,7 +229,7 @@ module.exports = function (grunt) {
 
 	grunt.registerTask(
 		'default',
-		['clean:clientScript', 'ts', 'tslint', 'exec:pegjs', 'browserify:main', 'uglify:browser']);
+		['clean:clientScript', 'tsconfig', 'ts', 'tslint', 'exec:pegjs', 'browserify:main', 'uglify:browser']);
 
 	grunt.registerTask(
 		'test-preprocess',

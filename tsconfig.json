@@ -43,6 +43,7 @@
         "./lib/parser/preprocessor.ts",
         "./lib/parser/validator.ts",
         "./lib/parser/walker.ts",
+        "./lib/peg/action.ts",
         "./lib/utils/polyfill.ts",
         "./lib/utils/utils.ts",
         "./test/suite/builder/builderSpec.ts",

@@ -4,7 +4,7 @@
 
 "use strict";
 
-import {PEG} from "../../resources/grammar";
+import * as PEG from "../../resources/grammar";
 
 import {visit, walk} from "./walker";
 

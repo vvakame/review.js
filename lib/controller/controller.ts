@@ -1,6 +1,6 @@
 "use strict";
 
-import {PEG} from "../../resources/grammar";
+import * as PEG from "../../resources/grammar";
 
 import {Book, ContentChunk, ReportLevel, Symbol} from "../model/compilerModel";
 

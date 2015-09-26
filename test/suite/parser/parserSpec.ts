@@ -7,7 +7,7 @@
 
 import * as Test from "../testHelper";
 
-import {PEG} from "../../../resources/grammar";
+import * as PEG from "../../../resources/grammar";
 
 import {isNodeJS} from "../../../lib/utils/utils";
 
