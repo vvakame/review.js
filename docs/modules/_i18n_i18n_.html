@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html class="default no-js">
 <head>
 	<meta charset="utf-8">
@@ -72,12 +72,84 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-not-exported">
-							<h3>Modules</h3>
+							<h3>Variables</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-module tsd-parent-kind-external-module tsd-is-not-exported"><a href="_i18n_i18n_.review.html" class="tsd-kind-icon">ReVIEW</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_i18n_i18n_.html#i18next" class="tsd-kind-icon">i18next</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_i18n_i18n_.html#setup" class="tsd-kind-icon">setup</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_i18n_i18n_.html#t" class="tsd-kind-icon">t</a></li>
 							</ul>
 						</section>
 					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+				<h2>Variables</h2>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="i18next" class="tsd-anchor"></a>
+					<h3>i18next</h3>
+					<div class="tsd-signature tsd-kind-icon">i18next<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">I18nextStatic</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/i18n/i18n.ts#L14">i18n/i18n.ts:14</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="setup" class="tsd-anchor"></a>
+					<h3>setup</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">setup<span class="tsd-signature-symbol">(</span>lang<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/i18n/i18n.ts#L16">i18n/i18n.ts:16</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> lang: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;ja&quot;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="t" class="tsd-anchor"></a>
+					<h3>t</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">t<span class="tsd-signature-symbol">(</span>str<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/i18n/i18n.ts#L29">i18n/i18n.ts:29</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>str: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -88,68 +160,78 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_main_.html">"<wbr>Main"</a>
+						<a href="_builder_builder_.html">"builder/builder"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_builder_builder_.html">"builder/<wbr>Builder"</a>
+						<a href="_builder_htmlbuilder_.html">"builder/html<wbr>Builder"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_builder_htmlbuilder_.html">"builder/<wbr>Html<wbr>Builder"</a>
+						<a href="_builder_textbuilder_.html">"builder/text<wbr>Builder"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_builder_textbuilder_.html">"builder/<wbr>Text<wbr>Builder"</a>
+						<a href="_controller_config_.html">"controller/config"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_controller_config_.html">"controller/<wbr>Config"</a>
+						<a href="_controller_configraw_.html">"controller/config<wbr>Raw"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_controller_configraw_.html">"controller/<wbr>Config<wbr>Raw"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_controller_controller_.html">"controller/<wbr>Controller"</a>
+						<a href="_controller_controller_.html">"controller/controller"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_i18n_en_.html">"i18n/en"</a>
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="_i18n_i18n_.html">"i18n/i18n"</a>
-						<ul>
-							<li class=" tsd-kind-module tsd-parent-kind-external-module tsd-is-not-exported">
-								<a href="_i18n_i18n_.review.html">ReVIEW</a>
-							</li>
-						</ul>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_i18n_ja_.html">"i18n/ja"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_model_compilermodel_.html">"model/<wbr>Compiler<wbr>Model"</a>
+						<a href="_index_.html">"index"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_parser_analyzer_.html">"parser/<wbr>Analyzer"</a>
+						<a href="_js_exception_.html">"js/exception"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_parser_parser_.html">"parser/<wbr>Parser"</a>
+						<a href="_model_compilermodel_.html">"model/compiler<wbr>Model"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_parser_preprocessor_.html">"parser/<wbr>Preprocessor"</a>
+						<a href="_parser_analyzer_.html">"parser/analyzer"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_parser_validator_.html">"parser/<wbr>Validator"</a>
+						<a href="_parser_parser_.html">"parser/parser"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_parser_walker_.html">"parser/<wbr>Walker"</a>
+						<a href="_parser_preprocessor_.html">"parser/preprocessor"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_utils_polyfill_.html">"utils/<wbr>Polyfill"</a>
+						<a href="_parser_validator_.html">"parser/validator"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_utils_utils_.html">"utils/<wbr>Utils"</a>
+						<a href="_parser_walker_.html">"parser/walker"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_peg_action_.html">"peg/action"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_utils_polyfill_.html">"utils/polyfill"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_utils_utils_.html">"utils/utils"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_i18n_i18n_.html#i18next" class="tsd-kind-icon">i18next</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_i18n_i18n_.html#setup" class="tsd-kind-icon">setup</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_i18n_i18n_.html#t" class="tsd-kind-icon">t</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

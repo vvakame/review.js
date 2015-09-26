@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html class="default no-js">
 <head>
 	<meta charset="utf-8">
@@ -79,9 +79,6 @@
 				現状Ruby版で使えて、ReVIEW.jsで使えない記法は以下の通りです。</p>
 				<ul>
 					<li>texequation ブロック記法</li>
-					<li>chap インライン記法</li>
-					<li>title インライン記法</li>
-					<li>chapref インライン記法</li>
 					<li>m インライン記法</li>
 					<li>bibpaper ブロック記法</li>
 					<li>bib インライン記法</li>
@@ -101,10 +98,6 @@
 				<p><code>./setup.sh</code> を叩きます。
 					その後、<code>grunt</code> で /bin に実行可能なJSが出力されます。
 				<code>grunt test</code>, <code>grunt test-browser</code>, <code>grunt-karma</code> でテストを実行することができます。</p>
-				<h2 id="-">開発お得情報</h2>
-				<p>WebStormで開発している場合、Cmd+Oとかでクラス一覧が参照できる。
-					この時、同一シンボルが複数参照される場合、lib/main.d.tsなどが原因だと思うのでファイルを右クリックしてMark as plain textを押す。
-				この設定は残念ながら共有できない。</p>
 				<h1 id="-">協力</h1>
 				<p>今貰えると嬉しい手助けはいくつかあります。</p>
 				<ul>
@@ -116,19 +109,19 @@
 						</ul>
 					</li>
 					<li>バグを見つけたら報告してください<ul>
-							<li>報告は日本語が良いです。日本語向けの組版システムだし。</li>
+							<li>報告は日本語で良いです。日本語向けの組版システムだし。</li>
 						</ul>
 					</li>
 				</ul>
 				<h1 id="-">構文追加のための最初の一歩</h1>
 				<ol>
 					<li>構文のノード構築部分を追加する
-						lib/parser/Analyzer.ts の DefaultAnalyzer に構文用のメソッドを追加します。
-						Analyzer.tsの末尾にある TODO 以下のものの実装をすすめます。
-					Analyzer.tsの中でinlineが先頭になっているものが簡単に実装できる。実装はまわりのメソッドを参考に。</li>
+						lib/parser/analyzer.ts の DefaultAnalyzer に構文用のメソッドを追加します。
+						analyzer.tsの末尾にある TODO 以下のものの実装をすすめます。
+					analyzer.tsの中でinlineが先頭になっているものが簡単に実装できる。実装はまわりのメソッドを参考に。</li>
 					<li>出力部分を追加する
 						lib/builder/ のなかに出力用ファイルがあります。
-						HtmlBuilder.ts,TextBuilder.ts のファイルにも1と同様に同名のメソッドを追加します。
+						htmlBuilder.ts,textBuilder.ts のファイルにも1と同様に同名のメソッドを追加します。
 						メソッド名＿pre,メソッド名＿postの関数を用意した場合にはメソッドの実行前、実行後にそれぞれ処理が実行されます。
 						まずはテキストのデータを表示してみましょう。
 					テキストのデータを取り出したい場合は以下の様に記述すると文字の部分が取得できます。</li>
@@ -158,25 +151,22 @@
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_main_.html">"<wbr>Main"</a>
+						<a href="modules/_builder_builder_.html">"builder/builder"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_builder_builder_.html">"builder/<wbr>Builder"</a>
+						<a href="modules/_builder_htmlbuilder_.html">"builder/html<wbr>Builder"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_builder_htmlbuilder_.html">"builder/<wbr>Html<wbr>Builder"</a>
+						<a href="modules/_builder_textbuilder_.html">"builder/text<wbr>Builder"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_builder_textbuilder_.html">"builder/<wbr>Text<wbr>Builder"</a>
+						<a href="modules/_controller_config_.html">"controller/config"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_controller_config_.html">"controller/<wbr>Config"</a>
+						<a href="modules/_controller_configraw_.html">"controller/config<wbr>Raw"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_controller_configraw_.html">"controller/<wbr>Config<wbr>Raw"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_controller_controller_.html">"controller/<wbr>Controller"</a>
+						<a href="modules/_controller_controller_.html">"controller/controller"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_i18n_en_.html">"i18n/en"</a>
@@ -188,28 +178,37 @@
 						<a href="modules/_i18n_ja_.html">"i18n/ja"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_model_compilermodel_.html">"model/<wbr>Compiler<wbr>Model"</a>
+						<a href="modules/_index_.html">"index"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_parser_analyzer_.html">"parser/<wbr>Analyzer"</a>
+						<a href="modules/_js_exception_.html">"js/exception"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_parser_parser_.html">"parser/<wbr>Parser"</a>
+						<a href="modules/_model_compilermodel_.html">"model/compiler<wbr>Model"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_parser_preprocessor_.html">"parser/<wbr>Preprocessor"</a>
+						<a href="modules/_parser_analyzer_.html">"parser/analyzer"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_parser_validator_.html">"parser/<wbr>Validator"</a>
+						<a href="modules/_parser_parser_.html">"parser/parser"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_parser_walker_.html">"parser/<wbr>Walker"</a>
+						<a href="modules/_parser_preprocessor_.html">"parser/preprocessor"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_utils_polyfill_.html">"utils/<wbr>Polyfill"</a>
+						<a href="modules/_parser_validator_.html">"parser/validator"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_utils_utils_.html">"utils/<wbr>Utils"</a>
+						<a href="modules/_parser_walker_.html">"parser/walker"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_peg_action_.html">"peg/action"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_utils_polyfill_.html">"utils/polyfill"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_utils_utils_.html">"utils/utils"</a>
 					</li>
 				</ul>
 			</nav>
