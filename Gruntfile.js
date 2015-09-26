@@ -47,26 +47,48 @@ module.exports = function (grunt) {
 		typedoc: {
 			main: {
 				options: {
-					module: "<%= ts.options.module %>",
+					module: "commonjs",
 					out: './docs',
 					name: '<%= pkg.name %>',
-					target: "<%= ts.options.target %>"
+					target: "es5",
+					experimentalDecorators: ""
 				},
 				src: [
-					'<%= opt.client.tsMain %>/**/*.ts',
-					'!<%= opt.client.tsMain %>/cli.ts' // main.d.ts読み込んでて重複が発生するので
+					"./**/*.ts",
+					"./**/*.tsx",
+					"!./**/*.d.ts",
+					"!./lib/cli.ts",
+					"./lib/typings/**/*.d.ts",
+					"./typings/**/*.d.ts",
+					"!./test/**/*.ts",
+					"!./example/**/*.ts",
+					"!./pages/**/*.ts",
+					"!./bower_components/**/*.ts",
+					"!./node_modules/**/*",
+					"./node_modules/typescript/lib/lib.es6.d.ts"
 				]
 			},
 			travisCI: {
 				options: {
-					module: "<%= ts.options.module %>",
+					module: "commonjs",
 					out: './pages/docs',
 					name: '<%= pkg.name %>',
-					target: "<%= ts.options.target %>"
+					target: "es5",
+					experimentalDecorators: ""
 				},
 				src: [
-					'<%= opt.client.tsMain %>/**/*.ts',
-					'!<%= opt.client.tsMain %>/cli.ts' // main.d.ts読み込んでて重複が発生するので
+					"./**/*.ts",
+					"./**/*.tsx",
+					"!./**/*.d.ts",
+					"!./lib/cli.ts",
+					"./lib/typings/**/*.d.ts",
+					"./typings/**/*.d.ts",
+					"!./test/**/*.ts",
+					"!./example/**/*.ts",
+					"!./pages/**/*.ts",
+					"!./bower_components/**/*.ts",
+					"!./node_modules/**/*",
+					"./node_modules/typescript/lib/lib.es6.d.ts"
 				]
 			}
 		},
