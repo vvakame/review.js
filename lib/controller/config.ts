@@ -237,7 +237,7 @@ export class WebBrowserConfig extends Config {
 				xhr.send();
 			} catch (e) {
 				if (e instanceof DOMException) {
-					let de: DOMException = <DOMException> e;
+					let de: DOMException = <DOMException>e;
 					console.log(de.message);
 				}
 				resolve({ path: path, result: false });

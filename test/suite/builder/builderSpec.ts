@@ -80,7 +80,7 @@ describe("ReVIEW.Buildの", () => {
 			return Test.compileSingle(
 				"= hoge\n== fuga\n=== moge\n== piyo\n=== foo\n== bar\n",
 				{ builders: [builder] }
-				)
+			)
 				.then(success=> {
 					let book = success.book;
 					let expected = "■H1■第1章　hoge\n\n■H2■fuga\n\n■H3■moge\n\n■H2■piyo\n\n■H3■foo\n\n■H2■bar\n\n";

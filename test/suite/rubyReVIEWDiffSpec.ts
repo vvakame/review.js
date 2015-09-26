@@ -33,7 +33,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
 						resolve(stdout.toString());
 					}
 				}
-				);
+			);
 		});
 	}
 
