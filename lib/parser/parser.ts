@@ -221,24 +221,26 @@ export class ParseError implements Error {
 	}
 }
 
+export interface Location {
+	start: {
+		line: number;
+		column: number;
+		offset: number;
+	};
+	end: {
+		line: number;
+		column: number;
+		offset: number;
+	};
+}
+
 /**
  * 構文解析直後の生データ。
  */
 export interface ConcreatSyntaxTree {
 	// 共通
 	syntax: string;
-	location: {
-		start: {
-			line: number;
-			column: number;
-			offset: number;
-		};
-		end: {
-			line: number;
-			column: number;
-			offset: number;
-		};
-	};
+	location: Location;
 
 	// Ruleによっては
 	headline?: any;
@@ -308,18 +310,7 @@ export enum RuleName {
 }
 
 export interface NodeLocation {
-	location: {
-		start: {
-			line: number;
-			column: number;
-			offset: number;
-		};
-		end: {
-			line: number;
-			column: number;
-			offset: number;
-		};
-	};
+	location: Location;
 }
 
 /**
@@ -327,18 +318,7 @@ export interface NodeLocation {
  */
 export class SyntaxTree implements NodeLocation {
 	parentNode: SyntaxTree;
-	location: {
-		start: {
-			line: number;
-			column: number;
-			offset: number;
-		};
-		end: {
-			line: number;
-			column: number;
-			offset: number;
-		};
-	};
+	location: Location;
 
 	ruleName: RuleName;
 	// analyzer 中で設定する項目

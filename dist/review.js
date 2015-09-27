@@ -4739,7 +4739,15 @@ var AsyncTaskPool = (function () {
 
 },{"./parser":14}],18:[function(require,module,exports){
 "use strict";
+var parser_1 = require("../parser/parser");
 var env;
+function checkRuleName(ruleName) {
+    "use strict";
+    if (!parser_1.RuleName[ruleName]) {
+        throw new Error("unknown rule: " + ruleName);
+    }
+    return ruleName;
+}
 function setup(_env) {
     "use strict";
     env = _env;
@@ -4748,7 +4756,7 @@ exports.setup = setup;
 function content(ruleName, c) {
     "use strict";
     return {
-        syntax: ruleName,
+        syntax: checkRuleName(ruleName),
         location: env.location(),
         content: c
     };
@@ -4766,7 +4774,7 @@ function contents(ruleName, c, cc) {
         }
     }
     return {
-        syntax: ruleName,
+        syntax: checkRuleName(ruleName),
         location: env.location(),
         content: processed
     };
@@ -4775,7 +4783,7 @@ exports.contents = contents;
 function text(ruleName, text) {
     "use strict";
     return {
-        syntax: ruleName,
+        syntax: checkRuleName(ruleName),
         location: env.location(),
         text: text
     };
@@ -4784,7 +4792,7 @@ exports.text = text;
 function chapter(headline, text) {
     "use strict";
     return {
-        syntax: "Chapter",
+        syntax: checkRuleName("Chapter"),
         location: env.location(),
         headline: headline,
         text: text
@@ -4794,7 +4802,7 @@ exports.chapter = chapter;
 function headline(level, label, caption) {
     "use strict";
     return {
-        syntax: "Headline",
+        syntax: checkRuleName("Headline"),
         location: env.location(),
         level: level.length,
         label: label,
@@ -4806,7 +4814,7 @@ function blockElement(symbol, args, contents) {
     "use strict";
     if (contents === void 0) { contents = []; }
     return {
-        syntax: "BlockElement",
+        syntax: checkRuleName("BlockElement"),
         location: env.location(),
         symbol: symbol,
         args: args,
@@ -4818,7 +4826,7 @@ function inlineElement(symbol, contents) {
     "use strict";
     if (contents === void 0) { contents = []; }
     return {
-        syntax: "InlineElement",
+        syntax: checkRuleName("InlineElement"),
         location: env.location(),
         symbol: symbol,
         content: contents
@@ -4828,7 +4836,7 @@ exports.inlineElement = inlineElement;
 function column(headline, text) {
     "use strict";
     return {
-        syntax: "Column",
+        syntax: checkRuleName("Column"),
         location: env.location(),
         headline: headline,
         text: text
@@ -4838,7 +4846,7 @@ exports.column = column;
 function columnHeadline(level, caption) {
     "use strict";
     return {
-        syntax: "ColumnHeadline",
+        syntax: checkRuleName("ColumnHeadline"),
         location: env.location(),
         level: level.length,
         caption: caption
@@ -4848,7 +4856,7 @@ exports.columnHeadline = columnHeadline;
 function columnTerminator(level) {
     "use strict";
     return {
-        syntax: "ColumnTerminator",
+        syntax: checkRuleName("ColumnTerminator"),
         location: env.location(),
         level: level.length
     };
@@ -4857,7 +4865,7 @@ exports.columnTerminator = columnTerminator;
 function braceArg(arg) {
     "use strict";
     return {
-        syntax: "BraceArg",
+        syntax: checkRuleName("BraceArg"),
         location: env.location(),
         arg: arg
     };
@@ -4866,7 +4874,7 @@ exports.braceArg = braceArg;
 function ulistElement(level, text) {
     "use strict";
     return {
-        syntax: "UlistElement",
+        syntax: checkRuleName("UlistElement"),
         location: env.location(),
         level: level.length,
         text: text
@@ -4876,7 +4884,7 @@ exports.ulistElement = ulistElement;
 function olistElement(n, text) {
     "use strict";
     return {
-        syntax: "OlistElement",
+        syntax: checkRuleName("OlistElement"),
         location: env.location(),
         no: parseInt(n, 10),
         text: text
@@ -4886,7 +4894,7 @@ exports.olistElement = olistElement;
 function dlistElement(text, content) {
     "use strict";
     return {
-        syntax: "DlistElement",
+        syntax: checkRuleName("DlistElement"),
         location: env.location(),
         text: text,
         content: content
@@ -4894,7 +4902,7 @@ function dlistElement(text, content) {
 }
 exports.dlistElement = dlistElement;
 
-},{}],19:[function(require,module,exports){
+},{"../parser/parser":14}],19:[function(require,module,exports){
 "use strict";
 var compilerModel_1 = require("../model/compilerModel");
 var parser_1 = require("../parser/parser");
