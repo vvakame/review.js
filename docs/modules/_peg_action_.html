@@ -89,6 +89,7 @@
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_peg_action_.html#blockelement" class="tsd-kind-icon">block<wbr>Element</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_peg_action_.html#bracearg" class="tsd-kind-icon">brace<wbr>Arg</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_peg_action_.html#chapter" class="tsd-kind-icon">chapter</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_peg_action_.html#checkrulename" class="tsd-kind-icon">check<wbr>Rule<wbr>Name</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_peg_action_.html#column" class="tsd-kind-icon">column</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_peg_action_.html#columnheadline" class="tsd-kind-icon">column<wbr>Headline</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_peg_action_.html#columnterminator" class="tsd-kind-icon">column<wbr>Terminator</a></li>
@@ -114,7 +115,7 @@
 					<div class="tsd-signature tsd-kind-icon">env<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_peg_action_.pegenvironment.html" class="tsd-signature-type">PEGEnvironment</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L8">peg/action.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L10">peg/action.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -125,13 +126,13 @@
 					<a name="blockelement" class="tsd-anchor"></a>
 					<h3>block<wbr>Element</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">block<wbr>Element<span class="tsd-signature-symbol">(</span>symbol<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, contents<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+						<li class="tsd-signature tsd-kind-icon">block<wbr>Element<span class="tsd-signature-symbol">(</span>symbol<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, contents<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L77">peg/action.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L90">peg/action.ts:90</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -146,24 +147,7 @@
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> contents: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
-							<ul class="tsd-parameters">
-								<li class="tsd-parameter">
-									<h5>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>location<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>symbol<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>syntax<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -171,13 +155,13 @@
 					<a name="bracearg" class="tsd-anchor"></a>
 					<h3>brace<wbr>Arg</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">brace<wbr>Arg<span class="tsd-signature-symbol">(</span>arg<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+						<li class="tsd-signature tsd-kind-icon">brace<wbr>Arg<span class="tsd-signature-symbol">(</span>arg<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L132">peg/action.ts:132</a></li>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L145">peg/action.ts:145</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -186,18 +170,7 @@
 									<h5>arg: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
-							<ul class="tsd-parameters">
-								<li class="tsd-parameter">
-									<h5>arg<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>location<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>syntax<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -205,13 +178,13 @@
 					<a name="chapter" class="tsd-anchor"></a>
 					<h3>chapter</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">chapter<span class="tsd-signature-symbol">(</span>headline<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+						<li class="tsd-signature tsd-kind-icon">chapter<span class="tsd-signature-symbol">(</span>headline<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L54">peg/action.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L67">peg/action.ts:67</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -223,21 +196,30 @@
 									<h5>text: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="checkrulename" class="tsd-anchor"></a>
+					<h3>check<wbr>Rule<wbr>Name</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">check<wbr>Rule<wbr>Name<span class="tsd-signature-symbol">(</span>ruleName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L12">peg/action.ts:12</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
-								<li class="tsd-parameter">
-									<h5>headline<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>location<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>syntax<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								<li>
+									<h5>ruleName: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -245,13 +227,13 @@
 					<a name="column" class="tsd-anchor"></a>
 					<h3>column</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">column<span class="tsd-signature-symbol">(</span>headline<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+						<li class="tsd-signature tsd-kind-icon">column<span class="tsd-signature-symbol">(</span>headline<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L100">peg/action.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L113">peg/action.ts:113</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -263,21 +245,7 @@
 									<h5>text: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
-							<ul class="tsd-parameters">
-								<li class="tsd-parameter">
-									<h5>headline<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>location<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>syntax<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -285,13 +253,13 @@
 					<a name="columnheadline" class="tsd-anchor"></a>
 					<h3>column<wbr>Headline</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">column<wbr>Headline<span class="tsd-signature-symbol">(</span>level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, caption<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+						<li class="tsd-signature tsd-kind-icon">column<wbr>Headline<span class="tsd-signature-symbol">(</span>level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, caption<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L111">peg/action.ts:111</a></li>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L124">peg/action.ts:124</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -303,21 +271,7 @@
 									<h5>caption: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
-							<ul class="tsd-parameters">
-								<li class="tsd-parameter">
-									<h5>caption<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>location<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>syntax<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -325,13 +279,13 @@
 					<a name="columnterminator" class="tsd-anchor"></a>
 					<h3>column<wbr>Terminator</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">column<wbr>Terminator<span class="tsd-signature-symbol">(</span>level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+						<li class="tsd-signature tsd-kind-icon">column<wbr>Terminator<span class="tsd-signature-symbol">(</span>level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L122">peg/action.ts:122</a></li>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L135">peg/action.ts:135</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -340,18 +294,7 @@
 									<h5>level: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
-							<ul class="tsd-parameters">
-								<li class="tsd-parameter">
-									<h5>level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>location<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>syntax<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -359,13 +302,13 @@
 					<a name="content" class="tsd-anchor"></a>
 					<h3>content</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">content<span class="tsd-signature-symbol">(</span>ruleName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, c<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+						<li class="tsd-signature tsd-kind-icon">content<span class="tsd-signature-symbol">(</span>ruleName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, c<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L16">peg/action.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L29">peg/action.ts:29</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -377,18 +320,7 @@
 									<h5>c: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
-							<ul class="tsd-parameters">
-								<li class="tsd-parameter">
-									<h5>content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>location<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>syntax<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -396,13 +328,13 @@
 					<a name="contents" class="tsd-anchor"></a>
 					<h3>contents</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">contents<span class="tsd-signature-symbol">(</span>ruleName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, c<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, cc<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+						<li class="tsd-signature tsd-kind-icon">contents<span class="tsd-signature-symbol">(</span>ruleName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, c<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, cc<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L26">peg/action.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L39">peg/action.ts:39</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -417,18 +349,7 @@
 									<h5>cc: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
-							<ul class="tsd-parameters">
-								<li class="tsd-parameter">
-									<h5>content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>location<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>syntax<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -436,13 +357,13 @@
 					<a name="dlistelement" class="tsd-anchor"></a>
 					<h3>dlist<wbr>Element</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">dlist<wbr>Element<span class="tsd-signature-symbol">(</span>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+						<li class="tsd-signature tsd-kind-icon">dlist<wbr>Element<span class="tsd-signature-symbol">(</span>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L164">peg/action.ts:164</a></li>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L177">peg/action.ts:177</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -454,21 +375,7 @@
 									<h5>content: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
-							<ul class="tsd-parameters">
-								<li class="tsd-parameter">
-									<h5>content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>location<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>syntax<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -476,13 +383,13 @@
 					<a name="headline" class="tsd-anchor"></a>
 					<h3>headline</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">headline<span class="tsd-signature-symbol">(</span>level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, label<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, caption<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+						<li class="tsd-signature tsd-kind-icon">headline<span class="tsd-signature-symbol">(</span>level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, label<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, caption<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L65">peg/action.ts:65</a></li>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L78">peg/action.ts:78</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -497,24 +404,7 @@
 									<h5>caption: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
-							<ul class="tsd-parameters">
-								<li class="tsd-parameter">
-									<h5>caption<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>label<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>location<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>syntax<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -522,13 +412,13 @@
 					<a name="inlineelement" class="tsd-anchor"></a>
 					<h3>inline<wbr>Element</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">inline<wbr>Element<span class="tsd-signature-symbol">(</span>symbol<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, contents<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+						<li class="tsd-signature tsd-kind-icon">inline<wbr>Element<span class="tsd-signature-symbol">(</span>symbol<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, contents<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L89">peg/action.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L102">peg/action.ts:102</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -540,21 +430,7 @@
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> contents: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
-							<ul class="tsd-parameters">
-								<li class="tsd-parameter">
-									<h5>content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>location<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>symbol<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>syntax<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -562,13 +438,13 @@
 					<a name="olistelement" class="tsd-anchor"></a>
 					<h3>olist<wbr>Element</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">olist<wbr>Element<span class="tsd-signature-symbol">(</span>n<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+						<li class="tsd-signature tsd-kind-icon">olist<wbr>Element<span class="tsd-signature-symbol">(</span>n<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L153">peg/action.ts:153</a></li>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L166">peg/action.ts:166</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -580,21 +456,7 @@
 									<h5>text: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
-							<ul class="tsd-parameters">
-								<li class="tsd-parameter">
-									<h5>location<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>no<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>syntax<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -608,7 +470,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L10">peg/action.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L23">peg/action.ts:23</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -625,13 +487,13 @@
 					<a name="text" class="tsd-anchor"></a>
 					<h3>text</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">text<span class="tsd-signature-symbol">(</span>ruleName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+						<li class="tsd-signature tsd-kind-icon">text<span class="tsd-signature-symbol">(</span>ruleName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L44">peg/action.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L57">peg/action.ts:57</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -643,18 +505,7 @@
 									<h5>text: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
-							<ul class="tsd-parameters">
-								<li class="tsd-parameter">
-									<h5>location<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>syntax<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -662,13 +513,13 @@
 					<a name="ulistelement" class="tsd-anchor"></a>
 					<h3>ulist<wbr>Element</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">ulist<wbr>Element<span class="tsd-signature-symbol">(</span>level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+						<li class="tsd-signature tsd-kind-icon">ulist<wbr>Element<span class="tsd-signature-symbol">(</span>level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L142">peg/action.ts:142</a></li>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L155">peg/action.ts:155</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -680,21 +531,7 @@
 									<h5>text: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
-							<ul class="tsd-parameters">
-								<li class="tsd-parameter">
-									<h5>level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>location<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>syntax<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_parser_parser_.concreatsyntaxtree.html" class="tsd-signature-type">ConcreatSyntaxTree</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -784,6 +621,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_peg_action_.html#chapter" class="tsd-kind-icon">chapter</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_peg_action_.html#checkrulename" class="tsd-kind-icon">check<wbr>Rule<wbr>Name</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_peg_action_.html#column" class="tsd-kind-icon">column</a>

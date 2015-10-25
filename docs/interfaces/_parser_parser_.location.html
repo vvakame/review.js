@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>PEGEnvironment | review.js</title>
+	<title>Location | review.js</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,13 +57,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_peg_action_.html">&quot;peg/action&quot;</a>
+					<a href="../modules/_parser_parser_.html">&quot;parser/parser&quot;</a>
 				</li>
 				<li>
-					<a href="_peg_action_.pegenvironment.html">PEGEnvironment</a>
+					<a href="_parser_parser_.location.html">Location</a>
 				</li>
 			</ul>
-			<h1>Interface PEGEnvironment</h1>
+			<h1>Interface Location</h1>
 		</div>
 	</div>
 </header>
@@ -74,7 +74,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">PEGEnvironment</span>
+						<span class="target">Location</span>
 					</li>
 				</ul>
 			</section>
@@ -83,50 +83,64 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Methods</h3>
+							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_peg_action_.pegenvironment.html#location" class="tsd-kind-icon">location</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_peg_action_.pegenvironment.html#text" class="tsd-kind-icon">text</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_parser_parser_.location.html#end" class="tsd-kind-icon">end</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_parser_parser_.location.html#start" class="tsd-kind-icon">start</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="location" class="tsd-anchor"></a>
-					<h3>location</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">location<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_parser_parser_.location.html" class="tsd-signature-type">Location</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L7">peg/action.ts:7</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="_parser_parser_.location.html" class="tsd-signature-type">Location</a></h4>
-						</li>
-					</ul>
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="end" class="tsd-anchor"></a>
+					<h3>end</h3>
+					<div class="tsd-signature tsd-kind-icon">end<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/parser.ts#L230">parser/parser.ts:230</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>column<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>line<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>offset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+							</li>
+						</ul>
+					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="text" class="tsd-anchor"></a>
-					<h3>text</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">text<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/peg/action.ts#L6">peg/action.ts:6</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="start" class="tsd-anchor"></a>
+					<h3>start</h3>
+					<div class="tsd-signature tsd-kind-icon">start<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/parser/parser.ts#L225">parser/parser.ts:225</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>column<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>line<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>offset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+							</li>
+						</ul>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -175,7 +189,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_parser_analyzer_.html">"parser/analyzer"</a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/_parser_parser_.html">"parser/parser"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -187,7 +201,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_parser_walker_.html">"parser/walker"</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_peg_action_.html">"peg/action"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -200,71 +214,83 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
+						<a href="../enums/_parser_parser_.rulename.html" class="tsd-kind-icon">Rule<wbr>Name</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_parser_parser_.argumentsyntaxtree.html" class="tsd-kind-icon">Argument<wbr>Syntax<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_parser_parser_.blockelementsyntaxtree.html" class="tsd-kind-icon">Block<wbr>Element<wbr>Syntax<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_parser_parser_.chaptersyntaxtree.html" class="tsd-kind-icon">Chapter<wbr>Syntax<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_parser_parser_.columnheadlinesyntaxtree.html" class="tsd-kind-icon">Column<wbr>Headline<wbr>Syntax<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_parser_parser_.columnsyntaxtree.html" class="tsd-kind-icon">Column<wbr>Syntax<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_parser_parser_.dlistelementsyntaxtree.html" class="tsd-kind-icon">Dlist<wbr>Element<wbr>Syntax<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_parser_parser_.headlinesyntaxtree.html" class="tsd-kind-icon">Headline<wbr>Syntax<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_parser_parser_.inlineelementsyntaxtree.html" class="tsd-kind-icon">Inline<wbr>Element<wbr>Syntax<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_parser_parser_.nodesyntaxtree.html" class="tsd-kind-icon">Node<wbr>Syntax<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_parser_parser_.olistelementsyntaxtree.html" class="tsd-kind-icon">Olist<wbr>Element<wbr>Syntax<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_parser_parser_.parseerror.html" class="tsd-kind-icon">Parse<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_parser_parser_.singlelinecommentsyntaxtree.html" class="tsd-kind-icon">Single<wbr>Line<wbr>Comment<wbr>Syntax<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_parser_parser_.syntaxtree.html" class="tsd-kind-icon">Syntax<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_parser_parser_.textnodesyntaxtree.html" class="tsd-kind-icon">Text<wbr>Node<wbr>Syntax<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_parser_parser_.ulistelementsyntaxtree.html" class="tsd-kind-icon">Ulist<wbr>Element<wbr>Syntax<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_parser_parser_.concreatsyntaxtree.html" class="tsd-kind-icon">Concreat<wbr>Syntax<wbr>Tree</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_peg_action_.pegenvironment.html" class="tsd-kind-icon">PEGEnvironment</a>
+						<a href="_parser_parser_.location.html" class="tsd-kind-icon">Location</a>
 						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_peg_action_.pegenvironment.html#location" class="tsd-kind-icon">location</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_parser_parser_.location.html#end" class="tsd-kind-icon">end</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_peg_action_.pegenvironment.html#text" class="tsd-kind-icon">text</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_parser_parser_.location.html#start" class="tsd-kind-icon">start</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_peg_action_.html#env" class="tsd-kind-icon">env</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_parser_parser_.nodelocation.html" class="tsd-kind-icon">Node<wbr>Location</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_peg_action_.html#blockelement" class="tsd-kind-icon">block<wbr>Element</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_peg_action_.html#bracearg" class="tsd-kind-icon">brace<wbr>Arg</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_peg_action_.html#chapter" class="tsd-kind-icon">chapter</a>
+						<a href="../modules/_parser_parser_.html#parse" class="tsd-kind-icon">parse</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_peg_action_.html#checkrulename" class="tsd-kind-icon">check<wbr>Rule<wbr>Name</a>
+						<a href="../modules/_parser_parser_.html#reconstruct" class="tsd-kind-icon">reconstruct</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_peg_action_.html#column" class="tsd-kind-icon">column</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_peg_action_.html#columnheadline" class="tsd-kind-icon">column<wbr>Headline</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_peg_action_.html#columnterminator" class="tsd-kind-icon">column<wbr>Terminator</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_peg_action_.html#content" class="tsd-kind-icon">content</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_peg_action_.html#contents" class="tsd-kind-icon">contents</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_peg_action_.html#dlistelement" class="tsd-kind-icon">dlist<wbr>Element</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_peg_action_.html#headline" class="tsd-kind-icon">headline</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_peg_action_.html#inlineelement" class="tsd-kind-icon">inline<wbr>Element</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_peg_action_.html#olistelement" class="tsd-kind-icon">olist<wbr>Element</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_peg_action_.html#setup" class="tsd-kind-icon">setup</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_peg_action_.html#text" class="tsd-kind-icon">text</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_peg_action_.html#ulistelement" class="tsd-kind-icon">ulist<wbr>Element</a>
+						<a href="../modules/_parser_parser_.html#transform" class="tsd-kind-icon">transform</a>
 					</li>
 				</ul>
 			</nav>
