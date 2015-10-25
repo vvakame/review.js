@@ -13,8 +13,9 @@ export let ja: IResourceStoreKey = {
 		"block_listnum": "行番号付きのリストを示します。\n//listnum[hello.js][ハローワールド]{\nconsole.log(\"Hello world!\");\n//}\nという形式で書きます。",
 		"block_emlist": "非採番のリストを示します。\n//emlist[ハローワールド]{\nconsole.log(\"Hello world\");\n//}\nという形式で書きます。",
 		"block_emlistnum": "行番号付きの非採番のリストを示します。\n//emlistnum{\nconsole.log(\"Hello world\");\n//}\nという形式で書きます。",
-		"block_image": "図表を示します。\n//image[sample][サンプル][scale=0.3]{\nメモ\n//}\nという形式で書きます。\n章のファイル名がtest.reの場合、images/test-sample.jpegが参照されます。\n画像のサイズを調整したい場合、scaleで倍率が指定できます。\n中に書かれているメモは無視されます。",
+		"block_image": "図表を示します。\n//image[sample][サンプル][scale=0.3]{\nメモ\n//}\nという形式で書きます。\n章のファイル名がtest.reの場合、images/test/sample.jpgが参照されます。\n画像のサイズを調整したい場合、scaleで倍率が指定できます。\n中に書かれているメモは無視されます。",
 		"block_indepimage": "非採番の図表を示します。\n//image[sample][サンプル][scale=0.3]{\nメモ\n//}\nという形式で書きます。詳細は //image と同様です。",
+		"block_graph": "グラフを示します。\n//graph[sample][ツール名][サンプル]{\nメモ\n//}\nという形式で書きます。\n文章中から参照する時は@<img>{sample}が利用できます。\n中に書かれているメモは無視されます。",
 		"inline_img": "図表への参照を示します。\n//image[sample][サンプル]{\n//}\nを参照するときは @<img>{sample} と書きます。",
 		"inline_icon": "文中に表示される図表を示します。\n@<icon>{sample}という形式で書きます。章のファイル名がtest.reの場合、images/test-sample.jpenが参照されます。",
 		"block_footnote": "脚注を示します。\n//footnote[sample][サンプルとしてはいささか豪華すぎるかも！]\nという形式で書きます。",
@@ -68,7 +69,9 @@ export let ja: IResourceStoreKey = {
 		"body_string_only": "内容は全て文字でなければいけません",
 		"chapter_not_toplevel": "深さ1のチャプターは最上位になければいけません",
 		"chapter_topleve_eq1": "最上位のチャプターは深さ1のものでなければいけません",
-		"deprecated_inline_symbol": "%s というインライン構文は非推奨です。"
+		"deprecated_inline_symbol": "%s というインライン構文は非推奨です。",
+		"graph_tool_is_not_recommended": "graph用ツールにはgraphvizをおすすめします。",
+		"unknown_graph_tool": "%s というgraph用ツールはサポートされていません。"
 	},
 	"builder": {
 		"image_not_found": "ID: %s にマッチする画像が見つかりませんでした",

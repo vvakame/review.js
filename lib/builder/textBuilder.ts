@@ -358,6 +358,24 @@ export class TextBuilder extends DefaultBuilder {
 		return false;
 	}
 
+	block_graph_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+		// TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
+		process.outRaw("◆→開始:図←◆\n");
+		let toolName = nodeContentToString(process, node.args[1]);
+		process.outRaw("graph: ").out(toolName).outRaw("</p>\n");
+		return (v: TreeVisitor) => {
+			// name, args はパスしたい
+			node.childNodes.forEach((node) => {
+				visit(node, v);
+			});
+		};
+	}
+
+	block_graph_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+		// TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
+		process.outRaw("◆→終了:図←◆\n");
+	}
+
 	inline_img(process: BuilderProcess, node: InlineElementSyntaxTree) {
 		let imgNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
 		process.out("図").out(process.base.chapter.no).out(".").out(imgNode.no).out("\n");

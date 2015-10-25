@@ -449,6 +449,22 @@ export class DefaultAnalyzer implements Analyzer {
 		});
 	}
 
+	block_graph(builder: AcceptableSyntaxBuilder) {
+		builder.setSyntaxType(SyntaxType.Block);
+		builder.setSymbol("graph");
+		builder.setDescription(t("description.block_graph"));
+		builder.checkArgsLength(2, 3);
+		builder.processNode((process, n) => {
+			let node = n.toBlockElement();
+			node.no = process.nextIndex("image");
+			process.addSymbol({
+				symbolName: "image",
+				labelName: nodeContentToString(process, node.args[0]),
+				node: node
+			});
+		});
+	}
+
 	inline_img(builder: AcceptableSyntaxBuilder) {
 		builder.setSyntaxType(SyntaxType.Inline);
 		builder.setSymbol("img");
@@ -780,6 +796,5 @@ export class DefaultAnalyzer implements Analyzer {
 	// クソめんどくさいの壁
 	// block_bibpaper
 	// inline_bib
-	// block_graph
 	// ↓実装が難しい
 }

@@ -502,6 +502,25 @@ export class HtmlBuilder extends DefaultBuilder {
 			});
 	}
 
+	block_graph_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+		// TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
+		process.outRaw("<div>\n");
+		let toolName = nodeContentToString(process, node.args[1]);
+		process.outRaw("<p>graph: ").out(toolName).outRaw("</p>\n");
+		process.outRaw("<pre>");
+		return (v: TreeVisitor) => {
+			// name, args はパスしたい
+			node.childNodes.forEach((node) => {
+				visit(node, v);
+			});
+		};
+	}
+
+	block_graph_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+		// TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
+		process.outRaw("\n</pre>\n").outRaw("</div>\n");
+	}
+
 	inline_img(process: BuilderProcess, node: InlineElementSyntaxTree) {
 		let imgNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
 		process.out("図").out(process.base.chapter.no).out(".").out(imgNode.no);

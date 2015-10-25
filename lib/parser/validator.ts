@@ -12,7 +12,7 @@ import {Builder} from "../builder/builder";
 
 import {visit} from "./walker";
 
-import {findChapter} from "../utils/utils";
+import {findChapter, nodeContentToString} from "../utils/utils";
 
 /**
  * IAnalyzerで処理した後の構文木について構文上のエラーがないかチェックする。
@@ -130,6 +130,38 @@ export class DefaultValidator implements Validator {
 					if (!parent) {
 						chunk.process.error(t("compile.chapter_topleve_eq1"), node);
 					}
+				}
+			}
+		});
+
+		this.chechBlockGraphTool(chunk);
+	}
+
+	chechBlockGraphTool(chunk: ContentChunk) {
+		// graph記法の外部ツール利用について内容が正しいかチェックする
+		visit(chunk.tree.ast, {
+			visitDefaultPre: (node: SyntaxTree) => {
+			},
+			visitBlockElementPre: (node: BlockElementSyntaxTree) => {
+				if (node.symbol !== "graph") {
+					return;
+				}
+				let toolNameNode = node.args[1];
+				if (!toolNameNode) {
+					// ここのNodeがないのは別でチェックするので気にしない
+					return;
+				}
+				let toolName = nodeContentToString(chunk.process, toolNameNode);
+				switch (toolName) {
+					case "graphviz":
+						break;
+					case "gnuplot":
+					case "blockdiag":
+					case "aafigure":
+						chunk.process.info(t("compile.graph_tool_is_not_recommended"), toolNameNode);
+						break;
+					default:
+						chunk.process.error(t("compile.unknown_graph_tool", toolName), toolNameNode);
 				}
 			}
 		});

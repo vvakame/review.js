@@ -1,0 +1,308 @@
+{
+  "ruleName": "Start",
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 8,
+      "column": 1,
+      "offset": 94
+    }
+  },
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 1,
+          "offset": 94
+        }
+      },
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 8,
+              "column": 1,
+              "offset": 94
+            }
+          },
+          "headline": {
+            "ruleName": "Headline",
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 13
+              }
+            },
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 12,
+                  "offset": 11
+                }
+              },
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 12,
+                      "offset": 11
+                    }
+                  },
+                  "text": "graphのテスト"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "BlockElement",
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 13
+                },
+                "end": {
+                  "line": 7,
+                  "column": 1,
+                  "offset": 73
+                }
+              },
+              "symbol": "graph",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 8,
+                      "offset": 20
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 22,
+                      "offset": 34
+                    }
+                  },
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 3,
+                          "column": 9,
+                          "offset": 21
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 21,
+                          "offset": 33
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 3,
+                              "column": 9,
+                              "offset": 21
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 21,
+                              "offset": 33
+                            }
+                          },
+                          "text": "graph-sample"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "ruleName": "BracketArg",
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 22,
+                      "offset": 34
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 32,
+                      "offset": 44
+                    }
+                  },
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 3,
+                          "column": 23,
+                          "offset": 35
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 31,
+                          "offset": 43
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 3,
+                              "column": 23,
+                              "offset": 35
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 31,
+                              "offset": 43
+                            }
+                          },
+                          "text": "graphviz"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "no": 1,
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "location": {
+                    "start": {
+                      "line": 4,
+                      "column": 1,
+                      "offset": 46
+                    },
+                    "end": {
+                      "line": null,
+                      "column": null,
+                      "offset": 12
+                    }
+                  },
+                  "text": "digraph g { a -> b; }"
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "location": {
+                "start": {
+                  "line": 7,
+                  "column": 1,
+                  "offset": 73
+                },
+                "end": {
+                  "line": 8,
+                  "column": 1,
+                  "offset": 94
+                }
+              },
+              "childNodes": [
+                {
+                  "ruleName": "InlineElement",
+                  "location": {
+                    "start": {
+                      "line": 7,
+                      "column": 1,
+                      "offset": 73
+                    },
+                    "end": {
+                      "line": 7,
+                      "column": 21,
+                      "offset": 93
+                    }
+                  },
+                  "symbol": "img",
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "location": {
+                        "start": {
+                          "line": 7,
+                          "column": 8,
+                          "offset": 80
+                        },
+                        "end": {
+                          "line": 7,
+                          "column": 20,
+                          "offset": 92
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "location": {
+                            "start": {
+                              "line": 7,
+                              "column": 8,
+                              "offset": 80
+                            },
+                            "end": {
+                              "line": 7,
+                              "column": 20,
+                              "offset": 92
+                            }
+                          },
+                          "text": "graph-sample"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "no": 1,
+          "level": 1,
+          "childNodes": []
+        }
+      ]
+    }
+  ]
+}
