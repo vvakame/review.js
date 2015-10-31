@@ -2072,9 +2072,6 @@ exports.en = {
 };
 
 },{}],8:[function(require,module,exports){
-/**
- * 国際化対応のためのモジュール。デフォルトでは日本語。
- */
 "use strict";
 var utils_1 = require("../utils/utils");
 var en_1 = require("./en");
@@ -4381,6 +4378,9 @@ exports.DefaultValidator = DefaultValidator;
 var parser_1 = require("./parser");
 function walk(ast, actor) {
     "use strict";
+    if (!ast) {
+        return;
+    }
     var next = actor(ast);
     if (next) {
         walk(next, actor);

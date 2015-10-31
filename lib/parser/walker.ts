@@ -12,6 +12,10 @@ import {RuleName, SyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, A
 export function walk(ast: SyntaxTree, actor: (ast: SyntaxTree) => SyntaxTree) {
 	"use strict";
 
+	if (!ast) {
+		return;
+	}
+
 	let next = actor(ast);
 	if (next) {
 		walk(next, actor);

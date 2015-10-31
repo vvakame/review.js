@@ -1,7 +1,3 @@
-/**
- * 国際化対応のためのモジュール。デフォルトでは日本語。
- */
-
 "use strict";
 
 import {isNodeJS} from "../utils/utils";
