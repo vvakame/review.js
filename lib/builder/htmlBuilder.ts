@@ -201,10 +201,9 @@ export class HtmlBuilder extends DefaultBuilder {
 		let text = t("builder.list", chapter.fqn, node.no);
 		process.outRaw("<p class=\"caption\">").out(text).outRaw(": ");
 		return (v: TreeVisitor) => {
-			// name はパスしたい
-			node.args.slice(1).forEach(node => {
-				visit(node, v);
-			});
+			// name はパスしたい, langもパスしたい
+			visit(node.args[1], v);
+
 			process.outRaw("</p>\n");
 			process.outRaw("<pre class=\"list\">");
 			node.childNodes.forEach((node) => {
@@ -224,10 +223,9 @@ export class HtmlBuilder extends DefaultBuilder {
 		process.outRaw("<p class=\"caption\">").out(text).out(": ");
 		let lineCount = 1;
 		return (v: TreeVisitor) => {
-			// name はパスしたい
-			node.args.slice(1).forEach(node => {
-				visit(node, v);
-			});
+			// name はパスしたい, langもパスしたい
+			visit(node.args[1], v);
+
 			process.outRaw("</p>\n");
 			process.outRaw("<pre class=\"list\">");
 			node.childNodes.forEach((node, index, childNodes) => {

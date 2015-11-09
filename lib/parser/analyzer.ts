@@ -335,7 +335,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setSymbol("list");
 		builder.setDescription(t("description.block_list"));
-		builder.checkArgsLength(2);
+		builder.checkArgsLength(2, 3);
 		builder.processNode((process, n) => {
 			let node = n.toBlockElement();
 			node.no = process.nextIndex("list");
@@ -351,7 +351,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setSymbol("listnum");
 		builder.setDescription(t("description.block_listnum"));
-		builder.checkArgsLength(2);
+		builder.checkArgsLength(2, 3);
 		builder.processNode((process, n) => {
 			let node = n.toBlockElement();
 			node.no = process.nextIndex("list");
@@ -381,7 +381,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setSymbol("emlist");
 		builder.setDescription(t("description.block_emlist"));
-		builder.checkArgsLength(0, 1);
+		builder.checkArgsLength(0, 1, 2);
 		builder.processNode((process, n) => {
 			let node = n.toBlockElement();
 			process.addSymbol({
@@ -395,7 +395,7 @@ export class DefaultAnalyzer implements Analyzer {
 		builder.setSyntaxType(SyntaxType.Block);
 		builder.setSymbol("emlistnum");
 		builder.setDescription(t("description.block_emlistnum"));
-		builder.checkArgsLength(0);
+		builder.checkArgsLength(0, 1, 2);
 		builder.processNode((process, n) => {
 			let node = n.toBlockElement();
 			process.addSymbol({

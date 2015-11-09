@@ -7,3 +7,9 @@
 console.log("だと思ったか…！？");
 console.log("はろわー");
 ◆→終了:リスト←◆
+リスト1.2。
+◆→開始:リスト←◆
+リスト1.2　言語の指定ができます
+
+#define mrb_string_p(o) (mrb_type(o) == MRB_TT_STRING)
+◆→終了:リスト←◆

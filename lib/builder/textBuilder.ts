@@ -100,10 +100,9 @@ export class TextBuilder extends DefaultBuilder {
 		let text = t("builder.list", chapter.fqn, node.no);
 		process.out(text).out("　");
 		return (v: TreeVisitor) => {
-			// name はパスしたい
-			node.args.slice(1).forEach(node => {
-				visit(node, v);
-			});
+			// name はパスしたい, langもパスしたい
+			visit(node.args[1], v);
+
 			process.outRaw("\n\n");
 			node.childNodes.forEach((node) => {
 				visit(node, v);
@@ -122,10 +121,9 @@ export class TextBuilder extends DefaultBuilder {
 		process.out(text).out("　");
 		let lineCount = 1;
 		return (v: TreeVisitor) => {
-			// name はパスしたい
-			node.args.slice(1).forEach(node => {
-				visit(node, v);
-			});
+			// name はパスしたい, langもパスしたい
+			visit(node.args[1], v);
+
 			process.outRaw("\n\n");
 			node.childNodes.forEach((node, index, childNodes) => {
 				if (node.isTextNode()) {

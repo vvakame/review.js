@@ -447,9 +447,7 @@ var HtmlBuilder = (function (_super) {
         var text = i18n_1.t("builder.list", chapter.fqn, node.no);
         process.outRaw("<p class=\"caption\">").out(text).outRaw(": ");
         return function (v) {
-            node.args.slice(1).forEach(function (node) {
-                walker_1.visit(node, v);
-            });
+            walker_1.visit(node.args[1], v);
             process.outRaw("</p>\n");
             process.outRaw("<pre class=\"list\">");
             node.childNodes.forEach(function (node) {
@@ -467,9 +465,7 @@ var HtmlBuilder = (function (_super) {
         process.outRaw("<p class=\"caption\">").out(text).out(": ");
         var lineCount = 1;
         return function (v) {
-            node.args.slice(1).forEach(function (node) {
-                walker_1.visit(node, v);
-            });
+            walker_1.visit(node.args[1], v);
             process.outRaw("</p>\n");
             process.outRaw("<pre class=\"list\">");
             node.childNodes.forEach(function (node, index, childNodes) {
@@ -992,9 +988,7 @@ var TextBuilder = (function (_super) {
         var text = i18n_1.t("builder.list", chapter.fqn, node.no);
         process.out(text).out("　");
         return function (v) {
-            node.args.slice(1).forEach(function (node) {
-                walker_1.visit(node, v);
-            });
+            walker_1.visit(node.args[1], v);
             process.outRaw("\n\n");
             node.childNodes.forEach(function (node) {
                 walker_1.visit(node, v);
@@ -1011,9 +1005,7 @@ var TextBuilder = (function (_super) {
         process.out(text).out("　");
         var lineCount = 1;
         return function (v) {
-            node.args.slice(1).forEach(function (node) {
-                walker_1.visit(node, v);
-            });
+            walker_1.visit(node.args[1], v);
             process.outRaw("\n\n");
             node.childNodes.forEach(function (node, index, childNodes) {
                 if (node.isTextNode()) {
@@ -2944,7 +2936,7 @@ var DefaultAnalyzer = (function () {
         builder.setSyntaxType(SyntaxType.Block);
         builder.setSymbol("list");
         builder.setDescription(i18n_1.t("description.block_list"));
-        builder.checkArgsLength(2);
+        builder.checkArgsLength(2, 3);
         builder.processNode(function (process, n) {
             var node = n.toBlockElement();
             node.no = process.nextIndex("list");
@@ -2959,7 +2951,7 @@ var DefaultAnalyzer = (function () {
         builder.setSyntaxType(SyntaxType.Block);
         builder.setSymbol("listnum");
         builder.setDescription(i18n_1.t("description.block_listnum"));
-        builder.checkArgsLength(2);
+        builder.checkArgsLength(2, 3);
         builder.processNode(function (process, n) {
             var node = n.toBlockElement();
             node.no = process.nextIndex("list");
@@ -2987,7 +2979,7 @@ var DefaultAnalyzer = (function () {
         builder.setSyntaxType(SyntaxType.Block);
         builder.setSymbol("emlist");
         builder.setDescription(i18n_1.t("description.block_emlist"));
-        builder.checkArgsLength(0, 1);
+        builder.checkArgsLength(0, 1, 2);
         builder.processNode(function (process, n) {
             var node = n.toBlockElement();
             process.addSymbol({
@@ -3000,7 +2992,7 @@ var DefaultAnalyzer = (function () {
         builder.setSyntaxType(SyntaxType.Block);
         builder.setSymbol("emlistnum");
         builder.setDescription(i18n_1.t("description.block_emlistnum"));
-        builder.checkArgsLength(0);
+        builder.checkArgsLength(0, 1, 2);
         builder.processNode(function (process, n) {
             var node = n.toBlockElement();
             process.addSymbol({
