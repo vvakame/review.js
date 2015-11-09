@@ -1,6 +1,6 @@
 {
   "name": "review.js",
-  "version": "0.9.6",
+  "version": "0.10.1",
   "dependencies": {
     "abbrev": {
       "version": "1.0.7",
