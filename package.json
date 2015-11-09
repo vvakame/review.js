@@ -10,7 +10,8 @@
   },
   "scripts": {
     "build": "grunt default",
-    "test": "grunt test-node"
+    "test": "grunt test-node",
+    "preversion": "npm run test"
   },
   "keywords": [
     "ReVIEW"
