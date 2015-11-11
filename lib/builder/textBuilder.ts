@@ -10,7 +10,7 @@ import {NodeSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, Headlin
 
 import {visit, TreeVisitor} from "../parser/walker";
 
-import {nodeContentToString, findChapter} from "../utils/utils";
+import {nodeContentToString, findChapter, padLeft, linesToFigure} from "../utils/utils";
 
 export class TextBuilder extends DefaultBuilder {
 	extention = "txt";
@@ -124,6 +124,14 @@ export class TextBuilder extends DefaultBuilder {
 			// name はパスしたい, langもパスしたい
 			visit(node.args[1], v);
 
+			let lineCountMax = 0;
+			node.childNodes.forEach((node, index, childNodes) => {
+				if (node.isTextNode()) {
+					lineCountMax += node.toTextNode().text.split("\n").length;
+				}
+			});
+			let lineDigit = Math.max(linesToFigure(lineCountMax), 2);
+
 			process.outRaw("\n\n");
 			node.childNodes.forEach((node, index, childNodes) => {
 				if (node.isTextNode()) {
@@ -132,7 +140,7 @@ export class TextBuilder extends DefaultBuilder {
 					let textNode = node.toTextNode();
 					let lines = textNode.text.split("\n");
 					lines.forEach((line, index) => {
-						process.out(" ").out(lineCount).out(": ");
+						process.out(padLeft(String(lineCount), " ", lineDigit)).out(": ");
 						process.out(line);
 						if (!hasNext || lines.length - 1 !== index) {
 							lineCount++;
@@ -187,6 +195,15 @@ export class TextBuilder extends DefaultBuilder {
 				visit(node.args[0], v);
 				process.out("\n");
 			}
+
+			let lineCountMax = 0;
+			node.childNodes.forEach((node, index, childNodes) => {
+				if (node.isTextNode()) {
+					lineCountMax += node.toTextNode().text.split("\n").length;
+				}
+			});
+			let lineDigit = Math.max(linesToFigure(lineCountMax), 2);
+
 			node.childNodes.forEach((node, index, childNodes) => {
 				if (node.isTextNode()) {
 					// 改行する可能性があるのはTextNodeだけ…のはず
@@ -194,7 +211,7 @@ export class TextBuilder extends DefaultBuilder {
 					let textNode = node.toTextNode();
 					let lines = textNode.text.split("\n");
 					lines.forEach((line, index) => {
-						process.out(" ").out(lineCount).out(": ");
+						process.out(padLeft(String(lineCount), " ", lineDigit)).out(": ");
 						process.out(line);
 						if (!hasNext || lines.length - 1 !== index) {
 							lineCount++;

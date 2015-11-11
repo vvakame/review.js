@@ -144,44 +144,18 @@ export class SyntaxPreprocessor implements Preprocessor {
 			};
 			let resultNodes: SyntaxTree[] = [];
 			let lastNode: SyntaxTree;
-			node.childNodes.forEach(node=> {
-				visit(node, {
-					visitDefaultPre: (node: SyntaxTree) => {
-						if (!info) {
-							info = {
-								offset: node.location.start.offset,
-								line: node.location.start.line,
-								column: node.location.start.column
-							};
-						}
-						lastNode = node;
-					},
-					visitInlineElementPre: (node: InlineElementSyntaxTree) => {
-						let textNode = new TextNodeSyntaxTree({
-							syntax: "BlockElementContentText",
-							location: {
-								start: {
-									offset: info.offset,
-									line: info.line,
-									column: info.column
-								},
-								end: {
-									offset: node.location.start.offset - 1,
-									line: null,
-									column: null
-								}
-							},
-							text: chunk.process.input.substring(info.offset, node.location.start.offset - 1)
-						});
-						resultNodes.push(textNode);
-						resultNodes.push(node);
-						info = null;
-						lastNode = node;
+			visit(node.childNodes[0], {
+				visitDefaultPre: (node: SyntaxTree) => {
+					if (!info) {
+						info = {
+							offset: node.location.start.offset,
+							line: node.location.start.line,
+							column: node.location.start.column
+						};
 					}
-				});
-			});
-			if (info) {
-				(() => {
+					lastNode = node;
+				},
+				visitInlineElementPre: (node: InlineElementSyntaxTree) => {
 					let textNode = new TextNodeSyntaxTree({
 						syntax: "BlockElementContentText",
 						location: {
@@ -196,37 +170,89 @@ export class SyntaxPreprocessor implements Preprocessor {
 								column: null
 							}
 						},
-						text: chunk.process.input.substring(info.offset, lastNode.location.end.offset)
+						text: chunk.process.input.substring(info.offset, node.location.start.offset - 1)
 					});
+					if (textNode.text) {
+						resultNodes.push(textNode);
+					}
 					resultNodes.push(textNode);
-				})();
+					resultNodes.push(node);
+					info = null;
+					lastNode = node;
+				},
+				visitSingleLineCommentPre: (node: SyntaxTree) => {
+					if (!info) {
+						lastNode = node;
+						return;
+					}
+					let textNode = new TextNodeSyntaxTree({
+						syntax: "BlockElementContentText",
+						location: {
+							start: {
+								offset: info.offset,
+								line: info.line,
+								column: info.column
+							},
+							end: {
+								offset: node.location.start.offset - 1,
+								line: null,
+								column: null
+							}
+						},
+						text: chunk.process.input.substring(info.offset, node.location.start.offset - 1)
+					});
+					if (textNode.text) {
+						resultNodes.push(textNode);
+					}
+					info = null;
+					lastNode = node;
+				}
+			});
+			if (info) {
+				let textNode = new TextNodeSyntaxTree({
+					syntax: "BlockElementContentText",
+					location: {
+						start: {
+							offset: info.offset,
+							line: info.line,
+							column: info.column
+						},
+						end: {
+							offset: node.location.start.offset - 1,
+							line: null,
+							column: null
+						}
+					},
+					text: chunk.process.input.substring(info.offset, lastNode.location.end.offset)
+				});
+				if (textNode.text) {
+					resultNodes.push(textNode);
+				}
 			}
 
 			node.childNodes = resultNodes;
 
 		} else {
-			(() => {
-				// 全て不許可(テキスト化
-				let first = node.childNodes[0];
-				let last = node.childNodes[node.childNodes.length - 1];
-				let textNode = new TextNodeSyntaxTree({
-					syntax: "BlockElementContentText",
-					location: {
-						start: {
-							offset: first.location.start.offset,
-							line: first.location.start.line,
-							column: first.location.start.column
-						},
-						end: {
-							offset: last.location.start.offset - 1,
-							line: null,
-							column: null
-						}
+			// 全て不許可(テキスト化
+			let first = node.childNodes[0];
+			let last = node.childNodes[node.childNodes.length - 1];
+			let textNode = new TextNodeSyntaxTree({
+				syntax: "BlockElementContentText",
+				location: {
+					start: {
+						offset: first.location.start.offset,
+						line: first.location.start.line,
+						column: first.location.start.column
 					},
-					text: nodeContentToString(chunk.process, node)
-				});
-				node.childNodes = [textNode];
-			})();
+					end: {
+						offset: last.location.start.offset - 1,
+						line: null,
+						column: null
+					}
+				},
+				text: nodeContentToString(chunk.process, node)
+			});
+			node.childNodes = [textNode];
 		}
 	}
 }

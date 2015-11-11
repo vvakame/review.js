@@ -7,9 +7,9 @@
       "offset": 0
     },
     "end": {
-      "line": 12,
-      "column": 9,
-      "offset": 64
+      "line": 31,
+      "column": 1,
+      "offset": 361
     }
   },
   "childNodes": [
@@ -22,9 +22,9 @@
           "offset": 0
         },
         "end": {
-          "line": 12,
-          "column": 9,
-          "offset": 64
+          "line": 31,
+          "column": 1,
+          "offset": 361
         }
       },
       "childNodes": [
@@ -37,9 +37,9 @@
               "offset": 0
             },
             "end": {
-              "line": 12,
-              "column": 9,
-              "offset": 64
+              "line": 31,
+              "column": 1,
+              "offset": 361
             }
           },
           "headline": {
@@ -248,12 +248,215 @@
                   "offset": 56
                 },
                 "end": {
-                  "line": 12,
-                  "column": 9,
-                  "offset": 64
+                  "line": 14,
+                  "column": 1,
+                  "offset": 66
                 }
               },
               "text": "# コメント"
+            },
+            {
+              "ruleName": "SinglelineComment",
+              "location": {
+                "start": {
+                  "line": 14,
+                  "column": 1,
+                  "offset": 66
+                },
+                "end": {
+                  "line": 15,
+                  "column": 1,
+                  "offset": 89
+                }
+              },
+              "text": "# allow inline block"
+            },
+            {
+              "ruleName": "BlockElement",
+              "location": {
+                "start": {
+                  "line": 15,
+                  "column": 1,
+                  "offset": 89
+                },
+                "end": {
+                  "line": 31,
+                  "column": 1,
+                  "offset": 361
+                }
+              },
+              "symbol": "listnum",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "location": {
+                    "start": {
+                      "line": 15,
+                      "column": 10,
+                      "offset": 98
+                    },
+                    "end": {
+                      "line": 15,
+                      "column": 17,
+                      "offset": 105
+                    }
+                  },
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 15,
+                          "column": 11,
+                          "offset": 99
+                        },
+                        "end": {
+                          "line": 15,
+                          "column": 16,
+                          "offset": 104
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 15,
+                              "column": 11,
+                              "offset": 99
+                            },
+                            "end": {
+                              "line": 15,
+                              "column": 16,
+                              "offset": 104
+                            }
+                          },
+                          "text": "hello"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "ruleName": "BracketArg",
+                  "location": {
+                    "start": {
+                      "line": 15,
+                      "column": 17,
+                      "offset": 105
+                    },
+                    "end": {
+                      "line": 15,
+                      "column": 26,
+                      "offset": 114
+                    }
+                  },
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 15,
+                          "column": 18,
+                          "offset": 106
+                        },
+                        "end": {
+                          "line": 15,
+                          "column": 25,
+                          "offset": 113
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 15,
+                              "column": 18,
+                              "offset": 106
+                            },
+                            "end": {
+                              "line": 15,
+                              "column": 25,
+                              "offset": 113
+                            }
+                          },
+                          "text": "hello.c"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "ruleName": "BracketArg",
+                  "location": {
+                    "start": {
+                      "line": 15,
+                      "column": 26,
+                      "offset": 114
+                    },
+                    "end": {
+                      "line": 15,
+                      "column": 29,
+                      "offset": 117
+                    }
+                  },
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 15,
+                          "column": 27,
+                          "offset": 115
+                        },
+                        "end": {
+                          "line": 15,
+                          "column": 28,
+                          "offset": 116
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 15,
+                              "column": 27,
+                              "offset": 115
+                            },
+                            "end": {
+                              "line": 15,
+                              "column": 28,
+                              "offset": 116
+                            }
+                          },
+                          "text": "c"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "no": 1,
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "location": {
+                    "start": {
+                      "line": 17,
+                      "column": 1,
+                      "offset": 151
+                    },
+                    "end": {
+                      "line": null,
+                      "column": null,
+                      "offset": 350
+                    }
+                  },
+                  "text": "#include <mruby.h>\n#include <mruby/compile.h>\n\nint\nmain(void)\n{\n  mrb_value result;\n  mrb_state *mrb = mrb_open();\n  result = mrb_load_string(mrb, \"p 'hello world!'\");\n  mrb_close(mrb);\n  return 0;\n}"
+                }
+              ]
             }
           ],
           "no": 1,

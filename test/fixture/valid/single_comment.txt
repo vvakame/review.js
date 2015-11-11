@@ -3,3 +3,19 @@
 ほげほげ
 ほげほげ
 ほげほげ
+◆→開始:リスト←◆
+リスト1.1　hello.c
+
+ 1: #include <mruby.h>
+ 2: #include <mruby/compile.h>
+ 3: 
+ 4: int
+ 5: main(void)
+ 6: {
+ 7:   mrb_value result;
+ 8:   mrb_state *mrb = mrb_open();
+ 9:   result = mrb_load_string(mrb, "p 'hello world!'");
+10:   mrb_close(mrb);
+11:   return 0;
+12: }
+◆→終了:リスト←◆

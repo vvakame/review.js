@@ -9,7 +9,7 @@ import {SyntaxTree, NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, I
 
 import {visit, walk, TreeVisitor} from "../parser/walker";
 
-import {nodeContentToString, findChapter} from "../utils/utils";
+import {nodeContentToString, findChapter, padLeft, linesToFigure} from "../utils/utils";
 
 export class HtmlBuilder extends DefaultBuilder {
 	extention = "html";
@@ -228,6 +228,15 @@ export class HtmlBuilder extends DefaultBuilder {
 
 			process.outRaw("</p>\n");
 			process.outRaw("<pre class=\"list\">");
+
+			let lineCountMax = 0;
+			node.childNodes.forEach((node, index, childNodes) => {
+				if (node.isTextNode()) {
+					lineCountMax += node.toTextNode().text.split("\n").length;
+				}
+			});
+			let lineDigit = Math.max(linesToFigure(lineCountMax), 2);
+
 			node.childNodes.forEach((node, index, childNodes) => {
 				if (node.isTextNode()) {
 					// 改行する可能性があるのはTextNodeだけ…のはず
@@ -235,7 +244,7 @@ export class HtmlBuilder extends DefaultBuilder {
 					let textNode = node.toTextNode();
 					let lines = textNode.text.split("\n");
 					lines.forEach((line, index) => {
-						process.out(" ").out(lineCount).out(": ");
+						process.out(padLeft(String(lineCount), " ", lineDigit)).out(": ");
 						process.out(line);
 						if (!hasNext || lines.length - 1 !== index) {
 							lineCount++;
@@ -289,6 +298,14 @@ export class HtmlBuilder extends DefaultBuilder {
 		let lineCount = 1;
 		return (v: TreeVisitor) => {
 			// name, args はパスしたい
+			let lineCountMax = 0;
+			node.childNodes.forEach((node, index, childNodes) => {
+				if (node.isTextNode()) {
+					lineCountMax += node.toTextNode().text.split("\n").length;
+				}
+			});
+			let lineDigit = Math.max(linesToFigure(lineCountMax), 2);
+
 			node.childNodes.forEach((node, index, childNodes) => {
 				if (node.isTextNode()) {
 					// 改行する可能性があるのはTextNodeだけ…のはず
@@ -296,7 +313,7 @@ export class HtmlBuilder extends DefaultBuilder {
 					let textNode = node.toTextNode();
 					let lines = textNode.text.split("\n");
 					lines.forEach((line, index) => {
-						process.out(" ").out(lineCount).out(": ");
+						process.out(padLeft(String(lineCount), " ", lineDigit)).out(": ");
 						process.out(line);
 						if (!hasNext || lines.length - 1 !== index) {
 							lineCount++;

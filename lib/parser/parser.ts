@@ -490,6 +490,10 @@ export class SyntaxTree implements NodeLocation {
 		return this.checkSyntaxType(TextNodeSyntaxTree);
 	}
 
+	isSingleLineComment(): boolean {
+		return this.checkSyntaxType(SingleLineCommentSyntaxTree);
+	}
+
 	private toOtherNode<T extends SyntaxTree>(clazz: any): T {
 		if (this instanceof clazz) {
 			return <T>this;

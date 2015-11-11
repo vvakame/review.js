@@ -12,5 +12,21 @@
 <p>ほげほげ</p>
 <p>ほげほげ</p>
 <p>ほげほげ</p>
+<div class="code">
+<p class="caption">リスト1.1: hello.c</p>
+<pre class="list"> 1: #include &lt;mruby.h&gt;
+ 2: #include &lt;mruby&#x2F;compile.h&gt;
+ 3: 
+ 4: int
+ 5: main(void)
+ 6: {
+ 7:   mrb_value result;
+ 8:   mrb_state *mrb = mrb_open();
+ 9:   result = mrb_load_string(mrb, &quot;p &#39;hello world!&#39;&quot;);
+10:   mrb_close(mrb);
+11:   return 0;
+12: }
+</pre>
+</div>
 </body>
 </html>

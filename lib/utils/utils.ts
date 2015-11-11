@@ -274,6 +274,24 @@ export module IO {
 	}
 }
 
+/**
+ * 行数から桁数の変換 100行 -> 3桁 
+ */
+export function linesToFigure(lines: number): number {
+	"use strict";
+
+	return String(lines).length;
+}
+
+export function padLeft(str: string, pad: string, maxLength: number): string {
+	"use strict";
+
+	if (maxLength <= str.length) {
+		return str;
+	}
+	return stringRepeat(maxLength - str.length, pad) + str;
+}
+
 export function stringRepeat(times: number, src: string): string {
 	"use strict";
 

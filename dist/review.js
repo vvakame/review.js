@@ -468,13 +468,20 @@ var HtmlBuilder = (function (_super) {
             walker_1.visit(node.args[1], v);
             process.outRaw("</p>\n");
             process.outRaw("<pre class=\"list\">");
+            var lineCountMax = 0;
+            node.childNodes.forEach(function (node, index, childNodes) {
+                if (node.isTextNode()) {
+                    lineCountMax += node.toTextNode().text.split("\n").length;
+                }
+            });
+            var lineDigit = Math.max(utils_1.linesToFigure(lineCountMax), 2);
             node.childNodes.forEach(function (node, index, childNodes) {
                 if (node.isTextNode()) {
                     var hasNext = !!childNodes[index + 1];
                     var textNode = node.toTextNode();
                     var lines = textNode.text.split("\n");
                     lines.forEach(function (line, index) {
-                        process.out(" ").out(lineCount).out(": ");
+                        process.out(utils_1.padLeft(String(lineCount), " ", lineDigit)).out(": ");
                         process.out(line);
                         if (!hasNext || lines.length - 1 !== index) {
                             lineCount++;
@@ -522,13 +529,20 @@ var HtmlBuilder = (function (_super) {
         process.outRaw("<pre class=\"emlist\">");
         var lineCount = 1;
         return function (v) {
+            var lineCountMax = 0;
+            node.childNodes.forEach(function (node, index, childNodes) {
+                if (node.isTextNode()) {
+                    lineCountMax += node.toTextNode().text.split("\n").length;
+                }
+            });
+            var lineDigit = Math.max(utils_1.linesToFigure(lineCountMax), 2);
             node.childNodes.forEach(function (node, index, childNodes) {
                 if (node.isTextNode()) {
                     var hasNext = !!childNodes[index + 1];
                     var textNode = node.toTextNode();
                     var lines = textNode.text.split("\n");
                     lines.forEach(function (line, index) {
-                        process.out(" ").out(lineCount).out(": ");
+                        process.out(utils_1.padLeft(String(lineCount), " ", lineDigit)).out(": ");
                         process.out(line);
                         if (!hasNext || lines.length - 1 !== index) {
                             lineCount++;
@@ -1006,6 +1020,13 @@ var TextBuilder = (function (_super) {
         var lineCount = 1;
         return function (v) {
             walker_1.visit(node.args[1], v);
+            var lineCountMax = 0;
+            node.childNodes.forEach(function (node, index, childNodes) {
+                if (node.isTextNode()) {
+                    lineCountMax += node.toTextNode().text.split("\n").length;
+                }
+            });
+            var lineDigit = Math.max(utils_1.linesToFigure(lineCountMax), 2);
             process.outRaw("\n\n");
             node.childNodes.forEach(function (node, index, childNodes) {
                 if (node.isTextNode()) {
@@ -1013,7 +1034,7 @@ var TextBuilder = (function (_super) {
                     var textNode = node.toTextNode();
                     var lines = textNode.text.split("\n");
                     lines.forEach(function (line, index) {
-                        process.out(" ").out(lineCount).out(": ");
+                        process.out(utils_1.padLeft(String(lineCount), " ", lineDigit)).out(": ");
                         process.out(line);
                         if (!hasNext || lines.length - 1 !== index) {
                             lineCount++;
@@ -1062,13 +1083,20 @@ var TextBuilder = (function (_super) {
                 walker_1.visit(node.args[0], v);
                 process.out("\n");
             }
+            var lineCountMax = 0;
+            node.childNodes.forEach(function (node, index, childNodes) {
+                if (node.isTextNode()) {
+                    lineCountMax += node.toTextNode().text.split("\n").length;
+                }
+            });
+            var lineDigit = Math.max(utils_1.linesToFigure(lineCountMax), 2);
             node.childNodes.forEach(function (node, index, childNodes) {
                 if (node.isTextNode()) {
                     var hasNext = !!childNodes[index + 1];
                     var textNode = node.toTextNode();
                     var lines = textNode.text.split("\n");
                     lines.forEach(function (line, index) {
-                        process.out(" ").out(lineCount).out(": ");
+                        process.out(utils_1.padLeft(String(lineCount), " ", lineDigit)).out(": ");
                         process.out(line);
                         if (!hasNext || lines.length - 1 !== index) {
                             lineCount++;
@@ -3718,6 +3746,9 @@ var SyntaxTree = (function () {
     SyntaxTree.prototype.isTextNode = function () {
         return this.checkSyntaxType(TextNodeSyntaxTree);
     };
+    SyntaxTree.prototype.isSingleLineComment = function () {
+        return this.checkSyntaxType(SingleLineCommentSyntaxTree);
+    };
     SyntaxTree.prototype.toOtherNode = function (clazz) {
         if (this instanceof clazz) {
             return this;
@@ -4085,44 +4116,18 @@ var SyntaxPreprocessor = (function () {
             var info;
             var resultNodes = [];
             var lastNode;
-            node.childNodes.forEach(function (node) {
-                walker_1.visit(node, {
-                    visitDefaultPre: function (node) {
-                        if (!info) {
-                            info = {
-                                offset: node.location.start.offset,
-                                line: node.location.start.line,
-                                column: node.location.start.column
-                            };
-                        }
-                        lastNode = node;
-                    },
-                    visitInlineElementPre: function (node) {
-                        var textNode = new parser_1.TextNodeSyntaxTree({
-                            syntax: "BlockElementContentText",
-                            location: {
-                                start: {
-                                    offset: info.offset,
-                                    line: info.line,
-                                    column: info.column
-                                },
-                                end: {
-                                    offset: node.location.start.offset - 1,
-                                    line: null,
-                                    column: null
-                                }
-                            },
-                            text: chunk.process.input.substring(info.offset, node.location.start.offset - 1)
-                        });
-                        resultNodes.push(textNode);
-                        resultNodes.push(node);
-                        info = null;
-                        lastNode = node;
+            walker_1.visit(node.childNodes[0], {
+                visitDefaultPre: function (node) {
+                    if (!info) {
+                        info = {
+                            offset: node.location.start.offset,
+                            line: node.location.start.line,
+                            column: node.location.start.column
+                        };
                     }
-                });
-            });
-            if (info) {
-                (function () {
+                    lastNode = node;
+                },
+                visitInlineElementPre: function (node) {
                     var textNode = new parser_1.TextNodeSyntaxTree({
                         syntax: "BlockElementContentText",
                         location: {
@@ -4137,10 +4142,64 @@ var SyntaxPreprocessor = (function () {
                                 column: null
                             }
                         },
-                        text: chunk.process.input.substring(info.offset, lastNode.location.end.offset)
+                        text: chunk.process.input.substring(info.offset, node.location.start.offset - 1)
                     });
+                    if (textNode.text) {
+                        resultNodes.push(textNode);
+                    }
                     resultNodes.push(textNode);
-                })();
+                    resultNodes.push(node);
+                    info = null;
+                    lastNode = node;
+                },
+                visitSingleLineCommentPre: function (node) {
+                    if (!info) {
+                        lastNode = node;
+                        return;
+                    }
+                    var textNode = new parser_1.TextNodeSyntaxTree({
+                        syntax: "BlockElementContentText",
+                        location: {
+                            start: {
+                                offset: info.offset,
+                                line: info.line,
+                                column: info.column
+                            },
+                            end: {
+                                offset: node.location.start.offset - 1,
+                                line: null,
+                                column: null
+                            }
+                        },
+                        text: chunk.process.input.substring(info.offset, node.location.start.offset - 1)
+                    });
+                    if (textNode.text) {
+                        resultNodes.push(textNode);
+                    }
+                    info = null;
+                    lastNode = node;
+                }
+            });
+            if (info) {
+                var textNode = new parser_1.TextNodeSyntaxTree({
+                    syntax: "BlockElementContentText",
+                    location: {
+                        start: {
+                            offset: info.offset,
+                            line: info.line,
+                            column: info.column
+                        },
+                        end: {
+                            offset: node.location.start.offset - 1,
+                            line: null,
+                            column: null
+                        }
+                    },
+                    text: chunk.process.input.substring(info.offset, lastNode.location.end.offset)
+                });
+                if (textNode.text) {
+                    resultNodes.push(textNode);
+                }
             }
             node.childNodes = resultNodes;
         }
@@ -5152,6 +5211,19 @@ var IO;
     }
     IO.write = write;
 })(IO = exports.IO || (exports.IO = {}));
+function linesToFigure(lines) {
+    "use strict";
+    return String(lines).length;
+}
+exports.linesToFigure = linesToFigure;
+function padLeft(str, pad, maxLength) {
+    "use strict";
+    if (maxLength <= str.length) {
+        return str;
+    }
+    return stringRepeat(maxLength - str.length, pad) + str;
+}
+exports.padLeft = padLeft;
 function stringRepeat(times, src) {
     "use strict";
     return new Array(times + 1).join(src);
