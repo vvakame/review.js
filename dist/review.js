@@ -4204,27 +4204,25 @@ var SyntaxPreprocessor = (function () {
             node.childNodes = resultNodes;
         }
         else {
-            (function () {
-                var first = node.childNodes[0];
-                var last = node.childNodes[node.childNodes.length - 1];
-                var textNode = new parser_1.TextNodeSyntaxTree({
-                    syntax: "BlockElementContentText",
-                    location: {
-                        start: {
-                            offset: first.location.start.offset,
-                            line: first.location.start.line,
-                            column: first.location.start.column
-                        },
-                        end: {
-                            offset: last.location.start.offset - 1,
-                            line: null,
-                            column: null
-                        }
+            var first = node.childNodes[0];
+            var last = node.childNodes[node.childNodes.length - 1];
+            var textNode = new parser_1.TextNodeSyntaxTree({
+                syntax: "BlockElementContentText",
+                location: {
+                    start: {
+                        offset: first.location.start.offset,
+                        line: first.location.start.line,
+                        column: first.location.start.column
                     },
-                    text: utils_1.nodeContentToString(chunk.process, node)
-                });
-                node.childNodes = [textNode];
-            })();
+                    end: {
+                        offset: last.location.start.offset - 1,
+                        line: null,
+                        column: null
+                    }
+                },
+                text: utils_1.nodeContentToString(chunk.process, node)
+            });
+            node.childNodes = [textNode];
         }
     };
     return SyntaxPreprocessor;
