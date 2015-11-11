@@ -95,8 +95,10 @@
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_utils_utils_.html#isamd" class="tsd-kind-icon">isAMD</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_utils_utils_.html#isbrowser" class="tsd-kind-icon">is<wbr>Browser</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_utils_utils_.html#isnodejs" class="tsd-kind-icon">is<wbr>NodeJS</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_utils_utils_.html#linestofigure" class="tsd-kind-icon">lines<wbr>ToFigure</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_utils_utils_.html#nodecontenttostring" class="tsd-kind-icon">node<wbr>Content<wbr>ToString</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_utils_utils_.html#nodetostring" class="tsd-kind-icon">node<wbr>ToString</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_utils_utils_.html#padleft" class="tsd-kind-icon">pad<wbr>Left</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_utils_utils_.html#stringrepeat" class="tsd-kind-icon">string<wbr>Repeat</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_utils_utils_.html#target2builder" class="tsd-kind-icon">target2builder</a></li>
 							</ul>
@@ -337,6 +339,34 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="linestofigure" class="tsd-anchor"></a>
+					<h3>lines<wbr>ToFigure</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">lines<wbr>ToFigure<span class="tsd-signature-symbol">(</span>lines<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/utils/utils.ts#L280">utils/utils.ts:280</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>行数から桁数の変換 100行 -&gt; 3桁</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>lines: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
 					<a name="nodecontenttostring" class="tsd-anchor"></a>
 					<h3>node<wbr>Content<wbr>ToString</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
@@ -439,6 +469,35 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="padleft" class="tsd-anchor"></a>
+					<h3>pad<wbr>Left</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">pad<wbr>Left<span class="tsd-signature-symbol">(</span>str<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, pad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, maxLength<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/utils/utils.ts#L286">utils/utils.ts:286</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>str: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>pad: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>maxLength: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
 					<a name="stringrepeat" class="tsd-anchor"></a>
 					<h3>string<wbr>Repeat</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
@@ -448,7 +507,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/utils/utils.ts#L277">utils/utils.ts:277</a></li>
+									<li>Defined in <a href="https://github.com/vvakame/review.js/blob/HEAD/lib/utils/utils.ts#L295">utils/utils.ts:295</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -595,10 +654,16 @@
 						<a href="_utils_utils_.html#isnodejs" class="tsd-kind-icon">is<wbr>NodeJS</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_utils_utils_.html#linestofigure" class="tsd-kind-icon">lines<wbr>ToFigure</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_utils_utils_.html#nodecontenttostring" class="tsd-kind-icon">node<wbr>Content<wbr>ToString</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_utils_utils_.html#nodetostring" class="tsd-kind-icon">node<wbr>ToString</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_utils_utils_.html#padleft" class="tsd-kind-icon">pad<wbr>Left</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_utils_utils_.html#stringrepeat" class="tsd-kind-icon">string<wbr>Repeat</a>
