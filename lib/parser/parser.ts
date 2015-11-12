@@ -64,6 +64,12 @@ export function parse(input: string): { ast: NodeSyntaxTree; cst: ConcreatSyntax
 				node.next = nodes[i + 1];
 			});
 		},
+		visitColumnPre: (ast: ColumnSyntaxTree) => {
+			ast.text.forEach((node, i, nodes) => {
+				node.prev = nodes[i - 1];
+				node.next = nodes[i + 1];
+			});
+		},
 		visitNodePre: (ast: NodeSyntaxTree) => {
 			ast.childNodes.forEach((node, i, nodes) => {
 				node.prev = nodes[i - 1];

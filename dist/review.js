@@ -3431,6 +3431,12 @@ function parse(input) {
                 node.next = nodes[i + 1];
             });
         },
+        visitColumnPre: function (ast) {
+            ast.text.forEach(function (node, i, nodes) {
+                node.prev = nodes[i - 1];
+                node.next = nodes[i + 1];
+            });
+        },
         visitNodePre: function (ast) {
             ast.childNodes.forEach(function (node, i, nodes) {
                 node.prev = nodes[i - 1];
@@ -4087,6 +4093,12 @@ var SyntaxPreprocessor = (function () {
             visitDefaultPre: function (ast, parent) {
             },
             visitChapterPre: function (ast) {
+                ast.text.forEach(function (node, i, nodes) {
+                    node.prev = nodes[i - 1];
+                    node.next = nodes[i + 1];
+                });
+            },
+            visitColumnPre: function (ast) {
                 ast.text.forEach(function (node, i, nodes) {
                     node.prev = nodes[i - 1];
                     node.next = nodes[i + 1];
