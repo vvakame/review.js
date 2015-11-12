@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as path from "path";
 import * as jsyaml from "js-yaml";
 import * as updateNotifier from "update-notifier";
 
@@ -19,7 +20,7 @@ if (notifier.update) {
 	notifier.notify();
 }
 
-let packageJson = JSON.parse(fs.readFileSync(__dirname + "/../package.json", "utf8"));
+let packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../package.json"), "utf8"));
 
 import * as commandpost from "commandpost";
 
@@ -35,7 +36,6 @@ let root = commandpost
 	.option("--base <path>", "alternative base path")
 	.action(() => {
 		process.stdout.write(root.helpText() + '\n');
-		process.exit(0);
 	});
 
 interface CompileOpts {
@@ -57,12 +57,12 @@ root
 		let ast = !!opts.ast;
 		let target: string = opts.target[0] || "html";
 
-		new Promise<{ fileName: string; input: string; }>((resolve, reject) => {
+		return new Promise<{ fileName: string; input: string; }>((resolve, reject) => {
 			let input = "";
 			if (args.document) {
-				let targetPath = process.cwd() + "/" + args.document;
+				let targetPath = path.resolve(process.cwd(), args.document);
 				if (!fs.existsSync(targetPath)) {
-					console.error(targetPath + " not exists");
+					console.error(`${targetPath} not exists`);
 					reject(null);
 					return;
 				}
@@ -85,40 +85,32 @@ root
 					result.book.allChunks[0].builderProcesses.forEach(process=> {
 						console.log(process.result);
 					});
-					process.exit(0);
+					return;
 				} else if (!result.book.hasError) {
 					let jsonString = JSON.stringify(result.book.allChunks[0].tree.ast, null, 2);
 					console.log(jsonString);
-					process.exit(0);
+					return;
 				} else {
 					result.book.reports.forEach(report=> {
 						let log: Function;
 						switch (report.level) {
 							case ReportLevel.Info:
-								log = console.log;
+								log = process.stdout.write;
 							case ReportLevel.Warning:
-								log = console.warn;
+								log = process.stderr.write;
 							case ReportLevel.Error:
-								log = console.error;
+								log = process.stderr.write;
 						}
 						let message = "";
 						report.nodes.forEach(function(node) {
-							message += "[" + node.location.start.line + "," + node.location.start.column + "] ";
+							message += `[${node.location.start.line}, ${node.location.start.column}] `;
 						});
-						message += report.message;
+						message += report.message + "\n";
 						log(message);
 					});
-					process.exit(1);
+
+					return Promise.reject("unexpected error occured");
 				}
-			}, err=> {
-				console.error("unexpected error", err);
-				if (err.stack) {
-					console.error(err.stack);
-				}
-				return Promise.reject(null);
-			})
-			.catch(() => {
-				process.exit(1);
 			});
 	});
 
@@ -139,57 +131,91 @@ root
 
 		function byReVIEWConfig() {
 			/* tslint:disable:no-require-imports */
-			let setup = require(process.cwd() + "/" + reviewfile);
+			let setup = require(path.resolve(process.cwd(), reviewfile));
 			/* tslint:enable:no-require-imports */
-			start(setup, {
+			return start(setup, {
 				reviewfile: reviewfile,
 				base: root.parsedOpts.base[0]
 			})
 				.then(book=> {
 					console.log("completed!");
-					process.exit(0);
-				})
-				.catch(err=> {
-					console.error("unexpected error", err);
-					process.exit(1);
+					book.reports.forEach(report=> {
+						let log: Function;
+						switch (report.level) {
+							case ReportLevel.Info:
+								log = process.stdout.write;
+							case ReportLevel.Warning:
+								log = process.stderr.write;
+							case ReportLevel.Error:
+								log = process.stderr.write;
+						}
+						let message = "";
+						report.nodes.forEach(node => {
+							message += `[${node.location.start.line}, ${node.location.start.column}] `;
+						});
+						message += report.message + "\n";
+						log(message);
+					});
 				});
 		}
 
 		function byConfigYaml() {
-			// var configYaml = jsyaml.safeLoad(fs.readFileSync(process.cwd() + "/" + "config.yml", "utf8"));
-			let catalogYaml = jsyaml.safeLoad(fs.readFileSync(process.cwd() + "/" + "catalog.yml", "utf8"));
+			let catalogYaml = jsyaml.safeLoad(fs.readFileSync(path.resolve(process.cwd(), "catalog.yml"), "utf8"));
 
 			let configRaw: ConfigRaw = {
 				builders: [target2builder(target)],
 				book: catalogYaml
 			};
 
-			start(review=> {
+			return start(review=> {
 				review.initConfig(configRaw);
 			}, {
 					reviewfile: reviewfile,
 					base: root.parsedOpts.base[0]
 				})
 				.then(book=> {
-					console.log("completed!");
-					process.exit(0);
-				})
-				.catch(err=> {
-					console.error("unexpected error", err);
-					process.exit(1);
+					process.stdout.write("completed!\n");
+					book.reports.forEach(report=> {
+						let log: Function;
+						switch (report.level) {
+							case ReportLevel.Info:
+								log = process.stdout.write;
+							case ReportLevel.Warning:
+								log = process.stderr.write;
+							case ReportLevel.Error:
+								log = process.stderr.write;
+						}
+						let message = "";
+						report.nodes.forEach(node => {
+							message += `[${node.location.start.line}, ${node.location.start.column}] `;
+						});
+						message += report.message + "\n";
+						log(message);
+					});
 				});
 		}
 
-		if (fs.existsSync(process.cwd() + "/" + reviewfile)) {
-			byReVIEWConfig();
-			return;
-		} else if (fs.existsSync(process.cwd() + "/" + "config.yml")) {
-			byConfigYaml();
-			return;
+		if (fs.existsSync(path.resolve(process.cwd(), reviewfile))) {
+			return byReVIEWConfig();
+		} else if (fs.existsSync(path.resolve(process.cwd(), "config.yml"))) {
+			return byConfigYaml();
 		} else {
-			console.log("can not found ReVIEWconfig.js or config.yml");
-			process.exit(1);
+			throw new Error("can not found ReVIEWconfig.js or config.yml");
 		}
 	});
 
-commandpost.exec(root, process.argv);
+commandpost
+	.exec(root, process.argv)
+	.then(() => {
+		process.stdout.write("");
+		process.stderr.write("");
+		process.exit(0);
+	}, err => {
+		console.error("unexpected error", err);
+		if (err.stack) {
+			console.error(err.stack);
+		}
+		process.stdout.write("");
+		process.stderr.write("");
+		process.exit(1);
+	});
