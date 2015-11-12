@@ -57,24 +57,24 @@ export let ja: IResourceStoreKey = {
 		"block_tsize": "テーブルの大きさを指定します。\nTODO 正しく実装した後に書く"
 	},
 	"compile": {
-		"file_not_exists": "ファイル %s が開けません",
-		"block_not_supported": "%s というブロック構文はサポートされていません",
-		"inline_not_supported": "%s というインライン構文はサポートされていません",
-		"part_is_missing": "パート %s が見つかりません",
-		"chapter_is_missing": "チャプター %s が見つかりません",
-		"reference_is_missing": "参照先 %s の %s が見つかりません",
-		"duplicated_label": "ラベルに重複があるようです",
+		"file_not_exists": "ファイル %s が開けません。",
+		"block_not_supported": "%s というブロック構文はサポートされていません。",
+		"inline_not_supported": "%s というインライン構文はサポートされていません。",
+		"part_is_missing": "パート %s が見つかりません。",
+		"chapter_is_missing": "チャプター %s が見つかりません。",
+		"reference_is_missing": "参照先 %s の %s が見つかりません。",
+		"duplicated_label": "ラベルに重複があるようです。 =={a-label} ラベル のように明示的にラベルを指定することを回避することができます。",
 		// TODO できれば 引数 という言葉を避けたい…
-		"args_length_mismatch": "引数の数に齟齬があります 期待値 %s, 実際 %s",
-		"body_string_only": "内容は全て文字でなければいけません",
-		"chapter_not_toplevel": "深さ1のチャプターは最上位になければいけません",
-		"chapter_topleve_eq1": "最上位のチャプターは深さ1のものでなければいけません",
+		"args_length_mismatch": "引数の数に齟齬があります。 期待値 %s, 実際 %s",
+		"body_string_only": "内容は全て文字でなければいけません。",
+		"chapter_not_toplevel": "深さ1のチャプターは最上位になければいけません。",
+		"chapter_topleve_eq1": "最上位のチャプターは深さ1のものでなければいけません。",
 		"deprecated_inline_symbol": "%s というインライン構文は非推奨です。",
 		"graph_tool_is_not_recommended": "graph用ツールにはgraphvizをおすすめします。",
 		"unknown_graph_tool": "%s というgraph用ツールはサポートされていません。"
 	},
 	"builder": {
-		"image_not_found": "ID: %s にマッチする画像が見つかりませんでした",
+		"image_not_found": "ID: %s にマッチする画像が見つかりませんでした。",
 		"chapter": "第%d章",
 		"list": "リスト%s.%s",
 		"table": "表%s.%s"
