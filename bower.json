@@ -15,7 +15,7 @@
 		"tests"
 	],
 	"dependencies": {
-		"review.js": "~0.6",
-		"jquery": "~2"
+		"review.js": "^0.10.3",
+		"jquery": "^2"
 	}
 }
