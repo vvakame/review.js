@@ -2191,7 +2191,8 @@ exports.ja = {
         "part_is_missing": "パート %s が見つかりません。",
         "chapter_is_missing": "チャプター %s が見つかりません。",
         "reference_is_missing": "参照先 %s の %s が見つかりません。",
-        "duplicated_label": "ラベルに重複があるようです。 =={a-label} ラベル のように明示的にラベルを指定することを回避することができます。",
+        "duplicated_label": "ラベルに重複があるようです。",
+        "duplicated_label_headline": "ラベルに重複があるようです。 =={a-label} ラベル のように明示的にラベルを指定することを回避することができます。",
         "args_length_mismatch": "引数の数に齟齬があります。 期待値 %s, 実際 %s",
         "body_string_only": "内容は全て文字でなければいけません。",
         "chapter_not_toplevel": "深さ1のチャプターは最上位になければいけません。",
@@ -4423,7 +4424,12 @@ var DefaultValidator = (function () {
                 }
                 if (symbol1.chapter === symbol2.chapter && symbol1.symbolName === symbol2.symbolName) {
                     if (symbol1.labelName && symbol2.labelName && symbol1.labelName === symbol2.labelName) {
-                        symbol1.chapter.process.error(i18n_1.t("compile.duplicated_label"), symbol1.node, symbol2.node);
+                        if (symbol1.symbolName === "hd") {
+                            symbol1.chapter.process.error(i18n_1.t("compile.duplicated_label_headline"), symbol1.node, symbol2.node);
+                        }
+                        else {
+                            symbol1.chapter.process.error(i18n_1.t("compile.duplicated_label"), symbol1.node, symbol2.node);
+                        }
                         return;
                     }
                 }

@@ -63,7 +63,8 @@ export let ja: IResourceStoreKey = {
 		"part_is_missing": "パート %s が見つかりません。",
 		"chapter_is_missing": "チャプター %s が見つかりません。",
 		"reference_is_missing": "参照先 %s の %s が見つかりません。",
-		"duplicated_label": "ラベルに重複があるようです。 =={a-label} ラベル のように明示的にラベルを指定することを回避することができます。",
+		"duplicated_label": "ラベルに重複があるようです。",
+		"duplicated_label_headline": "ラベルに重複があるようです。 =={a-label} ラベル のように明示的にラベルを指定することを回避することができます。",
 		// TODO できれば 引数 という言葉を避けたい…
 		"args_length_mismatch": "引数の数に齟齬があります。 期待値 %s, 実際 %s",
 		"body_string_only": "内容は全て文字でなければいけません。",

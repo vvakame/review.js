@@ -215,7 +215,11 @@ export class DefaultValidator implements Validator {
 				}
 				if (symbol1.chapter === symbol2.chapter && symbol1.symbolName === symbol2.symbolName) {
 					if (symbol1.labelName && symbol2.labelName && symbol1.labelName === symbol2.labelName) {
-						symbol1.chapter.process.error(t("compile.duplicated_label"), symbol1.node, symbol2.node);
+						if (symbol1.symbolName === "hd") {
+							symbol1.chapter.process.error(t("compile.duplicated_label_headline"), symbol1.node, symbol2.node);
+						} else {
+							symbol1.chapter.process.error(t("compile.duplicated_label"), symbol1.node, symbol2.node);
+						}
 						return;
 					}
 				}
