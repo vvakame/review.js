@@ -1,6 +1,3 @@
-///<reference path='../../../typings/mocha/mocha.d.ts' />
-///<reference path='../../../typings/assert/assert.d.ts' />
-
 import * as Test from "../testHelper";
 
 import {ReportLevel} from "../../../lib/model/compilerModel";

@@ -502,7 +502,7 @@ export class SyntaxTree implements NodeLocation {
 
 	private toOtherNode<T extends SyntaxTree>(clazz: any): T {
 		if (this instanceof clazz) {
-			return <T>this;
+			return this as any as T;
 		} else {
 			throw new Error("this node is not " + clazz.name + ", actual " + (<any>this).constructor.name);
 		}

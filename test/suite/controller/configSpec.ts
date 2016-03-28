@@ -1,6 +1,3 @@
-///<reference path='../../../typings/mocha/mocha.d.ts' />
-///<reference path='../../../typings/assert/assert.d.ts' />
-
 import {BookStructure, ConfigBook} from "../../../lib/controller/configRaw";
 
 describe("ReVIEWのConfig.tsの", () => {

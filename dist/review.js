@@ -258,7 +258,7 @@ var DefaultBuilder = (function () {
     DefaultBuilder.prototype.singleLineComment = function (process, node) {
     };
     return DefaultBuilder;
-})();
+}());
 exports.DefaultBuilder = DefaultBuilder;
 
 },{"../js/exception":11,"../parser/parser":14,"../parser/walker":17,"../utils/utils":19}],2:[function(require,module,exports){
@@ -477,16 +477,16 @@ var HtmlBuilder = (function (_super) {
             var lineDigit = Math.max(utils_1.linesToFigure(lineCountMax), 2);
             node.childNodes.forEach(function (node, index, childNodes) {
                 if (node.isTextNode()) {
-                    var hasNext = !!childNodes[index + 1];
+                    var hasNext_1 = !!childNodes[index + 1];
                     var textNode = node.toTextNode();
-                    var lines = textNode.text.split("\n");
-                    lines.forEach(function (line, index) {
+                    var lines_1 = textNode.text.split("\n");
+                    lines_1.forEach(function (line, index) {
                         process.out(utils_1.padLeft(String(lineCount), " ", lineDigit)).out(": ");
                         process.out(line);
-                        if (!hasNext || lines.length - 1 !== index) {
+                        if (!hasNext_1 || lines_1.length - 1 !== index) {
                             lineCount++;
                         }
-                        if (lines.length - 1 !== index) {
+                        if (lines_1.length - 1 !== index) {
                             process.out("\n");
                         }
                     });
@@ -538,16 +538,16 @@ var HtmlBuilder = (function (_super) {
             var lineDigit = Math.max(utils_1.linesToFigure(lineCountMax), 2);
             node.childNodes.forEach(function (node, index, childNodes) {
                 if (node.isTextNode()) {
-                    var hasNext = !!childNodes[index + 1];
+                    var hasNext_2 = !!childNodes[index + 1];
                     var textNode = node.toTextNode();
-                    var lines = textNode.text.split("\n");
-                    lines.forEach(function (line, index) {
+                    var lines_2 = textNode.text.split("\n");
+                    lines_2.forEach(function (line, index) {
                         process.out(utils_1.padLeft(String(lineCount), " ", lineDigit)).out(": ");
                         process.out(line);
-                        if (!hasNext || lines.length - 1 !== index) {
+                        if (!hasNext_2 || lines_2.length - 1 !== index) {
                             lineCount++;
                         }
-                        if (lines.length - 1 !== index) {
+                        if (lines_2.length - 1 !== index) {
                             process.out("\n");
                         }
                     });
@@ -910,7 +910,7 @@ var HtmlBuilder = (function (_super) {
         return false;
     };
     return HtmlBuilder;
-})(builder_1.DefaultBuilder);
+}(builder_1.DefaultBuilder));
 exports.HtmlBuilder = HtmlBuilder;
 
 },{"../i18n/i18n":8,"../parser/parser":14,"../parser/walker":17,"../utils/utils":19,"./builder":1}],3:[function(require,module,exports){
@@ -1030,13 +1030,13 @@ var TextBuilder = (function (_super) {
             process.outRaw("\n\n");
             node.childNodes.forEach(function (node, index, childNodes) {
                 if (node.isTextNode()) {
-                    var hasNext = !!childNodes[index + 1];
+                    var hasNext_1 = !!childNodes[index + 1];
                     var textNode = node.toTextNode();
-                    var lines = textNode.text.split("\n");
-                    lines.forEach(function (line, index) {
+                    var lines_1 = textNode.text.split("\n");
+                    lines_1.forEach(function (line, index) {
                         process.out(utils_1.padLeft(String(lineCount), " ", lineDigit)).out(": ");
                         process.out(line);
-                        if (!hasNext || lines.length - 1 !== index) {
+                        if (!hasNext_1 || lines_1.length - 1 !== index) {
                             lineCount++;
                         }
                         process.out("\n");
@@ -1092,13 +1092,13 @@ var TextBuilder = (function (_super) {
             var lineDigit = Math.max(utils_1.linesToFigure(lineCountMax), 2);
             node.childNodes.forEach(function (node, index, childNodes) {
                 if (node.isTextNode()) {
-                    var hasNext = !!childNodes[index + 1];
+                    var hasNext_2 = !!childNodes[index + 1];
                     var textNode = node.toTextNode();
-                    var lines = textNode.text.split("\n");
-                    lines.forEach(function (line, index) {
+                    var lines_2 = textNode.text.split("\n");
+                    lines_2.forEach(function (line, index) {
                         process.out(utils_1.padLeft(String(lineCount), " ", lineDigit)).out(": ");
                         process.out(line);
-                        if (!hasNext || lines.length - 1 !== index) {
+                        if (!hasNext_2 || lines_2.length - 1 !== index) {
                             lineCount++;
                         }
                         process.out("\n");
@@ -1426,7 +1426,7 @@ var TextBuilder = (function (_super) {
         return false;
     };
     return TextBuilder;
-})(builder_1.DefaultBuilder);
+}(builder_1.DefaultBuilder));
 exports.TextBuilder = TextBuilder;
 
 },{"../i18n/i18n":8,"../parser/parser":14,"../parser/walker":17,"../utils/utils":19,"./builder":1}],4:[function(require,module,exports){
@@ -1531,7 +1531,7 @@ var Config = (function () {
         throw new Error("please implements this method");
     };
     return Config;
-})();
+}());
 exports.Config = Config;
 var NodeJSConfig = (function (_super) {
     __extends(NodeJSConfig, _super);
@@ -1635,7 +1635,7 @@ var NodeJSConfig = (function (_super) {
         return p.join(base, path);
     };
     return NodeJSConfig;
-})(Config);
+}(Config));
 exports.NodeJSConfig = NodeJSConfig;
 var WebBrowserConfig = (function (_super) {
     __extends(WebBrowserConfig, _super);
@@ -1692,10 +1692,10 @@ var WebBrowserConfig = (function (_super) {
     WebBrowserConfig.prototype._existsHttpScheme = function (path) {
         var promise = new Promise(function (resolve, reject) {
             try {
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200 || xhr.status === 304) {
+                var xhr_1 = new XMLHttpRequest();
+                xhr_1.onreadystatechange = function () {
+                    if (xhr_1.readyState === 4) {
+                        if (xhr_1.status === 200 || xhr_1.status === 304) {
                             resolve({ path: path, result: true });
                         }
                         else {
@@ -1703,9 +1703,9 @@ var WebBrowserConfig = (function (_super) {
                         }
                     }
                 };
-                xhr.open("GET", path);
-                xhr.setRequestHeader("If-Modified-Since", new Date().toUTCString());
-                xhr.send();
+                xhr_1.open("GET", path);
+                xhr_1.setRequestHeader("If-Modified-Since", new Date().toUTCString());
+                xhr_1.send();
             }
             catch (e) {
                 if (e instanceof DOMException) {
@@ -1783,7 +1783,7 @@ var WebBrowserConfig = (function (_super) {
         return str.indexOf(target, str.length - target.length) !== -1;
     };
     return WebBrowserConfig;
-})(Config);
+}(Config));
 exports.WebBrowserConfig = WebBrowserConfig;
 
 },{"../builder/builder":1,"../model/compilerModel":12,"../parser/analyzer":13,"../parser/validator":16,"../utils/utils":19,"./configRaw":5,"colors":undefined,"fs":undefined,"path":undefined}],5:[function(require,module,exports){
@@ -1838,7 +1838,7 @@ var BookStructure = (function () {
         return new BookStructure(predef, contents, appendix, postdef);
     };
     return BookStructure;
-})();
+}());
 exports.BookStructure = BookStructure;
 var ContentStructure = (function () {
     function ContentStructure(part, chapter) {
@@ -1867,7 +1867,7 @@ var ContentStructure = (function () {
         return new ContentStructure(p, null);
     };
     return ContentStructure;
-})();
+}());
 exports.ContentStructure = ContentStructure;
 
 },{}],6:[function(require,module,exports){
@@ -2082,7 +2082,7 @@ var Controller = (function () {
         return Promise.reject(err);
     };
     return Controller;
-})();
+}());
 exports.Controller = Controller;
 
 },{"../../resources/grammar":20,"../builder/htmlBuilder":2,"../builder/textBuilder":3,"../model/compilerModel":12,"../parser/parser":14,"../parser/preprocessor":15,"../parser/walker":17,"../utils/utils":19,"./config":4,"./configRaw":5}],7:[function(require,module,exports){
@@ -2245,18 +2245,17 @@ function start(setup, options) {
 exports.start = start;
 
 },{"./builder/builder":1,"./builder/htmlBuilder":2,"./builder/textBuilder":3,"./controller/controller":6,"./model/compilerModel":12,"./parser/analyzer":13,"./parser/parser":14,"./parser/validator":16}],11:[function(require,module,exports){
+"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var DummyError = (function () {
     function DummyError(message) {
@@ -2266,7 +2265,7 @@ var DummyError = (function () {
         replace(Error)
     ], DummyError);
     return DummyError;
-})();
+}());
 exports.DummyError = DummyError;
 function replace(src) {
     "use strict";
@@ -2283,11 +2282,10 @@ var AnalyzerError = (function (_super) {
         }
     }
     return AnalyzerError;
-})(DummyError);
+}(DummyError));
 exports.AnalyzerError = AnalyzerError;
 
 },{}],12:[function(require,module,exports){
-// parser/ と builder/ で共用するモデル
 "use strict";
 var i18n_1 = require("../i18n/i18n");
 var walker_1 = require("../parser/walker");
@@ -2307,7 +2305,7 @@ var ProcessReport = (function () {
         this.nodes = nodes;
     }
     return ProcessReport;
-})();
+}());
 exports.ProcessReport = ProcessReport;
 var BookProcess = (function () {
     function BookProcess() {
@@ -2323,7 +2321,7 @@ var BookProcess = (function () {
         this.reports.push(new ProcessReport(ReportLevel.Error, null, null, message));
     };
     return BookProcess;
-})();
+}());
 exports.BookProcess = BookProcess;
 var Process = (function () {
     function Process(part, chapter, input) {
@@ -2450,7 +2448,7 @@ var Process = (function () {
         this.afterProcess = [];
     };
     return Process;
-})();
+}());
 exports.Process = Process;
 var BuilderProcess = (function () {
     function BuilderProcess(builder, base) {
@@ -2530,8 +2528,6 @@ var BuilderProcess = (function () {
         return chaps[0];
     };
     BuilderProcess.prototype.findImageFile = function (id) {
-        // NOTE: https://github.com/kmuto/review/wiki/ImagePath
-        // 4軸マトリクス 画像dir, ビルダ有無, chapId位置, 拡張子
         var _this = this;
         var config = (this.base.part || this.base.chapter).book.config;
         var fileNameList = [];
@@ -2572,7 +2568,7 @@ var BuilderProcess = (function () {
         return promise;
     };
     return BuilderProcess;
-})();
+}());
 exports.BuilderProcess = BuilderProcess;
 var Book = (function () {
     function Book(config) {
@@ -2631,7 +2627,7 @@ var Book = (function () {
         configurable: true
     });
     return Book;
-})();
+}());
 exports.Book = Book;
 var ContentChunk = (function () {
     function ContentChunk(book, parent, name) {
@@ -2679,7 +2675,7 @@ var ContentChunk = (function () {
         return founds[0].result;
     };
     return ContentChunk;
-})();
+}());
 exports.ContentChunk = ContentChunk;
 
 },{"../i18n/i18n":8,"../parser/walker":17}],13:[function(require,module,exports){
@@ -2740,7 +2736,7 @@ var AcceptableSyntaxes = (function () {
         };
     };
     return AcceptableSyntaxes;
-})();
+}());
 exports.AcceptableSyntaxes = AcceptableSyntaxes;
 var AcceptableSyntax = (function () {
     function AcceptableSyntax() {
@@ -2758,7 +2754,7 @@ var AcceptableSyntax = (function () {
         };
     };
     return AcceptableSyntax;
-})();
+}());
 exports.AcceptableSyntax = AcceptableSyntax;
 var AnalyzeProcess = (function () {
     function AnalyzeProcess() {
@@ -2831,7 +2827,7 @@ var AnalyzeProcess = (function () {
         this.current.process = func;
     };
     return AnalyzeProcess;
-})();
+}());
 var DefaultAnalyzer = (function () {
     function DefaultAnalyzer() {
     }
@@ -3377,13 +3373,10 @@ var DefaultAnalyzer = (function () {
         });
     };
     return DefaultAnalyzer;
-})();
+}());
 exports.DefaultAnalyzer = DefaultAnalyzer;
 
 },{"../i18n/i18n":8,"../js/exception":11,"../parser/parser":14,"../utils/utils":19}],14:[function(require,module,exports){
-/**
- * 構文解析用途のモジュール。
- */
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -3573,7 +3566,7 @@ var ParseError = (function () {
         this.name = "ParseError";
     }
     return ParseError;
-})();
+}());
 exports.ParseError = ParseError;
 (function (RuleName) {
     RuleName[RuleName["SyntaxError"] = 0] = "SyntaxError";
@@ -3804,7 +3797,7 @@ var SyntaxTree = (function () {
         return this.toOtherNode(SingleLineCommentSyntaxTree);
     };
     return SyntaxTree;
-})();
+}());
 exports.SyntaxTree = SyntaxTree;
 var NodeSyntaxTree = (function (_super) {
     __extends(NodeSyntaxTree, _super);
@@ -3843,7 +3836,7 @@ var NodeSyntaxTree = (function (_super) {
         }
     };
     return NodeSyntaxTree;
-})(SyntaxTree);
+}(SyntaxTree));
 exports.NodeSyntaxTree = NodeSyntaxTree;
 var ChapterSyntaxTree = (function (_super) {
     __extends(ChapterSyntaxTree, _super);
@@ -3885,7 +3878,7 @@ var ChapterSyntaxTree = (function (_super) {
         configurable: true
     });
     return ChapterSyntaxTree;
-})(NodeSyntaxTree);
+}(NodeSyntaxTree));
 exports.ChapterSyntaxTree = ChapterSyntaxTree;
 var HeadlineSyntaxTree = (function (_super) {
     __extends(HeadlineSyntaxTree, _super);
@@ -3898,7 +3891,7 @@ var HeadlineSyntaxTree = (function (_super) {
         this.caption = transform(this.checkObject(data.caption)).toNode();
     }
     return HeadlineSyntaxTree;
-})(SyntaxTree);
+}(SyntaxTree));
 exports.HeadlineSyntaxTree = HeadlineSyntaxTree;
 var BlockElementSyntaxTree = (function (_super) {
     __extends(BlockElementSyntaxTree, _super);
@@ -3910,7 +3903,7 @@ var BlockElementSyntaxTree = (function (_super) {
         });
     }
     return BlockElementSyntaxTree;
-})(NodeSyntaxTree);
+}(NodeSyntaxTree));
 exports.BlockElementSyntaxTree = BlockElementSyntaxTree;
 var InlineElementSyntaxTree = (function (_super) {
     __extends(InlineElementSyntaxTree, _super);
@@ -3919,7 +3912,7 @@ var InlineElementSyntaxTree = (function (_super) {
         this.symbol = this.checkString(data.symbol);
     }
     return InlineElementSyntaxTree;
-})(NodeSyntaxTree);
+}(NodeSyntaxTree));
 exports.InlineElementSyntaxTree = InlineElementSyntaxTree;
 var ColumnSyntaxTree = (function (_super) {
     __extends(ColumnSyntaxTree, _super);
@@ -3961,7 +3954,7 @@ var ColumnSyntaxTree = (function (_super) {
         configurable: true
     });
     return ColumnSyntaxTree;
-})(NodeSyntaxTree);
+}(NodeSyntaxTree));
 exports.ColumnSyntaxTree = ColumnSyntaxTree;
 var ColumnHeadlineSyntaxTree = (function (_super) {
     __extends(ColumnHeadlineSyntaxTree, _super);
@@ -3971,7 +3964,7 @@ var ColumnHeadlineSyntaxTree = (function (_super) {
         this.caption = transform(this.checkObject(data.caption)).toNode();
     }
     return ColumnHeadlineSyntaxTree;
-})(SyntaxTree);
+}(SyntaxTree));
 exports.ColumnHeadlineSyntaxTree = ColumnHeadlineSyntaxTree;
 var ArgumentSyntaxTree = (function (_super) {
     __extends(ArgumentSyntaxTree, _super);
@@ -3980,7 +3973,7 @@ var ArgumentSyntaxTree = (function (_super) {
         this.arg = this.checkString(data.arg);
     }
     return ArgumentSyntaxTree;
-})(SyntaxTree);
+}(SyntaxTree));
 exports.ArgumentSyntaxTree = ArgumentSyntaxTree;
 var UlistElementSyntaxTree = (function (_super) {
     __extends(UlistElementSyntaxTree, _super);
@@ -3992,7 +3985,7 @@ var UlistElementSyntaxTree = (function (_super) {
         this.childNodes = [];
     }
     return UlistElementSyntaxTree;
-})(NodeSyntaxTree);
+}(NodeSyntaxTree));
 exports.UlistElementSyntaxTree = UlistElementSyntaxTree;
 var OlistElementSyntaxTree = (function (_super) {
     __extends(OlistElementSyntaxTree, _super);
@@ -4002,7 +3995,7 @@ var OlistElementSyntaxTree = (function (_super) {
         this.text = transform(this.checkObject(data.text));
     }
     return OlistElementSyntaxTree;
-})(SyntaxTree);
+}(SyntaxTree));
 exports.OlistElementSyntaxTree = OlistElementSyntaxTree;
 var DlistElementSyntaxTree = (function (_super) {
     __extends(DlistElementSyntaxTree, _super);
@@ -4012,7 +4005,7 @@ var DlistElementSyntaxTree = (function (_super) {
         this.content = transform(this.checkObject(data.content));
     }
     return DlistElementSyntaxTree;
-})(SyntaxTree);
+}(SyntaxTree));
 exports.DlistElementSyntaxTree = DlistElementSyntaxTree;
 var TextNodeSyntaxTree = (function (_super) {
     __extends(TextNodeSyntaxTree, _super);
@@ -4021,7 +4014,7 @@ var TextNodeSyntaxTree = (function (_super) {
         this.text = this.checkString(data.text).replace(/\n+$/, "");
     }
     return TextNodeSyntaxTree;
-})(SyntaxTree);
+}(SyntaxTree));
 exports.TextNodeSyntaxTree = TextNodeSyntaxTree;
 var SingleLineCommentSyntaxTree = (function (_super) {
     __extends(SingleLineCommentSyntaxTree, _super);
@@ -4030,7 +4023,7 @@ var SingleLineCommentSyntaxTree = (function (_super) {
         this.text = this.checkString(data.text).replace(/^#@/, "").replace(/\n+$/, "");
     }
     return SingleLineCommentSyntaxTree;
-})(SyntaxTree);
+}(SyntaxTree));
 exports.SingleLineCommentSyntaxTree = SingleLineCommentSyntaxTree;
 
 },{"../../resources/grammar":20,"./walker":17}],15:[function(require,module,exports){
@@ -4126,28 +4119,28 @@ var SyntaxPreprocessor = (function () {
             return;
         }
         else if (syntax.allowInline) {
-            var info;
-            var resultNodes = [];
-            var lastNode;
+            var info_1;
+            var resultNodes_1 = [];
+            var lastNode_1;
             walker_1.visit(node.childNodes[0], {
                 visitDefaultPre: function (node) {
-                    if (!info) {
-                        info = {
+                    if (!info_1) {
+                        info_1 = {
                             offset: node.location.start.offset,
                             line: node.location.start.line,
                             column: node.location.start.column
                         };
                     }
-                    lastNode = node;
+                    lastNode_1 = node;
                 },
                 visitInlineElementPre: function (node) {
                     var textNode = new parser_1.TextNodeSyntaxTree({
                         syntax: "BlockElementContentText",
                         location: {
                             start: {
-                                offset: info.offset,
-                                line: info.line,
-                                column: info.column
+                                offset: info_1.offset,
+                                line: info_1.line,
+                                column: info_1.column
                             },
                             end: {
                                 offset: node.location.start.offset - 1,
@@ -4155,28 +4148,28 @@ var SyntaxPreprocessor = (function () {
                                 column: null
                             }
                         },
-                        text: chunk.process.input.substring(info.offset, node.location.start.offset - 1)
+                        text: chunk.process.input.substring(info_1.offset, node.location.start.offset - 1)
                     });
                     if (textNode.text) {
-                        resultNodes.push(textNode);
+                        resultNodes_1.push(textNode);
                     }
-                    resultNodes.push(textNode);
-                    resultNodes.push(node);
-                    info = null;
-                    lastNode = node;
+                    resultNodes_1.push(textNode);
+                    resultNodes_1.push(node);
+                    info_1 = null;
+                    lastNode_1 = node;
                 },
                 visitSingleLineCommentPre: function (node) {
-                    if (!info) {
-                        lastNode = node;
+                    if (!info_1) {
+                        lastNode_1 = node;
                         return;
                     }
                     var textNode = new parser_1.TextNodeSyntaxTree({
                         syntax: "BlockElementContentText",
                         location: {
                             start: {
-                                offset: info.offset,
-                                line: info.line,
-                                column: info.column
+                                offset: info_1.offset,
+                                line: info_1.line,
+                                column: info_1.column
                             },
                             end: {
                                 offset: node.location.start.offset - 1,
@@ -4184,23 +4177,23 @@ var SyntaxPreprocessor = (function () {
                                 column: null
                             }
                         },
-                        text: chunk.process.input.substring(info.offset, node.location.start.offset - 1)
+                        text: chunk.process.input.substring(info_1.offset, node.location.start.offset - 1)
                     });
                     if (textNode.text) {
-                        resultNodes.push(textNode);
+                        resultNodes_1.push(textNode);
                     }
-                    info = null;
-                    lastNode = node;
+                    info_1 = null;
+                    lastNode_1 = node;
                 }
             });
-            if (info) {
+            if (info_1) {
                 var textNode = new parser_1.TextNodeSyntaxTree({
                     syntax: "BlockElementContentText",
                     location: {
                         start: {
-                            offset: info.offset,
-                            line: info.line,
-                            column: info.column
+                            offset: info_1.offset,
+                            line: info_1.line,
+                            column: info_1.column
                         },
                         end: {
                             offset: node.location.start.offset - 1,
@@ -4208,13 +4201,13 @@ var SyntaxPreprocessor = (function () {
                             column: null
                         }
                     },
-                    text: chunk.process.input.substring(info.offset, lastNode.location.end.offset)
+                    text: chunk.process.input.substring(info_1.offset, lastNode_1.location.end.offset)
                 });
                 if (textNode.text) {
-                    resultNodes.push(textNode);
+                    resultNodes_1.push(textNode);
                 }
             }
-            node.childNodes = resultNodes;
+            node.childNodes = resultNodes_1;
         }
         else {
             var first = node.childNodes[0];
@@ -4239,7 +4232,7 @@ var SyntaxPreprocessor = (function () {
         }
     };
     return SyntaxPreprocessor;
-})();
+}());
 exports.SyntaxPreprocessor = SyntaxPreprocessor;
 
 },{"../utils/utils":19,"./parser":14,"./walker":17}],16:[function(require,module,exports){
@@ -4405,14 +4398,14 @@ var DefaultValidator = (function () {
         });
         symbols.forEach(function (symbol) {
             if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
-                var reference = symbol.referenceTo;
+                var reference_1 = symbol.referenceTo;
                 symbols.forEach(function (symbol) {
-                    if (reference.part === symbol.part && reference.chapter === symbol.chapter && reference.targetSymbol === symbol.symbolName && reference.label === symbol.labelName) {
-                        reference.referenceNode = symbol.node;
+                    if (reference_1.part === symbol.part && reference_1.chapter === symbol.chapter && reference_1.targetSymbol === symbol.symbolName && reference_1.label === symbol.labelName) {
+                        reference_1.referenceNode = symbol.node;
                     }
                 });
-                if (!reference.referenceNode) {
-                    symbol.chapter.process.error(i18n_1.t("compile.reference_is_missing", reference.targetSymbol, reference.label), symbol.node);
+                if (!reference_1.referenceNode) {
+                    symbol.chapter.process.error(i18n_1.t("compile.reference_is_missing", reference_1.targetSymbol, reference_1.label), symbol.node);
                     return;
                 }
             }
@@ -4437,7 +4430,7 @@ var DefaultValidator = (function () {
         });
     };
     return DefaultValidator;
-})();
+}());
 exports.DefaultValidator = DefaultValidator;
 
 },{"../i18n/i18n":8,"../utils/utils":19,"./analyzer":13,"./walker":17}],17:[function(require,module,exports){
@@ -4836,7 +4829,7 @@ var SyncTaskPool = (function () {
         return this.tasks.map(function (task) { return task(); });
     };
     return SyncTaskPool;
-})();
+}());
 var AsyncTaskPool = (function () {
     function AsyncTaskPool() {
         this.tasks = [];
@@ -4875,7 +4868,7 @@ var AsyncTaskPool = (function () {
         return promise;
     };
     return AsyncTaskPool;
-})();
+}());
 
 },{"./parser":14}],18:[function(require,module,exports){
 "use strict";

@@ -59,13 +59,15 @@
         "./test/suite/testHelper.ts",
         "./lib/typings/custom-colors.d.ts",
         "./lib/typings/polyfill.d.ts",
-        "./typings/assert/assert.d.ts",
         "./typings/bundle.d.ts",
+        "./typings/empower/empower.d.ts",
         "./typings/i18next/i18next.d.ts",
         "./typings/jquery/jquery.d.ts",
         "./typings/js-yaml/js-yaml.d.ts",
         "./typings/mocha/mocha.d.ts",
         "./typings/node/node.d.ts",
+        "./typings/power-assert-formatter/power-assert-formatter.d.ts",
+        "./typings/power-assert/power-assert.d.ts",
         "./typings/update-notifier/update-notifier.d.ts",
         "./node_modules/typescript/lib/lib.es6.d.ts"
     ]

@@ -1,6 +1,3 @@
-///<reference path='../../../typings/mocha/mocha.d.ts' />
-///<reference path='../../../typings/assert/assert.d.ts' />
-
 import {t, setup} from "../../../lib/i18n/i18n";
 
 describe("ReVIEW.i18nの", () => {

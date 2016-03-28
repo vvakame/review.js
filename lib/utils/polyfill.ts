@@ -2,5 +2,12 @@
 
 // Node.js用対応
 if (typeof Promise === "undefined" && typeof global !== "undefined") {
-	global.Promise = require("ypromise");
+    try {
+		global.Promise = require("es6-promise");
+    } catch (e) { }
+}
+if (typeof Promise === "undefined" && typeof global !== "undefined") {
+    try {
+		global.Promise = require("ypromise");
+    } catch (e) { }
 }

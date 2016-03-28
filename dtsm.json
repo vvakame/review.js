@@ -1,7 +1,7 @@
 {
   "repos": [
     {
-      "url": "https://github.com/borisyankov/DefinitelyTyped.git",
+      "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
       "ref": "master"
     }
   ],
@@ -9,25 +9,25 @@
   "bundle": "typings/bundle.d.ts",
   "dependencies": {
     "jquery/jquery.d.ts": {
-      "ref": "d9fea91e842c2cf5bd0f7d861ac378e571d2ad7c"
+      "ref": "80057d687aefa736511e434cd2a6c0e9a6bb02bc"
     },
     "i18next/i18next.d.ts": {
       "ref": "d9fea91e842c2cf5bd0f7d861ac378e571d2ad7c"
     },
     "update-notifier/update-notifier.d.ts": {
-      "ref": "d9fea91e842c2cf5bd0f7d861ac378e571d2ad7c"
+      "ref": "80057d687aefa736511e434cd2a6c0e9a6bb02bc"
     },
     "js-yaml/js-yaml.d.ts": {
-      "ref": "d9fea91e842c2cf5bd0f7d861ac378e571d2ad7c"
+      "ref": "80057d687aefa736511e434cd2a6c0e9a6bb02bc"
     },
     "node/node.d.ts": {
-      "ref": "d9fea91e842c2cf5bd0f7d861ac378e571d2ad7c"
+      "ref": "80057d687aefa736511e434cd2a6c0e9a6bb02bc"
     },
     "mocha/mocha.d.ts": {
-      "ref": "d9fea91e842c2cf5bd0f7d861ac378e571d2ad7c"
+      "ref": "80057d687aefa736511e434cd2a6c0e9a6bb02bc"
     },
-    "assert/assert.d.ts": {
-      "ref": "d9fea91e842c2cf5bd0f7d861ac378e571d2ad7c"
+    "power-assert/power-assert.d.ts": {
+      "ref": "80057d687aefa736511e434cd2a6c0e9a6bb02bc"
     }
   },
   "link": {

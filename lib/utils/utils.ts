@@ -358,7 +358,7 @@ export module Exec {
 		return start((review) => {
 			review.initConfig(config);
 		})
-			.then(book=> {
+			.then(book => {
 				return {
 					book: book,
 					results: results
