@@ -6,7 +6,7 @@ export class DummyError {
 }
 
 function replace(src: any) {
-	"use strict";
+    "use strict";
 
     return (_: any) => src;
 }

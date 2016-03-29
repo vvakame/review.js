@@ -19,211 +19,211 @@ import {findChapter, nodeContentToString} from "../utils/utils";
  * また、Builderと対比させて、未実装の候補がないかをチェックする。
  */
 export interface Validator {
-	start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: Builder[]): void;
+    start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: Builder[]): void;
 }
 
 export class DefaultValidator implements Validator {
-	acceptableSyntaxes: AcceptableSyntaxes;
-	builders: Builder[];
+    acceptableSyntaxes: AcceptableSyntaxes;
+    builders: Builder[];
 
-	start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: Builder[]) {
-		this.acceptableSyntaxes = acceptableSyntaxes;
-		this.builders = builders;
+    start(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: Builder[]) {
+        this.acceptableSyntaxes = acceptableSyntaxes;
+        this.builders = builders;
 
-		this.checkBuilder(book, acceptableSyntaxes, builders);
-		this.checkBook(book);
-		this.resolveSymbolAndReference(book);
-	}
+        this.checkBuilder(book, acceptableSyntaxes, builders);
+        this.checkBook(book);
+        this.resolveSymbolAndReference(book);
+    }
 
-	checkBuilder(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: Builder[] = []) {
-		acceptableSyntaxes.acceptableSyntaxes.forEach(syntax => {
-			let prefix: string;
-			switch (syntax.type) {
-				case SyntaxType.Other:
-					// Other系は実装をチェックする必要はない…。(ということにしておく
-					return;
-				case SyntaxType.Block:
-					prefix = "block_";
-					break;
-				case SyntaxType.Inline:
-					prefix = "inline_";
-					break;
-			}
-			let funcName1 = prefix + syntax.symbolName;
-			let funcName2 = prefix + syntax.symbolName + "_pre";
-			builders.forEach(builder=> {
-				let func = (<any>builder)[funcName1] || (<any>builder)[funcName2];
-				if (!func) {
-					book.process.error(SyntaxType[syntax.type] + " " + syntax.symbolName + " is not supported in " + builder.name);
-				}
-			});
-		});
-	}
+    checkBuilder(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: Builder[] = []) {
+        acceptableSyntaxes.acceptableSyntaxes.forEach(syntax => {
+            let prefix: string;
+            switch (syntax.type) {
+                case SyntaxType.Other:
+                    // Other系は実装をチェックする必要はない…。(ということにしておく
+                    return;
+                case SyntaxType.Block:
+                    prefix = "block_";
+                    break;
+                case SyntaxType.Inline:
+                    prefix = "inline_";
+                    break;
+            }
+            let funcName1 = prefix + syntax.symbolName;
+            let funcName2 = prefix + syntax.symbolName + "_pre";
+            builders.forEach(builder => {
+                let func = (<any>builder)[funcName1] || (<any>builder)[funcName2];
+                if (!func) {
+                    book.process.error(SyntaxType[syntax.type] + " " + syntax.symbolName + " is not supported in " + builder.name);
+                }
+            });
+        });
+    }
 
-	checkBook(book: Book) {
-		book.predef.forEach(chunk=> this.checkChunk(chunk));
-		book.contents.forEach(chunk=> this.checkChunk(chunk));
-		book.appendix.forEach(chunk=> this.checkChunk(chunk));
-		book.postdef.forEach(chunk=> this.checkChunk(chunk));
-	}
+    checkBook(book: Book) {
+        book.predef.forEach(chunk => this.checkChunk(chunk));
+        book.contents.forEach(chunk => this.checkChunk(chunk));
+        book.appendix.forEach(chunk => this.checkChunk(chunk));
+        book.postdef.forEach(chunk => this.checkChunk(chunk));
+    }
 
-	checkChunk(chunk: ContentChunk) {
-		// Analyzer 内で生成した構文規則に基づき処理
-		visit(chunk.tree.ast, {
-			visitDefaultPre: (node: SyntaxTree) => {
-			},
-			visitHeadlinePre: (node: HeadlineSyntaxTree) => {
-				let results = this.acceptableSyntaxes.find(node);
-				if (results.length !== 1) {
-					chunk.process.error(t("compile.syntax_definietion_error"), node);
-					return;
-				}
-				return results[0].process(chunk.process, node);
-			},
-			visitColumnPre: (node: ColumnSyntaxTree) => {
-				let results = this.acceptableSyntaxes.find(node);
-				if (results.length !== 1) {
-					chunk.process.error(t("compile.syntax_definietion_error"), node);
-					return;
-				}
-				return results[0].process(chunk.process, node);
-			},
-			visitBlockElementPre: (node: BlockElementSyntaxTree) => {
-				let results = this.acceptableSyntaxes.find(node);
-				if (results.length !== 1) {
-					chunk.process.error(t("compile.block_not_supported", node.symbol), node);
-					return;
-				}
-				let expects = results[0].argsLength;
-				let arg: NodeSyntaxTree[] = node.args || [];
-				if (expects.indexOf(arg.length) === -1) {
-					let expected = expects.map((n) => Number(n).toString()).join(" or ");
-					let message = t("compile.args_length_mismatch", expected, arg.length);
-					chunk.process.error(message, node);
-					return;
-				}
+    checkChunk(chunk: ContentChunk) {
+        // Analyzer 内で生成した構文規則に基づき処理
+        visit(chunk.tree.ast, {
+            visitDefaultPre: (node: SyntaxTree) => {
+            },
+            visitHeadlinePre: (node: HeadlineSyntaxTree) => {
+                let results = this.acceptableSyntaxes.find(node);
+                if (results.length !== 1) {
+                    chunk.process.error(t("compile.syntax_definietion_error"), node);
+                    return;
+                }
+                return results[0].process(chunk.process, node);
+            },
+            visitColumnPre: (node: ColumnSyntaxTree) => {
+                let results = this.acceptableSyntaxes.find(node);
+                if (results.length !== 1) {
+                    chunk.process.error(t("compile.syntax_definietion_error"), node);
+                    return;
+                }
+                return results[0].process(chunk.process, node);
+            },
+            visitBlockElementPre: (node: BlockElementSyntaxTree) => {
+                let results = this.acceptableSyntaxes.find(node);
+                if (results.length !== 1) {
+                    chunk.process.error(t("compile.block_not_supported", node.symbol), node);
+                    return;
+                }
+                let expects = results[0].argsLength;
+                let arg: NodeSyntaxTree[] = node.args || [];
+                if (expects.indexOf(arg.length) === -1) {
+                    let expected = expects.map((n) => Number(n).toString()).join(" or ");
+                    let message = t("compile.args_length_mismatch", expected, arg.length);
+                    chunk.process.error(message, node);
+                    return;
+                }
 
-				return results[0].process(chunk.process, node);
-			},
-			visitInlineElementPre: (node: InlineElementSyntaxTree) => {
-				let results = this.acceptableSyntaxes.find(node);
-				if (results.length !== 1) {
-					chunk.process.error(t("compile.inline_not_supported", node.symbol), node);
-					return;
-				}
-				return results[0].process(chunk.process, node);
-			}
-		});
+                return results[0].process(chunk.process, node);
+            },
+            visitInlineElementPre: (node: InlineElementSyntaxTree) => {
+                let results = this.acceptableSyntaxes.find(node);
+                if (results.length !== 1) {
+                    chunk.process.error(t("compile.inline_not_supported", node.symbol), node);
+                    return;
+                }
+                return results[0].process(chunk.process, node);
+            }
+        });
 
-		// 最初は必ず Level 1
-		visit(chunk.tree.ast, {
-			visitDefaultPre: (node: SyntaxTree) => {
-			},
-			visitChapterPre: (node: ChapterSyntaxTree) => {
-				if (node.level === 1) {
-					if (!findChapter(node)) {
-						// ここに来るのは実装のバグのはず
-						chunk.process.error(t("compile.chapter_not_toplevel"), node);
-					}
-				} else {
-					let parent = findChapter(node.parentNode);
-					if (!parent) {
-						chunk.process.error(t("compile.chapter_topleve_eq1"), node);
-					}
-				}
-			}
-		});
+        // 最初は必ず Level 1
+        visit(chunk.tree.ast, {
+            visitDefaultPre: (node: SyntaxTree) => {
+            },
+            visitChapterPre: (node: ChapterSyntaxTree) => {
+                if (node.level === 1) {
+                    if (!findChapter(node)) {
+                        // ここに来るのは実装のバグのはず
+                        chunk.process.error(t("compile.chapter_not_toplevel"), node);
+                    }
+                } else {
+                    let parent = findChapter(node.parentNode);
+                    if (!parent) {
+                        chunk.process.error(t("compile.chapter_topleve_eq1"), node);
+                    }
+                }
+            }
+        });
 
-		this.chechBlockGraphTool(chunk);
-	}
+        this.chechBlockGraphTool(chunk);
+    }
 
-	chechBlockGraphTool(chunk: ContentChunk) {
-		// graph記法の外部ツール利用について内容が正しいかチェックする
-		visit(chunk.tree.ast, {
-			visitDefaultPre: (node: SyntaxTree) => {
-			},
-			visitBlockElementPre: (node: BlockElementSyntaxTree) => {
-				if (node.symbol !== "graph") {
-					return;
-				}
-				let toolNameNode = node.args[1];
-				if (!toolNameNode) {
-					// ここのNodeがないのは別でチェックするので気にしない
-					return;
-				}
-				let toolName = nodeContentToString(chunk.process, toolNameNode);
-				switch (toolName) {
-					case "graphviz":
-						break;
-					case "gnuplot":
-					case "blockdiag":
-					case "aafigure":
-						chunk.process.info(t("compile.graph_tool_is_not_recommended"), toolNameNode);
-						break;
-					default:
-						chunk.process.error(t("compile.unknown_graph_tool", toolName), toolNameNode);
-				}
-			}
-		});
-	}
+    chechBlockGraphTool(chunk: ContentChunk) {
+        // graph記法の外部ツール利用について内容が正しいかチェックする
+        visit(chunk.tree.ast, {
+            visitDefaultPre: (node: SyntaxTree) => {
+            },
+            visitBlockElementPre: (node: BlockElementSyntaxTree) => {
+                if (node.symbol !== "graph") {
+                    return;
+                }
+                let toolNameNode = node.args[1];
+                if (!toolNameNode) {
+                    // ここのNodeがないのは別でチェックするので気にしない
+                    return;
+                }
+                let toolName = nodeContentToString(chunk.process, toolNameNode);
+                switch (toolName) {
+                    case "graphviz":
+                        break;
+                    case "gnuplot":
+                    case "blockdiag":
+                    case "aafigure":
+                        chunk.process.info(t("compile.graph_tool_is_not_recommended"), toolNameNode);
+                        break;
+                    default:
+                        chunk.process.error(t("compile.unknown_graph_tool", toolName), toolNameNode);
+                }
+            }
+        });
+    }
 
-	resolveSymbolAndReference(book: Book) {
-		// symbols の解決
-		// Arrayにflatten がなくて悲しい reduce だと長い…
-		let symbols: Symbol[] = book.allChunks.reduce<Symbol[]>((p, c) => p.concat(c.process.symbols), []);
-		symbols.forEach(symbol=> {
-			// referenceToのpartやchapterの解決
-			let referenceTo = symbol.referenceTo;
-			if (!referenceTo) {
-				return;
-			}
-			if (!referenceTo.part && referenceTo.partName) {
-				book.allChunks.forEach(chunk=> {
-					if (referenceTo.partName === chunk.name) {
-						referenceTo.part = chunk;
-					}
-				});
-			}
-			if (!referenceTo.chapter && referenceTo.chapterName) {
-				referenceTo.part.nodes.forEach(chunk=> {
-					if (referenceTo.chapterName === chunk.name) {
-						referenceTo.chapter = chunk;
-					}
-				});
-			}
-		});
-		// referenceTo.node の解決
-		symbols.forEach(symbol=> {
-			if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
-				let reference = symbol.referenceTo;
-				symbols.forEach(symbol=> {
-					if (reference.part === symbol.part && reference.chapter === symbol.chapter && reference.targetSymbol === symbol.symbolName && reference.label === symbol.labelName) {
-						reference.referenceNode = symbol.node;
-					}
-				});
-				if (!reference.referenceNode) {
-					symbol.chapter.process.error(t("compile.reference_is_missing", reference.targetSymbol, reference.label), symbol.node);
-					return;
-				}
-			}
-		});
-		// 同一チャプター内に同一シンボル(listとか)で同一labelの要素がないかチェック
-		symbols.forEach(symbol1=> {
-			symbols.forEach(symbol2=> {
-				if (symbol1 === symbol2) {
-					return;
-				}
-				if (symbol1.chapter === symbol2.chapter && symbol1.symbolName === symbol2.symbolName) {
-					if (symbol1.labelName && symbol2.labelName && symbol1.labelName === symbol2.labelName) {
-						if (symbol1.symbolName === "hd") {
-							symbol1.chapter.process.error(t("compile.duplicated_label_headline"), symbol1.node, symbol2.node);
-						} else {
-							symbol1.chapter.process.error(t("compile.duplicated_label"), symbol1.node, symbol2.node);
-						}
-						return;
-					}
-				}
-			});
-		});
-	}
+    resolveSymbolAndReference(book: Book) {
+        // symbols の解決
+        // Arrayにflatten がなくて悲しい reduce だと長い…
+        let symbols: Symbol[] = book.allChunks.reduce<Symbol[]>((p, c) => p.concat(c.process.symbols), []);
+        symbols.forEach(symbol => {
+            // referenceToのpartやchapterの解決
+            let referenceTo = symbol.referenceTo;
+            if (!referenceTo) {
+                return;
+            }
+            if (!referenceTo.part && referenceTo.partName) {
+                book.allChunks.forEach(chunk => {
+                    if (referenceTo.partName === chunk.name) {
+                        referenceTo.part = chunk;
+                    }
+                });
+            }
+            if (!referenceTo.chapter && referenceTo.chapterName) {
+                referenceTo.part.nodes.forEach(chunk => {
+                    if (referenceTo.chapterName === chunk.name) {
+                        referenceTo.chapter = chunk;
+                    }
+                });
+            }
+        });
+        // referenceTo.node の解決
+        symbols.forEach(symbol => {
+            if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
+                let reference = symbol.referenceTo;
+                symbols.forEach(symbol => {
+                    if (reference.part === symbol.part && reference.chapter === symbol.chapter && reference.targetSymbol === symbol.symbolName && reference.label === symbol.labelName) {
+                        reference.referenceNode = symbol.node;
+                    }
+                });
+                if (!reference.referenceNode) {
+                    symbol.chapter.process.error(t("compile.reference_is_missing", reference.targetSymbol, reference.label), symbol.node);
+                    return;
+                }
+            }
+        });
+        // 同一チャプター内に同一シンボル(listとか)で同一labelの要素がないかチェック
+        symbols.forEach(symbol1 => {
+            symbols.forEach(symbol2 => {
+                if (symbol1 === symbol2) {
+                    return;
+                }
+                if (symbol1.chapter === symbol2.chapter && symbol1.symbolName === symbol2.symbolName) {
+                    if (symbol1.labelName && symbol2.labelName && symbol1.labelName === symbol2.labelName) {
+                        if (symbol1.symbolName === "hd") {
+                            symbol1.chapter.process.error(t("compile.duplicated_label_headline"), symbol1.node, symbol2.node);
+                        } else {
+                            symbol1.chapter.process.error(t("compile.duplicated_label"), symbol1.node, symbol2.node);
+                        }
+                        return;
+                    }
+                }
+            });
+        });
+    }
 }

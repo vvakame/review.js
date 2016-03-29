@@ -26,10 +26,10 @@ declare var define: any;
  * @returns {Book}
  */
 export function start(setup: (review: Controller) => void, options?: Options): Promise<Book> {
-	"use strict";
+    "use strict";
 
-	let controller = new Controller(options);
-	// setup 中で initConfig が呼び出される
-	setup(controller);
-	return controller.process();
+    let controller = new Controller(options);
+    // setup 中で initConfig が呼び出される
+    setup(controller);
+    return controller.process();
 }

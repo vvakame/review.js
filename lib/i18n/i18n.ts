@@ -14,32 +14,32 @@ let langs: any = {
 let resource: any = deepAssign({}, langs.en, langs.ja);
 
 export function setup(lang = "ja") {
-	"use strict";
+    "use strict";
 
     resource = deepAssign({}, langs.en, langs.ja, langs[lang]);
 }
 
 let sprintf: any;
 if (typeof window !== "undefined" && (<any>window).sprintf) {
-	sprintf = (<any>window).sprintf;
+    sprintf = (<any>window).sprintf;
 } else {
-	sprintf = require("sprintf-js").sprintf;
+    sprintf = require("sprintf-js").sprintf;
 }
 isNodeJS(); // TODO utilsをi18n.ts内で使わないと実行時エラーになる
 
 export function t(str: string, ...args: any[]): string {
-	"use strict";
+    "use strict";
 
     let parts = str.split(".");
     let base = resource;
     parts.forEach(part => {
         base = base[part];
     });
-    if(typeof base !== "string") {
+    if (typeof base !== "string") {
         throw new Error(`unknown key: ${str}`);
     }
 
-	return sprintf(base, ...args);
+    return sprintf(base, ...args);
 }
 
 setup();

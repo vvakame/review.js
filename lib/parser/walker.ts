@@ -10,16 +10,16 @@ import {RuleName, SyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, A
  * @param actor
  */
 export function walk(ast: SyntaxTree, actor: (ast: SyntaxTree) => SyntaxTree) {
-	"use strict";
+    "use strict";
 
-	if (!ast) {
-		return;
-	}
+    if (!ast) {
+        return;
+    }
 
-	let next = actor(ast);
-	if (next) {
-		walk(next, actor);
-	}
+    let next = actor(ast);
+    if (next) {
+        walk(next, actor);
+    }
 }
 
 /**
@@ -30,9 +30,9 @@ export function walk(ast: SyntaxTree, actor: (ast: SyntaxTree) => SyntaxTree) {
  * @param v
  */
 export function visit(ast: SyntaxTree, v: TreeVisitor): void {
-	"use strict";
+    "use strict";
 
-	_visit(() => new SyncTaskPool<void>(), ast, v);
+    _visit(() => new SyncTaskPool<void>(), ast, v);
 }
 
 /**
@@ -43,352 +43,352 @@ export function visit(ast: SyntaxTree, v: TreeVisitor): void {
  * @param v
  */
 export function visitAsync(ast: SyntaxTree, v: TreeVisitor): Promise<void> {
-	"use strict";
+    "use strict";
 
-	return Promise.resolve(_visit(() => new AsyncTaskPool<void>(), ast, v));
+    return Promise.resolve(_visit(() => new AsyncTaskPool<void>(), ast, v));
 }
 
 function _visit(poolGenerator: () => TaskPool<void>, ast: SyntaxTree, v: TreeVisitor): any {
-	"use strict";
+    "use strict";
 
-	let newV: TreeVisitor = {
-		visitDefaultPre: v.visitDefaultPre,
-		visitDefaultPost: v.visitDefaultPost || (() => {
-		}),
-		visitBlockElementPre: v.visitBlockElementPre || v.visitNodePre || v.visitDefaultPre,
-		visitBlockElementPost: v.visitBlockElementPost || v.visitNodePost || v.visitDefaultPost || (() => {
-		}),
-		visitInlineElementPre: v.visitInlineElementPre || v.visitNodePre || v.visitDefaultPre,
-		visitInlineElementPost: v.visitInlineElementPost || v.visitNodePost || v.visitDefaultPost || (() => {
-		}),
-		visitNodePre: v.visitNodePre || v.visitDefaultPre,
-		visitNodePost: v.visitNodePost || v.visitDefaultPost || (() => {
-		}),
-		visitArgumentPre: v.visitArgumentPre || v.visitDefaultPre,
-		visitArgumentPost: v.visitArgumentPost || v.visitDefaultPost || (() => {
-		}),
-		visitChapterPre: v.visitChapterPre || v.visitNodePre || v.visitDefaultPre,
-		visitChapterPost: v.visitChapterPost || v.visitNodePost || v.visitDefaultPost || (() => {
-		}),
-		visitParagraphPre: v.visitParagraphPre || v.visitNodePre || v.visitDefaultPre,
-		visitParagraphPost: v.visitParagraphPost || v.visitNodePost || (() => {
-		}),
-		visitHeadlinePre: v.visitHeadlinePre || v.visitDefaultPre,
-		visitHeadlinePost: v.visitHeadlinePost || v.visitDefaultPost || (() => {
-		}),
-		visitUlistPre: v.visitUlistPre || v.visitNodePre || v.visitDefaultPre,
-		visitUlistPost: v.visitUlistPost || v.visitNodePost || v.visitDefaultPost || (() => {
-		}),
-		visitOlistPre: v.visitOlistPre || v.visitDefaultPre,
-		visitOlistPost: v.visitOlistPost || v.visitDefaultPost || (() => {
-		}),
-		visitDlistPre: v.visitDlistPre || v.visitDefaultPre,
-		visitDlistPost: v.visitDlistPost || v.visitDefaultPost || (() => {
-		}),
-		visitColumnPre: v.visitColumnPre || v.visitNodePre || v.visitDefaultPre,
-		visitColumnPost: v.visitColumnPost || v.visitNodePost || v.visitDefaultPost || (() => {
-		}),
-		visitColumnHeadlinePre: v.visitColumnHeadlinePre || v.visitDefaultPre,
-		visitColumnHeadlinePost: v.visitColumnHeadlinePost || v.visitDefaultPost || (() => {
-		}),
-		visitTextPre: v.visitTextPre || v.visitDefaultPre,
-		visitTextPost: v.visitTextPost || v.visitDefaultPost || (() => {
-		}),
-		visitSingleLineCommentPre: v.visitSingleLineCommentPre || v.visitDefaultPre,
-		visitSingleLineCommentPost: v.visitSingleLineCommentPost || v.visitDefaultPost || (() => {
-		})
-	};
-	newV.visitDefaultPre = newV.visitDefaultPre.bind(v);
-	newV.visitDefaultPost = newV.visitDefaultPost.bind(v);
-	newV.visitBlockElementPre = newV.visitBlockElementPre.bind(v);
-	newV.visitBlockElementPost = newV.visitBlockElementPost.bind(v);
-	newV.visitInlineElementPre = newV.visitInlineElementPre.bind(v);
-	newV.visitInlineElementPost = newV.visitInlineElementPost.bind(v);
-	newV.visitNodePre = newV.visitNodePre.bind(v);
-	newV.visitNodePost = newV.visitNodePost.bind(v);
-	newV.visitArgumentPre = newV.visitArgumentPre.bind(v);
-	newV.visitArgumentPost = newV.visitArgumentPost.bind(v);
-	newV.visitChapterPre = newV.visitChapterPre.bind(v);
-	newV.visitChapterPost = newV.visitChapterPost.bind(v);
-	newV.visitHeadlinePre = newV.visitHeadlinePre.bind(v);
-	newV.visitHeadlinePost = newV.visitHeadlinePost.bind(v);
-	newV.visitUlistPre = newV.visitUlistPre.bind(v);
-	newV.visitUlistPost = newV.visitUlistPost.bind(v);
-	newV.visitOlistPre = newV.visitOlistPre.bind(v);
-	newV.visitOlistPost = newV.visitOlistPost.bind(v);
-	newV.visitDlistPre = newV.visitDlistPre.bind(v);
-	newV.visitDlistPost = newV.visitDlistPost.bind(v);
-	newV.visitColumnPre = newV.visitColumnPre.bind(v);
-	newV.visitColumnPost = newV.visitColumnPost.bind(v);
-	newV.visitColumnHeadlinePre = newV.visitColumnHeadlinePre.bind(v);
-	newV.visitColumnHeadlinePost = newV.visitColumnHeadlinePost.bind(v);
-	newV.visitTextPre = newV.visitTextPre.bind(v);
-	newV.visitTextPost = newV.visitTextPost.bind(v);
-	newV.visitSingleLineCommentPre = newV.visitSingleLineCommentPre.bind(v);
-	newV.visitSingleLineCommentPost = newV.visitSingleLineCommentPost.bind(v);
+    let newV: TreeVisitor = {
+        visitDefaultPre: v.visitDefaultPre,
+        visitDefaultPost: v.visitDefaultPost || (() => {
+        }),
+        visitBlockElementPre: v.visitBlockElementPre || v.visitNodePre || v.visitDefaultPre,
+        visitBlockElementPost: v.visitBlockElementPost || v.visitNodePost || v.visitDefaultPost || (() => {
+        }),
+        visitInlineElementPre: v.visitInlineElementPre || v.visitNodePre || v.visitDefaultPre,
+        visitInlineElementPost: v.visitInlineElementPost || v.visitNodePost || v.visitDefaultPost || (() => {
+        }),
+        visitNodePre: v.visitNodePre || v.visitDefaultPre,
+        visitNodePost: v.visitNodePost || v.visitDefaultPost || (() => {
+        }),
+        visitArgumentPre: v.visitArgumentPre || v.visitDefaultPre,
+        visitArgumentPost: v.visitArgumentPost || v.visitDefaultPost || (() => {
+        }),
+        visitChapterPre: v.visitChapterPre || v.visitNodePre || v.visitDefaultPre,
+        visitChapterPost: v.visitChapterPost || v.visitNodePost || v.visitDefaultPost || (() => {
+        }),
+        visitParagraphPre: v.visitParagraphPre || v.visitNodePre || v.visitDefaultPre,
+        visitParagraphPost: v.visitParagraphPost || v.visitNodePost || (() => {
+        }),
+        visitHeadlinePre: v.visitHeadlinePre || v.visitDefaultPre,
+        visitHeadlinePost: v.visitHeadlinePost || v.visitDefaultPost || (() => {
+        }),
+        visitUlistPre: v.visitUlistPre || v.visitNodePre || v.visitDefaultPre,
+        visitUlistPost: v.visitUlistPost || v.visitNodePost || v.visitDefaultPost || (() => {
+        }),
+        visitOlistPre: v.visitOlistPre || v.visitDefaultPre,
+        visitOlistPost: v.visitOlistPost || v.visitDefaultPost || (() => {
+        }),
+        visitDlistPre: v.visitDlistPre || v.visitDefaultPre,
+        visitDlistPost: v.visitDlistPost || v.visitDefaultPost || (() => {
+        }),
+        visitColumnPre: v.visitColumnPre || v.visitNodePre || v.visitDefaultPre,
+        visitColumnPost: v.visitColumnPost || v.visitNodePost || v.visitDefaultPost || (() => {
+        }),
+        visitColumnHeadlinePre: v.visitColumnHeadlinePre || v.visitDefaultPre,
+        visitColumnHeadlinePost: v.visitColumnHeadlinePost || v.visitDefaultPost || (() => {
+        }),
+        visitTextPre: v.visitTextPre || v.visitDefaultPre,
+        visitTextPost: v.visitTextPost || v.visitDefaultPost || (() => {
+        }),
+        visitSingleLineCommentPre: v.visitSingleLineCommentPre || v.visitDefaultPre,
+        visitSingleLineCommentPost: v.visitSingleLineCommentPost || v.visitDefaultPost || (() => {
+        })
+    };
+    newV.visitDefaultPre = newV.visitDefaultPre.bind(v);
+    newV.visitDefaultPost = newV.visitDefaultPost.bind(v);
+    newV.visitBlockElementPre = newV.visitBlockElementPre.bind(v);
+    newV.visitBlockElementPost = newV.visitBlockElementPost.bind(v);
+    newV.visitInlineElementPre = newV.visitInlineElementPre.bind(v);
+    newV.visitInlineElementPost = newV.visitInlineElementPost.bind(v);
+    newV.visitNodePre = newV.visitNodePre.bind(v);
+    newV.visitNodePost = newV.visitNodePost.bind(v);
+    newV.visitArgumentPre = newV.visitArgumentPre.bind(v);
+    newV.visitArgumentPost = newV.visitArgumentPost.bind(v);
+    newV.visitChapterPre = newV.visitChapterPre.bind(v);
+    newV.visitChapterPost = newV.visitChapterPost.bind(v);
+    newV.visitHeadlinePre = newV.visitHeadlinePre.bind(v);
+    newV.visitHeadlinePost = newV.visitHeadlinePost.bind(v);
+    newV.visitUlistPre = newV.visitUlistPre.bind(v);
+    newV.visitUlistPost = newV.visitUlistPost.bind(v);
+    newV.visitOlistPre = newV.visitOlistPre.bind(v);
+    newV.visitOlistPost = newV.visitOlistPost.bind(v);
+    newV.visitDlistPre = newV.visitDlistPre.bind(v);
+    newV.visitDlistPost = newV.visitDlistPost.bind(v);
+    newV.visitColumnPre = newV.visitColumnPre.bind(v);
+    newV.visitColumnPost = newV.visitColumnPost.bind(v);
+    newV.visitColumnHeadlinePre = newV.visitColumnHeadlinePre.bind(v);
+    newV.visitColumnHeadlinePost = newV.visitColumnHeadlinePost.bind(v);
+    newV.visitTextPre = newV.visitTextPre.bind(v);
+    newV.visitTextPost = newV.visitTextPost.bind(v);
+    newV.visitSingleLineCommentPre = newV.visitSingleLineCommentPre.bind(v);
+    newV.visitSingleLineCommentPost = newV.visitSingleLineCommentPost.bind(v);
 
-	return _visitSub(poolGenerator, null, ast, newV);
+    return _visitSub(poolGenerator, null, ast, newV);
 }
 
 function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast: SyntaxTree, v: TreeVisitor): any {
-	"use strict";
+    "use strict";
 
-	if (ast instanceof BlockElementSyntaxTree) {
-		return (() => {
-			let pool = poolGenerator();
-			let ret = v.visitBlockElementPre(ast, parent);
-			pool.handle(ret, {
-				next: () => {
-					ast.args.forEach((next) => {
-						pool.add(() => _visitSub(poolGenerator, ast, next, v));
-					});
-					ast.childNodes.forEach((next) => {
-						pool.add(() => _visitSub(poolGenerator, ast, next, v));
-					});
-				},
-				func: () => {
-					ret(v);
-				}
-			});
-			pool.add(() => v.visitBlockElementPost(ast, parent));
-			return pool.consume();
-		})();
-	} else if (ast instanceof InlineElementSyntaxTree) {
-		return (() => {
-			let pool = poolGenerator();
-			let ret = v.visitInlineElementPre(ast, parent);
-			pool.handle(ret, {
-				next: () => {
-					ast.childNodes.forEach((next) => {
-						pool.add(() => _visitSub(poolGenerator, ast, next, v));
-					});
-				},
-				func: () => {
-					ret(v);
-				}
-			});
-			pool.add(() => v.visitInlineElementPost(ast, parent));
-			return pool.consume();
-		})();
-	} else if (ast instanceof ArgumentSyntaxTree) {
-		return (() => {
-			let pool = poolGenerator();
-			let ret = v.visitArgumentPre(ast, parent);
-			pool.handle(ret, {
-				next: () => {
-				},
-				func: () => {
-					ret(v);
-				}
-			});
-			pool.add(() => v.visitArgumentPost(ast, parent));
-			return pool.consume();
-		})();
-	} else if (ast instanceof ChapterSyntaxTree) {
-		return (() => {
-			let pool = poolGenerator();
-			let ret = v.visitChapterPre(ast, parent);
-			pool.handle(ret, {
-				next: () => {
-					pool.add(() => _visitSub(poolGenerator, ast, ast.headline, v));
-					if (ast.text) {
-						ast.text.forEach((next) => {
-							pool.add(() => _visitSub(poolGenerator, ast, next, v));
-						});
-					}
-					ast.childNodes.forEach((next) => {
-						pool.add(() => _visitSub(poolGenerator, ast, next, v));
-					});
-				},
-				func: () => {
-					ret(v);
-				}
-			});
-			pool.add(() => v.visitChapterPost(ast, parent));
-			return pool.consume();
-		})();
-	} else if (ast instanceof HeadlineSyntaxTree) {
-		return (() => {
-			let pool = poolGenerator();
-			let ret = v.visitHeadlinePre(ast, parent);
-			pool.handle(ret, {
-				next: () => {
-					pool.add(() => _visitSub(poolGenerator, ast, ast.label, v));
-					pool.add(() => _visitSub(poolGenerator, ast, ast.caption, v));
-				},
-				func: () => {
-					ret(v);
-				}
-			});
-			pool.add(() => v.visitHeadlinePost(ast, parent));
-			return pool.consume();
-		})();
-	} else if (ast instanceof ColumnSyntaxTree) {
-		return (() => {
-			let pool = poolGenerator();
-			let ret = v.visitColumnPre(ast, parent);
-			pool.handle(ret, {
-				next: () => {
-					pool.add(() => _visitSub(poolGenerator, ast, ast.headline, v));
-					if (ast.text) {
-						ast.text.forEach((next) => {
-							pool.add(() => _visitSub(poolGenerator, ast, next, v));
-						});
-					}
-				},
-				func: () => {
-					ret(v);
-				}
-			});
-			pool.add(() => v.visitColumnPost(ast, parent));
-			return pool.consume();
-		})();
-	} else if (ast instanceof ColumnHeadlineSyntaxTree) {
-		return (() => {
-			let pool = poolGenerator();
-			let ret = v.visitColumnHeadlinePre(ast, parent);
-			pool.handle(ret, {
-				next: () => {
-					pool.add(() => _visitSub(poolGenerator, ast, ast.caption, v));
-				},
-				func: () => {
-					ret(v);
-				}
-			});
-			pool.add(() => v.visitColumnHeadlinePost(ast, parent));
-			return pool.consume();
-		})();
-	} else if (ast instanceof UlistElementSyntaxTree) {
-		return (() => {
-			let pool = poolGenerator();
-			let ret = v.visitUlistPre(ast, parent);
-			pool.handle(ret, {
-				next: () => {
-					pool.add(() => _visitSub(poolGenerator, ast, ast.text, v));
-					ast.childNodes.forEach((next) => {
-						pool.add(() => _visitSub(poolGenerator, ast, next, v));
-					});
-				},
-				func: () => {
-					ret(v);
-				}
-			});
-			pool.add(() => v.visitUlistPost(ast, parent));
-			return pool.consume();
-		})();
-	} else if (ast instanceof OlistElementSyntaxTree) {
-		return (() => {
-			let pool = poolGenerator();
-			let ret = v.visitOlistPre(ast, parent);
-			pool.handle(ret, {
-				next: () => {
-					pool.add(() => _visitSub(poolGenerator, ast, ast.text, v));
-				},
-				func: () => {
-					ret(v);
-				}
-			});
-			pool.add(() => v.visitOlistPost(ast, parent));
-			return pool.consume();
-		})();
-	} else if (ast instanceof DlistElementSyntaxTree) {
-		return (() => {
-			let pool = poolGenerator();
-			let ret = v.visitDlistPre(ast, parent);
-			pool.handle(ret, {
-				next: () => {
-					pool.add(() => _visitSub(poolGenerator, ast, ast.text, v));
-					pool.add(() => _visitSub(poolGenerator, ast, ast.content, v));
-				},
-				func: () => {
-					ret(v);
-				}
-			});
-			pool.add(() => v.visitDlistPost(ast, parent));
-			return pool.consume();
-		})();
-	} else if (ast instanceof NodeSyntaxTree && (ast.ruleName === RuleName.Paragraph || ast.ruleName === RuleName.BlockElementParagraph)) {
-		return (() => {
-			let pool = poolGenerator();
-			let ret = v.visitParagraphPre(ast, parent);
-			pool.handle(ret, {
-				next: () => {
-					ast.childNodes.forEach((next) => {
-						pool.add(() => _visitSub(poolGenerator, ast, next, v));
-					});
-				},
-				func: () => {
-					ret(v);
-				}
-			});
-			pool.add(() => v.visitParagraphPost(ast, parent));
-			return pool.consume();
-		})();
-	} else if (ast instanceof NodeSyntaxTree) {
-		return (() => {
-			let pool = poolGenerator();
-			let ret = v.visitNodePre(ast, parent);
-			pool.handle(ret, {
-				next: () => {
-					ast.childNodes.forEach((next) => {
-						pool.add(() => _visitSub(poolGenerator, ast, next, v));
-					});
-				},
-				func: () => {
-					ret(v);
-				}
-			});
-			pool.add(() => v.visitNodePost(ast, parent));
-			return pool.consume();
-		})();
-	} else if (ast instanceof TextNodeSyntaxTree) {
-		return (() => {
-			let pool = poolGenerator();
-			let ret = v.visitTextPre(ast, parent);
-			pool.handle(ret, {
-				next: () => {
-				},
-				func: () => {
-					ret(v);
-				}
-			});
-			pool.add(() => v.visitTextPost(ast, parent));
-			return pool.consume();
-		})();
-	} else if (ast instanceof SingleLineCommentSyntaxTree) {
-		return (() => {
-			let pool = poolGenerator();
-			let ret = v.visitSingleLineCommentPre(ast, parent);
-			pool.handle(ret, {
-				next: () => {
-				},
-				func: () => {
-					ret(v);
-				}
-			});
-			pool.add(() => v.visitSingleLineCommentPost(ast, parent));
-			return pool.consume();
-		})();
-	} else if (ast) {
-		return (() => {
-			let pool = poolGenerator();
-			let ret = v.visitDefaultPre(parent, ast);
-			pool.handle(ret, {
-				next: () => {
-				},
-				func: () => {
-					ret(v);
-				}
-			});
-			pool.add(() => v.visitDefaultPost(parent, ast));
-			return pool.consume();
-		})();
-	} else {
-		return (() => {
-			let pool = poolGenerator();
-			return pool.consume();
-		})();
-	}
+    if (ast instanceof BlockElementSyntaxTree) {
+        return (() => {
+            let pool = poolGenerator();
+            let ret = v.visitBlockElementPre(ast, parent);
+            pool.handle(ret, {
+                next: () => {
+                    ast.args.forEach((next) => {
+                        pool.add(() => _visitSub(poolGenerator, ast, next, v));
+                    });
+                    ast.childNodes.forEach((next) => {
+                        pool.add(() => _visitSub(poolGenerator, ast, next, v));
+                    });
+                },
+                func: () => {
+                    ret(v);
+                }
+            });
+            pool.add(() => v.visitBlockElementPost(ast, parent));
+            return pool.consume();
+        })();
+    } else if (ast instanceof InlineElementSyntaxTree) {
+        return (() => {
+            let pool = poolGenerator();
+            let ret = v.visitInlineElementPre(ast, parent);
+            pool.handle(ret, {
+                next: () => {
+                    ast.childNodes.forEach((next) => {
+                        pool.add(() => _visitSub(poolGenerator, ast, next, v));
+                    });
+                },
+                func: () => {
+                    ret(v);
+                }
+            });
+            pool.add(() => v.visitInlineElementPost(ast, parent));
+            return pool.consume();
+        })();
+    } else if (ast instanceof ArgumentSyntaxTree) {
+        return (() => {
+            let pool = poolGenerator();
+            let ret = v.visitArgumentPre(ast, parent);
+            pool.handle(ret, {
+                next: () => {
+                },
+                func: () => {
+                    ret(v);
+                }
+            });
+            pool.add(() => v.visitArgumentPost(ast, parent));
+            return pool.consume();
+        })();
+    } else if (ast instanceof ChapterSyntaxTree) {
+        return (() => {
+            let pool = poolGenerator();
+            let ret = v.visitChapterPre(ast, parent);
+            pool.handle(ret, {
+                next: () => {
+                    pool.add(() => _visitSub(poolGenerator, ast, ast.headline, v));
+                    if (ast.text) {
+                        ast.text.forEach((next) => {
+                            pool.add(() => _visitSub(poolGenerator, ast, next, v));
+                        });
+                    }
+                    ast.childNodes.forEach((next) => {
+                        pool.add(() => _visitSub(poolGenerator, ast, next, v));
+                    });
+                },
+                func: () => {
+                    ret(v);
+                }
+            });
+            pool.add(() => v.visitChapterPost(ast, parent));
+            return pool.consume();
+        })();
+    } else if (ast instanceof HeadlineSyntaxTree) {
+        return (() => {
+            let pool = poolGenerator();
+            let ret = v.visitHeadlinePre(ast, parent);
+            pool.handle(ret, {
+                next: () => {
+                    pool.add(() => _visitSub(poolGenerator, ast, ast.label, v));
+                    pool.add(() => _visitSub(poolGenerator, ast, ast.caption, v));
+                },
+                func: () => {
+                    ret(v);
+                }
+            });
+            pool.add(() => v.visitHeadlinePost(ast, parent));
+            return pool.consume();
+        })();
+    } else if (ast instanceof ColumnSyntaxTree) {
+        return (() => {
+            let pool = poolGenerator();
+            let ret = v.visitColumnPre(ast, parent);
+            pool.handle(ret, {
+                next: () => {
+                    pool.add(() => _visitSub(poolGenerator, ast, ast.headline, v));
+                    if (ast.text) {
+                        ast.text.forEach((next) => {
+                            pool.add(() => _visitSub(poolGenerator, ast, next, v));
+                        });
+                    }
+                },
+                func: () => {
+                    ret(v);
+                }
+            });
+            pool.add(() => v.visitColumnPost(ast, parent));
+            return pool.consume();
+        })();
+    } else if (ast instanceof ColumnHeadlineSyntaxTree) {
+        return (() => {
+            let pool = poolGenerator();
+            let ret = v.visitColumnHeadlinePre(ast, parent);
+            pool.handle(ret, {
+                next: () => {
+                    pool.add(() => _visitSub(poolGenerator, ast, ast.caption, v));
+                },
+                func: () => {
+                    ret(v);
+                }
+            });
+            pool.add(() => v.visitColumnHeadlinePost(ast, parent));
+            return pool.consume();
+        })();
+    } else if (ast instanceof UlistElementSyntaxTree) {
+        return (() => {
+            let pool = poolGenerator();
+            let ret = v.visitUlistPre(ast, parent);
+            pool.handle(ret, {
+                next: () => {
+                    pool.add(() => _visitSub(poolGenerator, ast, ast.text, v));
+                    ast.childNodes.forEach((next) => {
+                        pool.add(() => _visitSub(poolGenerator, ast, next, v));
+                    });
+                },
+                func: () => {
+                    ret(v);
+                }
+            });
+            pool.add(() => v.visitUlistPost(ast, parent));
+            return pool.consume();
+        })();
+    } else if (ast instanceof OlistElementSyntaxTree) {
+        return (() => {
+            let pool = poolGenerator();
+            let ret = v.visitOlistPre(ast, parent);
+            pool.handle(ret, {
+                next: () => {
+                    pool.add(() => _visitSub(poolGenerator, ast, ast.text, v));
+                },
+                func: () => {
+                    ret(v);
+                }
+            });
+            pool.add(() => v.visitOlistPost(ast, parent));
+            return pool.consume();
+        })();
+    } else if (ast instanceof DlistElementSyntaxTree) {
+        return (() => {
+            let pool = poolGenerator();
+            let ret = v.visitDlistPre(ast, parent);
+            pool.handle(ret, {
+                next: () => {
+                    pool.add(() => _visitSub(poolGenerator, ast, ast.text, v));
+                    pool.add(() => _visitSub(poolGenerator, ast, ast.content, v));
+                },
+                func: () => {
+                    ret(v);
+                }
+            });
+            pool.add(() => v.visitDlistPost(ast, parent));
+            return pool.consume();
+        })();
+    } else if (ast instanceof NodeSyntaxTree && (ast.ruleName === RuleName.Paragraph || ast.ruleName === RuleName.BlockElementParagraph)) {
+        return (() => {
+            let pool = poolGenerator();
+            let ret = v.visitParagraphPre(ast, parent);
+            pool.handle(ret, {
+                next: () => {
+                    ast.childNodes.forEach((next) => {
+                        pool.add(() => _visitSub(poolGenerator, ast, next, v));
+                    });
+                },
+                func: () => {
+                    ret(v);
+                }
+            });
+            pool.add(() => v.visitParagraphPost(ast, parent));
+            return pool.consume();
+        })();
+    } else if (ast instanceof NodeSyntaxTree) {
+        return (() => {
+            let pool = poolGenerator();
+            let ret = v.visitNodePre(ast, parent);
+            pool.handle(ret, {
+                next: () => {
+                    ast.childNodes.forEach((next) => {
+                        pool.add(() => _visitSub(poolGenerator, ast, next, v));
+                    });
+                },
+                func: () => {
+                    ret(v);
+                }
+            });
+            pool.add(() => v.visitNodePost(ast, parent));
+            return pool.consume();
+        })();
+    } else if (ast instanceof TextNodeSyntaxTree) {
+        return (() => {
+            let pool = poolGenerator();
+            let ret = v.visitTextPre(ast, parent);
+            pool.handle(ret, {
+                next: () => {
+                },
+                func: () => {
+                    ret(v);
+                }
+            });
+            pool.add(() => v.visitTextPost(ast, parent));
+            return pool.consume();
+        })();
+    } else if (ast instanceof SingleLineCommentSyntaxTree) {
+        return (() => {
+            let pool = poolGenerator();
+            let ret = v.visitSingleLineCommentPre(ast, parent);
+            pool.handle(ret, {
+                next: () => {
+                },
+                func: () => {
+                    ret(v);
+                }
+            });
+            pool.add(() => v.visitSingleLineCommentPost(ast, parent));
+            return pool.consume();
+        })();
+    } else if (ast) {
+        return (() => {
+            let pool = poolGenerator();
+            let ret = v.visitDefaultPre(parent, ast);
+            pool.handle(ret, {
+                next: () => {
+                },
+                func: () => {
+                    ret(v);
+                }
+            });
+            pool.add(() => v.visitDefaultPost(parent, ast));
+            return pool.consume();
+        })();
+    } else {
+        return (() => {
+            let pool = poolGenerator();
+            return pool.consume();
+        })();
+    }
 }
 
 /**
@@ -400,36 +400,36 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
  * Function を返した時、子要素の探索を行う代わりにその関数が実行される。Functionには引数として実行中のTreeVisitorが渡される。
  */
 export interface TreeVisitor {
-	visitDefaultPre(node: SyntaxTree, parent: SyntaxTree): any;
-	visitDefaultPost?(node: SyntaxTree, parent: SyntaxTree): void;
-	visitNodePre?(node: NodeSyntaxTree, parent: SyntaxTree): any;
-	visitNodePost?(node: NodeSyntaxTree, parent: SyntaxTree): void;
-	visitBlockElementPre?(node: BlockElementSyntaxTree, parent: SyntaxTree): any;
-	visitBlockElementPost?(node: BlockElementSyntaxTree, parent: SyntaxTree): void;
-	visitInlineElementPre?(node: InlineElementSyntaxTree, parent: SyntaxTree): any;
-	visitInlineElementPost?(node: InlineElementSyntaxTree, parent: SyntaxTree): void;
-	visitArgumentPre?(node: ArgumentSyntaxTree, parent: SyntaxTree): any;
-	visitArgumentPost?(node: ArgumentSyntaxTree, parent: SyntaxTree): void;
-	visitChapterPre?(node: ChapterSyntaxTree, parent: SyntaxTree): any;
-	visitChapterPost?(node: ChapterSyntaxTree, parent: SyntaxTree): void;
-	visitParagraphPre?(node: NodeSyntaxTree, parent: SyntaxTree): any;
-	visitParagraphPost?(node: NodeSyntaxTree, parent: SyntaxTree): void;
-	visitHeadlinePre?(node: HeadlineSyntaxTree, parent: SyntaxTree): any;
-	visitHeadlinePost?(node: HeadlineSyntaxTree, parent: SyntaxTree): void;
-	visitUlistPre?(node: UlistElementSyntaxTree, parent: SyntaxTree): any;
-	visitUlistPost?(node: UlistElementSyntaxTree, parent: SyntaxTree): void;
-	visitOlistPre?(node: OlistElementSyntaxTree, parent: SyntaxTree): any;
-	visitOlistPost?(node: OlistElementSyntaxTree, parent: SyntaxTree): void;
-	visitDlistPre?(node: DlistElementSyntaxTree, parent: SyntaxTree): any;
-	visitDlistPost?(node: DlistElementSyntaxTree, parent: SyntaxTree): void;
-	visitColumnPre?(node: ColumnSyntaxTree, parent: SyntaxTree): any;
-	visitColumnPost?(node: ColumnSyntaxTree, parent: SyntaxTree): void;
-	visitColumnHeadlinePre?(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree): any;
-	visitColumnHeadlinePost?(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree): void;
-	visitSingleLineCommentPre?(node: SingleLineCommentSyntaxTree, parent: SyntaxTree): any;
-	visitSingleLineCommentPost?(node: SingleLineCommentSyntaxTree, parent: SyntaxTree): void;
-	visitTextPre?(node: TextNodeSyntaxTree, parent: SyntaxTree): any;
-	visitTextPost?(node: TextNodeSyntaxTree, parent: SyntaxTree): void;
+    visitDefaultPre(node: SyntaxTree, parent: SyntaxTree): any;
+    visitDefaultPost?(node: SyntaxTree, parent: SyntaxTree): void;
+    visitNodePre?(node: NodeSyntaxTree, parent: SyntaxTree): any;
+    visitNodePost?(node: NodeSyntaxTree, parent: SyntaxTree): void;
+    visitBlockElementPre?(node: BlockElementSyntaxTree, parent: SyntaxTree): any;
+    visitBlockElementPost?(node: BlockElementSyntaxTree, parent: SyntaxTree): void;
+    visitInlineElementPre?(node: InlineElementSyntaxTree, parent: SyntaxTree): any;
+    visitInlineElementPost?(node: InlineElementSyntaxTree, parent: SyntaxTree): void;
+    visitArgumentPre?(node: ArgumentSyntaxTree, parent: SyntaxTree): any;
+    visitArgumentPost?(node: ArgumentSyntaxTree, parent: SyntaxTree): void;
+    visitChapterPre?(node: ChapterSyntaxTree, parent: SyntaxTree): any;
+    visitChapterPost?(node: ChapterSyntaxTree, parent: SyntaxTree): void;
+    visitParagraphPre?(node: NodeSyntaxTree, parent: SyntaxTree): any;
+    visitParagraphPost?(node: NodeSyntaxTree, parent: SyntaxTree): void;
+    visitHeadlinePre?(node: HeadlineSyntaxTree, parent: SyntaxTree): any;
+    visitHeadlinePost?(node: HeadlineSyntaxTree, parent: SyntaxTree): void;
+    visitUlistPre?(node: UlistElementSyntaxTree, parent: SyntaxTree): any;
+    visitUlistPost?(node: UlistElementSyntaxTree, parent: SyntaxTree): void;
+    visitOlistPre?(node: OlistElementSyntaxTree, parent: SyntaxTree): any;
+    visitOlistPost?(node: OlistElementSyntaxTree, parent: SyntaxTree): void;
+    visitDlistPre?(node: DlistElementSyntaxTree, parent: SyntaxTree): any;
+    visitDlistPost?(node: DlistElementSyntaxTree, parent: SyntaxTree): void;
+    visitColumnPre?(node: ColumnSyntaxTree, parent: SyntaxTree): any;
+    visitColumnPost?(node: ColumnSyntaxTree, parent: SyntaxTree): void;
+    visitColumnHeadlinePre?(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree): any;
+    visitColumnHeadlinePost?(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree): void;
+    visitSingleLineCommentPre?(node: SingleLineCommentSyntaxTree, parent: SyntaxTree): any;
+    visitSingleLineCommentPost?(node: SingleLineCommentSyntaxTree, parent: SyntaxTree): void;
+    visitTextPre?(node: TextNodeSyntaxTree, parent: SyntaxTree): any;
+    visitTextPost?(node: TextNodeSyntaxTree, parent: SyntaxTree): void;
 }
 
 /**
@@ -437,32 +437,32 @@ export interface TreeVisitor {
  * 構造が汚いのでexportしないこと。
  */
 interface TaskPool<T> {
-	add(value: () => T): void;
-	handle(value: any, statements: { next: () => void; func: () => void; }): void;
-	consume(): any; // T | Promise<T[]>
+    add(value: () => T): void;
+    handle(value: any, statements: { next: () => void; func: () => void; }): void;
+    consume(): any; // T | Promise<T[]>
 }
 
 /**
  * 同期化処理をそのまま同期処理として扱うためのヘルパクラス。
  */
 class SyncTaskPool<T> implements TaskPool<T> {
-	tasks: { (): T; }[] = [];
+    tasks: { (): T; }[] = [];
 
-	add(value: () => T): void {
-		this.tasks.push(value);
-	}
+    add(value: () => T): void {
+        this.tasks.push(value);
+    }
 
-	handle(value: any, statements: { next: () => void; func: () => void; }): void {
-		if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
-			statements.next();
-		} else if (typeof value === "function") {
-			statements.func();
-		}
-	}
+    handle(value: any, statements: { next: () => void; func: () => void; }): void {
+        if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
+            statements.next();
+        } else if (typeof value === "function") {
+            statements.func();
+        }
+    }
 
-	consume(): T[] {
-		return this.tasks.map(task => task());
-	}
+    consume(): T[] {
+        return this.tasks.map(task => task());
+    }
 }
 
 /**
@@ -473,42 +473,42 @@ class SyncTaskPool<T> implements TaskPool<T> {
  * pool.consume().then(()=> ...);
  */
 class AsyncTaskPool<T> implements TaskPool<T> {
-	tasks: { (): Promise<T>; }[] = [];
+    tasks: { (): Promise<T>; }[] = [];
 
-	add(value: () => T): void;
+    add(value: () => T): void;
 
-	add(task: () => Promise<T>): void;
+    add(task: () => Promise<T>): void;
 
-	add(value: () => any) {
-		this.tasks.push(() => Promise.resolve(value()));
-	}
+    add(value: () => any) {
+        this.tasks.push(() => Promise.resolve(value()));
+    }
 
-	handle(value: any, statements: { next: () => void; func: () => void; }): void {
-		if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
-			statements.next();
-		} else if (value && typeof value.then === "function") {
-			this.tasks.push(() => Promise.resolve(value));
-		} else if (typeof value === "function") {
-			statements.func();
-		}
-	}
+    handle(value: any, statements: { next: () => void; func: () => void; }): void {
+        if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
+            statements.next();
+        } else if (value && typeof value.then === "function") {
+            this.tasks.push(() => Promise.resolve(value));
+        } else if (typeof value === "function") {
+            statements.func();
+        }
+    }
 
-	consume(): Promise<T[]> {
-		let promise = new Promise<T[]>((resolve, reject) => {
-			let result: T[] = [];
-			let next = () => {
-				let func = this.tasks.shift();
-				if (!func) {
-					resolve(result);
-					return;
-				}
-				func().then(value => {
-					result.push(value);
-					next();
-				});
-			};
-			next();
-		});
-		return promise;
-	}
+    consume(): Promise<T[]> {
+        let promise = new Promise<T[]>((resolve, reject) => {
+            let result: T[] = [];
+            let next = () => {
+                let func = this.tasks.shift();
+                if (!func) {
+                    resolve(result);
+                    return;
+                }
+                func().then(value => {
+                    result.push(value);
+                    next();
+                });
+            };
+            next();
+        });
+        return promise;
+    }
 }

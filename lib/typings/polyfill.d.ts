@@ -1,3 +1,3 @@
 interface String {
-	trimLeft(): string;
+    trimLeft(): string;
 }

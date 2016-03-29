@@ -1,5 +1,5 @@
 interface String {
-	error: string;
-	warn: string;
-	info: string;
+    error: string;
+    warn: string;
+    info: string;
 }

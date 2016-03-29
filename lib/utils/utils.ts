@@ -20,9 +20,9 @@ false && Book; // tslint消し
  * @returns {boolean}
  */
 export function isBrowser(): boolean {
-	"use strict";
+    "use strict";
 
-	return typeof window !== "undefined";
+    return typeof window !== "undefined";
 }
 
 declare var atom: any;
@@ -32,14 +32,14 @@ declare var atom: any;
  * @returns {boolean}
  */
 export function isNodeJS(): boolean {
-	"use strict";
+    "use strict";
 
-	if (typeof atom !== "undefined") {
-		// atomはNode.jsと判定したいけどwindowあるしbrowserify環境下と区別するために特別扱いする
-		return true;
-	}
+    if (typeof atom !== "undefined") {
+        // atomはNode.jsと判定したいけどwindowあるしbrowserify環境下と区別するために特別扱いする
+        return true;
+    }
 
-	return !isBrowser() && !isAMD() && typeof exports === "object";
+    return !isBrowser() && !isAMD() && typeof exports === "object";
 }
 
 /**
@@ -47,9 +47,9 @@ export function isNodeJS(): boolean {
  * @returns {boolean|any}
  */
 export function isAMD(): boolean {
-	"use strict";
+    "use strict";
 
-	return typeof define === "function" && define.amd;
+    return typeof define === "function" && define.amd;
 }
 
 /**
@@ -59,13 +59,13 @@ export function isAMD(): boolean {
  * @returns {*[]}
  */
 export function flatten(data: any[]): any[] {
-	"use strict";
+    "use strict";
 
-	if (data.some((d) => Array.isArray(d))) {
-		return flatten(data.reduce((p: any[], c: any[]) => p.concat(c), []));
-	} else {
-		return data;
-	}
+    if (data.some((d) => Array.isArray(d))) {
+        return flatten(data.reduce((p: any[], c: any[]) => p.concat(c), []));
+    } else {
+        return data;
+    }
 }
 
 /**
@@ -76,9 +76,9 @@ export function flatten(data: any[]): any[] {
 export function nodeToString(process: Process, node: SyntaxTree): string;
 export function nodeToString(process: BuilderProcess, node: SyntaxTree): string;
 export function nodeToString(process: any, node: SyntaxTree): string {
-	"use strict";
+    "use strict";
 
-	return process.input.substring(node.location.start.offset, node.location.end.offset);
+    return process.input.substring(node.location.start.offset, node.location.end.offset);
 }
 
 /**
@@ -89,53 +89,53 @@ export function nodeToString(process: any, node: SyntaxTree): string {
 export function nodeContentToString(process: Process, node: SyntaxTree): string;
 export function nodeContentToString(process: BuilderProcess, node: SyntaxTree): string;
 export function nodeContentToString(process: any, node: SyntaxTree): string {
-	"use strict";
+    "use strict";
 
-	let minPos = Number.MAX_VALUE;
-	let maxPos = -1;
-	// child
-	let childVisitor: TreeVisitor = {
-		visitDefaultPre: (node: SyntaxTree) => {
-			minPos = Math.min(minPos, node.location.start.offset);
-			maxPos = Math.max(maxPos, node.location.end.offset);
-		}
-	};
-	// root (子要素だけ抽出したい)
-	visit(node, {
-		visitDefaultPre: (node: SyntaxTree) => {
-		},
-		visitNodePre: (node: NodeSyntaxTree) => {
-			// Chapter, Inline, Block もここに来る
-			node.childNodes.forEach(child => visit(child, childVisitor));
-			return false;
-		},
-		visitHeadlinePre: (node: HeadlineSyntaxTree) => {
-			visit(node.caption, childVisitor);
-			return false;
-		},
-		visitUlistPre: (node: UlistElementSyntaxTree) => {
-			visit(node.text, childVisitor);
-			return false;
-		},
-		visitDlistPre: (node: DlistElementSyntaxTree) => {
-			visit(node.text, childVisitor);
-			visit(node.content, childVisitor);
-			return false;
-		},
-		visitOlistPre: (node: OlistElementSyntaxTree) => {
-			visit(node.text, childVisitor);
-			return false;
-		},
-		visitTextPre: (text: TextNodeSyntaxTree) => {
-			visit(node, childVisitor);
-			return false;
-		}
-	});
-	if (maxPos < 0) {
-		return "";
-	} else {
-		return process.input.substring(minPos, maxPos);
-	}
+    let minPos = Number.MAX_VALUE;
+    let maxPos = -1;
+    // child
+    let childVisitor: TreeVisitor = {
+        visitDefaultPre: (node: SyntaxTree) => {
+            minPos = Math.min(minPos, node.location.start.offset);
+            maxPos = Math.max(maxPos, node.location.end.offset);
+        }
+    };
+    // root (子要素だけ抽出したい)
+    visit(node, {
+        visitDefaultPre: (node: SyntaxTree) => {
+        },
+        visitNodePre: (node: NodeSyntaxTree) => {
+            // Chapter, Inline, Block もここに来る
+            node.childNodes.forEach(child => visit(child, childVisitor));
+            return false;
+        },
+        visitHeadlinePre: (node: HeadlineSyntaxTree) => {
+            visit(node.caption, childVisitor);
+            return false;
+        },
+        visitUlistPre: (node: UlistElementSyntaxTree) => {
+            visit(node.text, childVisitor);
+            return false;
+        },
+        visitDlistPre: (node: DlistElementSyntaxTree) => {
+            visit(node.text, childVisitor);
+            visit(node.content, childVisitor);
+            return false;
+        },
+        visitOlistPre: (node: OlistElementSyntaxTree) => {
+            visit(node.text, childVisitor);
+            return false;
+        },
+        visitTextPre: (text: TextNodeSyntaxTree) => {
+            visit(node, childVisitor);
+            return false;
+        }
+    });
+    if (maxPos < 0) {
+        return "";
+    } else {
+        return process.input.substring(minPos, maxPos);
+    }
 }
 
 /**
@@ -146,17 +146,17 @@ export function nodeContentToString(process: any, node: SyntaxTree): string {
  * @returns {SyntaxTree}
  */
 export function findUp(node: SyntaxTree, predicate: (node: SyntaxTree) => boolean): SyntaxTree {
-	"use strict";
+    "use strict";
 
-	let result: SyntaxTree = null;
-	walk(node, (node: SyntaxTree) => {
-		if (predicate(node)) {
-			result = node;
-			return null;
-		}
-		return node.parentNode;
-	});
-	return result;
+    let result: SyntaxTree = null;
+    walk(node, (node: SyntaxTree) => {
+        if (predicate(node)) {
+            result = node;
+            return null;
+        }
+        return node.parentNode;
+    });
+    return result;
 }
 
 /**
@@ -168,54 +168,54 @@ export function findUp(node: SyntaxTree, predicate: (node: SyntaxTree) => boolea
  * @returns {ReVIEW.Parse.ChapterSyntaxTree}
  */
 export function findChapter(node: SyntaxTree, level?: number): ChapterSyntaxTree {
-	"use strict";
+    "use strict";
 
-	let chapter: ChapterSyntaxTree = null;
-	walk(node, (node: SyntaxTree) => {
-		if (node instanceof ChapterSyntaxTree) {
-			chapter = node;
-			if (typeof level === "undefined" || node.level === level) {
-				return null;
-			}
-		}
-		return node.parentNode;
-	});
-	return chapter;
+    let chapter: ChapterSyntaxTree = null;
+    walk(node, (node: SyntaxTree) => {
+        if (node instanceof ChapterSyntaxTree) {
+            chapter = node;
+            if (typeof level === "undefined" || node.level === level) {
+                return null;
+            }
+        }
+        return node.parentNode;
+    });
+    return chapter;
 }
 
 export function findChapterOrColumn(node: SyntaxTree, level?: number): NodeSyntaxTree {
-	"use strict";
+    "use strict";
 
-	let chapter: ChapterSyntaxTree = null;
-	let column: ColumnSyntaxTree = null;
-	walk(node, (node: SyntaxTree) => {
-		if (node instanceof ChapterSyntaxTree) {
-			chapter = node;
-			if (typeof level === "undefined" || node.level === level) {
-				return null;
-			}
-		} else if (node instanceof ColumnSyntaxTree) {
-			column = node;
-			if (typeof level === "undefined" || node.level === level) {
-				return null;
-			}
-		}
-		return node.parentNode;
-	});
-	return chapter || column;
+    let chapter: ChapterSyntaxTree = null;
+    let column: ColumnSyntaxTree = null;
+    walk(node, (node: SyntaxTree) => {
+        if (node instanceof ChapterSyntaxTree) {
+            chapter = node;
+            if (typeof level === "undefined" || node.level === level) {
+                return null;
+            }
+        } else if (node instanceof ColumnSyntaxTree) {
+            column = node;
+            if (typeof level === "undefined" || node.level === level) {
+                return null;
+            }
+        }
+        return node.parentNode;
+    });
+    return chapter || column;
 }
 
 export function target2builder(target: string): Builder {
-	"use strict";
+    "use strict";
 
-	// TODO 適当になおす…
-	let builderName = target.charAt(0).toUpperCase() + target.substring(1) + "Builder";
-	if (builderName === "TextBuilder") {
-		return new TextBuilder();
-	}
-	if (builderName === "HtmlBuilder") {
-		return new HtmlBuilder();
-	}
+    // TODO 適当になおす…
+    let builderName = target.charAt(0).toUpperCase() + target.substring(1) + "Builder";
+    if (builderName === "TextBuilder") {
+        return new TextBuilder();
+    }
+    if (builderName === "HtmlBuilder") {
+        return new HtmlBuilder();
+    }
 	/*
 	for (let name in ReVIEW.Build) {
 		if (name === builderName) {
@@ -224,145 +224,145 @@ export function target2builder(target: string): Builder {
 		}
 	}
 	 */
-	return null;
+    return null;
 }
 
 /**
  * Node.jsでのIOをざっくり行うためのモジュール。
  */
 export module IO {
-	"use strict";
+    "use strict";
 
 	/**
 	 * 指定されたファイルを読み文字列として返す。
 	 * @param path
 	 * @returns {*}
 	 */
-	export function read(path: string): Promise<string> {
-		/* tslint:disable:no-require-imports */
-		let fs = require("fs");
-		/* tslint:enable:no-require-imports */
-		return new Promise((resolve, reject) => {
-			fs.readFile(path, { encoding: "utf8" }, (err: any, data: string) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(data);
-				}
-			});
-		});
-	}
+    export function read(path: string): Promise<string> {
+        /* tslint:disable:no-require-imports */
+        let fs = require("fs");
+        /* tslint:enable:no-require-imports */
+        return new Promise((resolve, reject) => {
+            fs.readFile(path, { encoding: "utf8" }, (err: any, data: string) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
+    }
 
 	/**
 	 * 指定されたファイルへ文字列を書く。
 	 * @param path
 	 * @param content
 	 */
-	export function write(path: string, content: string): Promise<void> {
-		/* tslint:disable:no-require-imports */
-		let fs = require("fs");
-		/* tslint:enable:no-require-imports */
-		return new Promise<void>((resolve, reject) => {
-			fs.writeFile(path, content, (err: any) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(null);
-				}
-			});
-		});
-	}
+    export function write(path: string, content: string): Promise<void> {
+        /* tslint:disable:no-require-imports */
+        let fs = require("fs");
+        /* tslint:enable:no-require-imports */
+        return new Promise<void>((resolve, reject) => {
+            fs.writeFile(path, content, (err: any) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(null);
+                }
+            });
+        });
+    }
 }
 
 /**
  * 行数から桁数の変換 100行 -> 3桁 
  */
 export function linesToFigure(lines: number): number {
-	"use strict";
+    "use strict";
 
-	return String(lines).length;
+    return String(lines).length;
 }
 
 export function padLeft(str: string, pad: string, maxLength: number): string {
-	"use strict";
+    "use strict";
 
-	if (maxLength <= str.length) {
-		return str;
-	}
-	return stringRepeat(maxLength - str.length, pad) + str;
+    if (maxLength <= str.length) {
+        return str;
+    }
+    return stringRepeat(maxLength - str.length, pad) + str;
 }
 
 export function stringRepeat(times: number, src: string): string {
-	"use strict";
+    "use strict";
 
-	return new Array(times + 1).join(src);
+    return new Array(times + 1).join(src);
 }
 
 /**
  * 実行するためのヘルパクラス群
  */
 export module Exec {
-	"use strict";
+    "use strict";
 
-	export function singleCompile(input: string, fileName?: string, target?: string, tmpConfig?: any /* ReVIEW.IConfig */) {
-		"use strict";
+    export function singleCompile(input: string, fileName?: string, target?: string, tmpConfig?: any /* ReVIEW.IConfig */) {
+        "use strict";
 
-		let config: ConfigRaw = tmpConfig || <any>{};
-		config.read = config.read || (() => Promise.resolve(input));
+        let config: ConfigRaw = tmpConfig || <any>{};
+        config.read = config.read || (() => Promise.resolve(input));
 
-		config.analyzer = config.analyzer || new DefaultAnalyzer();
-		config.validators = config.validators || [new DefaultValidator()];
-		if (target && target2builder(target) == null) {
-			console.error(target + " is not exists in builder");
-			process.exit(1);
-		}
-		config.builders = config.builders || target ? [target2builder(target)] : [new TextBuilder()];
-		config.book = config.book || {
-			contents: [
-				{ file: fileName }
-			]
-		};
-		config.book.contents = config.book.contents || [
-			{ file: fileName }
-		];
+        config.analyzer = config.analyzer || new DefaultAnalyzer();
+        config.validators = config.validators || [new DefaultValidator()];
+        if (target && target2builder(target) == null) {
+            console.error(target + " is not exists in builder");
+            process.exit(1);
+        }
+        config.builders = config.builders || target ? [target2builder(target)] : [new TextBuilder()];
+        config.book = config.book || {
+            contents: [
+                { file: fileName }
+            ]
+        };
+        config.book.contents = config.book.contents || [
+            { file: fileName }
+        ];
 
-		let results: any = {};
-		config.write = config.write || ((path: string, content: any) => results[path] = content);
+        let results: any = {};
+        config.write = config.write || ((path: string, content: any) => results[path] = content);
 
-		config.listener = config.listener || {
-			onReports: () => {
-			},
-			onCompileSuccess: () => {
-			},
-			onCompileFailed: () => {
-			}
-		};
-		config.listener.onReports = config.listener.onReports || (() => {
-		});
-		config.listener.onCompileSuccess = config.listener.onCompileSuccess || (() => {
-		});
-		config.listener.onCompileFailed = config.listener.onCompileFailed || (() => {
-		});
-		let success: boolean;
-		let originalCompileSuccess = config.listener.onCompileSuccess;
-		config.listener.onCompileSuccess = (book) => {
-			success = true;
-			originalCompileSuccess(book);
-		};
-		let originalCompileFailed = config.listener.onCompileFailed;
-		config.listener.onCompileFailed = (book) => {
-			success = false;
-			originalCompileFailed(book);
-		};
+        config.listener = config.listener || {
+            onReports: () => {
+            },
+            onCompileSuccess: () => {
+            },
+            onCompileFailed: () => {
+            }
+        };
+        config.listener.onReports = config.listener.onReports || (() => {
+        });
+        config.listener.onCompileSuccess = config.listener.onCompileSuccess || (() => {
+        });
+        config.listener.onCompileFailed = config.listener.onCompileFailed || (() => {
+        });
+        let success: boolean;
+        let originalCompileSuccess = config.listener.onCompileSuccess;
+        config.listener.onCompileSuccess = (book) => {
+            success = true;
+            originalCompileSuccess(book);
+        };
+        let originalCompileFailed = config.listener.onCompileFailed;
+        config.listener.onCompileFailed = (book) => {
+            success = false;
+            originalCompileFailed(book);
+        };
 
-		return start((review) => {
-			review.initConfig(config);
-		})
-			.then(book => {
-				return {
-					book: book,
-					results: results
-				};
-			});
-	}
+        return start((review) => {
+            review.initConfig(config);
+        })
+            .then(book => {
+                return {
+                    book: book,
+                    results: results
+                };
+            });
+    }
 }
