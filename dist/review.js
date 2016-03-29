@@ -261,7 +261,7 @@ var DefaultBuilder = (function () {
 }());
 exports.DefaultBuilder = DefaultBuilder;
 
-},{"../js/exception":11,"../parser/parser":14,"../parser/walker":17,"../utils/utils":19}],2:[function(require,module,exports){
+},{"../js/exception":12,"../parser/parser":15,"../parser/walker":18,"../utils/utils":20}],2:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -913,7 +913,7 @@ var HtmlBuilder = (function (_super) {
 }(builder_1.DefaultBuilder));
 exports.HtmlBuilder = HtmlBuilder;
 
-},{"../i18n/i18n":8,"../parser/parser":14,"../parser/walker":17,"../utils/utils":19,"./builder":1}],3:[function(require,module,exports){
+},{"../i18n/i18n":8,"../parser/parser":15,"../parser/walker":18,"../utils/utils":20,"./builder":1}],3:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1429,7 +1429,7 @@ var TextBuilder = (function (_super) {
 }(builder_1.DefaultBuilder));
 exports.TextBuilder = TextBuilder;
 
-},{"../i18n/i18n":8,"../parser/parser":14,"../parser/walker":17,"../utils/utils":19,"./builder":1}],4:[function(require,module,exports){
+},{"../i18n/i18n":8,"../parser/parser":15,"../parser/walker":18,"../utils/utils":20,"./builder":1}],4:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1786,7 +1786,7 @@ var WebBrowserConfig = (function (_super) {
 }(Config));
 exports.WebBrowserConfig = WebBrowserConfig;
 
-},{"../builder/builder":1,"../model/compilerModel":12,"../parser/analyzer":13,"../parser/validator":16,"../utils/utils":19,"./configRaw":5,"colors":undefined,"fs":undefined,"path":undefined}],5:[function(require,module,exports){
+},{"../builder/builder":1,"../model/compilerModel":13,"../parser/analyzer":14,"../parser/validator":17,"../utils/utils":20,"./configRaw":5,"colors":undefined,"fs":undefined,"path":undefined}],5:[function(require,module,exports){
 "use strict";
 var BookStructure = (function () {
     function BookStructure(predef, contents, appendix, postdef) {
@@ -2085,7 +2085,7 @@ var Controller = (function () {
 }());
 exports.Controller = Controller;
 
-},{"../../resources/grammar":20,"../builder/htmlBuilder":2,"../builder/textBuilder":3,"../model/compilerModel":12,"../parser/parser":14,"../parser/preprocessor":15,"../parser/walker":17,"../utils/utils":19,"./config":4,"./configRaw":5}],7:[function(require,module,exports){
+},{"../../resources/grammar":21,"../builder/htmlBuilder":2,"../builder/textBuilder":3,"../model/compilerModel":13,"../parser/parser":15,"../parser/preprocessor":16,"../parser/walker":18,"../utils/utils":20,"./config":4,"./configRaw":5}],7:[function(require,module,exports){
 "use strict";
 exports.en = {
     "sample": "Hello!"
@@ -2093,42 +2093,49 @@ exports.en = {
 
 },{}],8:[function(require,module,exports){
 "use strict";
-var utils_1 = require("../utils/utils");
+var utils_1 = require("./utils");
+var utils_2 = require("../utils/utils");
 var en_1 = require("./en");
 var ja_1 = require("./ja");
-var i18next;
+var langs = {
+    ja: ja_1.ja,
+    en: en_1.en,
+};
+var resource = utils_1.deepAssign({}, langs.en, langs.ja);
 function setup(lang) {
     "use strict";
     if (lang === void 0) { lang = "ja"; }
-    i18next.init({
-        lng: lang,
-        fallbackLng: "ja",
-        resStore: {
-            "ja": { translation: ja_1.ja },
-            "en": { translation: en_1.en }
-        }
-    });
+    resource = utils_1.deepAssign({}, langs.en, langs.ja, langs[lang]);
 }
 exports.setup = setup;
+var sprintf;
+if (typeof window !== "undefined" && window.sprintf) {
+    sprintf = window.sprintf;
+}
+else {
+    sprintf = require("sprintf-js").sprintf;
+}
+utils_2.isNodeJS();
 function t(str) {
     "use strict";
     var args = [];
     for (var _i = 1; _i < arguments.length; _i++) {
         args[_i - 1] = arguments[_i];
     }
-    return i18next.t(str, { postProcess: "sprintf", sprintf: args });
+    var parts = str.split(".");
+    var base = resource;
+    parts.forEach(function (part) {
+        base = base[part];
+    });
+    if (typeof base !== "string") {
+        throw new Error("unknown key: " + str);
+    }
+    return sprintf.apply(void 0, [base].concat(args));
 }
 exports.t = t;
-if (typeof window !== "undefined" && window.i18n) {
-    i18next = window.i18n;
-}
-else {
-    i18next = require("i18next");
-}
-utils_1.isNodeJS();
 setup();
 
-},{"../utils/utils":19,"./en":7,"./ja":9,"i18next":undefined}],9:[function(require,module,exports){
+},{"../utils/utils":20,"./en":7,"./ja":9,"./utils":10,"sprintf-js":undefined}],9:[function(require,module,exports){
 "use strict";
 exports.ja = {
     "sample": "こんちゃーす！",
@@ -2211,6 +2218,28 @@ exports.ja = {
 
 },{}],10:[function(require,module,exports){
 "use strict";
+function deepAssign(target) {
+    "use strict";
+    var args = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        args[_i - 1] = arguments[_i];
+    }
+    args.forEach(function (arg) {
+        Object.keys(arg).forEach(function (key) {
+            if (typeof arg[key] !== "object") {
+                target[key] = arg[key];
+            }
+            else {
+                target[key] = deepAssign(target[key] || {}, arg[key]);
+            }
+        });
+    });
+    return target;
+}
+exports.deepAssign = deepAssign;
+
+},{}],11:[function(require,module,exports){
+"use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
@@ -2244,7 +2273,7 @@ function start(setup, options) {
 }
 exports.start = start;
 
-},{"./builder/builder":1,"./builder/htmlBuilder":2,"./builder/textBuilder":3,"./controller/controller":6,"./model/compilerModel":12,"./parser/analyzer":13,"./parser/parser":14,"./parser/validator":16}],11:[function(require,module,exports){
+},{"./builder/builder":1,"./builder/htmlBuilder":2,"./builder/textBuilder":3,"./controller/controller":6,"./model/compilerModel":13,"./parser/analyzer":14,"./parser/parser":15,"./parser/validator":17}],12:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2285,7 +2314,7 @@ var AnalyzerError = (function (_super) {
 }(DummyError));
 exports.AnalyzerError = AnalyzerError;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
 var i18n_1 = require("../i18n/i18n");
 var walker_1 = require("../parser/walker");
@@ -2678,7 +2707,7 @@ var ContentChunk = (function () {
 }());
 exports.ContentChunk = ContentChunk;
 
-},{"../i18n/i18n":8,"../parser/walker":17}],13:[function(require,module,exports){
+},{"../i18n/i18n":8,"../parser/walker":18}],14:[function(require,module,exports){
 "use strict";
 var i18n_1 = require("../i18n/i18n");
 var exception_1 = require("../js/exception");
@@ -3376,7 +3405,7 @@ var DefaultAnalyzer = (function () {
 }());
 exports.DefaultAnalyzer = DefaultAnalyzer;
 
-},{"../i18n/i18n":8,"../js/exception":11,"../parser/parser":14,"../utils/utils":19}],14:[function(require,module,exports){
+},{"../i18n/i18n":8,"../js/exception":12,"../parser/parser":15,"../utils/utils":20}],15:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -4026,7 +4055,7 @@ var SingleLineCommentSyntaxTree = (function (_super) {
 }(SyntaxTree));
 exports.SingleLineCommentSyntaxTree = SingleLineCommentSyntaxTree;
 
-},{"../../resources/grammar":20,"./walker":17}],15:[function(require,module,exports){
+},{"../../resources/grammar":21,"./walker":18}],16:[function(require,module,exports){
 "use strict";
 var parser_1 = require("./parser");
 var walker_1 = require("./walker");
@@ -4235,7 +4264,7 @@ var SyntaxPreprocessor = (function () {
 }());
 exports.SyntaxPreprocessor = SyntaxPreprocessor;
 
-},{"../utils/utils":19,"./parser":14,"./walker":17}],16:[function(require,module,exports){
+},{"../utils/utils":20,"./parser":15,"./walker":18}],17:[function(require,module,exports){
 "use strict";
 var i18n_1 = require("../i18n/i18n");
 var analyzer_1 = require("./analyzer");
@@ -4433,7 +4462,7 @@ var DefaultValidator = (function () {
 }());
 exports.DefaultValidator = DefaultValidator;
 
-},{"../i18n/i18n":8,"../utils/utils":19,"./analyzer":13,"./walker":17}],17:[function(require,module,exports){
+},{"../i18n/i18n":8,"../utils/utils":20,"./analyzer":14,"./walker":18}],18:[function(require,module,exports){
 "use strict";
 var parser_1 = require("./parser");
 function walk(ast, actor) {
@@ -4870,7 +4899,7 @@ var AsyncTaskPool = (function () {
     return AsyncTaskPool;
 }());
 
-},{"./parser":14}],18:[function(require,module,exports){
+},{"./parser":15}],19:[function(require,module,exports){
 "use strict";
 var parser_1 = require("../parser/parser");
 var env;
@@ -5035,7 +5064,7 @@ function dlistElement(text, content) {
 }
 exports.dlistElement = dlistElement;
 
-},{"../parser/parser":14}],19:[function(require,module,exports){
+},{"../parser/parser":15}],20:[function(require,module,exports){
 "use strict";
 var compilerModel_1 = require("../model/compilerModel");
 var parser_1 = require("../parser/parser");
@@ -5300,7 +5329,7 @@ var Exec;
     Exec.singleCompile = singleCompile;
 })(Exec = exports.Exec || (exports.Exec = {}));
 
-},{"../builder/htmlBuilder":2,"../builder/textBuilder":3,"../index":10,"../model/compilerModel":12,"../parser/analyzer":13,"../parser/parser":14,"../parser/validator":16,"../parser/walker":17,"fs":undefined}],20:[function(require,module,exports){
+},{"../builder/htmlBuilder":2,"../builder/textBuilder":3,"../index":11,"../model/compilerModel":13,"../parser/analyzer":14,"../parser/parser":15,"../parser/validator":17,"../parser/walker":18,"fs":undefined}],21:[function(require,module,exports){
 module.exports = (function() {
   "use strict";
 
@@ -9442,5 +9471,5 @@ module.exports = (function() {
   };
 })();
 
-},{"../lib/peg/action":18}]},{},[10])(10)
+},{"../lib/peg/action":19}]},{},[11])(11)
 });

@@ -1,40 +1,45 @@
 "use strict";
 
+import {deepAssign} from "./utils";
 import {isNodeJS} from "../utils/utils";
 
 import {en} from "./en";
 import {ja} from "./ja";
 
-/* tslint:disable:no-use-before-declare */
+let langs: any = {
+    ja: ja,
+    en: en,
+};
 
-let i18next: I18nextStatic;
+let resource: any = deepAssign({}, langs.en, langs.ja);
 
 export function setup(lang = "ja") {
 	"use strict";
 
-	i18next.init({
-		lng: lang,
-		fallbackLng: "ja",
-		resStore: {
-			"ja": { translation: ja },
-			"en": { translation: en }
-		}
-	});
+    resource = deepAssign({}, langs.en, langs.ja, langs[lang]);
 }
+
+let sprintf: any;
+if (typeof window !== "undefined" && (<any>window).sprintf) {
+	sprintf = (<any>window).sprintf;
+} else {
+	sprintf = require("sprintf-js").sprintf;
+}
+isNodeJS(); // TODO utilsをi18n.ts内で使わないと実行時エラーになる
 
 export function t(str: string, ...args: any[]): string {
 	"use strict";
 
-	return i18next.t(str, { postProcess: "sprintf", sprintf: args });
-}
+    let parts = str.split(".");
+    let base = resource;
+    parts.forEach(part => {
+        base = base[part];
+    });
+    if(typeof base !== "string") {
+        throw new Error(`unknown key: ${str}`);
+    }
 
-if (typeof window !== "undefined" && (<any>window).i18n) {
-	i18next = (<any>window).i18n;
-} else {
-	i18next = require("i18next");
+	return sprintf(base, ...args);
 }
-isNodeJS(); // TODO utilsをi18n.ts内で使わないと実行時エラーになる
-
-/* tslint:enable:no-use-before-declare */
 
 setup();

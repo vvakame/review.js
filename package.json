@@ -29,11 +29,11 @@
     "node": ">= 4.0.0"
   },
   "dependencies": {
-    "update-notifier": "^0.6.3",
-    "commandpost": "^1.0.0",
-    "i18next": "^1.10.5",
     "colors": "^1.1.2",
-    "js-yaml": "^3.5.5"
+    "commandpost": "^1.0.0",
+    "js-yaml": "^3.5.5",
+    "sprintf-js": "^1.0.3",
+    "update-notifier": "^0.6.3"
   },
   "devDependencies": {
     "benchmark": "^2.1.0",

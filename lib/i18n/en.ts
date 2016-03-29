@@ -1,5 +1,5 @@
 "use strict";
 
-export let en: IResourceStoreKey = {
+export let en: any = {
 	"sample": "Hello!"
 };
