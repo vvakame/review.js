@@ -19,9 +19,12 @@ var reviewParser = require("../resources/grammar").PEG;
 
 var baseGrammar = fs.readFileSync("../resources/grammar.pegjs", {encoding: "utf8"});
 var base1 = PEG.buildParser(baseGrammar);
+fs.writeFileSync("./base1.js", base1.parse.toString() + "\n module.exports = peg$parse;");
+var base1parser = require("./base1");
 
-var altGrammar = fs.readFileSync("../resources/grammar-improve.pegjs", {encoding: "utf8"});
-var base2 = PEG.buildParser(altGrammar);
+var base2 = PEG.buildParser(baseGrammar, {cache: true});
+fs.writeFileSync("./base2.js", base2.parse.toString() + "\n module.exports = peg$parse;");
+var base2parser = require("./base2");
 
 var benchmark = require('benchmark');
 var suite = new benchmark.Suite();
@@ -30,15 +33,15 @@ suite
 		reviewParser.parse(content);
 	})
 	.add("parse1", function() {
-		base1.parse(content);
+		base1parser(content);
 	})
 	.add("parse2", function() {
-	  base2.parse(content);
+	    base2parser(content);
 	})
 	.on('cycle', function(event) {
-	  console.log(String(event.target));
+	    console.log(String(event.target));
 	})
 	.on('complete', function() {
-	  console.log('Fastest is ' + this.filter('fastest').pluck('name'));
+	    console.log('Fastest is ' + this.filter('fastest').map('name'));
 	})
 	.run({ 'async': true });

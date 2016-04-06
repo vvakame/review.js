@@ -39,6 +39,8 @@ test-results.xml
 pages/
 wiki/
 
+benchmark/base*.js
+
 bin/out/
 tscommand.tmp.txt
 .baseDir.ts
