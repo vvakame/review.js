@@ -2,7 +2,7 @@
   "name": "review.js",
   "author": "vvakame",
   "private": false,
-  "version": "0.10.4",
+  "version": "0.11.0",
   "description": "ReVIEW implementation by JavaScript",
   "main": "./index",
   "bin": {
