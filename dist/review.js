@@ -285,24 +285,23 @@ var HtmlBuilder = (function (_super) {
             "<": "&lt;",
             ">": "&gt;",
             '"': '&quot;',
-            "'": '&#39;',
-            "/": '&#x2F;'
         };
     }
     HtmlBuilder.prototype.escape = function (data) {
         var _this = this;
-        return String(data).replace(/[&<>"'\/]/g, function (c) { return _this.escapeMap[c]; });
+        var regexp = new RegExp("[" + Object.keys(this.escapeMap).join("") + "]", "g");
+        return String(data).replace(regexp, function (c) { return _this.escapeMap[c]; });
     };
     HtmlBuilder.prototype.processPost = function (process, chunk) {
         if (this.standalone) {
             var pre = "";
-            pre += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-            pre += "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n";
-            pre += "<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:ops=\"http://www.idpf.org/2007/ops\" xml:lang=\"ja\">\n";
-            pre += "<head>\n";
-            pre += "  <meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\" />\n";
-            pre += "  <meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n";
-            pre += "  <meta name=\"generator\" content=\"Re:VIEW\" />\n";
+            pre += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n";
+            pre += "<!DOCTYPE html>" + "\n";
+            pre += "<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:epub=\"http://www.idpf.org/2007/ops\" xmlns:ops=\"http://www.idpf.org/2007/ops\" xml:lang=\"ja\">" + "\n";
+            pre += "<head>" + "\n";
+            pre += "  <meta charset=\"UTF-8\" />" + "\n";
+            pre += "  <link rel=\"stylesheet\" type=\"text/css\" href=\"stylesheet.css\" />" + "\n";
+            pre += "  <meta name=\"generator\" content=\"Re:VIEW\" />" + "\n";
             var name_1 = null;
             walker_1.visit(chunk.tree.ast, {
                 visitDefaultPre: function () {
@@ -358,7 +357,9 @@ var HtmlBuilder = (function (_super) {
         process.outRaw("<a id=\"h").out(constructLabel(node)).outRaw("\"></a>");
         if (node.level === 1) {
             var text = i18n_1.t("builder.chapter", node.parentNode.no);
+            process.outRaw("<span class=\"secno\">");
             process.out(text).out("　");
+            process.outRaw("</span>");
         }
         else if (node.level === 2) {
         }
@@ -586,10 +587,10 @@ var HtmlBuilder = (function (_super) {
         process.outRaw("</b>");
     };
     HtmlBuilder.prototype.inline_code_pre = function (process, node) {
-        process.outRaw("<tt class=\"inline-code\">");
+        process.outRaw("<code class=\"inline-code tt\">");
     };
     HtmlBuilder.prototype.inline_code_post = function (process, node) {
-        process.outRaw("</tt>");
+        process.outRaw("</code>");
     };
     HtmlBuilder.prototype.inline_href = function (process, node) {
         var href = utils_1.nodeContentToString(process, node);
@@ -608,10 +609,10 @@ var HtmlBuilder = (function (_super) {
         return false;
     };
     HtmlBuilder.prototype.inline_tt_pre = function (process, node) {
-        process.outRaw("<tt>");
+        process.outRaw("<code class=\"tt\">");
     };
     HtmlBuilder.prototype.inline_tt_post = function (process, node) {
-        process.outRaw("</tt>");
+        process.outRaw("</code>");
     };
     HtmlBuilder.prototype.inline_ruby_pre = function (process, node) {
         process.outRaw("<ruby>");
@@ -619,10 +620,10 @@ var HtmlBuilder = (function (_super) {
             node.childNodes.forEach(function (node) {
                 var contentString = utils_1.nodeContentToString(process, node);
                 var keywordData = contentString.split(",");
-                process.outRaw("<rb>").out(keywordData[0]).outRaw("</rb>");
-                process.outRaw("<rp>（</rp><rt>");
-                process.out(keywordData[1]);
-                process.outRaw("</rt><rp>）</rp>");
+                process.out(keywordData[0]);
+                process.outRaw("<rp>（</rp>");
+                process.outRaw("<rt>").out(keywordData[1]).outRaw("</rt>");
+                process.outRaw("<rp>）</rp>");
             });
         };
     };
@@ -675,8 +676,15 @@ var HtmlBuilder = (function (_super) {
                     scale = parseFloat(result[1]);
                 }
             }
-            process.outRaw("<div class=\"image\">\n");
-            process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
+            process.outRaw("<div id=\"").out(label).outRaw("\" class=\"image\">" + "\n");
+            if (scale !== 1) {
+                var scaleClass = "000" + scale * 100;
+                scaleClass = scaleClass.substr(scaleClass.length - 3);
+                process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" class=\"width-").out(scaleClass).outRaw("per\" />\n");
+            }
+            else {
+                process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" />" + "\n");
+            }
             process.outRaw("<p class=\"caption\">\n");
             process.out("図").out(process.base.chapter.no).out(".").out(node.no).out(": ").out(caption);
             process.outRaw("\n</p>\n");
@@ -706,10 +714,12 @@ var HtmlBuilder = (function (_super) {
             }
             process.outRaw("<div class=\"image\">\n");
             if (scale !== 1) {
-                process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
+                var scaleClass = "000" + scale * 100;
+                scaleClass = scaleClass.substr(scaleClass.length - 3);
+                process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" class=\"width-").out(scaleClass).outRaw("per\" />\n");
             }
             else {
-                process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" />\n");
+                process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" />" + "\n");
             }
             if (node.args[1]) {
                 process.outRaw("<p class=\"caption\">\n");
@@ -748,16 +758,18 @@ var HtmlBuilder = (function (_super) {
         return false;
     };
     HtmlBuilder.prototype.block_footnote = function (process, node) {
-        process.outRaw("<div class=\"footnote\"><p class=\"footnote\">[<a id=\"fn-");
+        var label = utils_1.nodeContentToString(process, node.args[0]);
+        process.outRaw("<div class=\"footnote\" epub:type=\"footnote\" id=\"fn-").outRaw(label).outRaw("\"><p class=\"footnote\">");
+        process.outRaw("[*").out(node.no).outRaw("] ");
         return function (v) {
-            process.outRaw(utils_1.nodeContentToString(process, node.args[0])).outRaw("\">*").out(node.no).outRaw("</a>] ");
             walker_1.visit(node.args[1], v);
             process.outRaw("</p></div>\n");
         };
     };
     HtmlBuilder.prototype.inline_fn = function (process, node) {
         var footnoteNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-        process.outRaw("<a href=\"#fn-").out(utils_1.nodeContentToString(process, footnoteNode.args[0])).outRaw("\">*").out(footnoteNode.no).outRaw("</a>");
+        var label = utils_1.nodeContentToString(process, footnoteNode.args[0]);
+        process.outRaw("<a id=\"fnb-").out(label).outRaw("\" href=\"#fn-").out(label).outRaw("\" class=\"noteref\" epub:type=\"noteref\">*").out(footnoteNode.no).outRaw("</a>");
         return false;
     };
     HtmlBuilder.prototype.block_lead_pre = function (process, node) {
@@ -767,16 +779,16 @@ var HtmlBuilder = (function (_super) {
         process.outRaw("</div>\n");
     };
     HtmlBuilder.prototype.inline_tti_pre = function (process, node) {
-        process.outRaw("<tt><i>");
+        process.outRaw("<code class=\"tt\"><i>");
     };
     HtmlBuilder.prototype.inline_tti_post = function (process, node) {
-        process.outRaw("</i></tt>");
+        process.outRaw("</i></code>");
     };
     HtmlBuilder.prototype.inline_ttb_pre = function (process, node) {
-        process.outRaw("<tt><b>");
+        process.outRaw("<code class=\"tt\"><b>");
     };
     HtmlBuilder.prototype.inline_ttb_post = function (process, node) {
-        process.outRaw("</b></tt>");
+        process.outRaw("</b></code>");
     };
     HtmlBuilder.prototype.block_noindent = function (process, node) {
         return false;
@@ -947,7 +959,7 @@ var TextBuilder = (function (_super) {
         process.out("\n\n");
     };
     TextBuilder.prototype.columnHeadlinePre = function (process, node) {
-        process.out("\n◆→開始:←◆\n");
+        process.out("\n◆→開始:コラム←◆\n");
         process.out("■");
         return function (v) {
             walker_1.visit(node.caption, v);
@@ -957,7 +969,7 @@ var TextBuilder = (function (_super) {
         process.out("\n");
     };
     TextBuilder.prototype.columnPost = function (process, node) {
-        process.out("◆→終了:←◆\n\n");
+        process.out("◆→終了:コラム←◆\n\n");
     };
     TextBuilder.prototype.paragraphPost = function (process, name, node) {
         process.out("\n");

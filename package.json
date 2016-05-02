@@ -39,6 +39,7 @@
     "benchmark": "^2.1.0",
     "dtsm": "^1.1.0",
     "espower-loader": "^1.0.0",
+    "glob": "^7.0.3",
     "grunt": "^1.0.1",
     "grunt-bower-task": "^0.4.0",
     "grunt-browserify": "^5.0.0",

@@ -1,0 +1,405 @@
+{
+  "ruleName": "Start",
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 11,
+      "offset": 96
+    }
+  },
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 11,
+          "offset": 96
+        }
+      },
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 5,
+              "column": 11,
+              "offset": 96
+            }
+          },
+          "headline": {
+            "ruleName": "Headline",
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 2,
+                "column": 1,
+                "offset": 11
+              }
+            },
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 11,
+                  "offset": 10
+                }
+              },
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 11,
+                      "offset": 10
+                    }
+                  },
+                  "text": "headline"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "location": {
+                "start": {
+                  "line": 2,
+                  "column": 1,
+                  "offset": 11
+                },
+                "end": {
+                  "line": 4,
+                  "column": 1,
+                  "offset": 29
+                }
+              },
+              "childNodes": [
+                {
+                  "ruleName": "InlineElement",
+                  "location": {
+                    "start": {
+                      "line": 2,
+                      "column": 1,
+                      "offset": 11
+                    },
+                    "end": {
+                      "line": 2,
+                      "column": 17,
+                      "offset": 27
+                    }
+                  },
+                  "symbol": "kw",
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "location": {
+                        "start": {
+                          "line": 2,
+                          "column": 7,
+                          "offset": 17
+                        },
+                        "end": {
+                          "line": 2,
+                          "column": 16,
+                          "offset": 26
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "location": {
+                            "start": {
+                              "line": 2,
+                              "column": 7,
+                              "offset": 17
+                            },
+                            "end": {
+                              "line": 2,
+                              "column": 16,
+                              "offset": 26
+                            }
+                          },
+                          "text": "hoge,fuga"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "location": {
+                "start": {
+                  "line": 4,
+                  "column": 1,
+                  "offset": 29
+                },
+                "end": {
+                  "line": 5,
+                  "column": 11,
+                  "offset": 96
+                }
+              },
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "location": {
+                    "start": {
+                      "line": 4,
+                      "column": 1,
+                      "offset": 29
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 11,
+                      "offset": 39
+                    }
+                  },
+                  "text": "というように、型を "
+                },
+                {
+                  "ruleName": "InlineElement",
+                  "location": {
+                    "start": {
+                      "line": 4,
+                      "column": 11,
+                      "offset": 39
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 20,
+                      "offset": 48
+                    }
+                  },
+                  "symbol": "tti",
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "location": {
+                        "start": {
+                          "line": 4,
+                          "column": 18,
+                          "offset": 46
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 19,
+                          "offset": 47
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "location": {
+                            "start": {
+                              "line": 4,
+                              "column": 18,
+                              "offset": 46
+                            },
+                            "end": {
+                              "line": 4,
+                              "column": 19,
+                              "offset": 47
+                            }
+                          },
+                          "text": "<"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "ruleName": "ContentText",
+                  "location": {
+                    "start": {
+                      "line": 4,
+                      "column": 20,
+                      "offset": 48
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 23,
+                      "offset": 51
+                    }
+                  },
+                  "text": " と　"
+                },
+                {
+                  "ruleName": "InlineElement",
+                  "location": {
+                    "start": {
+                      "line": 4,
+                      "column": 23,
+                      "offset": 51
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 32,
+                      "offset": 60
+                    }
+                  },
+                  "symbol": "tti",
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "location": {
+                        "start": {
+                          "line": 4,
+                          "column": 30,
+                          "offset": 58
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 31,
+                          "offset": 59
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "location": {
+                            "start": {
+                              "line": 4,
+                              "column": 30,
+                              "offset": 58
+                            },
+                            "end": {
+                              "line": 4,
+                              "column": 31,
+                              "offset": 59
+                            }
+                          },
+                          "text": ">"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "ruleName": "ContentText",
+                  "location": {
+                    "start": {
+                      "line": 4,
+                      "column": 32,
+                      "offset": 60
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 57,
+                      "offset": 85
+                    }
+                  },
+                  "text": " で囲んで式 expression の先頭に置くと"
+                },
+                {
+                  "ruleName": "InlineElement",
+                  "location": {
+                    "start": {
+                      "line": 5,
+                      "column": 1,
+                      "offset": 86
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 10,
+                      "offset": 95
+                    }
+                  },
+                  "symbol": "tti",
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "location": {
+                        "start": {
+                          "line": 5,
+                          "column": 8,
+                          "offset": 93
+                        },
+                        "end": {
+                          "line": 5,
+                          "column": 9,
+                          "offset": 94
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "location": {
+                            "start": {
+                              "line": 5,
+                              "column": 8,
+                              "offset": 93
+                            },
+                            "end": {
+                              "line": 5,
+                              "column": 9,
+                              "offset": 94
+                            }
+                          },
+                          "text": "\\"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "ruleName": "ContentText",
+                  "location": {
+                    "start": {
+                      "line": 5,
+                      "column": 10,
+                      "offset": 95
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 11,
+                      "offset": 96
+                    }
+                  },
+                  "text": "}"
+                }
+              ]
+            }
+          ],
+          "no": 1,
+          "level": 1,
+          "childNodes": []
+        }
+      ]
+    }
+  ]
+}

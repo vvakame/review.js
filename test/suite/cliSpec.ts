@@ -77,14 +77,14 @@ describe("コマンドラインツールの動作", () => {
 
     describe("reviewjs compile の動作", () => {
         it("reviewjs compile fileName でコンパイルができること", () => {
-            return exec("./bin/reviewjs compile test/fixture/valid/block.re")
+            return exec("./bin/reviewjs compile test/fixture/valid/block/content.re")
                 .then(stdout => {
                     assert(stdout.indexOf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>") === 0);
                 });
         });
 
         it("reviewjs compile --target text fileName でコンパイルができること", () => {
-            return exec("./bin/reviewjs compile --target text test/fixture/valid/block.re")
+            return exec("./bin/reviewjs compile --target text test/fixture/valid/block/content.re")
                 .then(stdout => {
                     assert(stdout.indexOf("■H1■第1章") === 0);
                 });

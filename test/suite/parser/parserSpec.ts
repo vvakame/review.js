@@ -23,35 +23,43 @@ describe("ReVIEW構文の", () => {
     if (isNodeJS()) {
         /* tslint:disable:no-require-imports */
         let fs = require("fs");
+        let glob = require("glob");
         /* tslint:enable:no-require-imports */
         // PhantomJS 環境下専用のテスト
         describe("正しい構文のファイルが処理できること", () => {
+            let path = "test/fixture/valid/";
+
             let ignoreFiles = [
                 "block_dont_has_body.re", // noindent がまだサポートされていない
                 "ch01.re", // lead, emplist がまだサポートされていない
                 "headline.re", // なんか落ちる
                 "inline.re" // tti がまだサポートされていない
             ];
+            function matchIgnoreFiles(filePath: string) {
+                return ignoreFiles
+                    .map(name => `${path}${name}/content.re`)
+                    .some(ignoreFilePath => ignoreFilePath === filePath);
+            }
 
-            let path = "test/fixture/valid/";
-            let files = fs.readdirSync(path)
-                .filter((file: string) => file.indexOf(".re") !== -1 && !ignoreFiles.some(ignore => ignore === file))
+            let files = glob.sync(`${path}**/*.re`)
+                .filter((filePath: string) => !matchIgnoreFiles(filePath))
                 ;
 
             files
-                .filter((file: string) => file.indexOf(".re") !== -1)
-                .forEach((file: string) => {
-                    let baseName = file.substr(0, file.length - 3);
-                    let astFilePath = path + baseName + ".ast";
-                    it("ファイル:" + file, () => {
-                        let text = fs.readFileSync(path + file, "utf8");
+                .forEach((filePath: string) => {
+                    let baseName = filePath
+                        .substr(0, filePath.length - "/content.re".length)
+                        .substr(path.length);
+                    let astFilePath = `${path}${baseName}/content.ast`;
+                    it(`ファイル: ${baseName}/content.ast`, () => {
+                        let text = fs.readFileSync(filePath, "utf8");
                         return Test.compile({
                             basePath: __dirname + "/fixture/valid",
                             read: path => Promise.resolve(text),
                             builders: [new TextBuilder()],
                             book: {
                                 contents: [
-                                    file
+                                    "content.re",
                                 ]
                             }
                         })
@@ -77,12 +85,15 @@ describe("ReVIEW構文の", () => {
 
         describe("正しくない構文のファイルが処理できること", () => {
             let path = "test/fixture/invalid/";
-            let files = fs.readdirSync(path);
+            let files = glob.sync(`${path}**/*.re`);
             files
-                .filter((file: string) => file.indexOf(".re") !== -1)
-                .forEach((file: string) => {
-                    it("ファイル:" + file, () => {
-                        let data = fs.readFileSync(path + file, "utf8");
+                .forEach((filePath: string) => {
+                    let baseName = filePath
+                        .substr(0, filePath.length - "/content.re".length)
+                        .substr(path.length);
+
+                    it("ファイル:" + baseName, () => {
+                        let data = fs.readFileSync(filePath, "utf8");
                         try {
                             parse(data);
                             throw new Error("正しく処理できてしまった");

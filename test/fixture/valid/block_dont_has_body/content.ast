@@ -1,0 +1,241 @@
+{
+  "ruleName": "Start",
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 6,
+      "column": 1,
+      "offset": 63
+    }
+  },
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 1,
+          "offset": 63
+        }
+      },
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 6,
+              "column": 1,
+              "offset": 63
+            }
+          },
+          "headline": {
+            "ruleName": "Headline",
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 24
+              }
+            },
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 23,
+                  "offset": 22
+                }
+              },
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 23,
+                      "offset": 22
+                    }
+                  },
+                  "text": "{}部を持たないBlockElement"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "BlockElement",
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 24
+                },
+                "end": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 36
+                }
+              },
+              "symbol": "noindent",
+              "args": [],
+              "childNodes": []
+            },
+            {
+              "ruleName": "BlockElement",
+              "location": {
+                "start": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 36
+                },
+                "end": {
+                  "line": 6,
+                  "column": 1,
+                  "offset": 63
+                }
+              },
+              "symbol": "footnote",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "location": {
+                    "start": {
+                      "line": 5,
+                      "column": 11,
+                      "offset": 46
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 18,
+                      "offset": 53
+                    }
+                  },
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 5,
+                          "column": 12,
+                          "offset": 47
+                        },
+                        "end": {
+                          "line": 5,
+                          "column": 17,
+                          "offset": 52
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 5,
+                              "column": 12,
+                              "offset": 47
+                            },
+                            "end": {
+                              "line": 5,
+                              "column": 17,
+                              "offset": 52
+                            }
+                          },
+                          "text": "label"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "ruleName": "BracketArg",
+                  "location": {
+                    "start": {
+                      "line": 5,
+                      "column": 18,
+                      "offset": 53
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 27,
+                      "offset": 62
+                    }
+                  },
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 5,
+                          "column": 19,
+                          "offset": 54
+                        },
+                        "end": {
+                          "line": 5,
+                          "column": 26,
+                          "offset": 61
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 5,
+                              "column": 19,
+                              "offset": 54
+                            },
+                            "end": {
+                              "line": 5,
+                              "column": 26,
+                              "offset": 61
+                            }
+                          },
+                          "text": "caption"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "no": 1,
+              "childNodes": []
+            }
+          ],
+          "no": 1,
+          "level": 1,
+          "childNodes": []
+        }
+      ]
+    }
+  ]
+}

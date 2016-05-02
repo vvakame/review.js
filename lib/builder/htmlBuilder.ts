@@ -19,8 +19,6 @@ export class HtmlBuilder extends DefaultBuilder {
         "<": "&lt;",
         ">": "&gt;",
         '"': '&quot;',
-        "'": '&#39;',
-        "/": '&#x2F;'
     };
 
     constructor(private standalone = true) {
@@ -28,20 +26,21 @@ export class HtmlBuilder extends DefaultBuilder {
     }
 
     escape(data: any): string {
-        return String(data).replace(/[&<>"'\/]/g, c => this.escapeMap[c]);
+        let regexp = new RegExp(`[${Object.keys(this.escapeMap).join("")}]`, "g");
+        return String(data).replace(regexp, c => this.escapeMap[c]);
     }
 
     processPost(process: BuilderProcess, chunk: ContentChunk): void {
         if (this.standalone) {
 
             let pre = "";
-            pre += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-            pre += "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n";
-            pre += "<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:ops=\"http://www.idpf.org/2007/ops\" xml:lang=\"ja\">\n";
-            pre += "<head>\n";
-            pre += "  <meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\" />\n";
-            pre += "  <meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n";
-            pre += "  <meta name=\"generator\" content=\"Re:VIEW\" />\n";
+            pre += `<?xml version="1.0" encoding="UTF-8"?>` + "\n";
+            pre += `<!DOCTYPE html>` + "\n";
+            pre += `<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xmlns:ops="http://www.idpf.org/2007/ops" xml:lang="ja">` + "\n";
+            pre += `<head>` + "\n";
+            pre += `  <meta charset="UTF-8" />` + "\n";
+            pre += `  <link rel="stylesheet" type="text/css" href="stylesheet.css" />` + "\n";
+            pre += `  <meta name="generator" content="Re:VIEW" />` + "\n";
             let name: string = null;
             visit(chunk.tree.ast, {
                 visitDefaultPre: () => {
@@ -97,7 +96,9 @@ export class HtmlBuilder extends DefaultBuilder {
 
         if (node.level === 1) {
             let text = t("builder.chapter", node.parentNode.no);
+            process.outRaw(`<span class="secno">`);
             process.out(text).out("　");
+            process.outRaw(`</span>`);
         } else if (node.level === 2) {
             // process.out(node.parentNode.toChapter().fqn).out("　");
         }
@@ -362,11 +363,11 @@ export class HtmlBuilder extends DefaultBuilder {
     }
 
     inline_code_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
-        process.outRaw("<tt class=\"inline-code\">");
+        process.outRaw(`<code class="inline-code tt">`);
     }
 
     inline_code_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
-        process.outRaw("</tt>");
+        process.outRaw(`</code>`);
     }
 
     inline_href(process: BuilderProcess, node: InlineElementSyntaxTree) {
@@ -388,11 +389,11 @@ export class HtmlBuilder extends DefaultBuilder {
     }
 
     inline_tt_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
-        process.outRaw("<tt>"); // TODO RubyReviewではContentに改行が含まれている奴の挙動がサポートされていない。
+        process.outRaw(`<code class="tt">`); // TODO RubyReviewではContentに改行が含まれている奴の挙動がサポートされていない。
     }
 
     inline_tt_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
-        process.outRaw("</tt>");
+        process.outRaw(`</code>`);
     }
 
     inline_ruby_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
@@ -402,10 +403,10 @@ export class HtmlBuilder extends DefaultBuilder {
             node.childNodes.forEach(node => {
                 let contentString = nodeContentToString(process, node);
                 let keywordData = contentString.split(",");
-                process.outRaw("<rb>").out(keywordData[0]).outRaw("</rb>");
-                process.outRaw("<rp>（</rp><rt>");
-                process.out(keywordData[1]);
-                process.outRaw("</rt><rp>）</rp>");
+                process.out(keywordData[0]);
+                process.outRaw("<rp>（</rp>");
+                process.outRaw("<rt>").out(keywordData[1]).outRaw("</rt>");
+                process.outRaw("<rp>）</rp>");
             });
         };
     }
@@ -468,9 +469,16 @@ export class HtmlBuilder extends DefaultBuilder {
                         scale = parseFloat(result[1]);
                     }
                 }
-                process.outRaw("<div class=\"image\">\n");
+                process.outRaw(`<div id="`).out(label).outRaw(`" class="image">` + "\n");
                 // imagePathは変数作成時点でユーザ入力部分をescapeしている
-                process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
+                if (scale !== 1) {
+                    let scaleClass = `000${scale * 100}`;
+                    scaleClass = scaleClass.substr(scaleClass.length - 3);
+                    // TODO 各class設定にあわせたcssを同梱しないと…
+                    process.outRaw(`<img src="${imagePath}" alt="`).out(caption).outRaw(`" class="width-`).out(scaleClass).outRaw("per\" />\n");
+                } else {
+                    process.outRaw(`<img src="${imagePath}" alt="`).out(caption).outRaw(`" />` + "\n");
+                }
                 process.outRaw("<p class=\"caption\">\n");
                 process.out("図").out(process.base.chapter.no).out(".").out(node.no).out(": ").out(caption);
                 process.outRaw("\n</p>\n");
@@ -503,9 +511,12 @@ export class HtmlBuilder extends DefaultBuilder {
                 process.outRaw("<div class=\"image\">\n");
                 // imagePathは変数作成時点でユーザ入力部分をescapeしている
                 if (scale !== 1) {
-                    process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" width=\"").out(scale * 100).outRaw("%\" />\n");
+                    let scaleClass = `000${scale * 100}`;
+                    scaleClass = scaleClass.substr(scaleClass.length - 3);
+                    // TODO 各class設定にあわせたcssを同梱しないと…
+                    process.outRaw(`<img src="${imagePath}" alt="`).out(caption).outRaw(`" class="width-`).out(scaleClass).outRaw("per\" />\n");
                 } else {
-                    process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" />\n");
+                    process.outRaw(`<img src="${imagePath}" alt="`).out(caption).outRaw(`" />` + "\n");
                 }
                 if (node.args[1]) {
                     process.outRaw("<p class=\"caption\">\n");
@@ -553,9 +564,10 @@ export class HtmlBuilder extends DefaultBuilder {
     }
 
     block_footnote(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        process.outRaw("<div class=\"footnote\"><p class=\"footnote\">[<a id=\"fn-");
+        let label = nodeContentToString(process, node.args[0]);
+        process.outRaw("<div class=\"footnote\" epub:type=\"footnote\" id=\"fn-").outRaw(label).outRaw("\"><p class=\"footnote\">");
+        process.outRaw("[*").out(node.no).outRaw("] ");
         return (v: TreeVisitor) => {
-            process.outRaw(nodeContentToString(process, node.args[0])).outRaw("\">*").out(node.no).outRaw("</a>] ");
             visit(node.args[1], v);
             process.outRaw("</p></div>\n");
         };
@@ -563,7 +575,8 @@ export class HtmlBuilder extends DefaultBuilder {
 
     inline_fn(process: BuilderProcess, node: InlineElementSyntaxTree) {
         let footnoteNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-        process.outRaw("<a href=\"#fn-").out(nodeContentToString(process, footnoteNode.args[0])).outRaw("\">*").out(footnoteNode.no).outRaw("</a>");
+        let label = nodeContentToString(process, footnoteNode.args[0]);
+        process.outRaw(`<a id="fnb-`).out(label).outRaw(`" href="#fn-`).out(label).outRaw(`" class="noteref" epub:type="noteref">*`).out(footnoteNode.no).outRaw("</a>");
         return false;
     }
 
@@ -576,19 +589,19 @@ export class HtmlBuilder extends DefaultBuilder {
     }
 
     inline_tti_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
-        process.outRaw("<tt><i>");
+        process.outRaw(`<code class="tt"><i>`);
     }
 
     inline_tti_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
-        process.outRaw("</i></tt>");
+        process.outRaw(`</i></code>`);
     }
 
     inline_ttb_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
-        process.outRaw("<tt><b>");
+        process.outRaw(`<code class="tt"><b>`);
     }
 
     inline_ttb_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
-        process.outRaw("</b></tt>");
+        process.outRaw(`</b></code>`);
     }
 
     block_noindent(process: BuilderProcess, node: BlockElementSyntaxTree) {

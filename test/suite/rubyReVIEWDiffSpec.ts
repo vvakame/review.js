@@ -20,9 +20,9 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
     function convertByRubyReVIEW(fileName: string, target: string): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             exec(
-                "review-compile --level=1 --target=" + target + " " + fileName + ".re",
+                `bundle exec review-compile --level=1 --target=${target} content.re`,
                 {
-                    cwd: "test/fixture/valid",
+                    cwd: `test/fixture/valid/${fileName}/`,
                     env: process.env
                 },
                 (err: Error, stdout: NodeBuffer, stderr: NodeBuffer) => {
@@ -41,6 +41,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
     describe("正しい構文のファイルが処理できること", () => {
         /* tslint:disable:no-require-imports */
         let fs = require("fs");
+        let glob = require("glob");
         /* tslint:enable:no-require-imports */
 
         let typeList: { ext: string; target: string; builder: () => Builder; }[] = [
@@ -56,40 +57,52 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
             }
         ];
 
-        let ignoreFiles = [
-            "ch01.re", // lead, emplist がまだサポートされていない
-            "empty.re", // empty への対応をまだ行っていない ファイル実体は存在していない
-            "block_graph.re", // graph への対応がまだ不完全なので
-            "inline.re", // tti がまだサポートされていない < のエスケープとかも
-            "inline_nested.re", // Ruby版はネストを許可しない
-            "inline_with_newline.re", // Ruby版の処理が腐っている気がする
-            "lead.re", // ブロック構文内でのParagraphの扱いがおかしいのを直していない
-            "preface.re", // めんどくさいので
-            "preproc.re"  // めんどくさいので
-        ];
-
         let path = "test/fixture/valid/";
-        fs.readdirSync(path)
-            .filter((file: string) => file.indexOf(".re") !== -1 && !ignoreFiles.some(ignore => ignore === file))
-            .forEach((file: string) => {
-                let baseName = file.substr(0, file.length - 3);
+
+        let ignoreFiles = [
+            "ch01", // lead, emplist がまだサポートされていない
+            "empty", // empty への対応をまだ行っていない ファイル実体は存在していない
+            "block_graph", // graph への対応がまだ不完全なので
+            "inline", // tti がまだサポートされていない < のエスケープとかも
+            "inline_nested", // Ruby版はネストを許可しない
+            "inline_with_newline", // Ruby版の処理が腐っている気がする
+            "lead", // ブロック構文内でのParagraphの扱いがおかしいのを直していない
+            "preface", // めんどくさいので
+            "preproc",  // めんどくさいので
+            "inline_title", // Ruby版の処理がおかしい https://github.com/kmuto/review/issues/624
+            "inline_chapref", // Ruby版の処理がおかしい https://github.com/kmuto/review/issues/624
+            "inline_chap", // Ruby版の処理がおかしい https://github.com/kmuto/review/issues/624
+            "inline_comment", // Ruby版の処理がおかしい https://github.com/kmuto/review/pull/625
+        ];
+        function matchIgnoreFiles(filePath: string) {
+            return ignoreFiles
+                .map(name => `${path}${name}/content.re`)
+                .some(ignoreFilePath => ignoreFilePath === filePath);
+        }
+
+        glob.sync(`${path}**/*.re`)
+            .filter((filePath: string) => !matchIgnoreFiles(filePath))
+            .forEach((filePath: string) => {
+                let baseName = filePath
+                    .substr(0, filePath.length - "/content.re".length)
+                    .substr(path.length);
 
                 typeList.forEach(typeInfo => {
-                    let targetFileName = path + baseName + "." + typeInfo.ext;
-                    it("ファイル:" + targetFileName, () => {
-                        let text = fs.readFileSync(path + file, "utf8");
+                    let targetFileName = `${path}${baseName}/content.${typeInfo.ext}`;
+                    it(`ファイル: ${baseName}/content.${typeInfo.ext}`, () => {
+                        let text = fs.readFileSync(filePath, "utf8");
                         return Test.compile({
-                            basePath: process.cwd() + "/test/fixture/valid",
+                            basePath: `${process.cwd()}/test/fixture/valid/${baseName}`,
                             read: path => Promise.resolve(text),
                             builders: [typeInfo.builder()],
                             book: {
                                 contents: [
-                                    file
+                                    "content.re",
                                 ]
                             }
                         })
                             .then(s => {
-                                let result: string = s.results[baseName + "." + typeInfo.ext];
+                                let result: string = s.results["content." + typeInfo.ext];
                                 assert(result !== null);
 
                                 let assertResult = () => {

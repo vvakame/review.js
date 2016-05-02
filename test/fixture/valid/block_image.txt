@@ -1,9 +1,0 @@
-■H1■第1章　imageのテスト
-
-◆→開始:図←◆
-図1.1　サンプル
-
-◆→images/block_image-vvakame.png←◆
-◆→終了:図←◆
-図1.1
-

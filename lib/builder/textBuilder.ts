@@ -36,7 +36,7 @@ export class TextBuilder extends DefaultBuilder {
     }
 
     columnHeadlinePre(process: BuilderProcess, node: ColumnHeadlineSyntaxTree) {
-        process.out("\n◆→開始:←◆\n");
+        process.out("\n◆→開始:コラム←◆\n");
         process.out("■");
         return (v: TreeVisitor) => {
             visit(node.caption, v);
@@ -48,7 +48,7 @@ export class TextBuilder extends DefaultBuilder {
     }
 
     columnPost(process: BuilderProcess, node: ColumnSyntaxTree) {
-        process.out("◆→終了:←◆\n\n");
+        process.out("◆→終了:コラム←◆\n\n");
     }
 
     paragraphPost(process: BuilderProcess, name: string, node: NodeSyntaxTree) {

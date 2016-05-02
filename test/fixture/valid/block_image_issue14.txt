@@ -1,7 +1,0 @@
-■H1■第1章　Issue14
-
-◆→開始:図←◆
-図1.1　これらは全てマウスで操作できる
-
-◆→images/block_image_issue14-vvakame.png←◆
-◆→終了:図←◆

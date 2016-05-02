@@ -25,6 +25,9 @@
     },
     "power-assert/power-assert.d.ts": {
       "ref": "e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6"
+    },
+    "glob/glob.d.ts": {
+      "ref": "e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6"
     }
   },
   "link": {
