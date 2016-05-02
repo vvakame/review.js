@@ -272,15 +272,28 @@ export class BuilderProcess {
         (() => {
             let imageDirList = ["images/"];
             let builderList = [this.builder.extention + "/", ""];
-            let chapSeparatorList = ["/", "-"];
-            let extList = ["png", "jpg", "jpeg", "gif"];
+            let chapSwitchList = [true, false];
             let chunkName = (this.base.chapter || this.base.part).name; // TODO もっと頭良い感じに
             chunkName = chunkName.substring(0, chunkName.lastIndexOf("."));
+            let chapSeparatorList = ["/", "-"];
+            let extList = ["png", "jpg", "jpeg", "gif"];
             imageDirList.forEach(imageDir => {
                 builderList.forEach(builder => {
-                    chapSeparatorList.forEach(chapSeparator => {
-                        extList.forEach(ext => {
-                            fileNameList.push(imageDir + builder + chunkName + chapSeparator + id + "." + ext);
+                    chapSwitchList.forEach(chapSwitch => {
+                        chapSeparatorList.forEach(chapSeparator => {
+                            extList.forEach(ext => {
+                                let fileName = "";
+                                fileName += imageDir;
+                                fileName += builder;
+                                if (chapSwitch) {
+                                    fileName += chunkName;
+                                    fileName += chapSeparator;
+                                }
+                                fileName += id + "." + ext;
+                                if (fileNameList.indexOf(fileName) === -1) {
+                                    fileNameList.push(fileName);
+                                }
+                            });
                         });
                     });
                 });

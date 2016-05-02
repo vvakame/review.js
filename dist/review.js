@@ -2575,15 +2575,28 @@ var BuilderProcess = (function () {
         (function () {
             var imageDirList = ["images/"];
             var builderList = [_this.builder.extention + "/", ""];
-            var chapSeparatorList = ["/", "-"];
-            var extList = ["png", "jpg", "jpeg", "gif"];
+            var chapSwitchList = [true, false];
             var chunkName = (_this.base.chapter || _this.base.part).name;
             chunkName = chunkName.substring(0, chunkName.lastIndexOf("."));
+            var chapSeparatorList = ["/", "-"];
+            var extList = ["png", "jpg", "jpeg", "gif"];
             imageDirList.forEach(function (imageDir) {
                 builderList.forEach(function (builder) {
-                    chapSeparatorList.forEach(function (chapSeparator) {
-                        extList.forEach(function (ext) {
-                            fileNameList.push(imageDir + builder + chunkName + chapSeparator + id + "." + ext);
+                    chapSwitchList.forEach(function (chapSwitch) {
+                        chapSeparatorList.forEach(function (chapSeparator) {
+                            extList.forEach(function (ext) {
+                                var fileName = "";
+                                fileName += imageDir;
+                                fileName += builder;
+                                if (chapSwitch) {
+                                    fileName += chunkName;
+                                    fileName += chapSeparator;
+                                }
+                                fileName += id + "." + ext;
+                                if (fileNameList.indexOf(fileName) === -1) {
+                                    fileNameList.push(fileName);
+                                }
+                            });
                         });
                     });
                 });

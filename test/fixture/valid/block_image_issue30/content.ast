@@ -1,0 +1,223 @@
+{
+  "ruleName": "Start",
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 1,
+      "offset": 59
+    }
+  },
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 1,
+          "offset": 59
+        }
+      },
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 5,
+              "column": 1,
+              "offset": 59
+            }
+          },
+          "headline": {
+            "ruleName": "Headline",
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 11
+              }
+            },
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 10,
+                  "offset": 9
+                }
+              },
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 10,
+                      "offset": 9
+                    }
+                  },
+                  "text": "Issue30"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "BlockElement",
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 11
+                },
+                "end": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 59
+                }
+              },
+              "symbol": "image",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 8,
+                      "offset": 18
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 17,
+                      "offset": 27
+                    }
+                  },
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 3,
+                          "column": 9,
+                          "offset": 19
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 16,
+                          "offset": 26
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 3,
+                              "column": 9,
+                              "offset": 19
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 16,
+                              "offset": 26
+                            }
+                          },
+                          "text": "vvakame"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "ruleName": "BracketArg",
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 17,
+                      "offset": 27
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 43,
+                      "offset": 53
+                    }
+                  },
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 3,
+                          "column": 18,
+                          "offset": 28
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 42,
+                          "offset": 52
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 3,
+                              "column": 18,
+                              "offset": 28
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 42,
+                              "offset": 52
+                            }
+                          },
+                          "text": "images/vvakame.pngが発見できる"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "no": 1,
+              "childNodes": []
+            }
+          ],
+          "no": 1,
+          "level": 1,
+          "childNodes": []
+        }
+      ]
+    }
+  ]
+}
