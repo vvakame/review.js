@@ -213,9 +213,9 @@ module.exports = function (grunt) {
 				path: '<%= opt.client.jsTestOut %>/index.html'
 			}
 		},
-		exec: {
+		shell: {
 			"pegjs": {
-				cmd: function () {
+				command: function () {
 					var peg = grunt.config.get("opt.client.peg") + "/";
 					return "./node_modules/.bin/pegjs " + peg + "/grammar.pegjs " + peg + "/grammar.js";
 				}
@@ -229,7 +229,7 @@ module.exports = function (grunt) {
 
 	grunt.registerTask(
 		'default',
-		['clean:clientScript', 'tsconfig', 'ts', 'tslint', 'exec:pegjs', 'browserify:main', 'uglify:browser']);
+		['clean:clientScript', 'tsconfig', 'ts', 'tslint', 'shell:pegjs', 'browserify:main', 'uglify:browser']);
 
 	grunt.registerTask(
 		'test-preprocess',

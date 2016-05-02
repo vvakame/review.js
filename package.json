@@ -31,34 +31,34 @@
   "dependencies": {
     "colors": "^1.1.2",
     "commandpost": "^1.0.0",
-    "js-yaml": "^3.5.5",
+    "js-yaml": "^3.6.0",
     "sprintf-js": "^1.0.3",
     "update-notifier": "^0.6.3"
   },
   "devDependencies": {
     "benchmark": "^2.1.0",
-    "dtsm": "^1.0.0",
+    "dtsm": "^1.1.0",
     "espower-loader": "^1.0.0",
-    "grunt": "^0.4.5",
+    "grunt": "^1.0.1",
     "grunt-bower-task": "^0.4.0",
     "grunt-browserify": "^5.0.0",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-dtsm": "^1.0.0",
-    "grunt-exec": "^0.4.6",
-    "grunt-mocha": "^1.0.0",
+    "grunt-mocha": "^1.0.2",
     "grunt-mocha-test": "^0.12.7",
     "grunt-open": "^0.2.3",
+    "grunt-shell": "^1.3.0",
     "grunt-ts": "^5.5.0-beta.2",
     "grunt-tsconfig-update": "^0.0.1",
-    "grunt-tslint": "^3.0.3",
+    "grunt-tslint": "^3.1.0",
     "grunt-typedoc": "^0.2.3",
-    "load-grunt-tasks": "^3.4.1",
+    "load-grunt-tasks": "^3.5.0",
     "mocha": "^2.4.5",
     "pegjs": "^0.9.0",
     "power-assert": "^1.3.1",
     "time-grunt": "^1.3.0",
-    "tslint": "^3.6.0",
-    "typescript": "^1.8.9"
+    "tslint": "^3.8.1",
+    "typescript": "^1.8.10"
   }
 }
