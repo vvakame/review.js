@@ -9,25 +9,25 @@
   "bundle": "typings/bundle.d.ts",
   "dependencies": {
     "jquery/jquery.d.ts": {
-      "ref": "e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6"
+      "ref": "77b1b1709315b03b9b1b67c589d599bebeeef2ee"
     },
     "update-notifier/update-notifier.d.ts": {
-      "ref": "e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6"
+      "ref": "77b1b1709315b03b9b1b67c589d599bebeeef2ee"
     },
     "js-yaml/js-yaml.d.ts": {
-      "ref": "e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6"
+      "ref": "77b1b1709315b03b9b1b67c589d599bebeeef2ee"
     },
     "node/node.d.ts": {
-      "ref": "e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6"
+      "ref": "77b1b1709315b03b9b1b67c589d599bebeeef2ee"
     },
     "mocha/mocha.d.ts": {
-      "ref": "e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6"
+      "ref": "77b1b1709315b03b9b1b67c589d599bebeeef2ee"
     },
     "power-assert/power-assert.d.ts": {
-      "ref": "e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6"
+      "ref": "77b1b1709315b03b9b1b67c589d599bebeeef2ee"
     },
     "glob/glob.d.ts": {
-      "ref": "e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6"
+      "ref": "77b1b1709315b03b9b1b67c589d599bebeeef2ee"
     }
   },
   "link": {
