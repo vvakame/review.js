@@ -520,6 +520,15 @@ export class TextBuilder extends DefaultBuilder {
         process.out("☆");
     }
 
+    inline_m_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
+        // TODO
+        process.outRaw("TODO: ");
+    }
+
+    inline_m_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
+        process.outRaw("");
+    }
+
     inline_strong_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
         process.out("★");
     }

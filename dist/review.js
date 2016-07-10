@@ -847,6 +847,12 @@ var HtmlBuilder = (function (_super) {
     HtmlBuilder.prototype.inline_i_post = function (process, node) {
         process.outRaw("</i>");
     };
+    HtmlBuilder.prototype.inline_m_pre = function (process, node) {
+        process.outRaw("<span>TODO: ");
+    };
+    HtmlBuilder.prototype.inline_m_post = function (process, node) {
+        process.outRaw("</span>");
+    };
     HtmlBuilder.prototype.inline_strong_pre = function (process, node) {
         process.outRaw("<strong>");
     };
@@ -1357,6 +1363,12 @@ var TextBuilder = (function (_super) {
     };
     TextBuilder.prototype.inline_i_post = function (process, node) {
         process.out("☆");
+    };
+    TextBuilder.prototype.inline_m_pre = function (process, node) {
+        process.outRaw("TODO: ");
+    };
+    TextBuilder.prototype.inline_m_post = function (process, node) {
+        process.outRaw("");
     };
     TextBuilder.prototype.inline_strong_pre = function (process, node) {
         process.out("★");
@@ -2188,6 +2200,7 @@ exports.ja = {
         "inline_ami": "網掛け有りで出力することを示します。\n@<ami>{重点！}\nという形式で書きます。",
         "inline_bou": "傍点有りで出力することを示します。\n@<bou>{なんだって？}\nという形式で書きます。",
         "inline_i": "イタリックで出力することを示します。\n@<i>{斜体}\nという形式で書きます。",
+        "inline_m": "TeXの式を挿入することを示します。\n@<m>{TeX式}\nという形式で書きます。",
         "inline_strong": "ボールドで出力することを示します。\n@<strong>{強調！}\nという形式で書きます。",
         "inline_uchar": "指定された値を16進数の値として扱い、Unicode文字として出力することを示します。\n@<uchar>{1F64B}\nという形式で書きます。",
         "inline_tt": "囲まれたテキストを等幅フォントで表示します。",
@@ -3290,6 +3303,9 @@ var DefaultAnalyzer = (function () {
     };
     DefaultAnalyzer.prototype.inline_i = function (builder) {
         this.inlineDecorationSyntax(builder, "i");
+    };
+    DefaultAnalyzer.prototype.inline_m = function (builder) {
+        this.inlineDecorationSyntax(builder, "m");
     };
     DefaultAnalyzer.prototype.inline_strong = function (builder) {
         this.inlineDecorationSyntax(builder, "strong");

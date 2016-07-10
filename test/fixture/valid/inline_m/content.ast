@@ -1,0 +1,203 @@
+{
+  "ruleName": "Start",
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 1,
+      "offset": 42
+    }
+  },
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 1,
+          "offset": 42
+        }
+      },
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 5,
+              "column": 1,
+              "offset": 42
+            }
+          },
+          "headline": {
+            "ruleName": "Headline",
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 11
+              }
+            },
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 10,
+                  "offset": 9
+                }
+              },
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 10,
+                      "offset": 9
+                    }
+                  },
+                  "text": "m記法のテスト"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 11
+                },
+                "end": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 42
+                }
+              },
+              "childNodes": [
+                {
+                  "ruleName": "InlineElement",
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 1,
+                      "offset": 11
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 13,
+                      "offset": 23
+                    }
+                  },
+                  "symbol": "m",
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "location": {
+                        "start": {
+                          "line": 3,
+                          "column": 6,
+                          "offset": 16
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 12,
+                          "offset": 22
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "location": {
+                            "start": {
+                              "line": 3,
+                              "column": 6,
+                              "offset": 16
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 12,
+                              "offset": 22
+                            }
+                          },
+                          "text": "A^{-1\\"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "ruleName": "ContentText",
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 13,
+                      "offset": 23
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 14,
+                      "offset": 24
+                    }
+                  },
+                  "text": "}"
+                },
+                {
+                  "ruleName": "ContentText",
+                  "location": {
+                    "start": {
+                      "line": 4,
+                      "column": 1,
+                      "offset": 25
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 17,
+                      "offset": 41
+                    }
+                  },
+                  "text": "とりあえずはエラー吐かないだけ。"
+                }
+              ]
+            }
+          ],
+          "no": 1,
+          "level": 1,
+          "childNodes": []
+        }
+      ]
+    }
+  ]
+}

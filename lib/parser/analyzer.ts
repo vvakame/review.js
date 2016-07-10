@@ -642,6 +642,10 @@ export class DefaultAnalyzer implements Analyzer {
         this.inlineDecorationSyntax(builder, "i");
     }
 
+    inline_m(builder: AcceptableSyntaxBuilder) {
+        this.inlineDecorationSyntax(builder, "m");
+    }
+
     inline_strong(builder: AcceptableSyntaxBuilder) {
         this.inlineDecorationSyntax(builder, "strong");
     }

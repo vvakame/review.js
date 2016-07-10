@@ -73,6 +73,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
             "inline_chapref", // Ruby版の処理がおかしい https://github.com/kmuto/review/issues/624
             "inline_chap", // Ruby版の処理がおかしい https://github.com/kmuto/review/issues/624
             "inline_comment", // Ruby版の処理がおかしい https://github.com/kmuto/review/pull/625
+            "inline_m", // まだ真面目に実装していない
         ];
         function matchIgnoreFiles(filePath: string) {
             return ignoreFiles

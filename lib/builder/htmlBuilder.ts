@@ -678,6 +678,15 @@ export class HtmlBuilder extends DefaultBuilder {
         process.outRaw("</i>");
     }
 
+    inline_m_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
+        // TODO MathMLかなんかで…
+        process.outRaw("<span>TODO: ");
+    }
+
+    inline_m_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
+        process.outRaw("</span>");
+    }
+
     inline_strong_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
         process.outRaw("<strong>");
     }
