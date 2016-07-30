@@ -3112,9 +3112,8 @@ var DefaultAnalyzer = (function () {
             if (node.label) {
                 label = node.label.arg;
             }
-            else if (node.caption.childNodes.length === 1) {
-                var textNode = node.caption.childNodes[0].toTextNode();
-                label = textNode.text;
+            else {
+                label = utils_1.nodeContentToString(process, node.caption);
             }
             process.addSymbol({
                 symbolName: "hd",

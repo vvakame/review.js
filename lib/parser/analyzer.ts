@@ -253,9 +253,8 @@ export class DefaultAnalyzer implements Analyzer {
             let label: string = null;
             if (node.label) {
                 label = node.label.arg;
-            } else if (node.caption.childNodes.length === 1) {
-                let textNode = node.caption.childNodes[0].toTextNode();
-                label = textNode.text;
+            } else {
+                label = nodeContentToString(process, node.caption);
             }
             process.addSymbol({
                 symbolName: "hd",
