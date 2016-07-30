@@ -4,6 +4,10 @@ var exception_1 = require("../js/exception");
 var parser_1 = require("../parser/parser");
 var walker_1 = require("../parser/walker");
 var utils_1 = require("../utils/utils");
+/**
+ * デフォルトのビルダ。
+ * Re:VIEWのASTから何らかのテキストに変換する時はこのクラスを拡張し作成する。
+ */
 var DefaultBuilder = (function () {
     function DefaultBuilder() {
         this.extention = "bug";
@@ -152,6 +156,7 @@ var DefaultBuilder = (function () {
     DefaultBuilder.prototype.dlistPost = function (process, name, node) {
     };
     DefaultBuilder.prototype.text = function (process, node) {
+        // TODO in paragraph だったら note.text.replace("\n", "") したほうが良い…
         process.out(node.text);
     };
     DefaultBuilder.prototype.blockPre = function (process, name, node) {
@@ -227,11 +232,13 @@ var DefaultBuilder = (function () {
     };
     DefaultBuilder.prototype.block_raw = function (process, node) {
         var _this = this;
+        // TODO Ruby版との出力差が結構あるのでテスト含め直す
         var content = utils_1.nodeContentToString(process, node.args[0]);
         var matches = content.match(/\|(.+)\|/);
         if (matches && matches[1]) {
             var target = matches[1].split(",").some(function (name) { return _this.name.toLowerCase() === name + "builder"; });
             if (target) {
+                // "|hoge,fuga| piyo" の場合 matches[1] === "hoge,fuga"
                 process.outRaw(content.substring(matches[0].length));
             }
         }
@@ -247,6 +254,7 @@ var DefaultBuilder = (function () {
         if (matches && matches[1]) {
             var target = matches[1].split(",").some(function (name) { return _this.name.toLowerCase() === name + "builder"; });
             if (target) {
+                // "|hoge,fuga| piyo" の場合 matches[1] === "hoge,fuga"
                 process.outRaw(content.substring(matches[0].length));
             }
         }
@@ -256,6 +264,7 @@ var DefaultBuilder = (function () {
         return false;
     };
     DefaultBuilder.prototype.singleLineComment = function (process, node) {
+        // 特に何もしない
     };
     return DefaultBuilder;
 }());
@@ -398,6 +407,7 @@ var HtmlBuilder = (function (_super) {
         this.ulistParentHelper(process, node, function () {
             process.outRaw("<ul>\n<li>");
         });
+        // TODO <p> で囲まれないようにする
         if (node.prev instanceof parser_1.UlistElementSyntaxTree === false) {
             process.outRaw("<ul>\n");
         }
@@ -448,6 +458,7 @@ var HtmlBuilder = (function (_super) {
         var text = i18n_1.t("builder.list", chapter.fqn, node.no);
         process.outRaw("<p class=\"caption\">").out(text).outRaw(": ");
         return function (v) {
+            // name はパスしたい, langもパスしたい
             walker_1.visit(node.args[1], v);
             process.outRaw("</p>\n");
             process.outRaw("<pre class=\"list\">");
@@ -466,6 +477,7 @@ var HtmlBuilder = (function (_super) {
         process.outRaw("<p class=\"caption\">").out(text).out(": ");
         var lineCount = 1;
         return function (v) {
+            // name はパスしたい, langもパスしたい
             walker_1.visit(node.args[1], v);
             process.outRaw("</p>\n");
             process.outRaw("<pre class=\"list\">");
@@ -478,6 +490,7 @@ var HtmlBuilder = (function (_super) {
             var lineDigit = Math.max(utils_1.linesToFigure(lineCountMax), 2);
             node.childNodes.forEach(function (node, index, childNodes) {
                 if (node.isTextNode()) {
+                    // 改行する可能性があるのはTextNodeだけ…のはず
                     var hasNext_1 = !!childNodes[index + 1];
                     var textNode = node.toTextNode();
                     var lines_1 = textNode.text.split("\n");
@@ -511,6 +524,7 @@ var HtmlBuilder = (function (_super) {
     HtmlBuilder.prototype.block_emlist_pre = function (process, node) {
         process.outRaw("<div class=\"emlist-code\">\n");
         return function (v) {
+            // name はパスしたい
             if (node.args[0]) {
                 process.outRaw("<p class=\"caption\">");
                 walker_1.visit(node.args[0], v);
@@ -530,6 +544,7 @@ var HtmlBuilder = (function (_super) {
         process.outRaw("<pre class=\"emlist\">");
         var lineCount = 1;
         return function (v) {
+            // name, args はパスしたい
             var lineCountMax = 0;
             node.childNodes.forEach(function (node, index, childNodes) {
                 if (node.isTextNode()) {
@@ -539,6 +554,7 @@ var HtmlBuilder = (function (_super) {
             var lineDigit = Math.max(utils_1.linesToFigure(lineCountMax), 2);
             node.childNodes.forEach(function (node, index, childNodes) {
                 if (node.isTextNode()) {
+                    // 改行する可能性があるのはTextNodeだけ…のはず
                     var hasNext_2 = !!childNodes[index + 1];
                     var textNode = node.toTextNode();
                     var lines_2 = textNode.text.split("\n");
@@ -609,7 +625,7 @@ var HtmlBuilder = (function (_super) {
         return false;
     };
     HtmlBuilder.prototype.inline_tt_pre = function (process, node) {
-        process.outRaw("<code class=\"tt\">");
+        process.outRaw("<code class=\"tt\">"); // TODO RubyReviewではContentに改行が含まれている奴の挙動がサポートされていない。
     };
     HtmlBuilder.prototype.inline_tt_post = function (process, node) {
         process.outRaw("</code>");
@@ -617,6 +633,7 @@ var HtmlBuilder = (function (_super) {
     HtmlBuilder.prototype.inline_ruby_pre = function (process, node) {
         process.outRaw("<ruby>");
         return function (v) {
+            // name, args はパス
             node.childNodes.forEach(function (node) {
                 var contentString = utils_1.nodeContentToString(process, node);
                 var keywordData = contentString.split(",");
@@ -639,6 +656,7 @@ var HtmlBuilder = (function (_super) {
     HtmlBuilder.prototype.inline_kw_pre = function (process, node) {
         process.outRaw("<b class=\"kw\">");
         return function (v) {
+            // name, args はパス
             node.childNodes.forEach(function (node) {
                 var contentString = utils_1.nodeContentToString(process, node);
                 var keywordData = contentString.split(",");
@@ -667,9 +685,10 @@ var HtmlBuilder = (function (_super) {
         var label = utils_1.nodeContentToString(process, node.args[0]);
         return process.findImageFile(label)
             .then(function (imagePath) {
-            var caption = utils_1.nodeContentToString(process, node.args[1]);
+            var caption = utils_1.nodeContentToString(process, node.args[1]); // TODO vistでinlineの処理をきっちりするべき
             var scale = 1;
             if (node.args[2]) {
+                // let arg3 = node.args[2].arg;
                 var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
                 var result = regexp.exec(utils_1.nodeContentToString(process, node.args[2]));
                 if (result) {
@@ -677,9 +696,11 @@ var HtmlBuilder = (function (_super) {
                 }
             }
             process.outRaw("<div id=\"").out(label).outRaw("\" class=\"image\">" + "\n");
+            // imagePathは変数作成時点でユーザ入力部分をescapeしている
             if (scale !== 1) {
                 var scaleClass = "000" + scale * 100;
                 scaleClass = scaleClass.substr(scaleClass.length - 3);
+                // TODO 各class設定にあわせたcssを同梱しないと…
                 process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" class=\"width-").out(scaleClass).outRaw("per\" />\n");
             }
             else {
@@ -706,6 +727,7 @@ var HtmlBuilder = (function (_super) {
             }
             var scale = 1;
             if (node.args[2]) {
+                // let arg3 = node.args[2].arg;
                 var regexp = new RegExp("scale=(\\d+(?:\\.\\d+))");
                 var result = regexp.exec(utils_1.nodeContentToString(process, node.args[2]));
                 if (result) {
@@ -713,9 +735,11 @@ var HtmlBuilder = (function (_super) {
                 }
             }
             process.outRaw("<div class=\"image\">\n");
+            // imagePathは変数作成時点でユーザ入力部分をescapeしている
             if (scale !== 1) {
                 var scaleClass = "000" + scale * 100;
                 scaleClass = scaleClass.substr(scaleClass.length - 3);
+                // TODO 各class設定にあわせたcssを同梱しないと…
                 process.outRaw("<img src=\"" + imagePath + "\" alt=\"").out(caption).outRaw("\" class=\"width-").out(scaleClass).outRaw("per\" />\n");
             }
             else {
@@ -731,17 +755,20 @@ var HtmlBuilder = (function (_super) {
         });
     };
     HtmlBuilder.prototype.block_graph_pre = function (process, node) {
+        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         process.outRaw("<div>\n");
         var toolName = utils_1.nodeContentToString(process, node.args[1]);
         process.outRaw("<p>graph: ").out(toolName).outRaw("</p>\n");
         process.outRaw("<pre>");
         return function (v) {
+            // name, args はパスしたい
             node.childNodes.forEach(function (node) {
                 walker_1.visit(node, v);
             });
         };
     };
     HtmlBuilder.prototype.block_graph_post = function (process, node) {
+        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         process.outRaw("\n</pre>\n").outRaw("</div>\n");
     };
     HtmlBuilder.prototype.inline_img = function (process, node) {
@@ -750,6 +777,7 @@ var HtmlBuilder = (function (_super) {
         return false;
     };
     HtmlBuilder.prototype.inline_icon = function (process, node) {
+        // TODO ファイル名探索ロジックをもっと頑張る(jpgとかsvgとか)
         var chapterFileName = process.base.chapter.name;
         var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
         var imageName = utils_1.nodeContentToString(process, node);
@@ -791,6 +819,7 @@ var HtmlBuilder = (function (_super) {
         process.outRaw("</b></code>");
     };
     HtmlBuilder.prototype.block_noindent = function (process, node) {
+        // paragraphPre 中で処理
         return false;
     };
     HtmlBuilder.prototype.block_source_pre = function (process, node) {
@@ -798,6 +827,7 @@ var HtmlBuilder = (function (_super) {
         process.outRaw("<p class=\"caption\">").out(utils_1.nodeContentToString(process, node.args[0])).outRaw("</p>\n");
         process.outRaw("<pre class=\"source\">");
         return function (v) {
+            // name, args はパスしたい
             node.childNodes.forEach(function (node) {
                 walker_1.visit(node, v);
             });
@@ -810,6 +840,7 @@ var HtmlBuilder = (function (_super) {
         process.outRaw("<div class=\"cmd-code\">\n");
         process.outRaw("<pre class=\"cmd\">");
         return function (v) {
+            // name, args はパスしたい
             node.childNodes.forEach(function (node) {
                 walker_1.visit(node, v);
             });
@@ -821,6 +852,7 @@ var HtmlBuilder = (function (_super) {
     HtmlBuilder.prototype.block_quote_pre = function (process, node) {
         process.outRaw("<blockquote><p>");
         return function (v) {
+            // name, args はパスしたい
             node.childNodes.forEach(function (node) {
                 walker_1.visit(node, v);
             });
@@ -848,6 +880,7 @@ var HtmlBuilder = (function (_super) {
         process.outRaw("</i>");
     };
     HtmlBuilder.prototype.inline_m_pre = function (process, node) {
+        // TODO MathMLかなんかで…
         process.outRaw("<span>TODO: ");
     };
     HtmlBuilder.prototype.inline_m_post = function (process, node) {
@@ -866,21 +899,25 @@ var HtmlBuilder = (function (_super) {
         process.outRaw(";");
     };
     HtmlBuilder.prototype.block_table_pre = function (process, node) {
+        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         process.outRaw("<div>\n");
         var chapter = utils_1.findChapter(node, 1);
         var text = i18n_1.t("builder.table", chapter.fqn, node.no);
         process.outRaw("<p class=\"caption\">").out(text).out(": ").out(utils_1.nodeContentToString(process, node.args[1])).outRaw("</p>\n");
         process.outRaw("<pre>");
         return function (v) {
+            // name, args はパスしたい
             node.childNodes.forEach(function (node) {
                 walker_1.visit(node, v);
             });
         };
     };
     HtmlBuilder.prototype.block_table_post = function (process, node) {
+        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         process.outRaw("\n</pre>\n").outRaw("</div>\n");
     };
     HtmlBuilder.prototype.inline_table = function (process, node) {
+        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         var chapter = utils_1.findChapter(node, 1);
         var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
         var text = i18n_1.t("builder.table", chapter.fqn, listNode.no);
@@ -888,11 +925,13 @@ var HtmlBuilder = (function (_super) {
         return false;
     };
     HtmlBuilder.prototype.block_tsize = function (process, node) {
+        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         return false;
     };
     HtmlBuilder.prototype.block_comment_pre = function (process, node) {
         process.outRaw("<!-- ");
         return function (v) {
+            // name, args はパスしたい
             node.childNodes.forEach(function (node) {
                 walker_1.visit(node, v);
             });
@@ -953,6 +992,8 @@ var TextBuilder = (function (_super) {
         return data;
     };
     TextBuilder.prototype.headlinePre = function (process, name, node) {
+        // TODO no の採番がレベル別になっていない
+        // TODO 2.3.2 みたいな階層を返せるメソッドが何かほしい
         process.out("■H").out(node.level).out("■");
         if (node.level === 1) {
             var text = i18n_1.t("builder.chapter", node.parentNode.no);
@@ -1020,6 +1061,7 @@ var TextBuilder = (function (_super) {
         var text = i18n_1.t("builder.list", chapter.fqn, node.no);
         process.out(text).out("　");
         return function (v) {
+            // name はパスしたい, langもパスしたい
             walker_1.visit(node.args[1], v);
             process.outRaw("\n\n");
             node.childNodes.forEach(function (node) {
@@ -1037,6 +1079,7 @@ var TextBuilder = (function (_super) {
         process.out(text).out("　");
         var lineCount = 1;
         return function (v) {
+            // name はパスしたい, langもパスしたい
             walker_1.visit(node.args[1], v);
             var lineCountMax = 0;
             node.childNodes.forEach(function (node, index, childNodes) {
@@ -1048,6 +1091,7 @@ var TextBuilder = (function (_super) {
             process.outRaw("\n\n");
             node.childNodes.forEach(function (node, index, childNodes) {
                 if (node.isTextNode()) {
+                    // 改行する可能性があるのはTextNodeだけ…のはず
                     var hasNext_1 = !!childNodes[index + 1];
                     var textNode = node.toTextNode();
                     var lines_1 = textNode.text.split("\n");
@@ -1079,6 +1123,7 @@ var TextBuilder = (function (_super) {
     TextBuilder.prototype.block_emlist_pre = function (process, node) {
         process.out("◆→開始:インラインリスト←◆\n");
         return function (v) {
+            // name はパスしたい
             if (node.args[0]) {
                 process.out("■");
                 walker_1.visit(node.args[0], v);
@@ -1096,6 +1141,7 @@ var TextBuilder = (function (_super) {
         process.out("◆→開始:インラインリスト←◆\n");
         var lineCount = 1;
         return function (v) {
+            // name はパスしたい
             if (node.args[0]) {
                 process.out("■");
                 walker_1.visit(node.args[0], v);
@@ -1110,6 +1156,7 @@ var TextBuilder = (function (_super) {
             var lineDigit = Math.max(utils_1.linesToFigure(lineCountMax), 2);
             node.childNodes.forEach(function (node, index, childNodes) {
                 if (node.isTextNode()) {
+                    // 改行する可能性があるのはTextNodeだけ…のはず
                     var hasNext_2 = !!childNodes[index + 1];
                     var textNode = node.toTextNode();
                     var lines_2 = textNode.text.split("\n");
@@ -1190,6 +1237,7 @@ var TextBuilder = (function (_super) {
         var keywordData = contentString.split(",");
         process.out(keywordData[0]);
         return function (v) {
+            // name, args はパス
             node.childNodes.forEach(function (node) {
                 process.out("◆→DTP連絡:「").out(keywordData[0]);
                 process.out("」に「 ").out(keywordData[1].trim()).out("」とルビ←◆");
@@ -1205,6 +1253,7 @@ var TextBuilder = (function (_super) {
     TextBuilder.prototype.inline_kw = function (process, node) {
         process.out("★");
         return function (v) {
+            // name, args はパス
             node.childNodes.forEach(function (node) {
                 var contentString = utils_1.nodeContentToString(process, node);
                 var keywordData = contentString.split(",");
@@ -1255,16 +1304,19 @@ var TextBuilder = (function (_super) {
         return false;
     };
     TextBuilder.prototype.block_graph_pre = function (process, node) {
+        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         process.outRaw("◆→開始:図←◆\n");
         var toolName = utils_1.nodeContentToString(process, node.args[1]);
         process.outRaw("graph: ").out(toolName).outRaw("</p>\n");
         return function (v) {
+            // name, args はパスしたい
             node.childNodes.forEach(function (node) {
                 walker_1.visit(node, v);
             });
         };
     };
     TextBuilder.prototype.block_graph_post = function (process, node) {
+        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         process.outRaw("◆→終了:図←◆\n");
     };
     TextBuilder.prototype.inline_img = function (process, node) {
@@ -1273,6 +1325,7 @@ var TextBuilder = (function (_super) {
         return false;
     };
     TextBuilder.prototype.inline_icon = function (process, node) {
+        // TODO ファイル名探索ロジックをもっと頑張る(jpgとかsvgとか)
         var chapterFileName = process.base.chapter.name;
         var chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
         var imageName = utils_1.nodeContentToString(process, node);
@@ -1318,6 +1371,7 @@ var TextBuilder = (function (_super) {
         process.out("◆→開始:ソースコードリスト←◆\n");
         process.out("■").out(utils_1.nodeContentToString(process, node.args[0])).out("\n");
         return function (v) {
+            // name, args はパスしたい
             node.childNodes.forEach(function (node) {
                 walker_1.visit(node, v);
             });
@@ -1329,6 +1383,7 @@ var TextBuilder = (function (_super) {
     TextBuilder.prototype.block_cmd_pre = function (process, node) {
         process.out("◆→開始:コマンド←◆\n");
         return function (v) {
+            // name, args はパスしたい
             node.childNodes.forEach(function (node) {
                 walker_1.visit(node, v);
             });
@@ -1340,6 +1395,7 @@ var TextBuilder = (function (_super) {
     TextBuilder.prototype.block_quote_pre = function (process, node) {
         process.out("◆→開始:引用←◆\n");
         return function (v) {
+            // name, args はパスしたい
             node.childNodes.forEach(function (node) {
                 walker_1.visit(node, v);
             });
@@ -1351,11 +1407,13 @@ var TextBuilder = (function (_super) {
     TextBuilder.prototype.inline_ami_pre = function (process, node) {
     };
     TextBuilder.prototype.inline_ami_post = function (process, node) {
+        // TODO 入れ子になっている場合オペレータさんにイミフな出力になっちゃう
         process.out("◆→DTP連絡:「").out(utils_1.nodeContentToString(process, node)).out("」に網カケ←◆");
     };
     TextBuilder.prototype.inline_bou_pre = function (process, node) {
     };
     TextBuilder.prototype.inline_bou_post = function (process, node) {
+        // TODO 入れ子になっている場合オペレータさんにイミフな出力になっちゃう
         process.out("◆→DTP連絡:「").out(utils_1.nodeContentToString(process, node)).out("」に傍点←◆");
     };
     TextBuilder.prototype.inline_i_pre = function (process, node) {
@@ -1365,6 +1423,7 @@ var TextBuilder = (function (_super) {
         process.out("☆");
     };
     TextBuilder.prototype.inline_m_pre = function (process, node) {
+        // TODO
         process.outRaw("TODO: ");
     };
     TextBuilder.prototype.inline_m_post = function (process, node) {
@@ -1380,29 +1439,35 @@ var TextBuilder = (function (_super) {
         var hexString = utils_1.nodeContentToString(process, node);
         var code = parseInt(hexString, 16);
         var result = "";
+        /* tslint:disable:no-bitwise */
         while (code !== 0) {
             result = String.fromCharCode(code & 0xFFFF) + result;
             code >>>= 16;
         }
+        /* tslint:enable:no-bitwise */
         process.out(result);
         return false;
     };
     TextBuilder.prototype.block_table_pre = function (process, node) {
+        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         process.out("◆→開始:表←◆\n");
         process.out("TODO 現在table記法は仮実装です\n");
         var chapter = utils_1.findChapter(node, 1);
         var text = i18n_1.t("builder.table", chapter.fqn, node.no);
         process.out(text).out("　").out(utils_1.nodeContentToString(process, node.args[1])).out("\n\n");
         return function (v) {
+            // name, args はパスしたい
             node.childNodes.forEach(function (node) {
                 walker_1.visit(node, v);
             });
         };
     };
     TextBuilder.prototype.block_table_post = function (process, node) {
+        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         process.out("\n◆→終了:表←◆\n");
     };
     TextBuilder.prototype.inline_table = function (process, node) {
+        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         var chapter = utils_1.findChapter(node, 1);
         var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
         var text = i18n_1.t("builder.table", chapter.fqn, listNode.no);
@@ -1410,11 +1475,13 @@ var TextBuilder = (function (_super) {
         return false;
     };
     TextBuilder.prototype.block_tsize = function (process, node) {
+        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         return false;
     };
     TextBuilder.prototype.block_comment_pre = function (process, node) {
         process.out("◆→DTP連絡:");
         return function (v) {
+            // name, args はパスしたい
             node.childNodes.forEach(function (node) {
                 walker_1.visit(node, v);
             });
@@ -1521,6 +1588,7 @@ var Config = (function () {
             }
             var config = this.original;
             if (!config.builders || config.builders.length === 0) {
+                // TODO DefaultBuilder は微妙感
                 this._builders = [new builder_1.DefaultBuilder()];
             }
             else if (!Array.isArray(config.builders)) {
@@ -1582,8 +1650,10 @@ var NodeJSConfig = (function (_super) {
         get: function () {
             var _this = this;
             return function (path) {
+                /* tslint:disable:no-require-imports */
                 var fs = require("fs");
                 var _path = require("path");
+                /* tslint:enable:no-require-imports */
                 var basePath = _this.original.basePath || __dirname;
                 var promise = new Promise(function (resolve, reject) {
                     fs.exists(_path.resolve(basePath, path), function (result) {
@@ -1616,7 +1686,9 @@ var NodeJSConfig = (function (_super) {
         configurable: true
     });
     NodeJSConfig.prototype.onReports = function (reports) {
+        /* tslint:disable:no-require-imports */
         var colors = require("colors");
+        /* tslint:enable:no-require-imports */
         colors.setTheme({
             info: "cyan",
             warn: "yellow",
@@ -1654,7 +1726,9 @@ var NodeJSConfig = (function (_super) {
         process.exit(1);
     };
     NodeJSConfig.prototype.resolvePath = function (path) {
+        /* tslint:disable:no-require-imports */
         var p = require("path");
+        /* tslint:enable:no-require-imports */
         var base = this.options.base || "./";
         return p.join(base, path);
     };
@@ -1728,6 +1802,7 @@ var WebBrowserConfig = (function (_super) {
                     }
                 };
                 xhr_1.open("GET", path);
+                // If-Modified-Since をDate.now()で送って304返して貰ったほうが効率が良いのでは という発想
                 xhr_1.setRequestHeader("If-Modified-Since", new Date().toUTCString());
                 xhr_1.send();
             }
@@ -1812,7 +1887,11 @@ exports.WebBrowserConfig = WebBrowserConfig;
 
 },{"../builder/builder":1,"../model/compilerModel":13,"../parser/analyzer":14,"../parser/validator":17,"../utils/utils":20,"./configRaw":5,"colors":undefined,"fs":undefined,"path":undefined}],5:[function(require,module,exports){
 "use strict";
+/**
+ * 生の設定ファイルでの本の構成情報を画一的なフォーマットに変換し保持するためのクラス。
+ */
 var BookStructure = (function () {
+    // TODO コンストラクタ隠したい
     function BookStructure(predef, contents, appendix, postdef) {
         this.predef = predef;
         this.contents = contents;
@@ -1827,27 +1906,33 @@ var BookStructure = (function () {
         if (!config) {
             return new BookStructure(null, null, null, null);
         }
-        var predef = (config.predef || config.PREDEF || []).map(function (v) { return ContentStructure.createChapter(v); });
+        var predef = (config.predef || config.PREDEF || []).map(function (v /* IConfigChapter */) { return ContentStructure.createChapter(v); });
         var contents = (config.contents || config.CHAPS || []).map(function (v) {
+            // value は string(YAML由来) か IConfigPartOrChapter
             if (!v) {
                 return null;
             }
             if (typeof v === "string") {
+                // YAML由来
                 return ContentStructure.createChapter(v);
             }
             else if (v.chapter) {
+                // IConfigPartOrChapter 由来
                 return ContentStructure.createChapter(v.chapter);
             }
             else if (v.part) {
+                // IConfigPartOrChapter 由来
                 return ContentStructure.createPart(v.part);
             }
             else if (typeof v.file === "string" && v.chapters) {
                 return ContentStructure.createPart(v);
             }
             else if (typeof v.file === "string") {
+                // IConfigPartOrChapter 由来
                 return ContentStructure.createChapter(v);
             }
             else if (typeof v === "object") {
+                // YAML由来
                 return ContentStructure.createPart({
                     file: Object.keys(v)[0],
                     chapters: v[Object.keys(v)[0]].map(function (c) { return ({ file: c }); })
@@ -1857,14 +1942,18 @@ var BookStructure = (function () {
                 return null;
             }
         });
-        var appendix = (config.appendix || config.APPENDIX || []).map(function (v) { return ContentStructure.createChapter(v); });
-        var postdef = (config.postdef || config.POSTDEF || []).map(function (v) { return ContentStructure.createChapter(v); });
+        var appendix = (config.appendix || config.APPENDIX || []).map(function (v /* IConfigChapter */) { return ContentStructure.createChapter(v); });
+        var postdef = (config.postdef || config.POSTDEF || []).map(function (v /* IConfigChapter */) { return ContentStructure.createChapter(v); });
         return new BookStructure(predef, contents, appendix, postdef);
     };
     return BookStructure;
 }());
 exports.BookStructure = BookStructure;
+/**
+ * 生の設定ファイルでの本の構成情報を画一的なフォーマットに変換し保持するためのクラス。
+ */
 var ContentStructure = (function () {
+    // TODO コンストラクタ隠したい
     function ContentStructure(part, chapter) {
         this.part = part;
         this.chapter = chapter;
@@ -1907,12 +1996,21 @@ var textBuilder_1 = require("../builder/textBuilder");
 var htmlBuilder_1 = require("../builder/htmlBuilder");
 var walker_1 = require("../parser/walker");
 var utils_1 = require("../utils/utils");
+/**
+ * ReVIEW文書を処理するためのコントローラ。
+ * 処理の起点。
+ */
 var Controller = (function () {
     function Controller(options) {
         if (options === void 0) { options = {}; }
         this.options = options;
         this.builders = { TextBuilder: textBuilder_1.TextBuilder, HtmlBuilder: htmlBuilder_1.HtmlBuilder };
     }
+    /**
+     * 設定の初期化を行う。
+     * 通常、 ReVIEW.start 経由で呼び出される。
+     * @param data
+     */
     Controller.prototype.initConfig = function (data) {
         if (utils_1.isNodeJS()) {
             this.config = new config_1.NodeJSConfig(this.options, data);
@@ -1937,6 +2035,7 @@ var Controller = (function () {
     Controller.prototype.acceptableSyntaxes = function (book) {
         book.acceptableSyntaxes = book.config.analyzer.getAcceptableSyntaxes();
         if (book.config.listener.onAcceptables(book.acceptableSyntaxes) === false) {
+            // false が帰ってきたら処理を中断する (undefined でも継続)
             book.config.listener.onCompileFailed();
             return Promise.reject(null);
         }
@@ -1999,7 +2098,7 @@ var Controller = (function () {
                             column: se.column,
                             offset: se.offset
                         },
-                        end: null
+                        end: null // TODO SyntaxError が置き換えられたらなんとかできるかも…
                     }
                 });
                 chunk.tree = { ast: errorNode, cst: null };
@@ -2013,7 +2112,9 @@ var Controller = (function () {
         return book;
     };
     Controller.prototype.preprocessContent = function (book) {
+        // Chapterに採番を行う
         var numberingChapter = function (chunk, counter) {
+            // TODO partにも分け隔てなく採番してるけど間違ってるっしょ
             var chapters = [];
             walker_1.visit(chunk.tree.ast, {
                 visitDefaultPre: function (node) {
@@ -2063,10 +2164,12 @@ var Controller = (function () {
             validator.start(book, book.acceptableSyntaxes, _this.config.builders);
         });
         if (book.reports.some(function (report) { return report.level === compilerModel_1.ReportLevel.Error; })) {
+            // エラーがあったら処理中断
             return Promise.resolve(book);
         }
         var symbols = book.allChunks.reduce(function (p, c) { return p.concat(c.process.symbols); }, []);
         if (this.config.listener.onSymbols(symbols) === false) {
+            // false が帰ってきたら処理を中断する (undefined でも継続)
             return Promise.resolve(book);
         }
         return Promise.all(this.config.builders.map(function (builder) { return builder.init(book); })).then(function () { return book; });
@@ -2099,6 +2202,7 @@ var Controller = (function () {
         return book;
     };
     Controller.prototype.handleError = function (err) {
+        // TODO 指定された .re が存在しない場合ここにくる…
         console.error("unexpected error", err);
         if (err && err.stack) {
             console.error(err.stack);
@@ -2139,7 +2243,7 @@ if (typeof window !== "undefined" && window.sprintf) {
 else {
     sprintf = require("sprintf-js").sprintf;
 }
-utils_2.isNodeJS();
+utils_2.isNodeJS(); // TODO utilsをi18n.ts内で使わないと実行時エラーになる
 function t(str) {
     "use strict";
     var args = [];
@@ -2212,6 +2316,7 @@ exports.ja = {
         "inline_chap": "章番号を示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<chap>{sample} と書きます。",
         "inline_title": "章タイトルを示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<title>{sample} と書きます。",
         "inline_chapref": "章番号+章タイトルを示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<chapref>{sample} と書きます。",
+        // TODO 以下は今後書き直す
         "block_table": "テーブルを示します。\nTODO 正しく実装した後に書く",
         "inline_table": "テーブルへの参照を示します。\nTODO 正しく実装した後に書く",
         "block_tsize": "テーブルの大きさを指定します。\nTODO 正しく実装した後に書く"
@@ -2225,6 +2330,7 @@ exports.ja = {
         "reference_is_missing": "参照先 %s の %s が見つかりません。",
         "duplicated_label": "ラベルに重複があるようです。",
         "duplicated_label_headline": "ラベルに重複があるようです。 =={a-label} ラベル のように明示的にラベルを指定することを回避することができます。",
+        // TODO できれば 引数 という言葉を避けたい…
         "args_length_mismatch": "引数の数に齟齬があります。 期待値 %s, 実際 %s",
         "body_string_only": "内容は全て文字でなければいけません。",
         "chapter_not_toplevel": "深さ1のチャプターは最上位になければいけません。",
@@ -2290,9 +2396,16 @@ var textBuilder_1 = require("./builder/textBuilder");
 exports.TextBuilder = textBuilder_1.TextBuilder;
 var analyzer_2 = require("./parser/analyzer");
 exports.SyntaxType = analyzer_2.SyntaxType;
+/**
+ * ReVIEW文書のコンパイルを開始する。
+ * @param setup
+ * @param options
+ * @returns {Book}
+ */
 function start(setup, options) {
     "use strict";
     var controller = new controller_1.Controller(options);
+    // setup 中で initConfig が呼び出される
     setup(controller);
     return controller.process();
 }
@@ -2340,15 +2453,22 @@ var AnalyzerError = (function (_super) {
 exports.AnalyzerError = AnalyzerError;
 
 },{}],13:[function(require,module,exports){
+// parser/ と builder/ で共用するモデル
 "use strict";
 var i18n_1 = require("../i18n/i18n");
 var walker_1 = require("../parser/walker");
+/**
+ * 処理時に発生したレポートのレベル。
+ */
 (function (ReportLevel) {
     ReportLevel[ReportLevel["Info"] = 0] = "Info";
     ReportLevel[ReportLevel["Warning"] = 1] = "Warning";
     ReportLevel[ReportLevel["Error"] = 2] = "Error";
 })(exports.ReportLevel || (exports.ReportLevel = {}));
 var ReportLevel = exports.ReportLevel;
+/**
+ * 処理時に発生したレポート。
+ */
 var ProcessReport = (function () {
     function ProcessReport(level, part, chapter, message, nodes) {
         if (nodes === void 0) { nodes = []; }
@@ -2361,6 +2481,9 @@ var ProcessReport = (function () {
     return ProcessReport;
 }());
 exports.ProcessReport = ProcessReport;
+/**
+ * コンパイル処理時の出力ハンドリング。
+ */
 var BookProcess = (function () {
     function BookProcess() {
         this.reports = [];
@@ -2377,6 +2500,9 @@ var BookProcess = (function () {
     return BookProcess;
 }());
 exports.BookProcess = BookProcess;
+/**
+ * コンパイル処理時の出力ハンドリング。
+ */
 var Process = (function () {
     function Process(part, chapter, input) {
         this.part = part;
@@ -2532,13 +2658,16 @@ var BuilderProcess = (function () {
         configurable: true
     });
     BuilderProcess.prototype.out = function (data) {
+        // 最近のブラウザだと単純結合がアホみたいに早いらしいので
         this.result += this.builder.escape(data);
         return this;
     };
     BuilderProcess.prototype.outRaw = function (data) {
+        // 最近のブラウザだと単純結合がアホみたいに早いらしいので
         this.result += data;
         return this;
     };
+    // TODO pushOut いみふ感高いのでやめよう 削除だ！
     BuilderProcess.prototype.pushOut = function (data) {
         this.result = data + this.result;
         return this;
@@ -2581,7 +2710,16 @@ var BuilderProcess = (function () {
         });
         return chaps[0];
     };
+    /**
+     * 指定されたidの画像を探す。
+     * 解決ルールは https://github.com/kmuto/review/wiki/ImagePath の通り。
+     * Config側で絶対パス化やリソースの差し替えを行う可能性があるため、このメソッドの返り値は無加工で使うこと。
+     * @param id
+     * @returns {Promise<string>}
+     */
     BuilderProcess.prototype.findImageFile = function (id) {
+        // NOTE: https://github.com/kmuto/review/wiki/ImagePath
+        // 4軸マトリクス 画像dir, ビルダ有無, chapId位置, 拡張子
         var _this = this;
         var config = (this.base.part || this.base.chapter).book.config;
         var fileNameList = [];
@@ -2589,7 +2727,7 @@ var BuilderProcess = (function () {
             var imageDirList = ["images/"];
             var builderList = [_this.builder.extention + "/", ""];
             var chapSwitchList = [true, false];
-            var chunkName = (_this.base.chapter || _this.base.part).name;
+            var chunkName = (_this.base.chapter || _this.base.part).name; // TODO もっと頭良い感じに
             chunkName = chunkName.substring(0, chunkName.lastIndexOf("."));
             var chapSeparatorList = ["/", "-"];
             var extList = ["png", "jpg", "jpeg", "gif"];
@@ -2637,6 +2775,9 @@ var BuilderProcess = (function () {
     return BuilderProcess;
 }());
 exports.BuilderProcess = BuilderProcess;
+/**
+ * 本全体を表す。
+ */
 var Book = (function () {
     function Book(config) {
         this.config = config;
@@ -2712,7 +2853,7 @@ var ContentChunk = (function () {
             this.name = parent;
         }
         var part = parent ? parent : null;
-        var chapter = this;
+        var chapter = this; // TODO thisがpartでchapterが無しの場合もあるよ…！！
         this.process = new Process(part, chapter, null);
     }
     Object.defineProperty(ContentChunk.prototype, "input", {
@@ -2720,6 +2861,7 @@ var ContentChunk = (function () {
             return this._input;
         },
         set: function (value) {
+            // TODO やめる
             this._input = value;
             this.process.input = value;
         },
@@ -2739,6 +2881,7 @@ var ContentChunk = (function () {
         else {
             founds = this.builderProcesses.filter(function (process) { return process.builder === builder; });
         }
+        // TODO 何かエラー投げたほうがいい気もするなー
         return founds[0].result;
     };
     return ContentChunk;
@@ -2751,23 +2894,38 @@ var i18n_1 = require("../i18n/i18n");
 var exception_1 = require("../js/exception");
 var parser_1 = require("../parser/parser");
 var utils_1 = require("../utils/utils");
+/**
+ * 構文のタイプ。
+ */
 (function (SyntaxType) {
     SyntaxType[SyntaxType["Block"] = 0] = "Block";
     SyntaxType[SyntaxType["Inline"] = 1] = "Inline";
     SyntaxType[SyntaxType["Other"] = 2] = "Other";
 })(exports.SyntaxType || (exports.SyntaxType = {}));
 var SyntaxType = exports.SyntaxType;
+/**
+ * ReVIEW文書として受理可能な要素群。
+ * JSON.stringify でJSON化した時、エディタ上での入力補完に活用できるデータが得られる。
+ */
 var AcceptableSyntaxes = (function () {
     function AcceptableSyntaxes(acceptableSyntaxes) {
         this.acceptableSyntaxes = acceptableSyntaxes;
     }
+    /**
+     * 指定されたノードに当てはまる AcceptableSyntax を探して返す。
+     * 長さが1じゃないとおかしい。(呼び出し元でチェックする)
+     * @param node
+     * @returns {AcceptableSyntax[]}
+     */
     AcceptableSyntaxes.prototype.find = function (node) {
         var results;
         if (node instanceof parser_1.InlineElementSyntaxTree) {
-            results = this.inlines.filter(function (s) { return s.symbolName === node.symbol; });
+            var n_1 = node;
+            results = this.inlines.filter(function (s) { return s.symbolName === n_1.symbol; });
         }
         else if (node instanceof parser_1.BlockElementSyntaxTree) {
-            results = this.blocks.filter(function (s) { return s.symbolName === node.symbol; });
+            var n_2 = node;
+            results = this.blocks.filter(function (s) { return s.symbolName === n_2.symbol; });
         }
         else {
             results = this.others.filter(function (s) { return node instanceof s.clazz; });
@@ -2796,6 +2954,7 @@ var AcceptableSyntaxes = (function () {
         configurable: true
     });
     AcceptableSyntaxes.prototype.toJSON = function () {
+        // そのままJSON化するとAcceptableSyntax.typeの扱いに難儀すると思うので文字列に複合可能なデータを抱き合わせにする
         return {
             "rev": "1",
             "SyntaxType": SyntaxType,
@@ -2805,6 +2964,9 @@ var AcceptableSyntaxes = (function () {
     return AcceptableSyntaxes;
 }());
 exports.AcceptableSyntaxes = AcceptableSyntaxes;
+/**
+ * ReVIEW文書として受理可能な要素。
+ */
 var AcceptableSyntax = (function () {
     function AcceptableSyntax() {
         this.argsLength = [];
@@ -2959,6 +3121,7 @@ var DefaultAnalyzer = (function () {
                 labelName: label,
                 node: node
             });
+            // chap, title, chapref 用
             if (node.level === 1) {
                 var label_1 = null;
                 if (node.label) {
@@ -3447,6 +3610,9 @@ var DefaultAnalyzer = (function () {
 exports.DefaultAnalyzer = DefaultAnalyzer;
 
 },{"../i18n/i18n":8,"../js/exception":12,"../parser/parser":15,"../utils/utils":20}],15:[function(require,module,exports){
+/**
+ * 構文解析用途のモジュール。
+ */
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -3455,10 +3621,17 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var PEG = require("../../resources/grammar");
 var walker_1 = require("./walker");
+/**
+ * 文字列をReVIEW文書として解釈し構文木を返す。
+ * 解釈に失敗した場合、PEG.SyntaxError または ReVIEW.ParseError が投げられる。
+ * @param input
+ * @returns {{ast: NodeSyntaxTree, cst: *}}
+ */
 function parse(input) {
     "use strict";
     var rawResult = PEG.parse(input);
     var root = transform(rawResult).toNode();
+    // ParagraphSubs は構文上の都合であるだけのものなので潰す
     walker_1.visit(root, {
         visitDefaultPre: function (ast) {
         },
@@ -3467,9 +3640,12 @@ function parse(input) {
             ast.childNodes = subs.childNodes;
         }
     });
+    // Chapter を Headline の level に応じて構造を組み替える
+    //   level 2 は level 1 の下に来るようにしたい
     if (root.childNodes.length !== 0) {
         reconstruct(root.childNodes[0].toNode(), function (chapter) { return chapter.headline.level; });
     }
+    // Ulist もChapter 同様の level 構造があるので同じように処理したい
     var ulistSet = [];
     walker_1.visit(root, {
         visitDefaultPre: function (ast) {
@@ -3481,11 +3657,13 @@ function parse(input) {
     ulistSet.forEach(function (ulist) {
         reconstruct(ulist, function (ulistElement) { return ulistElement.level; });
     });
+    // parentNode を設定
     walker_1.visit(root, {
         visitDefaultPre: function (ast, parent) {
             ast.parentNode = parent;
         }
     });
+    // prev, next を設定
     walker_1.visit(root, {
         visitDefaultPre: function (ast, parent) {
         },
@@ -3514,6 +3692,11 @@ function parse(input) {
     };
 }
 exports.parse = parse;
+/**
+ * 具象構文木を抽象構文木に変換します。
+ * @param rawResult
+ * @returns {*}
+ */
 function transform(rawResult) {
     "use strict";
     if (!rawResult) {
@@ -3552,6 +3735,7 @@ function transform(rawResult) {
             return new TextNodeSyntaxTree(rawResult);
         case RuleName.SinglelineComment:
             return new SingleLineCommentSyntaxTree(rawResult);
+        // c, cc パターン
         case RuleName.Chapters:
         case RuleName.Contents:
         case RuleName.ParagraphSubs:
@@ -3566,6 +3750,7 @@ function transform(rawResult) {
         case RuleName.Dlist:
         case RuleName.DlistElementContents:
             return new NodeSyntaxTree(rawResult);
+        // c パターン
         case RuleName.Start:
         case RuleName.Paragraph:
         case RuleName.BracketArg:
@@ -3573,6 +3758,7 @@ function transform(rawResult) {
         case RuleName.BlockElementParagraphSub:
         case RuleName.DlistElementContent:
             return new NodeSyntaxTree(rawResult);
+        // パースした内容は直接役にたたない c / c / c 系
         case RuleName.Content:
         case RuleName.ParagraphSub:
         case RuleName.BracketArgSub:
@@ -3587,6 +3773,12 @@ function transform(rawResult) {
     }
 }
 exports.transform = transform;
+/**
+ * 構文木の組替えを行う。
+ * 主に兄弟ノードを親子ノードに組み替えるために使う。
+ * @param node
+ * @param pickLevel
+ */
 function reconstruct(node, pickLevel) {
     "use strict";
     var originalChildNodes = node.childNodes;
@@ -3626,6 +3818,9 @@ function reconstruct(node, pickLevel) {
         reconstruct(parent, pickLevel);
     });
 }
+/**
+ * 構文解析時に発生したエラー。
+ */
 var ParseError = (function () {
     function ParseError(syntax, message) {
         this.syntax = syntax;
@@ -3638,6 +3833,9 @@ var ParseError = (function () {
     return ParseError;
 }());
 exports.ParseError = ParseError;
+/**
+ * 構文解析時のルール名。
+ */
 (function (RuleName) {
     RuleName[RuleName["SyntaxError"] = 0] = "SyntaxError";
     RuleName[RuleName["Start"] = 1] = "Start";
@@ -3686,13 +3884,16 @@ exports.ParseError = ParseError;
     RuleName[RuleName["SinglelineComment"] = 44] = "SinglelineComment";
 })(exports.RuleName || (exports.RuleName = {}));
 var RuleName = exports.RuleName;
+/**
+ * 構文解析後の少し加工したデータ。
+ */
 var SyntaxTree = (function () {
     function SyntaxTree(data) {
         this.ruleName = RuleName[data.syntax];
         if (typeof this.ruleName === "undefined") {
             throw new ParseError(data, "unknown rule: " + data.syntax);
         }
-        var end = data.location.end || data.location.start;
+        var end = data.location.end || data.location.start; // SyntaxErrorの時
         this.location = {
             start: {
                 line: data.location.start.line,
@@ -3717,6 +3918,7 @@ var SyntaxTree = (function () {
             else if (k === "prev" || k === "next" || k === "parentNode") {
             }
             else if (k === "childNodes") {
+                // childNodesが先に来ると見づらいので
                 lowPriorities.push((function (k) {
                     return function () {
                         result[k] = _this[k];
@@ -3752,6 +3954,11 @@ var SyntaxTree = (function () {
     };
     SyntaxTree.prototype.toStringHook = function (indentLevel, result) {
     };
+    /**
+     * 引数が数字かどうかチェックして違うならば例外を投げる。
+     * @param value
+     * @returns {*=}
+     */
     SyntaxTree.prototype.checkNumber = function (value) {
         if (typeof value !== "number") {
             throw new Error("number required. actual:" + (typeof value) + ":" + value);
@@ -3760,6 +3967,11 @@ var SyntaxTree = (function () {
             return value;
         }
     };
+    /**
+     * 引数が文字列かどうかチェックして違うならば例外を投げる。
+     * @param value
+     * @returns {*=}
+     */
     SyntaxTree.prototype.checkString = function (value) {
         if (typeof value !== "string") {
             throw new Error("string required. actual:" + (typeof value) + ":" + value);
@@ -3768,6 +3980,11 @@ var SyntaxTree = (function () {
             return value;
         }
     };
+    /**
+     * 引数がオブジェクトかどうかチェックして違うならば例外を投げる。
+     * @param value
+     * @returns {*=}
+     */
     SyntaxTree.prototype.checkObject = function (value) {
         if (typeof value !== "object") {
             throw new Error("object required. actual:" + (typeof value) + ":" + value);
@@ -3776,6 +3993,11 @@ var SyntaxTree = (function () {
             return value;
         }
     };
+    /**
+     * 引数がArrayかどうかチェックして違うならば例外を投げる。
+     * @param value
+     * @returns {*=}
+     */
     SyntaxTree.prototype.checkArray = function (value) {
         if (!Array.isArray(value)) {
             throw new Error("array required. actual:" + (typeof value) + ":" + value);
@@ -3828,42 +4050,81 @@ var SyntaxTree = (function () {
             throw new Error("this node is not " + clazz.name + ", actual " + this.constructor.name);
         }
     };
+    /**
+     * thisをNodeSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     SyntaxTree.prototype.toNode = function () {
         return this.toOtherNode(NodeSyntaxTree);
     };
+    /**
+     * thisをBlockElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     SyntaxTree.prototype.toBlockElement = function () {
         return this.toOtherNode(BlockElementSyntaxTree);
     };
+    /**
+     * thisをInlineElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     SyntaxTree.prototype.toInlineElement = function () {
         return this.toOtherNode(InlineElementSyntaxTree);
     };
+    /**
+     * thisをArgumentSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     SyntaxTree.prototype.toArgument = function () {
         return this.toOtherNode(ArgumentSyntaxTree);
     };
+    /**
+     * thisをChapterSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     SyntaxTree.prototype.toChapter = function () {
         return this.toOtherNode(ChapterSyntaxTree);
     };
+    /**
+     * thisをColumnSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     SyntaxTree.prototype.toColumn = function () {
         return this.toOtherNode(ColumnSyntaxTree);
     };
+    /**
+     * thisをHeadlineSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     SyntaxTree.prototype.toHeadline = function () {
         return this.toOtherNode(HeadlineSyntaxTree);
     };
+    /**
+     * thisをColumnHeadlineSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     SyntaxTree.prototype.toColumnHeadline = function () {
         return this.toOtherNode(ColumnHeadlineSyntaxTree);
     };
+    /**
+     * thisをUlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     SyntaxTree.prototype.toUlist = function () {
         return this.toOtherNode(UlistElementSyntaxTree);
     };
+    /**
+     * thisをOlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     SyntaxTree.prototype.toOlist = function () {
         return this.toOtherNode(OlistElementSyntaxTree);
     };
+    /**
+     * thisをDlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     SyntaxTree.prototype.toDlist = function () {
         return this.toOtherNode(DlistElementSyntaxTree);
     };
+    /**
+     * thisをTextNodeSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     SyntaxTree.prototype.toTextNode = function () {
         return this.toOtherNode(TextNodeSyntaxTree);
     };
+    /**
+     * thisをSingleLineCommentSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     SyntaxTree.prototype.toSingleLineCommentNode = function () {
         return this.toOtherNode(SingleLineCommentSyntaxTree);
     };
@@ -3909,6 +4170,7 @@ var NodeSyntaxTree = (function (_super) {
     return NodeSyntaxTree;
 }(SyntaxTree));
 exports.NodeSyntaxTree = NodeSyntaxTree;
+// TODO SyntaxTree と指定されている所についてもっと細かく書けるはず…
 var ChapterSyntaxTree = (function (_super) {
     __extends(ChapterSyntaxTree, _super);
     function ChapterSyntaxTree(data) {
@@ -3921,7 +4183,7 @@ var ChapterSyntaxTree = (function (_super) {
         this.text = this.checkArray(data.text.content).map(function (data) {
             return transform(data);
         });
-        delete this.childNodes;
+        delete this.childNodes; // JSON化した時の属性順制御のため…
         this.childNodes = [];
     }
     Object.defineProperty(ChapterSyntaxTree.prototype, "level", {
@@ -3997,7 +4259,7 @@ var ColumnSyntaxTree = (function (_super) {
         this.text = this.checkArray(data.text.content).map(function (data) {
             return transform(data);
         });
-        delete this.childNodes;
+        delete this.childNodes; // JSON化した時の属性順制御のため…
         this.childNodes = [];
     }
     Object.defineProperty(ColumnSyntaxTree.prototype, "level", {
@@ -4052,7 +4314,7 @@ var UlistElementSyntaxTree = (function (_super) {
         _super.call(this, data);
         this.level = this.checkNumber(data.level);
         this.text = transform(this.checkObject(data.text));
-        delete this.childNodes;
+        delete this.childNodes; // JSON化した時の属性順制御のため…
         this.childNodes = [];
     }
     return UlistElementSyntaxTree;
@@ -4102,6 +4364,14 @@ exports.SingleLineCommentSyntaxTree = SingleLineCommentSyntaxTree;
 var parser_1 = require("./parser");
 var walker_1 = require("./walker");
 var utils_1 = require("../utils/utils");
+/**
+ * インライン構文やブロック構文中で利用可能な構造について制限をかけ、構文木を組み替える。
+ * 種類は主に3種類。
+ * 1. テキストをベースとしてインライン構文のみ許可する(デフォルト
+ * 2. 全て許可せずテキストとして扱う
+ * 3. 全てを許可する(なにもしない
+ * AcceptableSyntaxes にしたがって処理する。
+ */
 var SyntaxPreprocessor = (function () {
     function SyntaxPreprocessor() {
     }
@@ -4127,6 +4397,13 @@ var SyntaxPreprocessor = (function () {
         });
         chunk.nodes.forEach(function (chunk) { return _this.preprocessChunk(chunk); });
     };
+    /**
+     * コラム記法を組み替える。
+     * コラムの中ではHeadlineが使えるが、コラム自体の見出しレベルより深いレベルのHeadlineしか許可されない。
+     * そのため、コラム自体より浅いレベルの見出しレベルを見つけたらコラム内から脱出させる。
+     * @param chunk
+     * @param column
+     */
     SyntaxPreprocessor.prototype.preprocessColumnSyntax = function (chunk, column) {
         function reconstruct(parent, target, to) {
             if (to === void 0) { to = column.parentNode.toChapter(); }
@@ -4134,13 +4411,16 @@ var SyntaxPreprocessor = (function () {
                 reconstruct(parent.parentNode.toNode(), target, to.parentNode.toChapter());
                 return;
             }
+            // コラムより大きなChapterを見つけた場合、それ以下のノードは全て引き上げる
             to.childNodes.splice(to.childNodes.indexOf(parent) + 1, 0, target);
             column.text.splice(column.text.indexOf(target), 1);
         }
+        // 組み換え
         walker_1.visit(column, {
             visitDefaultPre: function (node) {
             },
             visitColumnPre: function (node) {
+                // TODO ここに来たらエラーにするべき
             },
             visitChapterPre: function (node) {
                 if (column.level < node.headline.level) {
@@ -4149,11 +4429,14 @@ var SyntaxPreprocessor = (function () {
                 reconstruct(column, node);
             }
         });
+        // Parser.ts からのコピペなので共通ロジックとしてリファクタリングする
+        // parentNode を設定
         walker_1.visit(chunk.tree.ast, {
             visitDefaultPre: function (ast, parent) {
                 ast.parentNode = parent;
             }
         });
+        // prev, next を設定
         walker_1.visit(chunk.tree.ast, {
             visitDefaultPre: function (ast, parent) {
             },
@@ -4177,19 +4460,29 @@ var SyntaxPreprocessor = (function () {
             }
         });
     };
+    /**
+     * ブロック記法の中身を組み替える。
+     * ブロック記法は 1. 全ての記法を許可 2. インライン記法のみ許可 3. 全てを許可しない の3パターンの組み換えがある。
+     * @param chapter
+     * @param node
+     */
     SyntaxPreprocessor.prototype.preprocessBlockSyntax = function (chunk, node) {
         if (node.childNodes.length === 0) {
             return;
         }
         var syntaxes = this.acceptableSyntaxes.find(node);
         if (syntaxes.length !== 1) {
+            // TODO エラーにしたほうがいいかなぁ
             return;
         }
         var syntax = syntaxes[0];
         if (syntax.allowFullySyntax) {
+            // 全て許可
             return;
         }
         else if (syntax.allowInline) {
+            // inline構文のみ許可(Paragraphは殺す
+            // inline以外の構文は叩き潰してTextにmergeする
             var info_1;
             var resultNodes_1 = [];
             var lastNode_1;
@@ -4281,6 +4574,7 @@ var SyntaxPreprocessor = (function () {
             node.childNodes = resultNodes_1;
         }
         else {
+            // 全て不許可(テキスト化
             var first = node.childNodes[0];
             var last = node.childNodes[node.childNodes.length - 1];
             var textNode = new parser_1.TextNodeSyntaxTree({
@@ -4328,6 +4622,7 @@ var DefaultValidator = (function () {
             var prefix;
             switch (syntax.type) {
                 case analyzer_1.SyntaxType.Other:
+                    // Other系は実装をチェックする必要はない…。(ということにしておく
                     return;
                 case analyzer_1.SyntaxType.Block:
                     prefix = "block_";
@@ -4355,6 +4650,7 @@ var DefaultValidator = (function () {
     };
     DefaultValidator.prototype.checkChunk = function (chunk) {
         var _this = this;
+        // Analyzer 内で生成した構文規則に基づき処理
         walker_1.visit(chunk.tree.ast, {
             visitDefaultPre: function (node) {
             },
@@ -4399,12 +4695,14 @@ var DefaultValidator = (function () {
                 return results[0].process(chunk.process, node);
             }
         });
+        // 最初は必ず Level 1
         walker_1.visit(chunk.tree.ast, {
             visitDefaultPre: function (node) {
             },
             visitChapterPre: function (node) {
                 if (node.level === 1) {
                     if (!utils_1.findChapter(node)) {
+                        // ここに来るのは実装のバグのはず
                         chunk.process.error(i18n_1.t("compile.chapter_not_toplevel"), node);
                     }
                 }
@@ -4419,6 +4717,7 @@ var DefaultValidator = (function () {
         this.chechBlockGraphTool(chunk);
     };
     DefaultValidator.prototype.chechBlockGraphTool = function (chunk) {
+        // graph記法の外部ツール利用について内容が正しいかチェックする
         walker_1.visit(chunk.tree.ast, {
             visitDefaultPre: function (node) {
             },
@@ -4428,6 +4727,7 @@ var DefaultValidator = (function () {
                 }
                 var toolNameNode = node.args[1];
                 if (!toolNameNode) {
+                    // ここのNodeがないのは別でチェックするので気にしない
                     return;
                 }
                 var toolName = utils_1.nodeContentToString(chunk.process, toolNameNode);
@@ -4446,8 +4746,11 @@ var DefaultValidator = (function () {
         });
     };
     DefaultValidator.prototype.resolveSymbolAndReference = function (book) {
+        // symbols の解決
+        // Arrayにflatten がなくて悲しい reduce だと長い…
         var symbols = book.allChunks.reduce(function (p, c) { return p.concat(c.process.symbols); }, []);
         symbols.forEach(function (symbol) {
+            // referenceToのpartやchapterの解決
             var referenceTo = symbol.referenceTo;
             if (!referenceTo) {
                 return;
@@ -4467,6 +4770,7 @@ var DefaultValidator = (function () {
                 });
             }
         });
+        // referenceTo.node の解決
         symbols.forEach(function (symbol) {
             if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
                 var reference_1 = symbol.referenceTo;
@@ -4481,6 +4785,7 @@ var DefaultValidator = (function () {
                 }
             }
         });
+        // 同一チャプター内に同一シンボル(listとか)で同一labelの要素がないかチェック
         symbols.forEach(function (symbol1) {
             symbols.forEach(function (symbol2) {
                 if (symbol1 === symbol2) {
@@ -4507,6 +4812,13 @@ exports.DefaultValidator = DefaultValidator;
 },{"../i18n/i18n":8,"../utils/utils":20,"./analyzer":14,"./walker":18}],18:[function(require,module,exports){
 "use strict";
 var parser_1 = require("./parser");
+/**
+ * 指定された構文木を歩きまわる。
+ * 次にどちらへ歩くかは渡した関数によって決まる。
+ * null が返ってくると歩くのを中断する。
+ * @param ast
+ * @param actor
+ */
 function walk(ast, actor) {
     "use strict";
     if (!ast) {
@@ -4518,11 +4830,25 @@ function walk(ast, actor) {
     }
 }
 exports.walk = walk;
+/**
+ * 指定された構文木の全てのノード・リーフを同期的に探索する。
+ * 親子であれば親のほうが先に探索され、兄弟であれば兄のほうが先に探索される。
+ * つまり、葉に着目すると文章に登場する順番に探索される。
+ * @param ast
+ * @param v
+ */
 function visit(ast, v) {
     "use strict";
     _visit(function () { return new SyncTaskPool(); }, ast, v);
 }
 exports.visit = visit;
+/**
+ * 指定された構文木の全てのノード・リーフを非同期に探索する。
+ * 親子であれば親のほうが先に探索され、兄弟であれば兄のほうが先に探索される。
+ * つまり、葉に着目すると文章に登場する順番に探索される。
+ * @param ast
+ * @param v
+ */
 function visitAsync(ast, v) {
     "use strict";
     return Promise.resolve(_visit(function () { return new AsyncTaskPool(); }, ast, v));
@@ -4610,15 +4936,16 @@ function _visit(poolGenerator, ast, v) {
 function _visitSub(poolGenerator, parent, ast, v) {
     "use strict";
     if (ast instanceof parser_1.BlockElementSyntaxTree) {
+        var _ast_1 = ast;
         return (function () {
             var pool = poolGenerator();
             var ret = v.visitBlockElementPre(ast, parent);
             pool.handle(ret, {
                 next: function () {
-                    ast.args.forEach(function (next) {
+                    _ast_1.args.forEach(function (next) {
                         pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                     });
-                    ast.childNodes.forEach(function (next) {
+                    _ast_1.childNodes.forEach(function (next) {
                         pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                     });
                 },
@@ -4626,17 +4953,18 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitBlockElementPost(ast, parent); });
+            pool.add(function () { return v.visitBlockElementPost(_ast_1, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.InlineElementSyntaxTree) {
+        var _ast_2 = ast;
         return (function () {
             var pool = poolGenerator();
             var ret = v.visitInlineElementPre(ast, parent);
             pool.handle(ret, {
                 next: function () {
-                    ast.childNodes.forEach(function (next) {
+                    _ast_2.childNodes.forEach(function (next) {
                         pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                     });
                 },
@@ -4644,14 +4972,15 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitInlineElementPost(ast, parent); });
+            pool.add(function () { return v.visitInlineElementPost(_ast_2, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.ArgumentSyntaxTree) {
+        var _ast_3 = ast;
         return (function () {
             var pool = poolGenerator();
-            var ret = v.visitArgumentPre(ast, parent);
+            var ret = v.visitArgumentPre(_ast_3, parent);
             pool.handle(ret, {
                 next: function () {
                 },
@@ -4659,23 +4988,24 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitArgumentPost(ast, parent); });
+            pool.add(function () { return v.visitArgumentPost(_ast_3, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.ChapterSyntaxTree) {
+        var _ast_4 = ast;
         return (function () {
             var pool = poolGenerator();
-            var ret = v.visitChapterPre(ast, parent);
+            var ret = v.visitChapterPre(_ast_4, parent);
             pool.handle(ret, {
                 next: function () {
-                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.headline, v); });
-                    if (ast.text) {
-                        ast.text.forEach(function (next) {
+                    pool.add(function () { return _visitSub(poolGenerator, _ast_4, _ast_4.headline, v); });
+                    if (_ast_4.text) {
+                        _ast_4.text.forEach(function (next) {
                             pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                         });
                     }
-                    ast.childNodes.forEach(function (next) {
+                    _ast_4.childNodes.forEach(function (next) {
                         pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                     });
                 },
@@ -4683,36 +5013,38 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitChapterPost(ast, parent); });
+            pool.add(function () { return v.visitChapterPost(_ast_4, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.HeadlineSyntaxTree) {
+        var _ast_5 = ast;
         return (function () {
             var pool = poolGenerator();
             var ret = v.visitHeadlinePre(ast, parent);
             pool.handle(ret, {
                 next: function () {
-                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.label, v); });
-                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.caption, v); });
+                    pool.add(function () { return _visitSub(poolGenerator, _ast_5, _ast_5.label, v); });
+                    pool.add(function () { return _visitSub(poolGenerator, _ast_5, _ast_5.caption, v); });
                 },
                 func: function () {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitHeadlinePost(ast, parent); });
+            pool.add(function () { return v.visitHeadlinePost(_ast_5, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.ColumnSyntaxTree) {
+        var _ast_6 = ast;
         return (function () {
             var pool = poolGenerator();
-            var ret = v.visitColumnPre(ast, parent);
+            var ret = v.visitColumnPre(_ast_6, parent);
             pool.handle(ret, {
                 next: function () {
-                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.headline, v); });
-                    if (ast.text) {
-                        ast.text.forEach(function (next) {
+                    pool.add(function () { return _visitSub(poolGenerator, _ast_6, _ast_6.headline, v); });
+                    if (_ast_6.text) {
+                        _ast_6.text.forEach(function (next) {
                             pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                         });
                     }
@@ -4721,34 +5053,36 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitColumnPost(ast, parent); });
+            pool.add(function () { return v.visitColumnPost(_ast_6, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.ColumnHeadlineSyntaxTree) {
+        var _ast_7 = ast;
         return (function () {
             var pool = poolGenerator();
-            var ret = v.visitColumnHeadlinePre(ast, parent);
+            var ret = v.visitColumnHeadlinePre(_ast_7, parent);
             pool.handle(ret, {
                 next: function () {
-                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.caption, v); });
+                    pool.add(function () { return _visitSub(poolGenerator, _ast_7, _ast_7.caption, v); });
                 },
                 func: function () {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitColumnHeadlinePost(ast, parent); });
+            pool.add(function () { return v.visitColumnHeadlinePost(_ast_7, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.UlistElementSyntaxTree) {
+        var _ast_8 = ast;
         return (function () {
             var pool = poolGenerator();
             var ret = v.visitUlistPre(ast, parent);
             pool.handle(ret, {
                 next: function () {
-                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.text, v); });
-                    ast.childNodes.forEach(function (next) {
+                    pool.add(function () { return _visitSub(poolGenerator, _ast_8, _ast_8.text, v); });
+                    _ast_8.childNodes.forEach(function (next) {
                         pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
                     });
                 },
@@ -4756,83 +5090,88 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitUlistPost(ast, parent); });
+            pool.add(function () { return v.visitUlistPost(_ast_8, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.OlistElementSyntaxTree) {
+        var _ast_9 = ast;
         return (function () {
             var pool = poolGenerator();
             var ret = v.visitOlistPre(ast, parent);
             pool.handle(ret, {
                 next: function () {
-                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.text, v); });
+                    pool.add(function () { return _visitSub(poolGenerator, _ast_9, _ast_9.text, v); });
                 },
                 func: function () {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitOlistPost(ast, parent); });
+            pool.add(function () { return v.visitOlistPost(_ast_9, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.DlistElementSyntaxTree) {
+        var _ast_10 = ast;
         return (function () {
             var pool = poolGenerator();
             var ret = v.visitDlistPre(ast, parent);
             pool.handle(ret, {
                 next: function () {
-                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.text, v); });
-                    pool.add(function () { return _visitSub(poolGenerator, ast, ast.content, v); });
+                    pool.add(function () { return _visitSub(poolGenerator, _ast_10, _ast_10.text, v); });
+                    pool.add(function () { return _visitSub(poolGenerator, _ast_10, _ast_10.content, v); });
                 },
                 func: function () {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitDlistPost(ast, parent); });
+            pool.add(function () { return v.visitDlistPost(_ast_10, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.NodeSyntaxTree && (ast.ruleName === parser_1.RuleName.Paragraph || ast.ruleName === parser_1.RuleName.BlockElementParagraph)) {
+        var _ast_11 = ast;
         return (function () {
             var pool = poolGenerator();
-            var ret = v.visitParagraphPre(ast, parent);
+            var ret = v.visitParagraphPre(_ast_11, parent);
             pool.handle(ret, {
                 next: function () {
-                    ast.childNodes.forEach(function (next) {
-                        pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
+                    _ast_11.childNodes.forEach(function (next) {
+                        pool.add(function () { return _visitSub(poolGenerator, _ast_11, next, v); });
                     });
                 },
                 func: function () {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitParagraphPost(ast, parent); });
+            pool.add(function () { return v.visitParagraphPost(_ast_11, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.NodeSyntaxTree) {
+        var _ast_12 = ast;
         return (function () {
             var pool = poolGenerator();
-            var ret = v.visitNodePre(ast, parent);
+            var ret = v.visitNodePre(_ast_12, parent);
             pool.handle(ret, {
                 next: function () {
-                    ast.childNodes.forEach(function (next) {
-                        pool.add(function () { return _visitSub(poolGenerator, ast, next, v); });
+                    _ast_12.childNodes.forEach(function (next) {
+                        pool.add(function () { return _visitSub(poolGenerator, _ast_12, next, v); });
                     });
                 },
                 func: function () {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitNodePost(ast, parent); });
+            pool.add(function () { return v.visitNodePost(_ast_12, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.TextNodeSyntaxTree) {
+        var _ast_13 = ast;
         return (function () {
             var pool = poolGenerator();
-            var ret = v.visitTextPre(ast, parent);
+            var ret = v.visitTextPre(_ast_13, parent);
             pool.handle(ret, {
                 next: function () {
                 },
@@ -4840,14 +5179,15 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitTextPost(ast, parent); });
+            pool.add(function () { return v.visitTextPost(_ast_13, parent); });
             return pool.consume();
         })();
     }
     else if (ast instanceof parser_1.SingleLineCommentSyntaxTree) {
+        var _ast_14 = ast;
         return (function () {
             var pool = poolGenerator();
-            var ret = v.visitSingleLineCommentPre(ast, parent);
+            var ret = v.visitSingleLineCommentPre(_ast_14, parent);
             pool.handle(ret, {
                 next: function () {
                 },
@@ -4855,7 +5195,7 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     ret(v);
                 }
             });
-            pool.add(function () { return v.visitSingleLineCommentPost(ast, parent); });
+            pool.add(function () { return v.visitSingleLineCommentPost(_ast_14, parent); });
             return pool.consume();
         })();
     }
@@ -4881,6 +5221,9 @@ function _visitSub(poolGenerator, parent, ast, v) {
         })();
     }
 }
+/**
+ * 同期化処理をそのまま同期処理として扱うためのヘルパクラス。
+ */
 var SyncTaskPool = (function () {
     function SyncTaskPool() {
         this.tasks = [];
@@ -4901,6 +5244,13 @@ var SyncTaskPool = (function () {
     };
     return SyncTaskPool;
 }());
+/**
+ * 同期化処理を非同期化するためのヘルパクラス。
+ * array.forEach(value => process(value)); を以下のように書き換えて使う。
+ * let pool = new AsyncTaskPool<any>();
+ * array.forEach(value => pool.add(()=> process(value));
+ * pool.consume().then(()=> ...);
+ */
 var AsyncTaskPool = (function () {
     function AsyncTaskPool() {
         this.tasks = [];
@@ -4947,6 +5297,7 @@ var parser_1 = require("../parser/parser");
 var env;
 function checkRuleName(ruleName) {
     "use strict";
+    // undefined or index 0 is invalid name
     if (!parser_1.RuleName[ruleName]) {
         throw new Error("unknown rule: " + ruleName);
     }
@@ -5116,25 +5467,44 @@ var analyzer_1 = require("../parser/analyzer");
 var validator_1 = require("../parser/validator");
 var walker_1 = require("../parser/walker");
 var index_1 = require("../index");
-false && compilerModel_1.Book;
+false && compilerModel_1.Book; // tslint消し
+/**
+ * ブラウザ上での実行かどうかを判別する。
+ * @returns {boolean}
+ */
 function isBrowser() {
     "use strict";
     return typeof window !== "undefined";
 }
 exports.isBrowser = isBrowser;
+/**
+ * Node.js上での実行かどうかを判別する。
+ * @returns {boolean}
+ */
 function isNodeJS() {
     "use strict";
     if (typeof atom !== "undefined") {
+        // atomはNode.jsと判定したいけどwindowあるしbrowserify環境下と区別するために特別扱いする
         return true;
     }
     return !isBrowser() && !isAMD() && typeof exports === "object";
 }
 exports.isNodeJS = isNodeJS;
+/**
+ * AMD環境下での実行かどうかを判別する。
+ * @returns {boolean|any}
+ */
 function isAMD() {
     "use strict";
     return typeof define === "function" && define.amd;
 }
 exports.isAMD = isAMD;
+/**
+ * ネストしたArrayを潰して平らにする。
+ * Arrayかどうかの判定は Array.isArray を利用。
+ * @param data
+ * @returns {*[]}
+ */
 function flatten(data) {
     "use strict";
     if (data.some(function (d) { return Array.isArray(d); })) {
@@ -5154,16 +5524,19 @@ function nodeContentToString(process, node) {
     "use strict";
     var minPos = Number.MAX_VALUE;
     var maxPos = -1;
+    // child
     var childVisitor = {
         visitDefaultPre: function (node) {
             minPos = Math.min(minPos, node.location.start.offset);
             maxPos = Math.max(maxPos, node.location.end.offset);
         }
     };
+    // root (子要素だけ抽出したい)
     walker_1.visit(node, {
         visitDefaultPre: function (node) {
         },
         visitNodePre: function (node) {
+            // Chapter, Inline, Block もここに来る
             node.childNodes.forEach(function (child) { return walker_1.visit(child, childVisitor); });
             return false;
         },
@@ -5197,6 +5570,13 @@ function nodeContentToString(process, node) {
     }
 }
 exports.nodeContentToString = nodeContentToString;
+/**
+ * 渡した要素から一番近いマッチする要素を探して返す。
+ * 見つからなかった場合 null を返す。
+ * @param node
+ * @param predicate
+ * @returns {SyntaxTree}
+ */
 function findUp(node, predicate) {
     "use strict";
     var result = null;
@@ -5210,6 +5590,14 @@ function findUp(node, predicate) {
     return result;
 }
 exports.findUp = findUp;
+/**
+ * 渡した要素から直近のChapterを探して返す。
+ * 見つからなかった場合 null を返す。
+ * もし、渡した要素自身がChapterだった場合、自身を返すのでnode.parentNode を渡すこと。
+ * @param node
+ * @param level 探すChapterのlevel
+ * @returns {ReVIEW.Parse.ChapterSyntaxTree}
+ */
 function findChapter(node, level) {
     "use strict";
     var chapter = null;
@@ -5249,6 +5637,7 @@ function findChapterOrColumn(node, level) {
 exports.findChapterOrColumn = findChapterOrColumn;
 function target2builder(target) {
     "use strict";
+    // TODO 適当になおす…
     var builderName = target.charAt(0).toUpperCase() + target.substring(1) + "Builder";
     if (builderName === "TextBuilder") {
         return new textBuilder_1.TextBuilder();
@@ -5256,14 +5645,32 @@ function target2builder(target) {
     if (builderName === "HtmlBuilder") {
         return new htmlBuilder_1.HtmlBuilder();
     }
+    /*
+    for (let name in ReVIEW.Build) {
+        if (name === builderName) {
+            let ctor = (<any>ReVIEW.Build)[name];
+            return new ctor();
+        }
+    }
+     */
     return null;
 }
 exports.target2builder = target2builder;
+/**
+ * Node.jsでのIOをざっくり行うためのモジュール。
+ */
 var IO;
 (function (IO) {
     "use strict";
+    /**
+     * 指定されたファイルを読み文字列として返す。
+     * @param path
+     * @returns {*}
+     */
     function read(path) {
+        /* tslint:disable:no-require-imports */
         var fs = require("fs");
+        /* tslint:enable:no-require-imports */
         return new Promise(function (resolve, reject) {
             fs.readFile(path, { encoding: "utf8" }, function (err, data) {
                 if (err) {
@@ -5276,8 +5683,15 @@ var IO;
         });
     }
     IO.read = read;
+    /**
+     * 指定されたファイルへ文字列を書く。
+     * @param path
+     * @param content
+     */
     function write(path, content) {
+        /* tslint:disable:no-require-imports */
         var fs = require("fs");
+        /* tslint:enable:no-require-imports */
         return new Promise(function (resolve, reject) {
             fs.writeFile(path, content, function (err) {
                 if (err) {
@@ -5291,6 +5705,9 @@ var IO;
     }
     IO.write = write;
 })(IO = exports.IO || (exports.IO = {}));
+/**
+ * 行数から桁数の変換 100行 -> 3桁
+ */
 function linesToFigure(lines) {
     "use strict";
     return String(lines).length;
@@ -5309,10 +5726,13 @@ function stringRepeat(times, src) {
     return new Array(times + 1).join(src);
 }
 exports.stringRepeat = stringRepeat;
+/**
+ * 実行するためのヘルパクラス群
+ */
 var Exec;
 (function (Exec) {
     "use strict";
-    function singleCompile(input, fileName, target, tmpConfig) {
+    function singleCompile(input, fileName, target, tmpConfig /* ReVIEW.IConfig */) {
         "use strict";
         var config = tmpConfig || {};
         config.read = config.read || (function () { return Promise.resolve(input); });

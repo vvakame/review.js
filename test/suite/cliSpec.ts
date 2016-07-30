@@ -1,4 +1,4 @@
-"use strict";
+import * as assert from "power-assert";
 
 import {isNodeJS} from "../../lib/utils/utils";
 

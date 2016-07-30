@@ -1,5 +1,3 @@
-"use strict";
-
 import {isNodeJS} from "../../lib/utils/utils";
 
 import {start} from "../../lib/index";

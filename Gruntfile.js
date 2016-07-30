@@ -20,18 +20,6 @@ module.exports = function (grunt) {
 			}
 		},
 
-		ts: {
-			default: {
-				tsconfig: {
-					tsconfig: "./tsconfig.json",
-					updateFiles:false
-				}
-			}
-		},
-		tsconfig: {
-				main: {
-				}
-		},
 		tslint: {
 			options: {
 				configuration: grunt.file.readJSON("tslint.json")
@@ -102,14 +90,6 @@ module.exports = function (grunt) {
 				}
 			}
 		},
-		dtsm: {
-			client: {
-				options: {
-					// optional: specify config file
-					confog: './dtsm.json'
-				}
-			}
-		},
 		browserify: {
 			main: {
 				files: {
@@ -145,7 +125,7 @@ module.exports = function (grunt) {
 					report: 'gzip',
 					// 変数名の圧縮類は作業コストが大きすぎるのでやらない
 					mangle: false,
-					preserveComments: 'some'
+					preserveComments: false
 				},
 				files: {
 					'<%= opt.client.outBase %>/review.min.js': [
@@ -171,12 +151,6 @@ module.exports = function (grunt) {
 					'<%= opt.client.peg %>/grammar.js'
 				]
 			},
-			dtsm: {
-				src: [
-					// dtsm installed
-					"typings/"
-				]
-			},
 			bower: {
 				src: [
 					// bower installed
@@ -197,9 +171,6 @@ module.exports = function (grunt) {
 								cwd: process.cwd() + '/' + grunt.config.get("opt.client.jsTestOut"),
 								pattern: '**/*.js'
 							});
-						},
-						function () {
-							assert = require('power-assert');
 						}
 					]
 				},
@@ -214,6 +185,11 @@ module.exports = function (grunt) {
 			}
 		},
 		shell: {
+			"tsc": {
+				command: function () {
+					return "./node_modules/.bin/tsc -p ./";
+				}
+			},
 			"pegjs": {
 				command: function () {
 					var peg = grunt.config.get("opt.client.peg") + "/";
@@ -225,11 +201,11 @@ module.exports = function (grunt) {
 
 	grunt.registerTask(
 		'setup',
-		['clean', 'bower', 'dtsm']);
+		['clean', 'bower']);
 
 	grunt.registerTask(
 		'default',
-		['clean:clientScript', 'tsconfig', 'ts', 'tslint', 'shell:pegjs', 'browserify:main', 'uglify:browser']);
+		['clean:clientScript', 'shell:tsc', 'tslint', 'shell:pegjs', 'browserify:main', 'uglify:browser']);
 
 	grunt.registerTask(
 		'test-preprocess',

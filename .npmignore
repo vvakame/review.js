@@ -1,8 +1,8 @@
 .git/
 .DS_Store
 
-# for WebStorm
-.idea/
+# for vscode
+.vscode/
 
 # for npm
 node_modules/
@@ -11,7 +11,6 @@ reviewjs-*.tgz
 # for grunt
 bower_components/
 bower-task/
-typings/
 .tscache/
 
 # for https://github.com/Microsoft/TypeScript/issues/4667

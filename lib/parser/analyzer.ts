@@ -43,9 +43,11 @@ export class AcceptableSyntaxes {
     find(node: SyntaxTree): AcceptableSyntax[] {
         let results: AcceptableSyntax[];
         if (node instanceof InlineElementSyntaxTree) {
-            results = this.inlines.filter(s => s.symbolName === node.symbol);
+            let n = node;
+            results = this.inlines.filter(s => s.symbolName === n.symbol);
         } else if (node instanceof BlockElementSyntaxTree) {
-            results = this.blocks.filter(s => s.symbolName === node.symbol);
+            let n = node;
+            results = this.blocks.filter(s => s.symbolName === n.symbol);
         } else {
             results = this.others.filter(s => node instanceof s.clazz);
         }

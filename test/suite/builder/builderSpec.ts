@@ -1,3 +1,5 @@
+import * as assert from "power-assert";
+
 import * as Test from "../testHelper";
 
 import {ReportLevel} from "../../../lib/model/compilerModel";

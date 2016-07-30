@@ -134,15 +134,16 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
     "use strict";
 
     if (ast instanceof BlockElementSyntaxTree) {
+        let _ast = ast;
         return (() => {
             let pool = poolGenerator();
             let ret = v.visitBlockElementPre(ast, parent);
             pool.handle(ret, {
                 next: () => {
-                    ast.args.forEach((next) => {
+                    _ast.args.forEach((next) => {
                         pool.add(() => _visitSub(poolGenerator, ast, next, v));
                     });
-                    ast.childNodes.forEach((next) => {
+                    _ast.childNodes.forEach((next) => {
                         pool.add(() => _visitSub(poolGenerator, ast, next, v));
                     });
                 },
@@ -150,16 +151,17 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     ret(v);
                 }
             });
-            pool.add(() => v.visitBlockElementPost(ast, parent));
+            pool.add(() => v.visitBlockElementPost(_ast, parent));
             return pool.consume();
         })();
     } else if (ast instanceof InlineElementSyntaxTree) {
+        let _ast = ast;
         return (() => {
             let pool = poolGenerator();
             let ret = v.visitInlineElementPre(ast, parent);
             pool.handle(ret, {
                 next: () => {
-                    ast.childNodes.forEach((next) => {
+                    _ast.childNodes.forEach((next) => {
                         pool.add(() => _visitSub(poolGenerator, ast, next, v));
                     });
                 },
@@ -167,13 +169,14 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     ret(v);
                 }
             });
-            pool.add(() => v.visitInlineElementPost(ast, parent));
+            pool.add(() => v.visitInlineElementPost(_ast, parent));
             return pool.consume();
         })();
     } else if (ast instanceof ArgumentSyntaxTree) {
+        let _ast = ast;
         return (() => {
             let pool = poolGenerator();
-            let ret = v.visitArgumentPre(ast, parent);
+            let ret = v.visitArgumentPre(_ast, parent);
             pool.handle(ret, {
                 next: () => {
                 },
@@ -181,22 +184,23 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     ret(v);
                 }
             });
-            pool.add(() => v.visitArgumentPost(ast, parent));
+            pool.add(() => v.visitArgumentPost(_ast, parent));
             return pool.consume();
         })();
     } else if (ast instanceof ChapterSyntaxTree) {
+        let _ast = ast;
         return (() => {
             let pool = poolGenerator();
-            let ret = v.visitChapterPre(ast, parent);
+            let ret = v.visitChapterPre(_ast, parent);
             pool.handle(ret, {
                 next: () => {
-                    pool.add(() => _visitSub(poolGenerator, ast, ast.headline, v));
-                    if (ast.text) {
-                        ast.text.forEach((next) => {
+                    pool.add(() => _visitSub(poolGenerator, _ast, _ast.headline, v));
+                    if (_ast.text) {
+                        _ast.text.forEach((next) => {
                             pool.add(() => _visitSub(poolGenerator, ast, next, v));
                         });
                     }
-                    ast.childNodes.forEach((next) => {
+                    _ast.childNodes.forEach((next) => {
                         pool.add(() => _visitSub(poolGenerator, ast, next, v));
                     });
                 },
@@ -204,34 +208,36 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     ret(v);
                 }
             });
-            pool.add(() => v.visitChapterPost(ast, parent));
+            pool.add(() => v.visitChapterPost(_ast, parent));
             return pool.consume();
         })();
     } else if (ast instanceof HeadlineSyntaxTree) {
+        let _ast = ast;
         return (() => {
             let pool = poolGenerator();
             let ret = v.visitHeadlinePre(ast, parent);
             pool.handle(ret, {
                 next: () => {
-                    pool.add(() => _visitSub(poolGenerator, ast, ast.label, v));
-                    pool.add(() => _visitSub(poolGenerator, ast, ast.caption, v));
+                    pool.add(() => _visitSub(poolGenerator, _ast, _ast.label, v));
+                    pool.add(() => _visitSub(poolGenerator, _ast, _ast.caption, v));
                 },
                 func: () => {
                     ret(v);
                 }
             });
-            pool.add(() => v.visitHeadlinePost(ast, parent));
+            pool.add(() => v.visitHeadlinePost(_ast, parent));
             return pool.consume();
         })();
     } else if (ast instanceof ColumnSyntaxTree) {
+        let _ast = ast;
         return (() => {
             let pool = poolGenerator();
-            let ret = v.visitColumnPre(ast, parent);
+            let ret = v.visitColumnPre(_ast, parent);
             pool.handle(ret, {
                 next: () => {
-                    pool.add(() => _visitSub(poolGenerator, ast, ast.headline, v));
-                    if (ast.text) {
-                        ast.text.forEach((next) => {
+                    pool.add(() => _visitSub(poolGenerator, _ast, _ast.headline, v));
+                    if (_ast.text) {
+                        _ast.text.forEach((next) => {
                             pool.add(() => _visitSub(poolGenerator, ast, next, v));
                         });
                     }
@@ -240,32 +246,34 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     ret(v);
                 }
             });
-            pool.add(() => v.visitColumnPost(ast, parent));
+            pool.add(() => v.visitColumnPost(_ast, parent));
             return pool.consume();
         })();
     } else if (ast instanceof ColumnHeadlineSyntaxTree) {
+        let _ast = ast;
         return (() => {
             let pool = poolGenerator();
-            let ret = v.visitColumnHeadlinePre(ast, parent);
+            let ret = v.visitColumnHeadlinePre(_ast, parent);
             pool.handle(ret, {
                 next: () => {
-                    pool.add(() => _visitSub(poolGenerator, ast, ast.caption, v));
+                    pool.add(() => _visitSub(poolGenerator, _ast, _ast.caption, v));
                 },
                 func: () => {
                     ret(v);
                 }
             });
-            pool.add(() => v.visitColumnHeadlinePost(ast, parent));
+            pool.add(() => v.visitColumnHeadlinePost(_ast, parent));
             return pool.consume();
         })();
     } else if (ast instanceof UlistElementSyntaxTree) {
+        let _ast = ast;
         return (() => {
             let pool = poolGenerator();
             let ret = v.visitUlistPre(ast, parent);
             pool.handle(ret, {
                 next: () => {
-                    pool.add(() => _visitSub(poolGenerator, ast, ast.text, v));
-                    ast.childNodes.forEach((next) => {
+                    pool.add(() => _visitSub(poolGenerator, _ast, _ast.text, v));
+                    _ast.childNodes.forEach((next) => {
                         pool.add(() => _visitSub(poolGenerator, ast, next, v));
                     });
                 },
@@ -273,78 +281,83 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     ret(v);
                 }
             });
-            pool.add(() => v.visitUlistPost(ast, parent));
+            pool.add(() => v.visitUlistPost(_ast, parent));
             return pool.consume();
         })();
     } else if (ast instanceof OlistElementSyntaxTree) {
+        let _ast = ast;
         return (() => {
             let pool = poolGenerator();
             let ret = v.visitOlistPre(ast, parent);
             pool.handle(ret, {
                 next: () => {
-                    pool.add(() => _visitSub(poolGenerator, ast, ast.text, v));
+                    pool.add(() => _visitSub(poolGenerator, _ast, _ast.text, v));
                 },
                 func: () => {
                     ret(v);
                 }
             });
-            pool.add(() => v.visitOlistPost(ast, parent));
+            pool.add(() => v.visitOlistPost(_ast, parent));
             return pool.consume();
         })();
     } else if (ast instanceof DlistElementSyntaxTree) {
+        let _ast = ast;
         return (() => {
             let pool = poolGenerator();
             let ret = v.visitDlistPre(ast, parent);
             pool.handle(ret, {
                 next: () => {
-                    pool.add(() => _visitSub(poolGenerator, ast, ast.text, v));
-                    pool.add(() => _visitSub(poolGenerator, ast, ast.content, v));
+                    pool.add(() => _visitSub(poolGenerator, _ast, _ast.text, v));
+                    pool.add(() => _visitSub(poolGenerator, _ast, _ast.content, v));
                 },
                 func: () => {
                     ret(v);
                 }
             });
-            pool.add(() => v.visitDlistPost(ast, parent));
+            pool.add(() => v.visitDlistPost(_ast, parent));
             return pool.consume();
         })();
     } else if (ast instanceof NodeSyntaxTree && (ast.ruleName === RuleName.Paragraph || ast.ruleName === RuleName.BlockElementParagraph)) {
+        let _ast = ast;
         return (() => {
             let pool = poolGenerator();
-            let ret = v.visitParagraphPre(ast, parent);
+            let ret = v.visitParagraphPre(_ast, parent);
             pool.handle(ret, {
                 next: () => {
-                    ast.childNodes.forEach((next) => {
-                        pool.add(() => _visitSub(poolGenerator, ast, next, v));
+                    _ast.childNodes.forEach((next) => {
+                        pool.add(() => _visitSub(poolGenerator, _ast, next, v));
                     });
                 },
                 func: () => {
                     ret(v);
                 }
             });
-            pool.add(() => v.visitParagraphPost(ast, parent));
+            pool.add(() => v.visitParagraphPost(_ast, parent));
             return pool.consume();
         })();
     } else if (ast instanceof NodeSyntaxTree) {
+        let _ast = ast;
         return (() => {
             let pool = poolGenerator();
-            let ret = v.visitNodePre(ast, parent);
+            let ret = v.visitNodePre(_ast, parent);
             pool.handle(ret, {
                 next: () => {
-                    ast.childNodes.forEach((next) => {
-                        pool.add(() => _visitSub(poolGenerator, ast, next, v));
+                    _ast.childNodes.forEach((next) => {
+                        pool.add(() => _visitSub(poolGenerator, _ast, next, v));
                     });
                 },
                 func: () => {
                     ret(v);
                 }
             });
-            pool.add(() => v.visitNodePost(ast, parent));
+            pool.add(() => v.visitNodePost(_ast, parent));
             return pool.consume();
         })();
     } else if (ast instanceof TextNodeSyntaxTree) {
+        let _ast = ast;
         return (() => {
             let pool = poolGenerator();
-            let ret = v.visitTextPre(ast, parent);
+            let ret = v.visitTextPre(_ast, parent);
             pool.handle(ret, {
                 next: () => {
                 },
@@ -352,13 +365,14 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     ret(v);
                 }
             });
-            pool.add(() => v.visitTextPost(ast, parent));
+            pool.add(() => v.visitTextPost(_ast, parent));
             return pool.consume();
         })();
     } else if (ast instanceof SingleLineCommentSyntaxTree) {
+        let _ast = ast;
         return (() => {
             let pool = poolGenerator();
-            let ret = v.visitSingleLineCommentPre(ast, parent);
+            let ret = v.visitSingleLineCommentPre(_ast, parent);
             pool.handle(ret, {
                 next: () => {
                 },
@@ -366,7 +380,7 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     ret(v);
                 }
             });
-            pool.add(() => v.visitSingleLineCommentPost(ast, parent));
+            pool.add(() => v.visitSingleLineCommentPost(_ast, parent));
             return pool.consume();
         })();
     } else if (ast) {

@@ -1,3 +1,5 @@
+import * as assert from "power-assert";
+
 import {deepAssign} from "../../../lib/i18n/utils";
 
 describe("ReVIEW.i18nの", () => {
