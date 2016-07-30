@@ -19,13 +19,13 @@
         "experimentalDecorators": true,
         "rootDir": ".",
         "sourceMap": true,
+        "inlineSources": true,
         "declaration": true,
         "listFiles": false,
         "traceResolution": false,
         "newLine": "LF",
         "forceConsistentCasingInFileNames": true,
-        "noEmitOnError": true,
-        "inlineSources": true
+        "noEmitOnError": true
     },
     "include": [
         "./lib/**/*.ts",
