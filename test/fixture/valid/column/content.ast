@@ -42,6 +42,7 @@
               "offset": 8
             }
           },
+          "comments": [],
           "headline": {
             "ruleName": "Headline",
             "location": {
@@ -109,6 +110,7 @@
                   "offset": 69
                 }
               },
+              "comments": [],
               "headline": {
                 "ruleName": "Headline",
                 "location": {
@@ -313,6 +315,7 @@
                   "offset": 176
                 }
               },
+              "comments": [],
               "headline": {
                 "ruleName": "Headline",
                 "location": {
@@ -517,6 +520,7 @@
                   "offset": 176
                 }
               },
+              "comments": [],
               "headline": {
                 "ruleName": "Headline",
                 "location": {

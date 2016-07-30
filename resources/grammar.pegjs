@@ -15,7 +15,7 @@ Chapters "chapters"
     ;
 
 Chapter "chapter"
-    = headline:Headline text:Contents? { return b.chapter(headline, text); }
+    = comments:SinglelineComments? headline:Headline text:Contents? { return b.chapter(comments, headline, text); }
     ;
 
 // = 章タイトル
@@ -211,6 +211,10 @@ DlistElementContents "contents of dlist element"
 
 DlistElementContent "content of dlist element"
     = [ \t]+ c:SinglelineContent Newline? { return b.content("DlistElementContent", c); }
+    ;
+
+SinglelineComments "signle line comments"
+    = c:SinglelineComment cc:SinglelineComments? { return b.contents("SinglelineComments", c, cc); }
     ;
 
 SinglelineComment "signle line comment"

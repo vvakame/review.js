@@ -64,12 +64,13 @@ export function text(ruleName: string, text: string): ConcreatSyntaxTree {
     };
 }
 
-export function chapter(headline: any, text: any): ConcreatSyntaxTree {
+export function chapter(comments:any, headline: any, text: any): ConcreatSyntaxTree {
     "use strict";
 
     return {
         syntax: checkRuleName("Chapter"),
         location: env.location(),
+        comments: comments,
         headline: headline,
         text: text
     };

@@ -141,6 +141,7 @@ export function transform(rawResult: ConcreatSyntaxTree): SyntaxTree {
         case RuleName.Olist:
         case RuleName.Dlist:
         case RuleName.DlistElementContents:
+        case RuleName.SinglelineComments:
             return new NodeSyntaxTree(rawResult);
         // c パターン
         case RuleName.Start:
@@ -249,6 +250,7 @@ export interface ConcreatSyntaxTree {
     location: Location;
 
     // Ruleによっては
+    comments?: any;
     headline?: any;
     text?: any;
     level?: number;
@@ -312,6 +314,7 @@ export enum RuleName {
     ColumnContents,
     ColumnContent,
     ColumnTerminator,
+    SinglelineComments,
     SinglelineComment,
 }
 
@@ -446,6 +449,7 @@ export class SyntaxTree implements NodeLocation {
 	 */
     checkArray(value: any): any[] {
         if (!Array.isArray(value)) {
+            console.log(JSON.stringify(value, null, 2));
             throw new Error("array required. actual:" + (typeof value) + ":" + value);
         } else {
             return value;
@@ -643,12 +647,20 @@ export class NodeSyntaxTree extends SyntaxTree {
 // TODO SyntaxTree と指定されている所についてもっと細かく書けるはず…
 
 export class ChapterSyntaxTree extends NodeSyntaxTree {
+    comments: SingleLineCommentSyntaxTree[];
     headline: HeadlineSyntaxTree;
     text: SyntaxTree[];
 
     constructor(data: ConcreatSyntaxTree) {
         super(data);
 
+        if (data.comments && data.comments.content) {
+            this.comments = this.checkArray(data.comments.content).map((data: ConcreatSyntaxTree) => {
+                return transform(data).toSingleLineCommentNode();
+            });
+        } else {
+            this.comments = [];
+        }
         this.headline = transform(this.checkObject(data.headline)).toHeadline();
         if (typeof data.text === "string" || data.text === null) {
             this.text = [];

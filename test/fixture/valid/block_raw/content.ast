@@ -42,6 +42,7 @@
               "offset": 150
             }
           },
+          "comments": [],
           "headline": {
             "ruleName": "Headline",
             "location": {

@@ -42,6 +42,7 @@
               "offset": 49
             }
           },
+          "comments": [],
           "headline": {
             "ruleName": "Headline",
             "location": {
@@ -179,6 +180,7 @@
                   "offset": 125
                 }
               },
+              "comments": [],
               "headline": {
                 "ruleName": "Headline",
                 "location": {
@@ -362,6 +364,7 @@
                       "offset": 741
                     }
                   },
+                  "comments": [],
                   "headline": {
                     "ruleName": "Headline",
                     "location": {
@@ -568,6 +571,7 @@
                   "offset": 741
                 }
               },
+              "comments": [],
               "headline": {
                 "ruleName": "Headline",
                 "location": {
@@ -890,6 +894,7 @@
                   "offset": 590
                 }
               },
+              "comments": [],
               "headline": {
                 "ruleName": "Headline",
                 "location": {
@@ -1265,6 +1270,7 @@
                   "offset": 373
                 }
               },
+              "comments": [],
               "headline": {
                 "ruleName": "Headline",
                 "location": {

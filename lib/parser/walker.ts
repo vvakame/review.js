@@ -194,6 +194,11 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
             let ret = v.visitChapterPre(_ast, parent);
             pool.handle(ret, {
                 next: () => {
+                    if(_ast.comments) {
+                        _ast.comments.forEach((next) => {
+                            pool.add(() => _visitSub(poolGenerator, ast, next, v));
+                        });
+                    }
                     pool.add(() => _visitSub(poolGenerator, _ast, _ast.headline, v));
                     if (_ast.text) {
                         _ast.text.forEach((next) => {

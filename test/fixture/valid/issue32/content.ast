@@ -7,9 +7,9 @@
       "offset": 0
     },
     "end": {
-      "line": 2,
+      "line": 3,
       "column": 1,
-      "offset": 14
+      "offset": 79
     }
   },
   "childNodes": [
@@ -22,9 +22,9 @@
           "offset": 0
         },
         "end": {
-          "line": 2,
+          "line": 3,
           "column": 1,
-          "offset": 14
+          "offset": 79
         }
       },
       "childNodes": [
@@ -37,24 +37,41 @@
               "offset": 0
             },
             "end": {
-              "line": 2,
+              "line": 3,
               "column": 1,
-              "offset": 14
+              "offset": 79
             }
           },
-          "comments": [],
+          "comments": [
+            {
+              "ruleName": "SinglelineComment",
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 1,
+                  "offset": 0
+                },
+                "end": {
+                  "line": 2,
+                  "column": 1,
+                  "offset": 47
+                }
+              },
+              "text": "# @suppress JapaneseAmbiguousNounConjunction"
+            }
+          ],
           "headline": {
             "ruleName": "Headline",
             "location": {
               "start": {
-                "line": 1,
-                "column": 1,
-                "offset": 0
-              },
-              "end": {
                 "line": 2,
                 "column": 1,
-                "offset": 14
+                "offset": 47
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 79
               }
             },
             "level": 1,
@@ -62,30 +79,30 @@
               "ruleName": "BraceArg",
               "location": {
                 "start": {
-                  "line": 1,
+                  "line": 2,
                   "column": 2,
-                  "offset": 1
+                  "offset": 48
                 },
                 "end": {
-                  "line": 1,
-                  "column": 8,
-                  "offset": 7
+                  "line": 2,
+                  "column": 9,
+                  "offset": 55
                 }
               },
-              "arg": "fuga"
+              "arg": "index"
             },
             "caption": {
               "ruleName": "ContentInlines",
               "location": {
                 "start": {
-                  "line": 1,
-                  "column": 9,
-                  "offset": 8
+                  "line": 2,
+                  "column": 10,
+                  "offset": 56
                 },
                 "end": {
-                  "line": 1,
-                  "column": 14,
-                  "offset": 13
+                  "line": 2,
+                  "column": 32,
+                  "offset": 78
                 }
               },
               "childNodes": [
@@ -93,17 +110,17 @@
                   "ruleName": "ContentInlineText",
                   "location": {
                     "start": {
-                      "line": 1,
-                      "column": 9,
-                      "offset": 8
+                      "line": 2,
+                      "column": 10,
+                      "offset": 56
                     },
                     "end": {
-                      "line": 1,
-                      "column": 14,
-                      "offset": 13
+                      "line": 2,
+                      "column": 32,
+                      "offset": 78
                     }
                   },
-                  "text": "ヘッダのみ"
+                  "text": "Revised 型の国のTypeScript"
                 }
               ]
             }
