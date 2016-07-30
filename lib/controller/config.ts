@@ -1,12 +1,12 @@
 "use strict";
 
-import {Builder, DefaultBuilder} from "../builder/builder";
-import {BookStructure, ConfigRaw, Options, ConfigListener} from "./configRaw";
-import {ProcessReport, ReportLevel, Book} from "../model/compilerModel";
-import {Analyzer, DefaultAnalyzer} from "../parser/analyzer";
-import {Validator, DefaultValidator} from "../parser/validator";
+import { Builder, DefaultBuilder } from "../builder/builder";
+import { BookStructure, ConfigRaw, Options, ConfigListener } from "./configRaw";
+import { ProcessReport, ReportLevel, Book } from "../model/compilerModel";
+import { Analyzer, DefaultAnalyzer } from "../parser/analyzer";
+import { Validator, DefaultValidator } from "../parser/validator";
 
-import {IO} from "../utils/utils";
+import { IO } from "../utils/utils";
 
 export class Config {
     _builders: Builder[];

@@ -2,11 +2,11 @@ import * as assert from "power-assert";
 
 import * as Test from "./testHelper";
 
-import {isNodeJS} from "../../lib/utils/utils";
+import { isNodeJS } from "../../lib/utils/utils";
 
-import {Builder} from "../../lib/builder/builder";
-import {TextBuilder} from "../../lib/builder/textBuilder";
-import {HtmlBuilder} from "../../lib/builder/htmlBuilder";
+import { Builder } from "../../lib/builder/builder";
+import { TextBuilder } from "../../lib/builder/textBuilder";
+import { HtmlBuilder } from "../../lib/builder/htmlBuilder";
 
 describe("Ruby版ReVIEWとの出力差確認", () => {
     "use strict";

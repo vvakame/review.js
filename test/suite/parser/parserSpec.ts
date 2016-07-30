@@ -4,10 +4,10 @@ import * as Test from "../testHelper";
 
 import * as PEG from "../../../resources/grammar";
 
-import {isNodeJS} from "../../../lib/utils/utils";
+import { isNodeJS } from "../../../lib/utils/utils";
 
-import {parse, SyntaxTree} from "../../../lib/parser/parser";
-import {TextBuilder} from "../../../lib/builder/textBuilder";
+import { parse, SyntaxTree } from "../../../lib/parser/parser";
+import { TextBuilder } from "../../../lib/builder/textBuilder";
 
 function updateIfSyntaxError(e: any) {
     "use strict";

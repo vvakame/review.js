@@ -1,18 +1,18 @@
 "use strict";
 
-import {Book, ContentChunk, ReportLevel, ProcessReport, Symbol} from "./model/compilerModel";
-import {Options} from "./controller/configRaw";
-import {Controller} from "./controller/controller";
+import { Book, ContentChunk, ReportLevel, ProcessReport, Symbol } from "./model/compilerModel";
+import { Options } from "./controller/configRaw";
+import { Controller } from "./controller/controller";
 
-import {NodeLocation, SyntaxTree} from "./parser/parser";
+import { NodeLocation, SyntaxTree } from "./parser/parser";
 export * from "./parser/parser";
-import {AcceptableSyntaxes, Analyzer, DefaultAnalyzer} from "./parser/analyzer";
-import {Validator, DefaultValidator} from "./parser/validator";
+import { AcceptableSyntaxes, Analyzer, DefaultAnalyzer } from "./parser/analyzer";
+import { Validator, DefaultValidator } from "./parser/validator";
 
-import {Builder, DefaultBuilder} from "./builder/builder";
-import {HtmlBuilder} from "./builder/htmlBuilder";
-import {TextBuilder} from "./builder/textBuilder";
-import {SyntaxType} from "./parser/analyzer";
+import { Builder, DefaultBuilder } from "./builder/builder";
+import { HtmlBuilder } from "./builder/htmlBuilder";
+import { TextBuilder } from "./builder/textBuilder";
+import { SyntaxType } from "./parser/analyzer";
 
 export { Book, ContentChunk, ReportLevel, ProcessReport, NodeLocation, Symbol, SyntaxTree, AcceptableSyntaxes, Analyzer, DefaultAnalyzer, Validator, DefaultValidator, Builder, DefaultBuilder, HtmlBuilder, TextBuilder, SyntaxType };
 

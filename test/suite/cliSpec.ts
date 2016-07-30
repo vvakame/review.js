@@ -1,6 +1,6 @@
 import * as assert from "power-assert";
 
-import {isNodeJS} from "../../lib/utils/utils";
+import { isNodeJS } from "../../lib/utils/utils";
 
 describe("コマンドラインツールの動作", () => {
     "use strict";

@@ -1,6 +1,6 @@
 import * as assert from "power-assert";
 
-import {BookStructure, ConfigBook} from "../../../lib/controller/configRaw";
+import { BookStructure, ConfigBook } from "../../../lib/controller/configRaw";
 
 describe("ReVIEWのConfig.tsの", () => {
     "use strict";

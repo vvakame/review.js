@@ -2,9 +2,9 @@ import * as assert from "power-assert";
 
 import * as Test from "../testHelper";
 
-import {ReportLevel} from "../../../lib/model/compilerModel";
+import { ReportLevel } from "../../../lib/model/compilerModel";
 
-import {TextBuilder} from "../../../lib/builder/textBuilder";
+import { TextBuilder } from "../../../lib/builder/textBuilder";
 
 describe("ReVIEW.Buildの", () => {
     "use strict";

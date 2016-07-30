@@ -1,10 +1,10 @@
 "use strict";
 
-import {deepAssign} from "./utils";
-import {isNodeJS} from "../utils/utils";
+import { deepAssign } from "./utils";
+import { isNodeJS } from "../utils/utils";
 
-import {en} from "./en";
-import {ja} from "./ja";
+import { en } from "./en";
+import { ja } from "./ja";
 
 let langs: any = {
     ja: ja,

@@ -1,14 +1,14 @@
 "use strict";
 
-import {t} from "../i18n/i18n";
+import { t } from "../i18n/i18n";
 
-import {AnalyzerError} from "../js/exception";
+import { AnalyzerError } from "../js/exception";
 
-import {Process} from "../model/compilerModel";
+import { Process } from "../model/compilerModel";
 
-import {SyntaxTree, InlineElementSyntaxTree, BlockElementSyntaxTree, HeadlineSyntaxTree, ColumnSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree} from "../parser/parser";
+import { SyntaxTree, InlineElementSyntaxTree, BlockElementSyntaxTree, HeadlineSyntaxTree, ColumnSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree } from "../parser/parser";
 
-import {nodeContentToString} from "../utils/utils";
+import { nodeContentToString } from "../utils/utils";
 
 /**
  * 構文のタイプ。

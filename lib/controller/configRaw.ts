@@ -1,9 +1,9 @@
 "use strict";
 
-import {Book, Symbol, ProcessReport} from "../model/compilerModel";
-import {Analyzer, AcceptableSyntaxes} from "../parser/analyzer";
-import {Validator} from "../parser/validator";
-import {Builder} from "../builder/builder";
+import { Book, Symbol, ProcessReport } from "../model/compilerModel";
+import { Analyzer, AcceptableSyntaxes } from "../parser/analyzer";
+import { Validator } from "../parser/validator";
+import { Builder } from "../builder/builder";
 
 /**
  * コマンドライン引数を解釈した結果のオプション。

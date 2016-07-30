@@ -1,18 +1,18 @@
 "use strict";
 
-import {t} from "../i18n/i18n";
+import { t } from "../i18n/i18n";
 
-import {Book, ContentChunk, Symbol} from "../model/compilerModel";
+import { Book, ContentChunk, Symbol } from "../model/compilerModel";
 
-import {SyntaxTree, ChapterSyntaxTree, ColumnSyntaxTree, HeadlineSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, NodeSyntaxTree} from "./parser";
+import { SyntaxTree, ChapterSyntaxTree, ColumnSyntaxTree, HeadlineSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, NodeSyntaxTree } from "./parser";
 
-import {AcceptableSyntaxes, SyntaxType} from "./analyzer";
+import { AcceptableSyntaxes, SyntaxType } from "./analyzer";
 
-import {Builder} from "../builder/builder";
+import { Builder } from "../builder/builder";
 
-import {visit} from "./walker";
+import { visit } from "./walker";
 
-import {findChapter, nodeContentToString} from "../utils/utils";
+import { findChapter, nodeContentToString } from "../utils/utils";
 
 /**
  * IAnalyzerで処理した後の構文木について構文上のエラーがないかチェックする。

@@ -1,16 +1,16 @@
 "use strict";
 
-import {ConfigRaw} from "../controller/configRaw";
-import {Book, Process, BuilderProcess} from "../model/compilerModel";
+import { ConfigRaw } from "../controller/configRaw";
+import { Book, Process, BuilderProcess } from "../model/compilerModel";
 
-import {SyntaxTree, NodeSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, DlistElementSyntaxTree, OlistElementSyntaxTree, TextNodeSyntaxTree, ChapterSyntaxTree, ColumnSyntaxTree} from "../parser/parser";
-import {Builder} from "../builder/builder";
-import {TextBuilder} from "../builder/textBuilder";
-import {HtmlBuilder} from "../builder/htmlBuilder";
-import {DefaultAnalyzer} from "../parser/analyzer";
-import {DefaultValidator} from "../parser/validator";
-import {TreeVisitor, visit, walk} from "../parser/walker";
-import {start} from "../index";
+import { SyntaxTree, NodeSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, DlistElementSyntaxTree, OlistElementSyntaxTree, TextNodeSyntaxTree, ChapterSyntaxTree, ColumnSyntaxTree } from "../parser/parser";
+import { Builder } from "../builder/builder";
+import { TextBuilder } from "../builder/textBuilder";
+import { HtmlBuilder } from "../builder/htmlBuilder";
+import { DefaultAnalyzer } from "../parser/analyzer";
+import { DefaultValidator } from "../parser/validator";
+import { TreeVisitor, visit, walk } from "../parser/walker";
+import { start } from "../index";
 
 declare let define: any; // TODO コンパイル通す用
 false && Book; // tslint消し

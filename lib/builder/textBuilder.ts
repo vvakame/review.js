@@ -1,16 +1,16 @@
 "use strict";
 
-import {BuilderProcess} from "../model/compilerModel";
+import { BuilderProcess } from "../model/compilerModel";
 
-import {DefaultBuilder} from "./builder";
+import { DefaultBuilder } from "./builder";
 
-import {t} from "../i18n/i18n";
+import { t } from "../i18n/i18n";
 
-import {NodeSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree} from "../parser/parser";
+import { NodeSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree } from "../parser/parser";
 
-import {visit, TreeVisitor} from "../parser/walker";
+import { visit, TreeVisitor } from "../parser/walker";
 
-import {nodeContentToString, findChapter, padLeft, linesToFigure} from "../utils/utils";
+import { nodeContentToString, findChapter, padLeft, linesToFigure } from "../utils/utils";
 
 export class TextBuilder extends DefaultBuilder {
     extention = "txt";

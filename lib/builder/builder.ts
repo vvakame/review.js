@@ -1,14 +1,14 @@
 "use strict";
 
-import {AnalyzerError} from "../js/exception";
+import { AnalyzerError } from "../js/exception";
 
-import {Book, BuilderProcess, ContentChunk, Symbol} from "../model/compilerModel";
+import { Book, BuilderProcess, ContentChunk, Symbol } from "../model/compilerModel";
 
-import {SyntaxTree, NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, TextNodeSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, SingleLineCommentSyntaxTree} from "../parser/parser";
+import { SyntaxTree, NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, TextNodeSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, SingleLineCommentSyntaxTree } from "../parser/parser";
 
-import {visit, visitAsync} from "../parser/walker";
+import { visit, visitAsync } from "../parser/walker";
 
-import {nodeContentToString, findUp} from "../utils/utils";
+import { nodeContentToString, findUp } from "../utils/utils";
 
 /**
  * IAnalyzerとIValidatorでチェックをした後に構文木から出力を生成する。

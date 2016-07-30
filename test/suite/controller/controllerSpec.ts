@@ -1,8 +1,8 @@
 import * as assert from "power-assert";
 
-import {start} from "../../../lib/index";
+import { start } from "../../../lib/index";
 
-import {TextBuilder} from "../../../lib/builder/textBuilder";
+import { TextBuilder } from "../../../lib/builder/textBuilder";
 
 describe("ReVIEW.Controllerの", () => {
     "use strict";

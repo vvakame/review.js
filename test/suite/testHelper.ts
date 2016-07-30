@@ -1,14 +1,14 @@
-import {isNodeJS} from "../../lib/utils/utils";
+import { isNodeJS } from "../../lib/utils/utils";
 
-import {start} from "../../lib/index";
+import { start } from "../../lib/index";
 
-import {ConfigRaw} from "../../lib/controller/configRaw";
-import {Book, ProcessReport} from "../../lib/model/compilerModel";
+import { ConfigRaw } from "../../lib/controller/configRaw";
+import { Book, ProcessReport } from "../../lib/model/compilerModel";
 
-import {DefaultAnalyzer} from "../../lib/parser/analyzer";
-import {DefaultValidator} from "../../lib/parser/validator";
+import { DefaultAnalyzer } from "../../lib/parser/analyzer";
+import { DefaultValidator } from "../../lib/parser/validator";
 
-import {TextBuilder} from "../../lib/builder/textBuilder";
+import { TextBuilder } from "../../lib/builder/textBuilder";
 
 /**
  * コンパイルを行う。

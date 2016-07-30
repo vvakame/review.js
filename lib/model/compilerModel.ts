@@ -2,14 +2,14 @@
 
 "use strict";
 
-import {t} from "../i18n/i18n";
+import { t } from "../i18n/i18n";
 
-import {ConcreatSyntaxTree, NodeLocation, SyntaxTree, InlineElementSyntaxTree, BlockElementSyntaxTree, ChapterSyntaxTree} from "../parser/parser";
+import { ConcreatSyntaxTree, NodeLocation, SyntaxTree, InlineElementSyntaxTree, BlockElementSyntaxTree, ChapterSyntaxTree } from "../parser/parser";
 
-import {AcceptableSyntaxes} from "../parser/analyzer";
-import {Builder} from "../builder/builder";
-import {Config} from "../controller/config";
-import {visit} from "../parser/walker";
+import { AcceptableSyntaxes } from "../parser/analyzer";
+import { Builder } from "../builder/builder";
+import { Config } from "../controller/config";
+import { visit } from "../parser/walker";
 
 /**
  * 参照先についての情報。

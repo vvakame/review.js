@@ -1,6 +1,6 @@
 import * as assert from "power-assert";
 
-import {t, setup} from "../../../lib/i18n/i18n";
+import { t, setup } from "../../../lib/i18n/i18n";
 
 describe("ReVIEW.i18nの", () => {
     "use strict";

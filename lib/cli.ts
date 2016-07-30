@@ -3,10 +3,10 @@ import * as path from "path";
 import * as jsyaml from "js-yaml";
 import * as updateNotifier from "update-notifier";
 
-import {start} from "./index";
-import {ConfigRaw} from "./controller/configRaw";
-import {ReportLevel} from "./model/compilerModel";
-import {Exec, target2builder} from "./utils/utils";
+import { start } from "./index";
+import { ConfigRaw } from "./controller/configRaw";
+import { ReportLevel } from "./model/compilerModel";
+import { Exec, target2builder } from "./utils/utils";
 
 /* tslint:disable:no-require-imports */
 let pkg = require("../package.json");

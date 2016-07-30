@@ -1,6 +1,6 @@
 "use strict";
 
-import {RuleName, SyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree, ChapterSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, NodeSyntaxTree, TextNodeSyntaxTree, SingleLineCommentSyntaxTree} from "./parser";
+import { RuleName, SyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree, ChapterSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, NodeSyntaxTree, TextNodeSyntaxTree, SingleLineCommentSyntaxTree } from "./parser";
 
 /**
  * 指定された構文木を歩きまわる。
@@ -194,7 +194,7 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
             let ret = v.visitChapterPre(_ast, parent);
             pool.handle(ret, {
                 next: () => {
-                    if(_ast.comments) {
+                    if (_ast.comments) {
                         _ast.comments.forEach((next) => {
                             pool.add(() => _visitSub(poolGenerator, ast, next, v));
                         });

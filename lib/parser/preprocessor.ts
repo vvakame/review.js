@@ -1,14 +1,14 @@
 "use strict";
 
-import {Book, ContentChunk} from "../model/compilerModel";
+import { Book, ContentChunk } from "../model/compilerModel";
 
-import {SyntaxTree, NodeSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ColumnSyntaxTree, ChapterSyntaxTree, TextNodeSyntaxTree} from "./parser";
+import { SyntaxTree, NodeSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ColumnSyntaxTree, ChapterSyntaxTree, TextNodeSyntaxTree } from "./parser";
 
-import {AcceptableSyntaxes} from "./analyzer";
+import { AcceptableSyntaxes } from "./analyzer";
 
-import {visit} from "./walker";
+import { visit } from "./walker";
 
-import {nodeContentToString} from "../utils/utils";
+import { nodeContentToString } from "../utils/utils";
 
 /**
  * 構文木の組み換えを行う機会を提供する。

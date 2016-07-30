@@ -2,22 +2,22 @@
 
 import * as PEG from "../../resources/grammar";
 
-import {Book, ContentChunk, ReportLevel, Symbol} from "../model/compilerModel";
+import { Book, ContentChunk, ReportLevel, Symbol } from "../model/compilerModel";
 
-import {SyntaxTree} from "../parser/parser";
-import {Config, NodeJSConfig, WebBrowserConfig} from "./config";
-import {Options, ConfigRaw, ContentStructure} from "./configRaw";
+import { SyntaxTree } from "../parser/parser";
+import { Config, NodeJSConfig, WebBrowserConfig } from "./config";
+import { Options, ConfigRaw, ContentStructure } from "./configRaw";
 
-import {parse, ChapterSyntaxTree} from "../parser/parser";
+import { parse, ChapterSyntaxTree } from "../parser/parser";
 
-import {SyntaxPreprocessor} from "../parser/preprocessor";
+import { SyntaxPreprocessor } from "../parser/preprocessor";
 
-import {TextBuilder} from "../builder/textBuilder";
-import {HtmlBuilder} from "../builder/htmlBuilder";
+import { TextBuilder } from "../builder/textBuilder";
+import { HtmlBuilder } from "../builder/htmlBuilder";
 
-import {visit} from "../parser/walker";
+import { visit } from "../parser/walker";
 
-import {isNodeJS} from "../utils/utils";
+import { isNodeJS } from "../utils/utils";
 
 /**
  * ReVIEW文書を処理するためのコントローラ。

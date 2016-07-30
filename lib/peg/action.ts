@@ -1,6 +1,6 @@
 "use strict";
 
-import {Location, RuleName, ConcreatSyntaxTree} from "../parser/parser";
+import { Location, RuleName, ConcreatSyntaxTree } from "../parser/parser";
 
 export interface PEGEnvironment {
     text(): string;
@@ -64,7 +64,7 @@ export function text(ruleName: string, text: string): ConcreatSyntaxTree {
     };
 }
 
-export function chapter(comments:any, headline: any, text: any): ConcreatSyntaxTree {
+export function chapter(comments: any, headline: any, text: any): ConcreatSyntaxTree {
     "use strict";
 
     return {
