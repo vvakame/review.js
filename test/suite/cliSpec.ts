@@ -19,7 +19,7 @@ describe("コマンドラインツールの動作", () => {
 
         let exec = require("child_process").exec;
         return new Promise<string>((resolve, reject) => {
-            let child = exec(command, options, (error: string, stdout: string, stderr: string) => {
+            let child = exec(command, options, (error: string, stdout: string, _stderr: string) => {
                 if (error) {
                     reject(error);
                     return;

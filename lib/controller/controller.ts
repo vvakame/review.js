@@ -153,7 +153,7 @@ export class Controller {
             // TODO partにも分け隔てなく採番してるけど間違ってるっしょ
             let chapters: ChapterSyntaxTree[] = [];
             visit(chunk.tree.ast, {
-                visitDefaultPre: (node) => {
+                visitDefaultPre: (_node) => {
                 },
                 visitChapterPre: (node: ChapterSyntaxTree) => {
                     chapters.push(node);

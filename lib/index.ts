@@ -16,9 +16,6 @@ import {SyntaxType} from "./parser/analyzer";
 
 export { Book, ContentChunk, ReportLevel, ProcessReport, NodeLocation, Symbol, SyntaxTree, AcceptableSyntaxes, Analyzer, DefaultAnalyzer, Validator, DefaultValidator, Builder, DefaultBuilder, HtmlBuilder, TextBuilder, SyntaxType };
 
-// AMD用
-declare var define: any;
-
 /**
  * ReVIEW文書のコンパイルを開始する。
  * @param setup

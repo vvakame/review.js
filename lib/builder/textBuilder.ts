@@ -19,7 +19,7 @@ export class TextBuilder extends DefaultBuilder {
         return data;
     }
 
-    headlinePre(process: BuilderProcess, name: string, node: HeadlineSyntaxTree) {
+    headlinePre(process: BuilderProcess, _name: string, node: HeadlineSyntaxTree) {
         // TODO no の採番がレベル別になっていない
         // TODO 2.3.2 みたいな階層を返せるメソッドが何かほしい
         process.out("■H").out(node.level).out("■");
@@ -31,7 +31,7 @@ export class TextBuilder extends DefaultBuilder {
         }
     }
 
-    headlinePost(process: BuilderProcess, name: string, node: HeadlineSyntaxTree) {
+    headlinePost(process: BuilderProcess, _name: string, _node: HeadlineSyntaxTree) {
         process.out("\n\n");
     }
 
@@ -43,19 +43,19 @@ export class TextBuilder extends DefaultBuilder {
         };
     }
 
-    columnHeadlinePost(process: BuilderProcess, node: ColumnHeadlineSyntaxTree) {
+    columnHeadlinePost(process: BuilderProcess, _node: ColumnHeadlineSyntaxTree) {
         process.out("\n");
     }
 
-    columnPost(process: BuilderProcess, node: ColumnSyntaxTree) {
+    columnPost(process: BuilderProcess, _node: ColumnSyntaxTree) {
         process.out("◆→終了:コラム←◆\n\n");
     }
 
-    paragraphPost(process: BuilderProcess, name: string, node: NodeSyntaxTree) {
+    paragraphPost(process: BuilderProcess, _name: string, _node: NodeSyntaxTree) {
         process.out("\n");
     }
 
-    ulistPre(process: BuilderProcess, name: string, node: UlistElementSyntaxTree) {
+    ulistPre(process: BuilderProcess, _name: string, node: UlistElementSyntaxTree) {
         this.ulistParentHelper(process, node, () => {
             process.out("\n\n●\t");
         });
@@ -67,19 +67,19 @@ export class TextBuilder extends DefaultBuilder {
         process.out("●\t");
     }
 
-    ulistPost(process: BuilderProcess, name: string, node: UlistElementSyntaxTree) {
+    ulistPost(process: BuilderProcess, _name: string, _node: UlistElementSyntaxTree) {
         process.out("\n");
     }
 
-    olistPre(process: BuilderProcess, name: string, node: OlistElementSyntaxTree) {
+    olistPre(process: BuilderProcess, _name: string, node: OlistElementSyntaxTree) {
         process.out(node.no).out("\t");
     }
 
-    olistPost(process: BuilderProcess, name: string, node: OlistElementSyntaxTree) {
+    olistPost(process: BuilderProcess, _name: string, _node: OlistElementSyntaxTree) {
         process.out("\n");
     }
 
-    dlistPre(process: BuilderProcess, name: string, node: DlistElementSyntaxTree) {
+    dlistPre(process: BuilderProcess, _name: string, node: DlistElementSyntaxTree) {
         return (v: TreeVisitor) => {
             process.out("★");
             visit(node.text, v);
@@ -90,7 +90,7 @@ export class TextBuilder extends DefaultBuilder {
         };
     }
 
-    dlistPost(process: BuilderProcess, name: string, node: DlistElementSyntaxTree) {
+    dlistPost(process: BuilderProcess, _name: string, _node: DlistElementSyntaxTree) {
         process.out("\n");
     }
 
@@ -110,7 +110,7 @@ export class TextBuilder extends DefaultBuilder {
         };
     }
 
-    block_list_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_list_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
         process.out("\n◆→終了:リスト←◆\n");
     }
 
@@ -125,7 +125,7 @@ export class TextBuilder extends DefaultBuilder {
             visit(node.args[1], v);
 
             let lineCountMax = 0;
-            node.childNodes.forEach((node, index, childNodes) => {
+            node.childNodes.forEach((node, _index, _childNodes) => {
                 if (node.isTextNode()) {
                     lineCountMax += node.toTextNode().text.split("\n").length;
                 }
@@ -154,7 +154,7 @@ export class TextBuilder extends DefaultBuilder {
         };
     }
 
-    block_listnum_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_listnum_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
         process.out("◆→終了:リスト←◆\n");
     }
 
@@ -181,7 +181,7 @@ export class TextBuilder extends DefaultBuilder {
         };
     }
 
-    block_emlist_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_emlist_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
         process.out("\n◆→終了:インラインリスト←◆\n");
     }
 
@@ -197,7 +197,7 @@ export class TextBuilder extends DefaultBuilder {
             }
 
             let lineCountMax = 0;
-            node.childNodes.forEach((node, index, childNodes) => {
+            node.childNodes.forEach((node, _index, _childNodes) => {
                 if (node.isTextNode()) {
                     lineCountMax += node.toTextNode().text.split("\n").length;
                 }
@@ -225,7 +225,7 @@ export class TextBuilder extends DefaultBuilder {
         };
     }
 
-    block_emlistnum_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_emlistnum_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
         process.out("◆→終了:インラインリスト←◆\n");
     }
 
@@ -241,35 +241,35 @@ export class TextBuilder extends DefaultBuilder {
         return false;
     }
 
-    inline_hd_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_hd_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("」");
     }
 
-    inline_br(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_br(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("\n");
     }
 
-    inline_b_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_b_pre(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("★");
     }
 
-    inline_b_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_b_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("☆");
     }
 
-    inline_code_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_code_pre(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("△");
     }
 
-    inline_code_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_code_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("☆");
     }
 
-    inline_href_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_href_pre(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("△");
     }
 
-    inline_href_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_href_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("☆");
     }
 
@@ -288,7 +288,7 @@ export class TextBuilder extends DefaultBuilder {
         return false;
     }
 
-    block_label(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_label(_process: BuilderProcess, _node: BlockElementSyntaxTree) {
         return false;
     }
 
@@ -296,26 +296,26 @@ export class TextBuilder extends DefaultBuilder {
         let contentString = nodeContentToString(process, node);
         let keywordData = contentString.split(",");
         process.out(keywordData[0]);
-        return (v: TreeVisitor) => {
+        return (_v: TreeVisitor) => {
             // name, args はパス
-            node.childNodes.forEach(node => {
+            node.childNodes.forEach(_node => {
                 process.out("◆→DTP連絡:「").out(keywordData[0]);
                 process.out("」に「 ").out(keywordData[1].trim()).out("」とルビ←◆");
             });
         };
     }
 
-    inline_u_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_u_pre(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("＠");
     }
 
-    inline_u_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_u_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("＠◆→＠〜＠部分に下線←◆");
     }
 
     inline_kw(process: BuilderProcess, node: InlineElementSyntaxTree) {
         process.out("★");
-        return (v: TreeVisitor) => {
+        return (_v: TreeVisitor) => {
             // name, args はパス
             node.childNodes.forEach(node => {
                 let contentString = nodeContentToString(process, node);
@@ -330,11 +330,11 @@ export class TextBuilder extends DefaultBuilder {
         };
     }
 
-    inline_tt_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_tt_pre(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("△");
     }
 
-    inline_tt_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_tt_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("☆");
     }
 
@@ -343,7 +343,7 @@ export class TextBuilder extends DefaultBuilder {
         process.out("@<em>{");
     }
 
-    inline_em_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_em_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("}");
     }
 
@@ -386,7 +386,7 @@ export class TextBuilder extends DefaultBuilder {
         };
     }
 
-    block_graph_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_graph_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
         // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         process.outRaw("◆→終了:図←◆\n");
     }
@@ -421,31 +421,31 @@ export class TextBuilder extends DefaultBuilder {
         return false;
     }
 
-    block_lead_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_lead_pre(process: BuilderProcess, _node: BlockElementSyntaxTree) {
         process.out("◆→開始:リード←◆\n");
     }
 
-    block_lead_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_lead_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
         process.out("◆→終了:リード←◆\n");
     }
 
-    inline_tti_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_tti_pre(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("▲");
     }
 
-    inline_tti_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_tti_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("☆◆→等幅フォントイタ←◆");
     }
 
-    inline_ttb_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_ttb_pre(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("★");
     }
 
-    inline_ttb_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_ttb_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("☆◆→等幅フォント太字←◆");
     }
 
-    block_noindent(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_noindent(process: BuilderProcess, _node: BlockElementSyntaxTree) {
         process.out("◆→DTP連絡:次の1行インデントなし←◆\n");
         return false;
     }
@@ -462,7 +462,7 @@ export class TextBuilder extends DefaultBuilder {
         };
     }
 
-    block_source_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_source_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
         process.out("\n◆→終了:ソースコードリスト←◆\n");
     }
 
@@ -477,7 +477,7 @@ export class TextBuilder extends DefaultBuilder {
         };
     }
 
-    block_cmd_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_cmd_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
         process.out("\n◆→終了:コマンド←◆\n");
     }
 
@@ -492,11 +492,11 @@ export class TextBuilder extends DefaultBuilder {
         };
     }
 
-    block_quote_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_quote_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
         process.out("\n◆→終了:引用←◆\n");
     }
 
-    inline_ami_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_ami_pre(_process: BuilderProcess, _node: InlineElementSyntaxTree) {
     }
 
     inline_ami_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
@@ -504,7 +504,7 @@ export class TextBuilder extends DefaultBuilder {
         process.out("◆→DTP連絡:「").out(nodeContentToString(process, node)).out("」に網カケ←◆");
     }
 
-    inline_bou_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_bou_pre(_process: BuilderProcess, _node: InlineElementSyntaxTree) {
     }
 
     inline_bou_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
@@ -512,28 +512,28 @@ export class TextBuilder extends DefaultBuilder {
         process.out("◆→DTP連絡:「").out(nodeContentToString(process, node)).out("」に傍点←◆");
     }
 
-    inline_i_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_i_pre(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("▲");
     }
 
-    inline_i_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_i_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("☆");
     }
 
-    inline_m_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_m_pre(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         // TODO
         process.outRaw("TODO: ");
     }
 
-    inline_m_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_m_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.outRaw("");
     }
 
-    inline_strong_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_strong_pre(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("★");
     }
 
-    inline_strong_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_strong_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("☆");
     }
 
@@ -566,7 +566,7 @@ export class TextBuilder extends DefaultBuilder {
         };
     }
 
-    block_table_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_table_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
         // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         process.out("\n◆→終了:表←◆\n");
     }
@@ -580,7 +580,7 @@ export class TextBuilder extends DefaultBuilder {
         return false;
     }
 
-    block_tsize(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_tsize(_process: BuilderProcess, _node: BlockElementSyntaxTree) {
         // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         return false;
     }
@@ -596,15 +596,15 @@ export class TextBuilder extends DefaultBuilder {
         };
     }
 
-    block_comment_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_comment_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
         process.out("←◆\n");
     }
 
-    inline_comment_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_comment_pre(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("◆→DTP連絡:");
     }
 
-    inline_comment_post(process: BuilderProcess, node: InlineElementSyntaxTree) {
+    inline_comment_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("←◆");
     }
 

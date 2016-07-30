@@ -14,9 +14,9 @@ describe("ReVIEW.walkについて", () => {
         let parseResult = parse(input);
         let headline: HeadlineSyntaxTree = null;
         visit(parseResult.ast, {
-            visitDefaultPre: (ast: SyntaxTree, parent: SyntaxTree) => {
+            visitDefaultPre: (_ast: SyntaxTree, _parent: SyntaxTree) => {
             },
-            visitHeadlinePre: (ast: HeadlineSyntaxTree, parent: SyntaxTree) => {
+            visitHeadlinePre: (ast: HeadlineSyntaxTree, _parent: SyntaxTree) => {
                 headline = ast;
             }
         });
@@ -61,9 +61,9 @@ describe("ReVIEW.visitについて", () => {
         it("BlockElementSyntaxTreeが処理できる", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
-                visitBlockElementPre: (ast: NodeSyntaxTree) => {
+                visitBlockElementPre: (_ast: NodeSyntaxTree) => {
                     actual += "n";
                 }
             });
@@ -72,7 +72,7 @@ describe("ReVIEW.visitについて", () => {
         it("visitBlockElementが無い時visitNodeに行く", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
                 visitNodePre: (ast: NodeSyntaxTree) => {
                     if (ast.ruleName === RuleName.BlockElement) {
@@ -102,9 +102,9 @@ describe("ReVIEW.visitについて", () => {
         it("InlineElementSyntaxTreeが処理できる", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
-                visitInlineElementPre: (ast: InlineElementSyntaxTree) => {
+                visitInlineElementPre: (_ast: InlineElementSyntaxTree) => {
                     actual += "n";
                 }
             });
@@ -113,7 +113,7 @@ describe("ReVIEW.visitについて", () => {
         it("visitInlineElementが無い時visitNodeに行く", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
                 visitNodePre: (ast: NodeSyntaxTree) => {
                     if (ast.ruleName === RuleName.InlineElement) {
@@ -143,9 +143,9 @@ describe("ReVIEW.visitについて", () => {
         it("NodeSyntaxTreeが処理できる", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
-                visitNodePre: (ast: NodeSyntaxTree) => {
+                visitNodePre: (_ast: NodeSyntaxTree) => {
                     actual += "n";
                 }
             });
@@ -155,7 +155,7 @@ describe("ReVIEW.visitについて", () => {
         it("visitNodeが無い時visitDefaultに行く", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                     actual += "n";
                 }
             });
@@ -171,9 +171,9 @@ describe("ReVIEW.visitについて", () => {
         it("ArgumentSyntaxTreeが処理できる", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
-                visitArgumentPre: (ast: ArgumentSyntaxTree) => {
+                visitArgumentPre: (_ast: ArgumentSyntaxTree) => {
                     actual += "n";
                 }
             });
@@ -199,9 +199,9 @@ describe("ReVIEW.visitについて", () => {
         it("ChapterSyntaxTreeが処理できる", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
-                visitChapterPre: (ast: ChapterSyntaxTree) => {
+                visitChapterPre: (_ast: ChapterSyntaxTree) => {
                     actual += "n";
                 }
             });
@@ -210,7 +210,7 @@ describe("ReVIEW.visitについて", () => {
         it("visitChapterが無い時visitNodeに行く", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
                 visitNodePre: (ast: NodeSyntaxTree) => {
                     if (ast.ruleName === RuleName.Chapter) {
@@ -240,9 +240,9 @@ describe("ReVIEW.visitについて", () => {
         it("HeadlineSyntaxTreeが処理できる", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
-                visitHeadlinePre: (ast: HeadlineSyntaxTree) => {
+                visitHeadlinePre: (_ast: HeadlineSyntaxTree) => {
                     actual += "n";
                 }
             });
@@ -268,9 +268,9 @@ describe("ReVIEW.visitについて", () => {
         it("UlistElementSyntaxTreeが処理できる", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
-                visitUlistPre: (ast: UlistElementSyntaxTree) => {
+                visitUlistPre: (_ast: UlistElementSyntaxTree) => {
                     actual += "n";
                 }
             });
@@ -279,7 +279,7 @@ describe("ReVIEW.visitについて", () => {
         it("visitUlistが無い時visitNodeに行く", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
                 visitNodePre: (ast: NodeSyntaxTree) => {
                     if (ast.ruleName === RuleName.UlistElement) {
@@ -309,9 +309,9 @@ describe("ReVIEW.visitについて", () => {
         it("OlistElementSyntaxTreeが処理できる", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
-                visitOlistPre: (ast: OlistElementSyntaxTree) => {
+                visitOlistPre: (_ast: OlistElementSyntaxTree) => {
                     actual += "n";
                 }
             });
@@ -337,9 +337,9 @@ describe("ReVIEW.visitについて", () => {
         it("DlistElementSyntaxTreeが処理できる", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
-                visitDlistPre: (ast: DlistElementSyntaxTree) => {
+                visitDlistPre: (_ast: DlistElementSyntaxTree) => {
                     actual += "n";
                 }
             });
@@ -365,9 +365,9 @@ describe("ReVIEW.visitについて", () => {
         it("ColumnSyntaxTreeが処理できる", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
-                visitColumnPre: (ast: ColumnSyntaxTree) => {
+                visitColumnPre: (_ast: ColumnSyntaxTree) => {
                     actual += "n";
                 }
             });
@@ -376,7 +376,7 @@ describe("ReVIEW.visitについて", () => {
         it("visitColumnが無い時visitNodeに行く", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
                 visitNodePre: (ast: NodeSyntaxTree) => {
                     if (ast.ruleName === RuleName.Column) {
@@ -406,9 +406,9 @@ describe("ReVIEW.visitについて", () => {
         it("ColumnHeadlineSyntaxTreeが処理できる", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
-                visitColumnHeadlinePre: (ast: ColumnHeadlineSyntaxTree) => {
+                visitColumnHeadlinePre: (_ast: ColumnHeadlineSyntaxTree) => {
                     actual += "n";
                 }
             });
@@ -434,9 +434,9 @@ describe("ReVIEW.visitについて", () => {
         it("TextNodeSyntaxTreeが処理できる", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
-                visitTextPre: (ast: TextNodeSyntaxTree) => {
+                visitTextPre: (_ast: TextNodeSyntaxTree) => {
                     actual += "n";
                 }
             });
@@ -462,9 +462,9 @@ describe("ReVIEW.visitについて", () => {
         it("SingleLineCommentSyntaxTreeが処理できる", () => {
             let actual = "";
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                 },
-                visitSingleLineCommentPre: (ast: TextNodeSyntaxTree) => {
+                visitSingleLineCommentPre: (_ast: TextNodeSyntaxTree) => {
                     actual += "n";
                 }
             });
@@ -490,7 +490,7 @@ describe("ReVIEW.visitについて", () => {
         it("探索をスキップできる", () => {
             let count = 0;
             visit(result.ast, {
-                visitDefaultPre: (ast: SyntaxTree) => {
+                visitDefaultPre: (_ast: SyntaxTree) => {
                     count++;
                     return false;
                 }
@@ -511,7 +511,7 @@ describe("ReVIEW.visitについて", () => {
                         return false;
                     }
                 },
-                visitChapterPre: (ast: ChapterSyntaxTree) => {
+                visitChapterPre: (_ast: ChapterSyntaxTree) => {
                     count++;
                 }
             });

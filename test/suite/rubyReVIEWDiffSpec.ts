@@ -25,7 +25,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
                     cwd: `test/fixture/valid/${fileName}/`,
                     env: process.env
                 },
-                (err: Error, stdout: NodeBuffer, stderr: NodeBuffer) => {
+                (err: Error, stdout: NodeBuffer, _stderr: NodeBuffer) => {
                     if (err) {
                         reject(err);
                         return;
@@ -94,7 +94,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
                         let text = fs.readFileSync(filePath, "utf8");
                         return Test.compile({
                             basePath: `${process.cwd()}/test/fixture/valid/${baseName}`,
-                            read: path => Promise.resolve(text),
+                            read: _path => Promise.resolve(text),
                             builders: [typeInfo.builder()],
                             book: {
                                 contents: [

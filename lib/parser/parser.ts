@@ -22,7 +22,7 @@ export function parse(input: string): { ast: NodeSyntaxTree; cst: ConcreatSyntax
 
     // ParagraphSubs は構文上の都合であるだけのものなので潰す
     visit(root, {
-        visitDefaultPre: (ast: SyntaxTree) => {
+        visitDefaultPre: (_ast: SyntaxTree) => {
         },
         visitParagraphPre: (ast: NodeSyntaxTree) => {
             let subs = ast.childNodes[0].toNode();
@@ -56,7 +56,7 @@ export function parse(input: string): { ast: NodeSyntaxTree; cst: ConcreatSyntax
     });
     // prev, next を設定
     visit(root, {
-        visitDefaultPre: (ast: SyntaxTree, parent: SyntaxTree) => {
+        visitDefaultPre: (_ast: SyntaxTree, _parent: SyntaxTree) => {
         },
         visitChapterPre: (ast: ChapterSyntaxTree) => {
             ast.text.forEach((node, i, nodes) => {
@@ -397,7 +397,7 @@ export class SyntaxTree implements NodeLocation {
         return indent;
     }
 
-    toStringHook(indentLevel: number, result: string) {
+    toStringHook(_indentLevel: number, _result: string) {
     }
 
 	/**

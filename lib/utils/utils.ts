@@ -102,7 +102,7 @@ export function nodeContentToString(process: any, node: SyntaxTree): string {
     };
     // root (子要素だけ抽出したい)
     visit(node, {
-        visitDefaultPre: (node: SyntaxTree) => {
+        visitDefaultPre: (_node: SyntaxTree) => {
         },
         visitNodePre: (node: NodeSyntaxTree) => {
             // Chapter, Inline, Block もここに来る
@@ -126,7 +126,7 @@ export function nodeContentToString(process: any, node: SyntaxTree): string {
             visit(node.text, childVisitor);
             return false;
         },
-        visitTextPre: (text: TextNodeSyntaxTree) => {
+        visitTextPre: (_text: TextNodeSyntaxTree) => {
             visit(node, childVisitor);
             return false;
         }

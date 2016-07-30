@@ -39,7 +39,7 @@ export class SyntaxPreprocessor implements Preprocessor {
 
     preprocessChunk(chunk: ContentChunk) {
         visit(chunk.tree.ast, {
-            visitDefaultPre: (node: SyntaxTree) => {
+            visitDefaultPre: (_node: SyntaxTree) => {
             },
             visitColumnPre: (node: ColumnSyntaxTree) => {
                 this.preprocessColumnSyntax(chunk, node);
@@ -72,9 +72,9 @@ export class SyntaxPreprocessor implements Preprocessor {
 
         // 組み換え
         visit(column, {
-            visitDefaultPre: (node: SyntaxTree) => {
+            visitDefaultPre: (_node: SyntaxTree) => {
             },
-            visitColumnPre: (node: ColumnSyntaxTree) => {
+            visitColumnPre: (_node: ColumnSyntaxTree) => {
                 // TODO ここに来たらエラーにするべき
             },
             visitChapterPre: (node: ChapterSyntaxTree) => {
@@ -95,7 +95,7 @@ export class SyntaxPreprocessor implements Preprocessor {
         });
         // prev, next を設定
         visit(chunk.tree.ast, {
-            visitDefaultPre: (ast: SyntaxTree, parent: SyntaxTree) => {
+            visitDefaultPre: (_ast: SyntaxTree, _parent: SyntaxTree) => {
             },
             visitChapterPre: (ast: ChapterSyntaxTree) => {
                 ast.text.forEach((node, i, nodes) => {

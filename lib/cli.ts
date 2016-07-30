@@ -85,11 +85,11 @@ root
                     result.book.allChunks[0].builderProcesses.forEach(process => {
                         console.log(process.result);
                     });
-                    return;
+                    return null;
                 } else if (!result.book.hasError) {
                     let jsonString = JSON.stringify(result.book.allChunks[0].tree.ast, null, 2);
                     console.log(jsonString);
-                    return;
+                    return null;
                 } else {
                     result.book.reports.forEach(report => {
                         let log: Function;
@@ -121,7 +121,7 @@ interface BuildArgs {
 root
     .subCommand<{}, BuildArgs>("build [target]")
     .description("build book")
-    .action((opts, args) => {
+    .action((_opts, args) => {
         // .action((target:string, options:any)=> {
         if (!args.target) {
             console.log("set target to html");

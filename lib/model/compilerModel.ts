@@ -239,10 +239,10 @@ export class BuilderProcess {
             }
             let chapter: ChapterSyntaxTree;
             visit(chunk.tree.ast, {
-                visitDefaultPre: (node, parent) => {
+                visitDefaultPre: (_node, _parent) => {
                     return !chapter;
                 },
-                visitChapterPre: (node, parent) => {
+                visitChapterPre: (node, _parent) => {
                     chapter = node;
                     return false;
                 }

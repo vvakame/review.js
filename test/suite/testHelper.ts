@@ -89,7 +89,7 @@ export function compileSingle(input: string, tmpConfig?: any /* ReVIEW.IConfigRa
     let config: ConfigRaw = tmpConfig || <any>{};
     config.read = config.read || (() => Promise.resolve(input));
     config.listener = config.listener || {
-        onCompileSuccess: (book) => {
+        onCompileSuccess: (_book) => {
         }
     };
     let resultString: string;

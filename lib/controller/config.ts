@@ -70,7 +70,7 @@ export class Config {
         return this._bookStructure;
     }
 
-    resolvePath(path: string): string {
+    resolvePath(_path: string): string {
         throw new Error("please implements this method");
     }
 }
@@ -98,7 +98,7 @@ export class NodeJSConfig extends Config {
             /* tslint:enable:no-require-imports */
 
             let basePath = this.original.basePath || __dirname;
-            let promise = new Promise<{ path: string; result: boolean; }>((resolve, reject) => {
+            let promise = new Promise<{ path: string; result: boolean; }>(resolve => {
                 fs.exists(_path.resolve(basePath, path), (result: boolean) => {
                     resolve({ path: path, result: result });
                 });
@@ -159,7 +159,7 @@ export class NodeJSConfig extends Config {
         });
     }
 
-    onCompileSuccess(book: Book) {
+    onCompileSuccess(_book: Book) {
         process.exit(0);
     }
 
@@ -205,8 +205,8 @@ export class WebBrowserConfig extends Config {
         };
     }
 
-    _existsFileScheme(path: string): Promise<{ path: string; result: boolean; }> {
-        let promise = new Promise<{ path: string; result: boolean; }>((resolve, reject) => {
+    _existsFileScheme(_path: string): Promise<{ path: string; result: boolean; }> {
+        let promise = new Promise<{ path: string; result: boolean; }>(resolve => {
             let canvas = document.createElement('canvas');
             canvas.width = 200;
             canvas.height = 14;
@@ -219,7 +219,7 @@ export class WebBrowserConfig extends Config {
     }
 
     _existsHttpScheme(path: string): Promise<{ path: string; result: boolean; }> {
-        let promise = new Promise<{ path: string; result: boolean; }>((resolve, reject) => {
+        let promise = new Promise<{ path: string; result: boolean; }>(resolve => {
             try {
                 let xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function() {
@@ -289,10 +289,10 @@ export class WebBrowserConfig extends Config {
         });
     }
 
-    onCompileSuccess(book: Book) {
+    onCompileSuccess(_book: Book) {
     }
 
-    onCompileFailed(book?: Book) {
+    onCompileFailed(_book?: Book) {
     }
 
     resolvePath(path: string): string {

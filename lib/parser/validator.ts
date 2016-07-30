@@ -70,7 +70,7 @@ export class DefaultValidator implements Validator {
     checkChunk(chunk: ContentChunk) {
         // Analyzer 内で生成した構文規則に基づき処理
         visit(chunk.tree.ast, {
-            visitDefaultPre: (node: SyntaxTree) => {
+            visitDefaultPre: (_node: SyntaxTree) => {
             },
             visitHeadlinePre: (node: HeadlineSyntaxTree) => {
                 let results = this.acceptableSyntaxes.find(node);
@@ -117,7 +117,7 @@ export class DefaultValidator implements Validator {
 
         // 最初は必ず Level 1
         visit(chunk.tree.ast, {
-            visitDefaultPre: (node: SyntaxTree) => {
+            visitDefaultPre: (_node: SyntaxTree) => {
             },
             visitChapterPre: (node: ChapterSyntaxTree) => {
                 if (node.level === 1) {
@@ -140,7 +140,7 @@ export class DefaultValidator implements Validator {
     chechBlockGraphTool(chunk: ContentChunk) {
         // graph記法の外部ツール利用について内容が正しいかチェックする
         visit(chunk.tree.ast, {
-            visitDefaultPre: (node: SyntaxTree) => {
+            visitDefaultPre: (_node: SyntaxTree) => {
             },
             visitBlockElementPre: (node: BlockElementSyntaxTree) => {
                 if (node.symbol !== "graph") {

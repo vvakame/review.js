@@ -508,7 +508,7 @@ class AsyncTaskPool<T> implements TaskPool<T> {
     }
 
     consume(): Promise<T[]> {
-        let promise = new Promise<T[]>((resolve, reject) => {
+        let promise = new Promise<T[]>(resolve => {
             let result: T[] = [];
             let next = () => {
                 let func = this.tasks.shift();

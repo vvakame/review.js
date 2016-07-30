@@ -57,7 +57,7 @@ describe("ReVIEW構文の", () => {
                         let text = fs.readFileSync(filePath, "utf8");
                         return Test.compile({
                             basePath: __dirname + "/fixture/valid",
-                            read: path => Promise.resolve(text),
+                            read: _path => Promise.resolve(text),
                             builders: [new TextBuilder()],
                             book: {
                                 contents: [
