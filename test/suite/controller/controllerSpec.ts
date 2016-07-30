@@ -21,7 +21,7 @@ describe("ReVIEW.Controllerの", () => {
                 },
                 write: (path: string, content: any) => {
                     result[path] = content;
-                    return Promise.resolve<void>(null);
+                    return Promise.resolve<null>(null);
                 },
 
                 listener: {
@@ -65,7 +65,7 @@ describe("ReVIEW.Controllerの", () => {
                 },
                 write: (path: string, content: any) => {
                     result[path] = content;
-                    return Promise.resolve<void>(null);
+                    return Promise.resolve<null>(null);
                 },
 
                 listener: {

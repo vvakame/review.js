@@ -270,8 +270,6 @@
                       "offset": 58
                     },
                     "end": {
-                      "line": null,
-                      "column": null,
                       "offset": 17
                     }
                   },
@@ -406,8 +404,6 @@
                       "offset": 95
                     },
                     "end": {
-                      "line": null,
-                      "column": null,
                       "offset": 65
                     }
                   },
@@ -492,8 +488,6 @@
                       "offset": 126
                     },
                     "end": {
-                      "line": null,
-                      "column": null,
                       "offset": 102
                     }
                   },

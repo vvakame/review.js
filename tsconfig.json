@@ -10,11 +10,13 @@
             "node",
             "mocha"
         ],
+        "strictNullChecks": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
+        "stripInternal": true,
         "skipDefaultLibCheck": true,
         "experimentalDecorators": true,
         "rootDir": ".",

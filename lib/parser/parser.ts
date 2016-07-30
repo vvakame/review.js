@@ -18,7 +18,7 @@ export function parse(input: string): { ast: NodeSyntaxTree; cst: ConcreatSyntax
     "use strict";
 
     let rawResult = PEG.parse(input);
-    let root = transform(rawResult).toNode();
+    let root = transform(rawResult) !.toNode();
 
     // ParagraphSubs は構文上の都合であるだけのものなので潰す
     visit(root, {
@@ -88,7 +88,7 @@ export function parse(input: string): { ast: NodeSyntaxTree; cst: ConcreatSyntax
  * @param rawResult
  * @returns {*}
  */
-export function transform(rawResult: ConcreatSyntaxTree): SyntaxTree {
+export function transform(rawResult: ConcreatSyntaxTree): SyntaxTree | null {
     "use strict";
 
     if (!rawResult) {
@@ -177,8 +177,8 @@ function reconstruct(node: NodeSyntaxTree, pickLevel: (ast: NodeSyntaxTree) => n
 
     let originalChildNodes = node.childNodes;
 
-    let nodeSets: { parent: NodeSyntaxTree; children: NodeSyntaxTree[]; }[] = [];
-    let currentSet: { parent: NodeSyntaxTree; children: NodeSyntaxTree[]; } = {
+    let nodeSets: { parent: NodeSyntaxTree | null; children: NodeSyntaxTree[]; }[] = [];
+    let currentSet: { parent: NodeSyntaxTree | null; children: NodeSyntaxTree[]; } = {
         parent: null,
         children: []
     };
@@ -205,12 +205,14 @@ function reconstruct(node: NodeSyntaxTree, pickLevel: (ast: NodeSyntaxTree) => n
     }
     node.childNodes = [];
     nodeSets.forEach(nodes => {
-        let parent = nodes.parent;
-        node.childNodes.push(parent);
-        nodes.children.forEach(child => {
-            parent.childNodes.push(child);
-        });
-        reconstruct(parent, pickLevel);
+        const parent = nodes.parent;
+        if (parent) {
+            node.childNodes.push(parent);
+            nodes.children.forEach(child => {
+                parent.childNodes.push(child);
+            });
+            reconstruct(parent, pickLevel);
+        }
     });
 }
 
@@ -234,10 +236,10 @@ export interface Location {
         column: number;
         offset: number;
     };
-    end: {
-        line: number;
-        column: number;
-        offset: number;
+    end?: {
+        line?: number;
+        column?: number;
+        offset?: number;
     };
 }
 
@@ -656,18 +658,18 @@ export class ChapterSyntaxTree extends NodeSyntaxTree {
 
         if (data.comments && data.comments.content) {
             this.comments = this.checkArray(data.comments.content).map((data: ConcreatSyntaxTree) => {
-                return transform(data).toSingleLineCommentNode();
+                return transform(data) !.toSingleLineCommentNode();
             });
         } else {
             this.comments = [];
         }
-        this.headline = transform(this.checkObject(data.headline)).toHeadline();
+        this.headline = transform(this.checkObject(data.headline)) !.toHeadline();
         if (typeof data.text === "string" || data.text === null) {
             this.text = [];
             return;
         }
         this.text = this.checkArray(data.text.content).map((data: ConcreatSyntaxTree) => {
-            return transform(data);
+            return transform(data) !;
         });
 
         delete this.childNodes; // JSON化した時の属性順制御のため…
@@ -703,9 +705,9 @@ export class HeadlineSyntaxTree extends SyntaxTree {
 
         this.level = this.checkNumber(data.level);
         if (data.label) {
-            this.label = transform(this.checkObject(data.label)).toArgument();
+            this.label = transform(this.checkObject(data.label)) !.toArgument();
         }
-        this.caption = transform(this.checkObject(data.caption)).toNode();
+        this.caption = transform(this.checkObject(data.caption)) !.toNode();
     }
 }
 
@@ -717,7 +719,7 @@ export class BlockElementSyntaxTree extends NodeSyntaxTree {
         super(data);
         this.symbol = this.checkString(data.symbol);
         this.args = this.checkArray(data.args).map((data: ConcreatSyntaxTree) => {
-            return transform(data).toNode();
+            return transform(data) !.toNode();
         });
     }
 }
@@ -738,13 +740,13 @@ export class ColumnSyntaxTree extends NodeSyntaxTree {
     constructor(data: ConcreatSyntaxTree) {
         super(data);
 
-        this.headline = transform(this.checkObject(data.headline)).toColumnHeadline();
+        this.headline = transform(this.checkObject(data.headline)) !.toColumnHeadline();
         if (typeof data.text === "string" || data.text === null) {
             this.text = [];
             return;
         }
         this.text = this.checkArray(data.text.content).map((data: ConcreatSyntaxTree) => {
-            return transform(data);
+            return transform(data) !;
         });
 
         delete this.childNodes; // JSON化した時の属性順制御のため…
@@ -778,7 +780,7 @@ export class ColumnHeadlineSyntaxTree extends SyntaxTree {
         super(data);
 
         this.level = this.checkNumber(data.level);
-        this.caption = transform(this.checkObject(data.caption)).toNode();
+        this.caption = transform(this.checkObject(data.caption)) !.toNode();
     }
 }
 
@@ -798,7 +800,7 @@ export class UlistElementSyntaxTree extends NodeSyntaxTree {
     constructor(data: ConcreatSyntaxTree) {
         super(data);
         this.level = this.checkNumber(data.level);
-        this.text = transform(this.checkObject(data.text));
+        this.text = transform(this.checkObject(data.text)) !;
 
         delete this.childNodes; // JSON化した時の属性順制御のため…
         this.childNodes = [];
@@ -812,7 +814,7 @@ export class OlistElementSyntaxTree extends SyntaxTree {
     constructor(data: ConcreatSyntaxTree) {
         super(data);
         this.no = this.checkNumber(data.no);
-        this.text = transform(this.checkObject(data.text));
+        this.text = transform(this.checkObject(data.text)) !;
     }
 }
 
@@ -822,8 +824,8 @@ export class DlistElementSyntaxTree extends SyntaxTree {
 
     constructor(data: ConcreatSyntaxTree) {
         super(data);
-        this.text = transform(this.checkObject(data.text));
-        this.content = transform(this.checkObject(data.content));
+        this.text = transform(this.checkObject(data.text)) !;
+        this.content = transform(this.checkObject(data.content)) !;
     }
 }
 

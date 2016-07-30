@@ -44,7 +44,8 @@ describe("ReVIEW.Buildの", () => {
                     let book = failure.book;
                     let missingSymbols = book.contents[0].process.missingSymbols;
                     assert(missingSymbols.length === 1);
-                    assert(missingSymbols[0].referenceTo.label === "missing");
+                    let refTo = missingSymbols[0].referenceTo;
+                    assert(refTo && refTo.label === "missing");
                 });
         });
     });

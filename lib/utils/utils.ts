@@ -9,7 +9,7 @@ import { TextBuilder } from "../builder/textBuilder";
 import { HtmlBuilder } from "../builder/htmlBuilder";
 import { DefaultAnalyzer } from "../parser/analyzer";
 import { DefaultValidator } from "../parser/validator";
-import { TreeVisitor, visit, walk } from "../parser/walker";
+import { TreeVisitorArg, visit, walk } from "../parser/walker";
 import { start } from "../index";
 
 declare let define: any; // TODO コンパイル通す用
@@ -78,7 +78,7 @@ export function nodeToString(process: BuilderProcess, node: SyntaxTree): string;
 export function nodeToString(process: any, node: SyntaxTree): string {
     "use strict";
 
-    return process.input.substring(node.location.start.offset, node.location.end.offset);
+    return process.input.substring(node.location.start.offset, node.location.end!.offset);
 }
 
 /**
@@ -94,10 +94,10 @@ export function nodeContentToString(process: any, node: SyntaxTree): string {
     let minPos = Number.MAX_VALUE;
     let maxPos = -1;
     // child
-    let childVisitor: TreeVisitor = {
+    let childVisitor: TreeVisitorArg = {
         visitDefaultPre: (node: SyntaxTree) => {
             minPos = Math.min(minPos, node.location.start.offset);
-            maxPos = Math.max(maxPos, node.location.end.offset);
+            maxPos = Math.max(maxPos, node.location.end!.offset!);
         }
     };
     // root (子要素だけ抽出したい)
@@ -145,10 +145,10 @@ export function nodeContentToString(process: any, node: SyntaxTree): string {
  * @param predicate
  * @returns {SyntaxTree}
  */
-export function findUp(node: SyntaxTree, predicate: (node: SyntaxTree) => boolean): SyntaxTree {
+export function findUp(node: SyntaxTree, predicate: (node: SyntaxTree) => boolean): SyntaxTree | null {
     "use strict";
 
-    let result: SyntaxTree = null;
+    let result: SyntaxTree | null = null;
     walk(node, (node: SyntaxTree) => {
         if (predicate(node)) {
             result = node;
@@ -167,10 +167,10 @@ export function findUp(node: SyntaxTree, predicate: (node: SyntaxTree) => boolea
  * @param level 探すChapterのlevel
  * @returns {ReVIEW.Parse.ChapterSyntaxTree}
  */
-export function findChapter(node: SyntaxTree, level?: number): ChapterSyntaxTree {
+export function findChapter(node: SyntaxTree, level?: number): ChapterSyntaxTree | null {
     "use strict";
 
-    let chapter: ChapterSyntaxTree = null;
+    let chapter: ChapterSyntaxTree | null = null;
     walk(node, (node: SyntaxTree) => {
         if (node instanceof ChapterSyntaxTree) {
             chapter = node;
@@ -183,11 +183,11 @@ export function findChapter(node: SyntaxTree, level?: number): ChapterSyntaxTree
     return chapter;
 }
 
-export function findChapterOrColumn(node: SyntaxTree, level?: number): NodeSyntaxTree {
+export function findChapterOrColumn(node: SyntaxTree, level?: number): NodeSyntaxTree | null {
     "use strict";
 
-    let chapter: ChapterSyntaxTree = null;
-    let column: ColumnSyntaxTree = null;
+    let chapter: ChapterSyntaxTree | null = null;
+    let column: ColumnSyntaxTree | null = null;
     walk(node, (node: SyntaxTree) => {
         if (node instanceof ChapterSyntaxTree) {
             chapter = node;
@@ -205,7 +205,7 @@ export function findChapterOrColumn(node: SyntaxTree, level?: number): NodeSynta
     return chapter || column;
 }
 
-export function target2builder(target: string): Builder {
+export function target2builder(target: string): Builder | null {
     "use strict";
 
     // TODO 適当になおす…
@@ -258,11 +258,11 @@ export module IO {
 	 * @param path
 	 * @param content
 	 */
-    export function write(path: string, content: string): Promise<void> {
+    export function write(path: string, content: string): Promise<null> {
         /* tslint:disable:no-require-imports */
         let fs = require("fs");
         /* tslint:enable:no-require-imports */
-        return new Promise<void>((resolve, reject) => {
+        return new Promise<null>((resolve, reject) => {
             fs.writeFile(path, content, (err: any) => {
                 if (err) {
                     reject(err);
@@ -304,7 +304,7 @@ export function stringRepeat(times: number, src: string): string {
 export module Exec {
     "use strict";
 
-    export function singleCompile(input: string, fileName?: string, target?: string, tmpConfig?: any /* ReVIEW.IConfig */) {
+    export function singleCompile(input: string, fileName?: string, target?: string, tmpConfig?: any /* ReVIEW.IConfig */): Promise<{ book: Book; results: any; }> {
         "use strict";
 
         let config: ConfigRaw = tmpConfig || <any>{};
@@ -316,7 +316,18 @@ export module Exec {
             console.error(target + " is not exists in builder");
             process.exit(1);
         }
-        config.builders = config.builders || target ? [target2builder(target)] : [new TextBuilder()];
+        config.builders = config.builders;
+        if (!config.builders) {
+            if (target) {
+                let builder = target2builder(target);
+                if (!builder) {
+                    return Promise.reject(`unknown target: ${target}`);
+                }
+                config.builders = [builder];
+            } else {
+                config.builders = [new TextBuilder()];
+            }
+        }
         config.book = config.book || {
             contents: [
                 { file: fileName }

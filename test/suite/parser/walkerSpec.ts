@@ -4,7 +4,7 @@ import { RuleName } from "../../../lib/parser/parser";
 
 import { parse, SyntaxTree, ChapterSyntaxTree, HeadlineSyntaxTree, TextNodeSyntaxTree, NodeSyntaxTree, InlineElementSyntaxTree, ArgumentSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, SingleLineCommentSyntaxTree } from "../../../lib/parser/parser";
 
-import { visit, walk, TreeVisitor } from "../../../lib/parser/walker";
+import { visit, walk, TreeVisitorArg } from "../../../lib/parser/walker";
 
 describe("ReVIEW.walkについて", () => {
     "use strict";
@@ -12,19 +12,24 @@ describe("ReVIEW.walkについて", () => {
     it("目的のNodeを発見できること", () => {
         let input = "= level1\n== level2\n=== level3\n==== level4\n===== level5";
         let parseResult = parse(input);
-        let headline: HeadlineSyntaxTree = null;
+        let headline: HeadlineSyntaxTree | null = null;
         visit(parseResult.ast, {
-            visitDefaultPre: (_ast: SyntaxTree, _parent: SyntaxTree) => {
+            visitDefaultPre: (_ast: SyntaxTree, _parent: SyntaxTree | null) => {
             },
-            visitHeadlinePre: (ast: HeadlineSyntaxTree, _parent: SyntaxTree) => {
+            visitHeadlinePre: (ast: HeadlineSyntaxTree, _parent: SyntaxTree | null) => {
                 headline = ast;
             }
         });
 
+        if (!headline) {
+            assert(headline != null);
+            return;
+        }
+
         // 最後のやつが取れる
         assert(headline.level === 5);
 
-        let result: ChapterSyntaxTree = null;
+        let result: ChapterSyntaxTree | null = null;
         walk(headline, (ast) => {
             if (ast.ruleName === RuleName.Chapter && ast.toChapter().level === 2) {
                 result = ast.toChapter();
@@ -33,6 +38,11 @@ describe("ReVIEW.walkについて", () => {
                 return ast.parentNode;
             }
         });
+        if (!result) {
+            assert(result != null);
+            return;
+        }
+
         // level に応じた適切な構造になってないの忘れてた
         assert(result.level === 2);
     });
@@ -504,7 +514,7 @@ describe("ReVIEW.visitについて", () => {
                 visitDefaultPre: (ast: SyntaxTree): any => {
                     count++;
                     if (ast.ruleName === RuleName.Start) {
-                        return (v: TreeVisitor) => {
+                        return (v: TreeVisitorArg) => {
                             visit(ast.toNode().childNodes[0], v);
                         };
                     } else {

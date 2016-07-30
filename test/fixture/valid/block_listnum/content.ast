@@ -321,8 +321,6 @@
                       "offset": 70
                     },
                     "end": {
-                      "line": null,
-                      "column": null,
                       "offset": 41
                     }
                   },

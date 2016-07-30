@@ -106,7 +106,7 @@ var DefaultBuilder = (function () {
         throw new Error("please override this method");
     };
     DefaultBuilder.prototype.getChapterTitle = function (process, chapter) {
-        var chapterNode;
+        var chapterNode = null;
         walker_1.visit(chapter.tree.ast, {
             visitDefaultPre: function (_node, _parent) {
                 return !chapterNode;
@@ -455,6 +455,10 @@ var HtmlBuilder = (function (_super) {
     HtmlBuilder.prototype.block_list_pre = function (process, node) {
         process.outRaw("<div class=\"caption-code\">\n");
         var chapter = utils_1.findChapter(node, 1);
+        if (!chapter) {
+            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
+            return false;
+        }
         var text = i18n_1.t("builder.list", chapter.fqn, node.no);
         process.outRaw("<p class=\"caption\">").out(text).outRaw(": ");
         return function (v) {
@@ -473,6 +477,10 @@ var HtmlBuilder = (function (_super) {
     HtmlBuilder.prototype.block_listnum_pre = function (process, node) {
         process.outRaw("<div class=\"code\">\n");
         var chapter = utils_1.findChapter(node, 1);
+        if (!chapter) {
+            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
+            return false;
+        }
         var text = i18n_1.t("builder.list", chapter.fqn, node.no);
         process.outRaw("<p class=\"caption\">").out(text).out(": ");
         var lineCount = 1;
@@ -516,6 +524,10 @@ var HtmlBuilder = (function (_super) {
     };
     HtmlBuilder.prototype.inline_list = function (process, node) {
         var chapter = utils_1.findChapter(node, 1);
+        if (!chapter) {
+            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
+            return false;
+        }
         var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
         var text = i18n_1.t("builder.list", chapter.fqn, listNode.no);
         process.out(text);
@@ -581,6 +593,10 @@ var HtmlBuilder = (function (_super) {
     HtmlBuilder.prototype.inline_hd_pre = function (process, node) {
         process.out("「");
         var chapter = utils_1.findChapter(node);
+        if (!chapter) {
+            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
+            return false;
+        }
         if (chapter.level === 1) {
             process.out(chapter.fqn).out("章 ");
         }
@@ -902,6 +918,10 @@ var HtmlBuilder = (function (_super) {
         // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         process.outRaw("<div>\n");
         var chapter = utils_1.findChapter(node, 1);
+        if (!chapter) {
+            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
+            return false;
+        }
         var text = i18n_1.t("builder.table", chapter.fqn, node.no);
         process.outRaw("<p class=\"caption\">").out(text).out(": ").out(utils_1.nodeContentToString(process, node.args[1])).outRaw("</p>\n");
         process.outRaw("<pre>");
@@ -919,6 +939,10 @@ var HtmlBuilder = (function (_super) {
     HtmlBuilder.prototype.inline_table = function (process, node) {
         // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         var chapter = utils_1.findChapter(node, 1);
+        if (!chapter) {
+            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
+            return false;
+        }
         var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
         var text = i18n_1.t("builder.table", chapter.fqn, listNode.no);
         process.out(text);
@@ -1058,6 +1082,10 @@ var TextBuilder = (function (_super) {
     TextBuilder.prototype.block_list_pre = function (process, node) {
         process.out("◆→開始:リスト←◆\n");
         var chapter = utils_1.findChapter(node, 1);
+        if (!chapter) {
+            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
+            return false;
+        }
         var text = i18n_1.t("builder.list", chapter.fqn, node.no);
         process.out(text).out("　");
         return function (v) {
@@ -1075,6 +1103,10 @@ var TextBuilder = (function (_super) {
     TextBuilder.prototype.block_listnum_pre = function (process, node) {
         process.out("◆→開始:リスト←◆\n");
         var chapter = utils_1.findChapter(node, 1);
+        if (!chapter) {
+            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
+            return false;
+        }
         var text = i18n_1.t("builder.list", chapter.fqn, node.no);
         process.out(text).out("　");
         var lineCount = 1;
@@ -1115,6 +1147,10 @@ var TextBuilder = (function (_super) {
     };
     TextBuilder.prototype.inline_list = function (process, node) {
         var chapter = utils_1.findChapter(node, 1);
+        if (!chapter) {
+            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
+            return false;
+        }
         var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
         var text = i18n_1.t("builder.list", chapter.fqn, listNode.no);
         process.out(text);
@@ -1181,6 +1217,10 @@ var TextBuilder = (function (_super) {
     TextBuilder.prototype.inline_hd_pre = function (process, node) {
         process.out("「");
         var chapter = utils_1.findChapter(node);
+        if (!chapter) {
+            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
+            return false;
+        }
         if (chapter.level === 1) {
             process.out(chapter.fqn).out("章 ");
         }
@@ -1453,6 +1493,10 @@ var TextBuilder = (function (_super) {
         process.out("◆→開始:表←◆\n");
         process.out("TODO 現在table記法は仮実装です\n");
         var chapter = utils_1.findChapter(node, 1);
+        if (!chapter) {
+            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
+            return false;
+        }
         var text = i18n_1.t("builder.table", chapter.fqn, node.no);
         process.out(text).out("　").out(utils_1.nodeContentToString(process, node.args[1])).out("\n\n");
         return function (v) {
@@ -1469,6 +1513,10 @@ var TextBuilder = (function (_super) {
     TextBuilder.prototype.inline_table = function (process, node) {
         // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         var chapter = utils_1.findChapter(node, 1);
+        if (!chapter) {
+            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
+            return false;
+        }
         var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
         var text = i18n_1.t("builder.table", chapter.fqn, listNode.no);
         process.out(text);
@@ -1904,7 +1952,7 @@ var BookStructure = (function () {
     }
     BookStructure.createBook = function (config) {
         if (!config) {
-            return new BookStructure(null, null, null, null);
+            return new BookStructure([], [], [], []);
         }
         var predef = (config.predef || config.PREDEF || []).map(function (v /* IConfigChapter */) { return ContentStructure.createChapter(v); });
         var contents = (config.contents || config.CHAPS || []).map(function (v) {
@@ -1953,7 +2001,6 @@ exports.BookStructure = BookStructure;
  * 生の設定ファイルでの本の構成情報を画一的なフォーマットに変換し保持するためのクラス。
  */
 var ContentStructure = (function () {
-    // TODO コンストラクタ隠したい
     function ContentStructure(part, chapter) {
         this.part = part;
         this.chapter = chapter;
@@ -2043,7 +2090,7 @@ var Controller = (function () {
     };
     Controller.prototype.toContentChunk = function (book) {
         var convert = function (c, parent) {
-            var chunk;
+            var chunk = null;
             if (c.part) {
                 chunk = new compilerModel_1.ContentChunk(book, c.part.file);
                 c.part.chapters.forEach(function (c) {
@@ -2098,10 +2145,10 @@ var Controller = (function () {
                             column: se.column,
                             offset: se.offset
                         },
-                        end: null // TODO SyntaxError が置き換えられたらなんとかできるかも…
+                        end: void 0,
                     }
                 });
-                chunk.tree = { ast: errorNode, cst: null };
+                chunk.tree = { ast: errorNode, cst: null }; // TODO null! をやめる
             }
             chunk.nodes.forEach(function (chunk) { return _parse(chunk); });
         };
@@ -2340,6 +2387,7 @@ exports.ja = {
         "unknown_graph_tool": "%s というgraph用ツールはサポートされていません。"
     },
     "builder": {
+        "chapter_not_found": "深さ %d にマッチするチャプターが見つかりませんでした。",
         "image_not_found": "ID: %s にマッチする画像が見つかりませんでした。",
         "chapter": "第%d章",
         "list": "リスト%s.%s",
@@ -2693,7 +2741,7 @@ var BuilderProcess = (function () {
             if (name === chapId) {
                 return true;
             }
-            var chapter;
+            var chapter = null;
             walker_1.visit(chunk.tree.ast, {
                 visitDefaultPre: function (_node, _parent) {
                     return !chapter;
@@ -2703,7 +2751,7 @@ var BuilderProcess = (function () {
                     return false;
                 }
             });
-            if (chapter.headline.label) {
+            if (chapter && chapter.headline.label) {
                 return chapter.headline.label.arg === chapId;
             }
             return false;
@@ -3811,11 +3859,13 @@ function reconstruct(node, pickLevel) {
     node.childNodes = [];
     nodeSets.forEach(function (nodes) {
         var parent = nodes.parent;
-        node.childNodes.push(parent);
-        nodes.children.forEach(function (child) {
-            parent.childNodes.push(child);
-        });
-        reconstruct(parent, pickLevel);
+        if (parent) {
+            node.childNodes.push(parent);
+            nodes.children.forEach(function (child) {
+                parent.childNodes.push(child);
+            });
+            reconstruct(parent, pickLevel);
+        }
     });
 }
 /**
@@ -4493,9 +4543,9 @@ var SyntaxPreprocessor = (function () {
         else if (syntax.allowInline) {
             // inline構文のみ許可(Paragraphは殺す
             // inline以外の構文は叩き潰してTextにmergeする
-            var info_1;
+            var info_1 = null;
             var resultNodes_1 = [];
-            var lastNode_1;
+            var lastNode_1 = null;
             walker_1.visit(node.childNodes[0], {
                 visitDefaultPre: function (node) {
                     if (!info_1) {
@@ -4518,8 +4568,8 @@ var SyntaxPreprocessor = (function () {
                             },
                             end: {
                                 offset: node.location.start.offset - 1,
-                                line: null,
-                                column: null
+                                line: void 0,
+                                column: void 0,
                             }
                         },
                         text: chunk.process.input.substring(info_1.offset, node.location.start.offset - 1)
@@ -4547,8 +4597,8 @@ var SyntaxPreprocessor = (function () {
                             },
                             end: {
                                 offset: node.location.start.offset - 1,
-                                line: null,
-                                column: null
+                                line: void 0,
+                                column: void 0,
                             }
                         },
                         text: chunk.process.input.substring(info_1.offset, node.location.start.offset - 1)
@@ -4567,12 +4617,12 @@ var SyntaxPreprocessor = (function () {
                         start: {
                             offset: info_1.offset,
                             line: info_1.line,
-                            column: info_1.column
+                            column: info_1.column,
                         },
                         end: {
                             offset: node.location.start.offset - 1,
-                            line: null,
-                            column: null
+                            line: void 0,
+                            column: void 0,
                         }
                     },
                     text: chunk.process.input.substring(info_1.offset, lastNode_1.location.end.offset)
@@ -4597,8 +4647,8 @@ var SyntaxPreprocessor = (function () {
                     },
                     end: {
                         offset: last.location.start.offset - 1,
-                        line: null,
-                        column: null
+                        line: void 0,
+                        column: void 0,
                     }
                 },
                 text: utils_1.nodeContentToString(chunk.process, node)
@@ -4629,7 +4679,7 @@ var DefaultValidator = (function () {
     DefaultValidator.prototype.checkBuilder = function (book, acceptableSyntaxes, builders) {
         if (builders === void 0) { builders = []; }
         acceptableSyntaxes.acceptableSyntaxes.forEach(function (syntax) {
-            var prefix;
+            var prefix = "";
             switch (syntax.type) {
                 case analyzer_1.SyntaxType.Other:
                     // Other系は実装をチェックする必要はない…。(ということにしておく
@@ -4960,7 +5010,7 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     });
                 },
                 func: function () {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(function () { return v.visitBlockElementPost(_ast_1, parent); });
@@ -4979,7 +5029,7 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     });
                 },
                 func: function () {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(function () { return v.visitInlineElementPost(_ast_2, parent); });
@@ -4995,7 +5045,7 @@ function _visitSub(poolGenerator, parent, ast, v) {
                 next: function () {
                 },
                 func: function () {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(function () { return v.visitArgumentPost(_ast_3, parent); });
@@ -5025,7 +5075,7 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     });
                 },
                 func: function () {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(function () { return v.visitChapterPost(_ast_4, parent); });
@@ -5043,7 +5093,7 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     pool.add(function () { return _visitSub(poolGenerator, _ast_5, _ast_5.caption, v); });
                 },
                 func: function () {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(function () { return v.visitHeadlinePost(_ast_5, parent); });
@@ -5065,7 +5115,7 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     }
                 },
                 func: function () {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(function () { return v.visitColumnPost(_ast_6, parent); });
@@ -5082,7 +5132,7 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     pool.add(function () { return _visitSub(poolGenerator, _ast_7, _ast_7.caption, v); });
                 },
                 func: function () {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(function () { return v.visitColumnHeadlinePost(_ast_7, parent); });
@@ -5102,7 +5152,7 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     });
                 },
                 func: function () {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(function () { return v.visitUlistPost(_ast_8, parent); });
@@ -5119,7 +5169,7 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     pool.add(function () { return _visitSub(poolGenerator, _ast_9, _ast_9.text, v); });
                 },
                 func: function () {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(function () { return v.visitOlistPost(_ast_9, parent); });
@@ -5137,7 +5187,7 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     pool.add(function () { return _visitSub(poolGenerator, _ast_10, _ast_10.content, v); });
                 },
                 func: function () {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(function () { return v.visitDlistPost(_ast_10, parent); });
@@ -5156,7 +5206,7 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     });
                 },
                 func: function () {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(function () { return v.visitParagraphPost(_ast_11, parent); });
@@ -5175,7 +5225,7 @@ function _visitSub(poolGenerator, parent, ast, v) {
                     });
                 },
                 func: function () {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(function () { return v.visitNodePost(_ast_12, parent); });
@@ -5191,7 +5241,7 @@ function _visitSub(poolGenerator, parent, ast, v) {
                 next: function () {
                 },
                 func: function () {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(function () { return v.visitTextPost(_ast_13, parent); });
@@ -5207,7 +5257,7 @@ function _visitSub(poolGenerator, parent, ast, v) {
                 next: function () {
                 },
                 func: function () {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(function () { return v.visitSingleLineCommentPost(_ast_14, parent); });
@@ -5217,15 +5267,15 @@ function _visitSub(poolGenerator, parent, ast, v) {
     else if (ast) {
         return (function () {
             var pool = poolGenerator();
-            var ret = v.visitDefaultPre(parent, ast);
+            var ret = v.visitDefaultPre(ast, parent);
             pool.handle(ret, {
                 next: function () {
                 },
                 func: function () {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
-            pool.add(function () { return v.visitDefaultPost(parent, ast); });
+            pool.add(function () { return v.visitDefaultPost(ast, parent); });
             return pool.consume();
         })();
     }
@@ -5758,7 +5808,19 @@ var Exec;
             console.error(target + " is not exists in builder");
             process.exit(1);
         }
-        config.builders = config.builders || target ? [target2builder(target)] : [new textBuilder_1.TextBuilder()];
+        config.builders = config.builders;
+        if (!config.builders) {
+            if (target) {
+                var builder = target2builder(target);
+                if (!builder) {
+                    return Promise.reject("unknown target: " + target);
+                }
+                config.builders = [builder];
+            }
+            else {
+                config.builders = [new textBuilder_1.TextBuilder()];
+            }
+        }
         config.book = config.book || {
             contents: [
                 { file: fileName }

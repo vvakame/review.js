@@ -147,9 +147,9 @@ export class SyntaxPreprocessor implements Preprocessor {
                 offset: number;
                 line: number;
                 column: number;
-            };
+            } | null = null;
             let resultNodes: SyntaxTree[] = [];
-            let lastNode: SyntaxTree;
+            let lastNode: SyntaxTree | null = null;
             visit(node.childNodes[0], {
                 visitDefaultPre: (node: SyntaxTree) => {
                     if (!info) {
@@ -166,17 +166,17 @@ export class SyntaxPreprocessor implements Preprocessor {
                         syntax: "BlockElementContentText",
                         location: {
                             start: {
-                                offset: info.offset,
-                                line: info.line,
-                                column: info.column
+                                offset: info!.offset,
+                                line: info!.line,
+                                column: info!.column
                             },
                             end: {
                                 offset: node.location.start.offset - 1,
-                                line: null,
-                                column: null
+                                line: void 0,
+                                column: void 0,
                             }
                         },
-                        text: chunk.process.input.substring(info.offset, node.location.start.offset - 1)
+                        text: chunk.process.input!.substring(info!.offset, node.location.start.offset - 1)
                     });
                     if (textNode.text) {
                         resultNodes.push(textNode);
@@ -201,11 +201,11 @@ export class SyntaxPreprocessor implements Preprocessor {
                             },
                             end: {
                                 offset: node.location.start.offset - 1,
-                                line: null,
-                                column: null
+                                line: void 0,
+                                column: void 0,
                             }
                         },
-                        text: chunk.process.input.substring(info.offset, node.location.start.offset - 1)
+                        text: chunk.process.input!.substring(info.offset, node.location.start.offset - 1)
                     });
                     if (textNode.text) {
                         resultNodes.push(textNode);
@@ -221,15 +221,15 @@ export class SyntaxPreprocessor implements Preprocessor {
                         start: {
                             offset: info.offset,
                             line: info.line,
-                            column: info.column
+                            column: info.column,
                         },
                         end: {
                             offset: node.location.start.offset - 1,
-                            line: null,
-                            column: null
+                            line: void 0,
+                            column: void 0,
                         }
                     },
-                    text: chunk.process.input.substring(info.offset, lastNode.location.end.offset)
+                    text: chunk.process.input!.substring(info.offset, lastNode!.location!.end!.offset)
                 });
                 if (textNode.text) {
                     resultNodes.push(textNode);
@@ -252,8 +252,8 @@ export class SyntaxPreprocessor implements Preprocessor {
                     },
                     end: {
                         offset: last.location.start.offset - 1,
-                        line: null,
-                        column: null
+                        line: void 0,
+                        column: void 0,
                     }
                 },
                 text: nodeContentToString(chunk.process, node)

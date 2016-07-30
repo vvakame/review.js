@@ -81,7 +81,7 @@ export class BookStructure {
 
     static createBook(config: ConfigBook) {
         if (!config) {
-            return new BookStructure(null, null, null, null);
+            return new BookStructure([], [], [], []);
         }
         let predef = (config.predef || (<any>config).PREDEF || []).map((v: any /* IConfigChapter */) => ContentStructure.createChapter(v));
         let contents = (config.contents || (<any>config).CHAPS || []).map((v: any) => {
@@ -123,11 +123,10 @@ export class BookStructure {
  * 生の設定ファイルでの本の構成情報を画一的なフォーマットに変換し保持するためのクラス。
  */
 export class ContentStructure {
-    // TODO コンストラクタ隠したい
-    constructor(public part: ConfigPart, public chapter: ConfigChapter) {
+    private constructor(public part: ConfigPart | null, public chapter: ConfigChapter | null) {
     }
 
-    static createChapter(value: string | ConfigChapter): ContentStructure {
+    static createChapter(value: string | ConfigChapter): ContentStructure | null {
         if (typeof value === "string") {
             return new ContentStructure(null, { file: value });
         } else if (value && typeof value.file === "string") {
@@ -137,7 +136,7 @@ export class ContentStructure {
         }
     }
 
-    static createPart(part: ConfigPart): ContentStructure {
+    static createPart(part: ConfigPart): ContentStructure | null {
         if (!part) {
             return null;
         }

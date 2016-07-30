@@ -16,10 +16,10 @@ import { TextBuilder } from "../../lib/builder/textBuilder";
  * @param tmpConfig
  * @returns {{success: (function(): {book: ReVIEW.Book, results: *}), failure: (function(): {})}}
  */
-export function compile(config?: ConfigRaw): Promise<{ book: Book; results: any; }> {
+export function compile(cfg?: ConfigRaw): Promise<{ book: Book; results: any; }> {
     "use strict";
 
-    config = config || <any>{};
+    const config = cfg || {} as any as ConfigRaw;
     config.basePath = config.basePath || (isNodeJS() ? __dirname + "/../" : void 0); // __dirname は main-spec.js の位置になる
     config.analyzer = config.analyzer || new DefaultAnalyzer();
     config.validators = config.validators || [new DefaultValidator()];
@@ -36,7 +36,7 @@ export function compile(config?: ConfigRaw): Promise<{ book: Book; results: any;
     let results: any = {};
     config.write = config.write || ((path: string, content: any) => {
         results[path] = content;
-        return Promise.resolve<void>(null);
+        return Promise.resolve<null>(null);
     });
 
     config.listener = config.listener || {
@@ -86,7 +86,7 @@ export function compile(config?: ConfigRaw): Promise<{ book: Book; results: any;
 export function compileSingle(input: string, tmpConfig?: any /* ReVIEW.IConfigRaw */): Promise<{ book: Book; results: any; result: string; }> {
     "use strict";
 
-    let config: ConfigRaw = tmpConfig || <any>{};
+    let config: ConfigRaw = tmpConfig || {} as any;
     config.read = config.read || (() => Promise.resolve(input));
     config.listener = config.listener || {
         onCompileSuccess: (_book) => {
@@ -96,7 +96,9 @@ export function compileSingle(input: string, tmpConfig?: any /* ReVIEW.IConfigRa
     let originalCompileSuccess = config.listener.onCompileSuccess;
     config.listener.onCompileSuccess = (book) => {
         resultString = book.allChunks[0].builderProcesses[0].result;
-        originalCompileSuccess(book);
+        if (originalCompileSuccess) {
+            originalCompileSuccess(book);
+        }
     };
 
     return compile(config).then(result => {

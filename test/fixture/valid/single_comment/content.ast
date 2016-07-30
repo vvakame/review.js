@@ -450,8 +450,6 @@
                       "offset": 151
                     },
                     "end": {
-                      "line": null,
-                      "column": null,
                       "offset": 350
                     }
                   },

@@ -9,7 +9,7 @@ import { RuleName, SyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, 
  * @param ast
  * @param actor
  */
-export function walk(ast: SyntaxTree, actor: (ast: SyntaxTree) => SyntaxTree) {
+export function walk(ast: SyntaxTree, actor: (ast: SyntaxTree) => SyntaxTree | null) {
     "use strict";
 
     if (!ast) {
@@ -29,7 +29,7 @@ export function walk(ast: SyntaxTree, actor: (ast: SyntaxTree) => SyntaxTree) {
  * @param ast
  * @param v
  */
-export function visit(ast: SyntaxTree, v: TreeVisitor): void {
+export function visit(ast: SyntaxTree, v: TreeVisitorArg): void {
     "use strict";
 
     _visit(() => new SyncTaskPool<void>(), ast, v);
@@ -42,13 +42,13 @@ export function visit(ast: SyntaxTree, v: TreeVisitor): void {
  * @param ast
  * @param v
  */
-export function visitAsync(ast: SyntaxTree, v: TreeVisitor): Promise<void> {
+export function visitAsync(ast: SyntaxTree, v: TreeVisitorArg): Promise<void> {
     "use strict";
 
     return Promise.resolve(_visit(() => new AsyncTaskPool<void>(), ast, v));
 }
 
-function _visit(poolGenerator: () => TaskPool<void>, ast: SyntaxTree, v: TreeVisitor): any {
+function _visit(poolGenerator: () => TaskPool<void>, ast: SyntaxTree, v: TreeVisitorArg): any {
     "use strict";
 
     let newV: TreeVisitor = {
@@ -130,7 +130,7 @@ function _visit(poolGenerator: () => TaskPool<void>, ast: SyntaxTree, v: TreeVis
     return _visitSub(poolGenerator, null, ast, newV);
 }
 
-function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast: SyntaxTree, v: TreeVisitor): any {
+function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree | null, ast: SyntaxTree, v: TreeVisitor): any {
     "use strict";
 
     if (ast instanceof BlockElementSyntaxTree) {
@@ -148,7 +148,7 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     });
                 },
                 func: () => {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(() => v.visitBlockElementPost(_ast, parent));
@@ -166,7 +166,7 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     });
                 },
                 func: () => {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(() => v.visitInlineElementPost(_ast, parent));
@@ -181,7 +181,7 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                 next: () => {
                 },
                 func: () => {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(() => v.visitArgumentPost(_ast, parent));
@@ -210,7 +210,7 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     });
                 },
                 func: () => {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(() => v.visitChapterPost(_ast, parent));
@@ -227,7 +227,7 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     pool.add(() => _visitSub(poolGenerator, _ast, _ast.caption, v));
                 },
                 func: () => {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(() => v.visitHeadlinePost(_ast, parent));
@@ -248,7 +248,7 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     }
                 },
                 func: () => {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(() => v.visitColumnPost(_ast, parent));
@@ -264,7 +264,7 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     pool.add(() => _visitSub(poolGenerator, _ast, _ast.caption, v));
                 },
                 func: () => {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(() => v.visitColumnHeadlinePost(_ast, parent));
@@ -283,7 +283,7 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     });
                 },
                 func: () => {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(() => v.visitUlistPost(_ast, parent));
@@ -299,7 +299,7 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     pool.add(() => _visitSub(poolGenerator, _ast, _ast.text, v));
                 },
                 func: () => {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(() => v.visitOlistPost(_ast, parent));
@@ -316,7 +316,7 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     pool.add(() => _visitSub(poolGenerator, _ast, _ast.content, v));
                 },
                 func: () => {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(() => v.visitDlistPost(_ast, parent));
@@ -334,7 +334,7 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     });
                 },
                 func: () => {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(() => v.visitParagraphPost(_ast, parent));
@@ -352,7 +352,7 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                     });
                 },
                 func: () => {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(() => v.visitNodePost(_ast, parent));
@@ -367,7 +367,7 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                 next: () => {
                 },
                 func: () => {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(() => v.visitTextPost(_ast, parent));
@@ -382,7 +382,7 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
                 next: () => {
                 },
                 func: () => {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
             pool.add(() => v.visitSingleLineCommentPost(_ast, parent));
@@ -391,15 +391,15 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
     } else if (ast) {
         return (() => {
             let pool = poolGenerator();
-            let ret = v.visitDefaultPre(parent, ast);
+            let ret = v.visitDefaultPre(ast, parent);
             pool.handle(ret, {
                 next: () => {
                 },
                 func: () => {
-                    ret(v);
+                    typeof ret === "function" && ret(v);
                 }
             });
-            pool.add(() => v.visitDefaultPost(parent, ast));
+            pool.add(() => v.visitDefaultPost(ast, parent));
             return pool.consume();
         })();
     } else {
@@ -408,6 +408,49 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
             return pool.consume();
         })();
     }
+}
+
+export type TreeVisitorReturn = boolean | undefined | ((v: TreeVisitor) => void) | void;
+
+/**
+ * 構文木を渡り歩くためのVisitorの原形。
+ * 実装されなかったメソッドは、visitDefault または NodeSyntaxTree を継承している場合 visitNode にフォールバックする。
+ * 各メソッドの返り値としてanyを返す。
+ * undefined, true を返した時、子要素の探索は継続される。
+ * false を返した時、子要素の探索は行われない。
+ * Function を返した時、子要素の探索を行う代わりにその関数が実行される。Functionには引数として実行中のTreeVisitorが渡される。
+ */
+export interface TreeVisitorArg {
+    visitDefaultPre(node: SyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitDefaultPost?(node: SyntaxTree, parent: SyntaxTree | null): void;
+    visitNodePre?(node: NodeSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitNodePost?(node: NodeSyntaxTree, parent: SyntaxTree | null): void;
+    visitBlockElementPre?(node: BlockElementSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitBlockElementPost?(node: BlockElementSyntaxTree, parent: SyntaxTree | null): void;
+    visitInlineElementPre?(node: InlineElementSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitInlineElementPost?(node: InlineElementSyntaxTree, parent: SyntaxTree | null): void;
+    visitArgumentPre?(node: ArgumentSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitArgumentPost?(node: ArgumentSyntaxTree, parent: SyntaxTree | null): void;
+    visitChapterPre?(node: ChapterSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitChapterPost?(node: ChapterSyntaxTree, parent: SyntaxTree | null): void;
+    visitParagraphPre?(node: NodeSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitParagraphPost?(node: NodeSyntaxTree, parent: SyntaxTree | null): void;
+    visitHeadlinePre?(node: HeadlineSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitHeadlinePost?(node: HeadlineSyntaxTree, parent: SyntaxTree | null): void;
+    visitUlistPre?(node: UlistElementSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitUlistPost?(node: UlistElementSyntaxTree, parent: SyntaxTree | null): void;
+    visitOlistPre?(node: OlistElementSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitOlistPost?(node: OlistElementSyntaxTree, parent: SyntaxTree | null): void;
+    visitDlistPre?(node: DlistElementSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitDlistPost?(node: DlistElementSyntaxTree, parent: SyntaxTree | null): void;
+    visitColumnPre?(node: ColumnSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitColumnPost?(node: ColumnSyntaxTree, parent: SyntaxTree | null): void;
+    visitColumnHeadlinePre?(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitColumnHeadlinePost?(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree | null): void;
+    visitSingleLineCommentPre?(node: SingleLineCommentSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitSingleLineCommentPost?(node: SingleLineCommentSyntaxTree, parent: SyntaxTree | null): void;
+    visitTextPre?(node: TextNodeSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitTextPost?(node: TextNodeSyntaxTree, parent: SyntaxTree | null): void;
 }
 
 /**
@@ -419,36 +462,36 @@ function _visitSub(poolGenerator: () => TaskPool<void>, parent: SyntaxTree, ast:
  * Function を返した時、子要素の探索を行う代わりにその関数が実行される。Functionには引数として実行中のTreeVisitorが渡される。
  */
 export interface TreeVisitor {
-    visitDefaultPre(node: SyntaxTree, parent: SyntaxTree): any;
-    visitDefaultPost?(node: SyntaxTree, parent: SyntaxTree): void;
-    visitNodePre?(node: NodeSyntaxTree, parent: SyntaxTree): any;
-    visitNodePost?(node: NodeSyntaxTree, parent: SyntaxTree): void;
-    visitBlockElementPre?(node: BlockElementSyntaxTree, parent: SyntaxTree): any;
-    visitBlockElementPost?(node: BlockElementSyntaxTree, parent: SyntaxTree): void;
-    visitInlineElementPre?(node: InlineElementSyntaxTree, parent: SyntaxTree): any;
-    visitInlineElementPost?(node: InlineElementSyntaxTree, parent: SyntaxTree): void;
-    visitArgumentPre?(node: ArgumentSyntaxTree, parent: SyntaxTree): any;
-    visitArgumentPost?(node: ArgumentSyntaxTree, parent: SyntaxTree): void;
-    visitChapterPre?(node: ChapterSyntaxTree, parent: SyntaxTree): any;
-    visitChapterPost?(node: ChapterSyntaxTree, parent: SyntaxTree): void;
-    visitParagraphPre?(node: NodeSyntaxTree, parent: SyntaxTree): any;
-    visitParagraphPost?(node: NodeSyntaxTree, parent: SyntaxTree): void;
-    visitHeadlinePre?(node: HeadlineSyntaxTree, parent: SyntaxTree): any;
-    visitHeadlinePost?(node: HeadlineSyntaxTree, parent: SyntaxTree): void;
-    visitUlistPre?(node: UlistElementSyntaxTree, parent: SyntaxTree): any;
-    visitUlistPost?(node: UlistElementSyntaxTree, parent: SyntaxTree): void;
-    visitOlistPre?(node: OlistElementSyntaxTree, parent: SyntaxTree): any;
-    visitOlistPost?(node: OlistElementSyntaxTree, parent: SyntaxTree): void;
-    visitDlistPre?(node: DlistElementSyntaxTree, parent: SyntaxTree): any;
-    visitDlistPost?(node: DlistElementSyntaxTree, parent: SyntaxTree): void;
-    visitColumnPre?(node: ColumnSyntaxTree, parent: SyntaxTree): any;
-    visitColumnPost?(node: ColumnSyntaxTree, parent: SyntaxTree): void;
-    visitColumnHeadlinePre?(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree): any;
-    visitColumnHeadlinePost?(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree): void;
-    visitSingleLineCommentPre?(node: SingleLineCommentSyntaxTree, parent: SyntaxTree): any;
-    visitSingleLineCommentPost?(node: SingleLineCommentSyntaxTree, parent: SyntaxTree): void;
-    visitTextPre?(node: TextNodeSyntaxTree, parent: SyntaxTree): any;
-    visitTextPost?(node: TextNodeSyntaxTree, parent: SyntaxTree): void;
+    visitDefaultPre(node: SyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitDefaultPost(node: SyntaxTree, parent: SyntaxTree | null): void;
+    visitNodePre(node: NodeSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitNodePost(node: NodeSyntaxTree, parent: SyntaxTree | null): void;
+    visitBlockElementPre(node: BlockElementSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitBlockElementPost(node: BlockElementSyntaxTree, parent: SyntaxTree | null): void;
+    visitInlineElementPre(node: InlineElementSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitInlineElementPost(node: InlineElementSyntaxTree, parent: SyntaxTree | null): void;
+    visitArgumentPre(node: ArgumentSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitArgumentPost(node: ArgumentSyntaxTree, parent: SyntaxTree | null): void;
+    visitChapterPre(node: ChapterSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitChapterPost(node: ChapterSyntaxTree, parent: SyntaxTree | null): void;
+    visitParagraphPre(node: NodeSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitParagraphPost(node: NodeSyntaxTree, parent: SyntaxTree | null): void;
+    visitHeadlinePre(node: HeadlineSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitHeadlinePost(node: HeadlineSyntaxTree, parent: SyntaxTree | null): void;
+    visitUlistPre(node: UlistElementSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitUlistPost(node: UlistElementSyntaxTree, parent: SyntaxTree | null): void;
+    visitOlistPre(node: OlistElementSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitOlistPost(node: OlistElementSyntaxTree, parent: SyntaxTree | null): void;
+    visitDlistPre(node: DlistElementSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitDlistPost(node: DlistElementSyntaxTree, parent: SyntaxTree | null): void;
+    visitColumnPre(node: ColumnSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitColumnPost(node: ColumnSyntaxTree, parent: SyntaxTree | null): void;
+    visitColumnHeadlinePre(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitColumnHeadlinePost(node: ColumnHeadlineSyntaxTree, parent: SyntaxTree | null): void;
+    visitSingleLineCommentPre(node: SingleLineCommentSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitSingleLineCommentPost(node: SingleLineCommentSyntaxTree, parent: SyntaxTree | null): void;
+    visitTextPre(node: TextNodeSyntaxTree, parent: SyntaxTree | null): TreeVisitorReturn;
+    visitTextPost(node: TextNodeSyntaxTree, parent: SyntaxTree | null): void;
 }
 
 /**
@@ -457,7 +500,7 @@ export interface TreeVisitor {
  */
 interface TaskPool<T> {
     add(value: () => T): void;
-    handle(value: any, statements: { next: () => void; func: () => void; }): void;
+    handle(value: TreeVisitorReturn, statements: { next: () => void; func: () => void; }): void;
     consume(): any; // T | Promise<T[]>
 }
 
@@ -471,7 +514,7 @@ class SyncTaskPool<T> implements TaskPool<T> {
         this.tasks.push(value);
     }
 
-    handle(value: any, statements: { next: () => void; func: () => void; }): void {
+    handle(value: TreeVisitorReturn, statements: { next: () => void; func: () => void; }): void {
         if (typeof value === "undefined" || (typeof value === "boolean" && value)) {
             statements.next();
         } else if (typeof value === "function") {

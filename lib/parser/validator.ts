@@ -37,7 +37,7 @@ export class DefaultValidator implements Validator {
 
     checkBuilder(book: Book, acceptableSyntaxes: AcceptableSyntaxes, builders: Builder[] = []) {
         acceptableSyntaxes.acceptableSyntaxes.forEach(syntax => {
-            let prefix: string;
+            let prefix = "";
             switch (syntax.type) {
                 case SyntaxType.Other:
                     // Other系は実装をチェックする必要はない…。(ということにしておく
@@ -173,7 +173,7 @@ export class DefaultValidator implements Validator {
         let symbols: Symbol[] = book.allChunks.reduce<Symbol[]>((p, c) => p.concat(c.process.symbols), []);
         symbols.forEach(symbol => {
             // referenceToのpartやchapterの解決
-            let referenceTo = symbol.referenceTo;
+            const referenceTo = symbol.referenceTo;
             if (!referenceTo) {
                 return;
             }
@@ -185,7 +185,7 @@ export class DefaultValidator implements Validator {
                 });
             }
             if (!referenceTo.chapter && referenceTo.chapterName) {
-                referenceTo.part.nodes.forEach(chunk => {
+                referenceTo.part!.nodes.forEach(chunk => {
                     if (referenceTo.chapterName === chunk.name) {
                         referenceTo.chapter = chunk;
                     }
@@ -202,7 +202,7 @@ export class DefaultValidator implements Validator {
                     }
                 });
                 if (!reference.referenceNode) {
-                    symbol.chapter.process.error(t("compile.reference_is_missing", reference.targetSymbol, reference.label), symbol.node);
+                    symbol.chapter!.process.error(t("compile.reference_is_missing", reference.targetSymbol, reference.label), symbol.node);
                     return;
                 }
             }
@@ -216,9 +216,9 @@ export class DefaultValidator implements Validator {
                 if (symbol1.chapter === symbol2.chapter && symbol1.symbolName === symbol2.symbolName) {
                     if (symbol1.labelName && symbol2.labelName && symbol1.labelName === symbol2.labelName) {
                         if (symbol1.symbolName === "hd") {
-                            symbol1.chapter.process.error(t("compile.duplicated_label_headline"), symbol1.node, symbol2.node);
+                            symbol1.chapter!.process.error(t("compile.duplicated_label_headline"), symbol1.node, symbol2.node);
                         } else {
-                            symbol1.chapter.process.error(t("compile.duplicated_label"), symbol1.node, symbol2.node);
+                            symbol1.chapter!.process.error(t("compile.duplicated_label"), symbol1.node, symbol2.node);
                         }
                         return;
                     }

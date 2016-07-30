@@ -76,6 +76,7 @@ export let ja: any = {
         "unknown_graph_tool": "%s というgraph用ツールはサポートされていません。"
     },
     "builder": {
+        "chapter_not_found": "深さ %d にマッチするチャプターが見つかりませんでした。",
         "image_not_found": "ID: %s にマッチする画像が見つかりませんでした。",
         "chapter": "第%d章",
         "list": "リスト%s.%s",

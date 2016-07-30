@@ -80,7 +80,7 @@ root
             }
         })
             .then(value => Exec.singleCompile(value.input, value.fileName, target, null))
-            .then(result => {
+            .then<null>(result => {
                 if (!result.book.hasError && !ast) {
                     result.book.allChunks[0].builderProcesses.forEach(process => {
                         console.log(process.result);
@@ -92,7 +92,7 @@ root
                     return null;
                 } else {
                     result.book.reports.forEach(report => {
-                        let log: Function;
+                        let log = (_msg: string) => { };
                         switch (report.level) {
                             case ReportLevel.Info:
                                 log = process.stdout.write;
@@ -102,7 +102,7 @@ root
                                 log = process.stderr.write;
                         }
                         let message = "";
-                        report.nodes.forEach(function(node) {
+                        report.nodes.forEach(node => {
                             message += `[${node.location.start.line}, ${node.location.start.column}] `;
                         });
                         message += report.message + "\n";
@@ -140,7 +140,7 @@ root
                 .then(book => {
                     console.log("completed!");
                     book.reports.forEach(report => {
-                        let log: Function;
+                        let log = (_msg: string) => { };
                         switch (report.level) {
                             case ReportLevel.Info:
                                 log = process.stdout.write;
@@ -163,7 +163,7 @@ root
             let catalogYaml = jsyaml.safeLoad(fs.readFileSync(path.resolve(process.cwd(), "catalog.yml"), "utf8"));
 
             let configRaw: ConfigRaw = {
-                builders: [target2builder(target)],
+                builders: [target2builder(target) !],
                 book: catalogYaml
             };
 
@@ -176,7 +176,7 @@ root
                 .then(book => {
                     process.stdout.write("completed!\n");
                     book.reports.forEach(report => {
-                        let log: Function;
+                        let log = (_msg: string) => { };
                         switch (report.level) {
                             case ReportLevel.Info:
                                 log = process.stdout.write;

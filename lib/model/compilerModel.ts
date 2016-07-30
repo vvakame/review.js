@@ -15,9 +15,9 @@ import { visit } from "../parser/walker";
  * 参照先についての情報。
  */
 export interface ReferenceTo {
-    part?: ContentChunk;
+    part?: ContentChunk | null;
     partName: string;
-    chapter?: ContentChunk;
+    chapter?: ContentChunk | null;
     chapterName: string;
     targetSymbol: string;
     label: string;
@@ -30,10 +30,10 @@ export interface ReferenceTo {
  */
 export interface Symbol {
     part?: ContentChunk;
-    chapter?: ContentChunk;
+    chapter?: ContentChunk | null;
     symbolName: string;
     labelName?: string;
-    referenceTo?: ReferenceTo;
+    referenceTo?: ReferenceTo | null;
     node: SyntaxTree;
 }
 
@@ -50,7 +50,7 @@ export enum ReportLevel {
  * 処理時に発生したレポート。
  */
 export class ProcessReport {
-    constructor(public level: ReportLevel, public part: ContentChunk, public chapter: ContentChunk, public message: string, public nodes: NodeLocation[] = []) {
+    constructor(public level: ReportLevel, public part: ContentChunk | null, public chapter: ContentChunk | null, public message: string, public nodes: NodeLocation[] = []) {
     }
 }
 
@@ -82,7 +82,7 @@ export class Process {
     afterProcess: Function[] = [];
     private _reports: ProcessReport[] = [];
 
-    constructor(public part: ContentChunk, public chapter: ContentChunk, public input: string) {
+    constructor(public part: ContentChunk, public chapter: ContentChunk | null, public input: string | null) {
     }
 
     info(message: string, ...nodes: NodeLocation[]) {
@@ -138,11 +138,11 @@ export class Process {
         return result;
     }
 
-    constructReferenceTo(node: InlineElementSyntaxTree, value: string, targetSymbol?: string, separator?: string): ReferenceTo;
+    constructReferenceTo(node: InlineElementSyntaxTree, value: string, targetSymbol?: string, separator?: string): ReferenceTo | null;
 
-    constructReferenceTo(node: BlockElementSyntaxTree, value: string, targetSymbol: string, separator?: string): ReferenceTo;
+    constructReferenceTo(node: BlockElementSyntaxTree, value: string, targetSymbol: string, separator?: string): ReferenceTo | null;
 
-    constructReferenceTo(node: any, value: string, targetSymbol = node.symbol, separator = "|"): ReferenceTo {
+    constructReferenceTo(node: any, value: string, targetSymbol = node.symbol, separator = "|"): ReferenceTo | null {
         let splitted = value.split(separator);
         if (splitted.length === 3) {
             return {
@@ -222,7 +222,7 @@ export class BuilderProcess {
         return this;
     }
 
-    get input(): string {
+    get input(): string | null {
         return this.base.input;
     }
 
@@ -231,13 +231,13 @@ export class BuilderProcess {
     }
 
     findChapter(chapId: string): ContentChunk {
-        let book = this.base.chapter.book;
+        let book = this.base.chapter!.book;
         let chaps = book.allChunks.filter(chunk => {
             let name = chunk.name.substr(0, chunk.name.lastIndexOf(".re"));
             if (name === chapId) {
                 return true;
             }
-            let chapter: ChapterSyntaxTree;
+            let chapter: ChapterSyntaxTree | null = null;
             visit(chunk.tree.ast, {
                 visitDefaultPre: (_node, _parent) => {
                     return !chapter;
@@ -247,7 +247,7 @@ export class BuilderProcess {
                     return false;
                 }
             });
-            if (chapter.headline.label) {
+            if (chapter && chapter.headline.label) {
                 return chapter.headline.label.arg === chapId;
             }
             return false;
@@ -266,7 +266,7 @@ export class BuilderProcess {
         // NOTE: https://github.com/kmuto/review/wiki/ImagePath
         // 4軸マトリクス 画像dir, ビルダ有無, chapId位置, 拡張子
 
-        let config = (this.base.part || this.base.chapter).book.config;
+        let config = (this.base.part || this.base.chapter) !.book.config;
 
         let fileNameList: string[] = [];
         (() => {
@@ -305,7 +305,7 @@ export class BuilderProcess {
                     reject(id);
                     return;
                 }
-                let fileName = fileNameList.shift();
+                let fileName = fileNameList.shift() !;
                 config.exists(fileName).then(result => {
                     if (result.result) {
                         resolve(result.path);
@@ -385,7 +385,7 @@ export class ContentChunk {
     process: Process;
     builderProcesses: BuilderProcess[] = [];
 
-    constructor(book: Book, parent: ContentChunk, name: string);
+    constructor(book: Book, parent: ContentChunk | null, name: string);
 
     constructor(book: Book, name: string);
 

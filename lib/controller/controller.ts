@@ -60,9 +60,9 @@ export class Controller {
     acceptableSyntaxes(book: Book): Promise<Book> {
         book.acceptableSyntaxes = book.config.analyzer.getAcceptableSyntaxes();
 
-        if (book.config.listener.onAcceptables(book.acceptableSyntaxes) === false) {
+        if (book.config.listener.onAcceptables!(book.acceptableSyntaxes) === false) {
             // false が帰ってきたら処理を中断する (undefined でも継続)
-            book.config.listener.onCompileFailed();
+            book.config.listener.onCompileFailed!();
             return Promise.reject<Book>(null);
         }
 
@@ -70,15 +70,15 @@ export class Controller {
     }
 
     toContentChunk(book: Book): Book {
-        let convert = (c: ContentStructure, parent?: ContentChunk): ContentChunk => {
-            let chunk: ContentChunk;
+        let convert = (c: ContentStructure, parent?: ContentChunk | null): ContentChunk | null => {
+            let chunk: ContentChunk | null = null;
             if (c.part) {
                 chunk = new ContentChunk(book, c.part.file);
                 c.part.chapters.forEach(c => {
-                    convert(ContentStructure.createChapter(c), chunk);
+                    convert(ContentStructure.createChapter(c) !, chunk);
                 });
             } else if (c.chapter) {
-                chunk = new ContentChunk(book, parent, c.chapter.file);
+                chunk = new ContentChunk(book, parent!, c.chapter.file);
             } else {
                 return null;
             }
@@ -88,10 +88,10 @@ export class Controller {
             return chunk;
         };
 
-        book.predef = this.config.book.predef.map(c => convert(c));
-        book.contents = this.config.book.contents.map(c => convert(c));
-        book.appendix = this.config.book.appendix.map(c => convert(c));
-        book.postdef = this.config.book.postdef.map(c => convert(c));
+        book.predef = this.config.book.predef.map(c => convert(c) !);
+        book.contents = this.config.book.contents.map(c => convert(c) !);
+        book.appendix = this.config.book.appendix.map(c => convert(c) !);
+        book.postdef = this.config.book.postdef.map(c => convert(c) !);
 
         return book;
     }
@@ -130,10 +130,10 @@ export class Controller {
                             column: se.column,
                             offset: se.offset
                         },
-                        end: null // TODO SyntaxError が置き換えられたらなんとかできるかも…
+                        end: void 0, // TODO SyntaxError が置き換えられたらなんとかできるかも…
                     }
                 });
-                chunk.tree = { ast: errorNode, cst: null };
+                chunk.tree = { ast: errorNode, cst: null! }; // TODO null! をやめる
                 // TODO エラー表示が必要 process.error 的なやつ
             }
             chunk.nodes.forEach(chunk => _parse(chunk));
@@ -205,7 +205,7 @@ export class Controller {
         }
 
         let symbols = book.allChunks.reduce<Symbol[]>((p, c) => p.concat(c.process.symbols), []);
-        if (this.config.listener.onSymbols(symbols) === false) {
+        if (this.config.listener.onSymbols!(symbols) === false) {
             // false が帰ってきたら処理を中断する (undefined でも継続)
             return Promise.resolve(book);
         }
@@ -234,11 +234,11 @@ export class Controller {
     }
 
     compileFinished(book: Book): Book {
-        book.config.listener.onReports(book.reports);
+        book.config.listener.onReports!(book.reports);
         if (!book.hasError) {
-            book.config.listener.onCompileSuccess(book);
+            book.config.listener.onCompileSuccess!(book);
         } else {
-            book.config.listener.onCompileFailed(book);
+            book.config.listener.onCompileFailed!(book);
         }
 
         return book;

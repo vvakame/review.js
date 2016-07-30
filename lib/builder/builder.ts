@@ -53,7 +53,7 @@ export class DefaultBuilder implements Builder {
     init(book: Book): Promise<void> {
         this.book = book;
 
-        return Promise.all(book.allChunks.map(chunk => this.processAst(chunk))).then(() => <void>null);
+        return Promise.all(book.allChunks.map(chunk => this.processAst(chunk))).then(() => null);
     }
 
     processAst(chunk: ContentChunk): Promise<void> {
@@ -130,7 +130,7 @@ export class DefaultBuilder implements Builder {
         })
             .then(() => {
                 this.processPost(process, chunk);
-                return Promise.all(chunk.nodes.map(chunk => this.processAst(chunk))).then(() => <void>null);
+                return Promise.all(chunk.nodes.map(chunk => this.processAst(chunk))).then(() => null);
             });
     }
 
@@ -138,8 +138,8 @@ export class DefaultBuilder implements Builder {
         throw new Error("please override this method");
     }
 
-    getChapterTitle(process: BuilderProcess, chapter: ContentChunk): string {
-        let chapterNode: ChapterSyntaxTree;
+    getChapterTitle(process: BuilderProcess, chapter: ContentChunk): string | null {
+        let chapterNode: ChapterSyntaxTree | null = null;
         visit(chapter.tree.ast, {
             visitDefaultPre: (_node, _parent) => {
                 return !chapterNode;

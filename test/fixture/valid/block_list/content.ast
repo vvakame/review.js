@@ -321,8 +321,6 @@
                       "offset": 64
                     },
                     "end": {
-                      "line": null,
-                      "column": null,
                       "offset": 38
                     }
                   },
@@ -592,8 +590,6 @@
                       "offset": 161
                     },
                     "end": {
-                      "line": null,
-                      "column": null,
                       "offset": 131
                     }
                   },

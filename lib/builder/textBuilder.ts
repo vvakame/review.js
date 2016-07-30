@@ -8,7 +8,7 @@ import { t } from "../i18n/i18n";
 
 import { NodeSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree } from "../parser/parser";
 
-import { visit, TreeVisitor } from "../parser/walker";
+import { visit, TreeVisitor, TreeVisitorReturn } from "../parser/walker";
 
 import { nodeContentToString, findChapter, padLeft, linesToFigure } from "../utils/utils";
 
@@ -94,9 +94,13 @@ export class TextBuilder extends DefaultBuilder {
         process.out("\n");
     }
 
-    block_list_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_list_pre(process: BuilderProcess, node: BlockElementSyntaxTree): TreeVisitorReturn {
         process.out("◆→開始:リスト←◆\n");
         let chapter = findChapter(node, 1);
+        if (!chapter) {
+            process.error(t("builder.chapter_not_found", 1), node);
+            return false;
+        }
         let text = t("builder.list", chapter.fqn, node.no);
         process.out(text).out("　");
         return (v: TreeVisitor) => {
@@ -114,9 +118,13 @@ export class TextBuilder extends DefaultBuilder {
         process.out("\n◆→終了:リスト←◆\n");
     }
 
-    block_listnum_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_listnum_pre(process: BuilderProcess, node: BlockElementSyntaxTree): TreeVisitorReturn {
         process.out("◆→開始:リスト←◆\n");
         let chapter = findChapter(node, 1);
+        if (!chapter) {
+            process.error(t("builder.chapter_not_found", 1), node);
+            return false;
+        }
         let text = t("builder.list", chapter.fqn, node.no);
         process.out(text).out("　");
         let lineCount = 1;
@@ -160,7 +168,11 @@ export class TextBuilder extends DefaultBuilder {
 
     inline_list(process: BuilderProcess, node: InlineElementSyntaxTree) {
         let chapter = findChapter(node, 1);
-        let listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+        if (!chapter) {
+            process.error(t("builder.chapter_not_found", 1), node);
+            return false;
+        }
+        let listNode = this.findReference(process, node).referenceTo!.referenceNode!.toBlockElement();
         let text = t("builder.list", chapter.fqn, listNode.no);
         process.out(text);
         return false;
@@ -232,6 +244,10 @@ export class TextBuilder extends DefaultBuilder {
     inline_hd_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
         process.out("「");
         let chapter = findChapter(node);
+        if (!chapter) {
+            process.error(t("builder.chapter_not_found", 1), node);
+            return false;
+        }
         if (chapter.level === 1) {
             process.out(chapter.fqn).out("章 ");
         } else {
@@ -274,7 +290,7 @@ export class TextBuilder extends DefaultBuilder {
     }
 
     inline_href(process: BuilderProcess, node: InlineElementSyntaxTree) {
-        let href: string = null;
+        let href: string | null = null;
         let text = nodeContentToString(process, node);
         if (text.indexOf(",") !== -1) {
             href = text.slice(0, text.indexOf(","));
@@ -353,7 +369,7 @@ export class TextBuilder extends DefaultBuilder {
             .then(imagePath => {
                 let caption = nodeContentToString(process, node.args[1]);
                 process.out("◆→開始:図←◆\n");
-                process.out("図").out(process.base.chapter.no).out(".").out(node.no).out("　").out(caption).out("\n");
+                process.out("図").out(process.base.chapter!.no).out(".").out(node.no).out("　").out(caption).out("\n");
                 process.out("\n");
                 process.out("◆→").out(imagePath).out("←◆\n");
                 process.out("◆→終了:図←◆\n");
@@ -392,14 +408,14 @@ export class TextBuilder extends DefaultBuilder {
     }
 
     inline_img(process: BuilderProcess, node: InlineElementSyntaxTree) {
-        let imgNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
-        process.out("図").out(process.base.chapter.no).out(".").out(imgNode.no).out("\n");
+        let imgNode = this.findReference(process, node).referenceTo!.referenceNode!.toBlockElement();
+        process.out("図").out(process.base.chapter!.no).out(".").out(imgNode.no).out("\n");
         return false;
     }
 
     inline_icon(process: BuilderProcess, node: InlineElementSyntaxTree) {
         // TODO ファイル名探索ロジックをもっと頑張る(jpgとかsvgとか)
-        let chapterFileName = process.base.chapter.name;
+        let chapterFileName = process.base.chapter!.name;
         let chapterName = chapterFileName.substring(0, chapterFileName.length - 3);
         let imageName = nodeContentToString(process, node);
         let imagePath = "images/" + chapterName + "-" + imageName + ".png";
@@ -416,7 +432,7 @@ export class TextBuilder extends DefaultBuilder {
     }
 
     inline_fn(process: BuilderProcess, node: InlineElementSyntaxTree) {
-        let footnoteNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+        let footnoteNode = this.findReference(process, node).referenceTo!.referenceNode!.toBlockElement();
         process.out("【注").out(footnoteNode.no).out("】");
         return false;
     }
@@ -551,11 +567,15 @@ export class TextBuilder extends DefaultBuilder {
         return false;
     }
 
-    block_table_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_table_pre(process: BuilderProcess, node: BlockElementSyntaxTree): TreeVisitorReturn {
         // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         process.out("◆→開始:表←◆\n");
         process.out("TODO 現在table記法は仮実装です\n");
         let chapter = findChapter(node, 1);
+        if (!chapter) {
+            process.error(t("builder.chapter_not_found", 1), node);
+            return false;
+        }
         let text = t("builder.table", chapter.fqn, node.no);
         process.out(text).out("　").out(nodeContentToString(process, node.args[1])).out("\n\n");
         return (v: TreeVisitor) => {
@@ -574,7 +594,11 @@ export class TextBuilder extends DefaultBuilder {
     inline_table(process: BuilderProcess, node: InlineElementSyntaxTree) {
         // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         let chapter = findChapter(node, 1);
-        let listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
+        if (!chapter) {
+            process.error(t("builder.chapter_not_found", 1), node);
+            return false;
+        }
+        let listNode = this.findReference(process, node).referenceTo!.referenceNode!.toBlockElement();
         let text = t("builder.table", chapter.fqn, listNode.no);
         process.out(text);
         return false;

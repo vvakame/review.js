@@ -218,7 +218,7 @@ export class DefaultAnalyzer implements Analyzer {
             if (typeof (<any>this)[k] !== "function") {
                 continue;
             }
-            let func: Function = null;
+            let func: Function | null = null;
             if (k.indexOf("block_") === 0) {
                 func = (<any>this)[k];
             } else if (k.indexOf("inline_") === 0) {
@@ -250,7 +250,7 @@ export class DefaultAnalyzer implements Analyzer {
         builder.setDescription(t("description.headline"));
         builder.processNode((process, n) => {
             let node = n.toHeadline();
-            let label: string = null;
+            let label: string | null = null;
             if (node.label) {
                 label = node.label.arg;
             } else {
@@ -264,11 +264,11 @@ export class DefaultAnalyzer implements Analyzer {
 
             // chap, title, chapref 用
             if (node.level === 1) {
-                let label: string = null;
+                let label: string | null = null;
                 if (node.label) {
                     label = node.label.arg;
                 } else {
-                    label = process.chapter.name.substr(0, process.chapter.name.lastIndexOf(".re"));
+                    label = process.chapter!.name.substr(0, process.chapter!.name.lastIndexOf(".re"));
                 }
                 process.addSymbol({
                     symbolName: "chapter",
