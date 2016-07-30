@@ -1,3 +1,0 @@
-<component name="DependencyValidationManager">
-  <scope name="TypeScript test" pattern="file:test//*.ts" />
-</component>
