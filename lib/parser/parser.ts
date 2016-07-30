@@ -337,6 +337,7 @@ export class SyntaxTree implements NodeLocation {
         if (typeof this.ruleName === "undefined") {
             throw new ParseError(data, "unknown rule: " + data.syntax);
         }
+        let end = data.location.end || data.location.start; // SyntaxErrorの時
         this.location = {
             start: {
                 line: data.location.start.line,
@@ -344,9 +345,9 @@ export class SyntaxTree implements NodeLocation {
                 offset: data.location.start.offset
             },
             end: {
-                line: data.location.end.line,
-                column: data.location.end.column,
-                offset: data.location.end.offset
+                line: end.line,
+                column: end.column,
+                offset: end.offset
             }
         };
     }

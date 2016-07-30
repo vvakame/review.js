@@ -3692,6 +3692,7 @@ var SyntaxTree = (function () {
         if (typeof this.ruleName === "undefined") {
             throw new ParseError(data, "unknown rule: " + data.syntax);
         }
+        var end = data.location.end || data.location.start;
         this.location = {
             start: {
                 line: data.location.start.line,
@@ -3699,9 +3700,9 @@ var SyntaxTree = (function () {
                 offset: data.location.start.offset
             },
             end: {
-                line: data.location.end.line,
-                column: data.location.end.column,
-                offset: data.location.end.offset
+                line: end.line,
+                column: end.column,
+                offset: end.offset
             }
         };
     }
