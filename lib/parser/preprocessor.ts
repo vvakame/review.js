@@ -147,7 +147,7 @@ export class SyntaxPreprocessor implements Preprocessor {
                 offset: number;
                 line: number;
                 column: number;
-            } | null = null;
+            } | null = null as any;
             let resultNodes: SyntaxTree[] = [];
             let lastNode: SyntaxTree | null = null;
             visit(node.childNodes[0], {

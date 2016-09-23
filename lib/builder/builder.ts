@@ -139,7 +139,7 @@ export class DefaultBuilder implements Builder {
     }
 
     getChapterTitle(process: BuilderProcess, chapter: ContentChunk): string | null {
-        let chapterNode: ChapterSyntaxTree | null = null;
+        let chapterNode: ChapterSyntaxTree | null = null as any;
         visit(chapter.tree.ast, {
             visitDefaultPre: (_node, _parent) => {
                 return !chapterNode;

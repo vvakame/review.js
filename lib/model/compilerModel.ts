@@ -237,7 +237,7 @@ export class BuilderProcess {
             if (name === chapId) {
                 return true;
             }
-            let chapter: ChapterSyntaxTree | null = null;
+            let chapter: ChapterSyntaxTree | null = null as any;
             visit(chunk.tree.ast, {
                 visitDefaultPre: (_node, _parent) => {
                     return !chapter;

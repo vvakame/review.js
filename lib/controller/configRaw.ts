@@ -115,7 +115,7 @@ export class BookStructure {
         });
         let appendix = (config.appendix || (<any>config).APPENDIX || []).map((v: any /* IConfigChapter */) => ContentStructure.createChapter(v));
         let postdef = (config.postdef || (<any>config).POSTDEF || []).map((v: any /* IConfigChapter */) => ContentStructure.createChapter(v));
-        return new BookStructure(predef, contents, appendix, postdef);
+        return new BookStructure(predef, contents as any, appendix, postdef);
     }
 }
 

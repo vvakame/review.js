@@ -192,8 +192,8 @@ module.exports = function (grunt) {
 			},
 			"pegjs": {
 				command: function () {
-					var peg = grunt.config.get("opt.client.peg") + "/";
-					return "./node_modules/.bin/pegjs " + peg + "/grammar.pegjs " + peg + "/grammar.js";
+					var peg = grunt.config.get("opt.client.peg");
+					return "./node_modules/.bin/pegjs --output " + peg + "/grammar.js " + peg + "/grammar.pegjs";
 				}
 			}
 		}

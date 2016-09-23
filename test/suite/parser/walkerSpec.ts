@@ -12,7 +12,7 @@ describe("ReVIEW.walkについて", () => {
     it("目的のNodeを発見できること", () => {
         let input = "= level1\n== level2\n=== level3\n==== level4\n===== level5";
         let parseResult = parse(input);
-        let headline: HeadlineSyntaxTree | null = null;
+        let headline: HeadlineSyntaxTree | null = null as any;
         visit(parseResult.ast, {
             visitDefaultPre: (_ast: SyntaxTree, _parent: SyntaxTree | null) => {
             },
@@ -29,7 +29,7 @@ describe("ReVIEW.walkについて", () => {
         // 最後のやつが取れる
         assert(headline.level === 5);
 
-        let result: ChapterSyntaxTree | null = null;
+        let result: ChapterSyntaxTree | null = null as any;
         walk(headline, (ast) => {
             if (ast.ruleName === RuleName.Chapter && ast.toChapter().level === 2) {
                 result = ast.toChapter();
