@@ -16,7 +16,7 @@ import { nodeContentToString, findUp } from "../utils/utils";
 export interface Builder {
     name: string;
     extention: string;
-    init(book: Book): Promise<void>;
+    init(book: Book): Promise<null>;
     escape(data: any): string;
     chapterPre(process: BuilderProcess, node: ChapterSyntaxTree): any;
     chapterPost(process: BuilderProcess, node: ChapterSyntaxTree): any;
@@ -50,13 +50,13 @@ export class DefaultBuilder implements Builder {
         return (<any>this).constructor.name;
     }
 
-    init(book: Book): Promise<void> {
+    init(book: Book): Promise<null> {
         this.book = book;
 
         return Promise.all(book.allChunks.map(chunk => this.processAst(chunk))).then(() => null);
     }
 
-    processAst(chunk: ContentChunk): Promise<void> {
+    processAst(chunk: ContentChunk): Promise<null> {
         let process = chunk.createBuilderProcess(this);
         return visitAsync(chunk.tree.ast, {
             visitDefaultPre: (_node: SyntaxTree) => {
