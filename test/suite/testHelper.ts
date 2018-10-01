@@ -3,7 +3,7 @@ import { isNodeJS } from "../../lib/utils/utils";
 import { start } from "../../lib/index";
 
 import { ConfigRaw } from "../../lib/controller/configRaw";
-import { Book, ProcessReport } from "../../lib/model/compilerModel";
+import { Book } from "../../lib/model/compilerModel";
 
 import { DefaultAnalyzer } from "../../lib/parser/analyzer";
 import { DefaultValidator } from "../../lib/parser/validator";
@@ -53,21 +53,16 @@ export function compile(cfg?: ConfigRaw): Promise<{ book: Book; results: any; }>
     });
     config.listener.onCompileFailed = config.listener.onCompileFailed || (() => {
     });
-    let success: boolean;
     let originalCompileSuccess = config.listener.onCompileSuccess;
     config.listener.onCompileSuccess = (book) => {
-        success = true;
         originalCompileSuccess(book);
     };
     let originalReports = config.listener.onReports;
-    let reports: ProcessReport[];
     config.listener.onReports = _reports => {
-        reports = _reports;
         originalReports(_reports);
     };
     let originalCompileFailed = config.listener.onCompileFailed;
     config.listener.onCompileFailed = (book) => {
-        success = false;
         originalCompileFailed(book);
     };
 
