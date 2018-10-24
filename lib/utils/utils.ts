@@ -275,7 +275,7 @@ export module IO {
 }
 
 /**
- * 行数から桁数の変換 100行 -> 3桁 
+ * 行数から桁数の変換 100行 -> 3桁
  */
 export function linesToFigure(lines: number): number {
     "use strict";
