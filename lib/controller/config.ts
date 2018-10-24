@@ -19,7 +19,7 @@ export class Config {
         throw new Error("please implements this method");
     }
 
-    get write(): (path: string, data: string) => Promise<void> {
+    get write(): (path: string, data: string) => Promise<null> {
         throw new Error("please implements this method");
     }
 
@@ -86,7 +86,7 @@ export class NodeJSConfig extends Config {
         return this.original.read || IO.read;
     }
 
-    get write(): (path: string, data: string) => Promise<void> {
+    get write(): (path: string, data: string) => Promise<null> {
         return this.original.write || IO.write;
     }
 
@@ -189,8 +189,8 @@ export class WebBrowserConfig extends Config {
         });
     }
 
-    get write(): (path: string, data: string) => Promise<void> {
-        return this.original.write || ((): Promise<void> => {
+    get write(): (path: string, data: string) => Promise<null> {
+        return this.original.write || ((): Promise<null> => {
             throw new Error("please implement config.write method");
         });
     }

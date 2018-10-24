@@ -23,7 +23,7 @@ export interface ConfigRaw {
     basePath?: string;
 
     read?: (path: string) => Promise<string>;
-    write?: (path: string, data: string) => Promise<void>;
+    write?: (path: string, data: string) => Promise<null>;
 
     listener?: ConfigListener;
 
@@ -45,7 +45,7 @@ export interface ConfigListener {
 
 export interface ConfigBook {
     predef?: ConfigChapter[];
-    contents: ConfigPartOrChapter[];
+    contents: ConfigPartOrChapter[] | string[];
     appendix?: ConfigChapter[];
     postdef?: ConfigChapter[];
 }
@@ -84,7 +84,7 @@ export class BookStructure {
             return new BookStructure([], [], [], []);
         }
         let predef = (config.predef || (<any>config).PREDEF || []).map((v: any /* IConfigChapter */) => ContentStructure.createChapter(v));
-        let contents = (config.contents || (<any>config).CHAPS || []).map((v: any) => {
+        let contents = (<any>config.contents || (<any>config).CHAPS || []).map((v: any) => {
             // value は string(YAML由来) か IConfigPartOrChapter
             if (!v) {
                 return null;

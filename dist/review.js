@@ -1,5 +1,6 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.ReVIEW = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.ReVIEW = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var exception_1 = require("../js/exception");
 var parser_1 = require("../parser/parser");
 var walker_1 = require("../parser/walker");
@@ -8,7 +9,7 @@ var utils_1 = require("../utils/utils");
  * デフォルトのビルダ。
  * Re:VIEWのASTから何らかのテキストに変換する時はこのクラスを拡張し作成する。
  */
-var DefaultBuilder = (function () {
+var DefaultBuilder = /** @class */ (function () {
     function DefaultBuilder() {
         this.extention = "bug";
     }
@@ -161,11 +162,11 @@ var DefaultBuilder = (function () {
     };
     DefaultBuilder.prototype.blockPre = function (process, name, node) {
         var func;
-        func = this[("block_" + name)];
+        func = this["block_" + name];
         if (typeof func === "function") {
             return func.call(this, process, node);
         }
-        func = this[("block_" + name + "_pre")];
+        func = this["block_" + name + "_pre"];
         if (typeof func !== "function") {
             throw new exception_1.AnalyzerError("block_" + name + "_pre or block_" + name + " is not Function");
         }
@@ -173,11 +174,11 @@ var DefaultBuilder = (function () {
     };
     DefaultBuilder.prototype.blockPost = function (process, name, node) {
         var func;
-        func = this[("block_" + name)];
+        func = this["block_" + name];
         if (typeof func === "function") {
             return;
         }
-        func = this[("block_" + name + "_post")];
+        func = this["block_" + name + "_post"];
         if (typeof func !== "function") {
             throw new exception_1.AnalyzerError("block_" + name + "_post is not Function");
         }
@@ -185,11 +186,11 @@ var DefaultBuilder = (function () {
     };
     DefaultBuilder.prototype.inlinePre = function (process, name, node) {
         var func;
-        func = this[("inline_" + name)];
+        func = this["inline_" + name];
         if (typeof func === "function") {
             return func.call(this, process, node);
         }
-        func = this[("inline_" + name + "_pre")];
+        func = this["inline_" + name + "_pre"];
         if (typeof func !== "function") {
             throw new exception_1.AnalyzerError("inline_" + name + "_pre or inline_" + name + " is not Function");
         }
@@ -197,11 +198,11 @@ var DefaultBuilder = (function () {
     };
     DefaultBuilder.prototype.inlinePost = function (process, name, node) {
         var func;
-        func = this[("inline_" + name)];
+        func = this["inline_" + name];
         if (typeof func === "function") {
             return;
         }
-        func = this[("inline_" + name + "_post")];
+        func = this["inline_" + name + "_post"];
         if (typeof func !== "function") {
             throw new exception_1.AnalyzerError("inline_" + name + "_post is not Function");
         }
@@ -272,29 +273,36 @@ exports.DefaultBuilder = DefaultBuilder;
 
 },{"../js/exception":12,"../parser/parser":15,"../parser/walker":18,"../utils/utils":20}],2:[function(require,module,exports){
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var i18n_1 = require("../i18n/i18n");
 var builder_1 = require("./builder");
 var parser_1 = require("../parser/parser");
 var walker_1 = require("../parser/walker");
 var utils_1 = require("../utils/utils");
-var HtmlBuilder = (function (_super) {
+var HtmlBuilder = /** @class */ (function (_super) {
     __extends(HtmlBuilder, _super);
     function HtmlBuilder(standalone) {
         if (standalone === void 0) { standalone = true; }
-        _super.call(this);
-        this.standalone = standalone;
-        this.extention = "html";
-        this.escapeMap = {
+        var _this = _super.call(this) || this;
+        _this.standalone = standalone;
+        _this.extention = "html";
+        _this.escapeMap = {
             "&": "&amp;",
             "<": "&lt;",
             ">": "&gt;",
             '"': '&quot;',
         };
+        return _this;
     }
     HtmlBuilder.prototype.escape = function (data) {
         var _this = this;
@@ -371,6 +379,7 @@ var HtmlBuilder = (function (_super) {
             process.outRaw("</span>");
         }
         else if (node.level === 2) {
+            // process.out(node.parentNode.toChapter().fqn).out("　");
         }
     };
     HtmlBuilder.prototype.headlinePost = function (process, _name, node) {
@@ -996,21 +1005,28 @@ exports.HtmlBuilder = HtmlBuilder;
 
 },{"../i18n/i18n":8,"../parser/parser":15,"../parser/walker":18,"../utils/utils":20,"./builder":1}],3:[function(require,module,exports){
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var builder_1 = require("./builder");
 var i18n_1 = require("../i18n/i18n");
 var parser_1 = require("../parser/parser");
 var walker_1 = require("../parser/walker");
 var utils_1 = require("../utils/utils");
-var TextBuilder = (function (_super) {
+var TextBuilder = /** @class */ (function (_super) {
     __extends(TextBuilder, _super);
     function TextBuilder() {
-        _super.apply(this, arguments);
-        this.extention = "txt";
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.extention = "txt";
+        return _this;
     }
     TextBuilder.prototype.escape = function (data) {
         return data;
@@ -1024,6 +1040,7 @@ var TextBuilder = (function (_super) {
             process.out(text).out("　");
         }
         else if (node.level === 2) {
+            // process.out(node.parentNode.toChapter().fqn).out("　");
         }
     };
     TextBuilder.prototype.headlinePost = function (process, _name, _node) {
@@ -1570,18 +1587,24 @@ exports.TextBuilder = TextBuilder;
 
 },{"../i18n/i18n":8,"../parser/parser":15,"../parser/walker":18,"../utils/utils":20,"./builder":1}],4:[function(require,module,exports){
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var builder_1 = require("../builder/builder");
 var configRaw_1 = require("./configRaw");
 var compilerModel_1 = require("../model/compilerModel");
 var analyzer_1 = require("../parser/analyzer");
 var validator_1 = require("../parser/validator");
 var utils_1 = require("../utils/utils");
-var Config = (function () {
+var Config = /** @class */ (function () {
     function Config(original) {
         this.original = original;
     }
@@ -1673,12 +1696,13 @@ var Config = (function () {
     return Config;
 }());
 exports.Config = Config;
-var NodeJSConfig = (function (_super) {
+var NodeJSConfig = /** @class */ (function (_super) {
     __extends(NodeJSConfig, _super);
     function NodeJSConfig(options, original) {
-        _super.call(this, original);
-        this.options = options;
-        this.original = original;
+        var _this = _super.call(this, original) || this;
+        _this.options = options;
+        _this.original = original;
+        return _this;
     }
     Object.defineProperty(NodeJSConfig.prototype, "read", {
         get: function () {
@@ -1783,12 +1807,13 @@ var NodeJSConfig = (function (_super) {
     return NodeJSConfig;
 }(Config));
 exports.NodeJSConfig = NodeJSConfig;
-var WebBrowserConfig = (function (_super) {
+var WebBrowserConfig = /** @class */ (function (_super) {
     __extends(WebBrowserConfig, _super);
     function WebBrowserConfig(options, original) {
-        _super.call(this, original);
-        this.options = options;
-        this.original = original;
+        var _this = _super.call(this, original) || this;
+        _this.options = options;
+        _this.original = original;
+        return _this;
     }
     Object.defineProperty(WebBrowserConfig.prototype, "read", {
         get: function () {
@@ -1935,10 +1960,11 @@ exports.WebBrowserConfig = WebBrowserConfig;
 
 },{"../builder/builder":1,"../model/compilerModel":13,"../parser/analyzer":14,"../parser/validator":17,"../utils/utils":20,"./configRaw":5,"colors":undefined,"fs":undefined,"path":undefined}],5:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * 生の設定ファイルでの本の構成情報を画一的なフォーマットに変換し保持するためのクラス。
  */
-var BookStructure = (function () {
+var BookStructure = /** @class */ (function () {
     // TODO コンストラクタ隠したい
     function BookStructure(predef, contents, appendix, postdef) {
         this.predef = predef;
@@ -2000,7 +2026,7 @@ exports.BookStructure = BookStructure;
 /**
  * 生の設定ファイルでの本の構成情報を画一的なフォーマットに変換し保持するためのクラス。
  */
-var ContentStructure = (function () {
+var ContentStructure = /** @class */ (function () {
     function ContentStructure(part, chapter) {
         this.part = part;
         this.chapter = chapter;
@@ -2032,6 +2058,7 @@ exports.ContentStructure = ContentStructure;
 
 },{}],6:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var PEG = require("../../resources/grammar");
 var compilerModel_1 = require("../model/compilerModel");
 var parser_1 = require("../parser/parser");
@@ -2047,7 +2074,7 @@ var utils_1 = require("../utils/utils");
  * ReVIEW文書を処理するためのコントローラ。
  * 処理の起点。
  */
-var Controller = (function () {
+var Controller = /** @class */ (function () {
     function Controller(options) {
         if (options === void 0) { options = {}; }
         this.options = options;
@@ -2149,6 +2176,7 @@ var Controller = (function () {
                     }
                 });
                 chunk.tree = { ast: errorNode, cst: null }; // TODO null! をやめる
+                // TODO エラー表示が必要 process.error 的なやつ
             }
             chunk.nodes.forEach(function (chunk) { return _parse(chunk); });
         };
@@ -2262,12 +2290,14 @@ exports.Controller = Controller;
 
 },{"../../resources/grammar":21,"../builder/htmlBuilder":2,"../builder/textBuilder":3,"../model/compilerModel":13,"../parser/parser":15,"../parser/preprocessor":16,"../parser/walker":18,"../utils/utils":20,"./config":4,"./configRaw":5}],7:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.en = {
     "sample": "Hello!"
 };
 
 },{}],8:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
 var utils_2 = require("../utils/utils");
 var en_1 = require("./en");
@@ -2312,6 +2342,7 @@ setup();
 
 },{"../utils/utils":20,"./en":7,"./ja":9,"./utils":10,"sprintf-js":undefined}],9:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.ja = {
     "sample": "こんちゃーす！",
     "description": {
@@ -2397,6 +2428,7 @@ exports.ja = {
 
 },{}],10:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 function deepAssign(target) {
     "use strict";
     var args = [];
@@ -2422,6 +2454,7 @@ exports.deepAssign = deepAssign;
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
+Object.defineProperty(exports, "__esModule", { value: true });
 var compilerModel_1 = require("./model/compilerModel");
 exports.Book = compilerModel_1.Book;
 exports.ContentChunk = compilerModel_1.ContentChunk;
@@ -2461,18 +2494,24 @@ exports.start = start;
 
 },{"./builder/builder":1,"./builder/htmlBuilder":2,"./builder/textBuilder":3,"./controller/controller":6,"./model/compilerModel":13,"./parser/analyzer":14,"./parser/parser":15,"./parser/validator":17}],12:[function(require,module,exports){
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var DummyError = (function () {
+Object.defineProperty(exports, "__esModule", { value: true });
+var DummyError = /** @class */ (function () {
     function DummyError(message) {
         this.message = message;
     }
@@ -2486,15 +2525,16 @@ function replace(src) {
     "use strict";
     return function (_) { return src; };
 }
-var AnalyzerError = (function (_super) {
+var AnalyzerError = /** @class */ (function (_super) {
     __extends(AnalyzerError, _super);
     function AnalyzerError(message) {
-        _super.call(this, message);
-        this.name = "AnalyzerError";
-        this.message = message;
+        var _this = _super.call(this, message) || this;
+        _this.name = "AnalyzerError";
+        _this.message = message;
         if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, AnalyzerError);
+            Error.captureStackTrace(_this, AnalyzerError);
         }
+        return _this;
     }
     return AnalyzerError;
 }(DummyError));
@@ -2503,21 +2543,22 @@ exports.AnalyzerError = AnalyzerError;
 },{}],13:[function(require,module,exports){
 // parser/ と builder/ で共用するモデル
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var i18n_1 = require("../i18n/i18n");
 var walker_1 = require("../parser/walker");
 /**
  * 処理時に発生したレポートのレベル。
  */
+var ReportLevel;
 (function (ReportLevel) {
     ReportLevel[ReportLevel["Info"] = 0] = "Info";
     ReportLevel[ReportLevel["Warning"] = 1] = "Warning";
     ReportLevel[ReportLevel["Error"] = 2] = "Error";
-})(exports.ReportLevel || (exports.ReportLevel = {}));
-var ReportLevel = exports.ReportLevel;
+})(ReportLevel = exports.ReportLevel || (exports.ReportLevel = {}));
 /**
  * 処理時に発生したレポート。
  */
-var ProcessReport = (function () {
+var ProcessReport = /** @class */ (function () {
     function ProcessReport(level, part, chapter, message, nodes) {
         if (nodes === void 0) { nodes = []; }
         this.level = level;
@@ -2532,7 +2573,7 @@ exports.ProcessReport = ProcessReport;
 /**
  * コンパイル処理時の出力ハンドリング。
  */
-var BookProcess = (function () {
+var BookProcess = /** @class */ (function () {
     function BookProcess() {
         this.reports = [];
     }
@@ -2551,7 +2592,7 @@ exports.BookProcess = BookProcess;
 /**
  * コンパイル処理時の出力ハンドリング。
  */
-var Process = (function () {
+var Process = /** @class */ (function () {
     function Process(part, chapter, input) {
         this.part = part;
         this.chapter = chapter;
@@ -2678,7 +2719,7 @@ var Process = (function () {
     return Process;
 }());
 exports.Process = Process;
-var BuilderProcess = (function () {
+var BuilderProcess = /** @class */ (function () {
     function BuilderProcess(builder, base) {
         this.builder = builder;
         this.base = base;
@@ -2826,7 +2867,7 @@ exports.BuilderProcess = BuilderProcess;
 /**
  * 本全体を表す。
  */
-var Book = (function () {
+var Book = /** @class */ (function () {
     function Book(config) {
         this.config = config;
         this.process = new BookProcess();
@@ -2885,7 +2926,7 @@ var Book = (function () {
     return Book;
 }());
 exports.Book = Book;
-var ContentChunk = (function () {
+var ContentChunk = /** @class */ (function () {
     function ContentChunk(book, parent, name) {
         this.book = book;
         this.nodes = [];
@@ -2938,6 +2979,7 @@ exports.ContentChunk = ContentChunk;
 
 },{"../i18n/i18n":8,"../parser/walker":18}],14:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var i18n_1 = require("../i18n/i18n");
 var exception_1 = require("../js/exception");
 var parser_1 = require("../parser/parser");
@@ -2945,17 +2987,17 @@ var utils_1 = require("../utils/utils");
 /**
  * 構文のタイプ。
  */
+var SyntaxType;
 (function (SyntaxType) {
     SyntaxType[SyntaxType["Block"] = 0] = "Block";
     SyntaxType[SyntaxType["Inline"] = 1] = "Inline";
     SyntaxType[SyntaxType["Other"] = 2] = "Other";
-})(exports.SyntaxType || (exports.SyntaxType = {}));
-var SyntaxType = exports.SyntaxType;
+})(SyntaxType = exports.SyntaxType || (exports.SyntaxType = {}));
 /**
  * ReVIEW文書として受理可能な要素群。
  * JSON.stringify でJSON化した時、エディタ上での入力補完に活用できるデータが得られる。
  */
-var AcceptableSyntaxes = (function () {
+var AcceptableSyntaxes = /** @class */ (function () {
     function AcceptableSyntaxes(acceptableSyntaxes) {
         this.acceptableSyntaxes = acceptableSyntaxes;
     }
@@ -3015,7 +3057,7 @@ exports.AcceptableSyntaxes = AcceptableSyntaxes;
 /**
  * ReVIEW文書として受理可能な要素。
  */
-var AcceptableSyntax = (function () {
+var AcceptableSyntax = /** @class */ (function () {
     function AcceptableSyntax() {
         this.argsLength = [];
         this.allowInline = true;
@@ -3033,7 +3075,7 @@ var AcceptableSyntax = (function () {
     return AcceptableSyntax;
 }());
 exports.AcceptableSyntax = AcceptableSyntax;
-var AnalyzeProcess = (function () {
+var AnalyzeProcess = /** @class */ (function () {
     function AnalyzeProcess() {
         this.acceptableSyntaxes = [];
     }
@@ -3090,7 +3132,7 @@ var AnalyzeProcess = (function () {
     AnalyzeProcess.prototype.checkArgsLength = function () {
         var argsLength = [];
         for (var _i = 0; _i < arguments.length; _i++) {
-            argsLength[_i - 0] = arguments[_i];
+            argsLength[_i] = arguments[_i];
         }
         this.current.argsLength = argsLength;
     };
@@ -3105,7 +3147,7 @@ var AnalyzeProcess = (function () {
     };
     return AnalyzeProcess;
 }());
-var DefaultAnalyzer = (function () {
+var DefaultAnalyzer = /** @class */ (function () {
     function DefaultAnalyzer() {
     }
     DefaultAnalyzer.prototype.getAcceptableSyntaxes = function () {
@@ -3661,11 +3703,17 @@ exports.DefaultAnalyzer = DefaultAnalyzer;
  * 構文解析用途のモジュール。
  */
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var PEG = require("../../resources/grammar");
 var walker_1 = require("./walker");
 /**
@@ -3871,7 +3919,7 @@ function reconstruct(node, pickLevel) {
 /**
  * 構文解析時に発生したエラー。
  */
-var ParseError = (function () {
+var ParseError = /** @class */ (function () {
     function ParseError(syntax, message) {
         this.syntax = syntax;
         this.message = message;
@@ -3886,6 +3934,7 @@ exports.ParseError = ParseError;
 /**
  * 構文解析時のルール名。
  */
+var RuleName;
 (function (RuleName) {
     RuleName[RuleName["SyntaxError"] = 0] = "SyntaxError";
     RuleName[RuleName["Start"] = 1] = "Start";
@@ -3933,12 +3982,11 @@ exports.ParseError = ParseError;
     RuleName[RuleName["ColumnTerminator"] = 43] = "ColumnTerminator";
     RuleName[RuleName["SinglelineComments"] = 44] = "SinglelineComments";
     RuleName[RuleName["SinglelineComment"] = 45] = "SinglelineComment";
-})(exports.RuleName || (exports.RuleName = {}));
-var RuleName = exports.RuleName;
+})(RuleName = exports.RuleName || (exports.RuleName = {}));
 /**
  * 構文解析後の少し加工したデータ。
  */
-var SyntaxTree = (function () {
+var SyntaxTree = /** @class */ (function () {
     function SyntaxTree(data) {
         this.ruleName = RuleName[data.syntax];
         if (typeof this.ruleName === "undefined") {
@@ -3967,6 +4015,7 @@ var SyntaxTree = (function () {
                 result[k] = RuleName[this.ruleName];
             }
             else if (k === "prev" || k === "next" || k === "parentNode") {
+                // 無視する
             }
             else if (k === "childNodes") {
                 // childNodesが先に来ると見づらいので
@@ -3977,6 +4026,7 @@ var SyntaxTree = (function () {
                 })(k));
             }
             else if (k === "fqn") {
+                // TODO あとでちゃんと出るようにする
             }
             else if (typeof this[k] !== "function") {
                 result[k] = this[k];
@@ -4183,12 +4233,13 @@ var SyntaxTree = (function () {
     return SyntaxTree;
 }());
 exports.SyntaxTree = SyntaxTree;
-var NodeSyntaxTree = (function (_super) {
+var NodeSyntaxTree = /** @class */ (function (_super) {
     __extends(NodeSyntaxTree, _super);
     function NodeSyntaxTree(data) {
-        _super.call(this, data);
-        this.childNodes = [];
-        this.processChildNodes(data.content);
+        var _this = _super.call(this, data) || this;
+        _this.childNodes = [];
+        _this.processChildNodes(data.content);
+        return _this;
     }
     NodeSyntaxTree.prototype.processChildNodes = function (content) {
         var _this = this;
@@ -4209,6 +4260,7 @@ var NodeSyntaxTree = (function (_super) {
             })(content);
         }
     };
+    // @ts-ignore: error TS6133: 'result' is declared but its value is never read.
     NodeSyntaxTree.prototype.toStringHook = function (indentLevel, result) {
         if (this.childNodes.length !== 0) {
             result += this.makeIndent(indentLevel + 1) + "childNodes[" + this.childNodes.length + "]=[\n";
@@ -4223,28 +4275,29 @@ var NodeSyntaxTree = (function (_super) {
 }(SyntaxTree));
 exports.NodeSyntaxTree = NodeSyntaxTree;
 // TODO SyntaxTree と指定されている所についてもっと細かく書けるはず…
-var ChapterSyntaxTree = (function (_super) {
+var ChapterSyntaxTree = /** @class */ (function (_super) {
     __extends(ChapterSyntaxTree, _super);
     function ChapterSyntaxTree(data) {
-        _super.call(this, data);
+        var _this = _super.call(this, data) || this;
         if (data.comments && data.comments.content) {
-            this.comments = this.checkArray(data.comments.content).map(function (data) {
+            _this.comments = _this.checkArray(data.comments.content).map(function (data) {
                 return transform(data).toSingleLineCommentNode();
             });
         }
         else {
-            this.comments = [];
+            _this.comments = [];
         }
-        this.headline = transform(this.checkObject(data.headline)).toHeadline();
+        _this.headline = transform(_this.checkObject(data.headline)).toHeadline();
         if (typeof data.text === "string" || data.text === null) {
-            this.text = [];
-            return;
+            _this.text = [];
+            return _this;
         }
-        this.text = this.checkArray(data.text.content).map(function (data) {
+        _this.text = _this.checkArray(data.text.content).map(function (data) {
             return transform(data);
         });
-        delete this.childNodes; // JSON化した時の属性順制御のため…
-        this.childNodes = [];
+        delete _this.childNodes; // JSON化した時の属性順制御のため…
+        _this.childNodes = [];
+        return _this;
     }
     Object.defineProperty(ChapterSyntaxTree.prototype, "level", {
         get: function () {
@@ -4273,54 +4326,58 @@ var ChapterSyntaxTree = (function (_super) {
     return ChapterSyntaxTree;
 }(NodeSyntaxTree));
 exports.ChapterSyntaxTree = ChapterSyntaxTree;
-var HeadlineSyntaxTree = (function (_super) {
+var HeadlineSyntaxTree = /** @class */ (function (_super) {
     __extends(HeadlineSyntaxTree, _super);
     function HeadlineSyntaxTree(data) {
-        _super.call(this, data);
-        this.level = this.checkNumber(data.level);
+        var _this = _super.call(this, data) || this;
+        _this.level = _this.checkNumber(data.level);
         if (data.label) {
-            this.label = transform(this.checkObject(data.label)).toArgument();
+            _this.label = transform(_this.checkObject(data.label)).toArgument();
         }
-        this.caption = transform(this.checkObject(data.caption)).toNode();
+        _this.caption = transform(_this.checkObject(data.caption)).toNode();
+        return _this;
     }
     return HeadlineSyntaxTree;
 }(SyntaxTree));
 exports.HeadlineSyntaxTree = HeadlineSyntaxTree;
-var BlockElementSyntaxTree = (function (_super) {
+var BlockElementSyntaxTree = /** @class */ (function (_super) {
     __extends(BlockElementSyntaxTree, _super);
     function BlockElementSyntaxTree(data) {
-        _super.call(this, data);
-        this.symbol = this.checkString(data.symbol);
-        this.args = this.checkArray(data.args).map(function (data) {
+        var _this = _super.call(this, data) || this;
+        _this.symbol = _this.checkString(data.symbol);
+        _this.args = _this.checkArray(data.args).map(function (data) {
             return transform(data).toNode();
         });
+        return _this;
     }
     return BlockElementSyntaxTree;
 }(NodeSyntaxTree));
 exports.BlockElementSyntaxTree = BlockElementSyntaxTree;
-var InlineElementSyntaxTree = (function (_super) {
+var InlineElementSyntaxTree = /** @class */ (function (_super) {
     __extends(InlineElementSyntaxTree, _super);
     function InlineElementSyntaxTree(data) {
-        _super.call(this, data);
-        this.symbol = this.checkString(data.symbol);
+        var _this = _super.call(this, data) || this;
+        _this.symbol = _this.checkString(data.symbol);
+        return _this;
     }
     return InlineElementSyntaxTree;
 }(NodeSyntaxTree));
 exports.InlineElementSyntaxTree = InlineElementSyntaxTree;
-var ColumnSyntaxTree = (function (_super) {
+var ColumnSyntaxTree = /** @class */ (function (_super) {
     __extends(ColumnSyntaxTree, _super);
     function ColumnSyntaxTree(data) {
-        _super.call(this, data);
-        this.headline = transform(this.checkObject(data.headline)).toColumnHeadline();
+        var _this = _super.call(this, data) || this;
+        _this.headline = transform(_this.checkObject(data.headline)).toColumnHeadline();
         if (typeof data.text === "string" || data.text === null) {
-            this.text = [];
-            return;
+            _this.text = [];
+            return _this;
         }
-        this.text = this.checkArray(data.text.content).map(function (data) {
+        _this.text = _this.checkArray(data.text.content).map(function (data) {
             return transform(data);
         });
-        delete this.childNodes; // JSON化した時の属性順制御のため…
-        this.childNodes = [];
+        delete _this.childNodes; // JSON化した時の属性順制御のため…
+        _this.childNodes = [];
+        return _this;
     }
     Object.defineProperty(ColumnSyntaxTree.prototype, "level", {
         get: function () {
@@ -4349,71 +4406,78 @@ var ColumnSyntaxTree = (function (_super) {
     return ColumnSyntaxTree;
 }(NodeSyntaxTree));
 exports.ColumnSyntaxTree = ColumnSyntaxTree;
-var ColumnHeadlineSyntaxTree = (function (_super) {
+var ColumnHeadlineSyntaxTree = /** @class */ (function (_super) {
     __extends(ColumnHeadlineSyntaxTree, _super);
     function ColumnHeadlineSyntaxTree(data) {
-        _super.call(this, data);
-        this.level = this.checkNumber(data.level);
-        this.caption = transform(this.checkObject(data.caption)).toNode();
+        var _this = _super.call(this, data) || this;
+        _this.level = _this.checkNumber(data.level);
+        _this.caption = transform(_this.checkObject(data.caption)).toNode();
+        return _this;
     }
     return ColumnHeadlineSyntaxTree;
 }(SyntaxTree));
 exports.ColumnHeadlineSyntaxTree = ColumnHeadlineSyntaxTree;
-var ArgumentSyntaxTree = (function (_super) {
+var ArgumentSyntaxTree = /** @class */ (function (_super) {
     __extends(ArgumentSyntaxTree, _super);
     function ArgumentSyntaxTree(data) {
-        _super.call(this, data);
-        this.arg = this.checkString(data.arg);
+        var _this = _super.call(this, data) || this;
+        _this.arg = _this.checkString(data.arg);
+        return _this;
     }
     return ArgumentSyntaxTree;
 }(SyntaxTree));
 exports.ArgumentSyntaxTree = ArgumentSyntaxTree;
-var UlistElementSyntaxTree = (function (_super) {
+var UlistElementSyntaxTree = /** @class */ (function (_super) {
     __extends(UlistElementSyntaxTree, _super);
     function UlistElementSyntaxTree(data) {
-        _super.call(this, data);
-        this.level = this.checkNumber(data.level);
-        this.text = transform(this.checkObject(data.text));
-        delete this.childNodes; // JSON化した時の属性順制御のため…
-        this.childNodes = [];
+        var _this = _super.call(this, data) || this;
+        _this.level = _this.checkNumber(data.level);
+        _this.text = transform(_this.checkObject(data.text));
+        delete _this.childNodes; // JSON化した時の属性順制御のため…
+        _this.childNodes = [];
+        return _this;
     }
     return UlistElementSyntaxTree;
 }(NodeSyntaxTree));
 exports.UlistElementSyntaxTree = UlistElementSyntaxTree;
-var OlistElementSyntaxTree = (function (_super) {
+var OlistElementSyntaxTree = /** @class */ (function (_super) {
     __extends(OlistElementSyntaxTree, _super);
     function OlistElementSyntaxTree(data) {
-        _super.call(this, data);
-        this.no = this.checkNumber(data.no);
-        this.text = transform(this.checkObject(data.text));
+        var _this = _super.call(this, data) || this;
+        _this.no = _this.checkNumber(data.no);
+        _this.text = transform(_this.checkObject(data.text));
+        return _this;
     }
     return OlistElementSyntaxTree;
 }(SyntaxTree));
 exports.OlistElementSyntaxTree = OlistElementSyntaxTree;
-var DlistElementSyntaxTree = (function (_super) {
+var DlistElementSyntaxTree = /** @class */ (function (_super) {
     __extends(DlistElementSyntaxTree, _super);
     function DlistElementSyntaxTree(data) {
-        _super.call(this, data);
-        this.text = transform(this.checkObject(data.text));
-        this.content = transform(this.checkObject(data.content));
+        var _this = _super.call(this, data) || this;
+        _this.text = transform(_this.checkObject(data.text));
+        _this.content = transform(_this.checkObject(data.content));
+        return _this;
     }
     return DlistElementSyntaxTree;
 }(SyntaxTree));
 exports.DlistElementSyntaxTree = DlistElementSyntaxTree;
-var TextNodeSyntaxTree = (function (_super) {
+var TextNodeSyntaxTree = /** @class */ (function (_super) {
     __extends(TextNodeSyntaxTree, _super);
     function TextNodeSyntaxTree(data) {
-        _super.call(this, data);
-        this.text = this.checkString(data.text).replace(/\n+$/, "");
+        var _this = _super.call(this, data) || this;
+        _this.text = _this.checkString(data.text).replace(/\n+$/, "");
+        return _this;
     }
     return TextNodeSyntaxTree;
 }(SyntaxTree));
 exports.TextNodeSyntaxTree = TextNodeSyntaxTree;
-var SingleLineCommentSyntaxTree = (function (_super) {
+var SingleLineCommentSyntaxTree = /** @class */ (function (_super) {
     __extends(SingleLineCommentSyntaxTree, _super);
     function SingleLineCommentSyntaxTree(data) {
-        _super.call(this, data);
-        this.text = this.checkString(data.text).replace(/^#@/, "").replace(/\n+$/, "");
+        var _this = _super.call(this, data) || this;
+        _this.text = _this.checkString(data.text).replace(/^#@/, "").replace(/\n+$/, "");
+        return _this;
     }
     return SingleLineCommentSyntaxTree;
 }(SyntaxTree));
@@ -4421,6 +4485,7 @@ exports.SingleLineCommentSyntaxTree = SingleLineCommentSyntaxTree;
 
 },{"../../resources/grammar":21,"./walker":18}],16:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var parser_1 = require("./parser");
 var walker_1 = require("./walker");
 var utils_1 = require("../utils/utils");
@@ -4432,7 +4497,7 @@ var utils_1 = require("../utils/utils");
  * 3. 全てを許可する(なにもしない
  * AcceptableSyntaxes にしたがって処理する。
  */
-var SyntaxPreprocessor = (function () {
+var SyntaxPreprocessor = /** @class */ (function () {
     function SyntaxPreprocessor() {
     }
     SyntaxPreprocessor.prototype.start = function (book) {
@@ -4662,11 +4727,12 @@ exports.SyntaxPreprocessor = SyntaxPreprocessor;
 
 },{"../utils/utils":20,"./parser":15,"./walker":18}],17:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var i18n_1 = require("../i18n/i18n");
 var analyzer_1 = require("./analyzer");
 var walker_1 = require("./walker");
 var utils_1 = require("../utils/utils");
-var DefaultValidator = (function () {
+var DefaultValidator = /** @class */ (function () {
     function DefaultValidator() {
     }
     DefaultValidator.prototype.start = function (book, acceptableSyntaxes, builders) {
@@ -4871,6 +4937,7 @@ exports.DefaultValidator = DefaultValidator;
 
 },{"../i18n/i18n":8,"../utils/utils":20,"./analyzer":14,"./walker":18}],18:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var parser_1 = require("./parser");
 /**
  * 指定された構文木を歩きまわる。
@@ -5289,7 +5356,7 @@ function _visitSub(poolGenerator, parent, ast, v) {
 /**
  * 同期化処理をそのまま同期処理として扱うためのヘルパクラス。
  */
-var SyncTaskPool = (function () {
+var SyncTaskPool = /** @class */ (function () {
     function SyncTaskPool() {
         this.tasks = [];
     }
@@ -5316,7 +5383,7 @@ var SyncTaskPool = (function () {
  * array.forEach(value => pool.add(()=> process(value));
  * pool.consume().then(()=> ...);
  */
-var AsyncTaskPool = (function () {
+var AsyncTaskPool = /** @class */ (function () {
     function AsyncTaskPool() {
         this.tasks = [];
     }
@@ -5358,6 +5425,7 @@ var AsyncTaskPool = (function () {
 
 },{"./parser":15}],19:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var parser_1 = require("../parser/parser");
 var env;
 function checkRuleName(ruleName) {
@@ -5525,6 +5593,7 @@ exports.dlistElement = dlistElement;
 
 },{"../parser/parser":15}],20:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var compilerModel_1 = require("../model/compilerModel");
 var parser_1 = require("../parser/parser");
 var textBuilder_1 = require("../builder/textBuilder");
@@ -5845,15 +5914,12 @@ var Exec;
         });
         config.listener.onCompileFailed = config.listener.onCompileFailed || (function () {
         });
-        var success;
         var originalCompileSuccess = config.listener.onCompileSuccess;
         config.listener.onCompileSuccess = function (book) {
-            success = true;
             originalCompileSuccess(book);
         };
         var originalCompileFailed = config.listener.onCompileFailed;
         config.listener.onCompileFailed = function (book) {
-            success = false;
             originalCompileFailed(book);
         };
         return index_1.start(function (review) {

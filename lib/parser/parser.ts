@@ -634,6 +634,7 @@ export class NodeSyntaxTree extends SyntaxTree {
         }
     }
 
+    // @ts-ignore: error TS6133: 'result' is declared but its value is never read.
     toStringHook(indentLevel: number, result: string) {
         if (this.childNodes.length !== 0) {
             result += this.makeIndent(indentLevel + 1) + "childNodes[" + this.childNodes.length + "]=[\n";

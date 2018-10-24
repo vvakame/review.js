@@ -354,15 +354,12 @@ export module Exec {
         });
         config.listener.onCompileFailed = config.listener.onCompileFailed || (() => {
         });
-        let success: boolean;
         let originalCompileSuccess = config.listener.onCompileSuccess;
         config.listener.onCompileSuccess = (book) => {
-            success = true;
             originalCompileSuccess(book);
         };
         let originalCompileFailed = config.listener.onCompileFailed;
         config.listener.onCompileFailed = (book) => {
-            success = false;
             originalCompileFailed(book);
         };
 
