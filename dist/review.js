@@ -1002,6 +1002,18 @@ var HtmlBuilder = /** @class */ (function (_super) {
         process.out("第").out(chapter.no).out("章「").out(title).out("」");
         return false;
     };
+    HtmlBuilder.prototype.block_flushright_pre = function (process, node) {
+        process.outRaw("<p class=\"flushright\">");
+        return function (v) {
+            // name, args はパスしたい
+            node.childNodes.forEach(function (node) {
+                walker_1.visit(node, v);
+            });
+        };
+    };
+    HtmlBuilder.prototype.block_flushright_post = function (process, _node) {
+        process.outRaw("</p>\n");
+    };
     return HtmlBuilder;
 }(builder_1.DefaultBuilder));
 exports.HtmlBuilder = HtmlBuilder;
@@ -1586,6 +1598,17 @@ var TextBuilder = /** @class */ (function (_super) {
         var title = this.getChapterTitle(process, chapter);
         process.out("第").out(chapter.no).out("章「").out(title).out("」");
         return false;
+    };
+    TextBuilder.prototype.block_flushright_pre = function (process, node) {
+        process.out("◆→開始:右寄せ←◆\n");
+        return function (v) {
+            node.childNodes.forEach(function (node) {
+                walker_1.visit(node, v);
+            });
+        };
+    };
+    TextBuilder.prototype.block_flushright_post = function (process, _node) {
+        process.out("\n◆→終了:右寄せ←◆\n");
     };
     return TextBuilder;
 }(builder_1.DefaultBuilder));
@@ -2403,6 +2426,7 @@ exports.ja = {
         "inline_chap": "章番号を示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<chap>{sample} と書きます。",
         "inline_title": "章タイトルを示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<title>{sample} と書きます。",
         "inline_chapref": "章番号+章タイトルを示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<chapref>{sample} と書きます。",
+        "block_flushright": "右寄せを示します。\n//flushright{\n神は言っている…ここで左へ行く定めではないと…\n//}\nという形式で書きます。",
         // TODO 以下は今後書き直す
         "block_table": "テーブルを示します。\nTODO 正しく実装した後に書く",
         "inline_table": "テーブルへの参照を示します。\nTODO 正しく実装した後に書く",
@@ -3705,6 +3729,9 @@ var DefaultAnalyzer = /** @class */ (function () {
                 node: node
             });
         });
+    };
+    DefaultAnalyzer.prototype.block_flushright = function (builder) {
+        this.blockDecorationSyntax(builder, "flushright", 0);
     };
     return DefaultAnalyzer;
 }());
