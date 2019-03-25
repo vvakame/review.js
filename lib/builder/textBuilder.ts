@@ -654,4 +654,18 @@ export class TextBuilder extends DefaultBuilder {
         process.out("第").out(chapter.no).out("章「").out(title).out("」");
         return false;
     }
+
+    block_flushright_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        process.out("◆→開始:右寄せ←◆\n");
+
+        return (v: TreeVisitor) => {
+            node.childNodes.forEach((node) => {
+                visit(node, v);
+            });
+        };
+    }
+
+    block_flushright_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
+        process.out("\n◆→終了:右寄せ←◆\n");
+    }
 }
