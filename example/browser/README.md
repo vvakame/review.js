@@ -1,5 +1,7 @@
 # ReVIEW.js をブラウザ上で動かすサンプル
 
+DEPRECATED: bowerを使った手法が現在メンテされていません。
+
 以下のコマンドを実行する。
 $ bower install
 

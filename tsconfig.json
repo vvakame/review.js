@@ -39,7 +39,6 @@
         "./test/**/*.d.ts",
         "./example/",
         "./pages/",
-        "./bower_components/",
         "./node_modules/"
     ]
 }

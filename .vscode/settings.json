@@ -3,12 +3,6 @@
 	"typescript.tsdk": "./node_modules/typescript/lib",
 	"files.exclude": {
 		"**/.git": true,
-		"**/.DS_Store": true,
-		"lib/**/*.js": true,
-		"lib/**/*.js.map": true,
-		"lib/**/*.d.ts": true,
-		"test/**/*.js": true,
-		"test/**/*.js.map": true,
-		"test/**/*.d.ts": true
+		"**/.DS_Store": true
 	}
 }

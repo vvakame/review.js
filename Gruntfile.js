@@ -3,7 +3,6 @@ module.exports = function (grunt) {
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
-		bwr: grunt.file.readJSON('bower.json'),
 		// Java用プロジェクト構成向け設定
 		opt: {
 			client: {
@@ -30,64 +29,6 @@ module.exports = function (grunt) {
 					'<%= opt.client.tsTest %>/**/*.ts',
 					'!<%= opt.client.tsMain %>/**/*.d.ts'
 				]
-			}
-		},
-		typedoc: {
-			main: {
-				options: {
-					module: "commonjs",
-					out: './docs',
-					name: '<%= pkg.name %>',
-					target: "es5",
-					experimentalDecorators: ""
-				},
-				src: [
-					"./**/*.ts",
-					"./**/*.tsx",
-					"!./**/*.d.ts",
-					"!./lib/cli.ts",
-					"./lib/typings/**/*.d.ts",
-					"./typings/**/*.d.ts",
-					"!./test/**/*.ts",
-					"!./example/**/*.ts",
-					"!./pages/**/*.ts",
-					"!./bower_components/**/*.ts",
-					"!./node_modules/**/*",
-					"./node_modules/typescript/lib/lib.es6.d.ts"
-				]
-			},
-			travisCI: {
-				options: {
-					module: "commonjs",
-					out: './pages/docs',
-					name: '<%= pkg.name %>',
-					target: "es5",
-					experimentalDecorators: ""
-				},
-				src: [
-					"./**/*.ts",
-					"./**/*.tsx",
-					"!./**/*.d.ts",
-					"!./lib/cli.ts",
-					"./lib/typings/**/*.d.ts",
-					"./typings/**/*.d.ts",
-					"!./test/**/*.ts",
-					"!./example/**/*.ts",
-					"!./pages/**/*.ts",
-					"!./bower_components/**/*.ts",
-					"!./node_modules/**/*",
-					"./node_modules/typescript/lib/lib.es6.d.ts"
-				]
-			}
-		},
-		bower: {
-			install: {
-				options: {
-					install: true,
-					copy: false,
-					verbose: true, // ログの詳細を出すかどうか
-					cleanBowerDir: false
-				}
 			}
 		},
 		browserify: {
@@ -150,15 +91,6 @@ module.exports = function (grunt) {
 					// peg.js
 					'<%= opt.client.peg %>/grammar.js'
 				]
-			},
-			bower: {
-				src: [
-					// bower installed
-					"bower_componenets",
-					'<%= opt.client.jsMainOut %>/libs',
-					'<%= opt.client.jsTestOut %>/libs/*.js',
-					'<%= opt.client.tsTest %>/libs/*.css'
-				]
 			}
 		},
 		mochaTest: {
@@ -201,7 +133,7 @@ module.exports = function (grunt) {
 
 	grunt.registerTask(
 		'setup',
-		['clean', 'bower']);
+		['clean']);
 
 	grunt.registerTask(
 		'default',
