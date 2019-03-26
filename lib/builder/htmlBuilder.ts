@@ -806,4 +806,18 @@ export class HtmlBuilder extends DefaultBuilder {
         process.out("第").out(chapter.no).out("章「").out(title).out("」");
         return false;
     }
+
+    block_flushright_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        process.outRaw("<p class=\"flushright\">");
+        return (v: TreeVisitor) => {
+            // name, args はパスしたい
+            node.childNodes.forEach((node) => {
+                visit(node, v);
+            });
+        };
+    }
+
+    block_flushright_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
+        process.outRaw("</p>\n");
+    }
 }

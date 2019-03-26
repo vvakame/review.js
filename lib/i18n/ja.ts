@@ -51,6 +51,7 @@ export let ja: any = {
         "inline_chap": "章番号を示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<chap>{sample} と書きます。",
         "inline_title": "章タイトルを示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<title>{sample} と書きます。",
         "inline_chapref": "章番号+章タイトルを示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<chapref>{sample} と書きます。",
+        "block_flushright": "右寄せを示します。\n//flushright{\n神は言っている…ここで左へ行く定めではないと…\n//}\nという形式で書きます。",
 
         // TODO 以下は今後書き直す
         "block_table": "テーブルを示します。\nTODO 正しく実装した後に書く",

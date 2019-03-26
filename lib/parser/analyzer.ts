@@ -794,6 +794,10 @@ export class DefaultAnalyzer implements Analyzer {
         });
     }
 
+    block_flushright(builder: AcceptableSyntaxBuilder) {
+        this.blockDecorationSyntax(builder, "flushright", 0);
+    }
+
     // TODO 以下のものの実装をすすめる
     // ↑実装が簡単
     // block_texequation // latexの式のやつなので…

@@ -1,0 +1,137 @@
+{
+  "ruleName": "Start",
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 6,
+      "column": 1,
+      "offset": 44
+    }
+  },
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 1,
+          "offset": 44
+        }
+      },
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 6,
+              "column": 1,
+              "offset": 44
+            }
+          },
+          "comments": [],
+          "headline": {
+            "ruleName": "Headline",
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 18
+              }
+            },
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 17,
+                  "offset": 16
+                }
+              },
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 17,
+                      "offset": 16
+                    }
+                  },
+                  "text": "flushrightのテスト"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "BlockElement",
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 18
+                },
+                "end": {
+                  "line": 6,
+                  "column": 1,
+                  "offset": 44
+                }
+              },
+              "symbol": "flushright",
+              "args": [],
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "location": {
+                    "start": {
+                      "line": 4,
+                      "column": 1,
+                      "offset": 32
+                    },
+                    "end": {
+                      "offset": 17
+                    }
+                  },
+                  "text": "右へ参ります。"
+                }
+              ]
+            }
+          ],
+          "no": 1,
+          "level": 1,
+          "childNodes": []
+        }
+      ]
+    }
+  ]
+}
