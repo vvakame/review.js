@@ -3,28 +3,12 @@ language: node_js
 sudo: false
 
 node_js:
-  - v4
+  - v10
 
 before_install:
   - ./setup.sh
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-
-before_script:
-  # for gh-pages
-  - git clone --quiet https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git pages
-  - cd pages
-  - git checkout -b gh-pages origin/gh-pages
-  - cd ..
-
-after_success:
-  # for gh-pages
-  - grunt typedoc:travisCI
-  - cd pages
-  - ./setup.sh
-  - git add .
-  - git commit -m "generate typedoc build ${TRAVIS_BUILD_NUMBER} commit:${TRAVIS_COMMIT}"
-  - '[ "$TRAVIS_BRANCH" = "master" ] && [ $GH_TOKEN ] && git push --quiet https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages'
 
 notifications:
   email: false

@@ -6,9 +6,6 @@ npm-debug.log
 reviewjs-*.tgz
 
 # for grunt
-bower_components/
-bower-task/
-.tscache/
 docs/
 lib/**/*.js
 lib/**/*.js.map

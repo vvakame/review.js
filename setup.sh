@@ -1,7 +1,7 @@
 #!/bin/sh
 ISERROR=0
 
-rm -rf node_modules bower-task bower_components && \
+rm -rf node_modules && \
 npm install && \
-grunt setup && \
+npx grunt setup && \
 echo "OK!"

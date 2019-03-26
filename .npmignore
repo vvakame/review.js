@@ -8,11 +8,6 @@
 node_modules/
 reviewjs-*.tgz
 
-# for grunt
-bower_components/
-bower-task/
-.tscache/
-
 # for https://github.com/Microsoft/TypeScript/issues/4667
 lib/**/*.ts
 !lib/**/*.d.ts
