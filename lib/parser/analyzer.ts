@@ -798,6 +798,34 @@ export class DefaultAnalyzer implements Analyzer {
         this.blockDecorationSyntax(builder, "flushright", 0);
     }
 
+    block_memo(builder: AcceptableSyntaxBuilder) {
+        this.blockDecorationSyntax(builder, "memo", 0);
+    }
+
+    block_tips(builder: AcceptableSyntaxBuilder) {
+        this.blockDecorationSyntax(builder, "tips", 0);
+    }
+
+    block_info(builder: AcceptableSyntaxBuilder) {
+        this.blockDecorationSyntax(builder, "info", 0);
+    }
+
+    block_warning(builder: AcceptableSyntaxBuilder) {
+        this.blockDecorationSyntax(builder, "warning", 0);
+    }
+
+    block_important(builder: AcceptableSyntaxBuilder) {
+        this.blockDecorationSyntax(builder, "important", 0);
+    }
+
+    block_caution(builder: AcceptableSyntaxBuilder) {
+        this.blockDecorationSyntax(builder, "caution", 0);
+    }
+
+    block_notice(builder: AcceptableSyntaxBuilder) {
+        this.blockDecorationSyntax(builder, "notice", 0);
+    }
+
     // TODO 以下のものの実装をすすめる
     // ↑実装が簡単
     // block_texequation // latexの式のやつなので…

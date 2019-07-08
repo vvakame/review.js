@@ -668,4 +668,72 @@ export class TextBuilder extends DefaultBuilder {
     block_flushright_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
         process.out("\n◆→終了:右寄せ←◆\n");
     }
+
+    block_captionblock_pre(typename: string, process: BuilderProcess, node: BlockElementSyntaxTree) {
+        process.out(`◆→開始:${typename}←◆\n`);
+        if (node.args[0]) {
+            let caption = nodeContentToString(process, node.args[0]);
+            process.out(`■${caption}\n`);
+        }
+    }
+
+    block_captionblock_post(typename: string, process: BuilderProcess, _node: BlockElementSyntaxTree) {
+        process.out(`◆→終了:${typename}←◆\n`);
+    }
+
+    block_info_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_pre("info", process, node);
+    }
+
+    block_info_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_post("info", process, node);
+    }
+
+    block_memo_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_pre("memo", process, node);
+    }
+
+    block_memo_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_post("memo", process, node);
+    }
+
+    block_tips_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_pre("tips", process, node);
+    }
+
+    block_tips_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_post("tips", process, node);
+    }
+
+    block_warning_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_pre("warning", process, node);
+    }
+
+    block_warning_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_post("warning", process, node);
+    }
+
+    block_important_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_pre("important", process, node);
+    }
+
+    block_important_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_post("important", process, node);
+    }
+
+    block_caution_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_pre("caution", process, node);
+    }
+
+    block_caution_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_post("caution", process, node);
+    }
+
+    block_notice_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_pre("notice", process, node);
+    }
+
+    block_notice_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_post("notice", process, node);
+    }
 }
