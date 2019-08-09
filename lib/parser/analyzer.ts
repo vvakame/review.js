@@ -725,6 +725,33 @@ export class DefaultAnalyzer implements Analyzer {
         });
     }
 
+    block_embed(builder: AcceptableSyntaxBuilder) {
+        builder.setSyntaxType(SyntaxType.Block);
+        builder.setSymbol("embed");
+        builder.setDescription(t("description.block_embed"));
+        builder.checkArgsLength(1);
+        builder.processNode((process, n) => {
+            let node = n.toBlockElement();
+            process.addSymbol({
+                symbolName: node.symbol,
+                node: node
+            });
+        });
+    }
+
+    inline_embed(builder: AcceptableSyntaxBuilder) {
+        builder.setSyntaxType(SyntaxType.Inline);
+        builder.setSymbol("embed");
+        builder.setDescription(t("description.inline_embed"));
+        builder.processNode((process, n) => {
+            let node = n.toInlineElement();
+            process.addSymbol({
+                symbolName: node.symbol,
+                node: node
+            });
+        });
+    }
+
     block_comment(builder: AcceptableSyntaxBuilder) {
         builder.setSyntaxType(SyntaxType.Block);
         builder.setSymbol("comment");
@@ -802,8 +829,8 @@ export class DefaultAnalyzer implements Analyzer {
         this.blockDecorationSyntax(builder, "memo", 0);
     }
 
-    block_tips(builder: AcceptableSyntaxBuilder) {
-        this.blockDecorationSyntax(builder, "tips", 0);
+    block_tip(builder: AcceptableSyntaxBuilder) {
+        this.blockDecorationSyntax(builder, "tip", 0);
     }
 
     block_info(builder: AcceptableSyntaxBuilder) {
@@ -824,6 +851,10 @@ export class DefaultAnalyzer implements Analyzer {
 
     block_notice(builder: AcceptableSyntaxBuilder) {
         this.blockDecorationSyntax(builder, "notice", 0);
+    }
+
+    block_note(builder: AcceptableSyntaxBuilder) {
+        this.blockDecorationSyntax(builder, "note", 0);
     }
 
     // TODO 以下のものの実装をすすめる
