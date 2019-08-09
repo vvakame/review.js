@@ -322,6 +322,37 @@ export class DefaultBuilder implements Builder {
         return false;
     }
 
+    block_embed(process: BuilderProcess, node: BlockElementSyntaxTree): any {
+        // TODO Ruby版との出力差が結構あるのでテスト含め直す
+        let content = nodeContentToString(process, node.args[0]);
+        let matches = content.match(/\|(.+)\|/);
+        if (matches && matches[1]) {
+            let target = matches[1].split(",").some(name => this.name.toLowerCase() === `${name}builder`);
+            if (target) {
+                // "|hoge,fuga| piyo" の場合 matches[1] === "hoge,fuga"
+                process.outRaw(content.substring(matches[0].length));
+            }
+        } else {
+            process.outRaw(content);
+        }
+        return false;
+    }
+
+    inline_embed(process: BuilderProcess, node: InlineElementSyntaxTree): any {
+        let content = nodeContentToString(process, node);
+        let matches = content.match(/\|(.+)\|/);
+        if (matches && matches[1]) {
+            let target = matches[1].split(",").some(name => this.name.toLowerCase() === `${name}builder`);
+            if (target) {
+                // "|hoge,fuga| piyo" の場合 matches[1] === "hoge,fuga"
+                process.outRaw(content.substring(matches[0].length));
+            }
+        } else {
+            process.outRaw(content);
+        }
+        return false;
+    }
+
     singleLineComment(_process: BuilderProcess, _node: SingleLineCommentSyntaxTree): any {
         // 特に何もしない
     }
