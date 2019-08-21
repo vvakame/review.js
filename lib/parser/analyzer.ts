@@ -825,6 +825,10 @@ export class DefaultAnalyzer implements Analyzer {
         this.blockDecorationSyntax(builder, "flushright", 0);
     }
 
+    block_note(builder: AcceptableSyntaxBuilder) {
+        this.blockDecorationSyntax(builder, "note", 0);
+    }
+
     block_memo(builder: AcceptableSyntaxBuilder) {
         this.blockDecorationSyntax(builder, "memo", 0);
     }
@@ -851,10 +855,6 @@ export class DefaultAnalyzer implements Analyzer {
 
     block_notice(builder: AcceptableSyntaxBuilder) {
         this.blockDecorationSyntax(builder, "notice", 0);
-    }
-
-    block_note(builder: AcceptableSyntaxBuilder) {
-        this.blockDecorationSyntax(builder, "note", 0);
     }
 
     // TODO 以下のものの実装をすすめる

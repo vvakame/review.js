@@ -833,12 +833,12 @@ export class HtmlBuilder extends DefaultBuilder {
         process.outRaw("</div>\n");
     }
 
-    block_info_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_pre("info", process, node);
+    block_note_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_pre("note", process, node);
     }
 
-    block_info_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_post("info", process, node);
+    block_note_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_post("note", process, node);
     }
 
     block_memo_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
@@ -855,6 +855,14 @@ export class HtmlBuilder extends DefaultBuilder {
 
     block_tip_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
         this.block_captionblock_post("tip", process, node);
+    }
+
+    block_info_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_pre("info", process, node);
+    }
+
+    block_info_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_post("info", process, node);
     }
 
     block_warning_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
@@ -887,13 +895,5 @@ export class HtmlBuilder extends DefaultBuilder {
 
     block_notice_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
         this.block_captionblock_post("notice", process, node);
-    }
-
-    block_note_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_pre("note", process, node);
-    }
-
-    block_note_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_post("note", process, node);
     }
 }
