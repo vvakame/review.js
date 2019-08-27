@@ -8,7 +8,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    rubyzip (1.2.0)
+    rubyzip (1.2.3)
 
 PLATFORMS
   ruby
