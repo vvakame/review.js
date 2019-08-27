@@ -681,12 +681,12 @@ export class TextBuilder extends DefaultBuilder {
         process.out(`◆→終了:${typename}←◆\n`);
     }
 
-    block_info_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_pre("info", process, node);
+    block_note_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_pre("note", process, node);
     }
 
-    block_info_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_post("info", process, node);
+    block_note_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_post("note", process, node);
     }
 
     block_memo_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
@@ -697,12 +697,20 @@ export class TextBuilder extends DefaultBuilder {
         this.block_captionblock_post("memo", process, node);
     }
 
-    block_tips_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_pre("tips", process, node);
+    block_tip_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_pre("tip", process, node);
     }
 
-    block_tips_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_post("tips", process, node);
+    block_tip_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_post("tip", process, node);
+    }
+
+    block_info_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_pre("info", process, node);
+    }
+
+    block_info_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_post("info", process, node);
     }
 
     block_warning_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
