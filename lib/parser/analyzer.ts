@@ -34,12 +34,12 @@ export class AcceptableSyntaxes {
     constructor(public acceptableSyntaxes: AcceptableSyntax[]) {
     }
 
-	/**
-	 * 指定されたノードに当てはまる AcceptableSyntax を探して返す。
-	 * 長さが1じゃないとおかしい。(呼び出し元でチェックする)
-	 * @param node
-	 * @returns {AcceptableSyntax[]}
-	 */
+    /**
+     * 指定されたノードに当てはまる AcceptableSyntax を探して返す。
+     * 長さが1じゃないとおかしい。(呼び出し元でチェックする)
+     * @param node
+     * @returns {AcceptableSyntax[]}
+     */
     find(node: SyntaxTree): AcceptableSyntax[] {
         let results: AcceptableSyntax[];
         if (node instanceof InlineElementSyntaxTree) {
