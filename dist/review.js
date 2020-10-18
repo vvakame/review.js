@@ -3845,26 +3845,31 @@ var DefaultAnalyzer = /** @class */ (function () {
     DefaultAnalyzer.prototype.block_flushright = function (builder) {
         this.blockDecorationSyntax(builder, "flushright", 0);
     };
+    DefaultAnalyzer.prototype.blockBoxedContentSyntax = function (builder, symbol) {
+        this.blockDecorationSyntax(builder, symbol, 0);
+        // 囲み記事は段落もサポート。
+        builder.setAllowFullySyntax(true);
+    };
     DefaultAnalyzer.prototype.block_memo = function (builder) {
-        this.blockDecorationSyntax(builder, "memo", 0);
+        this.blockBoxedContentSyntax(builder, "memo");
     };
     DefaultAnalyzer.prototype.block_tips = function (builder) {
-        this.blockDecorationSyntax(builder, "tips", 0);
+        this.blockBoxedContentSyntax(builder, "tips");
     };
     DefaultAnalyzer.prototype.block_info = function (builder) {
-        this.blockDecorationSyntax(builder, "info", 0);
+        this.blockBoxedContentSyntax(builder, "info");
     };
     DefaultAnalyzer.prototype.block_warning = function (builder) {
-        this.blockDecorationSyntax(builder, "warning", 0);
+        this.blockBoxedContentSyntax(builder, "warning");
     };
     DefaultAnalyzer.prototype.block_important = function (builder) {
-        this.blockDecorationSyntax(builder, "important", 0);
+        this.blockBoxedContentSyntax(builder, "important");
     };
     DefaultAnalyzer.prototype.block_caution = function (builder) {
-        this.blockDecorationSyntax(builder, "caution", 0);
+        this.blockBoxedContentSyntax(builder, "caution");
     };
     DefaultAnalyzer.prototype.block_notice = function (builder) {
-        this.blockDecorationSyntax(builder, "notice", 0);
+        this.blockBoxedContentSyntax(builder, "notice");
     };
     return DefaultAnalyzer;
 }());
