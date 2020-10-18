@@ -1030,17 +1030,23 @@ var HtmlBuilder = /** @class */ (function (_super) {
     HtmlBuilder.prototype.block_info_post = function (process, node) {
         this.block_captionblock_post("info", process, node);
     };
+    HtmlBuilder.prototype.block_note_pre = function (process, node) {
+        this.block_captionblock_pre("note", process, node);
+    };
+    HtmlBuilder.prototype.block_note_post = function (process, node) {
+        this.block_captionblock_post("note", process, node);
+    };
     HtmlBuilder.prototype.block_memo_pre = function (process, node) {
         this.block_captionblock_pre("memo", process, node);
     };
     HtmlBuilder.prototype.block_memo_post = function (process, node) {
         this.block_captionblock_post("memo", process, node);
     };
-    HtmlBuilder.prototype.block_tips_pre = function (process, node) {
-        this.block_captionblock_pre("tips", process, node);
+    HtmlBuilder.prototype.block_tip_pre = function (process, node) {
+        this.block_captionblock_pre("tip", process, node);
     };
-    HtmlBuilder.prototype.block_tips_post = function (process, node) {
-        this.block_captionblock_post("tips", process, node);
+    HtmlBuilder.prototype.block_tip_post = function (process, node) {
+        this.block_captionblock_post("tip", process, node);
     };
     HtmlBuilder.prototype.block_warning_pre = function (process, node) {
         this.block_captionblock_pre("warning", process, node);
@@ -1673,46 +1679,52 @@ var TextBuilder = /** @class */ (function (_super) {
         process.out("\u25C6\u2192\u7D42\u4E86:" + typename + "\u2190\u25C6\n");
     };
     TextBuilder.prototype.block_info_pre = function (process, node) {
-        this.block_captionblock_pre("info", process, node);
+        this.block_captionblock_pre("情報", process, node);
     };
     TextBuilder.prototype.block_info_post = function (process, node) {
-        this.block_captionblock_post("info", process, node);
+        this.block_captionblock_post("情報", process, node);
+    };
+    TextBuilder.prototype.block_note_pre = function (process, node) {
+        this.block_captionblock_pre("ノート", process, node);
+    };
+    TextBuilder.prototype.block_note_post = function (process, node) {
+        this.block_captionblock_post("ノート", process, node);
     };
     TextBuilder.prototype.block_memo_pre = function (process, node) {
-        this.block_captionblock_pre("memo", process, node);
+        this.block_captionblock_pre("メモ", process, node);
     };
     TextBuilder.prototype.block_memo_post = function (process, node) {
-        this.block_captionblock_post("memo", process, node);
+        this.block_captionblock_post("メモ", process, node);
     };
-    TextBuilder.prototype.block_tips_pre = function (process, node) {
-        this.block_captionblock_pre("tips", process, node);
+    TextBuilder.prototype.block_tip_pre = function (process, node) {
+        this.block_captionblock_pre("TIP", process, node);
     };
-    TextBuilder.prototype.block_tips_post = function (process, node) {
-        this.block_captionblock_post("tips", process, node);
+    TextBuilder.prototype.block_tip_post = function (process, node) {
+        this.block_captionblock_post("TIP", process, node);
     };
     TextBuilder.prototype.block_warning_pre = function (process, node) {
-        this.block_captionblock_pre("warning", process, node);
+        this.block_captionblock_pre("危険", process, node);
     };
     TextBuilder.prototype.block_warning_post = function (process, node) {
-        this.block_captionblock_post("warning", process, node);
+        this.block_captionblock_post("危険", process, node);
     };
     TextBuilder.prototype.block_important_pre = function (process, node) {
-        this.block_captionblock_pre("important", process, node);
+        this.block_captionblock_pre("重要", process, node);
     };
     TextBuilder.prototype.block_important_post = function (process, node) {
-        this.block_captionblock_post("important", process, node);
+        this.block_captionblock_post("重要", process, node);
     };
     TextBuilder.prototype.block_caution_pre = function (process, node) {
-        this.block_captionblock_pre("caution", process, node);
+        this.block_captionblock_pre("警告", process, node);
     };
     TextBuilder.prototype.block_caution_post = function (process, node) {
-        this.block_captionblock_post("caution", process, node);
+        this.block_captionblock_post("警告", process, node);
     };
     TextBuilder.prototype.block_notice_pre = function (process, node) {
-        this.block_captionblock_pre("notice", process, node);
+        this.block_captionblock_pre("注意", process, node);
     };
     TextBuilder.prototype.block_notice_post = function (process, node) {
-        this.block_captionblock_post("notice", process, node);
+        this.block_captionblock_post("注意", process, node);
     };
     return TextBuilder;
 }(builder_1.DefaultBuilder));
@@ -2533,7 +2545,7 @@ exports.ja = {
         "block_flushright": "右寄せを示します。\n//flushright{\n神は言っている…ここで左へ行く定めではないと…\n//}\nという形式で書きます。",
         "block_memo": "ちょっとしたメモを示します。\n//memo[キャプション]{\nより詳しい情報はURL:XXXXを参照ください。\n//}\nという形式で書きます。ブロック中では、全てのインライン構文が利用できます。",
         "block_info": "ちょっとした参考情報を示します。\n//info[キャプション]{\nより詳しい情報はURL:XXXXを参照ください。\n//}\nという形式で書きます。ブロック中では、全てのインライン構文が利用できます。",
-        "block_tips": "ちょっとしたTipsを示します。\n//tips[キャプション]{\nより詳しい情報はURL:XXXXを参照ください。\n//}\nという形式で書きます。ブロック中では、全てのインライン構文が利用できます。",
+        "block_tip": "ちょっとしたTipsを示します。\n//tip[キャプション]{\nより詳しい情報はURL:XXXXを参照ください。\n//}\nという形式で書きます。ブロック中では、全てのインライン構文が利用できます。",
         "block_note": "ちょっとしたノートを示します。\n//note[キャプション]{\nより詳しい情報はURL:XXXXを参照ください。\n//}\nという形式で書きます。ブロック中では、全てのインライン構文が利用できます。",
         "block_warning": "ちょっとした警告情報を示します。\n//warning[キャプション]{\n先ほどの例とは出力結果が異なります。\n//}\nという形式で書きます。ブロック中では、全てのインライン構文が利用できます。",
         "block_important": "ちょっとした重要情報を示します。\n//important[キャプション]{\n一定期間操作しない場合、キャッシュは削除されることがあります。\n//}\nという形式で書きます。ブロック中では、全てのインライン構文が利用できます。",
@@ -3845,26 +3857,34 @@ var DefaultAnalyzer = /** @class */ (function () {
     DefaultAnalyzer.prototype.block_flushright = function (builder) {
         this.blockDecorationSyntax(builder, "flushright", 0);
     };
-    DefaultAnalyzer.prototype.block_memo = function (builder) {
-        this.blockDecorationSyntax(builder, "memo", 0);
+    DefaultAnalyzer.prototype.blockBoxedContentSyntax = function (builder, symbol) {
+        this.blockDecorationSyntax(builder, symbol, 0);
+        // 囲み記事は段落もサポート。
+        builder.setAllowFullySyntax(true);
     };
-    DefaultAnalyzer.prototype.block_tips = function (builder) {
-        this.blockDecorationSyntax(builder, "tips", 0);
+    DefaultAnalyzer.prototype.block_note = function (builder) {
+        this.blockBoxedContentSyntax(builder, "note");
+    };
+    DefaultAnalyzer.prototype.block_memo = function (builder) {
+        this.blockBoxedContentSyntax(builder, "memo");
+    };
+    DefaultAnalyzer.prototype.block_tip = function (builder) {
+        this.blockBoxedContentSyntax(builder, "tip");
     };
     DefaultAnalyzer.prototype.block_info = function (builder) {
-        this.blockDecorationSyntax(builder, "info", 0);
+        this.blockBoxedContentSyntax(builder, "info");
     };
     DefaultAnalyzer.prototype.block_warning = function (builder) {
-        this.blockDecorationSyntax(builder, "warning", 0);
+        this.blockBoxedContentSyntax(builder, "warning");
     };
     DefaultAnalyzer.prototype.block_important = function (builder) {
-        this.blockDecorationSyntax(builder, "important", 0);
+        this.blockBoxedContentSyntax(builder, "important");
     };
     DefaultAnalyzer.prototype.block_caution = function (builder) {
-        this.blockDecorationSyntax(builder, "caution", 0);
+        this.blockBoxedContentSyntax(builder, "caution");
     };
     DefaultAnalyzer.prototype.block_notice = function (builder) {
-        this.blockDecorationSyntax(builder, "notice", 0);
+        this.blockBoxedContentSyntax(builder, "notice");
     };
     return DefaultAnalyzer;
 }());
@@ -4786,6 +4806,7 @@ var SyntaxPreprocessor = /** @class */ (function () {
             var info_1 = null;
             var resultNodes_1 = [];
             var lastNode_1 = null;
+            var processed_1 = false;
             walker_1.visit(node.childNodes[0], {
                 visitDefaultPre: function (node) {
                     if (!info_1) {
@@ -4817,10 +4838,10 @@ var SyntaxPreprocessor = /** @class */ (function () {
                     if (textNode.text) {
                         resultNodes_1.push(textNode);
                     }
-                    resultNodes_1.push(textNode);
                     resultNodes_1.push(node);
                     info_1 = null;
                     lastNode_1 = node;
+                    processed_1 = true;
                 },
                 visitSingleLineCommentPre: function (node) {
                     if (!info_1) {
@@ -4848,9 +4869,10 @@ var SyntaxPreprocessor = /** @class */ (function () {
                     }
                     info_1 = null;
                     lastNode_1 = node;
+                    processed_1 = true;
                 }
             });
-            if (info_1) {
+            if (info_1 && !processed_1) {
                 var textNode = new parser_1.TextNodeSyntaxTree({
                     syntax: "BlockElementContentText",
                     location: {

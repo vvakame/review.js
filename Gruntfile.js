@@ -119,13 +119,13 @@ module.exports = function (grunt) {
 		shell: {
 			"tsc": {
 				command: function () {
-					return "./node_modules/.bin/tsc -p ./";
+					return "\"./node_modules/.bin/tsc\" -p ./";
 				}
 			},
 			"pegjs": {
 				command: function () {
 					var peg = grunt.config.get("opt.client.peg");
-					return "./node_modules/.bin/pegjs --output " + peg + "/grammar.js " + peg + "/grammar.pegjs";
+					return "\"./node_modules/.bin/pegjs\" --output " + peg + "/grammar.js " + peg + "/grammar.pegjs";
 				}
 			}
 		}

@@ -1,0 +1,307 @@
+{
+  "ruleName": "Start",
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 11,
+      "column": 2,
+      "offset": 54
+    }
+  },
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 11,
+          "column": 2,
+          "offset": 54
+        }
+      },
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 11,
+              "column": 2,
+              "offset": 54
+            }
+          },
+          "comments": [],
+          "headline": {
+            "ruleName": "Headline",
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 7
+              }
+            },
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 6,
+                  "offset": 5
+                }
+              },
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 6,
+                      "offset": 5
+                    }
+                  },
+                  "text": "ノート"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 7
+                },
+                "end": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 10
+                }
+              },
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 1,
+                      "offset": 7
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 2,
+                      "offset": 8
+                    }
+                  },
+                  "text": "前"
+                }
+              ]
+            },
+            {
+              "ruleName": "BlockElement",
+              "location": {
+                "start": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 10
+                },
+                "end": {
+                  "line": 11,
+                  "column": 1,
+                  "offset": 53
+                }
+              },
+              "symbol": "note",
+              "args": [],
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContents",
+                  "location": {
+                    "start": {
+                      "line": 6,
+                      "column": 1,
+                      "offset": 18
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 1,
+                      "offset": 48
+                    }
+                  },
+                  "childNodes": [
+                    {
+                      "ruleName": "Paragraph",
+                      "location": {
+                        "start": {
+                          "line": 6,
+                          "column": 1,
+                          "offset": 18
+                        },
+                        "end": {
+                          "line": 8,
+                          "column": 1,
+                          "offset": 28
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentText",
+                          "location": {
+                            "start": {
+                              "line": 6,
+                              "column": 1,
+                              "offset": 18
+                            },
+                            "end": {
+                              "line": 7,
+                              "column": 1,
+                              "offset": 27
+                            }
+                          },
+                          "text": "うんたらかんたら"
+                        }
+                      ]
+                    },
+                    {
+                      "ruleName": "Paragraph",
+                      "location": {
+                        "start": {
+                          "line": 8,
+                          "column": 1,
+                          "offset": 28
+                        },
+                        "end": {
+                          "line": 9,
+                          "column": 1,
+                          "offset": 48
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElement",
+                          "location": {
+                            "start": {
+                              "line": 8,
+                              "column": 1,
+                              "offset": 28
+                            },
+                            "end": {
+                              "line": 8,
+                              "column": 20,
+                              "offset": 47
+                            }
+                          },
+                          "symbol": "b",
+                          "childNodes": [
+                            {
+                              "ruleName": "InlineElementContents",
+                              "location": {
+                                "start": {
+                                  "line": 8,
+                                  "column": 6,
+                                  "offset": 33
+                                },
+                                "end": {
+                                  "line": 8,
+                                  "column": 19,
+                                  "offset": 46
+                                }
+                              },
+                              "childNodes": [
+                                {
+                                  "ruleName": "InlineElementContentText",
+                                  "location": {
+                                    "start": {
+                                      "line": 8,
+                                      "column": 6,
+                                      "offset": 33
+                                    },
+                                    "end": {
+                                      "line": 8,
+                                      "column": 19,
+                                      "offset": 46
+                                    }
+                                  },
+                                  "text": "インライン入れられるはず！"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "location": {
+                "start": {
+                  "line": 11,
+                  "column": 1,
+                  "offset": 53
+                },
+                "end": {
+                  "line": 11,
+                  "column": 2,
+                  "offset": 54
+                }
+              },
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "location": {
+                    "start": {
+                      "line": 11,
+                      "column": 1,
+                      "offset": 53
+                    },
+                    "end": {
+                      "line": 11,
+                      "column": 2,
+                      "offset": 54
+                    }
+                  },
+                  "text": "後"
+                }
+              ]
+            }
+          ],
+          "no": 1,
+          "level": 1,
+          "childNodes": []
+        }
+      ]
+    }
+  ]
+}

@@ -34,12 +34,12 @@ export class AcceptableSyntaxes {
     constructor(public acceptableSyntaxes: AcceptableSyntax[]) {
     }
 
-	/**
-	 * 指定されたノードに当てはまる AcceptableSyntax を探して返す。
-	 * 長さが1じゃないとおかしい。(呼び出し元でチェックする)
-	 * @param node
-	 * @returns {AcceptableSyntax[]}
-	 */
+    /**
+     * 指定されたノードに当てはまる AcceptableSyntax を探して返す。
+     * 長さが1じゃないとおかしい。(呼び出し元でチェックする)
+     * @param node
+     * @returns {AcceptableSyntax[]}
+     */
     find(node: SyntaxTree): AcceptableSyntax[] {
         let results: AcceptableSyntax[];
         if (node instanceof InlineElementSyntaxTree) {
@@ -798,32 +798,42 @@ export class DefaultAnalyzer implements Analyzer {
         this.blockDecorationSyntax(builder, "flushright", 0);
     }
 
-    block_memo(builder: AcceptableSyntaxBuilder) {
-        this.blockDecorationSyntax(builder, "memo", 0);
+    blockBoxedContentSyntax(builder: AcceptableSyntaxBuilder, symbol: string) {
+        this.blockDecorationSyntax(builder, symbol, 0);
+        // 囲み記事は段落もサポート。
+        builder.setAllowFullySyntax(true);
     }
 
-    block_tips(builder: AcceptableSyntaxBuilder) {
-        this.blockDecorationSyntax(builder, "tips", 0);
+    block_note(builder: AcceptableSyntaxBuilder) {
+        this.blockBoxedContentSyntax(builder, "note");
+    }
+
+    block_memo(builder: AcceptableSyntaxBuilder) {
+        this.blockBoxedContentSyntax(builder, "memo");
+    }
+
+    block_tip(builder: AcceptableSyntaxBuilder) {
+        this.blockBoxedContentSyntax(builder, "tip");
     }
 
     block_info(builder: AcceptableSyntaxBuilder) {
-        this.blockDecorationSyntax(builder, "info", 0);
+        this.blockBoxedContentSyntax(builder, "info");
     }
 
     block_warning(builder: AcceptableSyntaxBuilder) {
-        this.blockDecorationSyntax(builder, "warning", 0);
+        this.blockBoxedContentSyntax(builder, "warning");
     }
 
     block_important(builder: AcceptableSyntaxBuilder) {
-        this.blockDecorationSyntax(builder, "important", 0);
+        this.blockBoxedContentSyntax(builder, "important");
     }
 
     block_caution(builder: AcceptableSyntaxBuilder) {
-        this.blockDecorationSyntax(builder, "caution", 0);
+        this.blockBoxedContentSyntax(builder, "caution");
     }
 
     block_notice(builder: AcceptableSyntaxBuilder) {
-        this.blockDecorationSyntax(builder, "notice", 0);
+        this.blockBoxedContentSyntax(builder, "notice");
     }
 
     // TODO 以下のものの実装をすすめる
