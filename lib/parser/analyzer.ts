@@ -804,6 +804,10 @@ export class DefaultAnalyzer implements Analyzer {
         builder.setAllowFullySyntax(true);
     }
 
+    block_note(builder: AcceptableSyntaxBuilder) {
+        this.blockBoxedContentSyntax(builder, "note");
+    }
+
     block_memo(builder: AcceptableSyntaxBuilder) {
         this.blockBoxedContentSyntax(builder, "memo");
     }

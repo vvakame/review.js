@@ -1030,6 +1030,12 @@ var HtmlBuilder = /** @class */ (function (_super) {
     HtmlBuilder.prototype.block_info_post = function (process, node) {
         this.block_captionblock_post("info", process, node);
     };
+    HtmlBuilder.prototype.block_note_pre = function (process, node) {
+        this.block_captionblock_pre("note", process, node);
+    };
+    HtmlBuilder.prototype.block_note_post = function (process, node) {
+        this.block_captionblock_post("note", process, node);
+    };
     HtmlBuilder.prototype.block_memo_pre = function (process, node) {
         this.block_captionblock_pre("memo", process, node);
     };
@@ -1677,6 +1683,12 @@ var TextBuilder = /** @class */ (function (_super) {
     };
     TextBuilder.prototype.block_info_post = function (process, node) {
         this.block_captionblock_post("情報", process, node);
+    };
+    TextBuilder.prototype.block_note_pre = function (process, node) {
+        this.block_captionblock_pre("ノート", process, node);
+    };
+    TextBuilder.prototype.block_note_post = function (process, node) {
+        this.block_captionblock_post("ノート", process, node);
     };
     TextBuilder.prototype.block_memo_pre = function (process, node) {
         this.block_captionblock_pre("メモ", process, node);
@@ -3849,6 +3861,9 @@ var DefaultAnalyzer = /** @class */ (function () {
         this.blockDecorationSyntax(builder, symbol, 0);
         // 囲み記事は段落もサポート。
         builder.setAllowFullySyntax(true);
+    };
+    DefaultAnalyzer.prototype.block_note = function (builder) {
+        this.blockBoxedContentSyntax(builder, "note");
     };
     DefaultAnalyzer.prototype.block_memo = function (builder) {
         this.blockBoxedContentSyntax(builder, "memo");

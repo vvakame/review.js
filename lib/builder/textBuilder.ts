@@ -689,6 +689,14 @@ export class TextBuilder extends DefaultBuilder {
         this.block_captionblock_post("情報", process, node);
     }
 
+    block_note_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_pre("ノート", process, node);
+    }
+
+    block_note_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_post("ノート", process, node);
+    }
+
     block_memo_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
         this.block_captionblock_pre("メモ", process, node);
     }

@@ -841,6 +841,14 @@ export class HtmlBuilder extends DefaultBuilder {
         this.block_captionblock_post("info", process, node);
     }
 
+    block_note_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_pre("note", process, node);
+    }
+
+    block_note_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_post("note", process, node);
+    }
+
     block_memo_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
         this.block_captionblock_pre("memo", process, node);
     }
