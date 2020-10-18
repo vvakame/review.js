@@ -1,0 +1,204 @@
+{
+  "ruleName": "Start",
+  "location": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 1,
+      "offset": 25
+    }
+  },
+  "childNodes": [
+    {
+      "ruleName": "Chapters",
+      "location": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 1,
+          "offset": 25
+        }
+      },
+      "childNodes": [
+        {
+          "ruleName": "Chapter",
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 4,
+              "column": 1,
+              "offset": 25
+            }
+          },
+          "comments": [],
+          "headline": {
+            "ruleName": "Headline",
+            "location": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1,
+                "offset": 8
+              }
+            },
+            "level": 1,
+            "caption": {
+              "ruleName": "ContentInlines",
+              "location": {
+                "start": {
+                  "line": 1,
+                  "column": 3,
+                  "offset": 2
+                },
+                "end": {
+                  "line": 1,
+                  "column": 7,
+                  "offset": 6
+                }
+              },
+              "childNodes": [
+                {
+                  "ruleName": "ContentInlineText",
+                  "location": {
+                    "start": {
+                      "line": 1,
+                      "column": 3,
+                      "offset": 2
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 7,
+                      "offset": 6
+                    }
+                  },
+                  "text": "索引項目"
+                }
+              ]
+            }
+          },
+          "text": [
+            {
+              "ruleName": "Paragraph",
+              "location": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 8
+                },
+                "end": {
+                  "line": 4,
+                  "column": 1,
+                  "offset": 25
+                }
+              },
+              "childNodes": [
+                {
+                  "ruleName": "ContentText",
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 1,
+                      "offset": 8
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 3,
+                      "offset": 10
+                    }
+                  },
+                  "text": "用語"
+                },
+                {
+                  "ruleName": "InlineElement",
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 3,
+                      "offset": 10
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 13,
+                      "offset": 20
+                    }
+                  },
+                  "symbol": "idx",
+                  "childNodes": [
+                    {
+                      "ruleName": "InlineElementContents",
+                      "location": {
+                        "start": {
+                          "line": 3,
+                          "column": 10,
+                          "offset": 17
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 12,
+                          "offset": 19
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElementContentText",
+                          "location": {
+                            "start": {
+                              "line": 3,
+                              "column": 10,
+                              "offset": 17
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 12,
+                              "offset": 19
+                            }
+                          },
+                          "text": "ほげ"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "ruleName": "ContentText",
+                  "location": {
+                    "start": {
+                      "line": 3,
+                      "column": 13,
+                      "offset": 20
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 17,
+                      "offset": 24
+                    }
+                  },
+                  "text": "は云々。"
+                }
+              ]
+            }
+          ],
+          "no": 1,
+          "level": 1,
+          "childNodes": []
+        }
+      ]
+    }
+  ]
+}
