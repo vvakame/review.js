@@ -1,0 +1,4 @@
+test/**/*.ast   text eol=lf
+test/**/*.html  text eol=lf
+test/**/*.re    text eol=lf
+test/**/*.txt   text eol=lf
