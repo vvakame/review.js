@@ -682,58 +682,58 @@ export class TextBuilder extends DefaultBuilder {
     }
 
     block_info_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_pre("info", process, node);
+        this.block_captionblock_pre("情報", process, node);
     }
 
     block_info_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_post("info", process, node);
+        this.block_captionblock_post("情報", process, node);
     }
 
     block_memo_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_pre("memo", process, node);
+        this.block_captionblock_pre("メモ", process, node);
     }
 
     block_memo_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_post("memo", process, node);
+        this.block_captionblock_post("メモ", process, node);
     }
 
     block_tips_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_pre("tips", process, node);
+        this.block_captionblock_pre("TIP", process, node);
     }
 
     block_tips_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_post("tips", process, node);
+        this.block_captionblock_post("TIP", process, node);
     }
 
     block_warning_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_pre("warning", process, node);
+        this.block_captionblock_pre("危険", process, node);
     }
 
     block_warning_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_post("warning", process, node);
+        this.block_captionblock_post("危険", process, node);
     }
 
     block_important_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_pre("important", process, node);
+        this.block_captionblock_pre("重要", process, node);
     }
 
     block_important_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_post("important", process, node);
+        this.block_captionblock_post("重要", process, node);
     }
 
     block_caution_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_pre("caution", process, node);
+        this.block_captionblock_pre("警告", process, node);
     }
 
     block_caution_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_post("caution", process, node);
+        this.block_captionblock_post("警告", process, node);
     }
 
     block_notice_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_pre("notice", process, node);
+        this.block_captionblock_pre("注意", process, node);
     }
 
     block_notice_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_post("notice", process, node);
+        this.block_captionblock_post("注意", process, node);
     }
 }

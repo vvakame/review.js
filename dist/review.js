@@ -1673,46 +1673,46 @@ var TextBuilder = /** @class */ (function (_super) {
         process.out("\u25C6\u2192\u7D42\u4E86:" + typename + "\u2190\u25C6\n");
     };
     TextBuilder.prototype.block_info_pre = function (process, node) {
-        this.block_captionblock_pre("info", process, node);
+        this.block_captionblock_pre("情報", process, node);
     };
     TextBuilder.prototype.block_info_post = function (process, node) {
-        this.block_captionblock_post("info", process, node);
+        this.block_captionblock_post("情報", process, node);
     };
     TextBuilder.prototype.block_memo_pre = function (process, node) {
-        this.block_captionblock_pre("memo", process, node);
+        this.block_captionblock_pre("メモ", process, node);
     };
     TextBuilder.prototype.block_memo_post = function (process, node) {
-        this.block_captionblock_post("memo", process, node);
+        this.block_captionblock_post("メモ", process, node);
     };
     TextBuilder.prototype.block_tips_pre = function (process, node) {
-        this.block_captionblock_pre("tips", process, node);
+        this.block_captionblock_pre("TIP", process, node);
     };
     TextBuilder.prototype.block_tips_post = function (process, node) {
-        this.block_captionblock_post("tips", process, node);
+        this.block_captionblock_post("TIP", process, node);
     };
     TextBuilder.prototype.block_warning_pre = function (process, node) {
-        this.block_captionblock_pre("warning", process, node);
+        this.block_captionblock_pre("危険", process, node);
     };
     TextBuilder.prototype.block_warning_post = function (process, node) {
-        this.block_captionblock_post("warning", process, node);
+        this.block_captionblock_post("危険", process, node);
     };
     TextBuilder.prototype.block_important_pre = function (process, node) {
-        this.block_captionblock_pre("important", process, node);
+        this.block_captionblock_pre("重要", process, node);
     };
     TextBuilder.prototype.block_important_post = function (process, node) {
-        this.block_captionblock_post("important", process, node);
+        this.block_captionblock_post("重要", process, node);
     };
     TextBuilder.prototype.block_caution_pre = function (process, node) {
-        this.block_captionblock_pre("caution", process, node);
+        this.block_captionblock_pre("警告", process, node);
     };
     TextBuilder.prototype.block_caution_post = function (process, node) {
-        this.block_captionblock_post("caution", process, node);
+        this.block_captionblock_post("警告", process, node);
     };
     TextBuilder.prototype.block_notice_pre = function (process, node) {
-        this.block_captionblock_pre("notice", process, node);
+        this.block_captionblock_pre("注意", process, node);
     };
     TextBuilder.prototype.block_notice_post = function (process, node) {
-        this.block_captionblock_post("notice", process, node);
+        this.block_captionblock_post("注意", process, node);
     };
     return TextBuilder;
 }(builder_1.DefaultBuilder));
