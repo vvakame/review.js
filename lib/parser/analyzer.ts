@@ -523,6 +523,32 @@ export class DefaultAnalyzer implements Analyzer {
         });
     }
 
+    inline_idx(builder: AcceptableSyntaxBuilder) {
+        builder.setSyntaxType(SyntaxType.Inline);
+        builder.setSymbol("idx");
+        builder.setDescription(t("description.inline_idx"));
+        builder.processNode((process, n) => {
+            let node = n.toInlineElement();
+            process.addSymbol({
+                symbolName: node.symbol,
+                node: node
+            });
+        });
+    }
+
+    inline_hidx(builder: AcceptableSyntaxBuilder) {
+        builder.setSyntaxType(SyntaxType.Inline);
+        builder.setSymbol("hidx");
+        builder.setDescription(t("description.inline_hidx"));
+        builder.processNode((process, n) => {
+            let node = n.toInlineElement();
+            process.addSymbol({
+                symbolName: node.symbol,
+                node: node
+            });
+        });
+    }
+
     blockDecorationSyntax(builder: AcceptableSyntaxBuilder, symbol: string, ...argsLength: number[]) {
         builder.setSyntaxType(SyntaxType.Block);
         builder.setSymbol(symbol);

@@ -807,6 +807,18 @@ export class HtmlBuilder extends DefaultBuilder {
         return false;
     }
 
+    inline_idx(process: BuilderProcess, node: InlineElementSyntaxTree) {
+        const text = nodeContentToString(process, node);
+        process.out(text).outRaw("<!-- IDX:").out(text).outRaw(" -->");
+        return false;
+    }
+
+    inline_hidx(process: BuilderProcess, node: InlineElementSyntaxTree) {
+        const text = nodeContentToString(process, node);
+        process.outRaw("<!-- IDX:").out(text).outRaw(" -->");
+        return false;
+    }
+
     block_flushright_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
         process.outRaw("<p class=\"flushright\">");
         return (v: TreeVisitor) => {

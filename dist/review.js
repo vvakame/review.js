@@ -1002,6 +1002,16 @@ var HtmlBuilder = /** @class */ (function (_super) {
         process.out("第").out(chapter.no).out("章「").out(title).out("」");
         return false;
     };
+    HtmlBuilder.prototype.inline_idx = function (process, node) {
+        var text = utils_1.nodeContentToString(process, node);
+        process.out(text).outRaw("<!-- IDX:").out(text).outRaw(" -->");
+        return false;
+    };
+    HtmlBuilder.prototype.inline_hidx = function (process, node) {
+        var text = utils_1.nodeContentToString(process, node);
+        process.outRaw("<!-- IDX:").out(text).outRaw(" -->");
+        return false;
+    };
     HtmlBuilder.prototype.block_flushright_pre = function (process, node) {
         process.outRaw("<p class=\"flushright\">");
         return function (v) {
@@ -1655,6 +1665,16 @@ var TextBuilder = /** @class */ (function (_super) {
         var chapter = process.findChapter(chapName);
         var title = this.getChapterTitle(process, chapter);
         process.out("第").out(chapter.no).out("章「").out(title).out("」");
+        return false;
+    };
+    TextBuilder.prototype.inline_idx = function (process, node) {
+        var text = utils_1.nodeContentToString(process, node);
+        process.out(text + "\u25C6\u2192\u7D22\u5F15\u9805\u76EE:" + text + "\u2190\u25C6");
+        return false;
+    };
+    TextBuilder.prototype.inline_hidx = function (process, node) {
+        var text = utils_1.nodeContentToString(process, node);
+        process.out("\u25C6\u2192\u7D22\u5F15\u9805\u76EE:" + text + "\u2190\u25C6");
         return false;
     };
     TextBuilder.prototype.block_flushright_pre = function (process, node) {
@@ -2542,6 +2562,8 @@ exports.ja = {
         "inline_chap": "章番号を示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<chap>{sample} と書きます。",
         "inline_title": "章タイトルを示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<title>{sample} と書きます。",
         "inline_chapref": "章番号+章タイトルを示します。\nファイル名の.reの前の部分か =={sample} タイトル の{}部分を参照します。@<chapref>{sample} と書きます。",
+        "inline_idx": "文字列を出力するとともに、索引として登録します。\n`親索引文字列<<>>子索引文字列`のように親子関係にある索引も定義できます。\n@<idx>{sample} と書きます。",
+        "inline_hidx": "索引として登録します (idx と異なり、紙面内に出力はしません)。\n`親索引文字列<<>>子索引文字列`のように親子関係にある索引も定義できます。\n@<hidx>{sample} と書きます。",
         "block_flushright": "右寄せを示します。\n//flushright{\n神は言っている…ここで左へ行く定めではないと…\n//}\nという形式で書きます。",
         "block_memo": "ちょっとしたメモを示します。\n//memo[キャプション]{\nより詳しい情報はURL:XXXXを参照ください。\n//}\nという形式で書きます。ブロック中では、全てのインライン構文が利用できます。",
         "block_info": "ちょっとした参考情報を示します。\n//info[キャプション]{\nより詳しい情報はURL:XXXXを参照ください。\n//}\nという形式で書きます。ブロック中では、全てのインライン構文が利用できます。",
@@ -3610,6 +3632,30 @@ var DefaultAnalyzer = /** @class */ (function () {
             process.addSymbol({
                 symbolName: node.symbol,
                 referenceTo: process.constructReferenceTo(node, utils_1.nodeContentToString(process, node), "footnote"),
+                node: node
+            });
+        });
+    };
+    DefaultAnalyzer.prototype.inline_idx = function (builder) {
+        builder.setSyntaxType(SyntaxType.Inline);
+        builder.setSymbol("idx");
+        builder.setDescription(i18n_1.t("description.inline_idx"));
+        builder.processNode(function (process, n) {
+            var node = n.toInlineElement();
+            process.addSymbol({
+                symbolName: node.symbol,
+                node: node
+            });
+        });
+    };
+    DefaultAnalyzer.prototype.inline_hidx = function (builder) {
+        builder.setSyntaxType(SyntaxType.Inline);
+        builder.setSymbol("hidx");
+        builder.setDescription(i18n_1.t("description.inline_hidx"));
+        builder.processNode(function (process, n) {
+            var node = n.toInlineElement();
+            process.addSymbol({
+                symbolName: node.symbol,
                 node: node
             });
         });
