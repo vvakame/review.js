@@ -150,6 +150,7 @@ export class SyntaxPreprocessor implements Preprocessor {
             } | null = null as any;
             let resultNodes: SyntaxTree[] = [];
             let lastNode: SyntaxTree | null = null;
+            let processed = false;
             visit(node.childNodes[0], {
                 visitDefaultPre: (node: SyntaxTree) => {
                     if (!info) {
@@ -181,10 +182,10 @@ export class SyntaxPreprocessor implements Preprocessor {
                     if (textNode.text) {
                         resultNodes.push(textNode);
                     }
-                    resultNodes.push(textNode);
                     resultNodes.push(node);
                     info = null;
                     lastNode = node;
+                    processed = true;
                 },
                 visitSingleLineCommentPre: (node: SyntaxTree) => {
                     if (!info) {
@@ -212,9 +213,10 @@ export class SyntaxPreprocessor implements Preprocessor {
                     }
                     info = null;
                     lastNode = node;
+                    processed = true;
                 }
             });
-            if (info) {
+            if (info && !processed) {
                 let textNode = new TextNodeSyntaxTree({
                     syntax: "BlockElementContentText",
                     location: {

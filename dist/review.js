@@ -4786,6 +4786,7 @@ var SyntaxPreprocessor = /** @class */ (function () {
             var info_1 = null;
             var resultNodes_1 = [];
             var lastNode_1 = null;
+            var processed_1 = false;
             walker_1.visit(node.childNodes[0], {
                 visitDefaultPre: function (node) {
                     if (!info_1) {
@@ -4817,10 +4818,10 @@ var SyntaxPreprocessor = /** @class */ (function () {
                     if (textNode.text) {
                         resultNodes_1.push(textNode);
                     }
-                    resultNodes_1.push(textNode);
                     resultNodes_1.push(node);
                     info_1 = null;
                     lastNode_1 = node;
+                    processed_1 = true;
                 },
                 visitSingleLineCommentPre: function (node) {
                     if (!info_1) {
@@ -4848,9 +4849,10 @@ var SyntaxPreprocessor = /** @class */ (function () {
                     }
                     info_1 = null;
                     lastNode_1 = node;
+                    processed_1 = true;
                 }
             });
-            if (info_1) {
+            if (info_1 && !processed_1) {
                 var textNode = new parser_1.TextNodeSyntaxTree({
                     syntax: "BlockElementContentText",
                     location: {
