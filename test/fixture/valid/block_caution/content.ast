@@ -9,7 +9,7 @@
     "end": {
       "line": 11,
       "column": 2,
-      "offset": 66
+      "offset": 56
     }
   },
   "childNodes": [
@@ -24,7 +24,7 @@
         "end": {
           "line": 11,
           "column": 2,
-          "offset": 66
+          "offset": 56
         }
       },
       "childNodes": [
@@ -39,7 +39,7 @@
             "end": {
               "line": 11,
               "column": 2,
-              "offset": 66
+              "offset": 56
             }
           },
           "comments": [],
@@ -54,7 +54,7 @@
               "end": {
                 "line": 3,
                 "column": 1,
-                "offset": 8
+                "offset": 6
               }
             },
             "level": 1,
@@ -99,12 +99,12 @@
                 "start": {
                   "line": 3,
                   "column": 1,
-                  "offset": 8
+                  "offset": 6
                 },
                 "end": {
                   "line": 5,
                   "column": 1,
-                  "offset": 13
+                  "offset": 9
                 }
               },
               "childNodes": [
@@ -114,12 +114,12 @@
                     "start": {
                       "line": 3,
                       "column": 1,
-                      "offset": 8
+                      "offset": 6
                     },
                     "end": {
                       "line": 3,
                       "column": 2,
-                      "offset": 9
+                      "offset": 7
                     }
                   },
                   "text": "前"
@@ -132,109 +132,134 @@
                 "start": {
                   "line": 5,
                   "column": 1,
-                  "offset": 13
+                  "offset": 9
                 },
                 "end": {
                   "line": 11,
                   "column": 1,
-                  "offset": 65
+                  "offset": 55
                 }
               },
               "symbol": "caution",
               "args": [],
               "childNodes": [
                 {
-                  "ruleName": "BlockElementContentText",
+                  "ruleName": "BlockElementContents",
                   "location": {
                     "start": {
                       "line": 6,
                       "column": 1,
-                      "offset": 25
+                      "offset": 20
                     },
                     "end": {
-                      "offset": 36
-                    }
-                  },
-                  "text": "うんたらかんたら\r\n\r"
-                },
-                {
-                  "ruleName": "BlockElementContentText",
-                  "location": {
-                    "start": {
-                      "line": 6,
+                      "line": 9,
                       "column": 1,
-                      "offset": 25
-                    },
-                    "end": {
-                      "offset": 36
+                      "offset": 50
                     }
                   },
-                  "text": "うんたらかんたら\r\n\r"
-                },
-                {
-                  "ruleName": "InlineElement",
-                  "location": {
-                    "start": {
-                      "line": 8,
-                      "column": 1,
-                      "offset": 37
-                    },
-                    "end": {
-                      "line": 8,
-                      "column": 20,
-                      "offset": 56
-                    }
-                  },
-                  "symbol": "b",
                   "childNodes": [
                     {
-                      "ruleName": "InlineElementContents",
+                      "ruleName": "Paragraph",
                       "location": {
                         "start": {
-                          "line": 8,
-                          "column": 6,
-                          "offset": 42
+                          "line": 6,
+                          "column": 1,
+                          "offset": 20
                         },
                         "end": {
                           "line": 8,
-                          "column": 19,
-                          "offset": 55
+                          "column": 1,
+                          "offset": 30
                         }
                       },
                       "childNodes": [
                         {
-                          "ruleName": "InlineElementContentText",
+                          "ruleName": "ContentText",
+                          "location": {
+                            "start": {
+                              "line": 6,
+                              "column": 1,
+                              "offset": 20
+                            },
+                            "end": {
+                              "line": 7,
+                              "column": 1,
+                              "offset": 29
+                            }
+                          },
+                          "text": "うんたらかんたら"
+                        }
+                      ]
+                    },
+                    {
+                      "ruleName": "Paragraph",
+                      "location": {
+                        "start": {
+                          "line": 8,
+                          "column": 1,
+                          "offset": 30
+                        },
+                        "end": {
+                          "line": 9,
+                          "column": 1,
+                          "offset": 50
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "InlineElement",
                           "location": {
                             "start": {
                               "line": 8,
-                              "column": 6,
-                              "offset": 42
+                              "column": 1,
+                              "offset": 30
                             },
                             "end": {
                               "line": 8,
-                              "column": 19,
-                              "offset": 55
+                              "column": 20,
+                              "offset": 49
                             }
                           },
-                          "text": "インライン入れられるはず！"
+                          "symbol": "b",
+                          "childNodes": [
+                            {
+                              "ruleName": "InlineElementContents",
+                              "location": {
+                                "start": {
+                                  "line": 8,
+                                  "column": 6,
+                                  "offset": 35
+                                },
+                                "end": {
+                                  "line": 8,
+                                  "column": 19,
+                                  "offset": 48
+                                }
+                              },
+                              "childNodes": [
+                                {
+                                  "ruleName": "InlineElementContentText",
+                                  "location": {
+                                    "start": {
+                                      "line": 8,
+                                      "column": 6,
+                                      "offset": 35
+                                    },
+                                    "end": {
+                                      "line": 8,
+                                      "column": 19,
+                                      "offset": 48
+                                    }
+                                  },
+                                  "text": "インライン入れられるはず！"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
                   ]
-                },
-                {
-                  "ruleName": "BlockElementContentText",
-                  "location": {
-                    "start": {
-                      "line": 8,
-                      "column": 6,
-                      "offset": 42
-                    },
-                    "end": {
-                      "offset": 12
-                    }
-                  },
-                  "text": "インライン入れられるはず！"
                 }
               ]
             },
@@ -244,12 +269,12 @@
                 "start": {
                   "line": 11,
                   "column": 1,
-                  "offset": 65
+                  "offset": 55
                 },
                 "end": {
                   "line": 11,
                   "column": 2,
-                  "offset": 66
+                  "offset": 56
                 }
               },
               "childNodes": [
@@ -259,12 +284,12 @@
                     "start": {
                       "line": 11,
                       "column": 1,
-                      "offset": 65
+                      "offset": 55
                     },
                     "end": {
                       "line": 11,
                       "column": 2,
-                      "offset": 66
+                      "offset": 56
                     }
                   },
                   "text": "後"
