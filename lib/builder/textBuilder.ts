@@ -697,11 +697,11 @@ export class TextBuilder extends DefaultBuilder {
         this.block_captionblock_post("メモ", process, node);
     }
 
-    block_tips_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_tip_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
         this.block_captionblock_pre("TIP", process, node);
     }
 
-    block_tips_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+    block_tip_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
         this.block_captionblock_post("TIP", process, node);
     }
 

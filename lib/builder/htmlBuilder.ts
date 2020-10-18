@@ -849,12 +849,12 @@ export class HtmlBuilder extends DefaultBuilder {
         this.block_captionblock_post("memo", process, node);
     }
 
-    block_tips_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_pre("tips", process, node);
+    block_tip_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_pre("tip", process, node);
     }
 
-    block_tips_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        this.block_captionblock_post("tips", process, node);
+    block_tip_post(process: BuilderProcess, node: BlockElementSyntaxTree) {
+        this.block_captionblock_post("tip", process, node);
     }
 
     block_warning_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {

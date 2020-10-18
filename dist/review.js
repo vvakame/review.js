@@ -1036,11 +1036,11 @@ var HtmlBuilder = /** @class */ (function (_super) {
     HtmlBuilder.prototype.block_memo_post = function (process, node) {
         this.block_captionblock_post("memo", process, node);
     };
-    HtmlBuilder.prototype.block_tips_pre = function (process, node) {
-        this.block_captionblock_pre("tips", process, node);
+    HtmlBuilder.prototype.block_tip_pre = function (process, node) {
+        this.block_captionblock_pre("tip", process, node);
     };
-    HtmlBuilder.prototype.block_tips_post = function (process, node) {
-        this.block_captionblock_post("tips", process, node);
+    HtmlBuilder.prototype.block_tip_post = function (process, node) {
+        this.block_captionblock_post("tip", process, node);
     };
     HtmlBuilder.prototype.block_warning_pre = function (process, node) {
         this.block_captionblock_pre("warning", process, node);
@@ -1684,10 +1684,10 @@ var TextBuilder = /** @class */ (function (_super) {
     TextBuilder.prototype.block_memo_post = function (process, node) {
         this.block_captionblock_post("メモ", process, node);
     };
-    TextBuilder.prototype.block_tips_pre = function (process, node) {
+    TextBuilder.prototype.block_tip_pre = function (process, node) {
         this.block_captionblock_pre("TIP", process, node);
     };
-    TextBuilder.prototype.block_tips_post = function (process, node) {
+    TextBuilder.prototype.block_tip_post = function (process, node) {
         this.block_captionblock_post("TIP", process, node);
     };
     TextBuilder.prototype.block_warning_pre = function (process, node) {
@@ -2533,7 +2533,7 @@ exports.ja = {
         "block_flushright": "右寄せを示します。\n//flushright{\n神は言っている…ここで左へ行く定めではないと…\n//}\nという形式で書きます。",
         "block_memo": "ちょっとしたメモを示します。\n//memo[キャプション]{\nより詳しい情報はURL:XXXXを参照ください。\n//}\nという形式で書きます。ブロック中では、全てのインライン構文が利用できます。",
         "block_info": "ちょっとした参考情報を示します。\n//info[キャプション]{\nより詳しい情報はURL:XXXXを参照ください。\n//}\nという形式で書きます。ブロック中では、全てのインライン構文が利用できます。",
-        "block_tips": "ちょっとしたTipsを示します。\n//tips[キャプション]{\nより詳しい情報はURL:XXXXを参照ください。\n//}\nという形式で書きます。ブロック中では、全てのインライン構文が利用できます。",
+        "block_tip": "ちょっとしたTipsを示します。\n//tip[キャプション]{\nより詳しい情報はURL:XXXXを参照ください。\n//}\nという形式で書きます。ブロック中では、全てのインライン構文が利用できます。",
         "block_note": "ちょっとしたノートを示します。\n//note[キャプション]{\nより詳しい情報はURL:XXXXを参照ください。\n//}\nという形式で書きます。ブロック中では、全てのインライン構文が利用できます。",
         "block_warning": "ちょっとした警告情報を示します。\n//warning[キャプション]{\n先ほどの例とは出力結果が異なります。\n//}\nという形式で書きます。ブロック中では、全てのインライン構文が利用できます。",
         "block_important": "ちょっとした重要情報を示します。\n//important[キャプション]{\n一定期間操作しない場合、キャッシュは削除されることがあります。\n//}\nという形式で書きます。ブロック中では、全てのインライン構文が利用できます。",
@@ -3853,8 +3853,8 @@ var DefaultAnalyzer = /** @class */ (function () {
     DefaultAnalyzer.prototype.block_memo = function (builder) {
         this.blockBoxedContentSyntax(builder, "memo");
     };
-    DefaultAnalyzer.prototype.block_tips = function (builder) {
-        this.blockBoxedContentSyntax(builder, "tips");
+    DefaultAnalyzer.prototype.block_tip = function (builder) {
+        this.blockBoxedContentSyntax(builder, "tip");
     };
     DefaultAnalyzer.prototype.block_info = function (builder) {
         this.blockBoxedContentSyntax(builder, "info");

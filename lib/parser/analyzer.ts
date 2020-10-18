@@ -808,8 +808,8 @@ export class DefaultAnalyzer implements Analyzer {
         this.blockBoxedContentSyntax(builder, "memo");
     }
 
-    block_tips(builder: AcceptableSyntaxBuilder) {
-        this.blockBoxedContentSyntax(builder, "tips");
+    block_tip(builder: AcceptableSyntaxBuilder) {
+        this.blockBoxedContentSyntax(builder, "tip");
     }
 
     block_info(builder: AcceptableSyntaxBuilder) {
