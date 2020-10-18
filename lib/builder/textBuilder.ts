@@ -655,6 +655,18 @@ export class TextBuilder extends DefaultBuilder {
         return false;
     }
 
+    inline_idx(process: BuilderProcess, node: InlineElementSyntaxTree) {
+        const text = nodeContentToString(process, node);
+        process.out(`${text}◆→索引項目:${text}←◆`);
+        return false;
+    }
+
+    inline_hidx(process: BuilderProcess, node: InlineElementSyntaxTree) {
+        const text = nodeContentToString(process, node);
+        process.out(`◆→索引項目:${text}←◆`);
+        return false;
+    }
+
     block_flushright_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
         process.out("◆→開始:右寄せ←◆\n");
 
