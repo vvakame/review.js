@@ -256,7 +256,6 @@
                   },
                   "text": [],
                   "no": 1,
-                  "level": 3,
                   "childNodes": []
                 },
                 {
@@ -325,17 +324,14 @@
                   },
                   "text": [],
                   "no": 1,
-                  "level": 4,
                   "childNodes": []
                 }
               ],
               "no": 1,
-              "level": 2,
               "childNodes": []
             }
           ],
           "no": 1,
-          "level": 1,
           "childNodes": [
             {
               "ruleName": "Chapter",
@@ -403,7 +399,6 @@
               },
               "text": [],
               "no": 1,
-              "level": 2,
               "childNodes": []
             }
           ]

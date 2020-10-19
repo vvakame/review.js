@@ -164,7 +164,6 @@
             }
           ],
           "no": 1,
-          "level": 1,
           "childNodes": [
             {
               "ruleName": "Chapter",
@@ -348,7 +347,6 @@
                 }
               ],
               "no": 1,
-              "level": 2,
               "childNodes": [
                 {
                   "ruleName": "Chapter",
@@ -547,12 +545,10 @@
                         }
                       ],
                       "no": 1,
-                      "level": 4,
                       "childNodes": []
                     }
                   ],
                   "no": 1,
-                  "level": 3,
                   "childNodes": []
                 }
               ]
@@ -877,7 +873,6 @@
                 }
               ],
               "no": 4,
-              "level": 2,
               "childNodes": []
             },
             {
@@ -1253,7 +1248,6 @@
                 }
               ],
               "no": 3,
-              "level": 2,
               "childNodes": []
             },
             {
@@ -1736,7 +1730,6 @@
                 }
               ],
               "no": 2,
-              "level": 2,
               "childNodes": []
             }
           ]
