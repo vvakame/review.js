@@ -10,7 +10,7 @@ import { NodeSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, Headli
 
 import { visit, TreeVisitor, TreeVisitorReturn } from "../parser/walker";
 
-import { nodeContentToString, findChapter, padLeft, linesToFigure } from "../utils/utils";
+import { nodeContentToString, findChapter, padLeft, linesToFigure, getHeadlineLevels } from "../utils/utils";
 
 export class TextBuilder extends DefaultBuilder {
     extention = "txt";
@@ -20,14 +20,12 @@ export class TextBuilder extends DefaultBuilder {
     }
 
     headlinePre(process: BuilderProcess, _name: string, node: HeadlineSyntaxTree) {
-        // TODO no の採番がレベル別になっていない
-        // TODO 2.3.2 みたいな階層を返せるメソッドが何かほしい
         process.out("■H").out(node.level).out("■");
         if (node.level === 1) {
             let text = t("builder.chapter", node.parentNode.no);
             process.out(text).out("　");
-        } else if (node.level === 2) {
-            // process.out(node.parentNode.toChapter().fqn).out("　");
+        } else if (node.level < 4) {
+            process.out(getHeadlineLevels(node).join(".")).out("　");
         }
     }
 
@@ -239,26 +237,6 @@ export class TextBuilder extends DefaultBuilder {
 
     block_emlistnum_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
         process.out("◆→終了:インラインリスト←◆\n");
-    }
-
-    inline_hd_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
-        process.out("「");
-        let chapter = findChapter(node);
-        if (!chapter) {
-            process.error(t("builder.chapter_not_found", 1), node);
-            return false;
-        }
-        if (chapter.level === 1) {
-            process.out(chapter.fqn).out("章 ");
-        } else {
-            process.out(chapter.fqn).out(" ");
-        }
-        process.out(nodeContentToString(process, chapter.headline));
-        return false;
-    }
-
-    inline_hd_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
-        process.out("」");
     }
 
     inline_br(process: BuilderProcess, _node: InlineElementSyntaxTree) {

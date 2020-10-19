@@ -5,11 +5,11 @@ import { BuilderProcess, ContentChunk } from "../model/compilerModel";
 
 import { DefaultBuilder } from "./builder";
 
-import { SyntaxTree, NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree } from "../parser/parser";
+import { NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree } from "../parser/parser";
 
-import { visit, walk, TreeVisitor, TreeVisitorReturn } from "../parser/walker";
+import { visit, TreeVisitor, TreeVisitorReturn } from "../parser/walker";
 
-import { nodeContentToString, findChapter, padLeft, linesToFigure } from "../utils/utils";
+import { nodeContentToString, findChapter, padLeft, linesToFigure, getHeadlineLevels } from "../utils/utils";
 
 export class HtmlBuilder extends DefaultBuilder {
     extention = "html";
@@ -67,40 +67,15 @@ export class HtmlBuilder extends DefaultBuilder {
             process.outRaw(" id=\"").out(node.label.arg).outRaw("\"");
         }
         process.outRaw(">");
-        let constructLabel = (node: SyntaxTree) => {
-            let numbers: { [no: number]: number; } = {};
-            let maxLevel = 0;
-            walk(node, (node: SyntaxTree) => {
-                if (node instanceof ChapterSyntaxTree) {
-                    numbers[node.level] = node.no;
-                    maxLevel = Math.max(maxLevel, node.level);
-                } else if (node instanceof ColumnSyntaxTree) {
-                    numbers[node.level] = -1;
-                    maxLevel = Math.max(maxLevel, node.level);
-                }
-                return node.parentNode;
-            });
-            let result: number[] = [];
-            for (let i = 1; i <= maxLevel; i++) {
-                if (numbers[i] === -1) {
-                    result.push(0);
-                } else if (typeof numbers[i] === "undefined") {
-                    result.push(1);
-                } else {
-                    result.push(numbers[i] || 0);
-                }
-            }
-            return result.join("-");
-        };
-        process.outRaw("<a id=\"h").out(constructLabel(node)).outRaw("\"></a>");
+        process.outRaw("<a id=\"h").out(getHeadlineLevels(node).join("-")).outRaw("\"></a>");
 
         if (node.level === 1) {
             let text = t("builder.chapter", node.parentNode.no);
             process.outRaw(`<span class="secno">`);
             process.out(text).out("　");
             process.outRaw(`</span>`);
-        } else if (node.level === 2) {
-            // process.out(node.parentNode.toChapter().fqn).out("　");
+        } else if (node.level < 4) {
+            process.out(getHeadlineLevels(node).join(".")).out("　");
         }
     }
 
@@ -344,26 +319,6 @@ export class HtmlBuilder extends DefaultBuilder {
 
     block_emlistnum_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
         process.outRaw("\n</pre>\n").outRaw("</div>\n");
-    }
-
-    inline_hd_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
-        process.out("「");
-        let chapter = findChapter(node);
-        if (!chapter) {
-            process.error(t("builder.chapter_not_found", 1), node);
-            return false;
-        }
-        if (chapter.level === 1) {
-            process.out(chapter.fqn).out("章 ");
-        } else {
-            process.out(chapter.fqn).out(" ");
-        }
-        process.out(nodeContentToString(process, chapter.headline));
-        return false;
-    }
-
-    inline_hd_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
-        process.out("」");
     }
 
     inline_br(process: BuilderProcess, _node: InlineElementSyntaxTree) {

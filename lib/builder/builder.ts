@@ -1,5 +1,6 @@
 "use strict";
 
+import { t } from "../i18n/i18n";
 import { AnalyzerError } from "../js/exception";
 
 import { Book, BuilderProcess, ContentChunk, Symbol } from "../model/compilerModel";
@@ -289,6 +290,26 @@ export class DefaultBuilder implements Builder {
             throw new AnalyzerError("invalid status.");
         }
         return founds[0];
+    }
+
+    inline_hd_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
+        process.out("「");
+        const chapter = this.findReference(process, node).referenceTo?.referenceNode?.parentNode.toChapter();
+        if (!chapter) {
+            process.error(t("builder.chapter_not_found", 1), node);
+            return false;
+        }
+        if (chapter.level === 1) {
+            process.out(chapter.fqn).out("章 ");
+        } else {
+            process.out(chapter.fqn).out(" ");
+        }
+        process.out(chapter.headline.caption.childNodes[0].toTextNode().text);
+        return false;
+    }
+
+    inline_hd_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
+        process.out("」");
     }
 
     block_raw(process: BuilderProcess, node: BlockElementSyntaxTree): any {

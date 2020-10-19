@@ -15,8 +15,6 @@ import { visit } from "../parser/walker";
  * 参照先についての情報。
  */
 export interface ReferenceTo {
-    part?: ContentChunk | null;
-    partName: string;
     chapter?: ContentChunk | null;
     chapterName: string;
     targetSymbol: string;
@@ -29,7 +27,6 @@ export interface ReferenceTo {
  * シンボルについての情報。
  */
 export interface Symbol {
-    part?: ContentChunk;
     chapter?: ContentChunk | null;
     symbolName: string;
     labelName?: string;
@@ -123,7 +120,6 @@ export class Process {
     }
 
     addSymbol(symbol: Symbol) {
-        symbol.part = this.part;
         symbol.chapter = this.chapter;
         this.symbols.push(symbol);
     }
@@ -144,34 +140,78 @@ export class Process {
 
     constructReferenceTo(node: any, value: string, targetSymbol = node.symbol, separator = "|"): ReferenceTo | null {
         let splitted = value.split(separator);
-        if (splitted.length === 3) {
+        if (targetSymbol === "chapter") {
+            // 常に {章ID} でなければならない
+            if (splitted.length !== 1) {
+                let message = t("compile.args_length_mismatch", "1", splitted.length);
+                this.error(message, node);
+                return null;
+            }
+
             return {
-                partName: splitted[0],
-                chapterName: splitted[1],
-                targetSymbol: targetSymbol,
-                label: splitted[2]
-            };
-        } else if (splitted.length === 2) {
-            return {
-                part: this.part,
-                partName: (this.part || <any>{}).name,
                 chapterName: splitted[0],
-                targetSymbol: targetSymbol,
-                label: splitted[1]
-            };
-        } else if (splitted.length === 1) {
-            return {
-                part: this.part,
-                partName: (this.part || <any>{}).name,
-                chapter: this.chapter,
-                chapterName: (this.chapter || <any>{}).name,
                 targetSymbol: targetSymbol,
                 label: splitted[0]
             };
+        }
+
+        if (targetSymbol === "fn") {
+            // 常に {ラベル} でなければならない
+            if (splitted.length !== 1) {
+                let message = t("compile.args_length_mismatch", "1", splitted.length);
+                this.error(message, node);
+                return null;
+            }
+
+            return {
+                chapter: this.chapter!,
+                chapterName: this.chapter?.name!,
+                targetSymbol: targetSymbol,
+                label: splitted[0]
+            };
+        }
+
+        if (targetSymbol !== "hd") {
+            // {ラベル} か {章ID|ラベル}
+            if (splitted.length === 2) {
+                return {
+                    chapterName: splitted[0],
+                    targetSymbol: targetSymbol,
+                    label: splitted[1]
+                };
+            } else if (splitted.length === 1) {
+                return {
+                    chapter: this.chapter,
+                    chapterName: this.chapter?.name!,
+                    targetSymbol: targetSymbol,
+                    label: splitted[0]
+                };
+            } else {
+                let message = t("compile.args_length_mismatch", "1 or 2", splitted.length);
+                this.error(message, node);
+                return null;
+            }
         } else {
-            let message = t("compile.args_length_mismatch", "1 or 2 or 3", splitted.length);
-            this.error(message, node);
-            return null;
+            // {章ID|パス} か {パス}
+            // FIXME: | 区切りのパスサポートと重複したキャプションのサポート
+            if (splitted.length === 2) {
+                return {
+                    chapterName: splitted[0],
+                    targetSymbol: targetSymbol,
+                    label: splitted[1]
+                };
+            } else if (splitted.length === 1) {
+                return {
+                    chapter: this.chapter,
+                    chapterName: this.chapter?.name!,
+                    targetSymbol: targetSymbol,
+                    label: splitted[0]
+                };
+            } else {
+                let message = t("compile.args_hd_path_not_implemented", splitted.length);
+                this.error(message, node);
+                return null;
+            }
         }
     }
 
@@ -255,18 +295,18 @@ export class BuilderProcess {
         return chaps[0];
     }
 
-	/**
-	 * 指定されたidの画像を探す。
-	 * 解決ルールは https://github.com/kmuto/review/wiki/ImagePath の通り。
-	 * Config側で絶対パス化やリソースの差し替えを行う可能性があるため、このメソッドの返り値は無加工で使うこと。
-	 * @param id
-	 * @returns {Promise<string>}
-	 */
+    /**
+     * 指定されたidの画像を探す。
+     * 解決ルールは https://github.com/kmuto/review/wiki/ImagePath の通り。
+     * Config側で絶対パス化やリソースの差し替えを行う可能性があるため、このメソッドの返り値は無加工で使うこと。
+     * @param id
+     * @returns {Promise<string>}
+     */
     findImageFile(id: string): Promise<string> {
         // NOTE: https://github.com/kmuto/review/wiki/ImagePath
         // 4軸マトリクス 画像dir, ビルダ有無, chapId位置, 拡張子
 
-        let config = (this.base.part || this.base.chapter) !.book.config;
+        let config = (this.base.part || this.base.chapter)!.book.config;
 
         let fileNameList: string[] = [];
         (() => {
@@ -305,7 +345,7 @@ export class BuilderProcess {
                     reject(id);
                     return;
                 }
-                let fileName = fileNameList.shift() !;
+                let fileName = fileNameList.shift()!;
                 config.exists(fileName).then(result => {
                     if (result.result) {
                         resolve(result.path);

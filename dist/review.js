@@ -1,6 +1,8 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.ReVIEW = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DefaultBuilder = void 0;
+var i18n_1 = require("../i18n/i18n");
 var exception_1 = require("../js/exception");
 var parser_1 = require("../parser/parser");
 var walker_1 = require("../parser/walker");
@@ -17,7 +19,7 @@ var DefaultBuilder = /** @class */ (function () {
         get: function () {
             return this.constructor.name;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     DefaultBuilder.prototype.init = function (book) {
@@ -231,6 +233,26 @@ var DefaultBuilder = /** @class */ (function () {
         }
         return founds[0];
     };
+    DefaultBuilder.prototype.inline_hd_pre = function (process, node) {
+        var _a, _b;
+        process.out("「");
+        var chapter = (_b = (_a = this.findReference(process, node).referenceTo) === null || _a === void 0 ? void 0 : _a.referenceNode) === null || _b === void 0 ? void 0 : _b.parentNode.toChapter();
+        if (!chapter) {
+            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
+            return false;
+        }
+        if (chapter.level === 1) {
+            process.out(chapter.fqn).out("章 ");
+        }
+        else {
+            process.out(chapter.fqn).out(" ");
+        }
+        process.out(chapter.headline.caption.childNodes[0].toTextNode().text);
+        return false;
+    };
+    DefaultBuilder.prototype.inline_hd_post = function (process, _node) {
+        process.out("」");
+    };
     DefaultBuilder.prototype.block_raw = function (process, node) {
         var _this = this;
         // TODO Ruby版との出力差が結構あるのでテスト含め直す
@@ -271,7 +293,7 @@ var DefaultBuilder = /** @class */ (function () {
 }());
 exports.DefaultBuilder = DefaultBuilder;
 
-},{"../js/exception":12,"../parser/parser":15,"../parser/walker":18,"../utils/utils":20}],2:[function(require,module,exports){
+},{"../i18n/i18n":8,"../js/exception":12,"../parser/parser":15,"../parser/walker":18,"../utils/utils":20}],2:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -287,6 +309,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.HtmlBuilder = void 0;
 var i18n_1 = require("../i18n/i18n");
 var builder_1 = require("./builder");
 var parser_1 = require("../parser/parser");
@@ -346,43 +369,15 @@ var HtmlBuilder = /** @class */ (function (_super) {
             process.outRaw(" id=\"").out(node.label.arg).outRaw("\"");
         }
         process.outRaw(">");
-        var constructLabel = function (node) {
-            var numbers = {};
-            var maxLevel = 0;
-            walker_1.walk(node, function (node) {
-                if (node instanceof parser_1.ChapterSyntaxTree) {
-                    numbers[node.level] = node.no;
-                    maxLevel = Math.max(maxLevel, node.level);
-                }
-                else if (node instanceof parser_1.ColumnSyntaxTree) {
-                    numbers[node.level] = -1;
-                    maxLevel = Math.max(maxLevel, node.level);
-                }
-                return node.parentNode;
-            });
-            var result = [];
-            for (var i = 1; i <= maxLevel; i++) {
-                if (numbers[i] === -1) {
-                    result.push(0);
-                }
-                else if (typeof numbers[i] === "undefined") {
-                    result.push(1);
-                }
-                else {
-                    result.push(numbers[i] || 0);
-                }
-            }
-            return result.join("-");
-        };
-        process.outRaw("<a id=\"h").out(constructLabel(node)).outRaw("\"></a>");
+        process.outRaw("<a id=\"h").out(utils_1.getHeadlineLevels(node).join("-")).outRaw("\"></a>");
         if (node.level === 1) {
             var text = i18n_1.t("builder.chapter", node.parentNode.no);
             process.outRaw("<span class=\"secno\">");
             process.out(text).out("　");
             process.outRaw("</span>");
         }
-        else if (node.level === 2) {
-            // process.out(node.parentNode.toChapter().fqn).out("　");
+        else if (node.level < 4) {
+            process.out(utils_1.getHeadlineLevels(node).join(".")).out("　");
         }
     };
     HtmlBuilder.prototype.headlinePost = function (process, _name, node) {
@@ -601,25 +596,6 @@ var HtmlBuilder = /** @class */ (function (_super) {
     };
     HtmlBuilder.prototype.block_emlistnum_post = function (process, _node) {
         process.outRaw("\n</pre>\n").outRaw("</div>\n");
-    };
-    HtmlBuilder.prototype.inline_hd_pre = function (process, node) {
-        process.out("「");
-        var chapter = utils_1.findChapter(node);
-        if (!chapter) {
-            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
-            return false;
-        }
-        if (chapter.level === 1) {
-            process.out(chapter.fqn).out("章 ");
-        }
-        else {
-            process.out(chapter.fqn).out(" ");
-        }
-        process.out(utils_1.nodeContentToString(process, chapter.headline));
-        return false;
-    };
-    HtmlBuilder.prototype.inline_hd_post = function (process, _node) {
-        process.out("」");
     };
     HtmlBuilder.prototype.inline_br = function (process, _node) {
         process.outRaw("<br />");
@@ -1102,6 +1078,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TextBuilder = void 0;
 var builder_1 = require("./builder");
 var i18n_1 = require("../i18n/i18n");
 var parser_1 = require("../parser/parser");
@@ -1118,15 +1095,13 @@ var TextBuilder = /** @class */ (function (_super) {
         return data;
     };
     TextBuilder.prototype.headlinePre = function (process, _name, node) {
-        // TODO no の採番がレベル別になっていない
-        // TODO 2.3.2 みたいな階層を返せるメソッドが何かほしい
         process.out("■H").out(node.level).out("■");
         if (node.level === 1) {
             var text = i18n_1.t("builder.chapter", node.parentNode.no);
             process.out(text).out("　");
         }
-        else if (node.level === 2) {
-            // process.out(node.parentNode.toChapter().fqn).out("　");
+        else if (node.level < 4) {
+            process.out(utils_1.getHeadlineLevels(node).join(".")).out("　");
         }
     };
     TextBuilder.prototype.headlinePost = function (process, _name, _node) {
@@ -1316,25 +1291,6 @@ var TextBuilder = /** @class */ (function (_super) {
     };
     TextBuilder.prototype.block_emlistnum_post = function (process, _node) {
         process.out("◆→終了:インラインリスト←◆\n");
-    };
-    TextBuilder.prototype.inline_hd_pre = function (process, node) {
-        process.out("「");
-        var chapter = utils_1.findChapter(node);
-        if (!chapter) {
-            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
-            return false;
-        }
-        if (chapter.level === 1) {
-            process.out(chapter.fqn).out("章 ");
-        }
-        else {
-            process.out(chapter.fqn).out(" ");
-        }
-        process.out(utils_1.nodeContentToString(process, chapter.headline));
-        return false;
-    };
-    TextBuilder.prototype.inline_hd_post = function (process, _node) {
-        process.out("」");
     };
     TextBuilder.prototype.inline_br = function (process, _node) {
         process.out("\n");
@@ -1766,6 +1722,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.WebBrowserConfig = exports.NodeJSConfig = exports.Config = void 0;
 var builder_1 = require("../builder/builder");
 var configRaw_1 = require("./configRaw");
 var compilerModel_1 = require("../model/compilerModel");
@@ -1780,28 +1737,28 @@ var Config = /** @class */ (function () {
         get: function () {
             throw new Error("please implements this method");
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Config.prototype, "write", {
         get: function () {
             throw new Error("please implements this method");
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Config.prototype, "exists", {
         get: function () {
             throw new Error("please implements this method");
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Config.prototype, "analyzer", {
         get: function () {
             return this.original.analyzer || new analyzer_1.DefaultAnalyzer();
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Config.prototype, "validators", {
@@ -1817,7 +1774,7 @@ var Config = /** @class */ (function () {
                 return config.validators;
             }
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Config.prototype, "builders", {
@@ -1838,14 +1795,14 @@ var Config = /** @class */ (function () {
             }
             return this._builders;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Config.prototype, "listener", {
         get: function () {
             throw new Error("please implements this method");
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Config.prototype, "book", {
@@ -1855,7 +1812,7 @@ var Config = /** @class */ (function () {
             }
             return this._bookStructure;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Config.prototype.resolvePath = function (_path) {
@@ -1876,14 +1833,14 @@ var NodeJSConfig = /** @class */ (function (_super) {
         get: function () {
             return this.original.read || utils_1.IO.read;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(NodeJSConfig.prototype, "write", {
         get: function () {
             return this.original.write || utils_1.IO.write;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(NodeJSConfig.prototype, "exists", {
@@ -1903,7 +1860,7 @@ var NodeJSConfig = /** @class */ (function (_super) {
                 return promise;
             };
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(NodeJSConfig.prototype, "listener", {
@@ -1922,7 +1879,7 @@ var NodeJSConfig = /** @class */ (function (_super) {
             this._listener = listener;
             return this._listener;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     NodeJSConfig.prototype.onReports = function (reports) {
@@ -1989,7 +1946,7 @@ var WebBrowserConfig = /** @class */ (function (_super) {
                 throw new Error("please implement config.read method");
             });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(WebBrowserConfig.prototype, "write", {
@@ -1998,7 +1955,7 @@ var WebBrowserConfig = /** @class */ (function (_super) {
                 throw new Error("please implement config.write method");
             });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(WebBrowserConfig.prototype, "exists", {
@@ -2013,7 +1970,7 @@ var WebBrowserConfig = /** @class */ (function (_super) {
                 }
             };
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     WebBrowserConfig.prototype._existsFileScheme = function (_path) {
@@ -2073,7 +2030,7 @@ var WebBrowserConfig = /** @class */ (function (_super) {
             this._listener = listener;
             return this._listener;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     WebBrowserConfig.prototype.onReports = function (reports) {
@@ -2129,6 +2086,7 @@ exports.WebBrowserConfig = WebBrowserConfig;
 },{"../builder/builder":1,"../model/compilerModel":13,"../parser/analyzer":14,"../parser/validator":17,"../utils/utils":20,"./configRaw":5,"colors":undefined,"fs":undefined,"path":undefined}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ContentStructure = exports.BookStructure = void 0;
 /**
  * 生の設定ファイルでの本の構成情報を画一的なフォーマットに変換し保持するためのクラス。
  */
@@ -2227,6 +2185,7 @@ exports.ContentStructure = ContentStructure;
 },{}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Controller = void 0;
 var PEG = require("../../resources/grammar");
 var compilerModel_1 = require("../model/compilerModel");
 var parser_1 = require("../parser/parser");
@@ -2459,13 +2418,22 @@ exports.Controller = Controller;
 },{"../../resources/grammar":21,"../builder/htmlBuilder":2,"../builder/textBuilder":3,"../model/compilerModel":13,"../parser/parser":15,"../parser/preprocessor":16,"../parser/walker":18,"../utils/utils":20,"./config":4,"./configRaw":5}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.en = void 0;
 exports.en = {
     "sample": "Hello!"
 };
 
 },{}],8:[function(require,module,exports){
 "use strict";
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.t = exports.setup = void 0;
 var utils_1 = require("./utils");
 var utils_2 = require("../utils/utils");
 var en_1 = require("./en");
@@ -2488,7 +2456,9 @@ if (typeof window !== "undefined" && window.sprintf) {
 else {
     sprintf = require("sprintf-js").sprintf;
 }
-utils_2.isNodeJS(); // TODO utilsをi18n.ts内で使わないと実行時エラーになる
+if (utils_2.isNodeJS != null) {
+    utils_2.isNodeJS(); // TODO utilsをi18n.ts内で使わないと実行時エラーになる
+}
 function t(str) {
     "use strict";
     var args = [];
@@ -2503,7 +2473,7 @@ function t(str) {
     if (typeof base !== "string") {
         throw new Error("unknown key: " + str);
     }
-    return sprintf.apply(void 0, [base].concat(args));
+    return sprintf.apply(void 0, __spreadArrays([base], args));
 }
 exports.t = t;
 setup();
@@ -2511,6 +2481,7 @@ setup();
 },{"../utils/utils":20,"./en":7,"./ja":9,"./utils":10,"sprintf-js":undefined}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ja = void 0;
 exports.ja = {
     "sample": "こんちゃーす！",
     "description": {
@@ -2589,6 +2560,7 @@ exports.ja = {
         "duplicated_label_headline": "ラベルに重複があるようです。 =={a-label} ラベル のように明示的にラベルを指定することを回避することができます。",
         // TODO できれば 引数 という言葉を避けたい…
         "args_length_mismatch": "引数の数に齟齬があります。 期待値 %s, 実際 %s",
+        "args_hd_path_not_implemented": "キャプションによる参照はまだ実装されていません。{ラベル}か{章ID|ラベル}の形式を使用してください。指定された要素は %s でした。",
         "body_string_only": "内容は全て文字でなければいけません。",
         "chapter_not_toplevel": "深さ1のチャプターは最上位になければいけません。",
         "chapter_topleve_eq1": "最上位のチャプターは深さ1のものでなければいけません。",
@@ -2608,6 +2580,7 @@ exports.ja = {
 },{}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.deepAssign = void 0;
 function deepAssign(target) {
     "use strict";
     var args = [];
@@ -2630,32 +2603,40 @@ exports.deepAssign = deepAssign;
 
 },{}],11:[function(require,module,exports){
 "use strict";
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.start = exports.SyntaxType = exports.TextBuilder = exports.HtmlBuilder = exports.DefaultBuilder = exports.DefaultValidator = exports.DefaultAnalyzer = exports.AcceptableSyntaxes = exports.SyntaxTree = exports.ProcessReport = exports.ReportLevel = exports.ContentChunk = exports.Book = void 0;
 var compilerModel_1 = require("./model/compilerModel");
-exports.Book = compilerModel_1.Book;
-exports.ContentChunk = compilerModel_1.ContentChunk;
-exports.ReportLevel = compilerModel_1.ReportLevel;
-exports.ProcessReport = compilerModel_1.ProcessReport;
+Object.defineProperty(exports, "Book", { enumerable: true, get: function () { return compilerModel_1.Book; } });
+Object.defineProperty(exports, "ContentChunk", { enumerable: true, get: function () { return compilerModel_1.ContentChunk; } });
+Object.defineProperty(exports, "ReportLevel", { enumerable: true, get: function () { return compilerModel_1.ReportLevel; } });
+Object.defineProperty(exports, "ProcessReport", { enumerable: true, get: function () { return compilerModel_1.ProcessReport; } });
 var controller_1 = require("./controller/controller");
 var parser_1 = require("./parser/parser");
-exports.SyntaxTree = parser_1.SyntaxTree;
-__export(require("./parser/parser"));
+Object.defineProperty(exports, "SyntaxTree", { enumerable: true, get: function () { return parser_1.SyntaxTree; } });
+__exportStar(require("./parser/parser"), exports);
 var analyzer_1 = require("./parser/analyzer");
-exports.AcceptableSyntaxes = analyzer_1.AcceptableSyntaxes;
-exports.DefaultAnalyzer = analyzer_1.DefaultAnalyzer;
+Object.defineProperty(exports, "AcceptableSyntaxes", { enumerable: true, get: function () { return analyzer_1.AcceptableSyntaxes; } });
+Object.defineProperty(exports, "DefaultAnalyzer", { enumerable: true, get: function () { return analyzer_1.DefaultAnalyzer; } });
 var validator_1 = require("./parser/validator");
-exports.DefaultValidator = validator_1.DefaultValidator;
+Object.defineProperty(exports, "DefaultValidator", { enumerable: true, get: function () { return validator_1.DefaultValidator; } });
 var builder_1 = require("./builder/builder");
-exports.DefaultBuilder = builder_1.DefaultBuilder;
+Object.defineProperty(exports, "DefaultBuilder", { enumerable: true, get: function () { return builder_1.DefaultBuilder; } });
 var htmlBuilder_1 = require("./builder/htmlBuilder");
-exports.HtmlBuilder = htmlBuilder_1.HtmlBuilder;
+Object.defineProperty(exports, "HtmlBuilder", { enumerable: true, get: function () { return htmlBuilder_1.HtmlBuilder; } });
 var textBuilder_1 = require("./builder/textBuilder");
-exports.TextBuilder = textBuilder_1.TextBuilder;
+Object.defineProperty(exports, "TextBuilder", { enumerable: true, get: function () { return textBuilder_1.TextBuilder; } });
 var analyzer_2 = require("./parser/analyzer");
-exports.SyntaxType = analyzer_2.SyntaxType;
+Object.defineProperty(exports, "SyntaxType", { enumerable: true, get: function () { return analyzer_2.SyntaxType; } });
 /**
  * ReVIEW文書のコンパイルを開始する。
  * @param setup
@@ -2693,6 +2674,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AnalyzerError = exports.DummyError = void 0;
 var DummyError = /** @class */ (function () {
     function DummyError(message) {
         this.message = message;
@@ -2726,6 +2708,7 @@ exports.AnalyzerError = AnalyzerError;
 // parser/ と builder/ で共用するモデル
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ContentChunk = exports.Book = exports.BuilderProcess = exports.Process = exports.BookProcess = exports.ProcessReport = exports.ReportLevel = void 0;
 var i18n_1 = require("../i18n/i18n");
 var walker_1 = require("../parser/walker");
 /**
@@ -2833,11 +2816,10 @@ var Process = /** @class */ (function () {
                 }
             });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Process.prototype.addSymbol = function (symbol) {
-        symbol.part = this.part;
         symbol.chapter = this.chapter;
         this.symbols.push(symbol);
     };
@@ -2851,44 +2833,87 @@ var Process = /** @class */ (function () {
             });
             return result;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Process.prototype.constructReferenceTo = function (node, value, targetSymbol, separator) {
+        var _a, _b, _c;
         if (targetSymbol === void 0) { targetSymbol = node.symbol; }
         if (separator === void 0) { separator = "|"; }
         var splitted = value.split(separator);
-        if (splitted.length === 3) {
+        if (targetSymbol === "chapter") {
+            // 常に {章ID} でなければならない
+            if (splitted.length !== 1) {
+                var message = i18n_1.t("compile.args_length_mismatch", "1", splitted.length);
+                this.error(message, node);
+                return null;
+            }
             return {
-                partName: splitted[0],
-                chapterName: splitted[1],
-                targetSymbol: targetSymbol,
-                label: splitted[2]
-            };
-        }
-        else if (splitted.length === 2) {
-            return {
-                part: this.part,
-                partName: (this.part || {}).name,
                 chapterName: splitted[0],
-                targetSymbol: targetSymbol,
-                label: splitted[1]
-            };
-        }
-        else if (splitted.length === 1) {
-            return {
-                part: this.part,
-                partName: (this.part || {}).name,
-                chapter: this.chapter,
-                chapterName: (this.chapter || {}).name,
                 targetSymbol: targetSymbol,
                 label: splitted[0]
             };
         }
+        if (targetSymbol === "fn") {
+            // 常に {ラベル} でなければならない
+            if (splitted.length !== 1) {
+                var message = i18n_1.t("compile.args_length_mismatch", "1", splitted.length);
+                this.error(message, node);
+                return null;
+            }
+            return {
+                chapter: this.chapter,
+                chapterName: (_a = this.chapter) === null || _a === void 0 ? void 0 : _a.name,
+                targetSymbol: targetSymbol,
+                label: splitted[0]
+            };
+        }
+        if (targetSymbol !== "hd") {
+            // {ラベル} か {章ID|ラベル}
+            if (splitted.length === 2) {
+                return {
+                    chapterName: splitted[0],
+                    targetSymbol: targetSymbol,
+                    label: splitted[1]
+                };
+            }
+            else if (splitted.length === 1) {
+                return {
+                    chapter: this.chapter,
+                    chapterName: (_b = this.chapter) === null || _b === void 0 ? void 0 : _b.name,
+                    targetSymbol: targetSymbol,
+                    label: splitted[0]
+                };
+            }
+            else {
+                var message = i18n_1.t("compile.args_length_mismatch", "1 or 2", splitted.length);
+                this.error(message, node);
+                return null;
+            }
+        }
         else {
-            var message = i18n_1.t("compile.args_length_mismatch", "1 or 2 or 3", splitted.length);
-            this.error(message, node);
-            return null;
+            // {章ID|パス} か {パス}
+            // FIXME: | 区切りのパスサポートと重複したキャプションのサポート
+            if (splitted.length === 2) {
+                return {
+                    chapterName: splitted[0],
+                    targetSymbol: targetSymbol,
+                    label: splitted[1]
+                };
+            }
+            else if (splitted.length === 1) {
+                return {
+                    chapter: this.chapter,
+                    chapterName: (_c = this.chapter) === null || _c === void 0 ? void 0 : _c.name,
+                    targetSymbol: targetSymbol,
+                    label: splitted[0]
+                };
+            }
+            else {
+                var message = i18n_1.t("compile.args_hd_path_not_implemented", splitted.length);
+                this.error(message, node);
+                return null;
+            }
         }
     };
     Process.prototype.addAfterProcess = function (func) {
@@ -2911,21 +2936,21 @@ var BuilderProcess = /** @class */ (function () {
         get: function () {
             return this.base.info.bind(this.base);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BuilderProcess.prototype, "warn", {
         get: function () {
             return this.base.warn.bind(this.base);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BuilderProcess.prototype, "error", {
         get: function () {
             return this.base.error.bind(this.base);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     BuilderProcess.prototype.out = function (data) {
@@ -2947,14 +2972,14 @@ var BuilderProcess = /** @class */ (function () {
         get: function () {
             return this.base.input;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BuilderProcess.prototype, "symbols", {
         get: function () {
             return this.base.symbols;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     BuilderProcess.prototype.findChapter = function (chapId) {
@@ -3071,7 +3096,7 @@ var Book = /** @class */ (function () {
             this.postdef.forEach(function (chunk) { return add(chunk); });
             return tmpArray;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Book.prototype, "reports", {
@@ -3088,21 +3113,21 @@ var Book = /** @class */ (function () {
             this.postdef.forEach(function (chunk) { return gatherReports(chunk); });
             return results;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Book.prototype, "hasError", {
         get: function () {
             return this.reports.some(function (report) { return report.level === ReportLevel.Error; });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Book.prototype, "hasWarning", {
         get: function () {
             return this.reports.some(function (report) { return report.level === ReportLevel.Warning; });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return Book;
@@ -3136,7 +3161,7 @@ var ContentChunk = /** @class */ (function () {
             this._input = value;
             this.process.input = value;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ContentChunk.prototype.createBuilderProcess = function (builder) {
@@ -3162,6 +3187,7 @@ exports.ContentChunk = ContentChunk;
 },{"../i18n/i18n":8,"../parser/walker":18}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DefaultAnalyzer = exports.AcceptableSyntax = exports.AcceptableSyntaxes = exports.SyntaxType = void 0;
 var i18n_1 = require("../i18n/i18n");
 var exception_1 = require("../js/exception");
 var parser_1 = require("../parser/parser");
@@ -3208,21 +3234,21 @@ var AcceptableSyntaxes = /** @class */ (function () {
         get: function () {
             return this.acceptableSyntaxes.filter(function (s) { return s.type === SyntaxType.Inline; });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(AcceptableSyntaxes.prototype, "blocks", {
         get: function () {
             return this.acceptableSyntaxes.filter(function (s) { return s.type === SyntaxType.Block; });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(AcceptableSyntaxes.prototype, "others", {
         get: function () {
             return this.acceptableSyntaxes.filter(function (s) { return s.type === SyntaxType.Other; });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     AcceptableSyntaxes.prototype.toJSON = function () {
@@ -3955,6 +3981,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SingleLineCommentSyntaxTree = exports.TextNodeSyntaxTree = exports.DlistElementSyntaxTree = exports.OlistElementSyntaxTree = exports.UlistElementSyntaxTree = exports.ArgumentSyntaxTree = exports.ColumnHeadlineSyntaxTree = exports.ColumnSyntaxTree = exports.InlineElementSyntaxTree = exports.BlockElementSyntaxTree = exports.HeadlineSyntaxTree = exports.ChapterSyntaxTree = exports.NodeSyntaxTree = exports.SyntaxTree = exports.RuleName = exports.ParseError = exports.transform = exports.parse = void 0;
 var PEG = require("../../resources/grammar");
 var walker_1 = require("./walker");
 /**
@@ -4544,7 +4571,7 @@ var ChapterSyntaxTree = /** @class */ (function (_super) {
         get: function () {
             return this.headline.level;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ChapterSyntaxTree.prototype, "fqn", {
@@ -4561,7 +4588,7 @@ var ChapterSyntaxTree = /** @class */ (function (_super) {
             }).join(".");
             return result;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ChapterSyntaxTree;
@@ -4624,7 +4651,7 @@ var ColumnSyntaxTree = /** @class */ (function (_super) {
         get: function () {
             return this.headline.level;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ColumnSyntaxTree.prototype, "fqn", {
@@ -4641,7 +4668,7 @@ var ColumnSyntaxTree = /** @class */ (function (_super) {
             }).join(".");
             return result;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ColumnSyntaxTree;
@@ -4727,6 +4754,7 @@ exports.SingleLineCommentSyntaxTree = SingleLineCommentSyntaxTree;
 },{"../../resources/grammar":21,"./walker":18}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SyntaxPreprocessor = void 0;
 var parser_1 = require("./parser");
 var walker_1 = require("./walker");
 var utils_1 = require("../utils/utils");
@@ -4971,6 +4999,7 @@ exports.SyntaxPreprocessor = SyntaxPreprocessor;
 },{"../utils/utils":20,"./parser":15,"./walker":18}],17:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DefaultValidator = void 0;
 var i18n_1 = require("../i18n/i18n");
 var analyzer_1 = require("./analyzer");
 var walker_1 = require("./walker");
@@ -5124,16 +5153,11 @@ var DefaultValidator = /** @class */ (function () {
             if (!referenceTo) {
                 return;
             }
-            if (!referenceTo.part && referenceTo.partName) {
-                book.allChunks.forEach(function (chunk) {
-                    if (referenceTo.partName === chunk.name) {
-                        referenceTo.part = chunk;
-                    }
-                });
-            }
             if (!referenceTo.chapter && referenceTo.chapterName) {
-                referenceTo.part.nodes.forEach(function (chunk) {
-                    if (referenceTo.chapterName === chunk.name) {
+                var chapterFileName_1 = referenceTo.chapterName + ".re";
+                // 部がない場合、単純に章を探す
+                book.allChunks.forEach(function (chunk) {
+                    if (chapterFileName_1 === chunk.name) {
                         referenceTo.chapter = chunk;
                     }
                 });
@@ -5144,7 +5168,7 @@ var DefaultValidator = /** @class */ (function () {
             if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
                 var reference_1 = symbol.referenceTo;
                 symbols.forEach(function (symbol) {
-                    if (reference_1.part === symbol.part && reference_1.chapter === symbol.chapter && reference_1.targetSymbol === symbol.symbolName && reference_1.label === symbol.labelName) {
+                    if (reference_1.chapter === symbol.chapter && reference_1.targetSymbol === symbol.symbolName && reference_1.label === symbol.labelName) {
                         reference_1.referenceNode = symbol.node;
                     }
                 });
@@ -5181,6 +5205,7 @@ exports.DefaultValidator = DefaultValidator;
 },{"../i18n/i18n":8,"../utils/utils":20,"./analyzer":14,"./walker":18}],18:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.visitAsync = exports.visit = exports.walk = void 0;
 var parser_1 = require("./parser");
 /**
  * 指定された構文木を歩きまわる。
@@ -5669,6 +5694,7 @@ var AsyncTaskPool = /** @class */ (function () {
 },{"./parser":15}],19:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.dlistElement = exports.olistElement = exports.ulistElement = exports.braceArg = exports.columnTerminator = exports.columnHeadline = exports.column = exports.inlineElement = exports.blockElement = exports.headline = exports.chapter = exports.text = exports.contents = exports.content = exports.setup = void 0;
 var parser_1 = require("../parser/parser");
 var env;
 function checkRuleName(ruleName) {
@@ -5837,6 +5863,7 @@ exports.dlistElement = dlistElement;
 },{"../parser/parser":15}],20:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Exec = exports.stringRepeat = exports.padLeft = exports.linesToFigure = exports.IO = exports.target2builder = exports.getHeadlineLevels = exports.findChapterOrColumn = exports.findChapter = exports.findUp = exports.nodeContentToString = exports.nodeToString = exports.flatten = exports.isAMD = exports.isNodeJS = exports.isBrowser = void 0;
 var compilerModel_1 = require("../model/compilerModel");
 var parser_1 = require("../parser/parser");
 var textBuilder_1 = require("../builder/textBuilder");
@@ -6013,6 +6040,35 @@ function findChapterOrColumn(node, level) {
     return chapter || column;
 }
 exports.findChapterOrColumn = findChapterOrColumn;
+function getHeadlineLevels(node) {
+    var numbers = {};
+    var maxLevel = 0;
+    walker_1.walk(node, function (node) {
+        if (node instanceof parser_1.ChapterSyntaxTree) {
+            numbers[node.level] = node.no;
+            maxLevel = Math.max(maxLevel, node.level);
+        }
+        else if (node instanceof parser_1.ColumnSyntaxTree) {
+            numbers[node.level] = -1;
+            maxLevel = Math.max(maxLevel, node.level);
+        }
+        return node.parentNode;
+    });
+    var result = [];
+    for (var i = 1; i <= maxLevel; i++) {
+        if (numbers[i] === -1) {
+            result.push(0);
+        }
+        else if (typeof numbers[i] === "undefined") {
+            result.push(1);
+        }
+        else {
+            result.push(numbers[i] || 0);
+        }
+    }
+    return result;
+}
+exports.getHeadlineLevels = getHeadlineLevels;
 function target2builder(target) {
     "use strict";
     // TODO 適当になおす…

@@ -7,9 +7,9 @@
       "offset": 0
     },
     "end": {
-      "line": 5,
+      "line": 8,
       "column": 1,
-      "offset": 56
+      "offset": 101
     }
   },
   "childNodes": [
@@ -22,9 +22,9 @@
           "offset": 0
         },
         "end": {
-          "line": 5,
+          "line": 8,
           "column": 1,
-          "offset": 56
+          "offset": 101
         }
       },
       "childNodes": [
@@ -94,7 +94,6 @@
           },
           "text": [],
           "no": 1,
-          "level": 1,
           "childNodes": [
             {
               "ruleName": "Chapter",
@@ -178,7 +177,6 @@
               },
               "text": [],
               "no": 1,
-              "level": 2,
               "childNodes": [
                 {
                   "ruleName": "Chapter",
@@ -246,7 +244,6 @@
                   },
                   "text": [],
                   "no": 1,
-                  "level": 3,
                   "childNodes": [
                     {
                       "ruleName": "Chapter",
@@ -314,8 +311,214 @@
                       },
                       "text": [],
                       "no": 1,
-                      "level": 4,
-                      "childNodes": []
+                      "childNodes": [
+                        {
+                          "ruleName": "Chapter",
+                          "location": {
+                            "start": {
+                              "line": 5,
+                              "column": 1,
+                              "offset": 56
+                            },
+                            "end": {
+                              "line": 6,
+                              "column": 1,
+                              "offset": 70
+                            }
+                          },
+                          "comments": [],
+                          "headline": {
+                            "ruleName": "Headline",
+                            "location": {
+                              "start": {
+                                "line": 5,
+                                "column": 1,
+                                "offset": 56
+                              },
+                              "end": {
+                                "line": 6,
+                                "column": 1,
+                                "offset": 70
+                              }
+                            },
+                            "level": 5,
+                            "caption": {
+                              "ruleName": "ContentInlines",
+                              "location": {
+                                "start": {
+                                  "line": 5,
+                                  "column": 7,
+                                  "offset": 62
+                                },
+                                "end": {
+                                  "line": 5,
+                                  "column": 14,
+                                  "offset": 69
+                                }
+                              },
+                              "childNodes": [
+                                {
+                                  "ruleName": "ContentInlineText",
+                                  "location": {
+                                    "start": {
+                                      "line": 5,
+                                      "column": 7,
+                                      "offset": 62
+                                    },
+                                    "end": {
+                                      "line": 5,
+                                      "column": 14,
+                                      "offset": 69
+                                    }
+                                  },
+                                  "text": "level 5"
+                                }
+                              ]
+                            }
+                          },
+                          "text": [],
+                          "no": 1,
+                          "childNodes": [
+                            {
+                              "ruleName": "Chapter",
+                              "location": {
+                                "start": {
+                                  "line": 6,
+                                  "column": 1,
+                                  "offset": 70
+                                },
+                                "end": {
+                                  "line": 7,
+                                  "column": 1,
+                                  "offset": 85
+                                }
+                              },
+                              "comments": [],
+                              "headline": {
+                                "ruleName": "Headline",
+                                "location": {
+                                  "start": {
+                                    "line": 6,
+                                    "column": 1,
+                                    "offset": 70
+                                  },
+                                  "end": {
+                                    "line": 7,
+                                    "column": 1,
+                                    "offset": 85
+                                  }
+                                },
+                                "level": 6,
+                                "caption": {
+                                  "ruleName": "ContentInlines",
+                                  "location": {
+                                    "start": {
+                                      "line": 6,
+                                      "column": 8,
+                                      "offset": 77
+                                    },
+                                    "end": {
+                                      "line": 6,
+                                      "column": 15,
+                                      "offset": 84
+                                    }
+                                  },
+                                  "childNodes": [
+                                    {
+                                      "ruleName": "ContentInlineText",
+                                      "location": {
+                                        "start": {
+                                          "line": 6,
+                                          "column": 8,
+                                          "offset": 77
+                                        },
+                                        "end": {
+                                          "line": 6,
+                                          "column": 15,
+                                          "offset": 84
+                                        }
+                                      },
+                                      "text": "level 6"
+                                    }
+                                  ]
+                                }
+                              },
+                              "text": [],
+                              "no": 1,
+                              "childNodes": [
+                                {
+                                  "ruleName": "Chapter",
+                                  "location": {
+                                    "start": {
+                                      "line": 7,
+                                      "column": 1,
+                                      "offset": 85
+                                    },
+                                    "end": {
+                                      "line": 8,
+                                      "column": 1,
+                                      "offset": 101
+                                    }
+                                  },
+                                  "comments": [],
+                                  "headline": {
+                                    "ruleName": "Headline",
+                                    "location": {
+                                      "start": {
+                                        "line": 7,
+                                        "column": 1,
+                                        "offset": 85
+                                      },
+                                      "end": {
+                                        "line": 8,
+                                        "column": 1,
+                                        "offset": 101
+                                      }
+                                    },
+                                    "level": 7,
+                                    "caption": {
+                                      "ruleName": "ContentInlines",
+                                      "location": {
+                                        "start": {
+                                          "line": 7,
+                                          "column": 9,
+                                          "offset": 93
+                                        },
+                                        "end": {
+                                          "line": 7,
+                                          "column": 16,
+                                          "offset": 100
+                                        }
+                                      },
+                                      "childNodes": [
+                                        {
+                                          "ruleName": "ContentInlineText",
+                                          "location": {
+                                            "start": {
+                                              "line": 7,
+                                              "column": 9,
+                                              "offset": 93
+                                            },
+                                            "end": {
+                                              "line": 7,
+                                              "column": 16,
+                                              "offset": 100
+                                            }
+                                          },
+                                          "text": "level 7"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "text": [],
+                                  "no": 1,
+                                  "childNodes": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
                 }
