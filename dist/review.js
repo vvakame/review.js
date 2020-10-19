@@ -2488,7 +2488,9 @@ if (typeof window !== "undefined" && window.sprintf) {
 else {
     sprintf = require("sprintf-js").sprintf;
 }
-utils_2.isNodeJS(); // TODO utilsをi18n.ts内で使わないと実行時エラーになる
+if (utils_2.isNodeJS != null) {
+    utils_2.isNodeJS(); // TODO utilsをi18n.ts内で使わないと実行時エラーになる
+}
 function t(str) {
     "use strict";
     var args = [];
