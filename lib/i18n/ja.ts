@@ -79,6 +79,7 @@ export let ja: any = {
         "duplicated_label_headline": "ラベルに重複があるようです。 =={a-label} ラベル のように明示的にラベルを指定することを回避することができます。",
         // TODO できれば 引数 という言葉を避けたい…
         "args_length_mismatch": "引数の数に齟齬があります。 期待値 %s, 実際 %s",
+        "args_hd_path_not_implemented": "キャプションによる参照はまだ実装されていません。{ラベル}か{章ID|ラベル}の形式を使用してください。指定された要素は %s でした。",
         "body_string_only": "内容は全て文字でなければいけません。",
         "chapter_not_toplevel": "深さ1のチャプターは最上位になければいけません。",
         "chapter_topleve_eq1": "最上位のチャプターは深さ1のものでなければいけません。",

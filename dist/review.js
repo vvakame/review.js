@@ -2560,6 +2560,7 @@ exports.ja = {
         "duplicated_label_headline": "ラベルに重複があるようです。 =={a-label} ラベル のように明示的にラベルを指定することを回避することができます。",
         // TODO できれば 引数 という言葉を避けたい…
         "args_length_mismatch": "引数の数に齟齬があります。 期待値 %s, 実際 %s",
+        "args_hd_path_not_implemented": "キャプションによる参照はまだ実装されていません。{ラベル}か{章ID|ラベル}の形式を使用してください。指定された要素は %s でした。",
         "body_string_only": "内容は全て文字でなければいけません。",
         "chapter_not_toplevel": "深さ1のチャプターは最上位になければいけません。",
         "chapter_topleve_eq1": "最上位のチャプターは深さ1のものでなければいけません。",
@@ -2819,7 +2820,6 @@ var Process = /** @class */ (function () {
         configurable: true
     });
     Process.prototype.addSymbol = function (symbol) {
-        symbol.part = this.part;
         symbol.chapter = this.chapter;
         this.symbols.push(symbol);
     };
@@ -2841,37 +2841,79 @@ var Process = /** @class */ (function () {
         if (targetSymbol === void 0) { targetSymbol = node.symbol; }
         if (separator === void 0) { separator = "|"; }
         var splitted = value.split(separator);
-        if (splitted.length === 3) {
+        if (targetSymbol === "chapter") {
+            // 常に {章ID} でなければならない
+            if (splitted.length !== 1) {
+                var message = i18n_1.t("compile.args_length_mismatch", "1", splitted.length);
+                this.error(message, node);
+                return null;
+            }
             return {
-                partName: splitted[0],
-                chapterName: splitted[1],
-                targetSymbol: targetSymbol,
-                label: splitted[2]
-            };
-        }
-        else if (splitted.length === 2) {
-            return {
-                part: this.part,
-                partName: (_a = this.part) === null || _a === void 0 ? void 0 : _a.name,
                 chapterName: splitted[0],
-                targetSymbol: targetSymbol,
-                label: splitted[1]
-            };
-        }
-        else if (splitted.length === 1) {
-            return {
-                part: this.part,
-                partName: (_b = this.part) === null || _b === void 0 ? void 0 : _b.name,
-                chapter: this.chapter,
-                chapterName: (_c = this.chapter) === null || _c === void 0 ? void 0 : _c.name,
                 targetSymbol: targetSymbol,
                 label: splitted[0]
             };
         }
+        if (targetSymbol === "fn") {
+            // 常に {ラベル} でなければならない
+            if (splitted.length !== 1) {
+                var message = i18n_1.t("compile.args_length_mismatch", "1", splitted.length);
+                this.error(message, node);
+                return null;
+            }
+            return {
+                chapter: this.chapter,
+                chapterName: (_a = this.chapter) === null || _a === void 0 ? void 0 : _a.name,
+                targetSymbol: targetSymbol,
+                label: splitted[0]
+            };
+        }
+        if (targetSymbol !== "hd") {
+            // {ラベル} か {章ID|ラベル}
+            if (splitted.length === 2) {
+                return {
+                    chapterName: splitted[0],
+                    targetSymbol: targetSymbol,
+                    label: splitted[1]
+                };
+            }
+            else if (splitted.length === 1) {
+                return {
+                    chapter: this.chapter,
+                    chapterName: (_b = this.chapter) === null || _b === void 0 ? void 0 : _b.name,
+                    targetSymbol: targetSymbol,
+                    label: splitted[0]
+                };
+            }
+            else {
+                var message = i18n_1.t("compile.args_length_mismatch", "1 or 2", splitted.length);
+                this.error(message, node);
+                return null;
+            }
+        }
         else {
-            var message = i18n_1.t("compile.args_length_mismatch", "1 or 2 or 3", splitted.length);
-            this.error(message, node);
-            return null;
+            // {章ID|パス} か {パス}
+            // FIXME: | 区切りのパスサポートと重複したキャプションのサポート
+            if (splitted.length === 2) {
+                return {
+                    chapterName: splitted[0],
+                    targetSymbol: targetSymbol,
+                    label: splitted[1]
+                };
+            }
+            else if (splitted.length === 1) {
+                return {
+                    chapter: this.chapter,
+                    chapterName: (_c = this.chapter) === null || _c === void 0 ? void 0 : _c.name,
+                    targetSymbol: targetSymbol,
+                    label: splitted[0]
+                };
+            }
+            else {
+                var message = i18n_1.t("compile.args_hd_path_not_implemented", splitted.length);
+                this.error(message, node);
+                return null;
+            }
         }
     };
     Process.prototype.addAfterProcess = function (func) {
@@ -5111,33 +5153,14 @@ var DefaultValidator = /** @class */ (function () {
             if (!referenceTo) {
                 return;
             }
-            if (!referenceTo.part && referenceTo.partName) {
-                // FIXME: 現状、Re:VIEWで部は参照できないはず
+            if (!referenceTo.chapter && referenceTo.chapterName) {
+                var chapterFileName_1 = referenceTo.chapterName + ".re";
+                // 部がない場合、単純に章を探す
                 book.allChunks.forEach(function (chunk) {
-                    if (referenceTo.partName === chunk.name) {
-                        referenceTo.part = chunk;
+                    if (chapterFileName_1 === chunk.name) {
+                        referenceTo.chapter = chunk;
                     }
                 });
-            }
-            if (!referenceTo.chapter && referenceTo.chapterName) {
-                if (referenceTo.part != null) {
-                    // 部がある場合、現在の部からの参照になるはず
-                    // FIXME: 現状、Re:VIEWで部は参照できないはず
-                    referenceTo.part.nodes.forEach(function (chunk) {
-                        if (referenceTo.chapterName === chunk.name) {
-                            referenceTo.chapter = chunk;
-                        }
-                    });
-                }
-                else {
-                    var chapterFileName_1 = referenceTo.chapterName + ".re";
-                    // 部がない場合、単純に章を探す
-                    book.allChunks.forEach(function (chunk) {
-                        if (chapterFileName_1 === chunk.name) {
-                            referenceTo.chapter = chunk;
-                        }
-                    });
-                }
             }
         });
         // referenceTo.node の解決
@@ -5145,7 +5168,7 @@ var DefaultValidator = /** @class */ (function () {
             if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
                 var reference_1 = symbol.referenceTo;
                 symbols.forEach(function (symbol) {
-                    if (reference_1.part === symbol.part && reference_1.chapter === symbol.chapter && reference_1.targetSymbol === symbol.symbolName && reference_1.label === symbol.labelName) {
+                    if (reference_1.chapter === symbol.chapter && reference_1.targetSymbol === symbol.symbolName && reference_1.label === symbol.labelName) {
                         reference_1.referenceNode = symbol.node;
                     }
                 });
