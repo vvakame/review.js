@@ -1,8 +1,14 @@
 ■H1■第1章　level 1
 
-■H2■level 2
+■H2■1.1　level 2
 
-■H3■level 3
+■H3■1.1.1　level 3
 
 ■H4■level 4
+
+■H5■level 5
+
+■H6■level 6
+
+■H7■level 7
 

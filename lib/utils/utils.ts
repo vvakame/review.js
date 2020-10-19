@@ -205,6 +205,32 @@ export function findChapterOrColumn(node: SyntaxTree, level?: number): NodeSynta
     return chapter || column;
 }
 
+export function getHeadlineLevels(node: SyntaxTree): number[] {
+    const numbers: { [no: number]: number; } = {};
+    let maxLevel = 0;
+    walk(node, (node: SyntaxTree) => {
+        if (node instanceof ChapterSyntaxTree) {
+            numbers[node.level] = node.no;
+            maxLevel = Math.max(maxLevel, node.level);
+        } else if (node instanceof ColumnSyntaxTree) {
+            numbers[node.level] = -1;
+            maxLevel = Math.max(maxLevel, node.level);
+        }
+        return node.parentNode;
+    });
+    const result: number[] = [];
+    for (let i = 1; i <= maxLevel; i++) {
+        if (numbers[i] === -1) {
+            result.push(0);
+        } else if (typeof numbers[i] === "undefined") {
+            result.push(1);
+        } else {
+            result.push(numbers[i] || 0);
+        }
+    }
+    return result;
+}
+
 export function target2builder(target: string): Builder | null {
     "use strict";
 

@@ -348,43 +348,15 @@ var HtmlBuilder = /** @class */ (function (_super) {
             process.outRaw(" id=\"").out(node.label.arg).outRaw("\"");
         }
         process.outRaw(">");
-        var constructLabel = function (node) {
-            var numbers = {};
-            var maxLevel = 0;
-            walker_1.walk(node, function (node) {
-                if (node instanceof parser_1.ChapterSyntaxTree) {
-                    numbers[node.level] = node.no;
-                    maxLevel = Math.max(maxLevel, node.level);
-                }
-                else if (node instanceof parser_1.ColumnSyntaxTree) {
-                    numbers[node.level] = -1;
-                    maxLevel = Math.max(maxLevel, node.level);
-                }
-                return node.parentNode;
-            });
-            var result = [];
-            for (var i = 1; i <= maxLevel; i++) {
-                if (numbers[i] === -1) {
-                    result.push(0);
-                }
-                else if (typeof numbers[i] === "undefined") {
-                    result.push(1);
-                }
-                else {
-                    result.push(numbers[i] || 0);
-                }
-            }
-            return result.join("-");
-        };
-        process.outRaw("<a id=\"h").out(constructLabel(node)).outRaw("\"></a>");
+        process.outRaw("<a id=\"h").out(utils_1.getHeadlineLevels(node).join("-")).outRaw("\"></a>");
         if (node.level === 1) {
             var text = i18n_1.t("builder.chapter", node.parentNode.no);
             process.outRaw("<span class=\"secno\">");
             process.out(text).out("　");
             process.outRaw("</span>");
         }
-        else if (node.level === 2) {
-            // process.out(node.parentNode.toChapter().fqn).out("　");
+        else if (node.level < 4) {
+            process.out(utils_1.getHeadlineLevels(node).join(".")).out("　");
         }
     };
     HtmlBuilder.prototype.headlinePost = function (process, _name, node) {
@@ -1121,15 +1093,13 @@ var TextBuilder = /** @class */ (function (_super) {
         return data;
     };
     TextBuilder.prototype.headlinePre = function (process, _name, node) {
-        // TODO no の採番がレベル別になっていない
-        // TODO 2.3.2 みたいな階層を返せるメソッドが何かほしい
         process.out("■H").out(node.level).out("■");
         if (node.level === 1) {
             var text = i18n_1.t("builder.chapter", node.parentNode.no);
             process.out(text).out("　");
         }
-        else if (node.level === 2) {
-            // process.out(node.parentNode.toChapter().fqn).out("　");
+        else if (node.level < 4) {
+            process.out(utils_1.getHeadlineLevels(node).join(".")).out("　");
         }
     };
     TextBuilder.prototype.headlinePost = function (process, _name, _node) {
@@ -5873,7 +5843,7 @@ exports.dlistElement = dlistElement;
 },{"../parser/parser":15}],20:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Exec = exports.stringRepeat = exports.padLeft = exports.linesToFigure = exports.IO = exports.target2builder = exports.findChapterOrColumn = exports.findChapter = exports.findUp = exports.nodeContentToString = exports.nodeToString = exports.flatten = exports.isAMD = exports.isNodeJS = exports.isBrowser = void 0;
+exports.Exec = exports.stringRepeat = exports.padLeft = exports.linesToFigure = exports.IO = exports.target2builder = exports.getHeadlineLevels = exports.findChapterOrColumn = exports.findChapter = exports.findUp = exports.nodeContentToString = exports.nodeToString = exports.flatten = exports.isAMD = exports.isNodeJS = exports.isBrowser = void 0;
 var compilerModel_1 = require("../model/compilerModel");
 var parser_1 = require("../parser/parser");
 var textBuilder_1 = require("../builder/textBuilder");
@@ -6050,6 +6020,35 @@ function findChapterOrColumn(node, level) {
     return chapter || column;
 }
 exports.findChapterOrColumn = findChapterOrColumn;
+function getHeadlineLevels(node) {
+    var numbers = {};
+    var maxLevel = 0;
+    walker_1.walk(node, function (node) {
+        if (node instanceof parser_1.ChapterSyntaxTree) {
+            numbers[node.level] = node.no;
+            maxLevel = Math.max(maxLevel, node.level);
+        }
+        else if (node instanceof parser_1.ColumnSyntaxTree) {
+            numbers[node.level] = -1;
+            maxLevel = Math.max(maxLevel, node.level);
+        }
+        return node.parentNode;
+    });
+    var result = [];
+    for (var i = 1; i <= maxLevel; i++) {
+        if (numbers[i] === -1) {
+            result.push(0);
+        }
+        else if (typeof numbers[i] === "undefined") {
+            result.push(1);
+        }
+        else {
+            result.push(numbers[i] || 0);
+        }
+    }
+    return result;
+}
+exports.getHeadlineLevels = getHeadlineLevels;
 function target2builder(target) {
     "use strict";
     // TODO 適当になおす…

@@ -10,7 +10,7 @@ import { NodeSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, Headli
 
 import { visit, TreeVisitor, TreeVisitorReturn } from "../parser/walker";
 
-import { nodeContentToString, findChapter, padLeft, linesToFigure } from "../utils/utils";
+import { nodeContentToString, findChapter, padLeft, linesToFigure, getHeadlineLevels } from "../utils/utils";
 
 export class TextBuilder extends DefaultBuilder {
     extention = "txt";
@@ -20,14 +20,12 @@ export class TextBuilder extends DefaultBuilder {
     }
 
     headlinePre(process: BuilderProcess, _name: string, node: HeadlineSyntaxTree) {
-        // TODO no の採番がレベル別になっていない
-        // TODO 2.3.2 みたいな階層を返せるメソッドが何かほしい
         process.out("■H").out(node.level).out("■");
         if (node.level === 1) {
             let text = t("builder.chapter", node.parentNode.no);
             process.out(text).out("　");
-        } else if (node.level === 2) {
-            // process.out(node.parentNode.toChapter().fqn).out("　");
+        } else if (node.level < 4) {
+            process.out(getHeadlineLevels(node).join(".")).out("　");
         }
     }
 

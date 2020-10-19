@@ -83,7 +83,7 @@ describe("ReVIEW.Buildの", () => {
             )
                 .then(success => {
                     let book = success.book;
-                    let expected = "■H1■第1章　hoge\n\n■H2■fuga\n\n■H3■moge\n\n■H2■piyo\n\n■H3■foo\n\n■H2■bar\n\n";
+                    let expected = "■H1■第1章　hoge\n\n■H2■1.1　fuga\n\n■H3■1.1.1　moge\n\n■H2■1.2　piyo\n\n■H3■1.2.1　foo\n\n■H2■1.3　bar\n\n";
                     assert(book.contents[0].findResultByBuilder(builder) === expected);
                 });
         });
