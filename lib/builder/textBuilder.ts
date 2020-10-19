@@ -239,26 +239,6 @@ export class TextBuilder extends DefaultBuilder {
         process.out("◆→終了:インラインリスト←◆\n");
     }
 
-    inline_hd_pre(process: BuilderProcess, node: InlineElementSyntaxTree) {
-        process.out("「");
-        let chapter = findChapter(node);
-        if (!chapter) {
-            process.error(t("builder.chapter_not_found", 1), node);
-            return false;
-        }
-        if (chapter.level === 1) {
-            process.out(chapter.fqn).out("章 ");
-        } else {
-            process.out(chapter.fqn).out(" ");
-        }
-        process.out(nodeContentToString(process, chapter.headline));
-        return false;
-    }
-
-    inline_hd_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
-        process.out("」");
-    }
-
     inline_br(process: BuilderProcess, _node: InlineElementSyntaxTree) {
         process.out("\n");
     }

@@ -178,6 +178,7 @@ export class DefaultValidator implements Validator {
                 return;
             }
             if (!referenceTo.part && referenceTo.partName) {
+                // FIXME: 現状、Re:VIEWで部は参照できないはず
                 book.allChunks.forEach(chunk => {
                     if (referenceTo.partName === chunk.name) {
                         referenceTo.part = chunk;
@@ -185,11 +186,23 @@ export class DefaultValidator implements Validator {
                 });
             }
             if (!referenceTo.chapter && referenceTo.chapterName) {
-                referenceTo.part!.nodes.forEach(chunk => {
-                    if (referenceTo.chapterName === chunk.name) {
-                        referenceTo.chapter = chunk;
-                    }
-                });
+                if (referenceTo.part != null) {
+                    // 部がある場合、現在の部からの参照になるはず
+                    // FIXME: 現状、Re:VIEWで部は参照できないはず
+                    referenceTo.part.nodes.forEach(chunk => {
+                        if (referenceTo.chapterName === chunk.name) {
+                            referenceTo.chapter = chunk;
+                        }
+                    });
+                } else {
+                    const chapterFileName = `${referenceTo.chapterName}.re`;
+                    // 部がない場合、単純に章を探す
+                    book.allChunks.forEach(chunk => {
+                        if (chapterFileName === chunk.name) {
+                            referenceTo.chapter = chunk;
+                        }
+                    });
+                }
             }
         });
         // referenceTo.node の解決

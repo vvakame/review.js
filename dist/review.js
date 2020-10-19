@@ -2,6 +2,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DefaultBuilder = void 0;
+var i18n_1 = require("../i18n/i18n");
 var exception_1 = require("../js/exception");
 var parser_1 = require("../parser/parser");
 var walker_1 = require("../parser/walker");
@@ -232,6 +233,26 @@ var DefaultBuilder = /** @class */ (function () {
         }
         return founds[0];
     };
+    DefaultBuilder.prototype.inline_hd_pre = function (process, node) {
+        var _a, _b;
+        process.out("「");
+        var chapter = (_b = (_a = this.findReference(process, node).referenceTo) === null || _a === void 0 ? void 0 : _a.referenceNode) === null || _b === void 0 ? void 0 : _b.parentNode.toChapter();
+        if (!chapter) {
+            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
+            return false;
+        }
+        if (chapter.level === 1) {
+            process.out(chapter.fqn).out("章 ");
+        }
+        else {
+            process.out(chapter.fqn).out(" ");
+        }
+        process.out(chapter.headline.caption.childNodes[0].toTextNode().text);
+        return false;
+    };
+    DefaultBuilder.prototype.inline_hd_post = function (process, _node) {
+        process.out("」");
+    };
     DefaultBuilder.prototype.block_raw = function (process, node) {
         var _this = this;
         // TODO Ruby版との出力差が結構あるのでテスト含め直す
@@ -272,7 +293,7 @@ var DefaultBuilder = /** @class */ (function () {
 }());
 exports.DefaultBuilder = DefaultBuilder;
 
-},{"../js/exception":12,"../parser/parser":15,"../parser/walker":18,"../utils/utils":20}],2:[function(require,module,exports){
+},{"../i18n/i18n":8,"../js/exception":12,"../parser/parser":15,"../parser/walker":18,"../utils/utils":20}],2:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -575,25 +596,6 @@ var HtmlBuilder = /** @class */ (function (_super) {
     };
     HtmlBuilder.prototype.block_emlistnum_post = function (process, _node) {
         process.outRaw("\n</pre>\n").outRaw("</div>\n");
-    };
-    HtmlBuilder.prototype.inline_hd_pre = function (process, node) {
-        process.out("「");
-        var chapter = utils_1.findChapter(node);
-        if (!chapter) {
-            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
-            return false;
-        }
-        if (chapter.level === 1) {
-            process.out(chapter.fqn).out("章 ");
-        }
-        else {
-            process.out(chapter.fqn).out(" ");
-        }
-        process.out(utils_1.nodeContentToString(process, chapter.headline));
-        return false;
-    };
-    HtmlBuilder.prototype.inline_hd_post = function (process, _node) {
-        process.out("」");
     };
     HtmlBuilder.prototype.inline_br = function (process, _node) {
         process.outRaw("<br />");
@@ -1289,25 +1291,6 @@ var TextBuilder = /** @class */ (function (_super) {
     };
     TextBuilder.prototype.block_emlistnum_post = function (process, _node) {
         process.out("◆→終了:インラインリスト←◆\n");
-    };
-    TextBuilder.prototype.inline_hd_pre = function (process, node) {
-        process.out("「");
-        var chapter = utils_1.findChapter(node);
-        if (!chapter) {
-            process.error(i18n_1.t("builder.chapter_not_found", 1), node);
-            return false;
-        }
-        if (chapter.level === 1) {
-            process.out(chapter.fqn).out("章 ");
-        }
-        else {
-            process.out(chapter.fqn).out(" ");
-        }
-        process.out(utils_1.nodeContentToString(process, chapter.headline));
-        return false;
-    };
-    TextBuilder.prototype.inline_hd_post = function (process, _node) {
-        process.out("」");
     };
     TextBuilder.prototype.inline_br = function (process, _node) {
         process.out("\n");
@@ -5129,6 +5112,7 @@ var DefaultValidator = /** @class */ (function () {
                 return;
             }
             if (!referenceTo.part && referenceTo.partName) {
+                // FIXME: 現状、Re:VIEWで部は参照できないはず
                 book.allChunks.forEach(function (chunk) {
                     if (referenceTo.partName === chunk.name) {
                         referenceTo.part = chunk;
@@ -5136,11 +5120,24 @@ var DefaultValidator = /** @class */ (function () {
                 });
             }
             if (!referenceTo.chapter && referenceTo.chapterName) {
-                referenceTo.part.nodes.forEach(function (chunk) {
-                    if (referenceTo.chapterName === chunk.name) {
-                        referenceTo.chapter = chunk;
-                    }
-                });
+                if (referenceTo.part != null) {
+                    // 部がある場合、現在の部からの参照になるはず
+                    // FIXME: 現状、Re:VIEWで部は参照できないはず
+                    referenceTo.part.nodes.forEach(function (chunk) {
+                        if (referenceTo.chapterName === chunk.name) {
+                            referenceTo.chapter = chunk;
+                        }
+                    });
+                }
+                else {
+                    var chapterFileName_1 = referenceTo.chapterName + ".re";
+                    // 部がない場合、単純に章を探す
+                    book.allChunks.forEach(function (chunk) {
+                        if (chapterFileName_1 === chunk.name) {
+                            referenceTo.chapter = chunk;
+                        }
+                    });
+                }
             }
         });
         // referenceTo.node の解決
