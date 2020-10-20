@@ -142,7 +142,7 @@ export class Controller {
         book.predef.forEach(chunk => _parse(chunk));
         book.contents.forEach(chunk => _parse(chunk));
         book.appendix.forEach(chunk => _parse(chunk));
-        book.predef.forEach(chunk => _parse(chunk));
+        book.postdef.forEach(chunk => _parse(chunk));
 
         return book;
     }
