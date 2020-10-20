@@ -18,7 +18,7 @@ export function parse(input: string): { ast: NodeSyntaxTree; cst: ConcreatSyntax
     "use strict";
 
     let rawResult = PEG.parse(input);
-    let root = transform(rawResult) !.toNode();
+    let root = transform(rawResult)!.toNode();
 
     // ParagraphSubs は構文上の都合であるだけのものなので潰す
     visit(root, {
@@ -405,11 +405,11 @@ export class SyntaxTree implements NodeLocation {
     toStringHook(_indentLevel: number, _result: string) {
     }
 
-	/**
-	 * 引数が数字かどうかチェックして違うならば例外を投げる。
-	 * @param value
-	 * @returns {*=}
-	 */
+    /**
+     * 引数が数字かどうかチェックして違うならば例外を投げる。
+     * @param value
+     * @returns {*=}
+     */
     checkNumber(value: any): number {
         if (typeof value !== "number") {
             throw new Error("number required. actual:" + (typeof value) + ":" + value);
@@ -418,11 +418,11 @@ export class SyntaxTree implements NodeLocation {
         }
     }
 
-	/**
-	 * 引数が文字列かどうかチェックして違うならば例外を投げる。
-	 * @param value
-	 * @returns {*=}
-	 */
+    /**
+     * 引数が文字列かどうかチェックして違うならば例外を投げる。
+     * @param value
+     * @returns {*=}
+     */
     checkString(value: any): string {
         if (typeof value !== "string") {
             throw new Error("string required. actual:" + (typeof value) + ":" + value);
@@ -431,11 +431,11 @@ export class SyntaxTree implements NodeLocation {
         }
     }
 
-	/**
-	 * 引数がオブジェクトかどうかチェックして違うならば例外を投げる。
-	 * @param value
-	 * @returns {*=}
-	 */
+    /**
+     * 引数がオブジェクトかどうかチェックして違うならば例外を投げる。
+     * @param value
+     * @returns {*=}
+     */
     checkObject(value: any): any {
         if (typeof value !== "object") {
             throw new Error("object required. actual:" + (typeof value) + ":" + value);
@@ -444,11 +444,11 @@ export class SyntaxTree implements NodeLocation {
         }
     }
 
-	/**
-	 * 引数がArrayかどうかチェックして違うならば例外を投げる。
-	 * @param value
-	 * @returns {*=}
-	 */
+    /**
+     * 引数がArrayかどうかチェックして違うならば例外を投げる。
+     * @param value
+     * @returns {*=}
+     */
     checkArray(value: any): any[] {
         if (!Array.isArray(value)) {
             console.log(JSON.stringify(value, null, 2));
@@ -515,93 +515,93 @@ export class SyntaxTree implements NodeLocation {
         }
     }
 
-	/**
-	 * thisをNodeSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
-	 */
+    /**
+     * thisをNodeSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     toNode(): NodeSyntaxTree {
         return this.toOtherNode<NodeSyntaxTree>(NodeSyntaxTree);
     }
 
-	/**
-	 * thisをBlockElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
-	 */
+    /**
+     * thisをBlockElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     toBlockElement(): BlockElementSyntaxTree {
         return this.toOtherNode<BlockElementSyntaxTree>(BlockElementSyntaxTree);
     }
 
-	/**
-	 * thisをInlineElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
-	 */
+    /**
+     * thisをInlineElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     toInlineElement(): InlineElementSyntaxTree {
         return this.toOtherNode<InlineElementSyntaxTree>(InlineElementSyntaxTree);
     }
 
-	/**
-	 * thisをArgumentSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
-	 */
+    /**
+     * thisをArgumentSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     toArgument(): ArgumentSyntaxTree {
         return this.toOtherNode<ArgumentSyntaxTree>(ArgumentSyntaxTree);
     }
 
-	/**
-	 * thisをChapterSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
-	 */
+    /**
+     * thisをChapterSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     toChapter(): ChapterSyntaxTree {
         return this.toOtherNode<ChapterSyntaxTree>(ChapterSyntaxTree);
     }
 
-	/**
-	 * thisをColumnSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
-	 */
+    /**
+     * thisをColumnSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     toColumn(): ColumnSyntaxTree {
         return this.toOtherNode<ColumnSyntaxTree>(ColumnSyntaxTree);
     }
 
-	/**
-	 * thisをHeadlineSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
-	 */
+    /**
+     * thisをHeadlineSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     toHeadline(): HeadlineSyntaxTree {
         return this.toOtherNode<HeadlineSyntaxTree>(HeadlineSyntaxTree);
     }
 
-	/**
-	 * thisをColumnHeadlineSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
-	 */
+    /**
+     * thisをColumnHeadlineSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     toColumnHeadline(): ColumnHeadlineSyntaxTree {
         return this.toOtherNode<ColumnHeadlineSyntaxTree>(ColumnHeadlineSyntaxTree);
     }
 
-	/**
-	 * thisをUlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
-	 */
+    /**
+     * thisをUlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     toUlist(): UlistElementSyntaxTree {
         return this.toOtherNode<UlistElementSyntaxTree>(UlistElementSyntaxTree);
     }
 
-	/**
-	 * thisをOlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
-	 */
+    /**
+     * thisをOlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     toOlist(): OlistElementSyntaxTree {
         return this.toOtherNode<OlistElementSyntaxTree>(OlistElementSyntaxTree);
     }
 
-	/**
-	 * thisをDlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
-	 */
+    /**
+     * thisをDlistElementSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     toDlist(): DlistElementSyntaxTree {
         return this.toOtherNode<DlistElementSyntaxTree>(DlistElementSyntaxTree);
     }
 
-	/**
-	 * thisをTextNodeSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
-	 */
+    /**
+     * thisをTextNodeSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     toTextNode(): TextNodeSyntaxTree {
         return this.toOtherNode<TextNodeSyntaxTree>(TextNodeSyntaxTree);
     }
 
-	/**
-	 * thisをSingleLineCommentSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
-	 */
+    /**
+     * thisをSingleLineCommentSyntaxTreeにcast可能か調べ、可能ならcastして返し、そうでなければ例外を投げる。
+     */
     toSingleLineCommentNode(): SingleLineCommentSyntaxTree {
         return this.toOtherNode<SingleLineCommentSyntaxTree>(SingleLineCommentSyntaxTree);
     }
@@ -659,18 +659,18 @@ export class ChapterSyntaxTree extends NodeSyntaxTree {
 
         if (data.comments && data.comments.content) {
             this.comments = this.checkArray(data.comments.content).map((data: ConcreatSyntaxTree) => {
-                return transform(data) !.toSingleLineCommentNode();
+                return transform(data)!.toSingleLineCommentNode();
             });
         } else {
             this.comments = [];
         }
-        this.headline = transform(this.checkObject(data.headline)) !.toHeadline();
+        this.headline = transform(this.checkObject(data.headline))!.toHeadline();
         if (typeof data.text === "string" || data.text === null) {
             this.text = [];
             return;
         }
         this.text = this.checkArray(data.text.content).map((data: ConcreatSyntaxTree) => {
-            return transform(data) !;
+            return transform(data)!;
         });
 
         delete this.childNodes; // JSON化した時の属性順制御のため…
@@ -706,9 +706,9 @@ export class HeadlineSyntaxTree extends SyntaxTree {
 
         this.level = this.checkNumber(data.level);
         if (data.label) {
-            this.label = transform(this.checkObject(data.label)) !.toArgument();
+            this.label = transform(this.checkObject(data.label))!.toArgument();
         }
-        this.caption = transform(this.checkObject(data.caption)) !.toNode();
+        this.caption = transform(this.checkObject(data.caption))!.toNode();
     }
 }
 
@@ -720,7 +720,7 @@ export class BlockElementSyntaxTree extends NodeSyntaxTree {
         super(data);
         this.symbol = this.checkString(data.symbol);
         this.args = this.checkArray(data.args).map((data: ConcreatSyntaxTree) => {
-            return transform(data) !.toNode();
+            return transform(data)!.toNode();
         });
     }
 }
@@ -741,13 +741,13 @@ export class ColumnSyntaxTree extends NodeSyntaxTree {
     constructor(data: ConcreatSyntaxTree) {
         super(data);
 
-        this.headline = transform(this.checkObject(data.headline)) !.toColumnHeadline();
+        this.headline = transform(this.checkObject(data.headline))!.toColumnHeadline();
         if (typeof data.text === "string" || data.text === null) {
             this.text = [];
             return;
         }
         this.text = this.checkArray(data.text.content).map((data: ConcreatSyntaxTree) => {
-            return transform(data) !;
+            return transform(data)!;
         });
 
         delete this.childNodes; // JSON化した時の属性順制御のため…
@@ -781,7 +781,7 @@ export class ColumnHeadlineSyntaxTree extends SyntaxTree {
         super(data);
 
         this.level = this.checkNumber(data.level);
-        this.caption = transform(this.checkObject(data.caption)) !.toNode();
+        this.caption = transform(this.checkObject(data.caption))!.toNode();
     }
 }
 
@@ -801,7 +801,7 @@ export class UlistElementSyntaxTree extends NodeSyntaxTree {
     constructor(data: ConcreatSyntaxTree) {
         super(data);
         this.level = this.checkNumber(data.level);
-        this.text = transform(this.checkObject(data.text)) !;
+        this.text = transform(this.checkObject(data.text))!;
 
         delete this.childNodes; // JSON化した時の属性順制御のため…
         this.childNodes = [];
@@ -815,7 +815,7 @@ export class OlistElementSyntaxTree extends SyntaxTree {
     constructor(data: ConcreatSyntaxTree) {
         super(data);
         this.no = this.checkNumber(data.no);
-        this.text = transform(this.checkObject(data.text)) !;
+        this.text = transform(this.checkObject(data.text))!;
     }
 }
 
@@ -825,8 +825,8 @@ export class DlistElementSyntaxTree extends SyntaxTree {
 
     constructor(data: ConcreatSyntaxTree) {
         super(data);
-        this.text = transform(this.checkObject(data.text)) !;
-        this.content = transform(this.checkObject(data.content)) !;
+        this.text = transform(this.checkObject(data.text))!;
+        this.content = transform(this.checkObject(data.content))!;
     }
 }
 
