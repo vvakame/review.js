@@ -2310,7 +2310,7 @@ var Controller = /** @class */ (function () {
         book.predef.forEach(function (chunk) { return _parse(chunk); });
         book.contents.forEach(function (chunk) { return _parse(chunk); });
         book.appendix.forEach(function (chunk) { return _parse(chunk); });
-        book.predef.forEach(function (chunk) { return _parse(chunk); });
+        book.postdef.forEach(function (chunk) { return _parse(chunk); });
         return book;
     };
     Controller.prototype.preprocessContent = function (book) {
@@ -5154,8 +5154,8 @@ var DefaultValidator = /** @class */ (function () {
                 return;
             }
             if (!referenceTo.chapter && referenceTo.chapterName) {
+                // 各章の名前は拡張子付きで入っているので、比較の為にファイル名にする
                 var chapterFileName_1 = referenceTo.chapterName + ".re";
-                // 部がない場合、単純に章を探す
                 book.allChunks.forEach(function (chunk) {
                     if (chapterFileName_1 === chunk.name) {
                         referenceTo.chapter = chunk;
