@@ -335,6 +335,17 @@ var HtmlBuilder = /** @class */ (function (_super) {
         var regexp = new RegExp("[" + Object.keys(this.escapeMap).join("") + "]", "g");
         return String(data).replace(regexp, function (c) { return _this.escapeMap[c]; });
     };
+    HtmlBuilder.prototype.normalizeId = function (label) {
+        if (label.arg.match(/^[a-z][a-z0-9_/-]*$/i)) {
+            return label.arg;
+        }
+        else if (label.arg.match(/^[0-9_.-][a-z0-9_.-]*$/i)) {
+            return "id_" + label.arg;
+        }
+        else {
+            return "id_" + encodeURIComponent(label.arg.replace(/_/g, "__").replace(/ /g, "-")).replace(/%/g, "_").replace(/\+/g, "-");
+        }
+    };
     HtmlBuilder.prototype.processPost = function (process, chunk) {
         if (this.standalone) {
             var pre = "";
@@ -366,7 +377,7 @@ var HtmlBuilder = /** @class */ (function (_super) {
     HtmlBuilder.prototype.headlinePre = function (process, _name, node) {
         process.outRaw("<h").out(node.level);
         if (node.label) {
-            process.outRaw(" id=\"").out(node.label.arg).outRaw("\"");
+            process.outRaw(" id=\"").out(this.normalizeId(node.label)).outRaw("\"");
         }
         process.outRaw(">");
         process.outRaw("<a id=\"h").out(utils_1.getHeadlineLevels(node).join("-")).outRaw("\"></a>");

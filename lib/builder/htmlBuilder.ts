@@ -5,7 +5,7 @@ import { BuilderProcess, ContentChunk } from "../model/compilerModel";
 
 import { DefaultBuilder } from "./builder";
 
-import { NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree } from "../parser/parser";
+import { NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, ArgumentSyntaxTree } from "../parser/parser";
 
 import { visit, TreeVisitor, TreeVisitorReturn } from "../parser/walker";
 
@@ -28,6 +28,16 @@ export class HtmlBuilder extends DefaultBuilder {
     escape(data: any): string {
         let regexp = new RegExp(`[${Object.keys(this.escapeMap).join("")}]`, "g");
         return String(data).replace(regexp, c => this.escapeMap[c]);
+    }
+
+    normalizeId(label: ArgumentSyntaxTree): string {
+        if (label.arg.match(/^[a-z][a-z0-9_/-]*$/i)) {
+            return label.arg;
+        } else if (label.arg.match(/^[0-9_.-][a-z0-9_.-]*$/i)) {
+            return `id_${label.arg}`;
+        } else {
+            return `id_${encodeURIComponent(label.arg.replace(/_/g, "__").replace(/ /g, "-")).replace(/%/g, "_").replace(/\+/g, "-")}`;
+        }
     }
 
     processPost(process: BuilderProcess, chunk: ContentChunk): void {
@@ -64,7 +74,7 @@ export class HtmlBuilder extends DefaultBuilder {
     headlinePre(process: BuilderProcess, _name: string, node: HeadlineSyntaxTree) {
         process.outRaw("<h").out(node.level);
         if (node.label) {
-            process.outRaw(" id=\"").out(node.label.arg).outRaw("\"");
+            process.outRaw(" id=\"").out(this.normalizeId(node.label)).outRaw("\"");
         }
         process.outRaw(">");
         process.outRaw("<a id=\"h").out(getHeadlineLevels(node).join("-")).outRaw("\"></a>");
