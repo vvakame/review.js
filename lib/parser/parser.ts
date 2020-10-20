@@ -775,12 +775,16 @@ export class ColumnSyntaxTree extends NodeSyntaxTree {
 
 export class ColumnHeadlineSyntaxTree extends SyntaxTree {
     level: number;
+    label: ArgumentSyntaxTree;
     caption: NodeSyntaxTree;
 
     constructor(data: ConcreatSyntaxTree) {
         super(data);
 
         this.level = this.checkNumber(data.level);
+        if (data.label) {
+            this.label = transform(this.checkObject(data.label))!.toArgument();
+        }
         this.caption = transform(this.checkObject(data.caption))!.toNode();
     }
 }

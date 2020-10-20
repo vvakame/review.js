@@ -102,7 +102,11 @@ export class HtmlBuilder extends DefaultBuilder {
     }
 
     columnHeadlinePre(process: BuilderProcess, node: ColumnHeadlineSyntaxTree) {
-        process.outRaw("<h").out(node.level).outRaw(">");
+        process.outRaw("<h").out(node.level);
+        if (node.label) {
+            process.outRaw(" id=\"").out(this.normalizeId(node.label)).outRaw("\"");
+        }
+        process.outRaw(">");
         process.outRaw("<a id=\"column-").out(node.parentNode.no).outRaw("\"></a>");
 
         return (v: TreeVisitor) => {
