@@ -23,9 +23,11 @@ benchmark/
 dest/
 
 # misc
+.gitattributes
 .gitignore
 .editorconfig
 .travis.yml
+setup.cmd
 setup.sh
 bower.json
 tsd.json
