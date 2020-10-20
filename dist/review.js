@@ -335,6 +335,17 @@ var HtmlBuilder = /** @class */ (function (_super) {
         var regexp = new RegExp("[" + Object.keys(this.escapeMap).join("") + "]", "g");
         return String(data).replace(regexp, function (c) { return _this.escapeMap[c]; });
     };
+    HtmlBuilder.prototype.normalizeId = function (label) {
+        if (label.arg.match(/^[a-z][a-z0-9_/-]*$/i)) {
+            return label.arg;
+        }
+        else if (label.arg.match(/^[0-9_.-][a-z0-9_.-]*$/i)) {
+            return "id_" + label.arg;
+        }
+        else {
+            return "id_" + encodeURIComponent(label.arg.replace(/_/g, "__").replace(/ /g, "-")).replace(/%/g, "_").replace(/\+/g, "-");
+        }
+    };
     HtmlBuilder.prototype.processPost = function (process, chunk) {
         if (this.standalone) {
             var pre = "";
@@ -366,7 +377,7 @@ var HtmlBuilder = /** @class */ (function (_super) {
     HtmlBuilder.prototype.headlinePre = function (process, _name, node) {
         process.outRaw("<h").out(node.level);
         if (node.label) {
-            process.outRaw(" id=\"").out(node.label.arg).outRaw("\"");
+            process.outRaw(" id=\"").out(this.normalizeId(node.label)).outRaw("\"");
         }
         process.outRaw(">");
         process.outRaw("<a id=\"h").out(utils_1.getHeadlineLevels(node).join("-")).outRaw("\"></a>");
@@ -390,7 +401,11 @@ var HtmlBuilder = /** @class */ (function (_super) {
         process.outRaw("</div>\n");
     };
     HtmlBuilder.prototype.columnHeadlinePre = function (process, node) {
-        process.outRaw("<h").out(node.level).outRaw(">");
+        process.outRaw("<h").out(node.level);
+        if (node.label) {
+            process.outRaw(" id=\"").out(this.normalizeId(node.label)).outRaw("\"");
+        }
+        process.outRaw(">");
         process.outRaw("<a id=\"column-").out(node.parentNode.no).outRaw("\"></a>");
         return function (v) {
             walker_1.visit(node.caption, v);
@@ -4679,6 +4694,9 @@ var ColumnHeadlineSyntaxTree = /** @class */ (function (_super) {
     function ColumnHeadlineSyntaxTree(data) {
         var _this = _super.call(this, data) || this;
         _this.level = _this.checkNumber(data.level);
+        if (data.label) {
+            _this.label = transform(_this.checkObject(data.label)).toArgument();
+        }
         _this.caption = transform(_this.checkObject(data.caption)).toNode();
         return _this;
     }
@@ -5801,12 +5819,13 @@ function column(headline, text) {
     };
 }
 exports.column = column;
-function columnHeadline(level, caption) {
+function columnHeadline(level, label, caption) {
     "use strict";
     return {
         syntax: checkRuleName("ColumnHeadline"),
         location: env.location(),
         level: level.length,
+        label: label,
         caption: caption
     };
 }
@@ -6427,7 +6446,7 @@ function peg$parse(input, options) {
       peg$c46 = peg$otherExpectation("column headline"),
       peg$c47 = "[column]",
       peg$c48 = peg$literalExpectation("[column]", false),
-      peg$c49 = function(level, caption) { return b.columnHeadline(level, caption); },
+      peg$c49 = function(level, label, caption) { return b.columnHeadline(level, label, caption); },
       peg$c50 = peg$otherExpectation("column contents"),
       peg$c51 = function(c, cc) { return b.contents("ColumnContents", c, cc); },
       peg$c52 = peg$otherExpectation("column content"),
@@ -7645,7 +7664,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parseColumnHeadline() {
-    var s0, s1, s2, s3, s4, s5;
+    var s0, s1, s2, s3, s4, s5, s6, s7;
 
     peg$silentFails++;
     s0 = peg$currPos;
@@ -7680,20 +7699,40 @@ function peg$parse(input, options) {
         if (peg$silentFails === 0) { peg$fail(peg$c48); }
       }
       if (s2 !== peg$FAILED) {
-        s3 = [];
-        s4 = peg$parseSpace();
-        while (s4 !== peg$FAILED) {
-          s3.push(s4);
-          s4 = peg$parseSpace();
+        s3 = peg$parseBraceArg();
+        if (s3 === peg$FAILED) {
+          s3 = null;
         }
         if (s3 !== peg$FAILED) {
-          s4 = peg$parseSinglelineContent();
+          s4 = [];
+          s5 = peg$parseSpace();
+          while (s5 !== peg$FAILED) {
+            s4.push(s5);
+            s5 = peg$parseSpace();
+          }
           if (s4 !== peg$FAILED) {
-            s5 = peg$parse_l();
+            s5 = [];
+            s6 = peg$parseSpace();
+            while (s6 !== peg$FAILED) {
+              s5.push(s6);
+              s6 = peg$parseSpace();
+            }
             if (s5 !== peg$FAILED) {
-              peg$savedPos = s0;
-              s1 = peg$c49(s1, s4);
-              s0 = s1;
+              s6 = peg$parseSinglelineContent();
+              if (s6 !== peg$FAILED) {
+                s7 = peg$parse_l();
+                if (s7 !== peg$FAILED) {
+                  peg$savedPos = s0;
+                  s1 = peg$c49(s1, s3, s6);
+                  s0 = s1;
+                } else {
+                  peg$currPos = s0;
+                  s0 = peg$FAILED;
+                }
+              } else {
+                peg$currPos = s0;
+                s0 = peg$FAILED;
+              }
             } else {
               peg$currPos = s0;
               s0 = peg$FAILED;

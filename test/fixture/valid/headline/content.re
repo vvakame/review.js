@@ -5,3 +5,5 @@
 ===== level 5
 ====== level 6
 ======= level 7
+======={1.1} number label
+======={ $　<-_&#+} chars label

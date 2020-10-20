@@ -70,7 +70,7 @@ Column "column"
     ;
 
 ColumnHeadline "column headline"
-    = level:"="+ "[column]" Space* caption:SinglelineContent _l { return b.columnHeadline(level, caption); }
+    = level:"="+ "[column]" label:BraceArg? Space* Space* caption:SinglelineContent _l { return b.columnHeadline(level, label, caption); }
     ;
 
 ColumnContents "column contents"

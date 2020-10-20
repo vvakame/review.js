@@ -7,9 +7,9 @@
       "offset": 0
     },
     "end": {
-      "line": 32,
+      "line": 38,
       "column": 1,
-      "offset": 176
+      "offset": 222
     }
   },
   "childNodes": [
@@ -22,9 +22,9 @@
           "offset": 0
         },
         "end": {
-          "line": 32,
+          "line": 38,
           "column": 1,
-          "offset": 176
+          "offset": 222
         }
       },
       "childNodes": [
@@ -307,9 +307,9 @@
                   "offset": 69
                 },
                 "end": {
-                  "line": 32,
+                  "line": 38,
                   "column": 1,
-                  "offset": 176
+                  "offset": 222
                 }
               },
               "comments": [],
@@ -405,9 +405,9 @@
                       "offset": 89
                     },
                     "end": {
-                      "line": 32,
+                      "line": 38,
                       "column": 1,
-                      "offset": 176
+                      "offset": 222
                     }
                   },
                   "headline": {
@@ -510,9 +510,9 @@
                   "offset": 116
                 },
                 "end": {
-                  "line": 32,
+                  "line": 38,
                   "column": 1,
-                  "offset": 176
+                  "offset": 222
                 }
               },
               "comments": [],
@@ -701,7 +701,7 @@
                   "childNodes": []
                 },
                 {
-                  "ruleName": "Paragraph",
+                  "ruleName": "Column",
                   "location": {
                     "start": {
                       "line": 31,
@@ -709,9 +709,126 @@
                       "offset": 172
                     },
                     "end": {
-                      "line": 32,
+                      "line": 37,
                       "column": 1,
-                      "offset": 176
+                      "offset": 218
+                    }
+                  },
+                  "headline": {
+                    "ruleName": "ColumnHeadline",
+                    "location": {
+                      "start": {
+                        "line": 31,
+                        "column": 1,
+                        "offset": 172
+                      },
+                      "end": {
+                        "line": 33,
+                        "column": 1,
+                        "offset": 196
+                      }
+                    },
+                    "level": 3,
+                    "label": {
+                      "ruleName": "BraceArg",
+                      "location": {
+                        "start": {
+                          "line": 31,
+                          "column": 12,
+                          "offset": 183
+                        },
+                        "end": {
+                          "line": 31,
+                          "column": 17,
+                          "offset": 188
+                        }
+                      },
+                      "arg": "col"
+                    },
+                    "caption": {
+                      "ruleName": "ContentInlines",
+                      "location": {
+                        "start": {
+                          "line": 31,
+                          "column": 18,
+                          "offset": 189
+                        },
+                        "end": {
+                          "line": 31,
+                          "column": 23,
+                          "offset": 194
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentInlineText",
+                          "location": {
+                            "start": {
+                              "line": 31,
+                              "column": 18,
+                              "offset": 189
+                            },
+                            "end": {
+                              "line": 31,
+                              "column": 23,
+                              "offset": 194
+                            }
+                          },
+                          "text": "ラベルあり"
+                        }
+                      ]
+                    }
+                  },
+                  "text": [
+                    {
+                      "ruleName": "Paragraph",
+                      "location": {
+                        "start": {
+                          "line": 33,
+                          "column": 1,
+                          "offset": 196
+                        },
+                        "end": {
+                          "line": 35,
+                          "column": 1,
+                          "offset": 204
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "ContentText",
+                          "location": {
+                            "start": {
+                              "line": 33,
+                              "column": 1,
+                              "offset": 196
+                            },
+                            "end": {
+                              "line": 33,
+                              "column": 7,
+                              "offset": 202
+                            }
+                          },
+                          "text": "コラム本文4"
+                        }
+                      ]
+                    }
+                  ],
+                  "no": 4,
+                  "childNodes": []
+                },
+                {
+                  "ruleName": "Paragraph",
+                  "location": {
+                    "start": {
+                      "line": 37,
+                      "column": 1,
+                      "offset": 218
+                    },
+                    "end": {
+                      "line": 38,
+                      "column": 1,
+                      "offset": 222
                     }
                   },
                   "childNodes": [
@@ -719,14 +836,14 @@
                       "ruleName": "ContentText",
                       "location": {
                         "start": {
-                          "line": 31,
+                          "line": 37,
                           "column": 1,
-                          "offset": 172
+                          "offset": 218
                         },
                         "end": {
-                          "line": 31,
+                          "line": 37,
                           "column": 4,
-                          "offset": 175
+                          "offset": 221
                         }
                       },
                       "text": "本文後"

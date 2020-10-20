@@ -12,3 +12,7 @@
 
 ■H7■level 7
 
+■H7■number label
+
+■H7■chars label
+

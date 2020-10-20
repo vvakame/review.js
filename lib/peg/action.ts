@@ -122,13 +122,14 @@ export function column(headline: any, text: any): ConcreatSyntaxTree {
     };
 }
 
-export function columnHeadline(level: any, caption: any): ConcreatSyntaxTree {
+export function columnHeadline(level: any, label: any, caption: any): ConcreatSyntaxTree {
     "use strict";
 
     return {
         syntax: checkRuleName("ColumnHeadline"),
         location: env.location(),
         level: level.length,
+        label: label,
         caption: caption
     };
 }

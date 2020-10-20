@@ -190,7 +190,7 @@ function peg$parse(input, options) {
       peg$c46 = peg$otherExpectation("column headline"),
       peg$c47 = "[column]",
       peg$c48 = peg$literalExpectation("[column]", false),
-      peg$c49 = function(level, caption) { return b.columnHeadline(level, caption); },
+      peg$c49 = function(level, label, caption) { return b.columnHeadline(level, label, caption); },
       peg$c50 = peg$otherExpectation("column contents"),
       peg$c51 = function(c, cc) { return b.contents("ColumnContents", c, cc); },
       peg$c52 = peg$otherExpectation("column content"),
@@ -1408,7 +1408,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parseColumnHeadline() {
-    var s0, s1, s2, s3, s4, s5;
+    var s0, s1, s2, s3, s4, s5, s6, s7;
 
     peg$silentFails++;
     s0 = peg$currPos;
@@ -1443,20 +1443,40 @@ function peg$parse(input, options) {
         if (peg$silentFails === 0) { peg$fail(peg$c48); }
       }
       if (s2 !== peg$FAILED) {
-        s3 = [];
-        s4 = peg$parseSpace();
-        while (s4 !== peg$FAILED) {
-          s3.push(s4);
-          s4 = peg$parseSpace();
+        s3 = peg$parseBraceArg();
+        if (s3 === peg$FAILED) {
+          s3 = null;
         }
         if (s3 !== peg$FAILED) {
-          s4 = peg$parseSinglelineContent();
+          s4 = [];
+          s5 = peg$parseSpace();
+          while (s5 !== peg$FAILED) {
+            s4.push(s5);
+            s5 = peg$parseSpace();
+          }
           if (s4 !== peg$FAILED) {
-            s5 = peg$parse_l();
+            s5 = [];
+            s6 = peg$parseSpace();
+            while (s6 !== peg$FAILED) {
+              s5.push(s6);
+              s6 = peg$parseSpace();
+            }
             if (s5 !== peg$FAILED) {
-              peg$savedPos = s0;
-              s1 = peg$c49(s1, s4);
-              s0 = s1;
+              s6 = peg$parseSinglelineContent();
+              if (s6 !== peg$FAILED) {
+                s7 = peg$parse_l();
+                if (s7 !== peg$FAILED) {
+                  peg$savedPos = s0;
+                  s1 = peg$c49(s1, s3, s6);
+                  s0 = s1;
+                } else {
+                  peg$currPos = s0;
+                  s0 = peg$FAILED;
+                }
+              } else {
+                peg$currPos = s0;
+                s0 = peg$FAILED;
+              }
             } else {
               peg$currPos = s0;
               s0 = peg$FAILED;
