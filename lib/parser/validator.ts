@@ -179,8 +179,8 @@ export class DefaultValidator implements Validator {
             }
 
             if (!referenceTo.chapter && referenceTo.chapterName) {
+                // 各章の名前は拡張子付きで入っているので、比較の為にファイル名にする
                 const chapterFileName = `${referenceTo.chapterName}.re`;
-                // 部がない場合、単純に章を探す
                 book.allChunks.forEach(chunk => {
                     if (chapterFileName === chunk.name) {
                         referenceTo.chapter = chunk;

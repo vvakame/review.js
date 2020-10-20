@@ -31,11 +31,11 @@ export class Controller {
     constructor(public options: Options = {}) {
     }
 
-	/**
-	 * 設定の初期化を行う。
-	 * 通常、 ReVIEW.start 経由で呼び出される。
-	 * @param data
-	 */
+    /**
+     * 設定の初期化を行う。
+     * 通常、 ReVIEW.start 経由で呼び出される。
+     * @param data
+     */
     initConfig(data: ConfigRaw): void {
         if (isNodeJS()) {
             this.config = new NodeJSConfig(this.options, data);
@@ -75,7 +75,7 @@ export class Controller {
             if (c.part) {
                 chunk = new ContentChunk(book, c.part.file);
                 c.part.chapters.forEach(c => {
-                    convert(ContentStructure.createChapter(c) !, chunk);
+                    convert(ContentStructure.createChapter(c)!, chunk);
                 });
             } else if (c.chapter) {
                 chunk = new ContentChunk(book, parent!, c.chapter.file);
@@ -88,10 +88,10 @@ export class Controller {
             return chunk;
         };
 
-        book.predef = this.config.book.predef.map(c => convert(c) !);
-        book.contents = this.config.book.contents.map(c => convert(c) !);
-        book.appendix = this.config.book.appendix.map(c => convert(c) !);
-        book.postdef = this.config.book.postdef.map(c => convert(c) !);
+        book.predef = this.config.book.predef.map(c => convert(c)!);
+        book.contents = this.config.book.contents.map(c => convert(c)!);
+        book.appendix = this.config.book.appendix.map(c => convert(c)!);
+        book.postdef = this.config.book.postdef.map(c => convert(c)!);
 
         return book;
     }
