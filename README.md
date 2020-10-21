@@ -1,6 +1,6 @@
 # ReVIEW.js for VSCode
 
-![Build Status](https://github.com/yfakariya/review.js-vscode/workflows/build/badge.svg) ![Dependency Status](https://david-dm.org/yfakariya/review.js-vscode.svg) ![Dev-Dependency Status](https://david-dm.org/yfakariya/review.js-vscode.svg#info=devDependencies)
+[![Build Status](https://github.com/yfakariya/review.js-vscode/workflows/build/badge.svg)](https://github.com/yfakariya/review.js-vscode/actions?build) [![Dependency Status](https://david-dm.org/yfakariya/review.js-vscode.svg)](https://david-dm.org/yfakariya/review.js-vscode) [![Dev-Dependency Status](https://david-dm.org/yfakariya/review.js-vscode/dev-status.png#info=devDependencies)](https://david-dm.org/yfakariya/review.js-vscode#type=dev)
 
 このリポジトリは [ReVIEW.js](https://github.com/vvakame/review.js) のフォークです。
 
