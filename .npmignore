@@ -7,6 +7,7 @@
 # for npm
 node_modules/
 reviewjs-*.tgz
+review.js-vscode-*.tgz
 
 # for https://github.com/Microsoft/TypeScript/issues/4667
 lib/**/*.ts
