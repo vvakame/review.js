@@ -56,7 +56,7 @@
     "grunt-shell": "^3.0.1",
     "grunt-tslint": "^5.0.2",
     "load-grunt-tasks": "^5.0.0",
-    "mocha": "^8.2.0",
+    "mocha": "^7.0.1",
     "pegjs": "^0.10.0",
     "power-assert": "^1.4.1",
     "time-grunt": "^2.0.0",
