@@ -1,9 +1,9 @@
 {
-  "name": "review.js",
-  "author": "vvakame",
+  "name": "review.js-vscode",
+  "author": "yfakariya",
   "private": false,
-  "version": "0.16.0",
-  "description": "ReVIEW implementation by JavaScript",
+  "version": "0.17.0",
+  "description": "ReVIEW implementation by JavaScript for VSCode plugin.\nThis is forked version from vvakame/review.js",
   "main": "./index",
   "bin": {
     "reviewjs": "./bin/reviewjs"
@@ -17,13 +17,13 @@
     "ReVIEW"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/vvakame/review.js",
+  "homepage": "https://github.com/yfakariya/review.js-vscode",
   "repository": {
     "type": "git",
-    "url": "git@github.com:vvakame/review.js.git"
+    "url": "git@github.com:yfakariya/review.js.git"
   },
   "bugs": {
-    "url": "https://github.com/vvakame/review.js/issues"
+    "url": "https://github.com/yfakariya/review.js-vscode/issues"
   },
   "engines": {
     "node": ">= 8.0.0"
@@ -33,30 +33,30 @@
     "commandpost": "^1.4.0",
     "js-yaml": "^3.13.0",
     "sprintf-js": "^1.1.2",
-    "update-notifier": "^3.0.1"
+    "update-notifier": "^4.1.3"
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
     "@types/jquery": "^3.3.29",
     "@types/js-yaml": "^3.12.0",
-    "@types/mocha": "^5.2.6",
-    "@types/node": "^12.0.12",
+    "@types/mocha": "^7.0.1",
+    "@types/node": "^14.14.0",
     "@types/power-assert": "^1.5.0",
-    "@types/update-notifier": "^2.5.0",
+    "@types/update-notifier": "^4.1.0",
     "benchmark": "^2.1.0",
     "espower-loader": "^1.0.0",
     "glob": "^7.1.0",
     "grunt": "^1.0.4",
     "grunt-browserify": "^5.0.0",
     "grunt-contrib-clean": "^2.0.0",
-    "grunt-contrib-uglify": "^4.0.1",
+    "grunt-contrib-uglify": "^5.0.0",
     "grunt-mocha": "^1.2.0",
     "grunt-mocha-test": "^0.13.2",
     "grunt-open": "^0.2.4",
     "grunt-shell": "^3.0.1",
     "grunt-tslint": "^5.0.2",
     "load-grunt-tasks": "^5.0.0",
-    "mocha": "^8.2.0",
+    "mocha": "^7.0.1",
     "pegjs": "^0.10.0",
     "power-assert": "^1.4.1",
     "time-grunt": "^2.0.0",

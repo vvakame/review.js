@@ -1,4 +1,33 @@
-# ReVIEW.js [![Build Status](https://travis-ci.org/vvakame/review.js.png?branch=master)](https://travis-ci.org/vvakame/review.js) [![Dependency Status](https://david-dm.org/vvakame/review.js.png)](https://david-dm.org/vvakame/review.js) [![devDependency Status](https://david-dm.org/vvakame/review.js/dev-status.png)](https://david-dm.org/vvakame/review.js#info=devDependencies)
+# ReVIEW.js for VSCode
+
+[![Build Status](https://github.com/yfakariya/review.js-vscode/workflows/build/badge.svg)](https://github.com/yfakariya/review.js-vscode/actions?build) [![Dependency Status](https://david-dm.org/yfakariya/review.js-vscode.svg)](https://david-dm.org/yfakariya/review.js-vscode) [![Dev-Dependency Status](https://david-dm.org/yfakariya/review.js-vscode/dev-status.png#info=devDependencies)](https://david-dm.org/yfakariya/review.js-vscode#type=dev)
+
+このリポジトリは [ReVIEW.js](https://github.com/vvakame/review.js) のフォークです。
+
+VS Code プラグインのプレビューで問題となる不具合を修正しています。
+このリポジトリは、本家の開発が再開した場合、（必要に応じて本家へのPull Requestを経て）閉鎖される可能性があります。
+フォークしたバージョンはv0.16.0のリリース後のコミット 23401fe6298a8236ab8dc7875c1edb2ce508f538 です。
+
+## 謝辞
+
+オリジナルの [ReVIEW.js](https://github.com/vvakame/review.js) の作者およびコントリビューターの皆様に対し、この場を借りて敬意と感謝の意を表します。
+
+## 本家との違い
+
+* 以下の要素の動作を改善
+  * チャプターに連番が出力されるように修正
+  * `@<hd>{...}` の内容が常にその要素を含むチャプターの名前になっていた問題を修正
+  * `@<hd>{...}` で別の章を参照するとクラッシュする問題を修正
+  * テキスト形式のRuby版との互換性の向上
+  * `@<idx>{...}` と `@<hidx>{...}` のサポート（テキストとHTMLしかないので、ほぼ「エラーにならない」だけ）
+  * `@<note>{...}` のサポート
+  * 囲み記事のRuby版との互換性の工場
+* いくつかのライブラリをアップグレード
+  * `npm audit` で問題となったパッケージ
+  * `tslint` と `typescript`
+* Windows上のVSCodeで開発できるように修正
+
+以下、本家の Readme のコピーとなります。
 
 ## What is ReVIEW?
 
@@ -12,7 +41,7 @@ ReVIEW.js is implemented by TypeScript :)
 [ReVIEW](https://github.com/kmuto/review) のJavaScript実装です。
 Node.js上とモダンなWebブラウザ上で動作することを目指します。
 
-[ドキュメント](https://vvakame.github.io/review.js/docs/)
+[ドキュメント](https://yfakariya.github.io/review.js/docs/)
 
 # 現状
 
