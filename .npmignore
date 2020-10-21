@@ -23,6 +23,7 @@ benchmark/
 dest/
 
 # misc
+.github/
 .gitattributes
 .gitignore
 .editorconfig
