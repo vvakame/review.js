@@ -1,5 +1,7 @@
 # ReVIEW.js for VSCode
 
+![Build Status](https://github.com/yfakariya/review.js-vscode/workflows/Node.js%20CI/badge.svg) ![Dependency Status](https://david-dm.org/yfakariya/review.js-vscode.svg) ![Dev-Dependency Status](https://david-dm.org/yfakariya/review.js-vscode.svg#info=devDependencies)
+
 このリポジトリは [ReVIEW.js](https://github.com/vvakame/review.js) のフォークです。
 
 VS Code プラグインのプレビューで問題となる不具合を修正しています。
