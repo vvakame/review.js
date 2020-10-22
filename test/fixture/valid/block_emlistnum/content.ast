@@ -7,9 +7,9 @@
       "offset": 0
     },
     "end": {
-      "line": 9,
+      "line": 18,
       "column": 1,
-      "offset": 76
+      "offset": 114
     }
   },
   "childNodes": [
@@ -22,9 +22,9 @@
           "offset": 0
         },
         "end": {
-          "line": 9,
+          "line": 18,
           "column": 1,
-          "offset": 76
+          "offset": 114
         }
       },
       "childNodes": [
@@ -37,9 +37,9 @@
               "offset": 0
             },
             "end": {
-              "line": 9,
+              "line": 18,
               "column": 1,
-              "offset": 76
+              "offset": 114
             }
           },
           "comments": [],
@@ -135,9 +135,9 @@
                   "offset": 28
                 },
                 "end": {
-                  "line": 9,
+                  "line": 10,
                   "column": 1,
-                  "offset": 76
+                  "offset": 77
                 }
               },
               "symbol": "emlistnum",
@@ -156,6 +156,67 @@
                     }
                   },
                   "text": "console.log(\"hoge\");\ndebugger;"
+                }
+              ]
+            },
+            {
+              "ruleName": "BlockElement",
+              "location": {
+                "start": {
+                  "line": 10,
+                  "column": 1,
+                  "offset": 77
+                },
+                "end": {
+                  "line": 18,
+                  "column": 1,
+                  "offset": 114
+                }
+              },
+              "symbol": "emlistnum",
+              "args": [],
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "location": {
+                    "start": {
+                      "line": 11,
+                      "column": 1,
+                      "offset": 90
+                    },
+                    "end": {
+                      "offset": 91
+                    }
+                  },
+                  "text": "1"
+                },
+                {
+                  "ruleName": "BlockElementContentText",
+                  "location": {
+                    "start": {
+                      "line": 13,
+                      "column": 1,
+                      "offset": 98
+                    },
+                    "end": {
+                      "offset": 101
+                    }
+                  },
+                  "text": "3\n4"
+                },
+                {
+                  "ruleName": "BlockElementContentText",
+                  "location": {
+                    "start": {
+                      "line": 16,
+                      "column": 1,
+                      "offset": 108
+                    },
+                    "end": {
+                      "offset": 76
+                    }
+                  },
+                  "text": "6"
                 }
               ]
             }

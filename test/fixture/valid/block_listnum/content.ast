@@ -7,9 +7,9 @@
       "offset": 0
     },
     "end": {
-      "line": 9,
+      "line": 18,
       "column": 1,
-      "offset": 121
+      "offset": 178
     }
   },
   "childNodes": [
@@ -22,9 +22,9 @@
           "offset": 0
         },
         "end": {
-          "line": 9,
+          "line": 18,
           "column": 1,
-          "offset": 121
+          "offset": 178
         }
       },
       "childNodes": [
@@ -37,9 +37,9 @@
               "offset": 0
             },
             "end": {
-              "line": 9,
+              "line": 18,
               "column": 1,
-              "offset": 121
+              "offset": 178
             }
           },
           "comments": [],
@@ -202,9 +202,9 @@
                   "offset": 42
                 },
                 "end": {
-                  "line": 9,
+                  "line": 10,
                   "column": 1,
-                  "offset": 121
+                  "offset": 122
                 }
               },
               "symbol": "listnum",
@@ -325,6 +325,219 @@
                     }
                   },
                   "text": "console.log(\"だと思ったか…！？\");\nconsole.log(\"はろわー\");"
+                }
+              ]
+            },
+            {
+              "ruleName": "BlockElement",
+              "location": {
+                "start": {
+                  "line": 10,
+                  "column": 1,
+                  "offset": 122
+                },
+                "end": {
+                  "line": 18,
+                  "column": 1,
+                  "offset": 178
+                }
+              },
+              "symbol": "listnum",
+              "args": [
+                {
+                  "ruleName": "BracketArg",
+                  "location": {
+                    "start": {
+                      "line": 10,
+                      "column": 10,
+                      "offset": 131
+                    },
+                    "end": {
+                      "line": 10,
+                      "column": 16,
+                      "offset": 137
+                    }
+                  },
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 10,
+                          "column": 11,
+                          "offset": 132
+                        },
+                        "end": {
+                          "line": 10,
+                          "column": 15,
+                          "offset": 136
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 10,
+                              "column": 11,
+                              "offset": 132
+                            },
+                            "end": {
+                              "line": 10,
+                              "column": 15,
+                              "offset": 136
+                            }
+                          },
+                          "text": "lang"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "ruleName": "BracketArg",
+                  "location": {
+                    "start": {
+                      "line": 10,
+                      "column": 16,
+                      "offset": 137
+                    },
+                    "end": {
+                      "line": 10,
+                      "column": 28,
+                      "offset": 149
+                    }
+                  },
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 10,
+                          "column": 17,
+                          "offset": 138
+                        },
+                        "end": {
+                          "line": 10,
+                          "column": 27,
+                          "offset": 148
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 10,
+                              "column": 17,
+                              "offset": 138
+                            },
+                            "end": {
+                              "line": 10,
+                              "column": 27,
+                              "offset": 148
+                            }
+                          },
+                          "text": "言語の指定ができます"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "ruleName": "BracketArg",
+                  "location": {
+                    "start": {
+                      "line": 10,
+                      "column": 28,
+                      "offset": 149
+                    },
+                    "end": {
+                      "line": 10,
+                      "column": 31,
+                      "offset": 152
+                    }
+                  },
+                  "childNodes": [
+                    {
+                      "ruleName": "BracketArgSubs",
+                      "location": {
+                        "start": {
+                          "line": 10,
+                          "column": 29,
+                          "offset": 150
+                        },
+                        "end": {
+                          "line": 10,
+                          "column": 30,
+                          "offset": 151
+                        }
+                      },
+                      "childNodes": [
+                        {
+                          "ruleName": "BracketArgText",
+                          "location": {
+                            "start": {
+                              "line": 10,
+                              "column": 29,
+                              "offset": 150
+                            },
+                            "end": {
+                              "line": 10,
+                              "column": 30,
+                              "offset": 151
+                            }
+                          },
+                          "text": "C"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "no": 2,
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "location": {
+                    "start": {
+                      "line": 11,
+                      "column": 1,
+                      "offset": 154
+                    },
+                    "end": {
+                      "offset": 155
+                    }
+                  },
+                  "text": "1"
+                },
+                {
+                  "ruleName": "BlockElementContentText",
+                  "location": {
+                    "start": {
+                      "line": 13,
+                      "column": 1,
+                      "offset": 162
+                    },
+                    "end": {
+                      "offset": 165
+                    }
+                  },
+                  "text": "3\n4"
+                },
+                {
+                  "ruleName": "BlockElementContentText",
+                  "location": {
+                    "start": {
+                      "line": 16,
+                      "column": 1,
+                      "offset": 172
+                    },
+                    "end": {
+                      "offset": 121
+                    }
+                  },
+                  "text": "6"
                 }
               ]
             }

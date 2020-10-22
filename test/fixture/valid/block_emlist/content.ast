@@ -7,9 +7,9 @@
       "offset": 0
     },
     "end": {
-      "line": 12,
+      "line": 21,
       "column": 1,
-      "offset": 108
+      "offset": 143
     }
   },
   "childNodes": [
@@ -22,9 +22,9 @@
           "offset": 0
         },
         "end": {
-          "line": 12,
+          "line": 21,
           "column": 1,
-          "offset": 108
+          "offset": 143
         }
       },
       "childNodes": [
@@ -37,9 +37,9 @@
               "offset": 0
             },
             "end": {
-              "line": 12,
+              "line": 21,
               "column": 1,
-              "offset": 108
+              "offset": 143
             }
           },
           "comments": [],
@@ -219,9 +219,9 @@
                   "offset": 73
                 },
                 "end": {
-                  "line": 12,
+                  "line": 13,
                   "column": 1,
-                  "offset": 108
+                  "offset": 109
                 }
               },
               "symbol": "emlist",
@@ -240,6 +240,67 @@
                     }
                   },
                   "text": "console.log(\"fuga\");"
+                }
+              ]
+            },
+            {
+              "ruleName": "BlockElement",
+              "location": {
+                "start": {
+                  "line": 13,
+                  "column": 1,
+                  "offset": 109
+                },
+                "end": {
+                  "line": 21,
+                  "column": 1,
+                  "offset": 143
+                }
+              },
+              "symbol": "emlist",
+              "args": [],
+              "childNodes": [
+                {
+                  "ruleName": "BlockElementContentText",
+                  "location": {
+                    "start": {
+                      "line": 14,
+                      "column": 1,
+                      "offset": 119
+                    },
+                    "end": {
+                      "offset": 120
+                    }
+                  },
+                  "text": "1"
+                },
+                {
+                  "ruleName": "BlockElementContentText",
+                  "location": {
+                    "start": {
+                      "line": 16,
+                      "column": 1,
+                      "offset": 127
+                    },
+                    "end": {
+                      "offset": 130
+                    }
+                  },
+                  "text": "3\n4"
+                },
+                {
+                  "ruleName": "BlockElementContentText",
+                  "location": {
+                    "start": {
+                      "line": 19,
+                      "column": 1,
+                      "offset": 137
+                    },
+                    "end": {
+                      "offset": 108
+                    }
+                  },
+                  "text": "6"
                 }
               ]
             }
