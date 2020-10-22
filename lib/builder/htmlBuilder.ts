@@ -200,8 +200,18 @@ export class HtmlBuilder extends DefaultBuilder {
 
             process.outRaw("</p>\n");
             process.outRaw("<pre class=\"list\">");
+
+            const nodeCount = node.childNodes.length;
+            let nodeIndex = 0;
             node.childNodes.forEach((node) => {
                 visit(node, v);
+
+                // <pre>の中では入力の改行が保持されるべきだが、ASTのパースで消えてしまうため補完。
+                // なお、\rは保持されるので、元ファイルの改行コードが\r\nの場合の考慮は不要。
+                nodeIndex++;
+                if (nodeIndex < nodeCount) {
+                    process.out("\n");
+                }
             });
         };
     }
@@ -235,6 +245,8 @@ export class HtmlBuilder extends DefaultBuilder {
             });
             let lineDigit = Math.max(linesToFigure(lineCountMax), 2);
 
+            const nodeCount = node.childNodes.length;
+            let nodeIndex = 0;
             node.childNodes.forEach((node, index, childNodes) => {
                 if (node.isTextNode()) {
                     // 改行する可能性があるのはTextNodeだけ…のはず
@@ -254,6 +266,15 @@ export class HtmlBuilder extends DefaultBuilder {
                 } else {
                     visit(node, v);
                 }
+
+                // <pre>の中では入力の改行が保持されるべきだが、ASTのパースで消えてしまうため補完。
+                // なお、\rは保持されるので、元ファイルの改行コードが\r\nの場合の考慮は不要。
+                nodeIndex++;
+                if (nodeIndex < nodeCount) {
+                    process.out("\n");
+                }
+
+                lineCount++;
             });
         };
     }
@@ -284,8 +305,18 @@ export class HtmlBuilder extends DefaultBuilder {
                 process.outRaw("</p>\n");
             }
             process.outRaw("<pre class=\"emlist\">");
+
+            const nodeCount = node.childNodes.length;
+            let nodeIndex = 0;
             node.childNodes.forEach((node) => {
                 visit(node, v);
+
+                // <pre>の中では入力の改行が保持されるべきだが、ASTのパースで消えてしまうため補完。
+                // なお、\rは保持されるので、元ファイルの改行コードが\r\nの場合の考慮は不要。
+                nodeIndex++;
+                if (nodeIndex < nodeCount) {
+                    process.out("\n");
+                }
             });
         };
     }
@@ -308,6 +339,8 @@ export class HtmlBuilder extends DefaultBuilder {
             });
             let lineDigit = Math.max(linesToFigure(lineCountMax), 2);
 
+            const nodeCount = node.childNodes.length;
+            let nodeIndex = 0;
             node.childNodes.forEach((node, index, childNodes) => {
                 if (node.isTextNode()) {
                     // 改行する可能性があるのはTextNodeだけ…のはず
@@ -327,6 +360,15 @@ export class HtmlBuilder extends DefaultBuilder {
                 } else {
                     visit(node, v);
                 }
+
+                // <pre>の中では入力の改行が保持されるべきだが、ASTのパースで消えてしまうため補完。
+                // なお、\rは保持されるので、元ファイルの改行コードが\r\nの場合の考慮は不要。
+                nodeIndex++;
+                if (nodeIndex < nodeCount) {
+                    process.out("\n");
+                }
+
+                lineCount++;
             });
         };
     }

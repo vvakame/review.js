@@ -106,8 +106,18 @@ export class TextBuilder extends DefaultBuilder {
             visit(node.args[1], v);
 
             process.outRaw("\n\n");
+
+            const nodeCount = node.childNodes.length;
+            let nodeIndex = 0;
             node.childNodes.forEach((node) => {
                 visit(node, v);
+
+                // 入力の改行が保持されるべきだが、ASTのパースで消えてしまうため補完。
+                // なお、\rは保持されるので、元ファイルの改行コードが\r\nの場合の考慮は不要。
+                nodeIndex++;
+                if (nodeIndex < nodeCount) {
+                    process.out("\n");
+                }
             });
         };
     }
@@ -139,6 +149,7 @@ export class TextBuilder extends DefaultBuilder {
             let lineDigit = Math.max(linesToFigure(lineCountMax), 2);
 
             process.outRaw("\n\n");
+
             node.childNodes.forEach((node, index, childNodes) => {
                 if (node.isTextNode()) {
                     // 改行する可能性があるのはTextNodeだけ…のはず
@@ -156,6 +167,8 @@ export class TextBuilder extends DefaultBuilder {
                 } else {
                     visit(node, v);
                 }
+
+                lineCount++;
             });
         };
     }
@@ -185,8 +198,18 @@ export class TextBuilder extends DefaultBuilder {
                 visit(node.args[0], v);
                 process.out("\n");
             }
+
+            const nodeCount = node.childNodes.length;
+            let nodeIndex = 0;
             node.childNodes.forEach((node) => {
                 visit(node, v);
+
+                // 入力の改行が保持されるべきだが、ASTのパースで消えてしまうため補完。
+                // なお、\rは保持されるので、元ファイルの改行コードが\r\nの場合の考慮は不要。
+                nodeIndex++;
+                if (nodeIndex < nodeCount) {
+                    process.out("\n");
+                }
             });
         };
     }
@@ -231,6 +254,8 @@ export class TextBuilder extends DefaultBuilder {
                 } else {
                     visit(node, v);
                 }
+
+                lineCount++;
             });
         };
     }

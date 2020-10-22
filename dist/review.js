@@ -488,8 +488,16 @@ var HtmlBuilder = /** @class */ (function (_super) {
             walker_1.visit(node.args[1], v);
             process.outRaw("</p>\n");
             process.outRaw("<pre class=\"list\">");
+            var nodeCount = node.childNodes.length;
+            var nodeIndex = 0;
             node.childNodes.forEach(function (node) {
                 walker_1.visit(node, v);
+                // <pre>の中では入力の改行が保持されるべきだが、ASTのパースで消えてしまうため補完。
+                // なお、\rは保持されるので、元ファイルの改行コードが\r\nの場合の考慮は不要。
+                nodeIndex++;
+                if (nodeIndex < nodeCount) {
+                    process.out("\n");
+                }
             });
         };
     };
@@ -518,6 +526,8 @@ var HtmlBuilder = /** @class */ (function (_super) {
                 }
             });
             var lineDigit = Math.max(utils_1.linesToFigure(lineCountMax), 2);
+            var nodeCount = node.childNodes.length;
+            var nodeIndex = 0;
             node.childNodes.forEach(function (node, index, childNodes) {
                 if (node.isTextNode()) {
                     // 改行する可能性があるのはTextNodeだけ…のはず
@@ -538,6 +548,13 @@ var HtmlBuilder = /** @class */ (function (_super) {
                 else {
                     walker_1.visit(node, v);
                 }
+                // <pre>の中では入力の改行が保持されるべきだが、ASTのパースで消えてしまうため補完。
+                // なお、\rは保持されるので、元ファイルの改行コードが\r\nの場合の考慮は不要。
+                nodeIndex++;
+                if (nodeIndex < nodeCount) {
+                    process.out("\n");
+                }
+                lineCount++;
             });
         };
     };
@@ -565,8 +582,16 @@ var HtmlBuilder = /** @class */ (function (_super) {
                 process.outRaw("</p>\n");
             }
             process.outRaw("<pre class=\"emlist\">");
+            var nodeCount = node.childNodes.length;
+            var nodeIndex = 0;
             node.childNodes.forEach(function (node) {
                 walker_1.visit(node, v);
+                // <pre>の中では入力の改行が保持されるべきだが、ASTのパースで消えてしまうため補完。
+                // なお、\rは保持されるので、元ファイルの改行コードが\r\nの場合の考慮は不要。
+                nodeIndex++;
+                if (nodeIndex < nodeCount) {
+                    process.out("\n");
+                }
             });
         };
     };
@@ -586,6 +611,8 @@ var HtmlBuilder = /** @class */ (function (_super) {
                 }
             });
             var lineDigit = Math.max(utils_1.linesToFigure(lineCountMax), 2);
+            var nodeCount = node.childNodes.length;
+            var nodeIndex = 0;
             node.childNodes.forEach(function (node, index, childNodes) {
                 if (node.isTextNode()) {
                     // 改行する可能性があるのはTextNodeだけ…のはず
@@ -606,6 +633,13 @@ var HtmlBuilder = /** @class */ (function (_super) {
                 else {
                     walker_1.visit(node, v);
                 }
+                // <pre>の中では入力の改行が保持されるべきだが、ASTのパースで消えてしまうため補完。
+                // なお、\rは保持されるので、元ファイルの改行コードが\r\nの場合の考慮は不要。
+                nodeIndex++;
+                if (nodeIndex < nodeCount) {
+                    process.out("\n");
+                }
+                lineCount++;
             });
         };
     };
@@ -1185,8 +1219,16 @@ var TextBuilder = /** @class */ (function (_super) {
             // name はパスしたい, langもパスしたい
             walker_1.visit(node.args[1], v);
             process.outRaw("\n\n");
+            var nodeCount = node.childNodes.length;
+            var nodeIndex = 0;
             node.childNodes.forEach(function (node) {
                 walker_1.visit(node, v);
+                // 入力の改行が保持されるべきだが、ASTのパースで消えてしまうため補完。
+                // なお、\rは保持されるので、元ファイルの改行コードが\r\nの場合の考慮は不要。
+                nodeIndex++;
+                if (nodeIndex < nodeCount) {
+                    process.out("\n");
+                }
             });
         };
     };
@@ -1232,6 +1274,7 @@ var TextBuilder = /** @class */ (function (_super) {
                 else {
                     walker_1.visit(node, v);
                 }
+                lineCount++;
             });
         };
     };
@@ -1258,8 +1301,16 @@ var TextBuilder = /** @class */ (function (_super) {
                 walker_1.visit(node.args[0], v);
                 process.out("\n");
             }
+            var nodeCount = node.childNodes.length;
+            var nodeIndex = 0;
             node.childNodes.forEach(function (node) {
                 walker_1.visit(node, v);
+                // 入力の改行が保持されるべきだが、ASTのパースで消えてしまうため補完。
+                // なお、\rは保持されるので、元ファイルの改行コードが\r\nの場合の考慮は不要。
+                nodeIndex++;
+                if (nodeIndex < nodeCount) {
+                    process.out("\n");
+                }
             });
         };
     };
@@ -1301,6 +1352,7 @@ var TextBuilder = /** @class */ (function (_super) {
                 else {
                     walker_1.visit(node, v);
                 }
+                lineCount++;
             });
         };
     };
