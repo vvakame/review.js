@@ -13,3 +13,11 @@ console.log("はろわー");
 
 #define mrb_string_p(o) (mrb_type(o) == MRB_TT_STRING)
 ◆→終了:リスト←◆
+◆→開始:リスト←◆
+リスト1.3　言語の指定ができます
+
+1
+3
+4
+6
+◆→終了:リスト←◆
