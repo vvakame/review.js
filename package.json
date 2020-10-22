@@ -2,7 +2,7 @@
   "name": "review.js-vscode",
   "author": "yfakariya",
   "private": false,
-  "version": "0.17.0",
+  "version": "0.18.0",
   "description": "ReVIEW implementation by JavaScript for VSCode plugin.\nThis is forked version from vvakame/review.js",
   "main": "./index",
   "bin": {
