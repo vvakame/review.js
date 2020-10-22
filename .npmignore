@@ -37,6 +37,9 @@ Gruntfile.js
 karma.conf.js
 Gemfile*
 npm-shrinkwrap.json
+tsconfig.json
+tslint.json
+ReVIEWSyntax.xhtml
 
 test-results.xml
 npm-debug.log
