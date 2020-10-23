@@ -166,9 +166,9 @@ export class SyntaxPreprocessor implements Preprocessor {
                         syntax: "BlockElementContentText",
                         location: {
                             start: {
-                                offset: info!.offset,
-                                line: info!.line,
-                                column: info!.column
+                                offset: info?.offset ?? node.location.start.offset,
+                                line: info?.line ?? node.location.start.line,
+                                column: info?.column ?? node.location.start.column
                             },
                             end: {
                                 offset: node.location.start.offset - 1,
@@ -176,7 +176,8 @@ export class SyntaxPreprocessor implements Preprocessor {
                                 column: void 0,
                             }
                         },
-                        text: chunk.process.input!.substring(info!.offset, node.location.start.offset - 1)
+                        // @<br>{} などは info がない
+                        text: info?.offset == null ? "" : chunk.process.input!.substring(info!.offset, node.location.start.offset - 1)
                     });
                     if (textNode.text) {
                         resultNodes.push(textNode);

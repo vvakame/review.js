@@ -4962,13 +4962,14 @@ var SyntaxPreprocessor = /** @class */ (function () {
                     lastNode_1 = node;
                 },
                 visitInlineElementPre: function (node) {
+                    var _a, _b, _c;
                     var textNode = new parser_1.TextNodeSyntaxTree({
                         syntax: "BlockElementContentText",
                         location: {
                             start: {
-                                offset: info_1.offset,
-                                line: info_1.line,
-                                column: info_1.column
+                                offset: (_a = info_1 === null || info_1 === void 0 ? void 0 : info_1.offset) !== null && _a !== void 0 ? _a : node.location.start.offset,
+                                line: (_b = info_1 === null || info_1 === void 0 ? void 0 : info_1.line) !== null && _b !== void 0 ? _b : node.location.start.line,
+                                column: (_c = info_1 === null || info_1 === void 0 ? void 0 : info_1.column) !== null && _c !== void 0 ? _c : node.location.start.column
                             },
                             end: {
                                 offset: node.location.start.offset - 1,
@@ -4976,7 +4977,8 @@ var SyntaxPreprocessor = /** @class */ (function () {
                                 column: void 0,
                             }
                         },
-                        text: chunk.process.input.substring(info_1.offset, node.location.start.offset - 1)
+                        // @<br>{} などは info がない
+                        text: (info_1 === null || info_1 === void 0 ? void 0 : info_1.offset) == null ? "" : chunk.process.input.substring(info_1.offset, node.location.start.offset - 1)
                     });
                     if (textNode.text) {
                         resultNodes_1.push(textNode);
