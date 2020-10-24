@@ -1,3 +1,3 @@
 ={referenced} chaprefインライン記法
 
-@<chapref>{referenced}を参照。
+@<chapref>{content}を参照。
