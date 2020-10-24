@@ -298,6 +298,128 @@ var DefaultBuilder = /** @class */ (function () {
     DefaultBuilder.prototype.singleLineComment = function (_process, _node) {
         // 特に何もしない
     };
+    DefaultBuilder.prototype.parseTable = function (tableContents) {
+        var rows = [];
+        var currentRow = [];
+        var currentCell = [];
+        var headerRowCount = 0;
+        tableContents.forEach(function (node) {
+            if (node.isInlineElement()) {
+                currentCell.push(node);
+                return;
+            }
+            // 行成分に分解する。
+            var lines = node.toTextNode().text.split(/\r?\n/g);
+            var totalOffsetOrRowHead = 0;
+            var _loop_1 = function (r) {
+                if (r > 0) {
+                    // 改行処理
+                    if (currentCell.length > 0) {
+                        currentRow.push({ nodes: currentCell });
+                        currentCell = [];
+                    }
+                    if (currentRow.length > 0) {
+                        rows.push(currentRow);
+                        currentRow = [];
+                    }
+                }
+                // Ruby実装との互換性のためトリム
+                var line = lines[r].trim();
+                if (line.match(/^(-{12,}|={12,})$/g) != null) {
+                    if (headerRowCount === 0) {
+                        headerRowCount = r;
+                    }
+                    return "continue";
+                }
+                var cells = line.split(/\t/g);
+                var columnOffset = 0;
+                cells.forEach(function (cell) {
+                    if (!cell.length) {
+                        // 空の列はスキップ
+                        return;
+                    }
+                    var text;
+                    if (cell === ".") {
+                        text = "";
+                    }
+                    else {
+                        text = cell.startsWith("..") ? cell.substr(1) : cell;
+                    }
+                    currentCell.push(new parser_1.TextNodeSyntaxTree({
+                        syntax: "InlineElementContentText",
+                        location: {
+                            start: {
+                                line: node.location.start.line + r,
+                                column: columnOffset,
+                                offset: node.location.start.offset + totalOffsetOrRowHead + columnOffset,
+                            },
+                            end: {
+                                line: node.location.start.line + r,
+                                column: columnOffset + cell.length,
+                                offset: node.location.start.offset + totalOffsetOrRowHead + columnOffset + cell.length
+                            }
+                        },
+                        text: text
+                    }));
+                    // 次の列へ。
+                    if (currentCell.length > 0) {
+                        currentRow.push({ nodes: currentCell });
+                        currentCell = [];
+                    }
+                    // タブ文字分オフセットを増やす
+                    columnOffset++;
+                });
+                totalOffsetOrRowHead += columnOffset;
+            };
+            for (var r = 0; r < lines.length; r++) {
+                _loop_1(r);
+            } // row
+        });
+        // 最終行の改行処理
+        if (currentCell.length > 0) {
+            currentRow.push({ nodes: currentCell });
+        }
+        if (currentRow.length > 0) {
+            rows.push(currentRow);
+        }
+        // 列の補完
+        var maxColumns = 0;
+        for (var _i = 0, _a = rows.map(function (cells) { return cells.length; }); _i < _a.length; _i++) {
+            var columns = _a[_i];
+            if (columns > maxColumns) {
+                maxColumns = columns;
+            }
+        }
+        // 空文字列セルを作って埋める。
+        rows.forEach(function (row) {
+            var _a, _b, _c;
+            var cell = row[row.length - 1];
+            var location = cell.nodes[cell.nodes.length - 1].location;
+            for (var c = row.length; c < maxColumns; c++) {
+                row.push({
+                    nodes: [
+                        new parser_1.TextNodeSyntaxTree({
+                            syntax: "InlineElementContentText",
+                            location: {
+                                start: {
+                                    line: location.start.line,
+                                    column: location.start.column,
+                                    offset: location.start.offset,
+                                },
+                                end: {
+                                    line: (_a = location.end) === null || _a === void 0 ? void 0 : _a.line,
+                                    column: (_b = location.end) === null || _b === void 0 ? void 0 : _b.column,
+                                    offset: (_c = location.end) === null || _c === void 0 ? void 0 : _c.offset
+                                }
+                            },
+                            text: ""
+                        })
+                    ]
+                });
+            }
+        });
+        return { cells: rows, headerRowCount: headerRowCount };
+    };
     return DefaultBuilder;
 }());
 exports.DefaultBuilder = DefaultBuilder;
@@ -345,14 +467,14 @@ var HtmlBuilder = /** @class */ (function (_super) {
         return String(data).replace(regexp, function (c) { return _this.escapeMap[c]; });
     };
     HtmlBuilder.prototype.normalizeId = function (label) {
-        if (label.arg.match(/^[a-z][a-z0-9_/-]*$/i)) {
-            return label.arg;
+        if (label.match(/^[a-z][a-z0-9_/-]*$/i)) {
+            return label;
         }
-        else if (label.arg.match(/^[0-9_.-][a-z0-9_.-]*$/i)) {
-            return "id_" + label.arg;
+        else if (label.match(/^[0-9_.-][a-z0-9_.-]*$/i)) {
+            return "id_" + label;
         }
         else {
-            return "id_" + encodeURIComponent(label.arg.replace(/_/g, "__").replace(/ /g, "-")).replace(/%/g, "_").replace(/\+/g, "-");
+            return "id_" + encodeURIComponent(label.replace(/_/g, "__").replace(/ /g, "-")).replace(/%/g, "_").replace(/\+/g, "-");
         }
     };
     HtmlBuilder.prototype.processPost = function (process, chunk) {
@@ -386,7 +508,7 @@ var HtmlBuilder = /** @class */ (function (_super) {
     HtmlBuilder.prototype.headlinePre = function (process, _name, node) {
         process.outRaw("<h").out(node.level);
         if (node.label) {
-            process.outRaw(" id=\"").out(this.normalizeId(node.label)).outRaw("\"");
+            process.outRaw(" id=\"").out(this.normalizeId(node.label.arg)).outRaw("\"");
         }
         process.outRaw(">");
         process.outRaw("<a id=\"h").out(utils_1.getHeadlineLevels(node).join("-")).outRaw("\"></a>");
@@ -412,7 +534,7 @@ var HtmlBuilder = /** @class */ (function (_super) {
     HtmlBuilder.prototype.columnHeadlinePre = function (process, node) {
         process.outRaw("<h").out(node.level);
         if (node.label) {
-            process.outRaw(" id=\"").out(this.normalizeId(node.label)).outRaw("\"");
+            process.outRaw(" id=\"").out(this.normalizeId(node.label.arg)).outRaw("\"");
         }
         process.outRaw(">");
         process.outRaw("<a id=\"column-").out(node.parentNode.no).outRaw("\"></a>");
@@ -961,26 +1083,77 @@ var HtmlBuilder = /** @class */ (function (_super) {
         process.outRaw(";");
     };
     HtmlBuilder.prototype.block_table_pre = function (process, node) {
-        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
-        process.outRaw("<div>\n");
         var chapter = utils_1.findChapter(node, 1);
         if (!chapter) {
             process.error(i18n_1.t("builder.chapter_not_found", 1), node);
             return false;
         }
         var text = i18n_1.t("builder.table", chapter.fqn, node.no);
+        process.outRaw("<div");
+        if (node.args[0] != null) {
+            // BracketArgs -> BracketArgSubs -> BracketArgText
+            process.outRaw(" id=\"").out(this.normalizeId(node.args[0].childNodes[0].toNode().childNodes[0].toTextNode().text)).outRaw("\"");
+        }
+        process.outRaw(" class=\"table\">\n");
         process.outRaw("<p class=\"caption\">").out(text).out(": ").out(utils_1.nodeContentToString(process, node.args[1])).outRaw("</p>\n");
-        process.outRaw("<pre>");
+        process.outRaw("<table>\n");
+        var table = this.parseTable(node.childNodes);
         return function (v) {
-            // name, args はパスしたい
-            node.childNodes.forEach(function (node) {
-                walker_1.visit(node, v);
-            });
+            if (table.headerRowCount === 0) {
+                // 1列目がヘッダー
+                table.cells.forEach(function (columns) {
+                    if (columns.length === 0) {
+                        return;
+                    }
+                    process.outRaw("<tr>");
+                    // ヘッダー列
+                    process.outRaw("<th>");
+                    columns[0].nodes.forEach(function (node) {
+                        walker_1.visit(node, v);
+                    });
+                    process.outRaw("</th>");
+                    // 残りの列
+                    for (var c = 1; c < columns.length; c++) {
+                        process.outRaw("<td>");
+                        columns[c].nodes.forEach(function (node) {
+                            walker_1.visit(node, v);
+                        });
+                        process.outRaw("</td>");
+                    }
+                    process.outRaw("</tr>\n");
+                });
+            }
+            else {
+                // ヘッダー行
+                var r = 0;
+                for (; r < table.headerRowCount; r++) {
+                    process.outRaw("<tr>");
+                    table.cells[r].forEach(function (columns) {
+                        process.outRaw("<th>");
+                        columns.nodes.forEach(function (node) {
+                            walker_1.visit(node, v);
+                        });
+                        process.outRaw("</th>");
+                    });
+                    process.outRaw("</tr>\n");
+                }
+                // ボディ
+                for (; r < table.cells.length; r++) {
+                    process.outRaw("<tr>");
+                    table.cells[r].forEach(function (columns) {
+                        process.outRaw("<td>");
+                        columns.nodes.forEach(function (node) {
+                            walker_1.visit(node, v);
+                        });
+                        process.outRaw("</td>");
+                    });
+                    process.outRaw("</tr>\n");
+                }
+            }
         };
     };
     HtmlBuilder.prototype.block_table_post = function (process, _node) {
-        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
-        process.outRaw("\n</pre>\n").outRaw("</div>\n");
+        process.outRaw("</table>\n").outRaw("</div>\n");
     };
     HtmlBuilder.prototype.inline_table = function (process, node) {
         // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
@@ -1618,9 +1791,7 @@ var TextBuilder = /** @class */ (function (_super) {
         return false;
     };
     TextBuilder.prototype.block_table_pre = function (process, node) {
-        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
-        process.out("◆→開始:表←◆\n");
-        process.out("TODO 現在table記法は仮実装です\n");
+        process.out("\n◆→開始:表←◆\n");
         var chapter = utils_1.findChapter(node, 1);
         if (!chapter) {
             process.error(i18n_1.t("builder.chapter_not_found", 1), node);
@@ -1628,16 +1799,76 @@ var TextBuilder = /** @class */ (function (_super) {
         }
         var text = i18n_1.t("builder.table", chapter.fqn, node.no);
         process.out(text).out("　").out(utils_1.nodeContentToString(process, node.args[1])).out("\n\n");
+        var table = this.parseTable(node.childNodes);
         return function (v) {
-            // name, args はパスしたい
-            node.childNodes.forEach(function (node) {
-                walker_1.visit(node, v);
-            });
+            if (table.headerRowCount === 0) {
+                // 1列目がヘッダー
+                table.cells.forEach(function (columns) {
+                    if (columns.length === 0) {
+                        return;
+                    }
+                    // ヘッダー列
+                    process.out("★");
+                    columns[0].nodes.forEach(function (node) {
+                        walker_1.visit(node, v);
+                    });
+                    process.out("☆");
+                    // 残りの列
+                    for (var c = 1; c < columns.length; c++) {
+                        process.outRaw("\t");
+                        columns[c].nodes.forEach(function (node) {
+                            walker_1.visit(node, v);
+                        });
+                    }
+                    process.outRaw("\n");
+                });
+            }
+            else {
+                // ヘッダー行
+                var r = 0;
+                var _loop_1 = function () {
+                    var columns = table.cells[r];
+                    columns.forEach(function (cell, index) {
+                        // TODO: ヘッダーにインラインがある場合は？
+                        process.out("★");
+                        cell.nodes.forEach(function (node) {
+                            walker_1.visit(node, v);
+                        });
+                        process.out("☆");
+                        if (index < columns.length - 1) {
+                            process.outRaw("\t");
+                        }
+                        else {
+                            process.outRaw("\n");
+                        }
+                    });
+                };
+                for (; r < table.headerRowCount; r++) {
+                    _loop_1();
+                }
+                var _loop_2 = function () {
+                    var columns = table.cells[r];
+                    columns.forEach(function (cell, index) {
+                        cell.nodes.forEach(function (node) {
+                            walker_1.visit(node, v);
+                        });
+                        if (index < columns.length - 1) {
+                            process.outRaw("\t");
+                        }
+                        else {
+                            process.outRaw("\n");
+                        }
+                    });
+                };
+                // ボディ
+                for (; r < table.cells.length; r++) {
+                    _loop_2();
+                }
+            }
         };
     };
     TextBuilder.prototype.block_table_post = function (process, _node) {
-        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
-        process.out("\n◆→終了:表←◆\n");
+        process.out("◆→終了:表←◆\n\n");
     };
     TextBuilder.prototype.inline_table = function (process, node) {
         // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装

@@ -40,6 +40,31 @@ export interface Builder {
 }
 
 /**
+ * 表。
+ */
+export interface Table {
+    /**
+     * セル。「行<>-セル」の構造。
+     */
+    cells: TableCell[][];
+
+    /**
+     * ヘッダー行の数。0のとき、ヘッダー行はなく、1列目がヘッダー扱い。
+     */
+    headerRowCount: number;
+}
+
+/**
+ * 表のセル。
+ */
+export interface TableCell {
+    /**
+     * セルに含まれるノード。[InlineElementSyntax]か[BlockElementContentTextSyntax]のいずれか。
+     */
+    nodes: SyntaxTree[];
+}
+
+/**
  * デフォルトのビルダ。
  * Re:VIEWのASTから何らかのテキストに変換する時はこのクラスを拡張し作成する。
  */
@@ -356,5 +381,139 @@ export class DefaultBuilder implements Builder {
 
     singleLineComment(_process: BuilderProcess, _node: SingleLineCommentSyntaxTree): any {
         // 特に何もしない
+    }
+
+    parseTable(tableContents: SyntaxTree[]): Table {
+        const rows: TableCell[][] = [];
+        let currentRow: TableCell[] = [];
+        let currentCell: SyntaxTree[] = [];
+        let headerRowCount = 0;
+
+        tableContents.forEach(node => {
+            if (node.isInlineElement()) {
+                currentCell.push(node);
+                return;
+            }
+
+            // 行成分に分解する。
+            const lines = node.toTextNode().text.split(/\r?\n/g);
+            let totalOffsetOrRowHead = 0;
+            for (let r = 0; r < lines.length; r++) {
+                if (r > 0) {
+                    // 改行処理
+                    if (currentCell.length > 0) {
+                        currentRow.push({ nodes: currentCell });
+                        currentCell = [];
+                    }
+
+                    if (currentRow.length > 0) {
+                        rows.push(currentRow);
+                        currentRow = [];
+                    }
+                }
+
+                // Ruby実装との互換性のためトリム
+                const line = lines[r].trim();
+
+                if (line.match(/^(-{12,}|={12,})$/g) != null) {
+                    if (headerRowCount === 0) {
+                        headerRowCount = r;
+                    }
+
+                    continue;
+                }
+
+                const cells = line.split(/\t/g);
+                let columnOffset = 0;
+                cells.forEach(cell => {
+                    if (!cell.length) {
+                        // 空の列はスキップ
+                        return;
+                    }
+
+                    let text: string;
+                    if (cell === ".") {
+                        text = "";
+                    } else {
+                        text = cell.startsWith("..") ? cell.substr(1) : cell;
+                    }
+
+                    currentCell.push(
+                        new TextNodeSyntaxTree({
+                            syntax: "InlineElementContentText",
+                            location: {
+                                start: {
+                                    line: node.location.start.line + r,
+                                    column: columnOffset,
+                                    offset: node.location.start.offset + totalOffsetOrRowHead + columnOffset,
+                                },
+                                end: {
+                                    line: node.location.start.line + r,
+                                    column: columnOffset + cell.length,
+                                    offset: node.location.start.offset + totalOffsetOrRowHead + columnOffset + cell.length
+                                }
+                            },
+                            text: text
+                        })
+                    );
+
+                    // 次の列へ。
+                    if (currentCell.length > 0) {
+                        currentRow.push({ nodes: currentCell });
+                        currentCell = [];
+                    }
+                    // タブ文字分オフセットを増やす
+                    columnOffset++;
+                });
+
+                totalOffsetOrRowHead += columnOffset;
+            } // row
+        });
+
+        // 最終行の改行処理
+        if (currentCell.length > 0) {
+            currentRow.push({ nodes: currentCell });
+        }
+        if (currentRow.length > 0) {
+            rows.push(currentRow);
+        }
+
+        // 列の補完
+        let maxColumns = 0;
+        for (const columns of rows.map(cells => cells.length)) {
+            if (columns > maxColumns) {
+                maxColumns = columns;
+            }
+        }
+
+        // 空文字列セルを作って埋める。
+        rows.forEach(row => {
+            const cell = row[row.length - 1];
+            const location = cell.nodes[cell.nodes.length - 1].location;
+            for (let c = row.length; c < maxColumns; c++) {
+                row.push({
+                    nodes: [
+                        new TextNodeSyntaxTree({
+                            syntax: "InlineElementContentText",
+                            location: {
+                                start: {
+                                    line: location.start.line,
+                                    column: location.start.column,
+                                    offset: location.start.offset,
+                                },
+                                end: {
+                                    line: location.end?.line,
+                                    column: location.end?.column,
+                                    offset: location.end?.offset
+                                }
+                            },
+                            text: ""
+                        })
+                    ]
+                });
+            }
+        });
+
+        return { cells: rows, headerRowCount: headerRowCount };
     }
 }

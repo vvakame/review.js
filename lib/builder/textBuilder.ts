@@ -571,9 +571,7 @@ export class TextBuilder extends DefaultBuilder {
     }
 
     block_table_pre(process: BuilderProcess, node: BlockElementSyntaxTree): TreeVisitorReturn {
-        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
-        process.out("◆→開始:表←◆\n");
-        process.out("TODO 現在table記法は仮実装です\n");
+        process.out("\n◆→開始:表←◆\n");
         let chapter = findChapter(node, 1);
         if (!chapter) {
             process.error(t("builder.chapter_not_found", 1), node);
@@ -581,17 +579,75 @@ export class TextBuilder extends DefaultBuilder {
         }
         let text = t("builder.table", chapter.fqn, node.no);
         process.out(text).out("　").out(nodeContentToString(process, node.args[1])).out("\n\n");
+        const table = this.parseTable(node.childNodes);
         return (v: TreeVisitor) => {
-            // name, args はパスしたい
-            node.childNodes.forEach((node) => {
-                visit(node, v);
-            });
+            if (table.headerRowCount === 0) {
+                // 1列目がヘッダー
+                table.cells.forEach((columns) => {
+                    if (columns.length === 0) {
+                        return;
+                    }
+
+                    // ヘッダー列
+                    process.out("★");
+                    columns[0].nodes.forEach((node) => {
+                        visit(node, v);
+                    });
+                    process.out("☆");
+
+                    // 残りの列
+                    for (let c = 1; c < columns.length; c++) {
+                        process.outRaw("\t");
+
+                        columns[c].nodes.forEach((node) => {
+                            visit(node, v);
+                        });
+                    }
+
+                    process.outRaw("\n");
+                });
+            } else {
+                // ヘッダー行
+                let r = 0;
+                for (; r < table.headerRowCount; r++) {
+                    const columns = table.cells[r];
+                    columns.forEach((cell, index) => {
+                        // TODO: ヘッダーにインラインがある場合は？
+                        process.out("★");
+                        cell.nodes.forEach((node) => {
+                            visit(node, v);
+                        });
+                        process.out("☆");
+
+                        if (index < columns.length - 1) {
+                            process.outRaw("\t");
+                        } else {
+                            process.outRaw("\n");
+                        }
+                    });
+                }
+
+                // ボディ
+                for (; r < table.cells.length; r++) {
+                    const columns = table.cells[r];
+                    columns.forEach((cell, index) => {
+                        cell.nodes.forEach((node) => {
+                            visit(node, v);
+                        });
+
+                        if (index < columns.length - 1) {
+                            process.outRaw("\t");
+                        } else {
+                            process.outRaw("\n");
+                        }
+                    });
+                }
+            }
         };
     }
 
     block_table_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
-        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
-        process.out("\n◆→終了:表←◆\n");
+        process.out("◆→終了:表←◆\n\n");
     }
 
     inline_table(process: BuilderProcess, node: InlineElementSyntaxTree) {
