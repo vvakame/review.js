@@ -175,15 +175,15 @@ DollarInlineElementContent "content of inline element"
     ;
 
 BraceInlineElementContentText "text of inline element"
-    = text:( ( !InlineElement BraceInlineElementContentChar )+ ) { return b.text("InlineElementContentText", text.flatMap(function(x) { return x.filter(function(y) { return y != null; }); }).join("")); }
+    = text:( ( !InlineElement BraceInlineElementContentChar )+ ) { return b.text("InlineElementContentText", text.map(function(x) { return x.filter(function(y) { return y != null; }).join(""); }).join("")); }
     ;
 
 PipeInlineElementContentText "text of inline element"
-    = text:( ( !InlineElement PipeInlineElementContentChar )+ ) { return b.text("InlineElementContentText", text.flatMap(function(x) { return x.filter(function(y) { return y != null; }); }).join("")); }
+    = text:( ( !InlineElement PipeInlineElementContentChar )+ ) { return b.text("InlineElementContentText", text.map(function(x) { return x.filter(function(y) { return y != null; }).join(""); }).join("")); }
     ;
 
 DollarInlineElementContentText "text of inline element"
-    = text:( ( !InlineElement DollarInlineElementContentChar )+ ) { return b.text("InlineElementContentText", text.flatMap(function(x) { return x.filter(function(y) { return y != null; }); }).join("")); }
+    = text:( ( !InlineElement DollarInlineElementContentChar )+ ) { return b.text("InlineElementContentText", text.map(function(x) { return x.filter(function(y) { return y != null; }).join(""); }).join("")); }
     ;
 
 BraceInlineElementContentChar "char of inline element content"

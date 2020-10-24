@@ -241,7 +241,7 @@ function peg$parse(input, options) {
       peg$c97 = function(c) { error("Inlines cannot not contain other inlines."); },
       peg$c98 = function(c) { return b.content("InlineElementContent", c); },
       peg$c99 = peg$otherExpectation("text of inline element"),
-      peg$c100 = function(text) { return b.text("InlineElementContentText", text.flatMap(function(x) { return x.filter(function(y) { return y != null; }); }).join("")); },
+      peg$c100 = function(text) { return b.text("InlineElementContentText", text.map(function(x) { return x.filter(function(y) { return y != null; }).join(""); }).join("")); },
       peg$c101 = peg$otherExpectation("char of inline element content"),
       peg$c102 = "\r\n",
       peg$c103 = peg$literalExpectation("\r\n", false),
