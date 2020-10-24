@@ -146,7 +146,7 @@ BlockElementContentText "text of content in block"
     ;
 
 InlineElementContents "contents of inline element"
-    = !"}" c:InlineElementContent cc:InlineElementContents? { return b.contents("InlineElementContents", c, cc); }
+    = c:InlineElementContent cc:InlineElementContents? { return b.contents("InlineElementContents", c, cc); }
     ;
 
 InlineElementContent "content of inline element"
@@ -155,7 +155,14 @@ InlineElementContent "content of inline element"
     ;
 
 InlineElementContentText "text of inline element"
-    = text:$( ( !InlineElement [^\r\n}] )+ ) { return b.text("InlineElementContentText", text); }
+    = text:( ( !InlineElement InlineElementContentChar )+ ) { return b.text("InlineElementContentText", text.flatMap(function(x) { return x.filter(function(y) { return y != null; }); }).join("")); }
+    ;
+
+InlineElementContentChar "char of inline element content"
+    = !( "\\" / "}" / "\r\n" / "\n" ) char:. { return char; }
+    / "\\\\" { return "\\"; }
+    // "}" とやると PEG.js のパーサーが解析に失敗するので \u 形式。
+    / "\\}" { return "\u007D"; }
     ;
 
 SinglelineContent "inline content"
