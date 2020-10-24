@@ -64,7 +64,6 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
             "ch01", // lead, emplist がまだサポートされていない
             "empty", // empty への対応をまだ行っていない ファイル実体は存在していない
             "block_graph", // graph への対応がまだ不完全なので
-            "inline", // tti がまだサポートされていない < のエスケープとかも
             "lead", // ブロック構文内でのParagraphの扱いがおかしいのを直していない
             "preface", // めんどくさいので
             "preproc",  // めんどくさいので
