@@ -65,7 +65,6 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
             "empty", // empty への対応をまだ行っていない ファイル実体は存在していない
             "block_graph", // graph への対応がまだ不完全なので
             "inline", // tti がまだサポートされていない < のエスケープとかも
-            "inline_with_newline", // Ruby版の処理が腐っている気がする
             "lead", // ブロック構文内でのParagraphの扱いがおかしいのを直していない
             "preface", // めんどくさいので
             "preproc",  // めんどくさいので
