@@ -57,7 +57,7 @@ export class HtmlBuilder extends DefaultBuilder {
                 },
                 visitChapterPre: (node: ChapterSyntaxTree) => {
                     if (node.headline.level === 1) {
-                        name = nodeContentToString(process, node.headline.caption);
+                        name = nodeContentToString(process, node.headline.caption, /* textOnly */true);
                     }
                 }
             });

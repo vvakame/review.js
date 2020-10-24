@@ -86,9 +86,9 @@ export function nodeToString(process: any, node: SyntaxTree): string {
  * @param process
  * @param node
  */
-export function nodeContentToString(process: Process, node: SyntaxTree): string;
-export function nodeContentToString(process: BuilderProcess, node: SyntaxTree): string;
-export function nodeContentToString(process: any, node: SyntaxTree): string {
+export function nodeContentToString(process: Process, node: SyntaxTree, textOnly?: boolean): string;
+export function nodeContentToString(process: BuilderProcess, node: SyntaxTree, textOnly?: boolean): string;
+export function nodeContentToString(process: any, node: SyntaxTree, textOnly?: boolean): string {
     "use strict";
 
     let minPos = Number.MAX_VALUE;
@@ -100,13 +100,13 @@ export function nodeContentToString(process: any, node: SyntaxTree): string {
             maxPos = Math.max(maxPos, node.location.end!.offset!);
         }
     };
-    // root (子要素だけ抽出したい)
-    visit(node, {
+    let visitor: TreeVisitorArg = null!;
+    visitor = {
         visitDefaultPre: (_node: SyntaxTree) => {
         },
         visitNodePre: (node: NodeSyntaxTree) => {
             // Chapter, Inline, Block もここに来る
-            node.childNodes.forEach(child => visit(child, childVisitor));
+            node.childNodes.forEach(child => visit(child, textOnly ? visitor : childVisitor));
             return false;
         },
         visitHeadlinePre: (node: HeadlineSyntaxTree) => {
@@ -126,11 +126,13 @@ export function nodeContentToString(process: any, node: SyntaxTree): string {
             visit(node.text, childVisitor);
             return false;
         },
-        visitTextPre: (_text: TextNodeSyntaxTree) => {
-            visit(node, childVisitor);
+        visitTextPre: (text: TextNodeSyntaxTree) => {
+            visit(textOnly ? text : node, childVisitor);
             return false;
         }
-    });
+    };
+    // root (子要素だけ抽出したい)
+    visit(node, visitor);
     if (maxPos < 0) {
         return "";
     } else {

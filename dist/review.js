@@ -362,7 +362,7 @@ var HtmlBuilder = /** @class */ (function (_super) {
                 },
                 visitChapterPre: function (node) {
                     if (node.headline.level === 1) {
-                        name_1 = utils_1.nodeContentToString(process, node.headline.caption);
+                        name_1 = utils_1.nodeContentToString(process, node.headline.caption, /* textOnly */ true);
                     }
                 }
             });
@@ -5997,7 +5997,7 @@ function nodeToString(process, node) {
     return process.input.substring(node.location.start.offset, node.location.end.offset);
 }
 exports.nodeToString = nodeToString;
-function nodeContentToString(process, node) {
+function nodeContentToString(process, node, textOnly) {
     "use strict";
     var minPos = Number.MAX_VALUE;
     var maxPos = -1;
@@ -6008,13 +6008,13 @@ function nodeContentToString(process, node) {
             maxPos = Math.max(maxPos, node.location.end.offset);
         }
     };
-    // root (子要素だけ抽出したい)
-    walker_1.visit(node, {
+    var visitor = null;
+    visitor = {
         visitDefaultPre: function (_node) {
         },
         visitNodePre: function (node) {
             // Chapter, Inline, Block もここに来る
-            node.childNodes.forEach(function (child) { return walker_1.visit(child, childVisitor); });
+            node.childNodes.forEach(function (child) { return walker_1.visit(child, textOnly ? visitor : childVisitor); });
             return false;
         },
         visitHeadlinePre: function (node) {
@@ -6034,11 +6034,13 @@ function nodeContentToString(process, node) {
             walker_1.visit(node.text, childVisitor);
             return false;
         },
-        visitTextPre: function (_text) {
-            walker_1.visit(node, childVisitor);
+        visitTextPre: function (text) {
+            walker_1.visit(textOnly ? text : node, childVisitor);
             return false;
         }
-    });
+    };
+    // root (子要素だけ抽出したい)
+    walker_1.visit(node, visitor);
     if (maxPos < 0) {
         return "";
     }
