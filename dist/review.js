@@ -159,6 +159,12 @@ var DefaultBuilder = /** @class */ (function () {
     DefaultBuilder.prototype.dlistPost = function (_process, _name, _node) {
     };
     DefaultBuilder.prototype.text = function (process, node) {
+        var _a, _b, _c;
+        // コメントの場合出力しない
+        if (((_a = node.parentNode) === null || _a === void 0 ? void 0 : _a.parentNode) != null && ((_b = node.parentNode) === null || _b === void 0 ? void 0 : _b.parentNode.isInlineElement()) &&
+            ((_c = node.parentNode) === null || _c === void 0 ? void 0 : _c.parentNode.toInlineElement().symbol) === "comment") {
+            return;
+        }
         // TODO in paragraph だったら note.text.replace("\n", "") したほうが良い…
         process.out(node.text);
     };
@@ -285,6 +291,9 @@ var DefaultBuilder = /** @class */ (function () {
             process.outRaw(content);
         }
         return false;
+    };
+    DefaultBuilder.prototype.inline_comment = function (_process, _node) {
+        // 特に何もしない
     };
     DefaultBuilder.prototype.singleLineComment = function (_process, _node) {
         // 特に何もしない
@@ -1001,12 +1010,6 @@ var HtmlBuilder = /** @class */ (function (_super) {
     HtmlBuilder.prototype.block_comment_post = function (process, _node) {
         process.outRaw(" -->\n");
     };
-    HtmlBuilder.prototype.inline_comment_pre = function (process, _node) {
-        process.outRaw("<!-- ");
-    };
-    HtmlBuilder.prototype.inline_comment_post = function (process, _node) {
-        process.outRaw(" -->");
-    };
     HtmlBuilder.prototype.inline_chap = function (process, node) {
         var chapName = utils_1.nodeContentToString(process, node);
         var chapter = process.findChapter(chapName);
@@ -1663,12 +1666,6 @@ var TextBuilder = /** @class */ (function (_super) {
     };
     TextBuilder.prototype.block_comment_post = function (process, _node) {
         process.out("←◆\n");
-    };
-    TextBuilder.prototype.inline_comment_pre = function (process, _node) {
-        process.out("◆→DTP連絡:");
-    };
-    TextBuilder.prototype.inline_comment_post = function (process, _node) {
-        process.out("←◆");
     };
     TextBuilder.prototype.inline_chap = function (process, node) {
         var chapName = utils_1.nodeContentToString(process, node);

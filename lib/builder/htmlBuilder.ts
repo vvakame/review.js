@@ -787,14 +787,6 @@ export class HtmlBuilder extends DefaultBuilder {
         process.outRaw(" -->\n");
     }
 
-    inline_comment_pre(process: BuilderProcess, _node: InlineElementSyntaxTree) {
-        process.outRaw("<!-- ");
-    }
-
-    inline_comment_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
-        process.outRaw(" -->");
-    }
-
     inline_chap(process: BuilderProcess, node: InlineElementSyntaxTree) {
         let chapName = nodeContentToString(process, node);
         let chapter = process.findChapter(chapName);

@@ -627,14 +627,6 @@ export class TextBuilder extends DefaultBuilder {
         process.out("←◆\n");
     }
 
-    inline_comment_pre(process: BuilderProcess, _node: InlineElementSyntaxTree) {
-        process.out("◆→DTP連絡:");
-    }
-
-    inline_comment_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
-        process.out("←◆");
-    }
-
     inline_chap(process: BuilderProcess, node: InlineElementSyntaxTree) {
         let chapName = nodeContentToString(process, node);
         let chapter = process.findChapter(chapName);
