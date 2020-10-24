@@ -160,17 +160,17 @@ DollarInlineElementContents "contents of inline element"
     ;
 
 BraceInlineElementContent "content of inline element"
-    = c:InlineElement                 { return b.content("InlineElementContent", c); }
+    = c:InlineElement                 { error("Inlines cannot not contain other inlines."); }
     / c:BraceInlineElementContentText { return b.content("InlineElementContent", c); }
     ;
 
 PipeInlineElementContent "content of inline element"
-    = c:InlineElement                { return b.content("InlineElementContent", c); }
+    = c:InlineElement                { error("Inlines cannot not contain other inlines."); }
     / c:PipeInlineElementContentText { return b.content("InlineElementContent", c); }
     ;
 
 DollarInlineElementContent "content of inline element"
-    = c:InlineElement                  { return b.content("InlineElementContent", c); }
+    = c:InlineElement                  { error("Inlines cannot not contain other inlines."); }
     / c:DollarInlineElementContentText { return b.content("InlineElementContent", c); }
     ;
 
