@@ -193,12 +193,14 @@ export class DefaultValidator implements Validator {
             if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
                 let reference = symbol.referenceTo;
                 symbols.forEach(symbol => {
-                    if (reference.chapter === symbol.chapter && reference.targetSymbol === symbol.symbolName && reference.label === symbol.labelName) {
+                    if (reference.chapter === symbol.chapter &&
+                        reference.targetSymbol === symbol.symbolName &&
+                        (reference.label == null || reference.label === symbol.labelName)) {
                         reference.referenceNode = symbol.node;
                     }
                 });
                 if (!reference.referenceNode) {
-                    symbol.chapter!.process.error(t("compile.reference_is_missing", reference.targetSymbol, reference.label), symbol.node);
+                    symbol.chapter!.process.error(t("compile.reference_is_missing", reference.targetSymbol, reference.label ?? reference.chapterName), symbol.node);
                     return;
                 }
             }

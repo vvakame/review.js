@@ -18,7 +18,7 @@ export interface ReferenceTo {
     chapter?: ContentChunk | null;
     chapterName: string;
     targetSymbol: string;
-    label: string;
+    label?: string; // 章ID参照の場合はなし
     // 上記情報から解決した結果のNode
     referenceNode?: SyntaxTree;
 }
@@ -150,8 +150,7 @@ export class Process {
 
             return {
                 chapterName: splitted[0],
-                targetSymbol: targetSymbol,
-                label: splitted[0]
+                targetSymbol: targetSymbol
             };
         }
 

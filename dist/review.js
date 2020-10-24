@@ -2917,8 +2917,7 @@ var Process = /** @class */ (function () {
             }
             return {
                 chapterName: splitted[0],
-                targetSymbol: targetSymbol,
-                label: splitted[0]
+                targetSymbol: targetSymbol
             };
         }
         if (targetSymbol === "fn") {
@@ -5234,15 +5233,18 @@ var DefaultValidator = /** @class */ (function () {
         });
         // referenceTo.node の解決
         symbols.forEach(function (symbol) {
+            var _a;
             if (symbol.referenceTo && !symbol.referenceTo.referenceNode) {
                 var reference_1 = symbol.referenceTo;
                 symbols.forEach(function (symbol) {
-                    if (reference_1.chapter === symbol.chapter && reference_1.targetSymbol === symbol.symbolName && reference_1.label === symbol.labelName) {
+                    if (reference_1.chapter === symbol.chapter &&
+                        reference_1.targetSymbol === symbol.symbolName &&
+                        (reference_1.label == null || reference_1.label === symbol.labelName)) {
                         reference_1.referenceNode = symbol.node;
                     }
                 });
                 if (!reference_1.referenceNode) {
-                    symbol.chapter.process.error(i18n_1.t("compile.reference_is_missing", reference_1.targetSymbol, reference_1.label), symbol.node);
+                    symbol.chapter.process.error(i18n_1.t("compile.reference_is_missing", reference_1.targetSymbol, (_a = reference_1.label) !== null && _a !== void 0 ? _a : reference_1.chapterName), symbol.node);
                     return;
                 }
             }
