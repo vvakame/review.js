@@ -1156,7 +1156,6 @@ var HtmlBuilder = /** @class */ (function (_super) {
         process.outRaw("</table>\n").outRaw("</div>\n");
     };
     HtmlBuilder.prototype.inline_table = function (process, node) {
-        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         var chapter = utils_1.findChapter(node, 1);
         if (!chapter) {
             process.error(i18n_1.t("builder.chapter_not_found", 1), node);
@@ -1164,7 +1163,7 @@ var HtmlBuilder = /** @class */ (function (_super) {
         }
         var listNode = this.findReference(process, node).referenceTo.referenceNode.toBlockElement();
         var text = i18n_1.t("builder.table", chapter.fqn, listNode.no);
-        process.out(text);
+        process.outRaw("<span class=\"tableref\">").out(text).outRaw("</span>");
         return false;
     };
     HtmlBuilder.prototype.block_tsize = function (_process, _node) {

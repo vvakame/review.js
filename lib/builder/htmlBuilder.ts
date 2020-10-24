@@ -809,7 +809,6 @@ export class HtmlBuilder extends DefaultBuilder {
     }
 
     inline_table(process: BuilderProcess, node: InlineElementSyntaxTree) {
-        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         let chapter = findChapter(node, 1);
         if (!chapter) {
             process.error(t("builder.chapter_not_found", 1), node);
@@ -817,7 +816,7 @@ export class HtmlBuilder extends DefaultBuilder {
         }
         let listNode = this.findReference(process, node).referenceTo!.referenceNode!.toBlockElement();
         let text = t("builder.table", chapter.fqn, listNode.no);
-        process.out(text);
+        process.outRaw("<span class=\"tableref\">").out(text).outRaw("</span>");
         return false;
     }
 
