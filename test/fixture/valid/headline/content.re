@@ -7,3 +7,4 @@
 ======= level 7
 ======={1.1} number label
 ======={ $　<-_&#+} chars label
+=={hoge} @<tt>{WithLabelAndInline}について

@@ -34,7 +34,6 @@ describe("ReVIEW構文の", () => {
             let ignoreFiles = [
                 "block_dont_has_body.re", // noindent がまだサポートされていない
                 "ch01.re", // lead, emplist がまだサポートされていない
-                "headline.re", // なんか落ちる
                 "inline.re" // tti がまだサポートされていない
             ];
             function matchIgnoreFiles(filePath: string) {
