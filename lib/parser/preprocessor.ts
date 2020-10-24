@@ -2,7 +2,7 @@
 
 import { Book, ContentChunk } from "../model/compilerModel";
 
-import { SyntaxTree, NodeSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ColumnSyntaxTree, ChapterSyntaxTree, TextNodeSyntaxTree } from "./parser";
+import { SyntaxTree, NodeSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ColumnSyntaxTree, ChapterSyntaxTree, TextNodeSyntaxTree, RuleName } from "./parser";
 
 import { AcceptableSyntaxes } from "./analyzer";
 
@@ -152,6 +152,13 @@ export class SyntaxPreprocessor implements Preprocessor {
             let lastNode: SyntaxTree | null = null;
             visit(node.childNodes[0], {
                 visitDefaultPre: (node: SyntaxTree) => {
+                    if (node.ruleName === RuleName.InlineElementContents ||
+                        node.ruleName === RuleName.InlineElementContent||
+                        node.ruleName === RuleName.InlineElementContentText) {
+                        // インラインコンテンツ二重出力を防ぐために無視。
+                        return;
+                    }
+
                     if (!info) {
                         info = {
                             offset: node.location.start.offset,

@@ -4951,6 +4951,12 @@ var SyntaxPreprocessor = /** @class */ (function () {
             var lastNode_1 = null;
             walker_1.visit(node.childNodes[0], {
                 visitDefaultPre: function (node) {
+                    if (node.ruleName === parser_1.RuleName.InlineElementContents ||
+                        node.ruleName === parser_1.RuleName.InlineElementContent ||
+                        node.ruleName === parser_1.RuleName.InlineElementContentText) {
+                        // インラインコンテンツ二重出力を防ぐために無視。
+                        return;
+                    }
                     if (!info_1) {
                         info_1 = {
                             offset: node.location.start.offset,
