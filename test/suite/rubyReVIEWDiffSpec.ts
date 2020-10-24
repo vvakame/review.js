@@ -7,6 +7,7 @@ import { isNodeJS } from "../../lib/utils/utils";
 import { Builder } from "../../lib/builder/builder";
 import { TextBuilder } from "../../lib/builder/textBuilder";
 import { HtmlBuilder } from "../../lib/builder/htmlBuilder";
+import { ProcessReport } from "../../lib";
 
 describe("Ruby版ReVIEWとの出力差確認", () => {
     "use strict";
@@ -89,6 +90,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
                     .substr(0, filePath.length - "/content.re".length)
                     .substr(path.length);
 
+                let compileReports : ProcessReport[] = [];
                 typeList.forEach(typeInfo => {
                     let targetFileName = `${path}${baseName}/content.${typeInfo.ext}`;
                     it(`ファイル: ${baseName}/content.${typeInfo.ext}`, () => {
@@ -101,11 +103,17 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
                                 contents: [
                                     "content.re",
                                 ]
+                            },
+                            listener: {
+                                onReports: reports => compileReports = reports
                             }
                         })
                             .then(s => {
+                                const compileErrors = compileReports.filter(r => r.level > 1);
+                                assert(compileErrors.length === 0, compileErrors.map(r => `${r.level}: ${r.message}`).join("\n"));
+
                                 let result: string = s.results["content." + typeInfo.ext];
-                                assert(result !== null);
+                                assert(result != null);
 
                                 let assertResult = () => {
                                     let expected = fs.readFileSync(targetFileName, "utf8");
