@@ -651,7 +651,6 @@ export class TextBuilder extends DefaultBuilder {
     }
 
     inline_table(process: BuilderProcess, node: InlineElementSyntaxTree) {
-        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         let chapter = findChapter(node, 1);
         if (!chapter) {
             process.error(t("builder.chapter_not_found", 1), node);

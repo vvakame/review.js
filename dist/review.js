@@ -1870,7 +1870,6 @@ var TextBuilder = /** @class */ (function (_super) {
         process.out("◆→終了:表←◆\n\n");
     };
     TextBuilder.prototype.inline_table = function (process, node) {
-        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         var chapter = utils_1.findChapter(node, 1);
         if (!chapter) {
             process.error(i18n_1.t("builder.chapter_not_found", 1), node);
