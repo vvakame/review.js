@@ -62,7 +62,9 @@ BlockElement "block element"
     ;
 
 InlineElement "inline element"
-    = "@<" symbol:$([^>\r\n]+) ">" "{" contents:InlineElementContents? "}" { return b.inlineElement(symbol, contents); }
+    = "@<" symbol:$([^>\r\n]+) ">" "{" contents:BraceInlineElementContents? "}" { return b.inlineElement(symbol, contents); }
+    / "@<" symbol:$([^>\r\n]+) ">" "|" contents:PipeInlineElementContents? "|" { return b.inlineElement(symbol, contents); }
+    / "@<" symbol:$([^>\r\n]+) ">" "$" contents:DollarInlineElementContents? "$" { return b.inlineElement(symbol, contents); }
     ;
 
 Column "column"
@@ -145,24 +147,62 @@ BlockElementContentText "text of content in block"
     = text:$( ( !( "//}" / Newline "//}" ) Newline? !SinglelineComment !BlockElement !Ulist !Olist !Dlist ( !InlineElement [^\r\n] )+ Newline? )+ ) { return b.text("ContentText", text); }
     ;
 
-InlineElementContents "contents of inline element"
-    = c:InlineElementContent cc:InlineElementContents? { return b.contents("InlineElementContents", c, cc); }
+BraceInlineElementContents "contents of inline element"
+    = c:BraceInlineElementContent cc:BraceInlineElementContents? { return b.contents("InlineElementContents", c, cc); }
     ;
 
-InlineElementContent "content of inline element"
-    = c:InlineElement            { return b.content("InlineElementContent", c); }
-    / c:InlineElementContentText { return b.content("InlineElementContent", c); }
+PipeInlineElementContents "contents of inline element"
+    = c:PipeInlineElementContent cc:PipeInlineElementContents? { return b.contents("InlineElementContents", c, cc); }
     ;
 
-InlineElementContentText "text of inline element"
-    = text:( ( !InlineElement InlineElementContentChar )+ ) { return b.text("InlineElementContentText", text.flatMap(function(x) { return x.filter(function(y) { return y != null; }); }).join("")); }
+DollarInlineElementContents "contents of inline element"
+    = c:DollarInlineElementContent cc:DollarInlineElementContents? { return b.contents("InlineElementContents", c, cc); }
     ;
 
-InlineElementContentChar "char of inline element content"
+BraceInlineElementContent "content of inline element"
+    = c:InlineElement                 { return b.content("InlineElementContent", c); }
+    / c:BraceInlineElementContentText { return b.content("InlineElementContent", c); }
+    ;
+
+PipeInlineElementContent "content of inline element"
+    = c:InlineElement                { return b.content("InlineElementContent", c); }
+    / c:PipeInlineElementContentText { return b.content("InlineElementContent", c); }
+    ;
+
+DollarInlineElementContent "content of inline element"
+    = c:InlineElement                  { return b.content("InlineElementContent", c); }
+    / c:DollarInlineElementContentText { return b.content("InlineElementContent", c); }
+    ;
+
+BraceInlineElementContentText "text of inline element"
+    = text:( ( !InlineElement BraceInlineElementContentChar )+ ) { return b.text("InlineElementContentText", text.flatMap(function(x) { return x.filter(function(y) { return y != null; }); }).join("")); }
+    ;
+
+PipeInlineElementContentText "text of inline element"
+    = text:( ( !InlineElement PipeInlineElementContentChar )+ ) { return b.text("InlineElementContentText", text.flatMap(function(x) { return x.filter(function(y) { return y != null; }); }).join("")); }
+    ;
+
+DollarInlineElementContentText "text of inline element"
+    = text:( ( !InlineElement DollarInlineElementContentChar )+ ) { return b.text("InlineElementContentText", text.flatMap(function(x) { return x.filter(function(y) { return y != null; }); }).join("")); }
+    ;
+
+BraceInlineElementContentChar "char of inline element content"
     = !( "\\" / "}" / "\r\n" / "\n" ) char:. { return char; }
     / "\\\\" { return "\\"; }
     // "}" とやると PEG.js のパーサーが解析に失敗するので \u 形式。
     / "\\}" { return "\u007D"; }
+    ;
+
+PipeInlineElementContentChar "char of inline element content"
+    = !( "\\" / "|" / "\r\n" / "\n" ) char:. { return char; }
+    / "\\\\" { return "\\"; }
+    / "\\|" { return "|"; }
+    ;
+
+DollarInlineElementContentChar "char of inline element content"
+    = !( "\\" / "$" / "\r\n" / "\n" ) char:. { return char; }
+    / "\\\\" { return "\\"; }
+    / "\\$" { return "$"; }
     ;
 
 SinglelineContent "inline content"
