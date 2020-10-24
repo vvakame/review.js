@@ -7,6 +7,7 @@ import { isNodeJS } from "../../lib/utils/utils";
 import { Builder } from "../../lib/builder/builder";
 import { TextBuilder } from "../../lib/builder/textBuilder";
 import { HtmlBuilder } from "../../lib/builder/htmlBuilder";
+import { ProcessReport } from "../../lib";
 
 describe("Ruby版ReVIEWとの出力差確認", () => {
     "use strict";
@@ -63,18 +64,10 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
             "ch01", // lead, emplist がまだサポートされていない
             "empty", // empty への対応をまだ行っていない ファイル実体は存在していない
             "block_graph", // graph への対応がまだ不完全なので
-            "inline", // tti がまだサポートされていない < のエスケープとかも
-            "inline_nested", // Ruby版はネストを許可しない
-            "inline_with_newline", // Ruby版の処理が腐っている気がする
             "lead", // ブロック構文内でのParagraphの扱いがおかしいのを直していない
             "preface", // めんどくさいので
             "preproc",  // めんどくさいので
-            "inline_title", // Ruby版の処理がおかしい https://github.com/kmuto/review/issues/624
-            "inline_chapref", // Ruby版の処理がおかしい https://github.com/kmuto/review/issues/624
-            "inline_chap", // Ruby版の処理がおかしい https://github.com/kmuto/review/issues/624
-            "inline_comment", // Ruby版の処理がおかしい https://github.com/kmuto/review/pull/625
             "inline_m", // まだ真面目に実装していない
-            "issue31", // Ruby版の処理があまりよくなさそう
         ];
         function matchIgnoreFiles(filePath: string) {
             return ignoreFiles
@@ -89,6 +82,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
                     .substr(0, filePath.length - "/content.re".length)
                     .substr(path.length);
 
+                let compileReports : ProcessReport[] = [];
                 typeList.forEach(typeInfo => {
                     let targetFileName = `${path}${baseName}/content.${typeInfo.ext}`;
                     it(`ファイル: ${baseName}/content.${typeInfo.ext}`, () => {
@@ -101,11 +95,17 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
                                 contents: [
                                     "content.re",
                                 ]
+                            },
+                            listener: {
+                                onReports: reports => compileReports = reports
                             }
                         })
                             .then(s => {
+                                const compileErrors = compileReports.filter(r => r.level > 1);
+                                assert(compileErrors.length === 0, compileErrors.map(r => `${r.level}: ${r.message}`).join("\n"));
+
                                 let result: string = s.results["content." + typeInfo.ext];
-                                assert(result !== null);
+                                assert(result != null);
 
                                 let assertResult = () => {
                                     let expected = fs.readFileSync(targetFileName, "utf8");

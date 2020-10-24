@@ -5,7 +5,7 @@ import { BuilderProcess, ContentChunk } from "../model/compilerModel";
 
 import { DefaultBuilder } from "./builder";
 
-import { NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, ArgumentSyntaxTree } from "../parser/parser";
+import { NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree } from "../parser/parser";
 
 import { visit, TreeVisitor, TreeVisitorReturn } from "../parser/walker";
 
@@ -30,13 +30,13 @@ export class HtmlBuilder extends DefaultBuilder {
         return String(data).replace(regexp, c => this.escapeMap[c]);
     }
 
-    normalizeId(label: ArgumentSyntaxTree): string {
-        if (label.arg.match(/^[a-z][a-z0-9_/-]*$/i)) {
-            return label.arg;
-        } else if (label.arg.match(/^[0-9_.-][a-z0-9_.-]*$/i)) {
-            return `id_${label.arg}`;
+    normalizeId(label: string): string {
+        if (label.match(/^[a-z][a-z0-9_/-]*$/i)) {
+            return label;
+        } else if (label.match(/^[0-9_.-][a-z0-9_.-]*$/i)) {
+            return `id_${label}`;
         } else {
-            return `id_${encodeURIComponent(label.arg.replace(/_/g, "__").replace(/ /g, "-")).replace(/%/g, "_").replace(/\+/g, "-")}`;
+            return `id_${encodeURIComponent(label.replace(/_/g, "__").replace(/ /g, "-")).replace(/%/g, "_").replace(/\+/g, "-")}`;
         }
     }
 
@@ -57,7 +57,7 @@ export class HtmlBuilder extends DefaultBuilder {
                 },
                 visitChapterPre: (node: ChapterSyntaxTree) => {
                     if (node.headline.level === 1) {
-                        name = nodeContentToString(process, node.headline.caption);
+                        name = nodeContentToString(process, node.headline.caption, /* textOnly */true);
                     }
                 }
             });
@@ -74,7 +74,7 @@ export class HtmlBuilder extends DefaultBuilder {
     headlinePre(process: BuilderProcess, _name: string, node: HeadlineSyntaxTree) {
         process.outRaw("<h").out(node.level);
         if (node.label) {
-            process.outRaw(" id=\"").out(this.normalizeId(node.label)).outRaw("\"");
+            process.outRaw(" id=\"").out(this.normalizeId(node.label.arg)).outRaw("\"");
         }
         process.outRaw(">");
         process.outRaw("<a id=\"h").out(getHeadlineLevels(node).join("-")).outRaw("\"></a>");
@@ -104,7 +104,7 @@ export class HtmlBuilder extends DefaultBuilder {
     columnHeadlinePre(process: BuilderProcess, node: ColumnHeadlineSyntaxTree) {
         process.outRaw("<h").out(node.level);
         if (node.label) {
-            process.outRaw(" id=\"").out(this.normalizeId(node.label)).outRaw("\"");
+            process.outRaw(" id=\"").out(this.normalizeId(node.label.arg)).outRaw("\"");
         }
         process.outRaw(">");
         process.outRaw("<a id=\"column-").out(node.parentNode.no).outRaw("\"></a>");
@@ -731,31 +731,84 @@ export class HtmlBuilder extends DefaultBuilder {
     }
 
     block_table_pre(process: BuilderProcess, node: BlockElementSyntaxTree): TreeVisitorReturn {
-        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
-        process.outRaw("<div>\n");
         let chapter = findChapter(node, 1);
         if (!chapter) {
             process.error(t("builder.chapter_not_found", 1), node);
             return false;
         }
         let text = t("builder.table", chapter.fqn, node.no);
+        process.outRaw("<div");
+        if (node.args[0] != null) {
+            // BracketArgs -> BracketArgSubs -> BracketArgText
+            process.outRaw(" id=\"").out(this.normalizeId(node.args[0].childNodes[0].toNode().childNodes[0].toTextNode().text)).outRaw("\"");
+        }
+        process.outRaw(" class=\"table\">\n");
         process.outRaw("<p class=\"caption\">").out(text).out(": ").out(nodeContentToString(process, node.args[1])).outRaw("</p>\n");
-        process.outRaw("<pre>");
+        process.outRaw("<table>\n");
+        const table = this.parseTable(node.childNodes);
         return (v: TreeVisitor) => {
-            // name, args はパスしたい
-            node.childNodes.forEach((node) => {
-                visit(node, v);
-            });
+            if (table.headerRowCount === 0) {
+                // 1列目がヘッダー
+                table.cells.forEach((columns) => {
+                    if (columns.length === 0) {
+                        return;
+                    }
+
+                    process.outRaw("<tr>");
+                    // ヘッダー列
+                    process.outRaw("<th>");
+                    columns[0].nodes.forEach((node) => {
+                        visit(node, v);
+                    });
+                    process.outRaw("</th>");
+
+                    // 残りの列
+                    for (let c = 1; c < columns.length; c++) {
+                        process.outRaw("<td>");
+                        columns[c].nodes.forEach((node) => {
+                            visit(node, v);
+                        });
+                        process.outRaw("</td>");
+                    }
+                    process.outRaw("</tr>\n");
+                });
+            } else {
+                // ヘッダー行
+                let r = 0;
+                for (; r < table.headerRowCount; r++) {
+                    process.outRaw("<tr>");
+                    table.cells[r].forEach((columns) => {
+                        process.outRaw("<th>");
+                        columns.nodes.forEach((node) => {
+                            visit(node, v);
+                        });
+                        process.outRaw("</th>");
+                    });
+                    process.outRaw("</tr>\n");
+                }
+
+                // ボディ
+                for (; r < table.cells.length; r++) {
+
+                    process.outRaw("<tr>");
+                    table.cells[r].forEach((columns) => {
+                        process.outRaw("<td>");
+                        columns.nodes.forEach((node) => {
+                            visit(node, v);
+                        });
+                        process.outRaw("</td>");
+                    });
+                    process.outRaw("</tr>\n");
+                }
+            }
         };
     }
 
     block_table_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
-        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
-        process.outRaw("\n</pre>\n").outRaw("</div>\n");
+        process.outRaw("</table>\n").outRaw("</div>\n");
     }
 
     inline_table(process: BuilderProcess, node: InlineElementSyntaxTree) {
-        // TODO 以下はとりあえず正規のRe:VIEW文書が食えるようにするための仮実装
         let chapter = findChapter(node, 1);
         if (!chapter) {
             process.error(t("builder.chapter_not_found", 1), node);
@@ -763,7 +816,7 @@ export class HtmlBuilder extends DefaultBuilder {
         }
         let listNode = this.findReference(process, node).referenceTo!.referenceNode!.toBlockElement();
         let text = t("builder.table", chapter.fqn, listNode.no);
-        process.out(text);
+        process.outRaw("<span class=\"tableref\">").out(text).outRaw("</span>");
         return false;
     }
 
@@ -787,18 +840,10 @@ export class HtmlBuilder extends DefaultBuilder {
         process.outRaw(" -->\n");
     }
 
-    inline_comment_pre(process: BuilderProcess, _node: InlineElementSyntaxTree) {
-        process.outRaw("<!-- ");
-    }
-
-    inline_comment_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
-        process.outRaw(" -->");
-    }
-
     inline_chap(process: BuilderProcess, node: InlineElementSyntaxTree) {
         let chapName = nodeContentToString(process, node);
         let chapter = process.findChapter(chapName);
-        process.out("第").out(chapter.no).out("章");
+        process.out(t("builder.chapter", chapter.no));
         return false;
     }
 
@@ -814,7 +859,7 @@ export class HtmlBuilder extends DefaultBuilder {
         let chapName = nodeContentToString(process, node);
         let chapter = process.findChapter(chapName);
         let title = this.getChapterTitle(process, chapter);
-        process.out("第").out(chapter.no).out("章「").out(title).out("」");
+        process.out(t("builder.chapter_ref", chapter.no, title));
         return false;
     }
 

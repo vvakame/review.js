@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xmlns:ops="http://www.idpf.org/2007/ops" xml:lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+  <meta name="generator" content="Re:VIEW" />
+  <title>表</title>
+</head>
+<body>
+<h1><a id="h1"></a><span class="secno">第1章　</span>表</h1>
+<div id="TABLE-1" class="table">
+<p class="caption">表1.1: インラインあり</p>
+<table>
+<tr><th>COL1</th><th>COL2</th></tr>
+<tr><td>テスト</td><td><code class="inline-code tt">printf();</code></td></tr>
+<tr><td>閉じ波括弧</td><td><code class="inline-code tt">{print();}</code></td></tr>
+<tr><td>改行</td><td><code class="inline-code tt">{</code><br /><code class="inline-code tt">}</code></td></tr>
+</table>
+</div>
+<p>表の間の段落</p>
+<div id="TABLE-2" class="table">
+<p class="caption">表1.2: 区切りが足りない</p>
+<table>
+<tr><th>COL1</th><td>COL2</td></tr>
+<tr><th>-----------</th><td></td></tr>
+<tr><th>列1</th><td>列2</td></tr>
+</table>
+</div>
+<div id="TABLE-3" class="table">
+<p class="caption">表1.3: 区切りが2回</p>
+<table>
+<tr><th>COL1</th><th>COL2</th></tr>
+<tr><td>列1</td><td>列2</td></tr>
+<tr><td>列3</td><td>列4</td></tr>
+</table>
+</div>
+<div id="TABLE-4" class="table">
+<p class="caption">表1.4: ヘッダーが2行</p>
+<table>
+<tr><th>COL1</th><th>COL2</th></tr>
+<tr><th>COL3</th><th>COL4</th></tr>
+<tr><td>列1</td><td>列2</td></tr>
+</table>
+</div>
+<div id="TABLE-5" class="table">
+<p class="caption">表1.5: ヘッダーとボディで列数違う</p>
+<table>
+<tr><th>COL1</th><th>COL2</th></tr>
+<tr><td>列1</td><td></td></tr>
+</table>
+</div>
+<div id="TABLE-6" class="table">
+<p class="caption">表1.6: ヘッダーとボディで列数違う</p>
+<table>
+<tr><th>COL1</th><th>COL2</th><th></th></tr>
+<tr><td>列1</td><td>列2</td><td>列3</td></tr>
+</table>
+</div>
+<div id="TABLE-7" class="table">
+<p class="caption">表1.7: 空セルに.がない</p>
+<table>
+<tr><th>COL1</th><th>COL2</th><th>COL3</th></tr>
+<tr><td>列1</td><td>列3</td><td></td></tr>
+</table>
+</div>
+<div id="TABLE-8" class="table">
+<p class="caption">表1.8: トリム</p>
+<table>
+<tr><th>COL1</th><th>COL2</th></tr>
+<tr><td>列1 </td><td> 列2</td></tr>
+<tr><td>列1　</td><td>　列2</td></tr>
+</table>
+</div>
+<div id="TABLE-9" class="table">
+<p class="caption">表1.9: 区切りが=</p>
+<table>
+<tr><th>COL1</th><th>COL2</th></tr>
+<tr><td>列1</td><td>列2</td></tr>
+</table>
+</div>
+</body>
+</html>

@@ -91,6 +91,7 @@ export let ja: any = {
         "chapter_not_found": "深さ %d にマッチするチャプターが見つかりませんでした。",
         "image_not_found": "ID: %s にマッチする画像が見つかりませんでした。",
         "chapter": "第%d章",
+        "chapter_ref": "第%d章「%s」",
         "list": "リスト%s.%s",
         "table": "表%s.%s"
     }

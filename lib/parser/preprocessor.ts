@@ -2,7 +2,7 @@
 
 import { Book, ContentChunk } from "../model/compilerModel";
 
-import { SyntaxTree, NodeSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ColumnSyntaxTree, ChapterSyntaxTree, TextNodeSyntaxTree } from "./parser";
+import { SyntaxTree, NodeSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, ColumnSyntaxTree, ChapterSyntaxTree, TextNodeSyntaxTree, RuleName } from "./parser";
 
 import { AcceptableSyntaxes } from "./analyzer";
 
@@ -152,6 +152,13 @@ export class SyntaxPreprocessor implements Preprocessor {
             let lastNode: SyntaxTree | null = null;
             visit(node.childNodes[0], {
                 visitDefaultPre: (node: SyntaxTree) => {
+                    if (node.ruleName === RuleName.InlineElementContents ||
+                        node.ruleName === RuleName.InlineElementContent||
+                        node.ruleName === RuleName.InlineElementContentText) {
+                        // インラインコンテンツ二重出力を防ぐために無視。
+                        return;
+                    }
+
                     if (!info) {
                         info = {
                             offset: node.location.start.offset,
@@ -166,9 +173,9 @@ export class SyntaxPreprocessor implements Preprocessor {
                         syntax: "BlockElementContentText",
                         location: {
                             start: {
-                                offset: info!.offset,
-                                line: info!.line,
-                                column: info!.column
+                                offset: info?.offset ?? node.location.start.offset,
+                                line: info?.line ?? node.location.start.line,
+                                column: info?.column ?? node.location.start.column
                             },
                             end: {
                                 offset: node.location.start.offset - 1,
@@ -176,7 +183,8 @@ export class SyntaxPreprocessor implements Preprocessor {
                                 column: void 0,
                             }
                         },
-                        text: chunk.process.input!.substring(info!.offset, node.location.start.offset - 1)
+                        // @<br>{} などは info がない
+                        text: info?.offset == null ? "" : chunk.process.input!.substring(info!.offset, node.location.start.offset - 1)
                     });
                     if (textNode.text) {
                         resultNodes.push(textNode);
