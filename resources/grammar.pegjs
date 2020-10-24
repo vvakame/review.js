@@ -142,7 +142,7 @@ BlockElementParagraphSub "paragraph sub in block"
     ;
 
 BlockElementContentText "text of content in block"
-    = text:$( ( &. !"//}" !SinglelineComment !BlockElement !Ulist !Olist !Dlist ( !InlineElement [^\r\n] )+ Newline? )+ ) { return b.text("ContentText", text); }
+    = text:$( ( !( "//}" / Newline "//}" ) Newline? !SinglelineComment !BlockElement !Ulist !Olist !Dlist ( !InlineElement [^\r\n] )+ Newline? )+ ) { return b.text("ContentText", text); }
     ;
 
 InlineElementContents "contents of inline element"
