@@ -1185,7 +1185,7 @@ var HtmlBuilder = /** @class */ (function (_super) {
     HtmlBuilder.prototype.inline_chap = function (process, node) {
         var chapName = utils_1.nodeContentToString(process, node);
         var chapter = process.findChapter(chapName);
-        process.out("第").out(chapter.no).out("章");
+        process.out(i18n_1.t("builder.chapter", chapter.no));
         return false;
     };
     HtmlBuilder.prototype.inline_title = function (process, node) {
@@ -1199,7 +1199,7 @@ var HtmlBuilder = /** @class */ (function (_super) {
         var chapName = utils_1.nodeContentToString(process, node);
         var chapter = process.findChapter(chapName);
         var title = this.getChapterTitle(process, chapter);
-        process.out("第").out(chapter.no).out("章「").out(title).out("」");
+        process.out(i18n_1.t("builder.chapter_ref", chapter.no, title));
         return false;
     };
     HtmlBuilder.prototype.inline_idx = function (process, node) {
@@ -2866,6 +2866,7 @@ exports.ja = {
         "chapter_not_found": "深さ %d にマッチするチャプターが見つかりませんでした。",
         "image_not_found": "ID: %s にマッチする画像が見つかりませんでした。",
         "chapter": "第%d章",
+        "chapter_ref": "第%d章「%s」",
         "list": "リスト%s.%s",
         "table": "表%s.%s"
     }

@@ -843,7 +843,7 @@ export class HtmlBuilder extends DefaultBuilder {
     inline_chap(process: BuilderProcess, node: InlineElementSyntaxTree) {
         let chapName = nodeContentToString(process, node);
         let chapter = process.findChapter(chapName);
-        process.out("第").out(chapter.no).out("章");
+        process.out(t("builder.chapter", chapter.no));
         return false;
     }
 
@@ -859,7 +859,7 @@ export class HtmlBuilder extends DefaultBuilder {
         let chapName = nodeContentToString(process, node);
         let chapter = process.findChapter(chapName);
         let title = this.getChapterTitle(process, chapter);
-        process.out("第").out(chapter.no).out("章「").out(title).out("」");
+        process.out(t("builder.chapter_ref", chapter.no, title));
         return false;
     }
 
