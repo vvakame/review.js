@@ -8,6 +8,7 @@ import { isNodeJS } from "../../../lib/utils/utils";
 
 import { parse, SyntaxTree } from "../../../lib/parser/parser";
 import { TextBuilder } from "../../../lib/builder/textBuilder";
+import Path = require("path");
 
 function updateIfSyntaxError(e: any) {
     "use strict";
@@ -93,16 +94,14 @@ describe("ReVIEW構文の", () => {
 
             function matchIgnoreFiles(filePath: string) {
                 return ignoreFiles
-                    .map(name => `${path}/${name}.re`)
+                    .map(name => `${path}${name}.re`)
                     .some(ignoreFilePath => ignoreFilePath === filePath);
             }
 
             glob.sync(`${path}**/*.re`)
                 .filter((filePath: string) => !matchIgnoreFiles(filePath))
                 .forEach((filePath: string) => {
-                    let baseName = filePath
-                        .substr(0, filePath.length - "/content.re".length)
-                        .substr(path.length);
+                    const baseName = Path.basename(filePath);
 
                     it("ファイル:" + baseName, () => {
                         let data = fs.readFileSync(filePath, "utf8");
