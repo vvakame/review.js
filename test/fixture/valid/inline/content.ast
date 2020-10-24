@@ -336,8 +336,8 @@
                     },
                     "end": {
                       "line": 5,
-                      "column": 10,
-                      "offset": 95
+                      "column": 11,
+                      "offset": 96
                     }
                   },
                   "symbol": "tti",
@@ -352,8 +352,8 @@
                         },
                         "end": {
                           "line": 5,
-                          "column": 9,
-                          "offset": 94
+                          "column": 10,
+                          "offset": 95
                         }
                       },
                       "childNodes": [
@@ -367,31 +367,15 @@
                             },
                             "end": {
                               "line": 5,
-                              "column": 9,
-                              "offset": 94
+                              "column": 10,
+                              "offset": 95
                             }
                           },
-                          "text": "\\"
+                          "text": "}"
                         }
                       ]
                     }
                   ]
-                },
-                {
-                  "ruleName": "ContentText",
-                  "location": {
-                    "start": {
-                      "line": 5,
-                      "column": 10,
-                      "offset": 95
-                    },
-                    "end": {
-                      "line": 5,
-                      "column": 11,
-                      "offset": 96
-                    }
-                  },
-                  "text": "}"
                 }
               ]
             }
