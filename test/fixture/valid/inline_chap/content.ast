@@ -9,7 +9,7 @@
     "end": {
       "line": 4,
       "column": 1,
-      "offset": 51
+      "offset": 48
     }
   },
   "childNodes": [
@@ -24,7 +24,7 @@
         "end": {
           "line": 4,
           "column": 1,
-          "offset": 51
+          "offset": 48
         }
       },
       "childNodes": [
@@ -39,7 +39,7 @@
             "end": {
               "line": 4,
               "column": 1,
-              "offset": 51
+              "offset": 48
             }
           },
           "comments": [],
@@ -120,7 +120,7 @@
                 "end": {
                   "line": 4,
                   "column": 1,
-                  "offset": 51
+                  "offset": 48
                 }
               },
               "childNodes": [
@@ -134,8 +134,8 @@
                     },
                     "end": {
                       "line": 3,
-                      "column": 20,
-                      "offset": 46
+                      "column": 17,
+                      "offset": 43
                     }
                   },
                   "symbol": "chap",
@@ -150,8 +150,8 @@
                         },
                         "end": {
                           "line": 3,
-                          "column": 19,
-                          "offset": 45
+                          "column": 16,
+                          "offset": 42
                         }
                       },
                       "childNodes": [
@@ -165,11 +165,11 @@
                             },
                             "end": {
                               "line": 3,
-                              "column": 19,
-                              "offset": 45
+                              "column": 16,
+                              "offset": 42
                             }
                           },
-                          "text": "referenced"
+                          "text": "content"
                         }
                       ]
                     }
@@ -180,13 +180,13 @@
                   "location": {
                     "start": {
                       "line": 3,
-                      "column": 20,
-                      "offset": 46
+                      "column": 17,
+                      "offset": 43
                     },
                     "end": {
                       "line": 3,
-                      "column": 24,
-                      "offset": 50
+                      "column": 21,
+                      "offset": 47
                     }
                   },
                   "text": "を参照。"
