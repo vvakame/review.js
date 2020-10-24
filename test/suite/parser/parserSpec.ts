@@ -87,8 +87,7 @@ describe("ReVIEW構文の", () => {
         describe("正しくない構文のファイルが処理できること", () => {
             let path = "test/fixture/invalid/";
 
-            let ignoreFiles = [
-                "inline_nested", // ネストを許可してしまっている
+            const ignoreFiles: string[] = [
             ];
 
             function matchIgnoreFiles(filePath: string) {
