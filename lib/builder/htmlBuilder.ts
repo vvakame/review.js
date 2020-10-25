@@ -11,6 +11,10 @@ import { visit, TreeVisitor, TreeVisitorReturn } from "../parser/walker";
 
 import { nodeContentToString, findChapter, padLeft, linesToFigure, getHeadlineLevels } from "../utils/utils";
 
+export interface HtmlBuilderOptions {
+    styleSheetUri?: string;
+}
+
 export class HtmlBuilder extends DefaultBuilder {
     extention = "html";
 
@@ -21,8 +25,11 @@ export class HtmlBuilder extends DefaultBuilder {
         '"': '&quot;',
     };
 
-    constructor(private standalone = true) {
+    readonly styleSheetUri: string;
+
+    constructor(options?: HtmlBuilderOptions, private standalone = true) {
         super();
+        this.styleSheetUri = options?.styleSheetUri ?? "stylesheet.css";
     }
 
     escape(data: any): string {
@@ -49,7 +56,7 @@ export class HtmlBuilder extends DefaultBuilder {
             pre += `<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xmlns:ops="http://www.idpf.org/2007/ops" xml:lang="ja">` + "\n";
             pre += `<head>` + "\n";
             pre += `  <meta charset="UTF-8" />` + "\n";
-            pre += `  <link rel="stylesheet" type="text/css" href="stylesheet.css" />` + "\n";
+            pre += `  <link rel="stylesheet" type="text/css" href="${this.styleSheetUri}" />` + "\n";
             pre += `  <meta name="generator" content="Re:VIEW" />` + "\n";
             let name: string | null = null;
             visit(chunk.tree.ast, {

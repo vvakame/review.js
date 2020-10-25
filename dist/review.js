@@ -439,8 +439,9 @@ var walker_1 = require("../parser/walker");
 var utils_1 = require("../utils/utils");
 var HtmlBuilder = /** @class */ (function (_super) {
     __extends(HtmlBuilder, _super);
-    function HtmlBuilder(standalone) {
+    function HtmlBuilder(options, standalone) {
         if (standalone === void 0) { standalone = true; }
+        var _a;
         var _this = _super.call(this) || this;
         _this.standalone = standalone;
         _this.extention = "html";
@@ -450,6 +451,7 @@ var HtmlBuilder = /** @class */ (function (_super) {
             ">": "&gt;",
             '"': '&quot;',
         };
+        _this.styleSheetUri = (_a = options === null || options === void 0 ? void 0 : options.styleSheetUri) !== null && _a !== void 0 ? _a : "stylesheet.css";
         return _this;
     }
     HtmlBuilder.prototype.escape = function (data) {
@@ -476,7 +478,7 @@ var HtmlBuilder = /** @class */ (function (_super) {
             pre += "<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:epub=\"http://www.idpf.org/2007/ops\" xmlns:ops=\"http://www.idpf.org/2007/ops\" xml:lang=\"ja\">" + "\n";
             pre += "<head>" + "\n";
             pre += "  <meta charset=\"UTF-8\" />" + "\n";
-            pre += "  <link rel=\"stylesheet\" type=\"text/css\" href=\"stylesheet.css\" />" + "\n";
+            pre += "  <link rel=\"stylesheet\" type=\"text/css\" href=\"" + this.styleSheetUri + "\" />" + "\n";
             pre += "  <meta name=\"generator\" content=\"Re:VIEW\" />" + "\n";
             var name_1 = null;
             walker_1.visit(chunk.tree.ast, {
