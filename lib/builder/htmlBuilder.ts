@@ -13,6 +13,7 @@ import { nodeContentToString, findChapter, padLeft, linesToFigure, getHeadlineLe
 
 export interface HtmlBuilderOptions {
     styleSheetUri?: string;
+    embededStyles?: string;
     standalone?: boolean;
 }
 
@@ -27,7 +28,7 @@ export class HtmlBuilder extends DefaultBuilder {
     };
 
     private readonly styleSheetUri: string;
-
+    private readonly embededStyles: string | null;
     private readonly standalone: boolean = true;
 
     constructor(options?: HtmlBuilderOptions | boolean) {
@@ -36,7 +37,8 @@ export class HtmlBuilder extends DefaultBuilder {
             this.standalone = options;
         } else {
             this.styleSheetUri = options?.styleSheetUri ?? "stylesheet.css";
-            this.standalone = options?.standalone?? true;
+            this.embededStyles = options?.embededStyles ?? null;
+            this.standalone = options?.standalone ?? true;
         }
     }
 
@@ -65,6 +67,11 @@ export class HtmlBuilder extends DefaultBuilder {
             pre += `<head>` + "\n";
             pre += `  <meta charset="UTF-8" />` + "\n";
             pre += `  <link rel="stylesheet" type="text/css" href="${this.styleSheetUri}" />` + "\n";
+            if (this.embededStyles != null) {
+                pre += `  <style type="text/css">\n<!--\n`;
+                pre += this.embededStyles;
+                pre += `  --></style>\n`;
+            }
             pre += `  <meta name="generator" content="Re:VIEW" />` + "\n";
             let name: string | null = null;
             visit(chunk.tree.ast, {

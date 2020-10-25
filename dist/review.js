@@ -440,7 +440,7 @@ var utils_1 = require("../utils/utils");
 var HtmlBuilder = /** @class */ (function (_super) {
     __extends(HtmlBuilder, _super);
     function HtmlBuilder(options) {
-        var _a, _b;
+        var _a, _b, _c;
         var _this = _super.call(this) || this;
         _this.extention = "html";
         _this.escapeMap = {
@@ -455,7 +455,8 @@ var HtmlBuilder = /** @class */ (function (_super) {
         }
         else {
             _this.styleSheetUri = (_a = options === null || options === void 0 ? void 0 : options.styleSheetUri) !== null && _a !== void 0 ? _a : "stylesheet.css";
-            _this.standalone = (_b = options === null || options === void 0 ? void 0 : options.standalone) !== null && _b !== void 0 ? _b : true;
+            _this.embededStyles = (_b = options === null || options === void 0 ? void 0 : options.embededStyles) !== null && _b !== void 0 ? _b : null;
+            _this.standalone = (_c = options === null || options === void 0 ? void 0 : options.standalone) !== null && _c !== void 0 ? _c : true;
         }
         return _this;
     }
@@ -484,6 +485,11 @@ var HtmlBuilder = /** @class */ (function (_super) {
             pre += "<head>" + "\n";
             pre += "  <meta charset=\"UTF-8\" />" + "\n";
             pre += "  <link rel=\"stylesheet\" type=\"text/css\" href=\"" + this.styleSheetUri + "\" />" + "\n";
+            if (this.embededStyles != null) {
+                pre += "  <style type=\"text/css\">\n<!--\n";
+                pre += this.embededStyles;
+                pre += "  --></style>\n";
+            }
             pre += "  <meta name=\"generator\" content=\"Re:VIEW\" />" + "\n";
             var name_1 = null;
             walker_1.visit(chunk.tree.ast, {
