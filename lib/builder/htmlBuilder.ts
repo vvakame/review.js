@@ -13,6 +13,7 @@ import { nodeContentToString, findChapter, padLeft, linesToFigure, getHeadlineLe
 
 export interface HtmlBuilderOptions {
     styleSheetUri?: string;
+    standalone?: boolean;
 }
 
 export class HtmlBuilder extends DefaultBuilder {
@@ -25,11 +26,18 @@ export class HtmlBuilder extends DefaultBuilder {
         '"': '&quot;',
     };
 
-    readonly styleSheetUri: string;
+    private readonly styleSheetUri: string;
 
-    constructor(options?: HtmlBuilderOptions, private standalone = true) {
+    private readonly standalone: boolean = true;
+
+    constructor(options?: HtmlBuilderOptions | boolean) {
         super();
-        this.styleSheetUri = options?.styleSheetUri ?? "stylesheet.css";
+        if (typeof options === "boolean") {
+            this.standalone = options;
+        } else {
+            this.styleSheetUri = options?.styleSheetUri ?? "stylesheet.css";
+            this.standalone = options?.standalone?? true;
+        }
     }
 
     escape(data: any): string {

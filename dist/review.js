@@ -439,11 +439,9 @@ var walker_1 = require("../parser/walker");
 var utils_1 = require("../utils/utils");
 var HtmlBuilder = /** @class */ (function (_super) {
     __extends(HtmlBuilder, _super);
-    function HtmlBuilder(options, standalone) {
-        if (standalone === void 0) { standalone = true; }
-        var _a;
+    function HtmlBuilder(options) {
+        var _a, _b;
         var _this = _super.call(this) || this;
-        _this.standalone = standalone;
         _this.extention = "html";
         _this.escapeMap = {
             "&": "&amp;",
@@ -451,7 +449,14 @@ var HtmlBuilder = /** @class */ (function (_super) {
             ">": "&gt;",
             '"': '&quot;',
         };
-        _this.styleSheetUri = (_a = options === null || options === void 0 ? void 0 : options.styleSheetUri) !== null && _a !== void 0 ? _a : "stylesheet.css";
+        _this.standalone = true;
+        if (typeof options === "boolean") {
+            _this.standalone = options;
+        }
+        else {
+            _this.styleSheetUri = (_a = options === null || options === void 0 ? void 0 : options.styleSheetUri) !== null && _a !== void 0 ? _a : "stylesheet.css";
+            _this.standalone = (_b = options === null || options === void 0 ? void 0 : options.standalone) !== null && _b !== void 0 ? _b : true;
+        }
         return _this;
     }
     HtmlBuilder.prototype.escape = function (data) {
