@@ -233,13 +233,6 @@ export class DefaultBuilder implements Builder {
     }
 
     text(process: BuilderProcess, node: TextNodeSyntaxTree): any {
-        // コメントの場合出力しない
-        if (node.parentNode?.parentNode != null &&
-            node.parentNode?.parentNode.isInlineElement() &&
-            node.parentNode?.parentNode.toInlineElement().symbol === "comment") {
-            return;
-        }
-
         // TODO in paragraph だったら note.text.replace("\n", "") したほうが良い…
         process.out(node.text);
     }
@@ -373,10 +366,6 @@ export class DefaultBuilder implements Builder {
             process.outRaw(content);
         }
         return false;
-    }
-
-    inline_comment(_process: BuilderProcess, _node: SingleLineCommentSyntaxTree): any {
-        // 特に何もしない
     }
 
     singleLineComment(_process: BuilderProcess, _node: SingleLineCommentSyntaxTree): any {

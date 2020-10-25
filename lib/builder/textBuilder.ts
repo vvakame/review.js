@@ -668,7 +668,12 @@ export class TextBuilder extends DefaultBuilder {
     }
 
     block_comment_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        process.out("◆→DTP連絡:");
+        if (!this.book.config.isDraft) {
+            // 中断
+            return false;
+        }
+
+        process.out("◆→");
 
         return (v: TreeVisitor) => {
             // name, args はパスしたい
@@ -679,7 +684,29 @@ export class TextBuilder extends DefaultBuilder {
     }
 
     block_comment_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
+        if (!this.book.config.isDraft) {
+            return;
+        }
+
         process.out("←◆\n");
+    }
+
+    inline_comment_pre(process: BuilderProcess, _node: InlineElementSyntaxTree) {
+        if (!this.book.config.isDraft) {
+            // 中断
+            return false;
+        }
+
+        process.out("◆→");
+        return true;
+    }
+
+    inline_comment_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
+        if (!this.book.config.isDraft) {
+            return;
+        }
+
+        process.out("←◆");
     }
 
     inline_chap(process: BuilderProcess, node: InlineElementSyntaxTree) {

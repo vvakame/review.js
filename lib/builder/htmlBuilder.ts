@@ -826,7 +826,12 @@ export class HtmlBuilder extends DefaultBuilder {
     }
 
     block_comment_pre(process: BuilderProcess, node: BlockElementSyntaxTree) {
-        process.outRaw("<!-- ");
+        if (!this.book.config.isDraft) {
+            // 中断
+            return false;
+        }
+
+        process.outRaw("<div class=\"draft-comment\">");
 
         return (v: TreeVisitor) => {
             // name, args はパスしたい
@@ -837,8 +842,31 @@ export class HtmlBuilder extends DefaultBuilder {
     }
 
     block_comment_post(process: BuilderProcess, _node: BlockElementSyntaxTree) {
-        process.outRaw(" -->\n");
+        if (!this.book.config.isDraft) {
+            return;
+        }
+
+        process.outRaw("</div>\n");
     }
+
+    inline_comment_pre(process: BuilderProcess, _node: InlineElementSyntaxTree) {
+        if (!this.book.config.isDraft) {
+            // 中断
+            return false;
+        }
+
+        process.outRaw("<span class=\"draft-comment\">");
+        return true;
+    }
+
+    inline_comment_post(process: BuilderProcess, _node: InlineElementSyntaxTree) {
+        if (!this.book.config.isDraft) {
+            return;
+        }
+
+        process.outRaw("</span>");
+    }
+
 
     inline_chap(process: BuilderProcess, node: InlineElementSyntaxTree) {
         let chapName = nodeContentToString(process, node);
