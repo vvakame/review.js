@@ -2,7 +2,7 @@ import { isNodeJS } from "../../lib/utils/utils";
 
 import { start } from "../../lib/index";
 
-import { ConfigRaw } from "../../lib/controller/configRaw";
+import { ConfigRaw, Options } from "../../lib/controller/configRaw";
 import { Book } from "../../lib/model/compilerModel";
 
 import { DefaultAnalyzer } from "../../lib/parser/analyzer";
@@ -16,7 +16,7 @@ import { TextBuilder } from "../../lib/builder/textBuilder";
  * @param tmpConfig
  * @returns {{success: (function(): {book: ReVIEW.Book, results: *}), failure: (function(): {})}}
  */
-export function compile(cfg?: ConfigRaw): Promise<{ book: Book; results: any; }> {
+export function compile(cfg?: ConfigRaw, options?: Options): Promise<{ book: Book; results: any; }> {
     "use strict";
 
     const config = cfg || {} as any as ConfigRaw;
@@ -68,7 +68,7 @@ export function compile(cfg?: ConfigRaw): Promise<{ book: Book; results: any; }>
 
     return start((review) => {
         review.initConfig(config);
-    })
+    }, options)
         .then(book => {
             return {
                 book: book,
