@@ -15,6 +15,10 @@ export class Config {
     constructor(public original: ConfigRaw) {
     }
 
+    get isDraft(): boolean {
+        return false;
+    }
+
     get read(): (path: string) => Promise<string> {
         throw new Error("please implements this method");
     }
@@ -82,6 +86,10 @@ export class NodeJSConfig extends Config {
         super(original);
     }
 
+    get isDraft() {
+        return this.options.draft ?? false;
+    }
+
     get read(): (path: string) => Promise<string> {
         return this.original.read || IO.read;
     }
@@ -118,9 +126,9 @@ export class NodeJSConfig extends Config {
         });
         listener.onSymbols = listener.onSymbols || (() => {
         });
-        listener.onReports = listener.onReports || this.onReports;
-        listener.onCompileSuccess = listener.onCompileSuccess || this.onCompileSuccess;
-        listener.onCompileFailed = listener.onCompileFailed || this.onCompileFailed;
+        listener.onReports = listener.onReports || (b=> this.onReports(b));
+        listener.onCompileSuccess = listener.onCompileSuccess || (b =>this.onCompileSuccess(b));
+        listener.onCompileFailed = listener.onCompileFailed || (() => this.onCompileFailed());
 
         this._listener = listener;
         return this._listener;
@@ -160,11 +168,15 @@ export class NodeJSConfig extends Config {
     }
 
     onCompileSuccess(_book: Book) {
-        process.exit(0);
+        if (!this.options?.inproc) {
+            process.exit(0);
+        }
     }
 
     onCompileFailed() {
-        process.exit(1);
+        if (!this.options?.inproc) {
+            process.exit(1);
+        }
     }
 
     resolvePath(path: string): string {
@@ -181,6 +193,10 @@ export class WebBrowserConfig extends Config {
 
     constructor(public options: Options, public original: ConfigRaw) {
         super(original);
+    }
+
+    get isDraft() {
+        return this.options.draft ?? false;
     }
 
     get read(): (path: string) => Promise<string> {
@@ -222,7 +238,7 @@ export class WebBrowserConfig extends Config {
         let promise = new Promise<{ path: string; result: boolean; }>(resolve => {
             try {
                 let xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function() {
+                xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200 || xhr.status === 304) {
                             resolve({ path: path, result: true });

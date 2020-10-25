@@ -159,12 +159,6 @@ var DefaultBuilder = /** @class */ (function () {
     DefaultBuilder.prototype.dlistPost = function (_process, _name, _node) {
     };
     DefaultBuilder.prototype.text = function (process, node) {
-        var _a, _b, _c;
-        // コメントの場合出力しない
-        if (((_a = node.parentNode) === null || _a === void 0 ? void 0 : _a.parentNode) != null && ((_b = node.parentNode) === null || _b === void 0 ? void 0 : _b.parentNode.isInlineElement()) &&
-            ((_c = node.parentNode) === null || _c === void 0 ? void 0 : _c.parentNode.toInlineElement().symbol) === "comment") {
-            return;
-        }
         // TODO in paragraph だったら note.text.replace("\n", "") したほうが良い…
         process.out(node.text);
     };
@@ -291,9 +285,6 @@ var DefaultBuilder = /** @class */ (function () {
             process.outRaw(content);
         }
         return false;
-    };
-    DefaultBuilder.prototype.inline_comment = function (_process, _node) {
-        // 特に何もしない
     };
     DefaultBuilder.prototype.singleLineComment = function (_process, _node) {
         // 特に何もしない
@@ -1171,7 +1162,11 @@ var HtmlBuilder = /** @class */ (function (_super) {
         return false;
     };
     HtmlBuilder.prototype.block_comment_pre = function (process, node) {
-        process.outRaw("<!-- ");
+        if (!this.book.config.isDraft) {
+            // 中断
+            return false;
+        }
+        process.outRaw("<div class=\"draft-comment\">");
         return function (v) {
             // name, args はパスしたい
             node.childNodes.forEach(function (node) {
@@ -1180,7 +1175,24 @@ var HtmlBuilder = /** @class */ (function (_super) {
         };
     };
     HtmlBuilder.prototype.block_comment_post = function (process, _node) {
-        process.outRaw(" -->\n");
+        if (!this.book.config.isDraft) {
+            return;
+        }
+        process.outRaw("</div>\n");
+    };
+    HtmlBuilder.prototype.inline_comment_pre = function (process, _node) {
+        if (!this.book.config.isDraft) {
+            // 中断
+            return false;
+        }
+        process.outRaw("<span class=\"draft-comment\">");
+        return true;
+    };
+    HtmlBuilder.prototype.inline_comment_post = function (process, _node) {
+        if (!this.book.config.isDraft) {
+            return;
+        }
+        process.outRaw("</span>");
     };
     HtmlBuilder.prototype.inline_chap = function (process, node) {
         var chapName = utils_1.nodeContentToString(process, node);
@@ -1885,7 +1897,11 @@ var TextBuilder = /** @class */ (function (_super) {
         return false;
     };
     TextBuilder.prototype.block_comment_pre = function (process, node) {
-        process.out("◆→DTP連絡:");
+        if (!this.book.config.isDraft) {
+            // 中断
+            return false;
+        }
+        process.out("◆→");
         return function (v) {
             // name, args はパスしたい
             node.childNodes.forEach(function (node) {
@@ -1894,7 +1910,24 @@ var TextBuilder = /** @class */ (function (_super) {
         };
     };
     TextBuilder.prototype.block_comment_post = function (process, _node) {
+        if (!this.book.config.isDraft) {
+            return;
+        }
         process.out("←◆\n");
+    };
+    TextBuilder.prototype.inline_comment_pre = function (process, _node) {
+        if (!this.book.config.isDraft) {
+            // 中断
+            return false;
+        }
+        process.out("◆→");
+        return true;
+    };
+    TextBuilder.prototype.inline_comment_post = function (process, _node) {
+        if (!this.book.config.isDraft) {
+            return;
+        }
+        process.out("←◆");
     };
     TextBuilder.prototype.inline_chap = function (process, node) {
         var chapName = utils_1.nodeContentToString(process, node);
@@ -2026,6 +2059,13 @@ var Config = /** @class */ (function () {
     function Config(original) {
         this.original = original;
     }
+    Object.defineProperty(Config.prototype, "isDraft", {
+        get: function () {
+            return false;
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(Config.prototype, "read", {
         get: function () {
             throw new Error("please implements this method");
@@ -2122,6 +2162,14 @@ var NodeJSConfig = /** @class */ (function (_super) {
         _this.original = original;
         return _this;
     }
+    Object.defineProperty(NodeJSConfig.prototype, "isDraft", {
+        get: function () {
+            var _a;
+            return (_a = this.options.draft) !== null && _a !== void 0 ? _a : false;
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(NodeJSConfig.prototype, "read", {
         get: function () {
             return this.original.read || utils_1.IO.read;
@@ -2158,6 +2206,7 @@ var NodeJSConfig = /** @class */ (function (_super) {
     });
     Object.defineProperty(NodeJSConfig.prototype, "listener", {
         get: function () {
+            var _this = this;
             if (this._listener) {
                 return this._listener;
             }
@@ -2166,9 +2215,9 @@ var NodeJSConfig = /** @class */ (function (_super) {
             });
             listener.onSymbols = listener.onSymbols || (function () {
             });
-            listener.onReports = listener.onReports || this.onReports;
-            listener.onCompileSuccess = listener.onCompileSuccess || this.onCompileSuccess;
-            listener.onCompileFailed = listener.onCompileFailed || this.onCompileFailed;
+            listener.onReports = listener.onReports || (function (b) { return _this.onReports(b); });
+            listener.onCompileSuccess = listener.onCompileSuccess || (function (b) { return _this.onCompileSuccess(b); });
+            listener.onCompileFailed = listener.onCompileFailed || (function () { return _this.onCompileFailed(); });
             this._listener = listener;
             return this._listener;
         },
@@ -2210,10 +2259,16 @@ var NodeJSConfig = /** @class */ (function (_super) {
         });
     };
     NodeJSConfig.prototype.onCompileSuccess = function (_book) {
-        process.exit(0);
+        var _a;
+        if (!((_a = this.options) === null || _a === void 0 ? void 0 : _a.inproc)) {
+            process.exit(0);
+        }
     };
     NodeJSConfig.prototype.onCompileFailed = function () {
-        process.exit(1);
+        var _a;
+        if (!((_a = this.options) === null || _a === void 0 ? void 0 : _a.inproc)) {
+            process.exit(1);
+        }
     };
     NodeJSConfig.prototype.resolvePath = function (path) {
         /* tslint:disable:no-require-imports */
@@ -2233,6 +2288,14 @@ var WebBrowserConfig = /** @class */ (function (_super) {
         _this.original = original;
         return _this;
     }
+    Object.defineProperty(WebBrowserConfig.prototype, "isDraft", {
+        get: function () {
+            var _a;
+            return (_a = this.options.draft) !== null && _a !== void 0 ? _a : false;
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(WebBrowserConfig.prototype, "read", {
         get: function () {
             return this.original.read || (function () {

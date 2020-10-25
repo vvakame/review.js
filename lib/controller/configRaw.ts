@@ -11,6 +11,8 @@ import { Builder } from "../builder/builder";
 export interface Options {
     reviewfile?: string;
     base?: string;
+    draft?: boolean;
+    inproc?: boolean;
 }
 
 /**

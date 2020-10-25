@@ -64,11 +64,19 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
             "ch01", // lead, emplist がまだサポートされていない
             "empty", // empty への対応をまだ行っていない ファイル実体は存在していない
             "block_graph", // graph への対応がまだ不完全なので
+            "inline", // tti がまだサポートされていない < のエスケープとかも
             "lead", // ブロック構文内でのParagraphの扱いがおかしいのを直していない
             "preface", // めんどくさいので
             "preproc",  // めんどくさいので
             "inline_m", // まだ真面目に実装していない
         ];
+
+        const withDraftFiles = [
+            "block_comment_with_draft",
+            "inline_comment_with_draft",
+            "single_comment_with_draft"
+        ].map(name => `${path}${name}/content.re`);
+
         function matchIgnoreFiles(filePath: string) {
             return ignoreFiles
                 .map(name => `${path}${name}/content.re`)
@@ -82,11 +90,16 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
                     .substr(0, filePath.length - "/content.re".length)
                     .substr(path.length);
 
-                let compileReports : ProcessReport[] = [];
+                let compileReports: ProcessReport[] = [];
                 typeList.forEach(typeInfo => {
                     let targetFileName = `${path}${baseName}/content.${typeInfo.ext}`;
+                    const options =
+                        withDraftFiles.includes(filePath) ?
+                            { draft: true } :
+                            undefined;
                     it(`ファイル: ${baseName}/content.${typeInfo.ext}`, () => {
                         let text = fs.readFileSync(filePath, "utf8");
+
                         return Test.compile({
                             basePath: `${process.cwd()}/test/fixture/valid/${baseName}`,
                             read: _path => Promise.resolve(text),
@@ -99,7 +112,7 @@ describe("Ruby版ReVIEWとの出力差確認", () => {
                             listener: {
                                 onReports: reports => compileReports = reports
                             }
-                        })
+                        }, options)
                             .then(s => {
                                 const compileErrors = compileReports.filter(r => r.level > 1);
                                 assert(compileErrors.length === 0, compileErrors.map(r => `${r.level}: ${r.message}`).join("\n"));

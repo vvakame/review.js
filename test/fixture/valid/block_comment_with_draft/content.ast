@@ -7,9 +7,9 @@
       "offset": 0
     },
     "end": {
-      "line": 4,
+      "line": 10,
       "column": 1,
-      "offset": 40
+      "offset": 46
     }
   },
   "childNodes": [
@@ -22,9 +22,9 @@
           "offset": 0
         },
         "end": {
-          "line": 4,
+          "line": 10,
           "column": 1,
-          "offset": 40
+          "offset": 46
         }
       },
       "childNodes": [
@@ -37,9 +37,9 @@
               "offset": 0
             },
             "end": {
-              "line": 4,
+              "line": 10,
               "column": 1,
-              "offset": 40
+              "offset": 46
             }
           },
           "comments": [],
@@ -54,7 +54,7 @@
               "end": {
                 "line": 3,
                 "column": 1,
-                "offset": 18
+                "offset": 17
               }
             },
             "level": 1,
@@ -68,8 +68,8 @@
                 },
                 "end": {
                   "line": 1,
-                  "column": 17,
-                  "offset": 16
+                  "column": 16,
+                  "offset": 15
                 }
               },
               "childNodes": [
@@ -83,11 +83,11 @@
                     },
                     "end": {
                       "line": 1,
-                      "column": 17,
-                      "offset": 16
+                      "column": 16,
+                      "offset": 15
                     }
                   },
-                  "text": "インラインcomment記法"
+                  "text": "ブロックcomment記法"
                 }
               ]
             }
@@ -99,12 +99,12 @@
                 "start": {
                   "line": 3,
                   "column": 1,
-                  "offset": 18
+                  "offset": 17
                 },
                 "end": {
-                  "line": 4,
+                  "line": 5,
                   "column": 1,
-                  "offset": 40
+                  "offset": 20
                 }
               },
               "childNodes": [
@@ -114,79 +114,78 @@
                     "start": {
                       "line": 3,
                       "column": 1,
-                      "offset": 18
+                      "offset": 17
                     },
                     "end": {
                       "line": 3,
                       "column": 2,
-                      "offset": 19
+                      "offset": 18
                     }
                   },
                   "text": "前"
+                }
+              ]
+            },
+            {
+              "ruleName": "BlockElement",
+              "location": {
+                "start": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 20
                 },
+                "end": {
+                  "line": 9,
+                  "column": 1,
+                  "offset": 44
+                }
+              },
+              "symbol": "comment",
+              "args": [],
+              "childNodes": [
                 {
-                  "ruleName": "InlineElement",
+                  "ruleName": "BlockElementContentText",
                   "location": {
                     "start": {
-                      "line": 3,
-                      "column": 2,
-                      "offset": 19
+                      "line": 6,
+                      "column": 1,
+                      "offset": 31
                     },
                     "end": {
-                      "line": 3,
-                      "column": 21,
-                      "offset": 38
+                      "offset": 19
                     }
                   },
-                  "symbol": "comment",
-                  "childNodes": [
-                    {
-                      "ruleName": "InlineElementContents",
-                      "location": {
-                        "start": {
-                          "line": 3,
-                          "column": 13,
-                          "offset": 30
-                        },
-                        "end": {
-                          "line": 3,
-                          "column": 20,
-                          "offset": 37
-                        }
-                      },
-                      "childNodes": [
-                        {
-                          "ruleName": "InlineElementContentText",
-                          "location": {
-                            "start": {
-                              "line": 3,
-                              "column": 13,
-                              "offset": 30
-                            },
-                            "end": {
-                              "line": 3,
-                              "column": 20,
-                              "offset": 37
-                            }
-                          },
-                          "text": "コメントだよ！"
-                        }
-                      ]
-                    }
-                  ]
+                  "text": "コメントだよ！"
+                }
+              ]
+            },
+            {
+              "ruleName": "Paragraph",
+              "location": {
+                "start": {
+                  "line": 9,
+                  "column": 1,
+                  "offset": 44
                 },
+                "end": {
+                  "line": 10,
+                  "column": 1,
+                  "offset": 46
+                }
+              },
+              "childNodes": [
                 {
                   "ruleName": "ContentText",
                   "location": {
                     "start": {
-                      "line": 3,
-                      "column": 21,
-                      "offset": 38
+                      "line": 9,
+                      "column": 1,
+                      "offset": 44
                     },
                     "end": {
-                      "line": 3,
-                      "column": 22,
-                      "offset": 39
+                      "line": 9,
+                      "column": 2,
+                      "offset": 45
                     }
                   },
                   "text": "後"
