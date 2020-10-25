@@ -2219,6 +2219,7 @@ var NodeJSConfig = /** @class */ (function (_super) {
     });
     Object.defineProperty(NodeJSConfig.prototype, "listener", {
         get: function () {
+            var _this = this;
             if (this._listener) {
                 return this._listener;
             }
@@ -2227,9 +2228,9 @@ var NodeJSConfig = /** @class */ (function (_super) {
             });
             listener.onSymbols = listener.onSymbols || (function () {
             });
-            listener.onReports = listener.onReports || this.onReports;
-            listener.onCompileSuccess = listener.onCompileSuccess || this.onCompileSuccess;
-            listener.onCompileFailed = listener.onCompileFailed || this.onCompileFailed;
+            listener.onReports = listener.onReports || (function (b) { return _this.onReports(b); });
+            listener.onCompileSuccess = listener.onCompileSuccess || (function (b) { return _this.onCompileSuccess(b); });
+            listener.onCompileFailed = listener.onCompileFailed || (function () { return _this.onCompileFailed(); });
             this._listener = listener;
             return this._listener;
         },

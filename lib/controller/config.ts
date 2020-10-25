@@ -126,9 +126,9 @@ export class NodeJSConfig extends Config {
         });
         listener.onSymbols = listener.onSymbols || (() => {
         });
-        listener.onReports = listener.onReports || this.onReports;
-        listener.onCompileSuccess = listener.onCompileSuccess || this.onCompileSuccess;
-        listener.onCompileFailed = listener.onCompileFailed || this.onCompileFailed;
+        listener.onReports = listener.onReports || (b=> this.onReports(b));
+        listener.onCompileSuccess = listener.onCompileSuccess || (b =>this.onCompileSuccess(b));
+        listener.onCompileFailed = listener.onCompileFailed || (() => this.onCompileFailed());
 
         this._listener = listener;
         return this._listener;
