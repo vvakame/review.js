@@ -2258,10 +2258,16 @@ var NodeJSConfig = /** @class */ (function (_super) {
         });
     };
     NodeJSConfig.prototype.onCompileSuccess = function (_book) {
-        process.exit(0);
+        var _a;
+        if (!((_a = this.options) === null || _a === void 0 ? void 0 : _a.inproc)) {
+            process.exit(0);
+        }
     };
     NodeJSConfig.prototype.onCompileFailed = function () {
-        process.exit(1);
+        var _a;
+        if (!((_a = this.options) === null || _a === void 0 ? void 0 : _a.inproc)) {
+            process.exit(1);
+        }
     };
     NodeJSConfig.prototype.resolvePath = function (path) {
         /* tslint:disable:no-require-imports */

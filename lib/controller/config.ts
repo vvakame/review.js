@@ -168,11 +168,15 @@ export class NodeJSConfig extends Config {
     }
 
     onCompileSuccess(_book: Book) {
-        process.exit(0);
+        if (!this.options?.inproc) {
+            process.exit(0);
+        }
     }
 
     onCompileFailed() {
-        process.exit(1);
+        if (!this.options?.inproc) {
+            process.exit(1);
+        }
     }
 
     resolvePath(path: string): string {
@@ -234,7 +238,7 @@ export class WebBrowserConfig extends Config {
         let promise = new Promise<{ path: string; result: boolean; }>(resolve => {
             try {
                 let xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function() {
+                xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200 || xhr.status === 304) {
                             resolve({ path: path, result: true });
