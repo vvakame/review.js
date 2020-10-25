@@ -15,6 +15,10 @@ export class Config {
     constructor(public original: ConfigRaw) {
     }
 
+    get isDraft(): boolean {
+        return false;
+    }
+
     get read(): (path: string) => Promise<string> {
         throw new Error("please implements this method");
     }
@@ -80,6 +84,10 @@ export class NodeJSConfig extends Config {
 
     constructor(public options: Options, public original: ConfigRaw) {
         super(original);
+    }
+
+    get isDraft() {
+        return this.options.draft ?? false;
     }
 
     get read(): (path: string) => Promise<string> {
@@ -181,6 +189,10 @@ export class WebBrowserConfig extends Config {
 
     constructor(public options: Options, public original: ConfigRaw) {
         super(original);
+    }
+
+    get isDraft() {
+        return this.options.draft ?? false;
     }
 
     get read(): (path: string) => Promise<string> {
