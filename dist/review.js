@@ -27,10 +27,9 @@ var DefaultBuilder = /** @class */ (function () {
         this.book = book;
         return Promise.all(book.allChunks.map(function (chunk) { return _this.processAst(chunk); })).then(function () { return null; });
     };
-    DefaultBuilder.prototype.processAst = function (chunk) {
+    DefaultBuilder.prototype.getDefaultVisitorArg = function (process) {
         var _this = this;
-        var process = chunk.createBuilderProcess(this);
-        return walker_1.visitAsync(chunk.tree.ast, {
+        return {
             visitDefaultPre: function (_node) {
             },
             visitChapterPre: function (node) {
@@ -99,7 +98,12 @@ var DefaultBuilder = /** @class */ (function () {
             visitSingleLineCommentPre: function (node) {
                 _this.singleLineComment(process, node);
             }
-        })
+        };
+    };
+    DefaultBuilder.prototype.processAst = function (chunk) {
+        var _this = this;
+        var process = chunk.createBuilderProcess(this);
+        return walker_1.visitAsync(chunk.tree.ast, this.getDefaultVisitorArg(process))
             .then(function () {
             _this.processPost(process, chunk);
             return Promise.all(chunk.nodes.map(function (chunk) { return _this.processAst(chunk); })).then(function () { return null; });
@@ -247,7 +251,8 @@ var DefaultBuilder = /** @class */ (function () {
         else {
             process.out(chapter.fqn).out(" ");
         }
-        process.out(chapter.headline.caption.childNodes[0].toTextNode().text);
+        // 再帰的に呼び出す（ラベルを使用した参照の場合、キャプションはインライン要素を含む可能性がある）
+        walker_1.visit(chapter.headline.caption, this.getDefaultVisitorArg(process));
         return false;
     };
     DefaultBuilder.prototype.inline_hd_post = function (process, _node) {

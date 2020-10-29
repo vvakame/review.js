@@ -7,7 +7,7 @@ import { Book, BuilderProcess, ContentChunk, Symbol } from "../model/compilerMod
 
 import { SyntaxTree, NodeSyntaxTree, ChapterSyntaxTree, BlockElementSyntaxTree, InlineElementSyntaxTree, HeadlineSyntaxTree, UlistElementSyntaxTree, OlistElementSyntaxTree, DlistElementSyntaxTree, TextNodeSyntaxTree, ColumnSyntaxTree, ColumnHeadlineSyntaxTree, SingleLineCommentSyntaxTree } from "../parser/parser";
 
-import { visit, visitAsync } from "../parser/walker";
+import { TreeVisitorArg, visit, visitAsync } from "../parser/walker";
 
 import { nodeContentToString, findUp } from "../utils/utils";
 
@@ -82,9 +82,8 @@ export class DefaultBuilder implements Builder {
         return Promise.all(book.allChunks.map(chunk => this.processAst(chunk))).then(() => null);
     }
 
-    processAst(chunk: ContentChunk): Promise<null> {
-        let process = chunk.createBuilderProcess(this);
-        return visitAsync(chunk.tree.ast, {
+    private getDefaultVisitorArg(process: BuilderProcess) : TreeVisitorArg {
+        return {
             visitDefaultPre: (_node: SyntaxTree) => {
             },
             visitChapterPre: (node: ChapterSyntaxTree) => {
@@ -153,7 +152,12 @@ export class DefaultBuilder implements Builder {
             visitSingleLineCommentPre: (node: SingleLineCommentSyntaxTree) => {
                 this.singleLineComment(process, node);
             }
-        })
+        };
+    }
+
+    processAst(chunk: ContentChunk): Promise<null> {
+        let process = chunk.createBuilderProcess(this);
+        return visitAsync(chunk.tree.ast, this.getDefaultVisitorArg(process))
             .then(() => {
                 this.processPost(process, chunk);
                 return Promise.all(chunk.nodes.map(chunk => this.processAst(chunk))).then(() => null);
@@ -329,7 +333,9 @@ export class DefaultBuilder implements Builder {
         } else {
             process.out(chapter.fqn).out(" ");
         }
-        process.out(chapter.headline.caption.childNodes[0].toTextNode().text);
+
+        // 再帰的に呼び出す（ラベルを使用した参照の場合、キャプションはインライン要素を含む可能性がある）
+        visit(chapter.headline.caption,this.getDefaultVisitorArg(process));
         return false;
     }
 
